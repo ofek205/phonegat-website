@@ -1,0 +1,42 @@
+[
+  {
+    "name": "obj1",
+    "areaPct": 4.54,
+    "xPct": 7.32,
+    "yPct": 54.97,
+    "wPct": 22.31,
+    "hPct": 35.45,
+    "cxPct": 18.47,
+    "cyPct": 72.7
+  },
+  {
+    "name": "obj2",
+    "areaPct": 3.75,
+    "xPct": 8.22,
+    "yPct": 24.86,
+    "wPct": 18.51,
+    "hPct": 27.99,
+    "cxPct": 17.47,
+    "cyPct": 38.86
+  },
+  {
+    "name": "obj3",
+    "areaPct": 3.36,
+    "xPct": 27.28,
+    "yPct": 80.76,
+    "wPct": 46.27,
+    "hPct": 15.38,
+    "cxPct": 50.41,
+    "cyPct": 88.44
+  },
+  {
+    "name": "obj4",
+    "areaPct": 26.98,
+    "xPct": 27.56,
+    "yPct": 9.39,
+    "wPct": 60.5,
+    "hPct": 70.9,
+    "cxPct": 57.8,
+    "cyPct": 44.84
+  }
+]

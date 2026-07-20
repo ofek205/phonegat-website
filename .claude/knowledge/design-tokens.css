@@ -1,0 +1,83 @@
+/* ============================================================
+   PHONE GAT — Design Tokens (v1, נעול 2026-07-18)
+   מעוגן בצבעי הלוגו האמיתיים + מערכת FunPhone (משמעת accent) + liquid-glass עדין.
+   פלטה: צבעי הלוגו · זכוכית: חתימה עדינה · רקע: לבן, קצב מול מקטעים כהים.
+   ============================================================ */
+:root {
+  /* ===== Brand — נדגם ישירות מהלוגו ===== */
+  --brand-purple: #783078;   /* rgb(120,48,120) */
+  --brand-teal:   #1878A8;   /* rgb(24,120,168) */
+  --brand-green:  #78C048;   /* rgb(120,192,72) */
+  --brand-orange: #F09030;   /* rgb(240,144,48) */
+
+  /* ===== Grounds — "הלבן הוא הבמה" ===== */
+  --bg:        #FCFCFC;   /* במה בהירה (כמו FunPhone) */
+  --bg-soft:   #F3F2F0;   /* מקטע בהיר משני */
+  --bg-dark:   #1A1512;   /* מקטעי סטוריטלינג כהים (near-black חמים) */
+  --bg-dark-2: #2A2230;   /* כהה משני, נטוי-סגול */
+
+  /* ===== Ink ===== */
+  --ink:              #1A1A1A;  /* טקסט ראשי על בהיר */
+  --ink-soft:         #5A5560;  /* טקסט משני (אפור נטוי-סגול, לא ניטרלי משעמם) */
+  --ink-on-dark:      #FFFFFF;
+  --ink-on-dark-soft: #C8C2CC;
+  --line:             #E4E1E6;  /* קווים/גבולות */
+
+  /* ===== Semantic accents — משמעת: ראשי אחד + כותרות + אמון + תשומת-לב ===== */
+  --accent:         var(--brand-teal);  /* אינטראקטיבי ראשי: כפתורים, קישורים, וואטסאפ */
+  --accent-hover:   #12617F;
+  --accent-ink:     #0F5A76;            /* טורקיז כהה מספיק לטקסט על לבן (>=4.5:1) */
+  --heading-accent: var(--brand-purple);/* eyebrows/כותרות מקטע — פרימיום */
+  --trust:          #4E8A2A;            /* ירוק מוכהה — תגי אמון/וי (הגרסה הבהירה נופלת בניגודיות) */
+  --attention:      #E3521C;            /* כתום-אדום, שימוש מדוד: דחיפות/הדגשה */
+
+  /* ===== Liquid glass — חתימה עדינה בלבד (סרגל CTA, כרטיסי אמון על כהה) ===== */
+  --glass-bg-dark:  rgba(255,255,255,0.07);
+  --glass-bg-light: rgba(255,255,255,0.55);
+  --glass-border:   rgba(255,255,255,0.16);
+  --glass-blur:     14px;
+  /* שימוש: background:var(--glass-bg-dark); backdrop-filter:blur(var(--glass-blur)) saturate(140%);
+     border:1px solid var(--glass-border); box-shadow:var(--shadow-glass);
+     ⚠️ נגישות: תמיד לוודא ניגודיות טקסט 4.5:1 מעל הזכוכית (רקע fallback מתחת). */
+
+  /* ===== Typography — Assistant, גוף נדיב 19px ===== */
+  --font: "Assistant", "Heebo", "Segoe UI", system-ui, sans-serif;
+  --fs-h1:    2.375rem;  /* 38px */
+  --fs-h2:    1.5rem;    /* 24px */
+  --fs-h3:    1.125rem;  /* 18px */
+  --fs-body:  1.1875rem; /* 19px */
+  --fs-small: 0.9375rem; /* 15px */
+  --fw-black: 800; --fw-bold: 700; --fw-semibold: 600; --fw-regular: 400;
+  --lh-body: 1.7;
+  /* עברית RTL: אין letter-spacing על כותרות (בניגוד ל-FunPhone) — פוגע בקריאוּת עברית */
+
+  /* ===== Radius ===== */
+  --radius-sm:   8px;    /* כפתורים, שדות */
+  --radius-lg:   24px;   /* פאנלים/כרטיסי זכוכית/אריחים (ברוח ה-28px של FunPhone) */
+  --radius-pill: 999px;
+
+  /* ===== Elevation — נגזר מ-FunPhone, מרובד ===== */
+  --shadow-sm:    rgba(0,0,0,0.06) 0 1px 3px 1px;
+  --shadow-md:    rgba(0,0,0,0.10) 0 4px 6px -1px, rgba(0,0,0,0.06) 0 10px 20px -5px;
+  --shadow-lg:    rgba(0,0,0,0.16) 0 12px 32px -8px, rgba(0,0,0,0.06) 0 0 0 1px;
+  --shadow-glass: rgba(0,0,0,0.20) 0 8px 32px -6px;
+
+  /* ===== Motion — easing חומרי (כמו FunPhone) ===== */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.16s; --dur: 0.24s; --dur-slow: 0.32s;
+
+  /* ===== Layout ===== */
+  --maxw: 1200px;                    /* צר מ-1400 של FunPhone — אין גריד מסחר */
+  --gap: clamp(16px, 3vw, 32px);
+  --section-y: clamp(56px, 8vw, 112px);
+}
+
+/* כיבוד העדפת תנועה מופחתת — חובת נגישות */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
