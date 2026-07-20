@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Consent Mode v2: analytics denied by default until the visitor accepts (see cookie banner on the home page) -->
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  var pgC='denied';try{if(localStorage.getItem('pgConsent')==='granted')pgC='granted';}catch(e){}
+  gtag('consent','default',{ad_storage:pgC,ad_user_data:pgC,ad_personalization:pgC,analytics_storage:pgC,functionality_storage:'granted',security_storage:'granted',wait_for_update:500});
+</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
