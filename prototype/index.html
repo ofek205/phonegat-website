@@ -36,8 +36,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:image" content="https://www.phonegat.co.il/store.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap"></noscript>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"MobilePhoneStore","@id":"https://www.phonegat.co.il/#business","name":"פון גת","url":"https://www.phonegat.co.il/","image":"https://www.phonegat.co.il/store.jpg","logo":"https://www.phonegat.co.il/logo.jpg","description":"מעבדת הסלולר הוותיקה בקרית גת: תיקון, מכירת מכשירים, סלקום וכל חברות הסלולר.","telephone":"+972-52-5893366","address":{"@type":"PostalAddress","streetAddress":"רחבת תשרי 2","addressLocality":"קרית גת","postalCode":"8202175","addressCountry":"IL"},"geo":{"@type":"GeoCoordinates","latitude":31.60332,"longitude":34.775553},"hasMap":"https://www.google.com/maps?cid=12990938412192454327","sameAs":["https://www.facebook.com/phonegat/","https://www.instagram.com/phonegat/","https://easy.co.il/page/26408300","https://www.google.com/maps?cid=12990938412192454327"],"areaServed":[{"@type":"City","name":"קרית גת"},{"@type":"Place","name":"כרמי גת"},{"@type":"Place","name":"קיבוצים ומושבי לכיש"}],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday","Monday","Tuesday","Wednesday","Thursday"],"opens":"09:00","closes":"18:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"09:00","closes":"13:00"}],"priceRange":"₪₪","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"537"},"review":[{"@type":"Review","author":{"@type":"Person","name":"שמוליק"},"reviewRating":{"@type":"Rating","ratingValue":"5"},"reviewBody":"מקצועיים, אמינים, ובעיקר עומדים בזמן."},{"@type":"Review","author":{"@type":"Person","name":"דרור"},"reviewRating":{"@type":"Rating","ratingValue":"5"},"reviewBody":"מקום שאתה קונה בו פעם אחת וכבר לא תקנה באף מקום אחר."},{"@type":"Review","author":{"@type":"Person","name":"מיכל"},"reviewRating":{"@type":"Rating","ratingValue":"5"},"reviewBody":"ישרים, אמינים בתיקונים. מקצועיות, אנושיות ומחירים מצוינים."}]}
 </script>
@@ -210,7 +210,8 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 @keyframes pgsb{0%,4%{top:11%}100%{top:86%}}
 .pg-screen:hover .pg-thumb{animation-play-state:paused}
 .pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
-.press .pcta{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;color:var(--teal);font-weight:800;font-size:.9rem;text-decoration:none}
+.press .pcta{display:inline-flex;align-items:center;gap:.55rem;margin-top:.85rem;color:var(--teal);font-weight:800;font-size:1.12rem;text-decoration:none}
+.press .pcta .wa-ico{width:28px;height:28px}
 .press .pcta:hover{text-decoration:underline}
 .pg-biz{background:#fff;padding:13px 15px;border-bottom:1px solid var(--pg-line)}
 .pg-biz-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -369,18 +370,18 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .press .source{font-size:.85rem;color:var(--ink-soft);margin-top:1.3rem;border-top:1px solid var(--line);padding-top:.85rem;line-height:1.5}
 .press .source a{color:var(--teal);text-decoration:underline}
 .press .kicker{color:var(--teal);font-weight:800;letter-spacing:.06em;font-size:.82rem}
-.press h2.head{font-family:"Frank Ruhl Libre",serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.2;color:#141210;margin:.3rem 0 .5rem}
+.press h2.head{font-family:var(--font);font-weight:900;font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.2;color:#141210;margin:.3rem 0 .5rem}
 .press .byline{color:var(--ink-soft);font-weight:600;font-size:.95rem;margin-bottom:1.1rem}
 .press .byline b{color:#141210}
 .press figure{margin:0 0 1.3rem}
 .press figure img{width:100%;height:auto;display:block;border-radius:2px}
 .press figcaption{font-size:.85rem;color:var(--ink-soft);font-style:italic;margin-top:.45rem;text-align:center}
-.press .body{font-family:"Frank Ruhl Libre",serif;font-size:1.16rem;line-height:1.8;color:#2a2620;text-align:justify}
+.press .body{font-family:var(--font);font-size:1.16rem;line-height:1.8;color:#2a2620;text-align:justify}
 .press .body p{margin-bottom:1rem}
 .press .body .lead::first-letter{font-size:3.1rem;font-weight:900;float:inline-start;line-height:.82;margin-inline-end:.1em;color:var(--teal)}
 .press .body h3{font-family:var(--font);font-size:1.12rem;margin:1.1rem 0 .25rem;color:#141210}
 .press .cols{column-count:2;column-gap:2.4rem}
-.press .pullquote{font-family:"Frank Ruhl Libre",serif;font-weight:700;font-size:clamp(1.3rem,2.6vw,1.7rem);line-height:1.4;color:#141210;border-inline-start:4px solid var(--teal);padding-inline-start:1rem;margin:1.4rem 0;break-inside:avoid}
+.press .pullquote{font-family:var(--font);font-weight:700;font-size:clamp(1.3rem,2.6vw,1.7rem);line-height:1.4;color:#141210;border-inline-start:4px solid var(--teal);padding-inline-start:1rem;margin:1.4rem 0;break-inside:avoid}
 .press .offer{background:#eef6f9;border:1.5px dashed var(--teal);border-radius:10px;padding:1.2rem 1.3rem;margin-top:1.4rem}
 .press .offer h4{color:var(--teal);font-size:1.15rem;margin:0 0 .4rem}
 .press .offer p{color:var(--ink);margin:0 0 .9rem;line-height:1.6;font-family:var(--font)}
@@ -449,10 +450,13 @@ html.a11y-stop-motion .reviews .rw-track{animation:none}
 .mcta{display:flex;flex-direction:column;gap:.7rem}
 .mcta-title{font-weight:800;font-size:1.08rem;color:var(--ink-strong)}
 .mcta-btns{display:flex;gap:.6rem;flex-wrap:wrap}
-.nav-btn{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line);border-radius:8px;padding:.55rem 1.05rem;font-weight:800;color:var(--ink);box-shadow:var(--shadow-sm);transition:border-color .2s,transform .2s}
-.nav-btn:hover{border-color:var(--teal);transform:translateY(-1px)}
-.nav-btn svg{flex:none}
-.nav-btn img{flex:none;height:22px;width:auto;object-fit:contain;display:block}
+.nav-btn{display:inline-flex;align-items:center;justify-content:center;inline-size:64px;block-size:64px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);transition:border-color .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease)}
+.nav-btn img{flex:none;width:auto;object-fit:contain;display:block}
+.nav-btn--waze img{height:40px}
+.nav-btn--maps img{height:46px}
+@media(hover:hover){.nav-btn:hover{border-color:var(--teal);transform:translateY(-1px);box-shadow:0 10px 24px -10px rgba(20,40,60,.3)}}
+.nav-btn:focus-visible{outline:3px solid var(--teal-d);outline-offset:2px}
+.nav-btn:active{transform:translateY(0) scale(.97);border-color:var(--teal-d)}
 @media(max-width:800px){.map .grid{grid-template-columns:1fr}}
 
 /* ===== faq ===== */
@@ -630,7 +634,7 @@ html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *:
   .car-btn{width:44px;height:44px}                 /* carousel arrows -> 44px */
   .slide{padding-inline:46px}                      /* keep slide text clear of the arrows */
   .car-dots button{box-sizing:content-box;background-clip:content-box;padding:15px 8px}  /* dot tap area */
-  .nav-btn{min-height:44px}                         /* waze/maps buttons -> 44px */
+  .nav-btn{inline-size:56px;block-size:56px}.nav-btn--waze img{height:34px}.nav-btn--maps img{height:40px}  /* waze/maps icon-chips */
   .burger{min-width:44px;min-height:44px;line-height:44px;text-align:center}
   nav.main a{padding-block:14px}                   /* menu links -> ~47px tap target */
   .person .p-photo{max-width:330px}                /* team photos a touch tighter */
@@ -1145,13 +1149,11 @@ document.addEventListener('DOMContentLoaded',function(){
         <div class="mcta">
           <p class="mcta-title">לחצו כדי לנווט</p>
           <div class="mcta-btns">
-            <a class="nav-btn" href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener" aria-label="ניווט לפון גת בוויז">
-              <img src="waze-logo.png" alt="" width="22" height="22" loading="lazy" decoding="async">
-              <span>וייז</span>
+            <a class="nav-btn nav-btn--waze" href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener" aria-label="ניווט לפון גת בוויז">
+              <img src="waze-logo.png" alt="" width="40" height="40" loading="lazy" decoding="async">
             </a>
-            <a class="nav-btn" href="https://www.google.com/maps/dir/?api=1&destination=31.60332,34.775553" target="_blank" rel="noopener" aria-label="ניווט לפון גת בגוגל מפות">
-              <img src="google-maps-logo.png" alt="" width="40" height="22" loading="lazy" decoding="async">
-              <span>גוגל מפות</span>
+            <a class="nav-btn nav-btn--maps" href="https://www.google.com/maps/dir/?api=1&destination=31.60332,34.775553" target="_blank" rel="noopener" aria-label="ניווט לפון גת בגוגל מפות">
+              <img src="google-maps-pin.png" alt="" width="33" height="46" loading="lazy" decoding="async">
             </a>
           </div>
         </div>
