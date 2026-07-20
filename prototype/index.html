@@ -349,10 +349,12 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 @media(prefers-reduced-motion:reduce){.car-track{transition:none}.slide-art>svg{animation:none}}
 
 /* ===== why / welcome (white) ===== */
-.why{text-align:center;padding:clamp(40px,6vw,72px) 0}
-.why h2{font-size:clamp(1.5rem,3.6vw,2.2rem)}
-.why .lead{font-weight:700;margin-top:.8rem;font-size:1.1rem}
-.why .lead2{color:var(--ink-soft);margin-top:.3rem;font-size:1.05rem}
+/* «why choose us» — frosted-glass card inside the reviews section */
+.why-card{background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.16);border-radius:16px;max-width:720px;margin:0 auto clamp(2rem,4vw,3rem);padding:clamp(1.5rem,3.5vw,2.4rem) clamp(1.3rem,3.5vw,2.6rem);box-shadow:0 22px 50px -26px rgba(0,0,0,.55)}
+.reviews .why-card h2{color:#fff;font-size:clamp(1.55rem,3.6vw,2.2rem);margin:0}
+.why-card .why-tag{color:#bfe0ee;font-weight:700;font-size:clamp(1.05rem,2.2vw,1.25rem);margin:.55rem 0 0}
+.why-line{margin:1.15rem auto 0;max-width:52ch;color:#cfe6f0;font-weight:600;font-size:1.05rem;line-height:1.75;text-wrap:balance}
+.why-line .nw{white-space:nowrap}
 .welcome{background:#f6f5f3;padding:clamp(36px,5vw,64px) 0}
 .welcome .box{max-width:900px;margin-inline:auto}
 .welcome h2{font-size:clamp(1.4rem,3.2vw,2rem)}
@@ -868,18 +870,18 @@ document.addEventListener('DOMContentLoaded',function(){
   </div>
 </section>
 
-<!-- WHY (הוחזר לבקשת הלקוח) -->
-<section class="why wrap" aria-labelledby="why-h">
-  <h2 id="why-h">למה לבחור בנו?</h2>
-  <p class="lead">היכן שוותק, מחיר ושירות נפגשים</p>
-  <p class="lead2">מעל 30 שנה · הסניף הראשון והיחיד של סלקום בקרית גת · שירות מקצה-לקצה · אחריות מלאה</p>
-</section>
+<!-- «למה לבחור בנו?» מוזג לתוך קטע הביקורות (ראו .why-card שם) -->
 
 <!-- REVIEWS RATINGS -->
 <section id="reviews" class="reviews" aria-labelledby="rev-h">
   <div class="rev-wall" id="revWall" aria-hidden="true"></div>
   <div class="rev-scrim" aria-hidden="true"></div>
   <div class="rev-fg wrap">
+    <div class="why-card">
+      <h2 id="why-h">למה לבחור בנו?</h2>
+      <p class="why-tag">היכן שוותק, מחיר ושירות נפגשים</p>
+      <p class="why-line"><span class="nw">מעל 30 שנה</span> · הסניף הראשון והיחיד של סלקום בקרית גת · <span class="nw">שירות מקצה-לקצה</span> · <span class="nw">אחריות מלאה</span></p>
+    </div>
     <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> מתוך 5 · מעל 1,500 ביקורות</span>
     <h2 id="rev-h">מאות לקוחות ממליצים</h2>
     <p class="rev-lead">מעל 30 שנות ניסיון · בליווי אישי של ברוך וסיגל</p>
