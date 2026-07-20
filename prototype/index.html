@@ -1623,7 +1623,8 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!/^0\d{8,9}$/.test(phd)){note.classList.remove('sent');note.textContent='מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.';if(phEl)phEl.focus();return;}
     if(!KEY||KEY.indexOf('YOUR_')===0){note.textContent='הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.';return;}
     btn.disabled=true;note.textContent='שולח...';
-    fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form)})
+    var _fd=new FormData(form),_o={};_fd.forEach(function(v,k){_o[k]=v;});
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(_o)})
       .then(function(r){return r.json();})
       .then(function(j){
         if(j.success){form.reset();note.classList.add('sent');note.innerHTML='<b>תודה! הפנייה נשלחה.</b> ברוך וסיגל יחזרו אליכם בהקדם.<br>בינתיים אפשר גם: <a href="https://wa.me/972525893366">וואטסאפ</a> · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a> · <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener">ניווט</a><br>שעות: א׳–ה׳ 9:00–18:30, ו׳ 9:00–13:00';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
