@@ -473,6 +473,8 @@ html.a11y-stop-motion .reviews .rw-track{animation:none}
 .field label{font-weight:700;font-size:.95rem}
 .field input,.field select{font-family:inherit;font-size:1rem;padding:.75rem .9rem;border:none;border-radius:6px;background:#fff;color:var(--ink)}
 .fnote{color:var(--on-dark-soft);font-size:.9rem;margin-top:.6rem}
+.fnote.sent{color:var(--on-dark);font-weight:600;line-height:1.7}
+.fnote.sent a{color:#45A6D6;font-weight:800;white-space:nowrap}
 .consent label{flex-direction:row;align-items:flex-start;gap:.55rem;font-weight:500;font-size:.92rem;line-height:1.5;cursor:pointer}
 .consent input{width:18px;height:18px;flex:none;margin-top:.15rem;padding:0;border-radius:4px;accent-color:var(--teal);cursor:pointer}
 .consent a{color:#fff;text-decoration:underline}
@@ -677,7 +679,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="#main" aria-label="פון גת, דף הבית"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="#services">שירותים</a><a href="#team">הסיפור</a><a href="#reviews">ביקורות</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
+      <a href="#services">שירותים</a><a href="#deals">מבצעים</a><a href="#team">הסיפור</a><a href="#reviews">ביקורות</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -1616,12 +1618,14 @@ document.addEventListener('DOMContentLoaded',function(){
   var keyEl=form.querySelector('input[name=access_key]'), KEY=keyEl?keyEl.value:'';
   form.addEventListener('submit',function(e){
     e.preventDefault();
+    var phEl=form.querySelector('#phone'), phd=((phEl&&phEl.value)||'').replace(/\D/g,'');
+    if(!/^0\d{8,9}$/.test(phd)){note.classList.remove('sent');note.textContent='מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.';if(phEl)phEl.focus();return;}
     if(!KEY||KEY.indexOf('YOUR_')===0){note.textContent='הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.';return;}
     btn.disabled=true;note.textContent='שולח...';
     fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form)})
       .then(function(r){return r.json();})
       .then(function(j){
-        if(j.success){form.reset();note.textContent='תודה! הפנייה נשלחה, ברוך וסיגל יחזרו אליכם בהקדם.';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
+        if(j.success){form.reset();note.classList.add('sent');note.innerHTML='<b>תודה! הפנייה נשלחה.</b> ברוך וסיגל יחזרו אליכם בהקדם.<br>בינתיים אפשר גם: <a href="https://wa.me/972525893366">וואטסאפ</a> · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a> · <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener">ניווט</a><br>שעות: א׳–ה׳ 9:00–18:30, ו׳ 9:00–13:00';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
         else{note.textContent='משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.';}
         btn.disabled=false;
       })
