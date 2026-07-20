@@ -1,0 +1,19 @@
+# Phone Gat static site — caching rules for Netlify / Cloudflare Pages.
+# (These hosts apply Brotli/gzip compression automatically, so only caching
+# is set here.) Ignored on hosts that don't read a _headers file.
+
+/*.html
+  Cache-Control: no-cache, must-revalidate
+
+/*.css
+  Cache-Control: public, max-age=604800
+/*.js
+  Cache-Control: public, max-age=604800
+/*.webp
+  Cache-Control: public, max-age=604800
+/*.png
+  Cache-Control: public, max-age=604800
+/*.jpg
+  Cache-Control: public, max-age=604800
+/*.svg
+  Cache-Control: public, max-age=604800

@@ -1,0 +1,24 @@
+# Phone Gat static site — compression + caching (Apache).
+# Everything is guarded by <IfModule>, so it is safe even if a module is
+# missing, and it is ignored entirely on non-Apache hosts (Nginx, Netlify...).
+
+# ===== Compression =====
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript text/javascript application/json image/svg+xml application/xml application/rss+xml
+</IfModule>
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+# ===== Caching =====
+<IfModule mod_headers.c>
+  # HTML always revalidated, so content edits show immediately.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  # Static assets cached for a week. Raise this once you add filename
+  # versioning (e.g. logo-mark.abc123.webp) for cache-busting on updates.
+  <FilesMatch "\.(css|js|webp|png|jpe?g|svg|ico|woff2)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
