@@ -111,7 +111,7 @@ nav.main{display:flex;gap:1.15rem;font-weight:600;font-size:.98rem;margin-inline
 nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hicons{display:flex;align-items:center;gap:.7rem;margin-inline-start:1rem}
 .hicons .ic{color:#eaeaea;font-size:1.15rem}
-.burger{display:none;background:none;border:none;color:#fff;font-size:1.7rem;cursor:pointer;margin-inline-start:auto}
+.burger{display:none;background:none;border:none;color:#fff;font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
 @media(max-width:980px){
   nav.main{display:none;position:absolute;inset-inline:0;top:100%;background:var(--black);flex-direction:column;gap:0;padding:.5rem 0;border-top:1px solid #222}
   nav.main.open{display:flex}
@@ -347,7 +347,7 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .car-dots{display:flex;gap:8px;justify-content:center;margin-top:1.15rem}
 .car-dots button{width:9px;height:9px;padding:0;border-radius:50%;background:#cfcbd4;border:none;cursor:pointer;transition:width .2s,background .2s}
 .car-dots button[aria-current="true"]{width:26px;border-radius:5px;background:var(--teal)}
-@media(max-width:720px){.carousel{padding-inline:14px}.car-btn{width:38px;height:38px;font-size:1.3rem}.slide{grid-template-columns:1fr;text-align:center;gap:.3rem}.slide .badge{margin-inline:auto}.slide p{margin-inline:auto}.slide-art{display:none}}
+@media(max-width:720px){.carousel{padding-inline:14px}.car-btn{width:44px;height:44px;font-size:1.3rem}.slide{grid-template-columns:1fr;text-align:center;gap:.3rem}.slide .badge{margin-inline:auto}.slide p{margin-inline:auto}.slide-art{display:none}}
 @media(prefers-reduced-motion:reduce){.car-track{transition:none}.slide-art>svg{animation:none}}
 
 /* ===== why / welcome (white) ===== */
@@ -777,7 +777,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function ab(k,l){var ic=k==='wa'?'<img class="wa-ico pg-wa" src="whatsapp-logo.png" alt="" width="32" height="32" decoding="async">':'<div class="pg-circ"><svg viewBox="0 0 24 24"><path d="'+ICON[k]+'"/></svg></div>';return '<div class="pg-act">'+ic+'<div class="pg-lbl">'+l+'</div></div>';}
   var BIZ='<div class="pg-biz"><div class="pg-biz-top"><div><div class="pg-biz-name">פון גת <span class="pg-vf">✓</span> <span class="pg-managed">מנוהל</span></div>'+
     '<div class="pg-biz-cat">חנות סלולר ואביזרים · רחבת תשרי 2, קרית גת</div>'+
-    '<div class="pg-biz-hours"><b>פתוח</b> עד 19:00</div>'+
+    '<div class="pg-biz-hours"><b>פתוח</b> עד 18:30</div>'+
     '<div class="pg-biz-cnt">835 ביקורות</div></div>'+
     '<div class="pg-badge"><b>9.5</b><span>ציון העסק</span></div></div>'+
     '<div class="pg-acts">'+ab("nav","ניווט")+ab("wa","וואטסאפ")+ab("call","חייגו")+ab("share","שיתוף")+'</div></div>';
