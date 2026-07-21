@@ -269,7 +269,7 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;align-items:stretch}
 .tile{position:relative;aspect-ratio:4/3;background:#0b0b0d;display:flex;align-items:flex-start;justify-content:space-between;padding:clamp(14px,2vw,26px);color:#fff;overflow:hidden}
 .tile .tphoto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%;z-index:0;filter:brightness(1.3) saturate(1.1)}
-.tile::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(8,8,10,.74),rgba(8,8,10,.32) 32%,rgba(8,8,10,.04) 62%,rgba(8,8,10,.22))}
+.tile::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(8,8,10,.82),rgba(8,8,10,.55) 35%,rgba(8,8,10,.5) 65%,rgba(8,8,10,.72))}
 .tile:hover .tphoto{transform:scale(1.05)}
 .tile .tphoto{transition:transform .5s var(--ease)}
 .tile .tname{position:relative;z-index:2;font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:800;text-align:start;text-shadow:0 1px 8px rgba(0,0,0,.7)}
@@ -329,12 +329,12 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 @keyframes dealFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .slide-art .hstage{width:100%;max-width:330px;background:transparent;border:none}
 .slide-art .hstage .hglow{opacity:.55}
-.s-teal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.18),transparent 48%),linear-gradient(135deg,#1a86bd,#0e4760)}
-.s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#8a3676,#421838)}
-.s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#e8983f,#9c5318)}
-.s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#63ab42,#285d1a)}
-.s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#137a9e,#093040)}
-.s-pink{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#a83a7f,#5b1d45)}
+.s-teal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.18),transparent 48%),linear-gradient(135deg,#135f83,#0e4760)}
+.s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#632854,#421838)}
+.s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
+.s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
+.s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
+.s-pink{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#7a295b,#5b1d45)}
 .car-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--ink-strong);font-size:1.6rem;line-height:0;cursor:pointer;box-shadow:0 8px 22px -10px rgba(0,0,0,.4);display:grid;place-items:center;transition:transform .15s var(--ease),background .15s,color .15s}
 .car-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
 .car-btn svg{width:20px;height:20px;display:block}
