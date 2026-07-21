@@ -174,7 +174,8 @@ html.a11y-stop-motion .hstage .henter{transition:none}
 @media(min-width:821px){.hero .grid.pg-has-phone{grid-template-columns:auto auto;justify-content:center;gap:clamp(2.5rem,5vw,5rem)}}
 @media(min-width:821px){.hero .grid.pg-has-phone .htext{max-width:32rem}}
 .pg-showcase{display:flex;flex-direction:column;align-items:center;gap:.9rem}
-.pg-phones{display:flex;align-items:center;justify-content:center;perspective:2400px}
+.pg-phones{position:relative;display:flex;align-items:center;justify-content:center;perspective:2400px}
+.pg-phones::before{content:"";position:absolute;top:50%;left:50%;width:82%;height:90%;transform:translate(-50%,-50%);background:radial-gradient(50% 50% at 50% 50%,rgba(69,166,214,.55),rgba(24,120,168,.24) 46%,transparent 74%);filter:blur(38px);z-index:0;pointer-events:none}
 .pg-source{margin:0;text-align:center;max-width:36ch}
 .pg-source-main{display:block;font-size:.82rem;font-weight:600;color:#cfe0ea;line-height:1.45}
 .pg-source-main b{color:#fff;font-weight:800}
@@ -186,15 +187,10 @@ html.a11y-stop-motion .hstage .henter{transition:none}
 html.a11y-stop-motion .pg-showcase{animation:none}
 @media(max-width:820px){.pg-showcase{margin-block-start:.6rem}}
 .pg-phone{--pg-teal:#1878A8;--pg-ink:#454545;--pg-sub:#757575;--pg-line:#ededed;--pg-green:#39b54a;--pg-gold:#FBB03B;--pg-pink:#e6007e;--pgd:104s;
-  position:relative;height:clamp(540px,72vh,700px);aspect-ratio:726/1556;transform:rotateY(18deg) rotateX(2.5deg);transform-style:preserve-3d;flex:none}
+  position:relative;z-index:1;height:clamp(540px,72vh,700px);aspect-ratio:663/1403;transform:rotateY(18deg) rotateX(2.5deg);transform-style:flat;flex:none}
 @media(max-width:820px){.pg-phone{height:auto;width:min(300px,78vw);transform:none}}
-.pg-body{position:absolute;inset:0;border-radius:44px;background:linear-gradient(118deg,#eef1f4 0%,#b7bdc6 12%,#f5f7f9 28%,#969da8 48%,#d0d5db 63%,#8f96a1 83%,#e9ecef 95%,#bfc5cd 100%);box-shadow:0 34px 62px -6px rgba(0,0,0,.55)}
-.pg-rail{position:absolute;inset:1.5px;border-radius:42px;box-shadow:inset 0 0 0 1.5px rgba(232,236,240,.75),inset 0 0 0 3px rgba(17,18,22,.9)}
-.pg-rim{position:absolute;inset:0;border-radius:44px;background:linear-gradient(133deg,rgba(255,255,255,.5),transparent 18%);pointer-events:none}
-.pg-btn-a{position:absolute;left:-3px;top:22.5%;width:3px;height:5.5%;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#eef0f3,#9aa0aa)}
-.pg-btn-v{position:absolute;left:-3px;top:30.5%;width:3px;height:15%;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#eef0f3,#9aa0aa)}
-.pg-btn-p{position:absolute;right:-3px;top:26%;width:3px;height:12%;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#eef0f3,#9aa0aa)}
-.pg-screen{position:absolute;inset:12px;border-radius:34px;overflow:hidden;background:#000}
+.pg-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;pointer-events:none;filter:drop-shadow(0 0 1.5px rgba(255,255,255,.5)) drop-shadow(0 28px 55px rgba(0,0,0,.55))}
+.pg-screen{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;border-style:solid;border-color:#000;border-width:3px 5px;border-radius:40px;overflow:hidden;background:#000;z-index:1}
 .pg-punch{position:absolute;top:2.5%;left:50%;transform:translateX(-50%);width:32%;height:4%;min-height:20px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.45);z-index:11}
 .pg-punch::after{content:"";position:absolute;top:50%;right:11%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#1c2b3b,#000 70%)}
 .pg-refl{position:absolute;inset:0;background:linear-gradient(122deg,rgba(255,255,255,.1),transparent 26%);pointer-events:none;z-index:10}
@@ -355,8 +351,6 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .why-card{background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.16);border-radius:16px;max-width:720px;margin:0 auto clamp(2rem,4vw,3rem);padding:clamp(1.5rem,3.5vw,2.4rem) clamp(1.3rem,3.5vw,2.6rem);box-shadow:0 22px 50px -26px rgba(0,0,0,.55)}
 .reviews .why-card h2{color:#fff;font-size:clamp(1.55rem,3.6vw,2.2rem);margin:0}
 .why-card .why-tag{color:#bfe0ee;font-weight:700;font-size:clamp(1.05rem,2.2vw,1.25rem);margin:.55rem 0 0}
-.why-line{margin:1.15rem auto 0;max-width:52ch;color:#cfe6f0;font-weight:600;font-size:1.05rem;line-height:1.75;text-wrap:balance}
-.why-line .nw{white-space:nowrap}
 .welcome{background:#f6f5f3;padding:clamp(36px,5vw,64px) 0}
 .welcome .box{max-width:900px;margin-inline:auto}
 .welcome h2{font-size:clamp(1.4rem,3.2vw,2rem)}
@@ -714,10 +708,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="eyebrow">שירות אישי כבר יותר מ-30 שנה</p>
       <h1 id="hero-h">פון גת. הרבה מעבר לחנות סלולר</h1>
       <p class="sub">מקום אחד למכשירים, תיקונים ושירות אישי, מהאנשים שמכירים אתכם כבר שנים.</p>
-      <div class="trust" role="img" aria-label="דירוג 4.9 מתוך 5 · מעל 1,500 ביקורות בגוגל, ב-easy ובפלטפורמות נוספות">
+      <div class="trust" role="img" aria-label="דירוג 4.9 בגוגל · מעל 1,500 ביקורות בגוגל, easy, דפי זהב ו-B144">
         <span class="score">4.9</span>
         <span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg></span>
-        <span class="count">· מעל 1,500 ביקורות בגוגל, easy ועוד</span>
+        <span class="count">בגוגל · מעל 1,500 ביקורות ב-4 פלטפורמות</span>
       </div>
       <div class="hcta">
         <a class="btn btn-wa" href="https://wa.me/972525893366"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
@@ -730,8 +724,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="pg-showcase">
       <div class="pg-phones" role="img" aria-label="מכשיר המציג ביקורות אמיתיות של לקוחות פון גת, מתוך עמוד העסק ב-easy">
         <div class="pg-phone" aria-hidden="true">
-          <div class="pg-body"></div><div class="pg-rail"></div><div class="pg-rim"></div>
-          <div class="pg-btn-a"></div><div class="pg-btn-v"></div><div class="pg-btn-p"></div>
+          <img class="pg-frame" src="iphone-frame.png" alt="" width="663" height="1403" decoding="async">
           <div class="pg-screen">
             <div class="pg-etop"><div class="pg-ham"><span></span><span></span><span></span></div><div class="pg-brand"><img class="pg-easy" src="easy-logo.png" alt="easy" width="246" height="185"></div></div>
             <div class="pg-feed"><div class="pg-track" id="pgTrack"></div></div>
@@ -882,9 +875,8 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="why-card">
       <h2 id="why-h">למה לבחור בנו?</h2>
       <p class="why-tag">ותק, אמון ושירות אישי</p>
-      <p class="why-line"><span class="nw">מעל 30 שנה</span> · הסניף הראשון והיחיד של סלקום בקרית גת · <span class="nw">שירות מקצה-לקצה</span> · <span class="nw">אחריות מלאה</span></p>
     </div>
-    <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> מתוך 5 · מעל 1,500 ביקורות</span>
+    <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> בגוגל · מעל 1,500 ביקורות ב-4 פלטפורמות</span>
     <h2 id="rev-h">מאות לקוחות ממליצים</h2>
     <p class="rev-lead">מעל 30 שנות ניסיון · בליווי אישי של ברוך וסיגל</p>
     <div class="ratings">
