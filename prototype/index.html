@@ -708,10 +708,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="eyebrow">שירות אישי כבר יותר מ-30 שנה</p>
       <h1 id="hero-h">פון גת. הרבה מעבר לחנות סלולר</h1>
       <p class="sub">מקום אחד למכשירים, תיקונים ושירות אישי, מהאנשים שמכירים אתכם כבר שנים.</p>
-      <div class="trust" role="img" aria-label="דירוג 4.9 בגוגל · מעל 1,500 ביקורות בגוגל, easy, דפי זהב ו-B144">
+      <div class="trust" role="img" aria-label="דירוג 4.9 · מעל 1,500 ביקורות בגוגל, easy ועוד">
         <span class="score">4.9</span>
         <span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.9 6.19 20.9l1.11-6.47L2.6 9.35l6.5-.95L12 2.5Z"/></svg></span>
-        <span class="count">בגוגל · מעל 1,500 ביקורות ב-4 פלטפורמות</span>
+        <span class="count">· מעל 1,500 ביקורות בגוגל, easy ועוד</span>
       </div>
       <div class="hcta">
         <a class="btn btn-wa" href="https://wa.me/972525893366"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
@@ -876,7 +876,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <h2 id="why-h">למה לבחור בנו?</h2>
       <p class="why-tag">ותק, אמון ושירות אישי</p>
     </div>
-    <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> בגוגל · מעל 1,500 ביקורות ב-4 פלטפורמות</span>
+    <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> · מעל 1,500 ביקורות בגוגל, easy ועוד</span>
     <h2 id="rev-h">מאות לקוחות ממליצים</h2>
     <p class="rev-lead">מעל 30 שנות ניסיון · בליווי אישי של ברוך וסיגל</p>
     <div class="ratings">
@@ -1058,7 +1058,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var n=slides.length,i=0,timer=null;
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var dots=slides.map(function(s,k){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','מעבר למבצע '+(k+1));b.addEventListener('click',function(){go(k,true);});dotsWrap.appendChild(b);return b;});
-  function render(){track.style.setProperty('--i',i);dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});slides.forEach(function(s,k){s.setAttribute('aria-hidden',k===i?'false':'true');});}
+  function render(){track.style.setProperty('--i',i);dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});slides.forEach(function(s,k){var act=k===i;s.setAttribute('aria-hidden',act?'false':'true');if(act)s.removeAttribute('inert');else s.setAttribute('inert','');});}
   function go(k,user){i=(k+n)%n;render();if(user)restart();}
   function start(){if(reduce)return;stop();timer=setInterval(function(){go(i+1);},5500);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
