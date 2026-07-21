@@ -340,7 +340,13 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .car-btn svg{width:20px;height:20px;display:block}
 .car-prev{inset-inline-start:0}
 .car-next{inset-inline-end:0}
-.car-dots{display:flex;gap:8px;justify-content:center;margin-top:1.15rem}
+.car-dots{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:1.15rem}
+.car-pause{width:24px;height:24px;padding:0;border:none;background:none;cursor:pointer;color:var(--ink-soft);display:inline-grid;place-items:center;border-radius:50%;transition:color .15s;margin-inline-end:4px}
+.car-pause:hover{color:var(--teal)}
+.car-pause svg{width:15px;height:15px;fill:currentColor;display:block}
+.car-pause .ic-play{display:none}
+.car-pause.is-paused .ic-pause{display:none}
+.car-pause.is-paused .ic-play{display:block}
 .car-dots button{width:9px;height:9px;padding:0;border-radius:50%;background:#cfcbd4;border:none;cursor:pointer;transition:width .2s,background .2s}
 .car-dots button[aria-current="true"]{width:26px;border-radius:5px;background:var(--teal)}
 @media(max-width:720px){.carousel{padding-inline:14px}.car-btn{width:44px;height:44px;font-size:1.3rem}.slide{grid-template-columns:1fr;text-align:center;gap:.3rem}.slide .badge{margin-inline:auto}.slide p{margin-inline:auto}.slide-art{display:none}}
@@ -1055,12 +1061,12 @@ document.addEventListener('DOMContentLoaded',function(){
   var slides=[].slice.call(root.querySelectorAll('.slide'));
   var dotsWrap=root.querySelector('.car-dots');
   var vp=root.querySelector('.car-vp');
-  var n=slides.length,i=0,timer=null;
+  var n=slides.length,i=0,timer=null,paused=false;
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var dots=slides.map(function(s,k){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','מעבר למבצע '+(k+1));b.addEventListener('click',function(){go(k,true);});dotsWrap.appendChild(b);return b;});
   function render(){track.style.setProperty('--i',i);dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});slides.forEach(function(s,k){var act=k===i;s.setAttribute('aria-hidden',act?'false':'true');if(act)s.removeAttribute('inert');else s.setAttribute('inert','');});}
   function go(k,user){i=(k+n)%n;render();if(user)restart();}
-  function start(){if(reduce)return;stop();timer=setInterval(function(){go(i+1);},7000);}
+  function start(){if(reduce||paused)return;stop();timer=setInterval(function(){go(i+1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
   root.querySelector('.car-next').addEventListener('click',function(){go(i+1,true);});
@@ -1072,6 +1078,10 @@ document.addEventListener('DOMContentLoaded',function(){
   vp.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){if(dx<0)go(i+1,true);else go(i-1,true);}else start();x0=null;},{passive:true});
   root.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){go(i+1,true);}else if(e.key==='ArrowRight'){go(i-1,true);}});
   document.addEventListener('visibilitychange',function(){if(document.hidden)stop();else start();});
+  var pauseBtn=document.createElement('button');pauseBtn.type='button';pauseBtn.className='car-pause';pauseBtn.setAttribute('aria-label','השהיית מעבר אוטומטי');pauseBtn.setAttribute('aria-pressed','false');
+  pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
+  pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
+  if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
   render();start();
 })();
 </script>
