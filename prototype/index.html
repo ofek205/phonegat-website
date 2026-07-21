@@ -1603,7 +1603,8 @@ document.addEventListener('DOMContentLoaded',function(){
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var phEl=form.querySelector('#phone'), phd=((phEl&&phEl.value)||'').replace(/\D/g,'');
-    if(!/^0\d{8,9}$/.test(phd)){note.classList.remove('sent');note.textContent='מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.';if(phEl)phEl.focus();return;}
+    if(!/^0\d{8,9}$/.test(phd)){note.classList.remove('sent');note.textContent='מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.';if(phEl){phEl.setAttribute('aria-invalid','true');phEl.setAttribute('aria-describedby','formNote');phEl.focus();}return;}
+    if(phEl)phEl.removeAttribute('aria-invalid');
     if(!KEY||KEY.indexOf('YOUR_')===0){note.textContent='הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.';return;}
     btn.disabled=true;note.textContent='שולח...';
     var _fd=new FormData(form),_o={};_fd.forEach(function(v,k){_o[k]=v;});
