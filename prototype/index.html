@@ -425,8 +425,8 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .reviews .rev-eyebrow b{color:#FBB03B;font-size:1.08em}
 .reviews .rev-eyebrow .rev-stars{color:#FBB03B;letter-spacing:2px}
 .reviews h2{color:#fff;font-size:clamp(1.6rem,3.6vw,2.3rem);margin-bottom:.5rem}
-.reviews .rev-lead{color:#bfe0ee;font-weight:600;margin-bottom:1.5rem}
-.ratings{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-bottom:1.6rem}
+.reviews .rev-lead{color:rgba(214,236,245,.92);font-weight:500;font-size:clamp(.95rem,1.9vw,1.05rem);margin:.45rem 0 0}
+.ratings{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin:1.2rem 0 1.6rem}
 .chip{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:.5rem 1.05rem;font-weight:700;background:#fff;color:var(--ink);transition:border-color .2s,box-shadow .2s,transform .2s}
 .chip:hover{border-color:var(--teal);box-shadow:0 8px 22px -10px rgba(0,0,0,.5);transform:translateY(-1px)}
 .chip span{color:var(--ink-soft);font-weight:600}
@@ -875,10 +875,10 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="why-card">
       <h2 id="why-h">למה לבחור בנו?</h2>
       <p class="why-tag">ותק, אמון ושירות אישי</p>
+      <p class="rev-lead">מעל 30 שנות ניסיון · בליווי אישי של ברוך וסיגל</p>
     </div>
     <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> · מעל 1,500 ביקורות בגוגל, easy ועוד</span>
     <h2 id="rev-h">מאות לקוחות ממליצים</h2>
-    <p class="rev-lead">מעל 30 שנות ניסיון · בליווי אישי של ברוך וסיגל</p>
     <div class="ratings">
       <a class="chip" href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener" aria-label="ביקורות פון גת בגוגל, דירוג 4.9">
         <svg class="lg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.23c0-.72-.06-1.4-.18-2.06H12v3.9h5.9a5.05 5.05 0 0 1-2.19 3.31v2.75h3.54c2.07-1.9 3.26-4.72 3.26-8.06z"/><path fill="#34A853" d="M12 23c2.95 0 5.43-.98 7.24-2.65l-3.54-2.75c-.98.66-2.24 1.05-3.7 1.05-2.85 0-5.26-1.92-6.12-4.5H2.23v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.88 14.15a6.6 6.6 0 0 1 0-4.3V7H2.23a11 11 0 0 0 0 10l3.65-2.85z"/><path fill="#EA4335" d="M12 5.35c1.6 0 3.05.55 4.19 1.64l3.14-3.14A11 11 0 0 0 12 1 11 11 0 0 0 2.23 7l3.65 2.85C6.74 7.27 9.15 5.35 12 5.35z"/></svg>
@@ -955,7 +955,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function closeAll(x){tiles.forEach(function(t){if(t!==x){t.classList.remove('open');var b=t.querySelector('.shop');if(b)b.setAttribute('aria-expanded','false');}});}
   tiles.forEach(function(t){
     var btn=t.querySelector('.shop'), cl=t.querySelector('.tclose');
-    if(btn)btn.addEventListener('click',function(){var o=t.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');if(o)closeAll(t);});
+    if(btn)btn.addEventListener('click',function(){var o=t.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');if(o){closeAll(t);var c=t.querySelector('.tclose');if(c)c.focus();}});
     if(cl)cl.addEventListener('click',function(){t.classList.remove('open');if(btn){btn.setAttribute('aria-expanded','false');btn.focus();}});
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll(null);});
@@ -1256,7 +1256,7 @@ document.addEventListener('DOMContentLoaded',function(){
   // mobile nav
   var burger=document.getElementById('burger'), nav=document.getElementById('nav');
   if(burger){burger.addEventListener('click',function(){var o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o)});
-    nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');burger.setAttribute('aria-expanded',false)}});}
+    nav.addEventListener('click',function(e){if(e.target.tagName==='A'){nav.classList.remove('open');burger.setAttribute('aria-expanded',false)}});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){nav.classList.remove('open');burger.setAttribute('aria-expanded',false);burger.focus();}});}
   // announcement rotator (pauses on hover/focus per WCAG 2.2.2)
   var msgs=document.querySelectorAll('.announce .msg'), i=0, annTimer=null;
   var prefersReduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
