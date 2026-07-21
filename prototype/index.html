@@ -680,7 +680,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="site">
   <div class="wrap hrow">
     <a class="logo" href="#main" aria-label="פון גת, דף הבית"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
-    <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false">☰</button>
+    <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
       <a href="#team">מי אנחנו</a><a href="#reviews">ביקורות</a><a href="#services">שירותים</a><a href="#deals">מבצעים</a><a href="#press">כתבו עלינו</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
     </nav>
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
   function stripNikud(s){return s.replace(/[֑-ׇ]/g,'');}
-  function has(t,kw){return new RegExp('(^|[^א-ת])[בהלמוכש]{0,3}'+esc(kw)).test(t);}
+  function has(t,kw){return new RegExp('(^|[^א-ת])[בהלמוכש]{0,3}'+esc(kw)+(kw.length<=2?'(?=$|[^א-ת])':'')).test(t);}
   function matchIntent(text){
     var t=stripNikud(String(text)), best=null, bestLen=0, tiers=[1,0], ti, i, j;
     for(ti=0;ti<tiers.length;ti++){
