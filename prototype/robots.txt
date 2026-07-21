@@ -1,0 +1,5 @@
+# פון גת — הנחיות לסורקים
+User-agent: *
+Allow: /
+
+Sitemap: https://www.phonegat.co.il/sitemap.xml
