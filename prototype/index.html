@@ -22,7 +22,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- TODO: להחליף www.phonegat.co.il לדומיין הסופי כשנרכש (canonical + og:url + og:image + schema url/@id) -->
 <link rel="canonical" href="https://www.phonegat.co.il/">
 <link rel="icon" type="image/jpeg" href="logo.jpg">
-<link rel="apple-touch-icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="פון גת">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="פון גת">
 <meta property="og:locale" content="he_IL">
@@ -562,6 +567,16 @@ footer .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.8rem}
 footer h4{color:#fff;margin-bottom:.7rem}
 footer .fl{list-style:none;padding:0;margin:0;display:grid;gap:.45rem}footer a:hover{color:#fff}
 footer .flogo{background:#fff;border-radius:8px;padding:5px;display:inline-flex}footer .flogo img{height:42px;width:auto}
+.pwa-cta{text-align:center;margin:1.8rem auto .2rem;padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.13)}
+.pwa-btn{display:inline-flex;align-items:center;gap:.55rem;font-family:inherit;font-weight:800;font-size:1.02rem;color:#fff;background:linear-gradient(180deg,#209ad0,#1878A8);border:0;border-radius:12px;padding:13px 26px;cursor:pointer;box-shadow:0 12px 30px -12px rgba(24,120,168,.85);transition:transform .15s ease,box-shadow .2s ease}
+.pwa-btn:hover{transform:translateY(-2px);box-shadow:0 18px 38px -12px rgba(24,120,168,.95)}
+.pwa-btn:active{transform:translateY(0)}
+.pwa-btn:focus-visible{outline:3px solid #8fd6f2;outline-offset:3px}
+.pwa-btn svg{width:22px;height:22px;flex:none}
+.pwa-hint{display:none;max-width:42ch;margin:.85rem auto 0;color:rgba(255,255,255,.82);font-size:.9rem;line-height:1.65}
+.pwa-hint.show{display:block}
+.pwa-hint b{color:#fff;font-weight:800}
+.pwa-hint svg{width:16px;height:16px;fill:currentColor;vertical-align:-3px;margin:0 2px}
 footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
 @media(max-width:720px){footer .cols{grid-template-columns:1fr}}
 
@@ -1287,6 +1302,13 @@ document.addEventListener('DOMContentLoaded',function(){
     <div><h4>יצירת קשר</h4><ul class="fl"><li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li><li>רחבת תשרי 2, קרית גת</li></ul></div>
     <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳–ה׳: 9:00–18:30</li><li>ו׳: 9:00–13:00</li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>
   </div>
+  <div class="wrap pwa-cta" id="pwaCta" hidden>
+    <button type="button" class="pwa-btn" id="pwaInstall" aria-describedby="pwaHint">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15.6 6.7 10.3l1.4-1.4 2.9 2.9V3h2v8.8l2.9-2.9 1.4 1.4L12 15.6zM5 18h14v2H5z"/></svg>
+      התקינו את האפליקציה של פון גת
+    </button>
+    <p class="pwa-hint" id="pwaHint" role="status" aria-live="polite"></p>
+  </div>
   <div class="wrap copy">© פון גת · כל הזכויות שמורות · <a href="accessibility.html">הצהרת נגישות</a> · <a href="privacy.html">מדיניות פרטיות</a></div>
   <div class="wrap copy" style="opacity:.72;font-size:.82em;margin-top:.45rem;line-height:1.55">הסימנים המסחריים, הלוגואים והביקורות המוצגים באתר (לרבות «easy», Google, דפי זהב ו‑B144) שייכים לבעליהם, ומוצגים לצורך הפניה למקור בלבד. פון גת אינה מסונפת אליהם ואינה מיוצגת על‑ידם. «סלקום» הוא סימן מסחר של סלקום ישראל בע"מ; פון גת פועלת כנקודת מכירה ושירות מורשית של סלקום.</div>
 </footer>
@@ -1835,6 +1857,33 @@ document.addEventListener('DOMContentLoaded',function(){
   ov.addEventListener('click',function(e){if(e.target===ov)close();});
   if(copyBtn)copyBtn.addEventListener('click',function(){var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done);}else{try{var r=document.createRange();r.selectNode(codeEl);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);document.execCommand('copy');sel.removeAllRanges();done();}catch(_){}}});
+})();
+</script>
+<script>
+/* PWA — install button (footer) + service worker registration */
+(function(){
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+  var cta=document.getElementById('pwaCta'), btn=document.getElementById('pwaInstall'), hint=document.getElementById('pwaHint');
+  if(!cta||!btn) return;
+  var ua=navigator.userAgent||'', deferred=null;
+  function standalone(){ return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone===true; }
+  var isIOS=/iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints>1);
+  var iosSafari=isIOS && !/crios|fxios|edgios/i.test(ua);
+  if(standalone()) return; /* already installed */
+  var isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Silk/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints>1);
+  if(!isMobile) return; /* mobile only — never show on desktop/web */
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferred=e; cta.hidden=false; });
+  window.addEventListener('appinstalled', function(){ cta.hidden=true; deferred=null; if(hint){hint.classList.remove('show');} });
+  if(isIOS){ cta.hidden=false; }
+  var shareSvg='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 8 6l1.4 1.4L11 5.8V15h2V5.8l1.6 1.6L16 6l-4-4zM5 10h4v2H6v8h12v-8h-3v-2h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1z"/></svg>';
+  btn.addEventListener('click', function(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(c){ if(c&&c.outcome==='accepted'){cta.hidden=true;} deferred=null; }); return; }
+    if(iosSafari){ hint.innerHTML='כדי להתקין: הקישו על כפתור <b>שיתוף</b> '+shareSvg+' בתחתית ה‑Safari, ואז בחרו <b>«הוסף למסך הבית»</b>.'; hint.classList.add('show'); return; }
+    if(isIOS){ hint.innerHTML='כדי להתקין באייפון פתחו את האתר ב‑<b>Safari</b>, הקישו על <b>שיתוף</b> '+shareSvg+' ואז <b>«הוסף למסך הבית»</b>.'; hint.classList.add('show'); return; }
+    hint.innerHTML='פתחו את תפריט הדפדפן ובחרו <b>«התקן אפליקציה»</b> או <b>«הוסף למסך הבית»</b>.'; hint.classList.add('show');
+  });
 })();
 </script>
 </body>

@@ -1,0 +1,19 @@
+{
+  "name": "פון גת — סלולר בקרית גת",
+  "short_name": "פון גת",
+  "description": "מעבדת הסלולר הוותיקה בקרית גת. תיקון, קניית מכשירים ושירות אישי, מכל הלב.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0b0b0b",
+  "categories": ["shopping", "business"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
