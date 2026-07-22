@@ -204,8 +204,8 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-st-time{font-size:.6rem;font-weight:700;color:#111}
 .pg-st-svg{display:block}
 /* FIXED app bar under the status bar — switches Google<->easy so you always know which "page" you're on */
-.pg-appbar{position:absolute;top:6%;left:0;width:100%;height:7.5%;background:#fff;border-bottom:1px solid #ececec;z-index:6;overflow:hidden}
-.pg-ab-g,.pg-ab-e{height:100%;display:flex;align-items:center;gap:8px;padding:0 13px}
+.pg-appbar{position:absolute;top:6%;left:0;width:100%;height:7.5%;background:#fff;border-bottom:1px solid #ececec;z-index:6;overflow:hidden;display:flex;align-items:center}
+.pg-ab-g,.pg-ab-e{flex:1;min-width:0;height:100%;display:flex;align-items:center;gap:8px;padding:0 13px}
 .pg-ab-e{justify-content:space-between}
 .pg-eword{color:#009fd6;font-weight:800;font-size:1.2rem;letter-spacing:-.5px;line-height:1}
 .pg-appbar .pg-ab-e{display:none}
@@ -216,12 +216,19 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-easy{height:24px;width:auto;display:block;border-radius:6px}
 .pg-feed{position:absolute;top:13.5%;left:0;width:100%;height:86.5%;overflow:hidden;background:#f5f6f8}
 .pg-track{display:flex;flex-direction:column;animation:pgfeed var(--pgd) linear infinite}
-@keyframes pgfeed{0%,4%{transform:translateY(0)}100%{transform:translateY(-50%)}}
-.pg-screen:hover .pg-track{animation-play-state:paused}
+@keyframes pgfeed{0%,2%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+@media(hover:hover){.pg-screen:hover .pg-track{animation-play-state:paused}}
 .pg-thumb{position:absolute;left:4px;width:3px;height:10%;border-radius:3px;background:rgba(0,0,0,.16);z-index:7;animation:pgsb var(--pgd) linear infinite;pointer-events:none}
-@keyframes pgsb{0%,4%{top:16%}100%{top:92%}}
-.pg-screen:hover .pg-thumb{animation-play-state:paused}
+@keyframes pgsb{0%,2%{top:16%}100%{top:92%}}
+@media(hover:hover){.pg-screen:hover .pg-thumb{animation-play-state:paused}}
 .pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
+.pg-screen{cursor:pointer}
+/* icon-only refresh button living inside the phone's top header (both Google & easy modes) */
+.pg-refresh{flex:none;margin-inline-end:8px;width:26px;height:26px;border:0;border-radius:50%;background:#f1f3f4;color:#5f6368;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;transition:background .15s,transform .1s}
+.pg-refresh:hover{background:#e4e7ea}
+.pg-refresh:active{transform:scale(.92)}
+.pg-refresh:focus-visible{outline:2px solid #00796b;outline-offset:2px}
+.pg-refresh svg{width:15px;height:15px;fill:currentColor}
 .press .pcta{display:inline-flex;align-items:center;gap:.55rem;margin-top:.85rem;color:var(--teal);font-weight:800;font-size:1.12rem;text-decoration:none}
 .press .pcta .wa-ico{width:28px;height:28px}
 .press .pcta:hover{text-decoration:underline}
@@ -990,8 +997,9 @@ document.addEventListener('DOMContentLoaded',function(){
   t.innerHTML=set+set;
   /* fixed app-bar that switches Google<->easy in sync with the scrolling feed, so it's always clear which "page" you're on */
   var ab=document.getElementById('pgAppbar');
+  var REFRESH='<button type="button" class="pg-refresh" id="pgRefresh" tabindex="-1" aria-label="התחלת הביקורות מחדש"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></button>';
   if(ab){
-    ab.innerHTML=AB_G+AB_E;
+    ab.innerHTML=AB_G+AB_E+REFRESH;
     var firstBiz=t.querySelector('.pg-biz');
     var gBlockH=firstBiz?firstBiz.offsetTop:t.offsetHeight;
     var lastMode='';
@@ -1005,6 +1013,13 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     abTick();setInterval(abTick,200);
   }
+  /* NOTE: tap-to-pause is already handled by the shared utilities script (toggles .pg-screen.paused);
+     don't add a 2nd click handler here or it double-toggles. The mobile "won't resume" bug was the
+     sticky :hover — fixed by wrapping the hover-pause rules in @media(hover:hover). */
+  var scr=document.querySelector('.pg-screen');
+  /* refresh button: restart the reviews scroll from the very top */
+  var rf=document.getElementById('pgRefresh'),th=document.querySelector('.pg-thumb');
+  if(rf){rf.addEventListener('click',function(e){e.stopPropagation();/* don't let it bubble to the screen's tap-to-pause */if(scr)scr.classList.remove('paused');[t,th].forEach(function(el){if(el)el.style.animation='none';});void t.offsetWidth;/* negative delay = skip the top hold so a deliberate refresh scrolls right away (the hold returns on the next loop) */var neg=(-(parseFloat(getComputedStyle(t).getPropertyValue('--pgd'))||150)*0.02)+'s';[t,th].forEach(function(el){if(el){el.style.animation='';el.style.animationDelay=neg;}});});}
 })();
 </script>
 
