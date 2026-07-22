@@ -191,7 +191,7 @@ html.a11y-stop-motion .hstage .henter{transition:none}
 @media (prefers-reduced-motion:no-preference){.pg-showcase{animation:heroIn .8s var(--ease) both;animation-delay:.5s}}
 html.a11y-stop-motion .pg-showcase{animation:none}
 @media(max-width:820px){.pg-showcase{margin-block-start:.6rem}}
-.pg-phone{--pg-teal:#1878A8;--pg-ink:#454545;--pg-sub:#757575;--pg-line:#ededed;--pg-green:#39b54a;--pg-gold:#FBB03B;--pg-pink:#e6007e;--pgd:118s;
+.pg-phone{--pg-teal:#1878A8;--pg-ink:#454545;--pg-sub:#757575;--pg-line:#ededed;--pg-green:#39b54a;--pg-gold:#FBB03B;--pg-pink:#e6007e;--pgd:150s;
   position:relative;z-index:1;height:clamp(540px,72vh,700px);aspect-ratio:663/1403;transform:rotateY(18deg) rotateX(2.5deg);transform-style:flat;flex:none}
 @media(max-width:820px){.pg-phone{height:auto;width:min(300px,78vw);transform:none}}
 .pg-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;pointer-events:none;filter:drop-shadow(0 0 1.5px rgba(255,255,255,.5)) drop-shadow(0 28px 55px rgba(0,0,0,.55))}
@@ -199,16 +199,27 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-punch{position:absolute;top:2.5%;left:50%;transform:translateX(-50%);width:32%;height:4%;min-height:20px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.45);z-index:11}
 .pg-punch::after{content:"";position:absolute;top:50%;right:11%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#1c2b3b,#000 70%)}
 .pg-refl{position:absolute;inset:0;background:linear-gradient(122deg,rgba(255,255,255,.1),transparent 26%);pointer-events:none;z-index:10}
-.pg-etop{position:absolute;top:0;left:0;width:100%;height:9%;background:#fff;border-bottom:1px solid var(--pg-line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;z-index:6}
+/* neutral phone status bar (constant OS chrome) */
+.pg-etop{position:absolute;top:0;left:0;width:100%;height:6%;background:#fff;direction:ltr;display:flex;align-items:center;justify-content:space-between;padding:0 7%;z-index:6}
+.pg-st-time{font-size:.6rem;font-weight:700;color:#111}
+.pg-st-svg{display:block}
+/* FIXED app bar under the status bar — switches Google<->easy so you always know which "page" you're on */
+.pg-appbar{position:absolute;top:6%;left:0;width:100%;height:7.5%;background:#fff;border-bottom:1px solid #ececec;z-index:6;overflow:hidden}
+.pg-ab-g,.pg-ab-e{height:100%;display:flex;align-items:center;gap:8px;padding:0 13px}
+.pg-ab-e{justify-content:space-between}
+.pg-eword{color:#009fd6;font-weight:800;font-size:1.2rem;letter-spacing:-.5px;line-height:1}
+.pg-appbar .pg-ab-e{display:none}
+.pg-appbar.is-easy .pg-ab-g{display:none}
+.pg-appbar.is-easy .pg-ab-e{display:flex}
 .pg-ham{display:flex;flex-direction:column;gap:3px}.pg-ham span{width:15px;height:2px;background:var(--pg-sub);border-radius:2px}
-.pg-brand{display:flex;align-items:center;height:100%}
-.pg-easy{height:74%;width:auto;display:block;border-radius:6px}
-.pg-feed{position:absolute;top:9%;left:0;width:100%;height:91%;overflow:hidden;background:#f5f6f8}
+.pg-brand{display:flex;align-items:center}
+.pg-easy{height:24px;width:auto;display:block;border-radius:6px}
+.pg-feed{position:absolute;top:13.5%;left:0;width:100%;height:86.5%;overflow:hidden;background:#f5f6f8}
 .pg-track{display:flex;flex-direction:column;animation:pgfeed var(--pgd) linear infinite}
 @keyframes pgfeed{0%,4%{transform:translateY(0)}100%{transform:translateY(-50%)}}
 .pg-screen:hover .pg-track{animation-play-state:paused}
 .pg-thumb{position:absolute;left:4px;width:3px;height:10%;border-radius:3px;background:rgba(0,0,0,.16);z-index:7;animation:pgsb var(--pgd) linear infinite;pointer-events:none}
-@keyframes pgsb{0%,4%{top:11%}100%{top:86%}}
+@keyframes pgsb{0%,4%{top:16%}100%{top:92%}}
 .pg-screen:hover .pg-thumb{animation-play-state:paused}
 .pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
 .press .pcta{display:inline-flex;align-items:center;gap:.55rem;margin-top:.85rem;color:var(--teal);font-weight:800;font-size:1.12rem;text-decoration:none}
@@ -242,6 +253,38 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-rc-st{color:var(--pg-gold);font-size:.6rem;letter-spacing:1px}.pg-rc-dt{color:var(--pg-sub);font-size:.6rem}
 .pg-rc-tx{color:var(--pg-ink);font-size:.76rem;line-height:1.52;margin-top:6px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .pg-rc-more{color:var(--pg-teal);font-size:.7rem;margin-top:2px}
+/* ---- Google reviews "app" section (Google Maps look) ---- */
+.pg-gbar{background:#fff;display:flex;align-items:center;gap:8px;padding:10px 13px 8px}
+.pg-gback{color:#5f6368;font-size:1.2rem;line-height:1;flex:none}
+.pg-gtitle{flex:1;min-width:0;font-size:.8rem;font-weight:600;color:#202124;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-gword{font-family:Arial,Helvetica,sans-serif;font-size:.8rem;font-weight:500;letter-spacing:-.3px;flex:none}
+.pg-gword b{font-weight:500}
+.pg-gtabs{display:flex;gap:15px;padding:0 13px;background:#fff;border-bottom:1px solid #ececec}
+.pg-gtab{font-size:.68rem;color:#5f6368;font-weight:500;padding:9px 0 7px;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.pg-gtab.act{color:#00796b;border-bottom-color:#00796b}
+.pg-ghead{background:#fff;padding:14px 16px 14px;border-bottom:8px solid #f1f3f4}
+.pg-gcat{font-size:.64rem;color:#5f6368;margin-bottom:12px}
+.pg-grate{display:flex;align-items:center;gap:13px}
+.pg-gsum{flex:none;text-align:center}
+.pg-gnum{font-size:1.95rem;font-weight:400;color:#202124;line-height:.95}
+.pg-gstars{color:#fbbc04;font-size:.76rem;letter-spacing:1px;display:block;margin-top:2px}
+.pg-gcount{font-size:.62rem;color:#5f6368;margin-top:3px}
+.pg-ginfo{flex:none;width:15px;height:15px;border:1px solid #bdc1c6;color:#80868b;border-radius:50%;font-size:.58rem;line-height:1;display:flex;align-items:center;justify-content:center;font-style:italic;font-family:Georgia,serif}
+.pg-gdist{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pg-gdrow{display:flex;align-items:center}
+.pg-gdbar{flex:1;height:5px;border-radius:3px;background:#e8eaed;overflow:hidden;direction:ltr}
+.pg-gdbar b{display:block;height:100%;background:#fbbc04}
+.pg-grc{background:#fff;border-bottom:1px solid #f1f1f1;padding:14px 16px 13px}
+.pg-grc-top{display:flex;gap:10px;align-items:center}
+.pg-grc-av{width:32px;height:32px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:15px;flex-shrink:0}
+.pg-grc-hd{flex:1;min-width:0}
+.pg-grc-nm{font-weight:500;font-size:.8rem;color:#202124}
+.pg-grc-lg{font-size:.58rem;color:#5f6368;margin-top:1px}
+.pg-grc-g{flex:none;width:16px;height:16px}
+.pg-grc-meta{display:flex;align-items:center;gap:7px;margin-top:9px}
+.pg-grc-st{color:#fbbc04;font-size:.66rem;letter-spacing:.5px}
+.pg-grc-dt{color:#5f6368;font-size:.62rem}
+.pg-grc-tx{color:#3c4043;font-size:.76rem;line-height:1.55;margin-top:7px;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 @media(prefers-reduced-motion:reduce){.pg-track,.pg-thumb{animation:none}}
 html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 /* in-feed sponsored ad card (injected every 10 reviews) */
@@ -810,19 +853,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- LIVE REVIEWS PHONE (easy). Real reviews sourced from easy; attribution + non-affiliation notice below.
          Later: add a second .pg-phone in .pg-phones (iPhone 17 / Google), tilted the opposite way. -->
     <div class="pg-showcase">
-      <div class="pg-phones" role="img" aria-label="מכשיר המציג ביקורות אמיתיות של לקוחות פון גת, מתוך עמוד העסק ב-easy">
+      <div class="pg-phones" role="img" aria-label="מכשיר המציג ביקורות אמיתיות של לקוחות פון גת, מתוך עמוד העסק ב-Google וב-easy">
         <div class="pg-phone" aria-hidden="true">
           <img class="pg-frame" src="iphone-frame.png" alt="" width="663" height="1403" decoding="async">
           <div class="pg-screen">
-            <div class="pg-etop"><div class="pg-ham"><span></span><span></span><span></span></div><div class="pg-brand"><img class="pg-easy" src="easy-logo.png" alt="easy" width="246" height="185"></div></div>
+            <div class="pg-etop"><span class="pg-st-time">9:41</span><svg class="pg-st-svg" viewBox="0 0 44 12" width="44" height="12" aria-hidden="true" fill="#111"><rect x="0" y="7" width="2.5" height="5" rx="1"/><rect x="4" y="5" width="2.5" height="7" rx="1"/><rect x="8" y="3" width="2.5" height="9" rx="1"/><rect x="12" y="1" width="2.5" height="11" rx="1"/><path d="M19 4c2.5-2 6.5-2 9 0l-1.3 1.4c-1.8-1.4-4.6-1.4-6.4 0zM21 6.3c1.4-1.1 3.6-1.1 5 0l-1.3 1.4c-.7-.6-1.7-.6-2.4 0z"/><rect x="31" y="2" width="10.5" height="8" rx="2" fill="none" stroke="#111" stroke-width="1"/><rect x="32.2" y="3.3" width="7.5" height="5.4" rx="1"/><rect x="42.3" y="4.4" width="1.4" height="3.2" rx=".7"/></svg></div>
+            <div class="pg-appbar" id="pgAppbar"></div>
             <div class="pg-feed"><div class="pg-track" id="pgTrack"></div></div>
             <div class="pg-thumb"></div><div class="pg-punch"></div><div class="pg-refl"></div>
           </div>
         </div>
       </div>
       <p class="pg-source">
-        <span class="pg-source-main"><span class="pg-src-star">★</span> ציון <b>9.5</b> ב‑easy · נכון ליולי 2026 · <a href="https://easy.co.il/page/26408300" target="_blank" rel="noopener nofollow">לכל ‎835 הביקורות בעמוד פון גת ב‑easy ›</a></span>
-        <span class="pg-disc">מוצג לצורך הפניה למקור. פון גת אינה מסונפת ל‑easy ואינה מיוצגת על‑ידה; הסימן «easy» והביקורות שייכים לבעליהם.</span>
+        <span class="pg-source-main"><span class="pg-src-star">★</span> <b>4.9</b> ב‑Google (‎537) · <b>9.5</b> ב‑easy (‎835) · נכון ליולי 2026<br><a href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener nofollow">ביקורות Google ›</a> · <a href="https://easy.co.il/page/26408300" target="_blank" rel="noopener nofollow">ביקורות easy ›</a></span>
+        <span class="pg-disc">מוצג לצורך הפניה למקור. פון גת אינה מסונפת ל‑Google או ל‑easy ואינה מיוצגת על‑ידן; הסימנים «Google» ו‑«easy» והביקורות שייכים לבעליהם.</span>
       </p>
     </div>
   </div>
@@ -917,9 +961,50 @@ document.addEventListener('DOMContentLoaded',function(){
     '<p class="pg-ad-fine">מבצע למשתמשי האתר בלבד · למעט מכשירים מעוגלים</p>'+
     '<button type="button" class="pg-ad-cta" data-pg-coupon aria-label="לקבלת ההטבה: מגן מסך והדבקה מקצועית ב-9 שקלים">לקבלת ההטבה ›</button>'+
   '</div>';
-  var feed='';for(var fi=0;fi<R.length;fi++){feed+=card(R[fi],fi);if((fi+1)%10===0)feed+=AD;}
-  var set=BIZ+TABS+feed;
+  /* ---- Google reviews (real, from the Google business profile — 4.9 / 537) ---- */
+  var GCOL=["#7cb342","#039be5","#e53935","#fb8c00","#8e24aa","#00897b","#c0ca33","#3949ab","#00acc1","#f4511e"];
+  var G=[
+    {n:"גיא בן שעיה",d:"לפני 5 חודשים",t:"סיפור שכך היה בדרך לרכבת לאחר גמר יום עבודה עמוס במיוחד נפל לי הטלפון אין מסך אין לי אפשרות לתקשר עם אף אחד. שאלתי אם מישהו מכיר מעבדת תיקונים קרובה אמרו לי תרד בקרית גת ליד הרכבת יש חנות ממש קרובה ומומלצת הם עוד הוסיפו שהיא קיימת למעלה מ30 שנה הייתי בהלם יש דבר כזה? אז הגעתי אליהם הם באמת ממש קרובים. הם קיבלו אותי יפה אפילו שהיתי בלחץ רציתי מהר! הם ביקשו מלקוחות שהיו במקום לקבל אותי לפניהם ותוך חצי שעה הטלפון היה מוכן בזמן הזה שהייתי בחנות היו מס' לקוחות כנראה לקוחות קבועים שרק דאגו להגיד כמה הם מרוצים מהשירות של פון גת ולא מוותרים תמיד הם מגיעים רק אליהם . היום אני יכולה להגיד את אותו הדבר נכון שחפרתי אבל באמת הייתי כל כך מרוצה מהם גם במחיר וכמובן בשירות אז באמת תודה רבה למי שהמליץ לי וגם למשפחה מיוחדת פון גת שהוא לפי הבנתי עסק משפחתי"},
+    {n:"נטלי סטוליארוב",d:"לפני שבועיים",t:"איתן הנער שעובד בפון גת עזר לי מאוד פתר לי בעייה שהייתה לי שנה וחצי יישר כח תודה רבה לך"},
+    {n:"חחי חימ",d:"לפני חודשיים",t:"אני מכיר את ברוך 30 שנה לפחות הוא היה איש קרבורטרים דרך בני גרוסמן שהיה איתו בחיל הים ומאז שהכרתי אותי אני לא יכול לתאר את הבנאדם כמה שהוא טוב מטפל לנו לכל המשפחה בטלפונים היושרה שלו זה שם דבר שמו הולך בפניו ובגלל זה אני כותב לכם שתדעו שאם אתם צריכים כל דבר לתקן לקנות לקבל שירות זה רק אצלו לא מוותר על שום תיקון גם אם קשה ביותר אין עליו תמיד מגיעים אליו תודה רבה רבה רבה"},
+    {n:"זאב שלמה",d:"לפני חודשיים",t:"ברוך איש עם ערכים עם נסיון ישר אמין ואחת הסיבות שאני אומר את זה אני יושב פה למעלה משעה מחכה שיעבירו לי נתונים לטלפון חדש ואז מגיעים לקוחות עם בעיית טעינה והוא לא גובה כסף מהלקוחות שהגיעו אליו הוא אומר ל הם זה שירות ללא עלות אמינות שירות ואחריות זה מה שאני רואה כאן פון גת אתם חנות אמינה ביותר"},
+    {n:"Abraham Teklom",d:"לפני 5 חודשים",t:"עמית וסיגל קניתי מהם טבלאט a11+ קיבלתי שירות יוצא מן הכלל ומחיר הכי טוב שאפשר לקבל אני יודע שאפשר תמיד לסמוך עליכם אם יש מקום מעולה וטוב זה רק אתם פון גת גם עזרתם לי עם האימייל שלי לפתוח מחדש אין עליכם אוהב להגיע לכאן מכייון שאתם יודעים לטפל בהכול אם זה תיקונים ואם זה מכשירים טוב תמיד אצלכם 😄😄😄😄😄😄"},
+    {n:"סבטלנה שימה",d:"לפני 6 חודשים",t:"עזרתם לי עם המצלמה תודה לכם פון גת 🥰🥰🥰🥰 ולא שילמתי דבר שמחה מאוד על השירות שלכם תמיד תמיד אתם עוזרים לי ללא תשלום ולכן תמיד ממליצה עליכם"},
+    {n:"לב אילייאיב",d:"לפני 5 חודשים",t:"ברוך אתה תותח מנקה לנו את המכשירים תמיד מחירים טובים אצלכם 100 אחוז שירות יש אין על פון גת והצוות שלכם מושלם"},
+    {n:"פיבי אסנר",d:"לפני חודשיים",t:"היתה לי בעיה בטלפון הרמקול לא עבד ניגשתי לפון גת וזאת לאחר המלצות רבות והבעיה נפתרה במקצועיות ובמסירות ולכן אני רוצה לציין את ברוך הטכנאי ואת סיגל על השירות האדיב והמקצועי תודה לכם מקרב לב אדע להמליץ עליכם בפני כולם"},
+    {n:"Yechiel Dotan",d:"לפני חודשיים",t:"משפחת פון גת הם החנות הטובה ביותר אנשים הטובים ביותר זו חנות משפחתית שכולם יוצאי חיל הים עושים מילואים גם בגיל המבוגר ברוך הוא בעצמו איש חיל הים שמתנדב למילואים וכשאני נמצא פה ואואה רואה את היחס והשירות האדיב שהם נותנים ומתייחסים ללקוחות ובמיוחד לחיילים הם ממש נמסים מהם ונותנים להם את כל כולם. אז גם אנחנו המבוגרים שבננו עדיין מקבלים טיפול ושירות פרטני אין חנות כזאת בכל קרית גת מכיר אותם יותר מ 30 שנה אז אחרי הכול תדעו שאם אתם הולכים אליהם אתם בידיים בטוחות שירות ומחיר מנצחים הם על הכול יישר כוח תודה רבה לכם שאתם כאן בשבילנו"},
+    {n:"Siyona Telulkar",d:"לפני חודשיים",t:"הייתה לי בעיה עם הסים ניסו לפתור לי אותה והצליחו. אני תמיד פה כמה שנים טובות בסלקום ואיתכם"}
+  ];
+  var GC={"גיא בן שעיה":"ביקורת אחת","נטלי סטוליארוב":"2 ביקורות","חחי חימ":"ביקורת אחת","זאב שלמה":"2 ביקורות","Abraham Teklom":"2 ביקורות","סבטלנה שימה":"ביקורת אחת","לב אילייאיב":"ביקורת אחת","פיבי אסנר":"2 ביקורות","Yechiel Dotan":"ביקורת אחת","Siyona Telulkar":"ביקורת אחת"};
+  function gcard(r,i){return '<div class="pg-grc"><div class="pg-grc-top"><div class="pg-grc-av" style="background:'+GCOL[i%GCOL.length]+'">'+esc(r.n.trim().charAt(0))+'</div><div class="pg-grc-hd"><div class="pg-grc-nm">'+esc(r.n)+'</div><div class="pg-grc-lg">'+esc(GC[r.n]||'')+'</div></div></div><div class="pg-grc-meta"><span class="pg-grc-st">★★★★★</span><span class="pg-grc-dt">'+esc(r.d)+'</span></div><div class="pg-grc-tx">'+esc(r.t)+'</div><div style="color:#00796b;font-size:.7rem;margin-top:3px">עוד</div></div>';}
+  var AB_G='<div class="pg-ab-g"><span class="pg-gback">›</span><span class="pg-gword"><b style="color:#4285F4">G</b><b style="color:#EA4335">o</b><b style="color:#FBBC05">o</b><b style="color:#4285F4">g</b><b style="color:#34A853">l</b><b style="color:#EA4335">e</b></span><span class="pg-gtitle">פון גת חנות ומעבדה לתיקון מכשירים סלולריים בקרית גת</span></div>';
+  var GTABS='<div class="pg-gtabs"><span class="pg-gtab">סקירה כללית</span><span class="pg-gtab act">ביקורות</span><span class="pg-gtab">תמונות</span><span class="pg-gtab">עדכונים</span></div>';
+  var GD=[98,7,3,1,3],gdist='';for(var gi=0;gi<5;gi++){gdist+='<div class="pg-gdrow"><span class="pg-gdbar"><b style="width:'+GD[gi]+'%"></b></span></div>';}
+  var GHEAD='<div class="pg-ghead"><div class="pg-gcat">חנות לטלפונים ניידים</div><div class="pg-grate"><div class="pg-gsum"><div class="pg-gnum">4.9</div><span class="pg-gstars">★★★★★</span><div class="pg-gcount">(‎537)</div></div><div class="pg-gdist">'+gdist+'</div><span class="pg-ginfo">i</span></div></div>';
+  var gfeed='';for(var gj=0;gj<G.length;gj++){gfeed+=gcard(G[gj],gj);}
+  /* ---- easy mode of the fixed app-bar (easy logo) ---- */
+  var AB_E='<div class="pg-ab-e"><div class="pg-ham"><span></span><span></span><span></span></div><span class="pg-eword">easy</span></div>';
+  var efeed='';for(var fi=0;fi<R.length;fi++){efeed+=card(R[fi],fi);if((fi+1)%10===0)efeed+=AD;}
+  /* start on the Google "screen", then switch to the easy "screen"; doubled for a seamless loop */
+  var set=GTABS+GHEAD+gfeed+BIZ+TABS+efeed;
   t.innerHTML=set+set;
+  /* fixed app-bar that switches Google<->easy in sync with the scrolling feed, so it's always clear which "page" you're on */
+  var ab=document.getElementById('pgAppbar');
+  if(ab){
+    ab.innerHTML=AB_G+AB_E;
+    var firstBiz=t.querySelector('.pg-biz');
+    var gBlockH=firstBiz?firstBiz.offsetTop:t.offsetHeight;
+    var lastMode='';
+    function abTick(){
+      var tf=getComputedStyle(t).transform,ty=0;
+      if(tf&&tf!=='none'){try{ty=new DOMMatrix(tf).m42;}catch(e){var mm=tf.match(/-?[\d.]+/g);if(mm)ty=parseFloat(mm.length>=16?mm[13]:mm[5])||0;}}
+      var setH=t.offsetHeight/2;if(setH<=0)return;
+      var off=(((-ty)%setH)+setH)%setH;
+      var m=off<gBlockH?'g':'e';
+      if(m!==lastMode){lastMode=m;ab.classList.toggle('is-easy',m==='e');}
+    }
+    abTick();setInterval(abTick,200);
+  }
 })();
 </script>
 
@@ -1078,7 +1163,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="car-vp">
       <div class="car-track">
 
-        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 6">
+        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 5">
           <div class="slide-in">
             <span class="badge">בתשלומים</span>
             <h3>מכשירים חדשים, בליווי אישי</h3>
@@ -1096,7 +1181,7 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-purple" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 6">
+        <article class="slide s-purple" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
           <div class="slide-in">
             <span class="badge">₪9</span>
             <h3>מגן מסך + הדבקה מקצועית</h3>
@@ -1106,17 +1191,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5.2v6.3c0 4.9 3.4 9.1 8 10.5 4.6-1.4 8-5.6 8-10.5V5.2L12 2Zm-1.1 13.6-3.4-3.4 1.4-1.4 2 2 4.4-4.4 1.4 1.4-5.8 5.8Z"/></svg></div>
         </article>
 
-        <article class="slide s-orange" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 6">
-          <div class="slide-in">
-            <span class="badge">30<small>דק'</small></span>
-            <h3>החלפת מסך, במקום</h3>
-            <p>מסך שבור? רוב התיקונים מבוצעים אצלנו במקום, תוך כחצי שעה, עם אחריות מלאה.</p>
-            <a class="btn btn-wa" href="https://wa.me/972525893366?text=היי, אשמח להצעת מחיר להחלפת מסך"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה בוואטסאפ</a>
-          </div>
-          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.7 6.3a5 5 0 0 1-6.6 4.7l-7.7 7.7a2.1 2.1 0 0 1-3-3l7.7-7.7a5 5 0 0 1 6.4-6.2l-2.8 2.8a1 1 0 0 0 0 1.4l1.1 1.1a1 1 0 0 0 1.4 0l2.8-2.8c.4.6.5 1.3.5 2Z"/></svg></div>
-        </article>
-
-        <article class="slide s-green" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 6">
+        <article class="slide s-green" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
             <h3>העברת נתונים מלאה</h3>
@@ -1126,7 +1201,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v14M8 3 4 7M8 3l4 4M16 21V7M16 21l4-4M16 21l-4-4"/></svg></div>
         </article>
 
-        <article class="slide s-dteal" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 6">
+        <article class="slide s-dteal" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
           <div class="slide-in">
             <span class="badge">סלקום</span>
             <h3>ניוד, סים ומסלולים</h3>
@@ -1136,7 +1211,7 @@ document.addEventListener('DOMContentLoaded',function(){
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h7l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 10a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H9Z"/></svg></div>
         </article>
 
-        <article class="slide s-pink" aria-roledescription="שקופית" aria-label="מבצע 6 מתוך 6">
+        <article class="slide s-pink" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
           <div class="slide-in">
             <span class="badge">מבחר</span>
             <h3>אבזור ומגנים לכל דגם</h3>
@@ -1200,8 +1275,17 @@ document.addEventListener('DOMContentLoaded',function(){
         <figure><img src="couple.jpg" alt="ברוך וסיגל אדלשטיין בחנות פון גת" width="641" height="250" loading="lazy"><figcaption>פון גת, רחבת תשרי 2, קרית גת</figcaption></figure>
         <div class="body">
           <p class="lead">רחבת תשרי 2, מול מכון מאר. פון גת, המעבדה וחנות הטלפונים, מלווה את קהילת קרית גת כבר יותר מ-30 שנה, בבעלות ברוך וסיגל אדלשטיין.</p>
-          <p class="pullquote">"הכול התחיל כשחברת סלקום פנתה אלינו והציעה לפתוח נקודת שירות ומכירה בעיר, אחרי שהתושבים המליצו עלינו. וכך נולד פון גת", מספרים ברוך וסיגל.</p>
-          <p class="source">קטע קצר מתוך הכתבה ב-<a href="https://www.kg4u.co.il/" target="_blank" rel="noopener">kg4u.co.il</a> (מאת זאב וקס) · התוכן המלא והזכויות שמורים למקור. <a href="https://www.kg4u.co.il/" target="_blank" rel="noopener">לכתבה המלאה »</a></p>
+          <div class="pbody collapsed" id="pb1">
+            <p><b>איך הכול התחיל?</b> ברוך אדלשטיין, אדם טכני ויצירתי, החל את דרכו המקצועית עם מכון "קרבורטור גת" שהפך לשם דבר בקרית גת והסביבה. "הכול התחיל כשחברת סלקום פנתה אלינו והציעה לפתוח נקודת שירות ומכירה בעיר, אחרי שהתושבים המליצו עלינו. וכך נולד פון גת", מספרים ברוך וסיגל.</p>
+            <p><b>עסק משפחתי שמרגיש כמו בית.</b> "כל הילדים שלנו עבדו בעסק, ועד היום הם חלק מהמשפחה פה. אנחנו נותנים ללקוחות יחס חם, עוטף ומלא בחיוכים". פון גת הוא גם הסניף הראשון והיחיד של סלקום בקרית גת: החלפת סים, ניוד קו, מכירת מכשירים בתשלומים ושירותי טוקמן.</p>
+            <p><b>רגעים שלא שוכחים.</b> לפני שנים, בזמן מבצע צבאי, נפל טיל בחניית העסק. "הייתה פאניקה, אבל למרבה המזל איש מהלקוחות שהיו במקום לא נפגע. הבן שלנו החליט שלא נכנעים, והרים את העסק למקומות חדשים וטובים יותר". רגע כזה הוא ההוכחה לכוח, לאחדות ולמשפחתיות שהעסק מייצג.</p>
+            <figure><img data-src="zeev2.jpg" alt="חנות פון גת בקרית גת" width="1080" height="1080" loading="lazy" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;תמונה נוספת מהכתבה&lt;/div&gt;'"><figcaption>בחנות · פון גת, קרית גת</figcaption></figure>
+            <p><b>לאן שואפים להגיע?</b> "אנחנו רוצים להמשיך לשרת את תושבי קרית גת והסביבה, ולהגיע גם לקיבוצים, למושבים ולכרמי גת הצעירה. בעזרת הלקוחות והקהילה הכול הופך להיות קל יותר, ואנחנו נהנים מכל רגע בעשייה."</p>
+            <p><b>קהילה שהיא משפחה.</b> "בהתחלה חששנו שלא נתחבר למקום, אבל גילינו מהר שזה לא נכון. התושבים חיבקו אותנו, ואנחנו אוהבים כל אחד ואחת מהם. יש ימים שמגיע לקוח עם הפתעה: תפוזים מהפרדס, ענבים או לימונים מהעץ בגינה, רק כדי להראות הערכה. קרית גת היא הבית שלנו, ואנחנו שמחים להיות חלק ממנה."</p>
+            <p>"אצלנו לא מדברים עם מוקד, מדברים עם ברוך וסיגל. אנשים תמיד עוצרים, גם כדי להתייעץ וגם כדי לשתות קפה", מספר ברוך בחיוך.</p>
+          </div>
+          <button class="more-btn" aria-expanded="false" data-target="pb1">הצג עוד</button>
+          <p class="source">פורסם ב-<a href="https://www.kg4u.co.il/" target="_blank" rel="noopener">kg4u.co.il</a> (מאת זאב וקס) · כל הזכויות על הכתבה שמורות למקור. <a href="https://www.kg4u.co.il/" target="_blank" rel="noopener">לכתבה המלאה »</a></p>
           <a class="pcta" href="https://wa.me/972525893366?text=היי, קראתי עליכם ואשמח לפרטים"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">רוצים שירות כזה? דברו איתנו</a>
         </div>
       </article>
@@ -1213,8 +1297,14 @@ document.addEventListener('DOMContentLoaded',function(){
         <figure><img src="couple2.jpg" alt="ברוך וסיגל אדלשטיין, פון גת קרית גת" width="454" height="262" loading="lazy" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;תמונת ברוך וסיגל&lt;br&gt;(מתנ״ס לכיש)&lt;/div&gt;'"><figcaption>ברוך וסיגל אדלשטיין · פון גת, קרית גת</figcaption></figure>
         <div class="body">
           <p class="lead">בטור "לכיש מרימים לעסקים" בחר המתנ״ס האזורי להאיר את פון גת, אחד העסקים הוותיקים בקרית גת.</p>
-          <p class="pullquote">"העסק הוא כמו משפחה, והלקוחות זוכים ליחס חם ואוהב מכל בני המשפחה", מספרים ברוך וסיגל.</p>
-          <p class="source">קטע קצר מתוך הפרסום של <b>מתנ״ס אזורי לכיש</b> · התוכן המלא והזכויות שמורים למקור. <a href="https://www.facebook.com/share/p/168xgVzCvXM/" target="_blank" rel="noopener">לפרסום המלא »</a></p>
+          <div class="pbody collapsed" id="pb2">
+            <p>פון גת הוא עסק משפחתי עם עשרות שנות ותק, שנותן מענה לכל תקלה ומכל חברה סלולרית, לצד מכירת מכשירים חדשים ואבזור. "העסק הוא כמו משפחה, והלקוחות זוכים ליחס חם ואוהב מכל בני המשפחה", מספרים ברוך וסיגל.</p>
+            <p><b>קהילה שהיא משפחה.</b> "בהתחלה חששנו שלא נתחבר למקום, אבל התושבים חיבקו אותנו, ואנחנו אוהבים כל אחד ואחת מהם", הם משתפים. "יש ימים שמגיע לקוח עם הפתעה: תפוזים מהפרדס, ענבים או לימונים מהגינה, רק כדי להראות הערכה."</p>
+            <p><b>לאן שואפים להגיע?</b> "אנחנו רוצים להמשיך לשרת את תושבי קרית גת והסביבה, ולהגיע גם לקיבוצים, למושבים ולכרמי גת הצעירה. קרית גת היא הבית שלנו, ואנחנו שמחים להיות חלק ממנה."</p>
+            <p>"אם יש לך חלום, אל תחכה לרגע האחרון. הכל אפשרי, והכי חשוב זה להתחיל", מסכמים ברוך וסיגל.</p>
+          </div>
+          <button class="more-btn" aria-expanded="false" data-target="pb2">הצג עוד</button>
+          <p class="source">פורסם על ידי <b>מתנ״ס אזורי לכיש</b> · כל הזכויות על הכתבה שמורות למקור. <a href="https://www.facebook.com/share/p/168xgVzCvXM/" target="_blank" rel="noopener">לפרסום המלא »</a></p>
           <a class="pcta" href="https://wa.me/972525893366?text=היי, קראתי עליכם ואשמח לפרטים"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">רוצים שירות כזה? דברו איתנו</a>
         </div>
       </article>
