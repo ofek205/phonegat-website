@@ -1991,6 +1991,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function standalone(){ return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone===true; }
   var isIOS=/iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints>1);
   var iosSafari=isIOS && !/crios|fxios|edgios/i.test(ua);
+  var isSamsung=/SamsungBrowser/i.test(ua);
   if(standalone()) return; /* already installed */
   var isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Silk/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints>1);
   if(!isMobile) return; /* mobile only — never show on desktop/web */
@@ -1999,6 +2000,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(isIOS){ cta.hidden=false; }
   var shareSvg='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 8 6l1.4 1.4L11 5.8V15h2V5.8l1.6 1.6L16 6l-4-4zM5 10h4v2H6v8h12v-8h-3v-2h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1z"/></svg>';
   btn.addEventListener('click', function(){
+    if(isSamsung){ hint.innerHTML='להתקנה נקייה פותחים ב‑<b>Chrome</b>. פותח עכשיו… אם לא נפתח, פתחו את phonegat.co.il ב‑Chrome ובחרו <b>"התקן אפליקציה"</b>.'; hint.classList.add('show'); location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;end'; return; }
     if(deferred){ deferred.prompt(); deferred.userChoice.then(function(c){ if(c&&c.outcome==='accepted'){cta.hidden=true;} deferred=null; }); return; }
     if(iosSafari){ hint.innerHTML='כדי להתקין: הקישו על כפתור <b>שיתוף</b> '+shareSvg+' בתחתית ה‑Safari, ואז בחרו <b>"הוסף למסך הבית"</b>.'; hint.classList.add('show'); return; }
     if(isIOS){ hint.innerHTML='כדי להתקין באייפון פתחו את האתר ב‑<b>Safari</b>, הקישו על <b>שיתוף</b> '+shareSvg+' ואז <b>"הוסף למסך הבית"</b>.'; hint.classList.add('show'); return; }
