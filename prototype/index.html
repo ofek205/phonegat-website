@@ -218,10 +218,13 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-easy{height:24px;width:auto;display:block;border-radius:6px}
 .pg-feed{position:absolute;top:13.5%;left:0;width:100%;height:86.5%;overflow:hidden;background:#f5f6f8}
 .pg-track{display:flex;flex-direction:column;animation:pgfeed var(--pgd) linear infinite}
-@keyframes pgfeed{0%,4%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+@keyframes pgfeed{0%,2.67%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+@keyframes pgfeedm{0%,4%{transform:translateY(0)}100%{transform:translateY(-50%)}}
 @media(hover:hover){.pg-screen:hover .pg-track{animation-play-state:paused}}
 .pg-thumb{position:absolute;left:4px;width:3px;height:10%;border-radius:3px;background:rgba(0,0,0,.16);z-index:7;animation:pgsb var(--pgd) linear infinite;pointer-events:none}
-@keyframes pgsb{0%,4%{top:16%}100%{top:92%}}
+@keyframes pgsb{0%,2.67%{top:16%}100%{top:92%}}
+@keyframes pgsbm{0%,4%{top:16%}100%{top:92%}}
+@media(max-width:820px){.pg-track{animation-name:pgfeedm}.pg-thumb{animation-name:pgsbm}}
 @media(hover:hover){.pg-screen:hover .pg-thumb{animation-play-state:paused}}
 .pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
 .pg-screen{cursor:pointer}
@@ -1036,7 +1039,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var scr=document.querySelector('.pg-screen');
   /* refresh button: restart the reviews scroll from the very top */
   var rf=document.getElementById('pgRefresh'),th=document.querySelector('.pg-thumb');
-  if(rf){rf.addEventListener('click',function(e){e.stopPropagation();/* don't let it bubble to the screen's tap-to-pause */if(scr)scr.classList.remove('paused');[t,th].forEach(function(el){if(el)el.style.animation='none';});void t.offsetWidth;/* negative delay = skip the top hold so a deliberate refresh scrolls right away (the hold returns on the next loop) */var neg=(-(parseFloat(getComputedStyle(t).getPropertyValue('--pgd'))||150)*0.04)+'s';[t,th].forEach(function(el){if(el){el.style.animation='';el.style.animationDelay=neg;}});});}
+  if(rf){rf.addEventListener('click',function(e){e.stopPropagation();/* don't let it bubble to the screen's tap-to-pause */if(scr)scr.classList.remove('paused');[t,th].forEach(function(el){if(el)el.style.animation='none';});void t.offsetWidth;/* restart from the very top WITH the initial hold, exactly like first load */[t,th].forEach(function(el){if(el){el.style.animation='';el.style.animationDelay='';}});});}
 })();
 </script>
 
