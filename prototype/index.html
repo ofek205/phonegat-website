@@ -360,6 +360,20 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
 .pg-cpn-go img{width:20px;height:20px}
 .pg-cpn-fine{margin:9px 0 0;font-size:.58rem;line-height:1.5;color:#9b9b9b}
+/* blue coupon theme — matches the screen-protector promo banner */
+.pg-cpn-ov.t-blue{background:rgba(6,24,48,.66)}
+.t-blue .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(120,190,255,.42),transparent 55%),linear-gradient(160deg,#1d579f 0%,#134279 58%,#0c2f5c 100%)}
+.t-blue .pg-cpn-hd .desc{color:rgba(214,232,250,.92)}
+.t-blue .pg-cpn-price{background:linear-gradient(180deg,rgba(8,34,66,.5),rgba(6,24,48,.5));border-color:rgba(255,255,255,.72);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(120,190,255,.3),inset 0 1px 0 rgba(255,255,255,.16)}
+.t-blue .pg-cpn-price b{color:#fff}
+.t-blue .pg-cpn-codeLab{color:#12558f}
+.t-blue .pg-cpn-codeLab::before,.t-blue .pg-cpn-codeLab::after{border-color:#a9cdea}
+.t-blue .pg-cpn-code{border-color:#78b0dd;background:#f2f8fd}
+.t-blue .pg-cpn-code:hover{background:#e7f2fb}
+.t-blue .pg-cpn-code:focus-visible{outline-color:#78b0dd}
+.t-blue .pg-cpn-code .tk{color:#1a6bb0}
+.t-blue .pg-cpn-code b{color:#0c2f5c}
+.t-blue .pg-cpn-copied{color:#5a86ab}
 /* navy/cyan coupon theme — matches the keyboard promo banner instead of the purple default */
 .pg-cpn-ov.t-navy{background:rgba(4,16,28,.66)}
 .t-navy .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(41,182,232,.45),transparent 55%),linear-gradient(160deg,#0f2d48 0%,#0a1f34 58%,#071626 100%)}
@@ -481,7 +495,9 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
 /* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
-.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center;background:#132a3e}
+.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
+.bn-kb{background:#132a3e}      /* matches the keyboard banner's dark edge */
+.bn-scr{background:#e9eef4}     /* matches the screen-protector banner's light edge */
 .s-banner::before,.s-banner::after{display:none}
 .s-banner .slide-banner{display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
@@ -490,11 +506,15 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-banner .slide-in,.s-banner .slide-art{display:none}
 @media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
 @media(max-width:720px){
-  .s-banner{padding:clamp(24px,5vw,38px) 46px;background:radial-gradient(115% 85% at 79% 8%,rgba(41,121,255,.42),transparent 56%),linear-gradient(135deg,#16305c,#0a1226)}
+  /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
+  .s-banner{padding:clamp(24px,5vw,38px) 46px}
+  .bn-kb{background:radial-gradient(115% 85% at 79% 8%,rgba(41,121,255,.42),transparent 56%),linear-gradient(135deg,#16305c,#0a1226)}
+  .bn-scr{background:radial-gradient(115% 85% at 79% 8%,rgba(64,150,235,.45),transparent 56%),linear-gradient(135deg,#1d579f,#0d3a68)}
   .s-banner .slide-banner{display:none}
   .s-banner .slide-in{display:block}
   .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
   .s-banner .slide-art img{width:100%;max-width:220px;max-height:108px;object-fit:contain;height:auto;border-radius:10px}
+  .bn-scr .slide-art{display:none}   /* its icon backdrop is taller than the room left, and the text stands alone */
 }
 .s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
 .s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
@@ -1265,11 +1285,14 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-purple" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
+        <article class="slide s-banner bn-scr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
+          <button type="button" class="slide-banner" data-pg-coupon aria-label="מגן מסך כולל הדבקה ב-9 שקלים, לקבלת קוד הקופון">
+            <img src="screen-promo-web.png" alt="מגן מסך כולל הדבקה, רק 9 ₪. מגן זכוכית איכותי והתקנה מקצועית במקום, למעט מכשירים מעוגלים ובכפוף למלאי." width="1386" height="848" loading="lazy" decoding="async">
+          </button>
           <div class="slide-in">
             <span class="badge">₪9</span>
-            <h3>מגן מסך + הדבקה מקצועית</h3>
-            <p>מגן זכוכית איכותי כולל הדבקה במקום, רק ב-9 ₪ (למעט מכשירים מעוגלים).</p>
+            <h3>מגן מסך כולל הדבקה</h3>
+            <p>מגן זכוכית איכותי והתקנה מקצועית במקום, רק ב-9 ₪ (למעט מכשירים מעוגלים ובכפוף למלאי).</p>
             <button type="button" class="btn btn-wa" data-pg-coupon aria-label="לקבלת ההטבה: מגן מסך והדבקה מקצועית ב-9 שקלים">לקבלת ההטבה</button>
           </div>
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5.2v6.3c0 4.9 3.4 9.1 8 10.5 4.6-1.4 8-5.6 8-10.5V5.2L12 2Zm-1.1 13.6-3.4-3.4 1.4-1.4 2 2 4.4-4.4 1.4 1.4-5.8 5.8Z"/></svg></div>
@@ -1304,7 +1327,7 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-banner" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
             <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
           </button>
@@ -2064,10 +2087,10 @@ document.addEventListener('DOMContentLoaded',function(){
   var lastFocus=null,builtKey=null;
   /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
   var OFFERS={
-    screen:{title:'מגן מסך + הדבקה מקצועית',desc:'מגן זכוכית איכותי + הדבקה מקצועית במקום',price:'9',
-      img:'iphone-protector.png',imgW:664,imgH:1428,key:'pg_screen9_coupon',prefix:'PG9-',
-      wa:'היי! אני רוצה לממש את מבצע מגן מסך + הדבקה מקצועית ב-9₪. קוד הקופון שלי: ',
-      fine:'הציגו את הקוד בחנות או סרקו · בכפוף לתקנון המבצע · למעט מכשירים מעוגלים.'},
+    screen:{title:'מגן מסך כולל הדבקה',desc:'מגן זכוכית איכותי והתקנה מקצועית במקום',price:'9',
+      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'PG9-',
+      wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
+      fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
       img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'PG49-',
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
@@ -2080,7 +2103,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var code=o.prefix+s;try{localStorage.setItem(o.key,code);}catch(_){}return code;}
 
   function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
-    ov.classList.remove('t-navy');if(o.theme)ov.classList.add(o.theme);
+    ov.classList.remove('t-navy','t-blue');if(o.theme)ov.classList.add(o.theme);
     if(titleEl)titleEl.textContent=o.title;
     if(descEl)descEl.textContent=o.desc;
     if(priceEl)priceEl.innerHTML='רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>';
