@@ -1709,8 +1709,32 @@ document.addEventListener('DOMContentLoaded',function(){
   function repDevice(dev){ctx.device=dev;flow={type:'repair',step:'issue'};botReply('מה קרה ל'+dev+'?',{sug:[['מסך שבור',function(){repIssue('מסך שבור');}],['בעיית סוללה',function(){repIssue('בעיית סוללה');}],['נפל למים',function(){repIssue('נזק מים');}],['לא נטען',function(){repIssue('בעיית טעינה');}],['תקלה אחרת',function(){repIssue('תקלה');}]]});}
   function repIssue(iss){ctx.issue=iss;flow=null;ctx.topic='תיקון '+iss+' '+ctx.device;track('chat_repair',{device:ctx.device,issue:iss});var wt='היי, הגעתי דרך האתר. אשמח להצעת מחיר לתיקון: '+iss+' ב'+ctx.device+'.';botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. מעבדה וותיקה מעל 30 שנה, עם אחריות. המחיר תלוי בדגם המדויק, אז נשמח לתת הצעה מהירה ומדויקת.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}],['שאלה אחרת',function(){mainMenu();}]]});}
 
-  function startBuy(){flow={type:'buy',step:'what'};ctx.topic='buy';track('chat_flow',{flow:'buy'});botReply('נשמח לעזור לבחור. מה מחפשים?',{sug:[['אייפון',function(){buyAns('אייפון');}],['סמסונג',function(){buyAns('סמסונג');}],['רוצה המלצה',function(){buyAns('');}],['אבזור',function(){flow=null;runIntent('accessories');}]]});}
-  function buyAns(dev){flow=null;ctx.topic=dev?('קניית '+dev):'קניית מכשיר';track('chat_buy',{device:dev||'המלצה'});var wt='היי, הגעתי דרך האתר. '+(dev?('מתעניין/ת בקניית '+dev+'.'):'רוצה המלצה על מכשיר חדש.');botReply((dev?('יש לנו '+dev+' ביבוא רשמי ומקביל. '):'נשמח להמליץ לפי הצרכים והתקציב שלכם. ')+'הכול בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}],['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}]]});}
+  var BUY_MODELS={'אייפון':['iPhone Pro / Pro Max','iPhone רגיל','דגם מדור קודם'],'סמסונג':['Galaxy S','Galaxy A','Galaxy Z מתקפל'],'שיאומי':['Redmi Note','Xiaomi סדרה גבוהה']};
+  function buyParts(){var p=[];if(ctx.rec)p.push('רוצה המלצה על הדגם המתאים');if(ctx.brand)p.push('יצרן: '+ctx.brand);if(ctx.model)p.push('דגם: '+ctx.model);if(ctx.storage)p.push('נפח: '+ctx.storage);if(ctx.imp)p.push('יבוא: '+ctx.imp);return p;}
+  function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
+  function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
+
+  function startBuy(){flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.storage='';ctx.imp='';ctx.rec=false;track('chat_flow',{flow:'buy'});botReply('נשמח לעזור לבחור. איזה מכשיר מעניין אתכם?',{sug:[['אייפון',function(){buyBrand('אייפון');}],['סמסונג',function(){buyBrand('סמסונג');}],['שיאומי',function(){buyBrand('שיאומי');}],['רוצה המלצה',function(){buyBrand('');}],['אבזור',function(){flow=null;runIntent('accessories');}]]});}
+  function buyBrand(b){
+    ctx.brand=b;track('chat_buy_step',{step:'brand',value:b||'המלצה'});
+    if(!b){ctx.rec=true;flow={type:'buy',step:'storage'};askStorage();return;}
+    flow={type:'buy',step:'model'};
+    var list=BUY_MODELS[b]||[],sug=[],i;
+    for(i=0;i<list.length;i++){(function(m){sug.push([m,function(){buyModel(m);}]);})(list[i]);}
+    sug.push(['לא בטוח / דגם אחר',function(){buyModel('');}]);
+    botReply('מעולה. איזה '+b+' בערך? אפשר גם להקליד דגם מדויק.',{sug:sug});
+  }
+  function buyModel(m){ctx.model=m||ctx.model||'';track('chat_buy_step',{step:'model',value:m||'לא בטוח'});flow={type:'buy',step:'storage'};askStorage();}
+  function askStorage(){botReply('איזה נפח זיכרון צריך?',{sug:[['128GB',function(){buyStorage('128GB');}],['256GB',function(){buyStorage('256GB');}],['512GB ומעלה',function(){buyStorage('512GB ומעלה');}],['לא בטוח',function(){buyStorage('');}]]});}
+  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:s||'לא בטוח'});flow={type:'buy',step:'import'};askImport();}
+  function askImport(){botReply('ואיזה יבוא מעדיפים?',{sug:[['יבוא רשמי',function(){buyImport('רשמי');}],['יבוא מקביל',function(){buyImport('מקביל');}],['לא בטוח, שתסבירו לי',function(){buyImport('');}]]});}
+  function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:v||'לא בטוח'});buyDone();}
+  function buyDone(){
+    flow=null;ctx.topic=buyTopic();
+    var p=buyParts(),sum=p.length?('רשמתי לפניי:\n• '+p.join('\n• ')+'\n'):'';
+    track('chat_buy',{device:ctx.brand||'המלצה',model:ctx.model||'',storage:ctx.storage||'',imp:ctx.imp||''});
+    botReply(sum+'הכול בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור. נשמח לתת לכם הצעת מחיר מדויקת.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}],['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}]]});
+  }
 
   function startLead(topic){ctx.topic=topic||ctx.topic||'כללי';track('chat_lead_start',{topic:ctx.topic});if(ctx.name){flow={type:'lead',step:'phone'};botReply('מעולה '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');}else{flow={type:'lead',step:'name'};botReply('בשמחה נחזור אליכם. איך קוראים לכם?');}}
   function saveLead(name,phone,topic){
@@ -1720,7 +1744,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function handleFlow(text){
     if(/(^|\s)(ביטול|תפריט|חזרה|עזוב|התחל)(\s|$)/.test(text)){mainMenu();return;}
     if(flow.type==='repair'){if(flow.step==='device')repDevice(text.slice(0,30));else repIssue(text.slice(0,40));return;}
-    if(flow.type==='buy'){buyAns(text.slice(0,30));return;}
+    if(flow.type==='buy'){var bt=text.slice(0,40);if(flow.step==='model')buyModel(bt);else if(flow.step==='storage')buyStorage(bt);else if(flow.step==='import')buyImport(bt);else buyBrand(bt);return;}
     if(flow.type==='lead'){
       if(flow.step==='name'){ctx.name=text.replace(/[<>]/g,'').slice(0,40);flow.step='phone';botReply('נעים מאוד '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');return;}
       if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var kEl=document.querySelector('#contactForm input[name=access_key]'),keyOk=!!(kEl&&kEl.value&&kEl.value.indexOf('YOUR_')!==0);var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! כדי שנחזור אליכם הכי מהר, שלחו לנו את הפרטים בלחיצה אחת ב-WhatsApp, או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
