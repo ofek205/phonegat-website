@@ -500,6 +500,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 /* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
 .s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
 .bn-kb{background:#132a3e}      /* matches the keyboard banner's dark edge */
+.bn-tr{background:#fefefe}      /* matches the data-transfer banner's white edge */
 /* ===== screen-protector slide: light card like the ad, glass animating onto the phone ===== */
 .s-scr{background:radial-gradient(72% 62% at 31% 52%,#dbe8f7,transparent 62%),linear-gradient(135deg,#f5f8fb,#e6edf5);color:var(--ink-strong)}
 .s-scr::before,.s-scr::after{display:none}
@@ -517,13 +518,19 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .scr-stage{position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(15,45,82,.3))}
 .scr-halo{position:absolute;left:50%;top:52%;width:152%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);z-index:0}
 /* the screen sits ABOVE the frame image (its own thin bezel reads as the phone's edge), as in the hero */
-.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:2px 4px;border-radius:36px;z-index:2;background:linear-gradient(168deg,#12386e 4%,#1d63a8 25%,#2f97c4 45%,#4ec4a6 65%,#c4dd62 84%,#f7e06a 100%)}
+.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:2px 4px;border-radius:36px;z-index:2;background:linear-gradient(168deg,#1b4f96 0%,#2a7fc4 20%,#39abcc 40%,#57d2a6 60%,#cbe65f 82%,#ffe96d 100%)}
 .scr-frame{position:relative;display:block;width:clamp(104px,11.5vw,156px);height:auto;z-index:1;pointer-events:none}
-.scr-glass{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none;animation:scrApply 4.6s var(--ease) infinite}
+/* the glass is drawn in CSS, not an image: a bright rim and a diagonal sheen read as a real pane
+   without the grey wash a translucent PNG lays over the screen */
+.scr-glass{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;z-index:3;pointer-events:none;
+  border:1.5px solid rgba(255,255,255,.88);border-radius:36px;
+  background:linear-gradient(148deg,rgba(255,255,255,.36) 0%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.1) 68%,rgba(255,255,255,.28) 100%);
+  box-shadow:0 10px 18px rgba(15,45,82,.3),inset 0 1px 0 rgba(255,255,255,.65);
+  animation:scrApply 4.6s var(--ease) infinite}
 @keyframes scrApply{
-  0%,10%{transform:translate(9%,-7%) scale(1.05);opacity:.66}
+  0%,10%{transform:translate(11%,-9%) scale(1.06);opacity:.5}
   46%,66%{transform:translate(0,0) scale(1);opacity:.95}
-  100%{transform:translate(9%,-7%) scale(1.05);opacity:.66}
+  100%{transform:translate(11%,-9%) scale(1.06);opacity:.5}
 }
 @media(prefers-reduced-motion:reduce){.scr-glass{animation:none;transform:none;opacity:.9}}
 html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
@@ -532,12 +539,14 @@ html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
 .s-banner .slide-banner:hover img{transform:scale(1.015)}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.bn-tr .slide-banner:focus-visible{outline-color:#1478a8}   /* white outline would vanish on this light banner */
 .s-banner .slide-in,.s-banner .slide-art{display:none}
 @media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
 @media(max-width:720px){
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
   .s-banner{padding:clamp(24px,5vw,38px) 46px}
   .bn-kb{background:radial-gradient(115% 85% at 79% 8%,rgba(41,121,255,.42),transparent 56%),linear-gradient(135deg,#16305c,#0a1226)}
+  .bn-tr{background:radial-gradient(115% 85% at 79% 8%,rgba(69,190,224,.40),transparent 56%),linear-gradient(135deg,#1887b1,#0b3f57)}
   /* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
   .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
   .s-scr .scr-fine{display:none}
@@ -1332,17 +1341,20 @@ document.addEventListener('DOMContentLoaded',function(){
               <span class="scr-halo" aria-hidden="true"></span>
               <span class="scr-wall" aria-hidden="true"></span>
               <img class="scr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
-              <img class="scr-glass" src="iphone-protector.png" alt="" width="664" height="1428" loading="lazy" decoding="async">
+              <span class="scr-glass" aria-hidden="true"></span>
             </div>
           </div>
         </article>
 
-        <article class="slide s-green" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+        <article class="slide s-banner bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+          <a class="slide-banner" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש" aria-label="העברת נתונים מלאה ללא עלות, לתיאום בוואטסאפ">
+            <img src="promo_transfers.png" alt="העברת נתונים מלאה ללא עלות: קונים מכשיר חדש? נעביר עבורכם אנשי קשר, תמונות ותוכן חשוב מהמכשיר הישן. ברכישת מכשיר חדש בפון גת." width="1832" height="859" loading="lazy" decoding="async">
+          </a>
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
             <h3>העברת נתונים מלאה</h3>
             <p>קונים מכשיר חדש? מעבירים לכם את כל התוכן החשוב לכם, אנשי קשר ותמונות, ללא עלות, גם ממכשיר שבור.</p>
-            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על העברת נתונים למכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
           </div>
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v14M8 3 4 7M8 3l4 4M16 21V7M16 21l4-4M16 21l-4-4"/></svg></div>
         </article>
@@ -2154,7 +2166,11 @@ document.addEventListener('DOMContentLoaded',function(){
     var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
     seqPending[k]=fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({offer:k}),cache:'no-store',signal:ctl?ctl.signal:undefined})
-      .then(function(r){return r.ok?r.json():null;})
+      .then(function(r){
+        /* an offer missing from the server allowlist would otherwise fail silently into the
+           9xxx range — the site keeps working but that offer never gets counted. Say so loudly. */
+        if(r.status===400&&window.console)console.warn('[pg] מבצע "'+k+'" חסר ברשימת ההיתר ב-api/coupon.js — הקודים שלו לא ייספרו');
+        return r.ok?r.json():null;})
       .then(function(j){return (j&&typeof j.n==='number')?j.n:null;})
       .catch(function(){return null;})
       .then(function(n){clearTimeout(timer);delete seqPending[k];return n;});
