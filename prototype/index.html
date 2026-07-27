@@ -500,7 +500,33 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 /* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
 .s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
 .bn-kb{background:#132a3e}      /* matches the keyboard banner's dark edge */
-.bn-scr{background:#e9eef4}     /* matches the screen-protector banner's light edge */
+/* ===== screen-protector slide: light card like the ad, glass animating onto the phone ===== */
+.s-scr{background:radial-gradient(72% 62% at 31% 52%,#dbe8f7,transparent 62%),linear-gradient(135deg,#f5f8fb,#e6edf5);color:var(--ink-strong)}
+.s-scr::before,.s-scr::after{display:none}
+.s-scr .scr-excl{display:inline-flex;align-items:center;gap:6px;background:#1d4f91;color:#fff;font-weight:800;font-size:.78rem;border-radius:999px;padding:6px 15px;margin-bottom:.85rem}
+.s-scr .scr-excl .st{color:#ffc94d}
+.s-scr h3{color:#0f2d52;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.12;margin:0}
+.s-scr .scr-price{display:flex;align-items:baseline;gap:.3rem;margin:.45rem 0 0;color:#1f6fd0;font-weight:900;font-size:clamp(1.05rem,2vw,1.3rem)}
+.s-scr .scr-price b{font-size:clamp(2.5rem,6vw,4.1rem);line-height:.95;letter-spacing:-2px}
+.s-scr .scr-price .cur{font-size:clamp(1.15rem,2.4vw,1.65rem);font-weight:800}
+.s-scr .scr-sub{color:#3c4a5c;font-size:clamp(.95rem,1.5vw,1.08rem);margin:.35rem 0 0;max-width:34ch}
+.s-scr .scr-fine{color:#7c8797;font-size:.8rem;margin:.25rem 0 0}
+.s-scr .scr-cta{background:#fff;color:#1f6fd0;font-weight:900;box-shadow:0 10px 26px -12px rgba(15,45,82,.5);margin-top:1rem}
+.s-scr .scr-cta:hover{background:#f1f7ff}
+/* the frame image stays in flow so the stage box equals it exactly — the % offsets below depend on that */
+.scr-stage{position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(15,45,82,.3))}
+.scr-halo{position:absolute;left:50%;top:52%;width:152%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);z-index:0}
+/* the screen sits ABOVE the frame image (its own thin bezel reads as the phone's edge), as in the hero */
+.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:2px 4px;border-radius:36px;z-index:2;background:linear-gradient(168deg,#12386e 4%,#1d63a8 25%,#2f97c4 45%,#4ec4a6 65%,#c4dd62 84%,#f7e06a 100%)}
+.scr-frame{position:relative;display:block;width:clamp(104px,11.5vw,156px);height:auto;z-index:1;pointer-events:none}
+.scr-glass{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none;animation:scrApply 4.6s var(--ease) infinite}
+@keyframes scrApply{
+  0%,10%{transform:translate(9%,-7%) scale(1.05);opacity:.66}
+  46%,66%{transform:translate(0,0) scale(1);opacity:.95}
+  100%{transform:translate(9%,-7%) scale(1.05);opacity:.66}
+}
+@media(prefers-reduced-motion:reduce){.scr-glass{animation:none;transform:none;opacity:.9}}
+html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 .s-banner::before,.s-banner::after{display:none}
 .s-banner .slide-banner{display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
@@ -512,12 +538,15 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
   .s-banner{padding:clamp(24px,5vw,38px) 46px}
   .bn-kb{background:radial-gradient(115% 85% at 79% 8%,rgba(41,121,255,.42),transparent 56%),linear-gradient(135deg,#16305c,#0a1226)}
-  .bn-scr{background:radial-gradient(115% 85% at 79% 8%,rgba(64,150,235,.45),transparent 56%),linear-gradient(135deg,#1d579f,#0d3a68)}
+  /* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
+  .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
+  .s-scr .scr-fine{display:none}
+  .scr-stage{transform:rotate(-6deg)}
+  .scr-frame{width:min(96px,26vw)}
   .s-banner .slide-banner{display:none}
   .s-banner .slide-in{display:block}
   .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
   .s-banner .slide-art img{width:100%;max-width:220px;max-height:108px;object-fit:contain;height:auto;border-radius:10px}
-  .bn-scr .slide-art{display:none}   /* its icon backdrop is taller than the room left, and the text stands alone */
 }
 .s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
 .s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
@@ -1288,17 +1317,24 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-banner bn-scr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
-          <button type="button" class="slide-banner" data-pg-coupon aria-label="מגן מסך כולל הדבקה ב-9 שקלים, לקבלת קוד הקופון">
-            <img src="screen-promo-web.png" alt="מגן מסך כולל הדבקה, רק 9 ₪. מגן זכוכית איכותי והתקנה מקצועית במקום, למעט מכשירים מעוגלים ובכפוף למלאי." width="1386" height="848" loading="lazy" decoding="async">
-          </button>
+        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
           <div class="slide-in">
-            <span class="badge">₪9</span>
+            <span class="scr-excl"><span class="st">★</span> הטבה בלעדית לגולשי האתר</span>
             <h3>מגן מסך כולל הדבקה</h3>
-            <p>מגן זכוכית איכותי והתקנה מקצועית במקום, רק ב-9 ₪ (למעט מכשירים מעוגלים ובכפוף למלאי).</p>
-            <button type="button" class="btn btn-wa" data-pg-coupon aria-label="לקבלת ההטבה: מגן מסך והדבקה מקצועית ב-9 שקלים">לקבלת ההטבה</button>
+            <p class="scr-price">רק <b>9</b><span class="cur">₪</span></p>
+            <p class="scr-sub">מגן זכוכית איכותי והתקנה מקצועית במקום.</p>
+            <p class="scr-fine">למעט מכשירים מעוגלים ובכפוף למלאי.</p>
+            <button type="button" class="btn scr-cta" data-pg-coupon aria-label="לקבלת קוד הקופון: מגן מסך כולל הדבקה ב-9 שקלים">לקבלת קוד הקופון</button>
           </div>
-          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5.2v6.3c0 4.9 3.4 9.1 8 10.5 4.6-1.4 8-5.6 8-10.5V5.2L12 2Zm-1.1 13.6-3.4-3.4 1.4-1.4 2 2 4.4-4.4 1.4 1.4-5.8 5.8Z"/></svg></div>
+          <div class="slide-art">
+            <!-- live product shot: the glass drifts up and settles onto the phone, like applying it -->
+            <div class="scr-stage" role="img" aria-label="מגן זכוכית נצמד אל מסך האייפון">
+              <span class="scr-halo" aria-hidden="true"></span>
+              <span class="scr-wall" aria-hidden="true"></span>
+              <img class="scr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <img class="scr-glass" src="iphone-protector.png" alt="" width="664" height="1428" loading="lazy" decoding="async">
+            </div>
+          </div>
         </article>
 
         <article class="slide s-green" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
@@ -2004,7 +2040,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <div class="pg-cpn-bd">
       <p class="pg-cpn-codeLab">קוד הקופון שלך</p>
       <button class="pg-cpn-code" id="pgCpnCopy" type="button" aria-label="העתקת קוד הקופון">
-        <b id="pgCpnCode">PG9-••••••</b>
+        <b id="pgCpnCode">SP-••••</b>
         <svg class="tk" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h13A2.5 2.5 0 0 1 21 8.5 1.5 1.5 0 0 0 21 11.5 2.5 2.5 0 0 1 18.5 14h-13A2.5 2.5 0 0 1 3 11.5 1.5 1.5 0 0 0 3 8.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M9 9l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="9.4" cy="9.4" r="1" fill="currentColor"/><circle cx="14.6" cy="14.6" r="1" fill="currentColor"/></svg>
       </button>
       <p class="pg-cpn-copied" id="pgCpnCopied">הקישו על הקוד להעתקה</p>
@@ -2091,19 +2127,64 @@ document.addEventListener('DOMContentLoaded',function(){
   /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
   var OFFERS={
     screen:{title:'מגן מסך כולל הדבקה',desc:'מגן זכוכית איכותי והתקנה מקצועית במקום',price:'9',
-      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'PG9-',
+      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'SP-',
       wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
-      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'PG49-',
+      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'}
   };
   var FOCUSABLE='a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])';
 
-  function makeCode(o){try{var e=localStorage.getItem(o.key);if(e)return e;}catch(_){}
-    var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<6;i++)s+=chars.charAt(Math.floor(Math.random()*chars.length));
-    var code=o.prefix+s;try{localStorage.setItem(o.key,code);}catch(_){}return code;}
+  /* Coupon numbers come from /api/coupon, so they ascend across all visitors and the last
+     number issued tells the shop how many coupons were handed out. A number is drawn once
+     per browser per offer and then kept, so a returning customer sees the same code.
+     If the counter can't be reached the code falls back to the reserved 9xxx range — that
+     leading 9 tells the shop at a glance it wasn't issued by the counter. */
+  var SEQ_TIMEOUT=2500,seqPending={},currentCode=null;
+
+  function pad4(n){var s=String(n);return s.length>=4?s:('0000'+s).slice(-4);}
+  function fallbackCode(o){var d='';for(var i=0;i<3;i++)d+=Math.floor(Math.random()*10);return o.prefix+'9'+d;}
+
+  /* one request per offer even on a double-click, so no number gets consumed and thrown away */
+  function fetchSeq(k){
+    if(seqPending[k])return seqPending[k];
+    var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
+    seqPending[k]=fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({offer:k}),cache:'no-store',signal:ctl?ctl.signal:undefined})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(j){return (j&&typeof j.n==='number')?j.n:null;})
+      .catch(function(){return null;})
+      .then(function(n){clearTimeout(timer);delete seqPending[k];return n;});
+    return seqPending[k];
+  }
+
+  function storedCode(o){try{return localStorage.getItem(o.key)||null;}catch(_){return null;}}
+
+  /* draws a fresh number — only ever called when this browser has no code for the offer yet */
+  function mintCode(k,o){
+    return fetchSeq(k).then(function(n){
+      var code=(n===null)?fallbackCode(o):(o.prefix+pad4(n));
+      try{localStorage.setItem(o.key,code);}catch(_){}
+      return code;
+    });
+  }
+
+  /* the popup must never wait on the network: it opens with a placeholder and fills in */
+  function setPending(o){currentCode=null;
+    if(codeEl)codeEl.textContent=o.prefix+'••••';
+    if(goBtn)goBtn.setAttribute('aria-disabled','true');
+    if(copiedEl){copiedEl.textContent='רק רגע, מכינים את הקוד…';copiedEl.classList.remove('ok');}}
+
+  function applyCode(o,code){currentCode=code;
+    if(codeEl)codeEl.textContent=code;
+    if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}
+    if(goBtn){goBtn.removeAttribute('aria-disabled');
+      goBtn.href=WA+'?text='+encodeURIComponent(o.wa+code+' (לשימוש חד פעמי).');}
+    if(qrBox)qrBox.style.display='';
+    try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:(o.qr||'#241033'),light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){if(qrBox)qrBox.style.display='none';}}
 
   function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
     ov.classList.remove('t-navy','t-blue');if(o.theme)ov.classList.add(o.theme);
@@ -2112,10 +2193,11 @@ document.addEventListener('DOMContentLoaded',function(){
     if(priceEl)priceEl.innerHTML='רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>';
     if(fineEl)fineEl.textContent=o.fine;
     if(devEl){devEl.src=o.img;devEl.setAttribute('width',o.imgW);devEl.setAttribute('height',o.imgH);devEl.classList.toggle('is-photo',!!o.photo);}
-    var code=makeCode(o);codeEl.textContent=code;
-    goBtn.href=WA+'?text='+encodeURIComponent(o.wa+code+' (לשימוש חד פעמי).');
-    if(qrBox)qrBox.style.display='';
-    try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:(o.qr||'#241033'),light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){qrBox.style.display='none';}}
+    /* a code this browser already holds shows instantly — no placeholder flash, no number drawn */
+    var have=storedCode(o);
+    if(have){applyCode(o,have);return;}
+    setPending(o);
+    mintCode(k,o).then(function(code){if(builtKey===k)applyCode(o,code);});}
 
   function pauseFeed(p){if(screen)screen.classList.toggle('paused',p);}
   function onKey(e){if(e.key==='Escape'){e.preventDefault();close();return;}
@@ -2131,7 +2213,10 @@ document.addEventListener('DOMContentLoaded',function(){
   document.addEventListener('click',function(e){var btn=e.target.closest?e.target.closest('[data-pg-coupon]'):null;if(btn){e.preventDefault();e.stopPropagation();open(btn);}},true);
   if(xBtn)xBtn.addEventListener('click',close);
   ov.addEventListener('click',function(e){if(e.target===ov)close();});
-  if(copyBtn)copyBtn.addEventListener('click',function(){var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
+  /* while the number is still coming back, copying or sending the «••••» placeholder
+     would be worse than a brief wait — so both actions no-op until the code lands */
+  if(goBtn)goBtn.addEventListener('click',function(e){if(!currentCode){e.preventDefault();}});
+  if(copyBtn)copyBtn.addEventListener('click',function(){if(!currentCode)return;var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done);}else{try{var r=document.createRange();r.selectNode(codeEl);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);document.execCommand('copy');sel.removeAllRanges();done();}catch(_){}}});
 })();
 </script>
