@@ -334,7 +334,7 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-dev{width:auto;height:72px;display:block;margin:9px auto 5px;filter:drop-shadow(0 7px 14px rgba(0,0,0,.42))}
 /* photo-style offer image (a real product shot with its own background, not a cut-out) */
 .pg-cpn-dev.is-photo{height:84px;border-radius:11px;border:1px solid rgba(255,255,255,.3);box-shadow:0 9px 20px -7px rgba(0,0,0,.55)}
-.pg-cpn-hd h3{margin:0;font-size:1.08rem;font-weight:900;line-height:1.14}
+.pg-cpn-hd h3{margin:0;font-size:1.08rem;font-weight:900;line-height:1.14;color:#fff}
 .pg-cpn-hd .desc{margin:3px 0 0;font-size:.72rem;color:rgba(244,236,251,.9)}
 .pg-cpn-price{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:linear-gradient(180deg,rgba(58,18,88,.5),rgba(38,11,62,.5));border:1.5px solid rgba(255,224,140,.85);color:#fff;font-weight:800;font-size:.86rem;border-radius:999px;padding:6px 19px;box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(255,205,100,.28),inset 0 1px 0 rgba(255,255,255,.14)}
 .pg-cpn-price b{display:inline-flex;align-items:baseline;color:#ffe08c;font-weight:900;font-size:1.28rem;letter-spacing:-.5px}
@@ -360,6 +360,20 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
 .pg-cpn-go img{width:20px;height:20px}
 .pg-cpn-fine{margin:9px 0 0;font-size:.58rem;line-height:1.5;color:#9b9b9b}
+/* navy/cyan coupon theme — matches the keyboard promo banner instead of the purple default */
+.pg-cpn-ov.t-navy{background:rgba(4,16,28,.66)}
+.t-navy .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(41,182,232,.45),transparent 55%),linear-gradient(160deg,#0f2d48 0%,#0a1f34 58%,#071626 100%)}
+.t-navy .pg-cpn-hd .desc{color:rgba(212,236,250,.9)}
+.t-navy .pg-cpn-price{background:linear-gradient(180deg,rgba(10,34,54,.55),rgba(6,22,38,.55));border-color:rgba(255,178,41,.9);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(255,178,41,.26),inset 0 1px 0 rgba(255,255,255,.14)}
+.t-navy .pg-cpn-price b{color:#ffb229}
+.t-navy .pg-cpn-codeLab{color:#0d6f9e}
+.t-navy .pg-cpn-codeLab::before,.t-navy .pg-cpn-codeLab::after{border-color:#a5d7ef}
+.t-navy .pg-cpn-code{border-color:#7cc4e6;background:#f2fafd}
+.t-navy .pg-cpn-code:hover{background:#e6f5fc}
+.t-navy .pg-cpn-code:focus-visible{outline-color:#7cc4e6}
+.t-navy .pg-cpn-code .tk{color:#1a86bd}
+.t-navy .pg-cpn-code b{color:#0b2f4a}
+.t-navy .pg-cpn-copied{color:#5b8ba8}
 @media(prefers-reduced-motion:reduce){.pg-cpn-ov.open,.pg-cpn{animation:none}}
 html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:none}
 
@@ -467,7 +481,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
 /* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
-.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center;background:#0b1120}
+.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center;background:#132a3e}
 .s-banner::before,.s-banner::after{display:none}
 .s-banner .slide-banner{display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
@@ -1292,7 +1306,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
         <article class="slide s-banner" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
-            <img src="keyboard_promo.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1896" height="829" loading="lazy" decoding="async">
+            <img src="keyboard-promo-web.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
           </button>
           <div class="slide-in">
             <span class="badge">₪49</span>
@@ -2055,7 +2069,7 @@ document.addEventListener('DOMContentLoaded',function(){
       wa:'היי! אני רוצה לממש את מבצע מגן מסך + הדבקה מקצועית ב-9₪. קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · בכפוף לתקנון המבצע · למעט מכשירים מעוגלים.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
-      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,key:'pg_kb49_coupon',prefix:'PG49-',
+      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'PG49-',
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'}
   };
@@ -2066,6 +2080,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var code=o.prefix+s;try{localStorage.setItem(o.key,code);}catch(_){}return code;}
 
   function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
+    ov.classList.remove('t-navy');if(o.theme)ov.classList.add(o.theme);
     if(titleEl)titleEl.textContent=o.title;
     if(descEl)descEl.textContent=o.desc;
     if(priceEl)priceEl.innerHTML='רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>';
@@ -2074,7 +2089,7 @@ document.addEventListener('DOMContentLoaded',function(){
     var code=makeCode(o);codeEl.textContent=code;
     goBtn.href=WA+'?text='+encodeURIComponent(o.wa+code+' (לשימוש חד פעמי).');
     if(qrBox)qrBox.style.display='';
-    try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:'#241033',light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){qrBox.style.display='none';}}
+    try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:(o.qr||'#241033'),light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){qrBox.style.display='none';}}
 
   function pauseFeed(p){if(screen)screen.classList.toggle('paused',p);}
   function onKey(e){if(e.key==='Escape'){e.preventDefault();close();return;}
