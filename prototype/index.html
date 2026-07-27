@@ -332,6 +332,8 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-excl{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:900;color:#3a2405;background:linear-gradient(180deg,#ffe08c,#e0a52f);border-radius:999px;padding:5px 15px;box-shadow:0 3px 12px rgba(224,165,47,.5),inset 0 1px 0 rgba(255,255,255,.55)}
 .pg-cpn-excl .st{color:#8a5a00}
 .pg-cpn-dev{width:auto;height:72px;display:block;margin:9px auto 5px;filter:drop-shadow(0 7px 14px rgba(0,0,0,.42))}
+/* photo-style offer image (a real product shot with its own background, not a cut-out) */
+.pg-cpn-dev.is-photo{height:84px;border-radius:11px;border:1px solid rgba(255,255,255,.3);box-shadow:0 9px 20px -7px rgba(0,0,0,.55)}
 .pg-cpn-hd h3{margin:0;font-size:1.08rem;font-weight:900;line-height:1.14}
 .pg-cpn-hd .desc{margin:3px 0 0;font-size:.72rem;color:rgba(244,236,251,.9)}
 .pg-cpn-price{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:linear-gradient(180deg,rgba(58,18,88,.5),rgba(38,11,62,.5));border:1.5px solid rgba(255,224,140,.85);color:#fff;font-weight:800;font-size:.86rem;border-radius:999px;padding:6px 19px;box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(255,205,100,.28),inset 0 1px 0 rgba(255,255,255,.14)}
@@ -369,7 +371,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .team-head h2::after{content:"";display:block;height:4px;width:66px;border-radius:2px;margin:.7rem auto 0;background:linear-gradient(90deg,var(--teal) 0 25%,var(--purple) 25% 50%,var(--green) 50% 75%,var(--orange) 75% 100%)}
 .rows{display:grid;gap:clamp(44px,6vw,72px)}
 .person{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,56px);align-items:center}
-.person.photo-first{grid-template-columns:.75fr 1.35fr}
+.person.photo-first{grid-template-columns:.9fr 1.1fr}   /* mirror of the first row, so both photos get the same width */
 .person .p-role{color:var(--teal);font-weight:800;font-size:.82rem;margin:0}
 .person .p-text h3{font-size:clamp(1.5rem,3.4vw,2.1rem);color:var(--ink-strong);margin:.35rem 0 .1rem}
 .person .p-tag{font-weight:800;font-size:clamp(1.1rem,2vw,1.3rem);color:var(--teal-d);margin:0 0 .9rem}
@@ -377,7 +379,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .person .p-photo{margin:0}
 .person .p-photo img,.person .p-photo .ph-fig{width:100%;height:auto;aspect-ratio:4/5;border-radius:10px;display:block}
 .person .p-photo img{object-fit:cover;box-shadow:0 4px 12px -2px rgba(0,0,0,.10),0 24px 50px -20px rgba(0,0,0,.28)}
-.person .p-photo img[src="sigal.jpg"]{aspect-ratio:1200/1101;object-position:center top}
+.person .p-photo img[src="sigal.jpg"]{object-position:center top}   /* same 4/5 frame as Baruch; cover crops from the top so the face stays in */
 .person .p-photo .ph-fig{background:#eef1f3;border:1px solid var(--line);display:grid;place-items:center;text-align:center;color:var(--ink-soft);font-weight:700;padding:1.2rem;line-height:1.55;box-shadow:0 4px 12px -2px rgba(0,0,0,.10),0 24px 50px -20px rgba(0,0,0,.28)}
 @media(max-width:800px){.rows{gap:2.6rem}.person,.person.photo-first{grid-template-columns:1fr;gap:1.2rem}.person .p-photo{width:100%;max-width:400px;margin-inline:auto}.person.photo-first .p-photo{order:1}.person .p-photo img,.person .p-photo .ph-fig{aspect-ratio:4/5}}
 .intro{text-align:center;padding:clamp(36px,5vw,64px) 0 clamp(10px,2vw,20px)}
@@ -464,6 +466,22 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#632854,#421838)}
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
+/* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
+.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center;background:#0b1120}
+.s-banner::before,.s-banner::after{display:none}
+.s-banner .slide-banner{display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
+.s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
+.s-banner .slide-banner:hover img{transform:scale(1.015)}
+.s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.s-banner .slide-in,.s-banner .slide-art{display:none}
+@media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
+@media(max-width:720px){
+  .s-banner{padding:clamp(24px,5vw,38px) 46px;background:radial-gradient(115% 85% at 79% 8%,rgba(41,121,255,.42),transparent 56%),linear-gradient(135deg,#16305c,#0a1226)}
+  .s-banner .slide-banner{display:none}
+  .s-banner .slide-in{display:block}
+  .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
+  .s-banner .slide-art img{width:100%;max-width:220px;max-height:108px;object-fit:contain;height:auto;border-radius:10px}
+}
 .s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
 .s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
 .s-pink{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#7a295b,#5b1d45)}
@@ -1272,14 +1290,17 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-navy" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+        <article class="slide s-banner" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+          <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
+            <img src="keyboard_promo.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1896" height="829" loading="lazy" decoding="async">
+          </button>
           <div class="slide-in">
             <span class="badge">₪49</span>
-            <h3>סט מקלדת ועכבר לתלמידים</h3>
-            <p>חוזרים לבית ספר: סט מקלדת ועכבר ב-49 ₪ בקנייה מעל 100 ₪. חיבור USB פשוט, בלי דרייבר, ונוח ללימודים ולמשרד.</p>
-            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על מבצע חוזרים לבית ספר, סט מקלדת ועכבר"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+            <h3>מקלדת + עכבר</h3>
+            <p>ב-49 ₪ בקנייה מעל 100 ₪ בחנות. חיבור USB, שימוש נוח ואיכות אמינה, ללימודים, לבית ולמשרד.</p>
+            <button type="button" class="btn btn-wa" data-pg-coupon="kb">לקבלת קוד קופון</button>
           </div>
-          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.7 5.4h18.6c1.2 0 2.2 1 2.2 2.2v8.8c0 1.2-1 2.2-2.2 2.2H2.7c-1.2 0-2.2-1-2.2-2.2V7.6c0-1.2 1-2.2 2.2-2.2Zm1.6 3v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2ZM4.3 11.9v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2Zm3.4 0v2h2v-2h-2ZM6.6 15.4v2h10.8v-2H6.6Z"/></svg></div>
+          <div class="slide-art"><img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async"></div>
         </article>
 
       </div>
@@ -1935,10 +1956,10 @@ document.addEventListener('DOMContentLoaded',function(){
       <button class="pg-cpn-x" id="pgCpnX" type="button" aria-label="סגירה"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <picture><source srcset="logo-mark.webp" type="image/webp"><img class="pg-cpn-logo" src="logo-mark.png" alt="פון גת" width="295" height="112"></picture>
       <span class="pg-cpn-excl"><span class="st">★</span> בלעדי למשתמשי האתר</span>
-      <img class="pg-cpn-dev" src="iphone-protector.png" alt="" width="664" height="1428" decoding="async">
+      <img class="pg-cpn-dev" id="pgCpnDev" src="iphone-protector.png" alt="" width="664" height="1428" decoding="async">
       <h3 id="pgCpnTitle">מגן מסך + הדבקה מקצועית</h3>
-      <p class="desc">מגן זכוכית איכותי + הדבקה מקצועית במקום</p>
-      <span class="pg-cpn-price">רק ב־ <b>9<span class="cur">₪</span></b></span>
+      <p class="desc" id="pgCpnDesc">מגן זכוכית איכותי + הדבקה מקצועית במקום</p>
+      <span class="pg-cpn-price" id="pgCpnPrice">רק ב־ <b>9<span class="cur">₪</span></b></span>
     </div>
     <div class="pg-cpn-bd">
       <p class="pg-cpn-codeLab">קוד הקופון שלך</p>
@@ -1951,7 +1972,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="pg-cpn-qr" id="pgCpnQrBox" aria-hidden="true"><canvas id="pgCpnQr"></canvas></div>
       <p class="pg-cpn-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 1.6 21h20.8L12 3.2Zm0 5.3c.6 0 1 .4 1 1v4.5a1 1 0 0 1-2 0V9.5c0-.6.4-1 1-1Zm0 8.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg> לשימוש חד פעמי בלבד</p>
       <a class="pg-cpn-go" id="pgCpnGo" href="#" target="_blank" rel="noopener"><img src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">מימוש עכשיו ב-WhatsApp</a>
-      <p class="pg-cpn-fine">הציגו את הקוד בחנות או סרקו · בכפוף לתקנון המבצע · למעט מכשירים מעוגלים.</p>
+      <p class="pg-cpn-fine" id="pgCpnFine">הציגו את הקוד בחנות או סרקו · בכפוף לתקנון המבצע · למעט מכשירים מעוגלים.</p>
     </div>
   </div>
 </div>
@@ -2020,22 +2041,48 @@ document.addEventListener('DOMContentLoaded',function(){
       xBtn=document.getElementById('pgCpnX'),
       track=document.getElementById('pgTrack'),
       copiedEl=document.getElementById('pgCpnCopied'),
+      titleEl=document.getElementById('pgCpnTitle'),
+      descEl=document.getElementById('pgCpnDesc'),
+      priceEl=document.getElementById('pgCpnPrice'),
+      fineEl=document.getElementById('pgCpnFine'),
+      devEl=document.getElementById('pgCpnDev'),
       screen=document.querySelector('.pg-screen');
-  var lastFocus=null,built=false;
+  var lastFocus=null,builtKey=null;
+  /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
+  var OFFERS={
+    screen:{title:'מגן מסך + הדבקה מקצועית',desc:'מגן זכוכית איכותי + הדבקה מקצועית במקום',price:'9',
+      img:'iphone-protector.png',imgW:664,imgH:1428,key:'pg_screen9_coupon',prefix:'PG9-',
+      wa:'היי! אני רוצה לממש את מבצע מגן מסך + הדבקה מקצועית ב-9₪. קוד הקופון שלי: ',
+      fine:'הציגו את הקוד בחנות או סרקו · בכפוף לתקנון המבצע · למעט מכשירים מעוגלים.'},
+    kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
+      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,key:'pg_kb49_coupon',prefix:'PG49-',
+      wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
+      fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'}
+  };
   var FOCUSABLE='a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])';
 
-  function makeCode(){var k='pg_screen9_coupon';try{var e=localStorage.getItem(k);if(e)return e;}catch(_){}
+  function makeCode(o){try{var e=localStorage.getItem(o.key);if(e)return e;}catch(_){}
     var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<6;i++)s+=chars.charAt(Math.floor(Math.random()*chars.length));
-    var code='PG9-'+s;try{localStorage.setItem(k,code);}catch(_){}return code;}
+    var code=o.prefix+s;try{localStorage.setItem(o.key,code);}catch(_){}return code;}
 
-  function build(){if(built)return;built=true;var code=makeCode();codeEl.textContent=code;
-    goBtn.href=WA+'?text='+encodeURIComponent('היי! אני רוצה לממש את מבצע מגן מסך + הדבקה מקצועית ב-9₪. קוד הקופון שלי: '+code+' (לשימוש חד פעמי).');
+  function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
+    if(titleEl)titleEl.textContent=o.title;
+    if(descEl)descEl.textContent=o.desc;
+    if(priceEl)priceEl.innerHTML='רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>';
+    if(fineEl)fineEl.textContent=o.fine;
+    if(devEl){devEl.src=o.img;devEl.setAttribute('width',o.imgW);devEl.setAttribute('height',o.imgH);devEl.classList.toggle('is-photo',!!o.photo);}
+    var code=makeCode(o);codeEl.textContent=code;
+    goBtn.href=WA+'?text='+encodeURIComponent(o.wa+code+' (לשימוש חד פעמי).');
+    if(qrBox)qrBox.style.display='';
     try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:'#241033',light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){qrBox.style.display='none';}}
 
   function pauseFeed(p){if(screen)screen.classList.toggle('paused',p);}
   function onKey(e){if(e.key==='Escape'){e.preventDefault();close();return;}
     if(e.key==='Tab'){var f=[].slice.call(dialog.querySelectorAll(FOCUSABLE)).filter(function(el){return el.offsetParent!==null;});if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
-  function open(trigger){lastFocus=trigger||document.activeElement;build();ov.classList.add('open');document.documentElement.style.overflow='hidden';pauseFeed(true);(xBtn||dialog).focus();document.addEventListener('keydown',onKey,true);}
+  function open(trigger){lastFocus=trigger||document.activeElement;
+    var k=(trigger&&trigger.getAttribute)?(trigger.getAttribute('data-pg-coupon')||'screen'):'screen';
+    if(!OFFERS[k])k='screen';
+    build(k);ov.classList.add('open');document.documentElement.style.overflow='hidden';pauseFeed(true);(xBtn||dialog).focus();document.addEventListener('keydown',onKey,true);}
   function close(){ov.classList.remove('open');document.documentElement.style.overflow='';pauseFeed(false);document.removeEventListener('keydown',onKey,true);if(lastFocus&&lastFocus.focus){try{lastFocus.focus();}catch(_){}}}
 
   /* open the offer popup from ANY [data-pg-coupon] trigger, anywhere on the page.
