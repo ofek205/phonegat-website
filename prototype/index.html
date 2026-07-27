@@ -479,6 +479,23 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 @media(max-width:720px){.carousel{padding-inline:14px}.car-btn{width:44px;height:44px;font-size:1.3rem}.slide{grid-template-columns:1fr;text-align:center;gap:.3rem}.slide .badge{margin-inline:auto}.slide p{margin-inline:auto}.slide-art{display:none}}
 @media(prefers-reduced-motion:reduce){.car-track{transition:none}.slide-art>svg{animation:none}}
 
+/* ===== carriers slide — floating SIM cards ===== */
+.s-carriers{background:radial-gradient(110% 85% at 76% 8%,rgba(96,200,230,.20),transparent 52%),radial-gradient(92% 92% at 20% 110%,rgba(18,86,126,.55),transparent 60%),linear-gradient(140deg,#0e5670,#0a3b52 46%,#062636)}
+.pg-sim-stage{position:relative;width:100%;height:100%;min-height:270px}
+.pg-sim-stage::before{content:"";position:absolute;left:50%;bottom:3%;transform:translateX(-50%);width:82%;height:40%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(120,205,255,.6),rgba(120,205,255,0) 68%);filter:blur(8px);z-index:0;animation:simPodium 5.5s ease-in-out infinite}
+.pg-sim-stage::after{content:"";position:absolute;left:50%;bottom:6%;transform:translateX(-50%);width:66%;height:22%;border-radius:50%;border:1.5px solid rgba(130,215,255,.5);box-shadow:0 0 22px rgba(90,190,255,.45),inset 0 0 16px rgba(90,190,255,.3);z-index:0}
+.pg-sim{position:absolute;left:var(--x);top:var(--y);width:calc(114px*var(--s,1));aspect-ratio:1.12;transform:translate(-50%,-50%) rotate(var(--r,0deg));z-index:var(--z,1)}
+.pg-sim-face{position:absolute;inset:0;border-radius:15%;overflow:hidden;background:var(--sbg,#fff);box-shadow:0 20px 34px -14px rgba(2,14,34,.8),0 3px 8px rgba(2,14,34,.4),inset 0 0 0 1px rgba(255,255,255,.26);animation:simFloat var(--fd,7s) var(--fdl,0s) ease-in-out infinite;will-change:transform}
+.pg-sim-face::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.3),transparent 44%);pointer-events:none}
+.pg-sim-logo{position:absolute;top:6%;inset-inline-start:6%;width:88%;height:58%;object-fit:contain;display:block}
+.pg-sim-chip{position:absolute;bottom:13%;inset-inline-start:50%;transform:translateX(-50%);width:24%;aspect-ratio:1.32;border-radius:16%/20%;background:linear-gradient(135deg,#fbeea8,#e1bf5a 44%,#b98a34);box-shadow:inset 0 0 0 1px rgba(120,82,20,.45),0 1px 2px rgba(0,0,0,.22)}
+.pg-sim-chip::after{content:"";position:absolute;inset:24% 28%;background:linear-gradient(rgba(120,82,20,.55) 0 0) center/100% 1px no-repeat,linear-gradient(rgba(120,82,20,.55) 0 0) center/1px 100% no-repeat}
+@keyframes simFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--mx,6px),calc(var(--my,12px)*-1))}}
+@keyframes simPodium{0%,100%{opacity:.5;transform:translateX(-50%) scaleX(1)}50%{opacity:.78;transform:translateX(-50%) scaleX(1.09)}}
+.slide[aria-hidden="true"] .pg-sim-face,.slide[aria-hidden="true"] .pg-sim-stage::before{animation-play-state:paused}
+@media(max-width:720px){.s-carriers .slide-art{display:flex;min-height:240px;margin-top:.6rem}.pg-sim-stage{min-height:230px;max-width:320px;margin-inline:auto}.pg-sim{width:calc(98px*var(--s,1))}}
+@media(prefers-reduced-motion:reduce){.pg-sim-face,.pg-sim-stage::before{animation:none}}
+
 /* ===== why / welcome (white) ===== */
 /* «why choose us» — frosted-glass card inside the reviews section */
 .why-card{background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.16);border-radius:16px;max-width:720px;margin:0 auto clamp(2rem,4vw,3rem);padding:clamp(1.5rem,3.5vw,2.4rem) clamp(1.3rem,3.5vw,2.6rem);box-shadow:0 22px 50px -26px rgba(0,0,0,.55)}
@@ -817,16 +834,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="msg">תיקון, מכירת מכשירים ואבזור, הכול במקום אחד</span>
     <span class="msg">הטבה לאתר: מגן מסך + הדבקה ב-9 ₪, והעברת נתונים ללא עלות</span>
     <button class="next" id="annNext" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-  </div>
-</div>
-
-<!-- info bar -->
-<div class="infobar">
-  <div class="wrap inner">
-    <span class="promo">פון גת. כל עולם הסלולר במקום אחד. חייגו <bdo dir="ltr">052-5893366</bdo></span>
-    <nav class="links" aria-label="קישורים">
-      <a href="#main">דף הבית</a><span>|</span><a href="#team">מי אנחנו</a><span>|</span><a href="#contact">צרו קשר</a>
-    </nav>
   </div>
 </div>
 
@@ -1238,14 +1245,23 @@ document.addEventListener('DOMContentLoaded',function(){
           <div class="slide-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v14M8 3 4 7M8 3l4 4M16 21V7M16 21l4-4M16 21l-4-4"/></svg></div>
         </article>
 
-        <article class="slide s-dteal" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
+        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
           <div class="slide-in">
-            <span class="badge">סלקום</span>
-            <h3>ניוד, סים ומסלולים</h3>
-            <p>הסניף הראשון והיחיד של סלקום בקרית גת: פתיחת קו חדש, ניוד, החלפת סים, וגם שירות לכל החברות.</p>
-            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על מסלולים או ניוד קו"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+            <span class="badge">כל החברות</span>
+            <h3>כל חברות הסלולר, אנחנו מסדרים הכל</h3>
+            <p>פתיחת קו, ניוד מספר, החלפת סים או מעבר מסלול, לכל חברה בישראל. משווק מורשה סלקום, ומסדרים לכם את הכל פנים אל פנים, בלי מוקדים.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על ניוד קו או פתיחת מסלול"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
           </div>
-          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h7l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 10a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H9Z"/></svg></div>
+          <div class="slide-art">
+            <div class="pg-sim-stage" aria-hidden="true">
+              <span class="pg-sim" style="--x:69%;--y:30%;--z:5;--s:1;--fd:6.6s;--fdl:.2s;--mx:6px;--my:11px;--r:5deg;--sbg:#fff"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/pelephone.png" alt="פלאפון" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:31%;--y:32%;--z:4;--s:.9;--fd:7.3s;--fdl:.6s;--mx:-7px;--my:10px;--r:-9deg;--sbg:#fff"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/cellcom.png" alt="סלקום" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:50%;--y:52%;--z:6;--s:.94;--fd:6.9s;--fdl:0s;--mx:5px;--my:12px;--r:-2deg;--sbg:#2dd5c4"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/partner.png" alt="פרטנר" width="173" height="115" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:22%;--y:63%;--z:3;--s:.8;--fd:8s;--fdl:.9s;--mx:-8px;--my:9px;--r:-11deg;--sbg:#ff40b3"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/ramilevy.png" alt="רמי לוי תקשורת" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:49%;--y:77%;--z:7;--s:.88;--fd:7.6s;--fdl:.4s;--mx:6px;--my:13px;--r:3deg;--sbg:#000"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/hot.png" alt="HOT mobile" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:75%;--y:64%;--z:3;--s:.8;--fd:8.4s;--fdl:1.1s;--mx:7px;--my:10px;--r:9deg;--sbg:#fff"><span class="pg-sim-face"><img class="pg-sim-logo" src="logos/golan.png" alt="גולן טלקום" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+            </div>
+          </div>
         </article>
 
         <article class="slide s-pink" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
@@ -1602,7 +1618,7 @@ document.addEventListener('DOMContentLoaded',function(){
     {id:'gaming',c:1,k:['פלייסטיישן','סוני','גיימינג','קונסולה','מחשב','מחשבים','לפטופ','בקר'],a:'בפלייסטיישן אנחנו מוכרים ומתקנים קונסולות סוני ומציעים אבזור גיימינג. במחשבים אנחנו מסייעים בגיבוי והעברת נתונים (לא תיקוני חומרה).',cta:['wa','tel'],sug:['callback']},
     {id:'accessories',c:1,k:['אבזור','אביזר','כיסוי','כיסויים','מטען','כבל','אוזניות','ציוד לרכב','מטען לרכב','מעמד'],a:'יש לנו מבחר אבזור: כיסויים, מגני מסך, מטענים, כבלים, אוזניות וציוד לרכב. ספרו לנו לאיזה דגם ונכין לכם.',cta:['wa'],sug:['offer','buy']},
     {id:'payments',c:1,k:['תשלומים','אשראי','ביט','פריסה','פריסת','קרדיט'],a:'אפשר לרכוש מכשיר חדש בתשלומים. נשמח לפרט את האפשרויות המדויקות לפי הדגם, דברו איתנו.',cta:['wa','tel'],sug:['buy','callback']},
-    {id:'tradein',c:1,k:['טרייד','טרייד אין','מכשיר ישן','זיכוי','להחליף מכשיר'],a:'אפשר לקבל זיכוי על המכשיר הישן בקנייה של חדש, וגם מעבירים את כל הנתונים. הביאו את המכשיר או שלחו לנו פרטים.',cta:['wa','callback'],sug:['buy','data']},
+    {id:'tradein',c:1,k:['טרייד','טרייד אין','מכשיר ישן','זיכוי','להחליף מכשיר'],a:'אנחנו לא נותנים זיכוי על מכשיר ישן, אבל נשמח לעזור לכם לבחור מכשיר חדש בתשלומים נוחים, כולל העברת כל הנתונים מהמכשיר הישן, גם אם הוא שבור.',cta:['wa','callback'],sug:['buy','payments','data']},
     {id:'business',c:1,k:['עסק','עסקי','חשבונית','כמות','עוסק','חברה'],a:'אנחנו משרתים גם עסקים: מכשירים, קווים ואבזור בכמות, עם חשבונית. ספרו לנו על הצורך ונחזור עם הצעה.',cta:['callback','wa'],sug:['callback']},
     {id:'price',c:1,k:['כמה עולה','מחיר','מחירון','עולה','עלות','כמה זה','כמה יעלה'],a:'המחיר משתנה לפי המכשיר והשירות. נשמח לתת הצעה מהירה ומדויקת, בחרו נושא או השאירו פרטים:',cta:contactCta,sug:['repair','buy','callback']},
     {id:'human',c:1,k:['נציג','לדבר','בנאדם','אדם','ברוך','סיגל','להתקשר','מוקד','טלפון','לצלצל'],a:'אצלנו לא מדברים עם מוקד, מדברים ישירות עם ברוך וסיגל.',cta:contactCta,sug:['callback']},
@@ -1699,7 +1715,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function repIssue(iss){ctx.issue=iss;flow=null;ctx.topic='תיקון '+iss+' '+ctx.device;track('chat_repair',{device:ctx.device,issue:iss});var wt='היי, הגעתי דרך האתר. אשמח להצעת מחיר לתיקון: '+iss+' ב'+ctx.device+'.';botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. מעבדה וותיקה מעל 30 שנה, עם אחריות. המחיר תלוי בדגם המדויק, אז נשמח לתת הצעה מהירה ומדויקת.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}],['שאלה אחרת',function(){mainMenu();}]]});}
 
   function startBuy(){flow={type:'buy',step:'what'};ctx.topic='buy';track('chat_flow',{flow:'buy'});botReply('נשמח לעזור לבחור. מה מחפשים?',{sug:[['אייפון',function(){buyAns('אייפון');}],['סמסונג',function(){buyAns('סמסונג');}],['רוצה המלצה',function(){buyAns('');}],['אבזור',function(){flow=null;runIntent('accessories');}]]});}
-  function buyAns(dev){flow=null;ctx.topic=dev?('קניית '+dev):'קניית מכשיר';track('chat_buy',{device:dev||'המלצה'});var wt='היי, הגעתי דרך האתר. '+(dev?('מתעניין/ת בקניית '+dev+'.'):'רוצה המלצה על מכשיר חדש.');botReply((dev?('יש לנו '+dev+' ביבוא רשמי ומקביל. '):'נשמח להמליץ לפי הצרכים והתקציב שלכם. ')+'הכול בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['תשלומים',function(){runIntent('payments');}],['טרייד אין',function(){runIntent('tradein');}],['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}]]});}
+  function buyAns(dev){flow=null;ctx.topic=dev?('קניית '+dev):'קניית מכשיר';track('chat_buy',{device:dev||'המלצה'});var wt='היי, הגעתי דרך האתר. '+(dev?('מתעניין/ת בקניית '+dev+'.'):'רוצה המלצה על מכשיר חדש.');botReply((dev?('יש לנו '+dev+' ביבוא רשמי ומקביל. '):'נשמח להמליץ לפי הצרכים והתקציב שלכם. ')+'הכול בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}],['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}]]});}
 
   function startLead(topic){ctx.topic=topic||ctx.topic||'כללי';track('chat_lead_start',{topic:ctx.topic});if(ctx.name){flow={type:'lead',step:'phone'};botReply('מעולה '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');}else{flow={type:'lead',step:'name'};botReply('בשמחה נחזור אליכם. איך קוראים לכם?');}}
   function saveLead(name,phone,topic){
