@@ -19,7 +19,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <title>פון גת | תיקון וקניית סלולר בקרית גת וכרמי גת · מעבדה וותיקה</title>
 <meta name="description" content="מעבדת הסלולר הוותיקה בקרית גת וכרמי גת (30+ שנה). תיקון מסך וסוללה לכל המכשירים, קניית מכשירים בתשלומים, סלקום וכל החברות. חייגו 052-5893366.">
 <meta name="theme-color" content="#0b0b0b">
-<!-- TODO: להחליף www.phonegat.co.il לדומיין הסופי כשנרכש (canonical + og:url + og:image + schema url/@id) -->
 <link rel="canonical" href="https://www.phonegat.co.il/">
 <link rel="icon" type="image/jpeg" href="logo.jpg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -297,6 +296,10 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-grc-tx{color:#3c4043;font-size:.76rem;line-height:1.55;margin-top:7px;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 @media(prefers-reduced-motion:reduce){.pg-track,.pg-thumb{animation:none}}
 html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
+/* Screen-reader-only content: available to assistive tech, invisible on screen.
+   Used to give blind visitors the review text that the decorative phone mock-up
+   hides from them (the animated feed is aria-hidden — see .pg-phone). */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* in-feed sponsored ad card (injected after the 3rd review, then every 8th — in both Google & easy feeds) */
 .pg-ad{position:relative;overflow:hidden;padding:13px 15px 15px;border-bottom:1px solid var(--pg-line);color:#f4ecfb;background:radial-gradient(58% 52% at 24% 4%,rgba(210,150,240,.48),transparent 60%),linear-gradient(157deg,#3a1056 0%,#5a1c82 48%,#7d27a9 100%)}
 .pg-ad-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
@@ -983,7 +986,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- LIVE REVIEWS PHONE (easy). Real reviews sourced from easy; attribution + non-affiliation notice below.
          Later: add a second .pg-phone in .pg-phones (iPhone 17 / Google), tilted the opposite way. -->
     <div class="pg-showcase">
-      <div class="pg-phones" role="img" aria-label="מכשיר המציג ביקורות אמיתיות של לקוחות פון גת, מתוך עמוד העסק ב-Google וב-easy">
+      <div class="pg-phones" role="img" aria-label="הדמיית מכשיר עם ביקורות לקוחות מתוך Google ו-easy. דירוג 4.9 מתוך 5 ב-Google ו-9.5 מתוך 10 ב-easy. נוסח הביקורות זמין בקטע «מאות לקוחות ממליצים» בהמשך העמוד.">
         <div class="pg-phone" aria-hidden="true">
           <img class="pg-frame" src="iphone-frame.png" alt="" width="663" height="1403" decoding="async">
           <div class="pg-screen">
@@ -1150,6 +1153,27 @@ document.addEventListener('DOMContentLoaded',function(){
   /* refresh button: restart the reviews scroll from the very top */
   var rf=document.getElementById('pgRefresh'),th=document.querySelector('.pg-thumb');
   if(rf){rf.addEventListener('click',function(e){e.stopPropagation();/* don't let it bubble to the screen's tap-to-pause */if(scr)scr.classList.remove('paused');[t,th].forEach(function(el){if(el)el.style.animation='none';});void t.offsetWidth;/* restart from the very top WITH the initial hold, exactly like first load */[t,th].forEach(function(el){if(el){el.style.animation='';el.style.animationDelay='';}});});}
+
+  /* ---- Accessible reviews for screen readers (IS 5568 / WCAG 1.1.1) ----
+     The hero phone is a decorative mock-up: it's aria-hidden, so a blind visitor would
+     otherwise get none of the 54 real reviews a sighted visitor can read. Reading the whole
+     looping feed aloud would be unusable, so we expose a representative sample as plain text
+     inside the reviews section — same source arrays, so the text never drifts out of sync. */
+  function fillSR(){
+    var box=document.getElementById('revSR');if(!box)return;
+    var SAMPLE_G=5, SAMPLE_E=5;
+    var items='';
+    for(var a=0;a<Math.min(SAMPLE_G,G.length);a++)
+      items+='<li>'+esc(G[a].n)+', ב-Google, חמישה כוכבים, '+esc(G[a].d)+': '+esc(G[a].t)+'</li>';
+    for(var b=0;b<Math.min(SAMPLE_E,R.length);b++)
+      items+='<li>'+esc(R[b][0])+', ב-easy, חמישה כוכבים, '+esc(R[b][1])+': '+esc(R[b][2])+'</li>';
+    box.innerHTML='<h3>מבחר ביקורות לקוחות</h3>'+
+      '<p>דירוג 4.9 מתוך 5 ב-Google על פי 537 ביקורות, ו-9.5 מתוך 10 ב-easy על פי 835 ביקורות. '+
+      'להלן מבחר של '+(Math.min(SAMPLE_G,G.length)+Math.min(SAMPLE_E,R.length))+' ביקורות אמיתיות. '+
+      'לרשימה המלאה אפשר לעבור לעמודי הביקורות ב-Google וב-easy, המקושרים בהמשך העמוד.</p>'+
+      '<ul>'+items+'</ul>';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fillSR);else fillSR();
 })();
 </script>
 
@@ -1208,6 +1232,10 @@ document.addEventListener('DOMContentLoaded',function(){
     </div>
     <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> · מעל 1,500 ביקורות בגוגל, easy ועוד</span>
     <h2 id="rev-h">מאות לקוחות ממליצים</h2>
+    <!-- Blind visitors can't reach the reviews inside the hero phone mock-up (it's aria-hidden,
+         and reading 98 looping cards aloud would be unusable). This holds the same real reviews
+         as plain text for screen readers — filled by the reviews script from the same data. -->
+    <div class="sr-only" id="revSR"></div>
     <div class="ratings">
       <a class="chip" href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener" aria-label="ביקורות פון גת בגוגל, דירוג 4.9">
         <svg class="lg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.23c0-.72-.06-1.4-.18-2.06H12v3.9h5.9a5.05 5.05 0 0 1-2.19 3.31v2.75h3.54c2.07-1.9 3.26-4.72 3.26-8.06z"/><path fill="#34A853" d="M12 23c2.95 0 5.43-.98 7.24-2.65l-3.54-2.75c-.98.66-2.24 1.05-3.7 1.05-2.85 0-5.26-1.92-6.12-4.5H2.23v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.88 14.15a6.6 6.6 0 0 1 0-4.3V7H2.23a11 11 0 0 0 0 10l3.65-2.85z"/><path fill="#EA4335" d="M12 5.35c1.6 0 3.05.55 4.19 1.64l3.14-3.14A11 11 0 0 0 12 1 11 11 0 0 0 2.23 7l3.65 2.85C6.74 7.27 9.15 5.35 12 5.35z"/></svg>
@@ -1552,7 +1580,9 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="wrap fbox">
     <h2 id="c-h">השאירו פרטים ונחזור אליכם</h2>
     <p class="sub">או פשוט חייגו / שלחו WhatsApp, וברוך וסיגל כאן בשבילכם</p>
-    <form class="fgrid" id="contactForm">
+    <!-- novalidate: the browser's own validation bubbles announce in the BROWSER's language,
+         not necessarily Hebrew. We validate in JS instead so every message is Hebrew (IS 5568). -->
+    <form class="fgrid" id="contactForm" novalidate>
       <input type="hidden" name="access_key" value="99c6d9a8-827b-42d7-99f1-22e06a8643fe">
       <input type="hidden" name="subject" value="פנייה חדשה מאתר פון גת">
       <input type="hidden" name="from_name" value="אתר פון גת">
@@ -2018,22 +2048,36 @@ document.addEventListener('DOMContentLoaded',function(){
   var form=document.getElementById('contactForm');if(!form)return;
   var note=document.getElementById('formNote'), btn=form.querySelector('button[type=submit]');
   var keyEl=form.querySelector('input[name=access_key]'), KEY=keyEl?keyEl.value:'';
+  /* Errors are announced assertively (role=alert); status/success stays polite (role=status). */
+  function fail(el,msg){
+    note.classList.remove('sent');note.setAttribute('role','alert');note.textContent=msg;
+    if(el){el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby','formNote');el.focus();}
+  }
+  function ok(el){if(el){el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');}}
+  function say(msg){note.setAttribute('role','status');note.textContent=msg;}
+
   form.addEventListener('submit',function(e){
     e.preventDefault();
+    /* We set novalidate on the form, so every required field is checked here — in Hebrew. */
+    var nmEl=form.querySelector('#name'), tpEl=form.querySelector('#topic'), csEl=form.querySelector('input[name=consent]');
     var phEl=form.querySelector('#phone'), phd=((phEl&&phEl.value)||'').replace(/\D/g,'');
-    if(!/^0\d{8,9}$/.test(phd)){note.classList.remove('sent');note.textContent='מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.';if(phEl){phEl.setAttribute('aria-invalid','true');phEl.setAttribute('aria-describedby','formNote');phEl.focus();}return;}
-    if(phEl)phEl.removeAttribute('aria-invalid');
-    if(!KEY||KEY.indexOf('YOUR_')===0){note.textContent='הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.';return;}
-    btn.disabled=true;note.textContent='שולח...';
+    [nmEl,phEl,tpEl].forEach(ok);
+    if(!nmEl||!nmEl.value.trim())return fail(nmEl,'נא למלא שם מלא.');
+    if(!/^0\d{8,9}$/.test(phd))return fail(phEl,'מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.');
+    if(!tpEl||!tpEl.value)return fail(tpEl,'נא לבחור נושא לפנייה.');
+    if(csEl&&!csEl.checked)return fail(csEl,'כדי לשלוח את הפנייה יש לאשר את מדיניות הפרטיות.');
+    ok(phEl);
+    if(!KEY||KEY.indexOf('YOUR_')===0){say('הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.');return;}
+    btn.disabled=true;say('שולח...');
     var _fd=new FormData(form),_o={};_fd.forEach(function(v,k){_o[k]=v;});
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(_o)})
       .then(function(r){return r.json();})
       .then(function(j){
-        if(j.success){form.reset();note.classList.add('sent');note.innerHTML='<b>תודה! הפנייה נשלחה.</b> ברוך וסיגל יחזרו אליכם בהקדם.<br>בינתיים אפשר גם: <a href="https://wa.me/97286812050">WhatsApp</a> · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a> · <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener">ניווט</a><br>שעות: א׳–ה׳ 9:00–18:30, ו׳ 9:00–13:00';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
-        else{note.textContent='משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.';}
+        if(j.success){form.reset();note.classList.add('sent');note.setAttribute('role','status');note.innerHTML='<b>תודה! הפנייה נשלחה.</b> ברוך וסיגל יחזרו אליכם בהקדם.<br>בינתיים אפשר גם: <a href="https://wa.me/97286812050">WhatsApp</a> · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a> · <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener">ניווט</a><br>שעות: א׳–ה׳ 9:00–18:30, ו׳ 9:00–13:00';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
+        else{fail(null,'משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.');}
         btn.disabled=false;
       })
-      .catch(function(){note.textContent='משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.';btn.disabled=false;});
+      .catch(function(){fail(null,'משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.');btn.disabled=false;});
   });
 })();
 </script>
