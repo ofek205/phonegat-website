@@ -942,7 +942,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- header -->
-<header class="site">
+<header class="site" role="banner">
   <div class="wrap hrow">
     <a class="logo" href="#main" aria-label="פון גת, דף הבית"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
@@ -956,7 +956,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-<main id="main" tabindex="-1">
+<main id="main" role="main" tabindex="-1">
 
 <!-- HERO -->
 <section class="hero" aria-labelledby="hero-h">
@@ -1587,11 +1587,11 @@ document.addEventListener('DOMContentLoaded',function(){
       <input type="hidden" name="subject" value="פנייה חדשה מאתר פון גת">
       <input type="hidden" name="from_name" value="אתר פון גת">
       <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
-      <div class="field"><label for="name">שם מלא</label><input id="name" name="שם מלא" type="text" autocomplete="name" placeholder="שם מלא" required></div>
-      <div class="field"><label for="phone">טלפון</label><input id="phone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-XXXXXXX" required></div>
-      <div class="field"><label for="topic">נושא</label><select id="topic" name="נושא" required><option value="">בחרו נושא</option><option>קניית מכשיר</option><option>תיקון</option><option>קו / סלקום</option><option>אבזור</option><option>אחר</option></select></div>
+      <div class="field"><label for="name">שם מלא</label><input id="name" name="שם מלא" type="text" autocomplete="name" placeholder="שם מלא" required aria-required="true"></div>
+      <div class="field"><label for="phone">טלפון</label><input id="phone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-XXXXXXX" required aria-required="true"></div>
+      <div class="field"><label for="topic">נושא</label><select id="topic" name="נושא" required aria-required="true"><option value="">בחרו נושא</option><option>קניית מכשיר</option><option>תיקון</option><option>קו / סלקום</option><option>אבזור</option><option>אחר</option></select></div>
       <div class="field"><label for="msg">הודעה</label><input id="msg" name="הודעה" type="text" placeholder="ספרו לנו במה נוכל לעזור"></div>
-      <div class="field full consent"><label><input type="checkbox" name="consent" value="כן" required> קראתי ואני מסכים/ה ל<a href="privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a></label></div>
+      <div class="field full consent"><label><input type="checkbox" name="consent" value="כן" required aria-required="true"> קראתי ואני מסכים/ה ל<a href="privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a></label></div>
       <div class="field full"><button class="btn btn-teal" type="submit">שלחו פרטים</button><p class="fnote" id="formNote" role="status" aria-live="polite">לא נשלח ספאם. הפנייה מגיעה ישירות לברוך וסיגל.</p></div>
     </form>
   </div>
@@ -1599,7 +1599,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 </main>
 
-<footer class="site">
+<footer class="site" role="contentinfo">
   <div class="wrap cols">
     <div><a class="flogo" href="#main"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת" width="295" height="112" loading="lazy"></picture></a><p style="margin-top:1rem;max-width:34ch">מעבדת הסלולר הוותיקה בקרית גת. כל עולם הסלולר במקום אחד, מכל הלב.</p></div>
     <div><h4>יצירת קשר</h4><ul class="fl"><li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li><li>רחבת תשרי 2, קרית גת</li></ul></div>
