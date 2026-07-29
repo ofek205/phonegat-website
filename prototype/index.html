@@ -604,19 +604,29 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    The artwork is a baked image, so the flow lane is expressed as a % box over it: the old phone's
    screen ends at ~20% of the image width, the new one starts at ~33%, and the light bridge between
    them sits between 42% and 68% of the height. Percentages keep it aligned at any banner width. */
-/* above the anchors: a travelling icon half-hidden behind a resting one reads as a glitch, while
-   passing in front of it reads as exactly what it is */
-.bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:4}
+/* Behind the anchors, not in front. The anchors sit across the whole gap, so a traveller crossing
+   over them lands square on top of one and reads as a collision; slipping behind reads as depth. */
+.bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:2}
 /* ---- anchors: one card per printed icon, sized 5.2% of the banner against the printed 3.9% so a
    gentle drift can never uncover what is underneath. Positions come from measuring the artwork. ---- */
 .bn-tr .tr-anchors{position:absolute;inset:0;pointer-events:none;z-index:3}
-.bn-tr .tr-anchors i,.bn-tr .tr-flow i{border-radius:26%;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(150deg,#fff,#e8f2fc);
-  box-shadow:0 4px 12px rgba(18,66,124,.26),0 0 0 1px rgba(255,255,255,.85)}
+/* The cards have to sit IN the photograph, not on it. Sampling the artwork showed its own cards
+   peak at near-white with a cyan cast and their shadows are cool (#69bae8 range), not navy — a flat
+   white tile with a navy shadow reads as a sticker pasted over the render. So: a cyan-leaning
+   gradient face, a glass highlight along the top edge, a cool cast shadow, and a faint outer glow
+   that lets the light bridge spill onto the card. */
+.bn-tr .tr-anchors i,.bn-tr .tr-flow i{border-radius:27%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,#fff 0%,#f6fcff 42%,#dff0fc 100%);
+  box-shadow:
+    0 10px 20px -6px rgba(30,105,160,.30),
+    0 2px 5px -1px rgba(30,105,160,.20),
+    0 0 16px rgba(125,205,245,.32),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(188,224,245,.55)}
 /* 6.6% against the printed 3.9%: each printed card also drops a soft shadow below it, and covering
    the card alone left that shadow showing as a second outline under the floating one. */
 .bn-tr .tr-anchors i{position:absolute;width:6.6%;aspect-ratio:1}
-.bn-tr .tr-anchors i svg{width:52%;height:52%;fill:#1f86d8}
+.bn-tr .tr-anchors i svg{width:53%;height:53%;fill:#1b87ce}
 .bn-tr .tr-anchors .a1{left:21.95%;top:39.9%;animation:trBob 5.4s ease-in-out infinite}
 .bn-tr .tr-anchors .a2{left:28.33%;top:45.4%;animation:trBob 6.2s ease-in-out infinite -2.1s}
 .bn-tr .tr-anchors .a3{left:21.67%;top:54.9%;animation:trBob 5.8s ease-in-out infinite -4.3s}
@@ -628,24 +638,22 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   30%    {transform:translate(3%,-12%)}
   65%    {transform:translate(-2.5%,9%)}
 }
-/* App-icon cards matching the three baked into the artwork: white tile, soft shadow, blue glyph.
-   Sized as a % of the lane so they scale with the banner and stay in proportion to the baked ones. */
-.bn-tr .tr-flow i{position:absolute;width:27%;aspect-ratio:1;border-radius:26%;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(150deg,#fff,#e8f2fc);
-  box-shadow:0 4px 12px rgba(18,66,124,.26),0 0 0 1px rgba(255,255,255,.85);
+/* Surface, radius and shadow all come from the shared rule above, so a traveller and a resting card
+   are the same object seen at different moments. Only size and motion differ here. */
+.bn-tr .tr-flow i{position:absolute;width:27%;aspect-ratio:1;
   /* backwards matters: during its animation-delay an icon would otherwise sit visible at its static
      position instead of waiting off-stage, so half of them appear parked on the artwork on load */
   animation:trFlow 4.6s linear infinite backwards}
-.bn-tr .tr-flow i svg{width:56%;height:56%;fill:#1f86d8}
+.bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce}
 /* Kept to the bright core of the bridge — the channel that runs between the contact icon above and
    the chat icon below — so packets read as travelling along it instead of landing on the artwork. */
 /* staggered evenly across the loop so one icon is always mid-flight, and offset vertically so they
    don't march along a single line */
-.bn-tr .tr-flow i:nth-child(1){top:4%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){top:62%;animation-delay:1.15s;width:24%}
-.bn-tr .tr-flow i:nth-child(3){top:30%;animation-delay:2.3s;width:25%}
-.bn-tr .tr-flow i:nth-child(4){top:72%;animation-delay:3.45s;width:23%}
+/* smaller than the anchors, which reinforces that they are further back */
+.bn-tr .tr-flow i:nth-child(1){top:2%;animation-delay:0s;width:20%}
+.bn-tr .tr-flow i:nth-child(2){top:74%;animation-delay:1.15s;width:19%}
+.bn-tr .tr-flow i:nth-child(3){top:26%;animation-delay:2.3s;width:21%}
+.bn-tr .tr-flow i:nth-child(4){top:84%;animation-delay:3.45s;width:18%}
 /* Emerges from the old phone, drifts up slightly as it crosses, is absorbed into the new one.
    The crossing takes only the first 42% of the cycle and the icon waits out the rest off-stage —
    with six of them staggered that keeps two or three in flight instead of all six at once. */
