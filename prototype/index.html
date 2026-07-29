@@ -116,6 +116,9 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hicons{display:flex;align-items:center;gap:.7rem;margin-inline-start:1rem}
 .hicons .ic{color:#eaeaea;font-size:1.15rem}
 .burger{display:none;background:none;border:none;color:#fff;font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
+/* laptop widths: nine nav items need ~9px more than the row has, so tighten the gap
+   just in this band instead of letting the header grow to two rows */
+@media(min-width:981px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
 @media(max-width:980px){
   nav.main{display:none;position:absolute;inset-inline:0;top:100%;background:var(--black);flex-direction:column;gap:0;padding:.5rem 0;border-top:1px solid #222}
   nav.main.open{display:flex}
@@ -628,15 +631,16 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    The height budget is free real estate: the carousel track is as tall as its tallest slide (the
    keyboard banner, 457px), so this slide's row can grow to 457-108px of padding = 349px without making
    any slide taller. 364x338 spends most of it and finally puts these phones on the same visual footing
-   as the 156px one on the screen-protector slide. */
-.bn-tr .tr-scene{position:relative;width:100%;max-width:364px;aspect-ratio:1/.93;margin-inline:auto}
+   as the 156px one on the screen-protector slide.
+   35% and not more, because the tilt below is a 2D rotate: a 127px phone 270px tall swings 18px past
+   each side of its own layout box, which is 36px taken out of the lane the icons fly down. At 38% the
+   lane closed to 48px and the cargo had nowhere to go. */
+.bn-tr .tr-scene{position:relative;width:100%;max-width:364px;aspect-ratio:1/.84;margin-inline:auto;--tilt:8deg}
 
-/* Placement only. Both phones are the same width; the 7% difference in top is the composition: the
-   source sits high, the destination low, so the cargo runs downhill with the reading direction instead
-   of straight across. The turn towards each other lives on .tr-dev as a rotateY. */
-.bn-tr .tr-ph{position:absolute;width:38%;transform:translateY(-50%)}
-.bn-tr .tr-src{right:0;top:46.5%;z-index:2;--ry:-12deg}
-.bn-tr .tr-dst{left:0; top:53.5%;z-index:3;--ry:12deg}
+/* placement only - tilt and float live on .tr-dev, so no keyframe ever restates this transform */
+.bn-tr .tr-ph{position:absolute;top:50%;width:35%;transform:translateY(-50%)}
+.bn-tr .tr-src{right:0;z-index:2}
+.bn-tr .tr-dst{left:0;z-index:3}
 
 /* the frame image stays IN FLOW, so this box IS the image box and every % below is valid.
    container-type turns that width into the unit the whole on-screen UI is written in (1em = 10% of the
@@ -681,6 +685,8 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    10% of the phone's width, so the layout is identical at 138px and at 100px. */
 .bn-tr .tr-ui{z-index:3;overflow:hidden;font-size:10cqw;
   display:flex;flex-direction:column;align-items:center}
+/* the glyph sprite. Collapsed to nothing rather than display:none, which stops <use> resolving. */
+.bn-tr .tr-sprite{position:absolute;width:0;height:0;overflow:hidden}
 /* status bar: at a 130px screen a clock would be 4px of unreadable text, so it is two abstract marks
    flanking the island - the shape of a status bar, which is all that registers at this size */
 /* 2.5% not the island's own 3.1%: .tr-punch measures against the frame box and this measures against
@@ -690,16 +696,61 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 .bn-tr .tr-stat i{display:block;height:.26em;border-radius:999px;background:rgba(255,255,255,.9)}
 .bn-tr .tr-stat i:first-child{width:1.05em}
 .bn-tr .tr-stat i:last-child{width:1.4em}
-/* 4x6 apps, the real iPhone home-screen grid. The grid inherits dir=rtl, which is correct: on a Hebrew
-   iPhone the apps really do fill from the right. */
+/* 4x5 apps, the real iPhone home-screen grid. The grid inherits dir=rtl, which is correct: on a Hebrew
+   iPhone the apps really do fill from the right. Five rows, not six: at a 265px screen a sixth row
+   collides with the dock once the name labels are counted in. */
 .bn-tr .tr-grid{display:grid;grid-template-columns:repeat(4,1fr);align-items:start;
-  gap:.52em .46em;width:83%;margin-top:2.9em}
-/* iOS 26 Liquid Glass rather than 24 saturated squares: translucent tinted glass is both what an
-   iPhone 17 looks like now AND far quieter next to six icons flying over the top of it. --c is an
-   r,g,b triplet so one gradient serves every app; the default is plain white glass. */
-.bn-tr .tr-grid i,.bn-tr .tr-dock i{--c:255,255,255;aspect-ratio:1;border-radius:24%;
-  background:linear-gradient(158deg,rgba(var(--c),.5),rgba(var(--c),.18) 58%,rgba(var(--c),.34));
-  box-shadow:inset 0 .5px 0 rgba(255,255,255,.55),0 .5px 1.5px rgba(0,0,0,.28)}
+  gap:.8em .46em;width:83%;margin-top:2.9em}
+/* Named apps, each its own colour and its own white shape. Translucent glass tiles were tried here
+   first and read as empty placeholders rather than as a phone in use, which is the whole point of
+   switching these screens on. At 21px the colour and the silhouette are what register - the same two
+   things that let anyone name an app on a real home screen from across a table - so every icon is one
+   gradient (--g) plus one glyph (--k, white unless the tile itself is light). */
+/* The two defaults sit on the CONTAINER, not on the tile. Custom properties inherit, and a value set
+   directly on an element always beats an inherited one - whereas on the tile they would need
+   .bn-tr .tr-grid i (0,2,1), which quietly outranks every .bn-tr .a-name rule (0,2,0) and paints all
+   twenty apps the same grey. */
+.bn-tr .tr-grid,.bn-tr .tr-dock{--g:linear-gradient(180deg,#7d8894,#5b6572);--k:#fff}
+.bn-tr .tr-grid i,.bn-tr .tr-dock i{
+  position:relative;aspect-ratio:1;border-radius:23%;background:var(--g);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.3),0 .5px 1.5px rgba(0,0,0,.38)}
+.bn-tr .tr-grid i svg,.bn-tr .tr-dock i svg{position:absolute;top:19%;left:19%;width:62%;height:62%;
+  fill:var(--k);color:var(--k)}
+/* The app names. Real text would be four unreadable pixels, so each is one soft bar - which is exactly
+   what a row of labels looks like from any distance. The widths cycle so they do not read as a stencil. */
+.bn-tr .tr-grid i::after{content:"";position:absolute;top:calc(100% + .17em);left:50%;
+  transform:translateX(-50%);width:var(--lb,72%);height:.15em;min-height:1.5px;border-radius:999px;
+  background:rgba(255,255,255,.6)}
+.bn-tr .tr-grid i:nth-child(3n){--lb:86%}
+.bn-tr .tr-grid i:nth-child(4n){--lb:62%}
+.bn-tr .tr-grid i:nth-child(5n){--lb:78%}
+
+/* One line per app. Colours follow iOS closely enough to be named at a glance; the light-tiled ones
+   (Photos, Calendar, Health, Files, Contacts) carry a coloured glyph instead of a white one. */
+.bn-tr .a-mail   {--g:linear-gradient(180deg,#4bb2ff,#0a72e8)}
+.bn-tr .a-camera {--g:linear-gradient(180deg,#6b7078,#33383f)}
+.bn-tr .a-photos {--g:linear-gradient(180deg,#fff,#eef1f5);--k:#f5455f}
+.bn-tr .a-maps   {--g:linear-gradient(180deg,#8fdf9a,#35a8d8)}
+.bn-tr .a-clock  {--g:linear-gradient(180deg,#2a2c31,#101114)}
+.bn-tr .a-weather{--g:linear-gradient(180deg,#48b0f7,#1667d4)}
+.bn-tr .a-cal    {--g:linear-gradient(180deg,#fff,#eceff3);--k:#ff3b30}
+.bn-tr .a-notes  {--g:linear-gradient(180deg,#ffe89a,#ffcf3f);--k:#8a6a12}
+.bn-tr .a-remind {--g:linear-gradient(180deg,#fff,#eceff3);--k:#3ea6ff}
+.bn-tr .a-store  {--g:linear-gradient(180deg,#4fb3ff,#0d64e0)}
+.bn-tr .a-wallet {--g:linear-gradient(180deg,#33363c,#0f1013)}
+.bn-tr .a-health {--g:linear-gradient(180deg,#fff,#eceff3);--k:#fb3b5c}
+.bn-tr .a-wa     {--g:linear-gradient(180deg,#61e07a,#12a64a)}
+.bn-tr .a-pod    {--g:linear-gradient(180deg,#c46bf0,#8b2ed8)}
+.bn-tr .a-files  {--g:linear-gradient(180deg,#fff,#eceff3);--k:#3d9ae8}
+.bn-tr .a-contact{--g:linear-gradient(180deg,#fff,#eceff3);--k:#8a9099}
+.bn-tr .a-calc   {--g:linear-gradient(180deg,#ffb23f,#f07c1a)}
+.bn-tr .a-set    {--g:linear-gradient(180deg,#a8aeb6,#71777f)}
+.bn-tr .a-voice  {--g:linear-gradient(180deg,#2a2c31,#101114);--k:#ff4b45}
+.bn-tr .a-books  {--g:linear-gradient(180deg,#ffb64f,#f2872a)}
+.bn-tr .a-phone  {--g:linear-gradient(180deg,#5ce06a,#12b23c)}
+.bn-tr .a-msg    {--g:linear-gradient(180deg,#6ff07f,#24c33e)}
+.bn-tr .a-safari {--g:linear-gradient(180deg,#fdfefe,#e6edf4);--k:#1a8fe3}
+.bn-tr .a-music  {--g:linear-gradient(180deg,#fc6b7f,#e02a55)}
 /* auto pushes the dots, dock and home bar to the foot of the screen whatever the grid does above */
 .bn-tr .tr-dots{display:flex;gap:.3em;margin-top:auto;margin-bottom:.6em}
 .bn-tr .tr-dots i{width:.2em;height:.2em;border-radius:50%;background:rgba(255,255,255,.45)}
@@ -716,30 +767,31 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    5.4s cycle, so at any instant most apps are already there and three or four are still landing. iOS
    shows restoring apps exactly like this, so the loop point reads as more apps arriving rather than as
    a reset. The source phone is deliberately left alone: it is the library, it should look settled. */
-.bn-tr .tr-dst .tr-grid i{animation:trSlot 5.4s linear infinite;animation-delay:calc(var(--i,0)*-.225s)}
+/* -.27s = 5.4/20, one slot per app, so the wave crosses the grid exactly once per cycle. Now that the
+   apps are coloured, an arriving one greys out rather than nearly vanishing - which is also what iOS
+   does to an app that is still restoring. */
+.bn-tr .tr-dst .tr-grid i{animation:trSlot 5.4s linear infinite;animation-delay:calc(var(--i,0)*-.27s)}
 @keyframes trSlot{
-  0%,3%  {opacity:.14;transform:scale(.8)}
-  9%     {opacity:1;  transform:scale(1.08)}
-  14%,90%{opacity:1;  transform:scale(1)}
-  100%   {opacity:.14;transform:scale(.8)}
+  0%,3%  {opacity:.42;filter:grayscale(1) brightness(.6);transform:scale(.82)}
+  9%     {opacity:1;  filter:none;                       transform:scale(1.08)}
+  14%,90%{opacity:1;  filter:none;                       transform:scale(1)}
+  100%   {opacity:.42;filter:grayscale(1) brightness(.6);transform:scale(.82)}
 }
 
 /* Both devices are deliberately identical - same size, same brightness, same halo. Direction is told
    by motion alone (one is being read, one is receiving), never by making a phone look worse.
-   perspective() as a transform function rather than a perspective property on the scene: each phone
-   then turns about its own vanishing point, which is what two phones held towards each other actually
-   do, and it keeps .tr-ph free for placement. Unlike a 2D rotate this adds nothing to the bounding
-   box, so the pair cannot grow into the text column. */
-.bn-tr .tr-src .tr-dev{transform:perspective(760px) rotateY(var(--ry,0deg));animation:trBobA 7.1s ease-in-out infinite}
-.bn-tr .tr-dst .tr-dev{transform:perspective(760px) rotateY(var(--ry,0deg));animation:trBobB 6.2s ease-in-out infinite}
-/* Durations that do not divide into each other, so the pair never falls into lockstep. The turn is
-   restated inside each keyframe so switching motion off leaves the phones facing each other. Always
-   var(--ry,0deg) with a fallback: a missing custom property inside transform computes the WHOLE
-   transform to none, and the two would silently snap flat. */
-@keyframes trBobA{0%,100%{transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(0)}
-                  50%    {transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(-5px)}}
-@keyframes trBobB{0%,100%{transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(0)}
-                  50%    {transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(-7px)}}
+   Mirrored 2D tilt, tops leaning towards each other. A rotateY turn was tried instead and is wrong
+   here: it foreshortens the very home screens this scene now exists to show. */
+.bn-tr .tr-src .tr-dev{transform:rotate(calc(var(--tilt,8deg)*-1));animation:trBobA 7.1s ease-in-out infinite}
+.bn-tr .tr-dst .tr-dev{transform:rotate(var(--tilt,8deg));animation:trBobB 6.2s ease-in-out infinite}
+/* Durations that do not divide into each other, so the pair never falls into lockstep. The rotate is
+   restated inside each keyframe so switching motion off leaves the tilt standing. Always var(--tilt,8deg)
+   with a fallback: a missing custom property inside transform computes the WHOLE transform to none and
+   the phones would silently go flat. */
+@keyframes trBobA{0%,100%{transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(0)}
+                  50%    {transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(-5px)}}
+@keyframes trBobB{0%,100%{transform:rotate(var(--tilt,8deg)) translateY(0)}
+                  50%    {transform:rotate(var(--tilt,8deg)) translateY(-7px)}}
 
 /* halo in % of the frame box so it scales; breathing on the master half-beat (2.7s = 5.4/2) */
 .bn-tr .tr-halo{position:absolute;left:50%;top:52%;width:134%;aspect-ratio:1;transform:translate(-50%,-50%);
@@ -800,27 +852,25 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    the old ones now that the phones are bigger: a flying icon should read as one app leaving the grid,
    about half again the 22px of an icon on the screen, not as a floating tile. Delays are NEGATIVE so
    the lane is already full on the first frame instead of filling over 4.5s. 5.4/6 = one every .9s. */
-.bn-tr .tr-flow i:nth-child(1){--t:24%;--sz:10.4%;--rest:78%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){--t:60%;--sz:9.2%; --rest:66%;animation-delay:-.9s}
-.bn-tr .tr-flow i:nth-child(3){--t:36%;--sz:11%;  --rest:54%;animation-delay:-1.8s}
-.bn-tr .tr-flow i:nth-child(4){--t:72%;--sz:8.8%; --rest:42%;animation-delay:-2.7s}
-.bn-tr .tr-flow i:nth-child(5){--t:20%;--sz:9.6%; --rest:30%;animation-delay:-3.6s}
-.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:10.2%;--rest:20%;animation-delay:-4.5s}
+.bn-tr .tr-flow i:nth-child(1){--t:24%;--sz:9.4%;--rest:78%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){--t:60%;--sz:8.2%;--rest:66%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(3){--t:36%;--sz:9.9%;--rest:54%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(4){--t:72%;--sz:7.9%;--rest:42%;animation-delay:-2.7s}
+.bn-tr .tr-flow i:nth-child(5){--t:20%;--sz:8.6%;--rest:30%;animation-delay:-3.6s}
+.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:9.2%;--rest:20%;animation-delay:-4.5s}
 /* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon lifts off a
-   home screen and sinks into the other one rather than sliding past them. The Y term now also drifts
-   downwards over the flight, because the source sits 7% higher than the destination and a flat lane
-   between two phones at different heights looks detached from both. The crossing fills 72% of the
-   cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
+   home screen and sinks into the other one rather than sliding past them. The crossing fills 72% of
+   the cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
    ever parked visibly, since for the other 28% it sits off-stage at opacity 0. linear and one shared
    5.4s (with the beam on its exact 1.8s/2.7s harmonics, and the arriving apps on the same 5.4s)
    because all of it is one mechanism: easing them apart would let the bloom fire while nothing lands. */
 @keyframes trFly{
-  0%  {left:84%;opacity:0;transform:translate(-50%,calc(-50% - 6px))  scale(.4)  rotate(-14deg)}
-  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 11px)) scale(1)   rotate(-7deg)}
-  40% {         opacity:1;transform:translate(-50%,calc(-50% - 7px))  scale(1.03)rotate(0deg)}
-  64% {         opacity:1;transform:translate(-50%,calc(-50% + 5px))  scale(1)   rotate(4deg)}
-  72% {left:17%;opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.4)  rotate(11deg)}
-  100%{left:17%;opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.4)  rotate(11deg)}
+  0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
+  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 3px))  scale(1)    rotate(-7deg)}
+  40% {         opacity:1;transform:translate(-50%,calc(-50% - 12px)) scale(1.03) rotate(0deg)}
+  64% {         opacity:1;transform:translate(-50%,calc(-50% - 9px))  scale(1)    rotate(4deg)}
+  72% {left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
+  100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
 }
 
 /* Both kill switches, per the file convention. Not decorative here: the global reduced-motion rule
@@ -850,13 +900,14 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 @media(max-width:720px){
   /* .slide-art is hidden globally on phones, so this slide has to opt back in */
   .bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}
-  /* Cap the scene and straighten the pair slightly - at 100px a 12 degree turn costs more legibility
-     on the home screens than it buys in depth. Everything on the screen is in cqw and needs no mobile
-     value at all. Four icons in the lane rather than six, so it stays a stream, not a crowd. */
-  .bn-tr .tr-scene{max-width:268px}
-  .bn-tr .tr-src{--ry:-9deg}
-  .bn-tr .tr-dst{--ry:9deg}
+  /* Cap the scene, ease the tilt the way .scr-stage does, thin the bezel again. Everything on the home
+     screen is in cqw and needs no mobile value at all. Four icons in the lane rather than six, so it
+     stays a stream, not a crowd. */
+  .bn-tr .tr-scene{max-width:274px;--tilt:7deg}
   .bn-tr .tr-wall{border-width:1px 1.5px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
+  /* the art column leaves only 6px either side here, and a 134% halo reaches 16px past its phone -
+     enough to cross the slide edge. 120% keeps the glow inside and reads tighter at this size anyway. */
+  .bn-tr .tr-halo{width:120%}
   .bn-tr .tr-flow i:nth-child(n+5){display:none}
   .bn-tr .tr-flow i:nth-child(1){animation-delay:0s}
   .bn-tr .tr-flow i:nth-child(2){animation-delay:-1.35s}
@@ -1047,6 +1098,8 @@ html.a11y-stop-motion .reviews .rw-track{animation:none}
 .faq details[open] summary::after{content:"–"}.faq details p{padding:0 1.2rem 1rem;color:var(--ink-soft)}
 .faq .faq-cat{font-size:1.12rem;font-weight:800;color:var(--teal);margin:2.2rem 0 .7rem;padding-bottom:.4rem;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:.45rem}
 .faq .box>.faq-cat:first-of-type{margin-top:.2rem}
+.faq .faq-more{margin-top:1.4rem;text-align:center;color:var(--ink-soft);font-size:.98rem}
+.faq .faq-more a{color:var(--teal-d);font-weight:700;text-decoration:underline}
 
 /* ===== contact ===== */
 .contact{background:var(--dark);color:#fff;padding:clamp(40px,6vw,72px) 0}
@@ -1273,7 +1326,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="#main" aria-label="פון גת, דף הבית"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="#team">מי אנחנו</a><a href="#reviews">ביקורות</a><a href="#services">שירותים</a><a href="#deals">מבצעים</a><a href="#press">כתבו עלינו</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
+      <a href="#team">מי אנחנו</a><a href="#reviews">ביקורות</a><a href="#services">שירותים</a><a href="phone-problems.html">מדריך תקלות</a><a href="#deals">מבצעים</a><a href="#press">כתבו עלינו</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -1633,7 +1686,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <div class="tiles" aria-label="שירותים">
   <article class="tile"><img class="tphoto" src="svc-devices.jpg" alt="מכשירים חדשים למכירה בפון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מכירת מכשירים</h3><span class="tdesc">מכשירים חדשים מכל המותגים, בתשלומים בתנאים נוחים ובליווי אישי</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מכירת מכשירים</h4><p>סמארטפונים חדשים מכל המותגים, אייפון, סמסונג גלקסי, שיאומי ורדמי ועוד, וגם טאבלטים, ביבוא רשמי ומקביל ובתשלומים נוחים. כולל העברת נתונים מלאה מהמכשיר הישן ואבזור, ובליווי אישי שיעזור לכם לבחור בדיוק את מה שמתאים לכם ולתקציב.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-lines.jpg" alt="כרטיסי SIM וקווי סלקום" loading="lazy"><div class="tinfo"><h3 class="tname">קווים וסלקום</h3><span class="tdesc">שירות לכל חברות הסלולר: פתיחת קו חדש, ניוד ומסלולים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>קווים וסלקום</h4><p>אצלנו מקבלים שירות קווים מלא לכל חברות הסלולר: פתיחת קו חדש, ניוד מספר, החלפת סים ו-eSIM, מעבר בין מסלולים וחבילות גלישה, וגם טעינת טוקמן. ובנוסף, פון גת הוא גם הסניף הראשון והיחיד של סלקום בקרית גת.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
-  <article class="tile"><img class="tphoto" src="svc-repair.jpg" alt="תיקון מכשיר במעבדת פון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מעבדת תיקונים</h3><span class="tdesc">מסך, סוללה ותקלות מורכבות, עם אחריות. גם נזקי מים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מעבדת תיקונים</h4><p>מעבדת סלולר מקצועית עם מעל 30 שנה ניסיון, לכל היצרנים: אייפון, סמסונג גלקסי (כולל סדרת A), שיאומי ורדמי ועוד. החלפת מסך, סוללה, שקע טעינה, רמקול ומצלמה, וטיפול בתקלות מורכבות שאחרים ויתרו עליהן, ומתקנים גם אייפד, שעוני Apple Watch ואוזניות AirPods. תיקונים נפוצים מבוצעים במקום ובזמן קצר, עם אחריות. אנחנו מטפלים גם בנזקי מים, אך מטבע הדברים תיקוני נזקי מים ניתנים ללא אחריות.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
+  <article class="tile"><img class="tphoto" src="svc-repair.jpg" alt="תיקון מכשיר במעבדת פון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מעבדת תיקונים</h3><span class="tdesc">מסך, סוללה ותקלות מורכבות, עם אחריות. גם נזקי מים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מעבדת תיקונים</h4><p>מעבדת סלולר מקצועית עם מעל 30 שנה ניסיון, לכל היצרנים: אייפון, סמסונג גלקסי (כולל סדרת A), שיאומי ורדמי ועוד. החלפת מסך, סוללה, שקע טעינה, רמקול ומצלמה, וטיפול בתקלות מורכבות שאחרים ויתרו עליהן, ומתקנים גם אייפד, שעוני Apple Watch ואוזניות AirPods. תיקונים נפוצים מבוצעים במקום ובזמן קצר, עם אחריות. אנחנו מטפלים גם בנזקי מים, אך מטבע הדברים תיקוני נזקי מים ניתנים ללא אחריות.</p><p style="font-size:.95rem;color:#cfd2d6">יש לכם תקלה ואתם רוצים לנסות קודם לבד? <a href="phone-problems.html" style="color:#45A6D6;text-decoration:underline;font-weight:700">מדריך התקלות שלנו</a> מסביר בדיוק מה לעשות, לפי המכשיר שלכם.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-accessories.jpg" alt="אבזור וציוד לסלולר" loading="lazy"><div class="tinfo"><h3 class="tname">אבזור וציוד</h3><span class="tdesc">כיסויים, מגני מסך, מטענים וכלל האבזור הנדרש</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>אבזור וציוד</h4><p>כלל האבזור הנדרש לסמארטפון שלכם במקום אחד: כיסויים, מגני זכוכית עם הדבקה, מטענים וכבלים, אוזניות, מטענים ניידים ומעמדים לרכב. הטבה לקוראי האתר: מגן זכוכית כולל הדבקה ב-9 ₪.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-gaming.jpg" alt="קונסולות גיימינג וציוד לפלייסטיישן" loading="lazy"><div class="tinfo"><h3 class="tname">פלייסטיישן וגיימינג</h3><span class="tdesc">קונסולות סוני, אבזור גיימינג ותיקונים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>פלייסטיישן וגיימינג</h4><p>מעבר לסלולר, אנחנו מוכרים ומתקנים קונסולות סוני פלייסטיישן, ומציעים אבזור גיימינג כולל בקרים וציוד היקפי. מחפשים קונסולה, אבזור או תיקון? דברו איתנו.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-computers.jpg" alt="גיבוי והעברת נתונים למחשבים" loading="lazy"><div class="tinfo"><h3 class="tname">מחשבים, גיבוי ונתונים</h3><span class="tdesc">גיבוי והעברת נתונים למחשבים ניידים ונייחים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מחשבים, גיבוי ונתונים</h4><p>גיבוי והעברת נתונים בין מחשבים ניידים ונייחים, כולל שמירה על הקבצים והמידע החשוב לכם, בשירות אישי מאותם אנשים שאתם כבר סומכים עליהם.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
@@ -1724,6 +1777,35 @@ document.addEventListener('DOMContentLoaded',function(){
                  purpose, so .slide-art:has(>svg)::before (the glass tile meant for the plain icon
                  slides) and .slide-art>svg (dealFloat) cannot match this scene. -->
             <div class="tr-scene" role="img" aria-label="התוכן מהמכשיר הישן עובר אל המכשיר החדש: אנשי קשר, תמונות, הודעות, מוזיקה, מסמכים וסרטונים">
+              <!-- One sprite, 24 glyphs, referenced 48 times by <use>. Defined inside .tr-scene and not
+                   in .slide-art, because a direct <svg> child of .slide-art picks up the glass tile from
+                   .slide-art:has(>svg)::before and the dealFloat animation meant for the icon slides. -->
+              <svg class="tr-sprite" aria-hidden="true" focusable="false"><defs>
+                <symbol id="ai-mail" viewBox="0 0 24 24"><path d="M2 6.8 12 13.5 22 6.8V18a1.7 1.7 0 0 1-1.7 1.7H3.7A1.7 1.7 0 0 1 2 18V6.8Zm.9-2.5h18.2L12 10.9 2.9 4.3Z"/></symbol>
+                <symbol id="ai-camera" viewBox="0 0 24 24"><path d="M9 3.4h6l1.1 2H20a1.9 1.9 0 0 1 1.9 1.9v10.9a1.9 1.9 0 0 1-1.9 1.9H4a1.9 1.9 0 0 1-1.9-1.9V7.3A1.9 1.9 0 0 1 4 5.4h3.9L9 3.4Zm3 4.5a4.9 4.9 0 1 0 0 9.8 4.9 4.9 0 0 0 0-9.8Zm0 2.1a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6Z"/></symbol>
+                <symbol id="ai-photos" viewBox="0 0 24 24"><g fill-opacity=".8"><ellipse cx="12" cy="7.2" rx="3" ry="5.2"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(120 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(180 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(240 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(300 12 12)"/></g></symbol>
+                <symbol id="ai-maps" viewBox="0 0 24 24"><path d="M2.6 5.8 8.6 3.2v15.4l-6 2.6V5.8Zm6.9-2.6 5 2.1v15.4l-5-2.1V3.2Zm5.9 2.1 5.9-2.5v15.4l-5.9 2.5V5.3Z"/></symbol>
+                <symbol id="ai-clock" viewBox="0 0 24 24"><path d="M12 2.3a9.7 9.7 0 1 0 0 19.4 9.7 9.7 0 0 0 0-19.4Zm0 1.9a7.8 7.8 0 1 1 0 15.6 7.8 7.8 0 0 1 0-15.6Zm-1 2.4v6.2l4.7 2.8.9-1.6-3.7-2.2V6.6H11Z"/></symbol>
+                <symbol id="ai-weather" viewBox="0 0 24 24"><g><circle cx="8.8" cy="8" r="4.3"/><path d="M8.1 20.8a4.2 4.2 0 0 1-.5-8.4 6 6 0 0 1 11.4 1.5 3.6 3.6 0 0 1-.7 6.9H8.1Z"/></g></symbol>
+                <symbol id="ai-cal" viewBox="0 0 24 24"><g><rect x="2.4" y="3.2" width="19.2" height="4.8" rx="1.6"/><rect x="7" y="10.8" width="10" height="9" rx="1.3" fill="#2f3136"/></g></symbol>
+                <symbol id="ai-notes" viewBox="0 0 24 24"><g><rect x="4" y="4.6" width="16" height="2.5" rx="1.25"/><rect x="4" y="10" width="16" height="2.3" rx="1.15"/><rect x="4" y="15.2" width="10.4" height="2.3" rx="1.15"/></g></symbol>
+                <symbol id="ai-remind" viewBox="0 0 24 24"><g><circle cx="5.4" cy="6.2" r="2.3"/><rect x="9.8" y="5" width="10.4" height="2.5" rx="1.25"/><circle cx="5.4" cy="12" r="2.3"/><rect x="9.8" y="10.8" width="10.4" height="2.5" rx="1.25"/><circle cx="5.4" cy="17.8" r="2.3"/><rect x="9.8" y="16.6" width="7.4" height="2.5" rx="1.25"/></g></symbol>
+                <symbol id="ai-store" viewBox="0 0 24 24"><path d="M10.6 3.4h2.8l6.1 17.2h-3l-1.3-3.9H8.8l-1.3 3.9h-3L10.6 3.4Zm1.4 4.3-1.9 6.2h3.8L12 7.7Z"/></symbol>
+                <symbol id="ai-wallet" viewBox="0 0 24 24"><g><rect x="3" y="4.4" width="18" height="4.2" rx="1.6" opacity=".5"/><rect x="3" y="9.3" width="18" height="4.2" rx="1.6" opacity=".75"/><rect x="3" y="14.2" width="18" height="5.4" rx="1.8"/></g></symbol>
+                <symbol id="ai-health" viewBox="0 0 24 24"><path d="M12 21.2 3.7 12.9a5.1 5.1 0 0 1 7.2-7.2l1.1 1.1 1.1-1.1a5.1 5.1 0 0 1 7.2 7.2L12 21.2Z"/></symbol>
+                <symbol id="ai-wa" viewBox="0 0 24 24"><path d="M12 2.4a9.5 9.5 0 0 0-8.1 14.5l-1.4 4.7 4.8-1.4A9.5 9.5 0 1 0 12 2.4Zm5.2 13.3c-.2.6-1.2 1.2-1.7 1.2-.5.1-1.1.1-1.7-.1a13.2 13.2 0 0 1-6-5.3c-.4-.7-.7-1.5-.7-2.3 0-.9.5-1.4.7-1.7.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2 0 .4-.1.5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.4.4 0 .2 0 .6-.2 1Z"/></symbol>
+                <symbol id="ai-pod" viewBox="0 0 24 24"><g><rect x="9.5" y="2.4" width="5" height="10.8" rx="2.5"/><path d="M6.2 11.5a5.8 5.8 0 0 0 11.6 0h2a7.8 7.8 0 0 1-6.8 7.7v2.5h-2v-2.5a7.8 7.8 0 0 1-6.8-7.7h2Z"/></g></symbol>
+                <symbol id="ai-files" viewBox="0 0 24 24"><path d="M2.6 6.6a2.1 2.1 0 0 1 2.1-2.1h4.4l2.1 2.5h8.1a2.1 2.1 0 0 1 2.1 2.1v8.4a2.1 2.1 0 0 1-2.1 2.1H4.7a2.1 2.1 0 0 1-2.1-2.1V6.6Z"/></symbol>
+                <symbol id="ai-contact" viewBox="0 0 24 24"><path d="M12 11.8a4.4 4.4 0 1 0 0-8.8 4.4 4.4 0 0 0 0 8.8Zm0 1.8c-4.4 0-7.9 2.3-7.9 5V21h15.8v-2.4c0-2.7-3.5-5-7.9-5Z"/></symbol>
+                <symbol id="ai-calc" viewBox="0 0 24 24"><g><rect x="4.2" y="2.8" width="15.6" height="4.6" rx="1.5"/><circle cx="7" cy="11.6" r="1.8"/><circle cx="12" cy="11.6" r="1.8"/><circle cx="17" cy="11.6" r="1.8"/><circle cx="7" cy="16.8" r="1.8"/><circle cx="12" cy="16.8" r="1.8"/><rect x="15.2" y="15" width="3.6" height="6.2" rx="1.8"/></g></symbol>
+                <symbol id="ai-set" viewBox="0 0 24 24"><g fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.4" stroke-width="4" stroke-dasharray="2.6 3.9"/><circle cx="12" cy="12" r="4.4" stroke-width="2.2"/></g></symbol>
+                <symbol id="ai-voice" viewBox="0 0 24 24"><g><rect x="2.4" y="9" width="2.6" height="6" rx="1.3"/><rect x="7" y="5.4" width="2.6" height="13.2" rx="1.3"/><rect x="11.6" y="2.6" width="2.6" height="18.8" rx="1.3"/><rect x="16.2" y="6.6" width="2.6" height="10.8" rx="1.3"/><rect x="20.8" y="9.6" width="2.6" height="4.8" rx="1.3"/></g></symbol>
+                <symbol id="ai-books" viewBox="0 0 24 24"><path d="M12 5.7C10.2 4.3 7.5 3.4 4.5 3.4c-.9 0-1.7.8-1.7 1.7v12.4c0 .9.8 1.7 1.7 1.7 3 0 5.7.9 7.5 2.3 1.8-1.4 4.5-2.3 7.5-2.3.9 0 1.7-.8 1.7-1.7V5.1c0-.9-.8-1.7-1.7-1.7-3 0-5.7.9-7.5 2.3Z"/></symbol>
+                <symbol id="ai-phone" viewBox="0 0 24 24"><path d="m18.3 15.6-2.7-1.2c-.4-.2-1 0-1.2.4l-1.1 1.4c-2.2-1.1-4-2.9-5.1-5.1l1.4-1.1c.4-.3.6-.8.4-1.2L8.8 6.1c-.2-.5-.7-.7-1.2-.6l-2.5.6c-.5.1-.8.5-.8 1C4.3 15 9.3 20 16.2 20.2c.5 0 .9-.3 1-.8l.6-2.5c.1-.5-.1-1-.5-1.3Z"/></symbol>
+                <symbol id="ai-msg" viewBox="0 0 24 24"><path d="M12 3.4c5 0 9 3.2 9 7.2s-4 7.2-9 7.2c-1 0-1.9-.1-2.8-.4l-4.8 2 1.5-3.7C4.1 14.4 3 12.8 3 10.6c0-4 4-7.2 9-7.2Z"/></symbol>
+                <symbol id="ai-safari" viewBox="0 0 24 24"><g><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m17 7-7.1 2.9L7 17l7.1-2.9L17 7Z"/></g></symbol>
+                <symbol id="ai-music" viewBox="0 0 24 24"><g><circle cx="7.4" cy="18.4" r="3.2"/><circle cx="17.6" cy="16.4" r="3.2"/><path d="M8.6 5.4 20.8 2.9v3.4L8.6 8.8V5.4Z"/><rect x="8.6" y="5.4" width="2" height="13"/><rect x="18.8" y="2.9" width="2" height="13.5"/></g></symbol>
+              </defs></svg>
               <span class="tr-beam" aria-hidden="true"></span>
               <span class="tr-ph tr-src" aria-hidden="true">
                 <span class="tr-dev">
@@ -1732,15 +1814,14 @@ document.addEventListener('DOMContentLoaded',function(){
                   <span class="tr-ui">
                     <span class="tr-stat"><i></i><i></i></span>
                     <span class="tr-grid">
-                      <i style="--i:0;--c:52,199,89"></i><i style="--i:1"></i><i style="--i:2;--c:10,132,255"></i><i style="--i:3"></i>
-                      <i style="--i:4"></i><i style="--i:5;--c:255,159,10"></i><i style="--i:6"></i><i style="--i:7;--c:45,190,200"></i>
-                      <i style="--i:8;--c:255,69,58"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11;--c:191,90,242"></i>
-                      <i style="--i:12"></i><i style="--i:13;--c:255,214,10"></i><i style="--i:14"></i><i style="--i:15"></i>
-                      <i style="--i:16;--c:100,210,255"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19;--c:120,180,255"></i>
-                      <i style="--i:20"></i><i style="--i:21"></i><i style="--i:22;--c:88,214,141"></i><i style="--i:23"></i>
+                      <i class="a-mail"    style="--i:0"><svg viewBox="0 0 24 24"><use href="#ai-mail"/></svg></i><i class="a-camera" style="--i:1"><svg viewBox="0 0 24 24"><use href="#ai-camera"/></svg></i><i class="a-photos"  style="--i:2"><svg viewBox="0 0 24 24"><use href="#ai-photos"/></svg></i><i class="a-maps"    style="--i:3"><svg viewBox="0 0 24 24"><use href="#ai-maps"/></svg></i>
+                      <i class="a-clock"   style="--i:4"><svg viewBox="0 0 24 24"><use href="#ai-clock"/></svg></i><i class="a-weather" style="--i:5"><svg viewBox="0 0 24 24"><use href="#ai-weather"/></svg></i><i class="a-cal"     style="--i:6"><svg viewBox="0 0 24 24"><use href="#ai-cal"/></svg></i><i class="a-notes"   style="--i:7"><svg viewBox="0 0 24 24"><use href="#ai-notes"/></svg></i>
+                      <i class="a-remind"  style="--i:8"><svg viewBox="0 0 24 24"><use href="#ai-remind"/></svg></i><i class="a-store"  style="--i:9"><svg viewBox="0 0 24 24"><use href="#ai-store"/></svg></i><i class="a-wallet"  style="--i:10"><svg viewBox="0 0 24 24"><use href="#ai-wallet"/></svg></i><i class="a-health" style="--i:11"><svg viewBox="0 0 24 24"><use href="#ai-health"/></svg></i>
+                      <i class="a-wa"      style="--i:12"><svg viewBox="0 0 24 24"><use href="#ai-wa"/></svg></i><i class="a-pod"     style="--i:13"><svg viewBox="0 0 24 24"><use href="#ai-pod"/></svg></i><i class="a-files"   style="--i:14"><svg viewBox="0 0 24 24"><use href="#ai-files"/></svg></i><i class="a-contact" style="--i:15"><svg viewBox="0 0 24 24"><use href="#ai-contact"/></svg></i>
+                      <i class="a-calc"    style="--i:16"><svg viewBox="0 0 24 24"><use href="#ai-calc"/></svg></i><i class="a-set"    style="--i:17"><svg viewBox="0 0 24 24"><use href="#ai-set"/></svg></i><i class="a-voice"   style="--i:18"><svg viewBox="0 0 24 24"><use href="#ai-voice"/></svg></i><i class="a-books"  style="--i:19"><svg viewBox="0 0 24 24"><use href="#ai-books"/></svg></i>
                     </span>
                     <span class="tr-dots"><i></i><i></i><i></i></span>
-                    <span class="tr-dock"><i style="--c:52,199,89"></i><i style="--c:10,132,255"></i><i style="--c:45,190,200"></i><i style="--c:255,159,10"></i></span>
+                    <span class="tr-dock"><i class="a-phone"><svg viewBox="0 0 24 24"><use href="#ai-phone"/></svg></i><i class="a-msg"><svg viewBox="0 0 24 24"><use href="#ai-msg"/></svg></i><i class="a-safari"><svg viewBox="0 0 24 24"><use href="#ai-safari"/></svg></i><i class="a-music"><svg viewBox="0 0 24 24"><use href="#ai-music"/></svg></i></span>
                     <span class="tr-home"></span>
                   </span>
                   <span class="tr-punch"></span>
@@ -1756,15 +1837,14 @@ document.addEventListener('DOMContentLoaded',function(){
                   <span class="tr-ui">
                     <span class="tr-stat"><i></i><i></i></span>
                     <span class="tr-grid">
-                      <i style="--i:0;--c:52,199,89"></i><i style="--i:1"></i><i style="--i:2;--c:10,132,255"></i><i style="--i:3"></i>
-                      <i style="--i:4"></i><i style="--i:5;--c:255,159,10"></i><i style="--i:6"></i><i style="--i:7;--c:45,190,200"></i>
-                      <i style="--i:8;--c:255,69,58"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11;--c:191,90,242"></i>
-                      <i style="--i:12"></i><i style="--i:13;--c:255,214,10"></i><i style="--i:14"></i><i style="--i:15"></i>
-                      <i style="--i:16;--c:100,210,255"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19;--c:120,180,255"></i>
-                      <i style="--i:20"></i><i style="--i:21"></i><i style="--i:22;--c:88,214,141"></i><i style="--i:23"></i>
+                      <i class="a-mail"    style="--i:0"><svg viewBox="0 0 24 24"><use href="#ai-mail"/></svg></i><i class="a-camera" style="--i:1"><svg viewBox="0 0 24 24"><use href="#ai-camera"/></svg></i><i class="a-photos"  style="--i:2"><svg viewBox="0 0 24 24"><use href="#ai-photos"/></svg></i><i class="a-maps"    style="--i:3"><svg viewBox="0 0 24 24"><use href="#ai-maps"/></svg></i>
+                      <i class="a-clock"   style="--i:4"><svg viewBox="0 0 24 24"><use href="#ai-clock"/></svg></i><i class="a-weather" style="--i:5"><svg viewBox="0 0 24 24"><use href="#ai-weather"/></svg></i><i class="a-cal"     style="--i:6"><svg viewBox="0 0 24 24"><use href="#ai-cal"/></svg></i><i class="a-notes"   style="--i:7"><svg viewBox="0 0 24 24"><use href="#ai-notes"/></svg></i>
+                      <i class="a-remind"  style="--i:8"><svg viewBox="0 0 24 24"><use href="#ai-remind"/></svg></i><i class="a-store"  style="--i:9"><svg viewBox="0 0 24 24"><use href="#ai-store"/></svg></i><i class="a-wallet"  style="--i:10"><svg viewBox="0 0 24 24"><use href="#ai-wallet"/></svg></i><i class="a-health" style="--i:11"><svg viewBox="0 0 24 24"><use href="#ai-health"/></svg></i>
+                      <i class="a-wa"      style="--i:12"><svg viewBox="0 0 24 24"><use href="#ai-wa"/></svg></i><i class="a-pod"     style="--i:13"><svg viewBox="0 0 24 24"><use href="#ai-pod"/></svg></i><i class="a-files"   style="--i:14"><svg viewBox="0 0 24 24"><use href="#ai-files"/></svg></i><i class="a-contact" style="--i:15"><svg viewBox="0 0 24 24"><use href="#ai-contact"/></svg></i>
+                      <i class="a-calc"    style="--i:16"><svg viewBox="0 0 24 24"><use href="#ai-calc"/></svg></i><i class="a-set"    style="--i:17"><svg viewBox="0 0 24 24"><use href="#ai-set"/></svg></i><i class="a-voice"   style="--i:18"><svg viewBox="0 0 24 24"><use href="#ai-voice"/></svg></i><i class="a-books"  style="--i:19"><svg viewBox="0 0 24 24"><use href="#ai-books"/></svg></i>
                     </span>
                     <span class="tr-dots"><i></i><i></i><i></i></span>
-                    <span class="tr-dock"><i style="--c:52,199,89"></i><i style="--c:10,132,255"></i><i style="--c:45,190,200"></i><i style="--c:255,159,10"></i></span>
+                    <span class="tr-dock"><i class="a-phone"><svg viewBox="0 0 24 24"><use href="#ai-phone"/></svg></i><i class="a-msg"><svg viewBox="0 0 24 24"><use href="#ai-msg"/></svg></i><i class="a-safari"><svg viewBox="0 0 24 24"><use href="#ai-safari"/></svg></i><i class="a-music"><svg viewBox="0 0 24 24"><use href="#ai-music"/></svg></i></span>
                     <span class="tr-home"></span>
                   </span>
                   <span class="tr-punch"></span>
@@ -1970,6 +2050,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <details><summary>איפה מתקנים סלולר בקרית גת?</summary><p>בפון גת, רחבת תשרי 2 (מול מכון מאר), קרית גת, ומשרתים גם את כרמי גת והיישובים בסביבה. מעבדת הסלולר הוותיקה באזור, מעל 30 שנה בניהול ברוך וסיגל, עם אחריות על כל תיקון.</p></details>
     <details><summary>מה שעות הפתיחה ואיך מגיעים?</summary><p>רחבת תשרי 2, קרית גת (מול מכון מאר). ראשון עד חמישי 9:00-18:30, שישי 9:00-13:00. ניווט בוייז או בגוגל מפות בלחיצה, או חייגו 052-5893366.</p></details>
     <details><summary>מאילו יישובים באזור מגיעים אליכם?</summary><p>מכל אזור לכיש והדרום, מלבד קרית גת וכרמי גת, מגיעים אלינו גם מקרית מלאכי, שדרות, אופקים ונתיבות, ומכל המושבים והקיבוצים בסביבה:<br><br><b>מ.א. יואב:</b> קיבוץ גת, גלאון, נגבה, רבדים, שדה יואב, כפר מנחם, כפר הרי״ף, נחלה, סגולה, ורדון, קדמה, בית גוברין, בית ניר, אל־עזי.<br><br><b>מ.א. שפיר:</b> עין צורים, נועם, עוזה, זבדיאל, זרחיה, איתן, שלווה, רווחה, קוממיות, משואות יצחק, שפיר, אבן שמואל, אלומה, מרכז שפירא.<br><br><b>מ.א. לכיש:</b> לכיש, נהורה, שדה משה, שדה דוד, אחוזם, אמציה, זוהר, יד נתן, מנוחה, נוגה, ניר ח״ן, עוצם, שחר, שקף, תלמים, אליאב, בני דקלים, כרמי קטיף, נטע.<br><br><b>מ.א. באר טוביה:</b> באר טוביה, כפר ורבורג, אביגדור, אורות, אמונים, ביצרון, בית עזרא, גבעתי, חצב, ינון, כפר אחים, נווה מבטח, ניר בנים, עזריקם, ערוגות, שדה עוזיהו, שתולים, תימורים, תלמי יחיאל, חצור אשדוד, אחווה, עזר, כנות.</p></details>
+    <p class="faq-more">לא מצאתם את התקלה שלכם? ריכזנו <a href="phone-problems.html">מדריך תקלות מפורט</a> עם מה שאפשר לנסות בבית לפני שמגיעים אלינו, לאייפון, לגלקסי ולשיאומי.</p>
   </div>
 </section>
 
