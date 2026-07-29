@@ -118,7 +118,8 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .burger{display:none;background:none;border:none;color:#fff;font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
 /* laptop widths: nine nav items need ~9px more than the row has, so tighten the gap
    just in this band instead of letting the header grow to two rows */
-@media(min-width:981px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
+@media(min-width:1101px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
+@media(min-width:981px) and (max-width:1100px){nav.main{gap:.7rem;font-size:.9rem}}
 @media(max-width:980px){
   nav.main{display:none;position:absolute;inset-inline:0;top:100%;background:var(--black);flex-direction:column;gap:0;padding:.5rem 0;border-top:1px solid #222}
   nav.main.open{display:flex}
@@ -511,10 +512,14 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#632854,#421838)}
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
-/* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
-.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
-.bn-kb{background:linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}      /* matches the keyboard banner's dark edge */
-/* charcoal behind the artwork too: the white frame made this the one slide that broke the run */
+/* Keyboard slide. It used to be a ready-made promo image on desktop with every word of the offer
+   baked into the PNG, and real text only on phones. That is WCAG 2.0 AA 1.4.5 (Images of Text): a
+   reader who enlarges the page gets a blurred picture instead of larger words, and none of it is
+   selectable or translatable. Same real text at every width now, on the same grid as the other four
+   slides, with the photo demoted to decoration (alt=""). The orange accent used to live only inside
+   the phone breakpoint, for the same reason the transfer slide's cyan did - on desktop the photo
+   brought its own light. */
+.bn-kb{background:radial-gradient(118% 88% at 79% 8%,rgba(224,145,63,.28),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
 /* This slide's own accent, in the cyan its scene carries. It used to be added only on phones, because
    on desktop the slide was a photo that brought its own light with it; the scene is CSS at every width now. */
 .bn-tr{background:radial-gradient(118% 88% at 79% 8%,rgba(64,178,214,.30),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
@@ -610,8 +615,6 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 }
 html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
-.s-banner::before,.s-banner::after{display:none}
-.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
 /* ===== data-transfer slide: two live iPhones, content flying from one into the other =====
    Rebuilt from the site's own parts. The previous version cropped windows out of promo_transfers.jpg,
    whose pale studio backdrop, three PRINTED app icons and baked marketing type fought the charcoal at
@@ -914,26 +917,36 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   .bn-tr .tr-flow i:nth-child(3){animation-delay:-2.7s}
   .bn-tr .tr-flow i:nth-child(4){animation-delay:-4.05s}
 }
-.s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
-.s-banner .slide-banner:hover img{transform:scale(1.015)}
-.s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
-.s-banner .slide-in,.s-banner .slide-art{display:none}
-@media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
+/* ===== keyboard slide artwork: the product shot, sitting in the charcoal ===== */
+/* Two adjustments put a photo shot on a blue backdrop onto this slide. saturate() drains the blue out
+   of the background while leaving the product itself untouched - it is black and grey, so it has no
+   saturation to lose. The mask then fades all four edges, so the shot ends inside the slide instead of
+   on a rectangle; a hard crop edge is what sank every attempt at the old transfer photo. */
+.bn-kb .kb-shot{position:relative;display:block;width:100%;max-width:356px;line-height:0;
+  animation:kbFloat 7.4s ease-in-out infinite}
+.bn-kb .kb-shot::before{content:"";position:absolute;left:50%;top:52%;width:98%;height:82%;
+  transform:translate(-50%,-50%);border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(224,145,63,.3),rgba(224,145,63,.09) 54%,transparent 74%);
+  animation:kbGlow 3.7s ease-in-out infinite alternate}
+.bn-kb .kb-shot img{position:relative;z-index:1;display:block;width:100%;height:auto;
+  filter:saturate(.4) contrast(1.07);
+  -webkit-mask-image:radial-gradient(76% 70% at 50% 50%,#000 50%,rgba(0,0,0,.6) 76%,transparent 96%);
+  mask-image:radial-gradient(76% 70% at 50% 50%,#000 50%,rgba(0,0,0,.6) 76%,transparent 96%)}
+@keyframes kbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes kbGlow{from{opacity:.7}to{opacity:1}}
+/* both kill switches, per the file convention */
+@media(prefers-reduced-motion:reduce){.bn-kb :is(.kb-shot,.kb-shot::before){animation:none}}
+html.a11y-stop-motion .bn-kb .kb-shot,html.a11y-stop-motion .bn-kb .kb-shot::before{animation:none}
+.slide[aria-hidden="true"] .kb-shot,.slide[aria-hidden="true"] .kb-shot::before{animation-play-state:paused}
 @media(max-width:720px){
-  /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
-  .s-banner{padding:clamp(24px,5vw,38px) 46px}
-  /* Same charcoal as the rest of the carousel, with the orange logo accent. (The transfer slide's own
-     cyan accent moved out of this block: its scene is CSS at every width now, not a photo on desktop.) */
-  .bn-kb{background:radial-gradient(118% 88% at 79% 8%,rgba(224,145,63,.28),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
   /* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
   .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
   .s-scr .scr-fine{display:none}
   .scr-stage{transform:rotate(-6deg)}
   .scr-frame{width:min(96px,26vw)}
-  .s-banner .slide-banner{display:none}
-  .s-banner .slide-in{display:block}
-  .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
-  .s-banner .slide-art img{width:100%;max-width:220px;max-height:108px;object-fit:contain;height:auto;border-radius:10px}
+  /* .slide-art is hidden globally on phones, so this slide has to opt back in */
+  .bn-kb .slide-art{display:flex;min-height:0;margin-top:.55rem}
+  .bn-kb .kb-shot{max-width:268px}
 }
 .s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
 .s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
@@ -1884,17 +1897,21 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
-          <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
-            <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
-          </button>
+        <article class="slide bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
           <div class="slide-in">
             <span class="badge">₪49</span>
             <h3>מקלדת + עכבר</h3>
             <p>ב-49 ₪ בקנייה מעל 100 ₪ בחנות. חיבור USB, שימוש נוח ואיכות אמינה, ללימודים, לבית ולמשרד.</p>
             <button type="button" class="btn btn-wa" data-pg-coupon="kb">לקבלת קוד קופון</button>
           </div>
-          <div class="slide-art"><img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async"></div>
+          <!-- The offer is spelled out in .slide-in above, so the photo carries no information and
+               takes alt="". It replaces keyboard-promo-web2.png, which had the whole offer painted
+               into the pixels and could only be described second-hand in an alt attribute. -->
+          <div class="slide-art">
+            <span class="kb-shot" aria-hidden="true">
+              <img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async">
+            </span>
+          </div>
         </article>
 
       </div>
