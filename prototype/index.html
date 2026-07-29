@@ -511,10 +511,9 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
    this slide the odd one out in the carousel, and washed out the phone and the glass sitting on it */
 .s-scr{background:radial-gradient(78% 64% at 30% 46%,rgba(70,140,220,.42),transparent 62%),linear-gradient(135deg,#1b3a63,#0b1a30);color:#eaf2fb}
 .s-scr::before,.s-scr::after{display:none}
-/* same glass surface as .slide .badge (alpha, border, blur) so both read as one component.
-   It stays smaller because this one carries a full sentence, not a two-word price tag. */
-.s-scr .scr-excl{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;font-weight:900;font-size:.92rem;line-height:1;border-radius:14px;padding:.5em .85em;margin-bottom:1rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.s-scr .scr-excl .st{color:#ffc94d}
+/* identical to .slide .badge on every other slide — same surface, same type scale. The copy was
+   shortened to a two-word tag so it fits that size without wrapping, like the others. */
+.s-scr .scr-excl{display:inline-flex;align-items:baseline;gap:.12em;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;font-weight:900;font-size:clamp(1.7rem,3.8vw,2.7rem);line-height:1;border-radius:14px;padding:.26em .5em;margin-bottom:1rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .s-scr h3{color:#fff;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.12;margin:0}
 .s-scr .scr-price{display:flex;align-items:baseline;gap:.3rem;margin:.45rem 0 0;color:#6fc0ff;font-weight:900;font-size:clamp(1.05rem,2vw,1.3rem)}
 .s-scr .scr-price b{font-size:clamp(2.5rem,6vw,4.1rem);line-height:.95;letter-spacing:-2px}
@@ -1418,7 +1417,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
         <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
           <div class="slide-in">
-            <span class="scr-excl"><span class="st">★</span> הטבה בלעדית לגולשי האתר</span>
+            <span class="scr-excl">רק באתר</span>
             <h3>מגן מסך כולל הדבקה</h3>
             <p class="scr-price">רק <b>9</b><span class="cur">₪</span></p>
             <p class="scr-sub">מגן זכוכית איכותי והתקנה מקצועית במקום.</p>
