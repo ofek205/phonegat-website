@@ -622,10 +622,21 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* A soft-edged fade was tried here so the devices would float like the objects on the other slides,
    but the artwork's own backdrop is pale and any transparency sank it into the charcoal. It stays a
    deliberate product card instead, finished to match the glass surfaces used elsewhere on the site. */
-.bn-tr .tr-stage{position:relative;display:block;width:100%;max-width:440px;aspect-ratio:934/859;overflow:hidden;
+/* The artwork sits on a white page with a pale panel inset inside it. The first crop kept that white
+   margin, which showed as a thick bright border around the card and was the ugliest thing on the
+   slide. The window is pulled inside the panel on all four sides: x 3%-52%, y 4%-96%. */
+.bn-tr .tr-stage{position:relative;display:block;width:100%;max-width:430px;aspect-ratio:898/790;overflow:hidden;
   border-radius:18px;box-shadow:0 18px 40px -18px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.10)}
-.bn-tr .tr-plate{position:absolute;top:0;left:-3.9%;width:196%}
-.bn-tr .tr-plate img{display:block;width:100%;height:auto}
+.bn-tr .tr-plate{position:absolute;top:-4.36%;left:-6.12%;width:204.1%}
+/* The artwork's backdrop is near-white and read as a glaring block against the charcoal. Toning the
+   photo down lets the card sit in the dark scheme; the devices and the light bridge are its bright
+   parts, so they survive the exposure drop and become what the eye lands on. The filter is on the
+   image alone — on the plate it would dull the icon cards drawn over it. */
+.bn-tr .tr-plate img{display:block;width:100%;height:auto;filter:brightness(.72) contrast(1.12) saturate(1.06)}
+/* soft inner shade so the tile melts into the slide instead of ending in a hard line. It sits above
+   the photo but below the icons, which stay crisp. */
+.bn-tr .tr-plate::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(115% 108% at 50% 46%,transparent 48%,rgba(13,11,10,.62) 100%)}
 /* mobile keeps the artwork rather than falling back to the plain icon the other text slides use */
 @media(max-width:720px){.bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}}
 /* ---- anchors: one card per printed icon, sized 5.2% of the banner against the printed 3.9% so a
