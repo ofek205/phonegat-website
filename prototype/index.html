@@ -599,7 +599,36 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
 .s-banner::before,.s-banner::after{display:none}
-.s-banner .slide-banner{display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
+.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
+/* ===== data-transfer banner: packets streaming between the two phones =====
+   The artwork is a baked image, so the flow lane is expressed as a % box over it: the old phone's
+   screen ends at ~20% of the image width, the new one starts at ~33%, and the light bridge between
+   them sits between 42% and 68% of the height. Percentages keep it aligned at any banner width. */
+.bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:2}
+/* Streaks, not dots: the artwork is a bridge of flowing light, so packets shaped like short
+   comet trails sit in it naturally, where round chips read as UI stuck on top of the photo.
+   Saturated blue because the bridge itself is pale cyan — a pale packet disappears into it. */
+.bn-tr .tr-flow i{position:absolute;top:50%;width:22px;height:4px;border-radius:999px;
+  background:linear-gradient(90deg,rgba(31,120,210,0),#2f97e6 42%,#0f63c0 68%,rgba(31,120,210,0));
+  box-shadow:0 0 7px 1px rgba(120,200,255,.75);
+  animation:trFlow 2.8s linear infinite}
+/* Kept to the bright core of the bridge — the channel that runs between the contact icon above and
+   the chat icon below — so packets read as travelling along it instead of landing on the artwork. */
+.bn-tr .tr-flow i:nth-child(1){top:30%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){top:47%;animation-delay:.4s;width:16px;height:3px}
+.bn-tr .tr-flow i:nth-child(3){top:63%;animation-delay:.8s;width:26px}
+.bn-tr .tr-flow i:nth-child(4){top:38%;animation-delay:1.2s;width:18px;height:3px}
+.bn-tr .tr-flow i:nth-child(5){top:71%;animation-delay:1.6s;width:15px;height:3px}
+.bn-tr .tr-flow i:nth-child(6){top:54%;animation-delay:2s;width:24px}
+.bn-tr .tr-flow i:nth-child(7){top:44%;animation-delay:2.4s;width:16px;height:3px}
+@keyframes trFlow{
+  0%  {left:-6%;opacity:0;transform:translateY(0) scale(.55)}
+  14% {opacity:1;transform:translateY(-8%) scale(1)}
+  84% {opacity:1;transform:translateY(-14%) scale(1)}
+  100%{left:106%;opacity:0;transform:translateY(-18%) scale(.55)}
+}
+@media(prefers-reduced-motion:reduce){.bn-tr .tr-flow{display:none}}
+html.a11y-stop-motion .bn-tr .tr-flow{display:none}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
 .s-banner .slide-banner:hover img{transform:scale(1.015)}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
@@ -1440,6 +1469,9 @@ document.addEventListener('DOMContentLoaded',function(){
         <article class="slide s-banner bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
           <a class="slide-banner" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש" aria-label="העברת נתונים מלאה ללא עלות, לתיאום בוואטסאפ">
             <img src="promo_transfers.jpg" alt="העברת נתונים מלאה ללא עלות: קונים מכשיר חדש? נעביר עבורכם אנשי קשר, תמונות ותוכן חשוב מהמכשיר הישן. ברכישת מכשיר חדש בפון גת." width="1832" height="859" loading="lazy" decoding="async">
+            <!-- data packets streaming from the old phone into the new one. Positioned in % of the
+                 banner image so they stay locked to the two devices at every width. -->
+            <span class="tr-flow" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
           </a>
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
