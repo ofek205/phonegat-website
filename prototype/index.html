@@ -614,6 +614,20 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* Behind the anchors, not in front. The anchors sit across the whole gap, so a traveller crossing
    over them lands square on top of one and reads as a collision; slipping behind reads as depth. */
 .bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:2}
+/* ---- the artwork, cropped to the two devices ----
+   The right half of promo_transfers.jpg is a headline, a sub-line and a button rendered into the
+   photo. Nothing there can follow the site's fonts, sizes or colours, so it always read as a
+   different design. The window below shows only x 2%-53% of the image, and the slide supplies its
+   own text. .tr-plate keeps the image's own box, so every icon coordinate stays in image %. */
+/* A soft-edged fade was tried here so the devices would float like the objects on the other slides,
+   but the artwork's own backdrop is pale and any transparency sank it into the charcoal. It stays a
+   deliberate product card instead, finished to match the glass surfaces used elsewhere on the site. */
+.bn-tr .tr-stage{position:relative;display:block;width:100%;max-width:440px;aspect-ratio:934/859;overflow:hidden;
+  border-radius:18px;box-shadow:0 18px 40px -18px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.10)}
+.bn-tr .tr-plate{position:absolute;top:0;left:-3.9%;width:196%}
+.bn-tr .tr-plate img{display:block;width:100%;height:auto}
+/* mobile keeps the artwork rather than falling back to the plain icon the other text slides use */
+@media(max-width:720px){.bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}}
 /* ---- anchors: one card per printed icon, sized 5.2% of the banner against the printed 3.9% so a
    gentle drift can never uncover what is underneath. Positions come from measuring the artwork. ---- */
 .bn-tr .tr-anchors{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -1521,9 +1535,21 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-banner bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
-          <a class="slide-banner" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש" aria-label="העברת נתונים מלאה ללא עלות, לתיאום בוואטסאפ">
-            <img src="promo_transfers.jpg" alt="העברת נתונים מלאה ללא עלות: קונים מכשיר חדש? נעביר עבורכם אנשי קשר, תמונות ותוכן חשוב מהמכשיר הישן. ברכישת מכשיר חדש בפון גת." width="1832" height="859" loading="lazy" decoding="async">
+        <!-- A normal slide, not a baked banner: the artwork's right half is marketing text rendered
+             into the photo, which can never match the site's own type, and that mismatch is why this
+             slide read as foreign next to the others. The text below is real HTML now, and only the
+             two devices are kept from the artwork. -->
+        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+          <div class="slide-in">
+            <span class="badge">ללא עלות</span>
+            <h3>העברת נתונים מלאה</h3>
+            <p>קונים מכשיר חדש? מעבירים לכם את כל התוכן החשוב לכם, אנשי קשר ותמונות, ללא עלות, גם ממכשיר שבור.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
+          </div>
+          <div class="slide-art">
+           <span class="tr-stage" aria-hidden="true">
+            <span class="tr-plate">
+            <img src="promo_transfers.jpg" alt="" width="1832" height="859" loading="lazy" decoding="async">
             <!-- The three icons in the artwork are baked into the photo and cannot move, and a mix of
                  static and moving ones reads as broken. So each is covered by a slightly larger card
                  of its own that drifts gently: the printed one never shows, and everything on screen
@@ -1539,14 +1565,9 @@ document.addEventListener('DOMContentLoaded',function(){
               <i><svg viewBox="0 0 24 24"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
               <i><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
             </span>
-          </a>
-          <div class="slide-in">
-            <span class="badge">ללא עלות</span>
-            <h3>העברת נתונים מלאה</h3>
-            <p>קונים מכשיר חדש? מעבירים לכם את כל התוכן החשוב לכם, אנשי קשר ותמונות, ללא עלות, גם ממכשיר שבור.</p>
-            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
+            </span>
+           </span>
           </div>
-          <div class="slide-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v14M8 3 4 7M8 3l4 4M16 21V7M16 21l4-4M16 21l-4-4"/></svg></div>
         </article>
 
         <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
