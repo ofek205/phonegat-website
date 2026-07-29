@@ -605,27 +605,35 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    screen ends at ~20% of the image width, the new one starts at ~33%, and the light bridge between
    them sits between 42% and 68% of the height. Percentages keep it aligned at any banner width. */
 .bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:2}
-/* Streaks, not dots: the artwork is a bridge of flowing light, so packets shaped like short
-   comet trails sit in it naturally, where round chips read as UI stuck on top of the photo.
-   Saturated blue because the bridge itself is pale cyan — a pale packet disappears into it. */
-.bn-tr .tr-flow i{position:absolute;top:50%;width:22px;height:4px;border-radius:999px;
-  background:linear-gradient(90deg,rgba(31,120,210,0),#2f97e6 42%,#0f63c0 68%,rgba(31,120,210,0));
-  box-shadow:0 0 7px 1px rgba(120,200,255,.75);
-  animation:trFlow 2.8s linear infinite}
+/* App-icon cards matching the three baked into the artwork: white tile, soft shadow, blue glyph.
+   Sized as a % of the lane so they scale with the banner and stay in proportion to the baked ones. */
+.bn-tr .tr-flow i{position:absolute;width:27%;aspect-ratio:1;border-radius:26%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#fff,#e8f2fc);
+  box-shadow:0 4px 12px rgba(18,66,124,.26),0 0 0 1px rgba(255,255,255,.85);
+  /* backwards matters: during its animation-delay an icon would otherwise sit visible at its static
+     position instead of waiting off-stage, so half of them appear parked on the artwork on load */
+  animation:trFlow 4.6s linear infinite backwards}
+.bn-tr .tr-flow i svg{width:56%;height:56%;fill:#1f86d8}
 /* Kept to the bright core of the bridge — the channel that runs between the contact icon above and
    the chat icon below — so packets read as travelling along it instead of landing on the artwork. */
-.bn-tr .tr-flow i:nth-child(1){top:30%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){top:47%;animation-delay:.4s;width:16px;height:3px}
-.bn-tr .tr-flow i:nth-child(3){top:63%;animation-delay:.8s;width:26px}
-.bn-tr .tr-flow i:nth-child(4){top:38%;animation-delay:1.2s;width:18px;height:3px}
-.bn-tr .tr-flow i:nth-child(5){top:71%;animation-delay:1.6s;width:15px;height:3px}
-.bn-tr .tr-flow i:nth-child(6){top:54%;animation-delay:2s;width:24px}
-.bn-tr .tr-flow i:nth-child(7){top:44%;animation-delay:2.4s;width:16px;height:3px}
+/* staggered evenly across the loop so one icon is always mid-flight, and offset vertically so they
+   don't march along a single line */
+.bn-tr .tr-flow i:nth-child(1){top:0%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){top:38%;animation-delay:.77s;width:24%}
+.bn-tr .tr-flow i:nth-child(3){top:68%;animation-delay:1.53s}
+.bn-tr .tr-flow i:nth-child(4){top:14%;animation-delay:2.3s;width:23%}
+.bn-tr .tr-flow i:nth-child(5){top:52%;animation-delay:3.07s;width:25%}
+.bn-tr .tr-flow i:nth-child(6){top:26%;animation-delay:3.83s;width:24%}
+/* Emerges from the old phone, drifts up slightly as it crosses, is absorbed into the new one.
+   The crossing takes only the first 42% of the cycle and the icon waits out the rest off-stage —
+   with six of them staggered that keeps two or three in flight instead of all six at once. */
 @keyframes trFlow{
-  0%  {left:-6%;opacity:0;transform:translateY(0) scale(.55)}
-  14% {opacity:1;transform:translateY(-8%) scale(1)}
-  84% {opacity:1;transform:translateY(-14%) scale(1)}
-  100%{left:106%;opacity:0;transform:translateY(-18%) scale(.55)}
+  0%  {left:-36%;opacity:0;transform:translateY(10%) scale(.5)}
+  7%  {opacity:1;transform:translateY(2%) scale(1)}
+  35% {opacity:1;transform:translateY(-8%) scale(1)}
+  42% {left:102%;opacity:0;transform:translateY(-14%) scale(.5)}
+  100%{left:102%;opacity:0;transform:translateY(-14%) scale(.5)}
 }
 @media(prefers-reduced-motion:reduce){.bn-tr .tr-flow{display:none}}
 html.a11y-stop-motion .bn-tr .tr-flow{display:none}
@@ -1469,9 +1477,16 @@ document.addEventListener('DOMContentLoaded',function(){
         <article class="slide s-banner bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
           <a class="slide-banner" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש" aria-label="העברת נתונים מלאה ללא עלות, לתיאום בוואטסאפ">
             <img src="promo_transfers.jpg" alt="העברת נתונים מלאה ללא עלות: קונים מכשיר חדש? נעביר עבורכם אנשי קשר, תמונות ותוכן חשוב מהמכשיר הישן. ברכישת מכשיר חדש בפון גת." width="1832" height="859" loading="lazy" decoding="async">
-            <!-- data packets streaming from the old phone into the new one. Positioned in % of the
-                 banner image so they stay locked to the two devices at every width. -->
-            <span class="tr-flow" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <!-- app icons flying from the old phone into the new one. The lane is expressed in % of
+                 the banner image so it stays locked to the two devices at every width. -->
+            <span class="tr-flow" aria-hidden="true">
+              <i><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
+            </span>
           </a>
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
