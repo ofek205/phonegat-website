@@ -624,16 +624,25 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 
 /* Sized as a share of the art column, never of the viewport: that column peaks at ~390px at a 1080px
    viewport and then SHRINKS back to ~379px, so a vw-based width would keep growing after the column
-   stopped and push the pair out of the grid cell. width:100%+max-width cannot overflow by construction. */
-.bn-tr .tr-scene{position:relative;width:100%;max-width:352px;aspect-ratio:1/.8;margin-inline:auto;--tilt:8deg}
+   stopped and push the pair out of the grid cell. width:100%+max-width cannot overflow by construction.
+   The height budget is free real estate: the carousel track is as tall as its tallest slide (the
+   keyboard banner, 457px), so this slide's row can grow to 457-108px of padding = 349px without making
+   any slide taller. 364x338 spends most of it and finally puts these phones on the same visual footing
+   as the 156px one on the screen-protector slide. */
+.bn-tr .tr-scene{position:relative;width:100%;max-width:364px;aspect-ratio:1/.93;margin-inline:auto}
 
-/* placement only - tilt and float live on .tr-dev, so no keyframe ever restates this transform */
-.bn-tr .tr-ph{position:absolute;top:50%;width:31%;transform:translateY(-50%)}
-.bn-tr .tr-src{right:0;z-index:2}
-.bn-tr .tr-dst{left:0;z-index:3}
+/* Placement only. Both phones are the same width; the 7% difference in top is the composition: the
+   source sits high, the destination low, so the cargo runs downhill with the reading direction instead
+   of straight across. The turn towards each other lives on .tr-dev as a rotateY. */
+.bn-tr .tr-ph{position:absolute;width:38%;transform:translateY(-50%)}
+.bn-tr .tr-src{right:0;top:46.5%;z-index:2;--ry:-12deg}
+.bn-tr .tr-dst{left:0; top:53.5%;z-index:3;--ry:12deg}
 
-/* the frame image stays IN FLOW, so this box IS the image box and every % below is valid */
-.bn-tr .tr-dev{position:relative;display:block;line-height:0}
+/* the frame image stays IN FLOW, so this box IS the image box and every % below is valid.
+   container-type turns that width into the unit the whole on-screen UI is written in (1em = 10% of the
+   phone), which is the only number that changes between desktop and mobile. It also sidesteps the real
+   trap in here: a percentage row-gap inside a grid of indefinite height is not dependable. */
+.bn-tr .tr-dev{position:relative;display:block;line-height:0;container-type:inline-size}
 .bn-tr .tr-frame{position:relative;display:block;width:100%;height:auto;z-index:1;pointer-events:none;
   /* shadow on the image, not the wrapper: on the wrapper the 134% halo would cast it too, i.e. a dark
      blob under a glow */
@@ -641,38 +650,96 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 
 /* The four numbers that map a layer onto iphone-frame.png's display area, taken verbatim from .scr-*
    where they are known to line up. */
-.bn-tr .tr-wall,.bn-tr .tr-refl,.bn-tr .tr-scan,.bn-tr .tr-land{
+.bn-tr .tr-wall,.bn-tr .tr-ui,.bn-tr .tr-refl,.bn-tr .tr-scan,.bn-tr .tr-land{
   position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;pointer-events:none;
-  /* .scr-* hard-codes border-radius:36px, correct only at its own 156px frame. These phones are ~105px
-     (~80px on mobile), where 36px rounds the screen into a lozenge and stops matching the frame's own
+  /* .scr-* hard-codes border-radius:36px, correct only at its own 156px frame. These phones are ~138px
+     (~100px on mobile), where 36px rounds the screen into a lozenge and stops matching the frame's own
      scaled corners. On the reference screen box (147.76x325.18) 36px is 24.36% of width and 11.07% of
      height, and 24.36/11.07 equals that box's 2.2 aspect - so this pair draws the same corner as a
      CIRCLE at any size. */
   border-radius:24.36%/11.07%}
 .bn-tr .tr-wall{box-sizing:border-box;z-index:2;
-  background:#0f3f66 url(phone-wall.png) center/cover no-repeat;
-  /* .scr-wall's 2px/4px bezel was drawn for a 156px frame; unscaled at 105px it reads as a fat black
-     picture frame rather than an edge */
-  border:solid #000;border-width:1px 2.5px;
+  /* scrim over the wallpaper: the icons above are glass, and glass needs something darker than a pale
+     photo behind it or it disappears */
+  background:linear-gradient(180deg,rgba(3,18,38,.26),rgba(3,18,38,.46)),
+             url(phone-wall.png) center/cover no-repeat #0f3f66;
+  /* .scr-wall's 2px/4px bezel was drawn for a 156px frame; unscaled here it reads as a fat black
+     picture frame rather than the thin even edge an iPhone 17 actually has */
+  border:solid #000;border-width:1px 2px;
   box-shadow:inset 0 0 4px 1.5px rgba(0,0,0,.5)}
-/* Dynamic Island - the detail that makes a small mock-up read as an iPhone at a glance */
-.bn-tr .tr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:29%;height:4.2%;
+/* Dynamic Island, with the lens dot the hero phone also draws - at this size that one 2px highlight is
+   what stops it reading as a plain black pill. */
+.bn-tr .tr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:28%;height:4%;
   min-height:5px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.5);
-  z-index:3;pointer-events:none}
-.bn-tr .tr-refl{z-index:4;background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
+  z-index:4;pointer-events:none}
+.bn-tr .tr-punch::after{content:"";position:absolute;top:50%;right:12%;transform:translateY(-50%);
+  width:26%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 32%,#22364a,#000 72%)}
+.bn-tr .tr-refl{z-index:5;background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
+
+/* ---- the screen itself: an iOS home screen, so the phones are switched ON ---- */
+/* Everything below is in em, and this one font-size is the only place a pixel budget is set: 1em is
+   10% of the phone's width, so the layout is identical at 138px and at 100px. */
+.bn-tr .tr-ui{z-index:3;overflow:hidden;font-size:10cqw;
+  display:flex;flex-direction:column;align-items:center}
+/* status bar: at a 130px screen a clock would be 4px of unreadable text, so it is two abstract marks
+   flanking the island - the shape of a status bar, which is all that registers at this size */
+/* 2.5% not the island's own 3.1%: .tr-punch measures against the frame box and this measures against
+   the screen box, which starts .64% lower, so equal numbers would sit the marks 1.6px below the island */
+.bn-tr .tr-stat{position:absolute;top:2.5%;height:4%;left:0;width:100%;box-sizing:border-box;padding:0 13%;
+  display:flex;align-items:center;justify-content:space-between}
+.bn-tr .tr-stat i{display:block;height:.26em;border-radius:999px;background:rgba(255,255,255,.9)}
+.bn-tr .tr-stat i:first-child{width:1.05em}
+.bn-tr .tr-stat i:last-child{width:1.4em}
+/* 4x6 apps, the real iPhone home-screen grid. The grid inherits dir=rtl, which is correct: on a Hebrew
+   iPhone the apps really do fill from the right. */
+.bn-tr .tr-grid{display:grid;grid-template-columns:repeat(4,1fr);align-items:start;
+  gap:.52em .46em;width:83%;margin-top:2.9em}
+/* iOS 26 Liquid Glass rather than 24 saturated squares: translucent tinted glass is both what an
+   iPhone 17 looks like now AND far quieter next to six icons flying over the top of it. --c is an
+   r,g,b triplet so one gradient serves every app; the default is plain white glass. */
+.bn-tr .tr-grid i,.bn-tr .tr-dock i{--c:255,255,255;aspect-ratio:1;border-radius:24%;
+  background:linear-gradient(158deg,rgba(var(--c),.5),rgba(var(--c),.18) 58%,rgba(var(--c),.34));
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.55),0 .5px 1.5px rgba(0,0,0,.28)}
+/* auto pushes the dots, dock and home bar to the foot of the screen whatever the grid does above */
+.bn-tr .tr-dots{display:flex;gap:.3em;margin-top:auto;margin-bottom:.6em}
+.bn-tr .tr-dots i{width:.2em;height:.2em;border-radius:50%;background:rgba(255,255,255,.45)}
+.bn-tr .tr-dots i:first-child{background:rgba(255,255,255,.95)}
+.bn-tr .tr-dock{display:flex;gap:.44em;width:83%;box-sizing:border-box;padding:.4em;border-radius:1.15em;
+  background:rgba(255,255,255,.16);box-shadow:inset 0 .5px 0 rgba(255,255,255,.34);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bn-tr .tr-dock i{flex:1}
+/* the home indicator: two pixels that no other phone has */
+.bn-tr .tr-home{width:31%;height:.16em;min-height:2px;border-radius:999px;
+  background:rgba(255,255,255,.85);margin:0 0 .45em}
+
+/* The destination is filling up. Each slot arrives dim and pops to full, staggered across the master
+   5.4s cycle, so at any instant most apps are already there and three or four are still landing. iOS
+   shows restoring apps exactly like this, so the loop point reads as more apps arriving rather than as
+   a reset. The source phone is deliberately left alone: it is the library, it should look settled. */
+.bn-tr .tr-dst .tr-grid i{animation:trSlot 5.4s linear infinite;animation-delay:calc(var(--i,0)*-.225s)}
+@keyframes trSlot{
+  0%,3%  {opacity:.14;transform:scale(.8)}
+  9%     {opacity:1;  transform:scale(1.08)}
+  14%,90%{opacity:1;  transform:scale(1)}
+  100%   {opacity:.14;transform:scale(.8)}
+}
 
 /* Both devices are deliberately identical - same size, same brightness, same halo. Direction is told
-   by motion alone (one is being read, one is receiving), never by making a phone look worse. */
-.bn-tr .tr-src .tr-dev{transform:rotate(calc(var(--tilt,8deg)*-1));animation:trBobA 7.1s ease-in-out infinite}
-.bn-tr .tr-dst .tr-dev{transform:rotate(var(--tilt,8deg));animation:trBobB 6.2s ease-in-out infinite}
-/* Durations that do not divide into each other, so the pair never falls into lockstep. The rotate is
-   restated inside each keyframe so switching motion off leaves the tilt standing. Always var(--tilt,8deg)
-   with a fallback: a missing custom property inside transform computes the WHOLE transform to none and
-   the phones would silently go flat. */
-@keyframes trBobA{0%,100%{transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(0)}
-                  50%    {transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(-5px)}}
-@keyframes trBobB{0%,100%{transform:rotate(var(--tilt,8deg)) translateY(0)}
-                  50%    {transform:rotate(var(--tilt,8deg)) translateY(-7px)}}
+   by motion alone (one is being read, one is receiving), never by making a phone look worse.
+   perspective() as a transform function rather than a perspective property on the scene: each phone
+   then turns about its own vanishing point, which is what two phones held towards each other actually
+   do, and it keeps .tr-ph free for placement. Unlike a 2D rotate this adds nothing to the bounding
+   box, so the pair cannot grow into the text column. */
+.bn-tr .tr-src .tr-dev{transform:perspective(760px) rotateY(var(--ry,0deg));animation:trBobA 7.1s ease-in-out infinite}
+.bn-tr .tr-dst .tr-dev{transform:perspective(760px) rotateY(var(--ry,0deg));animation:trBobB 6.2s ease-in-out infinite}
+/* Durations that do not divide into each other, so the pair never falls into lockstep. The turn is
+   restated inside each keyframe so switching motion off leaves the phones facing each other. Always
+   var(--ry,0deg) with a fallback: a missing custom property inside transform computes the WHOLE
+   transform to none, and the two would silently snap flat. */
+@keyframes trBobA{0%,100%{transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(0)}
+                  50%    {transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(-5px)}}
+@keyframes trBobB{0%,100%{transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(0)}
+                  50%    {transform:perspective(760px) rotateY(var(--ry,0deg)) translateY(-7px)}}
 
 /* halo in % of the frame box so it scales; breathing on the master half-beat (2.7s = 5.4/2) */
 .bn-tr .tr-halo{position:absolute;left:50%;top:52%;width:134%;aspect-ratio:1;transform:translate(-50%,-50%);
@@ -686,14 +753,14 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* The source phone is being READ: a light bar runs down its screen. background-position rather than a
    transform because the band must be clipped by the screen's own rounded box, and that box is this
    element. With background-size 100% 24%, -34% parks it fully above the glass and 132% fully below. */
-.bn-tr .tr-scan{z-index:5;
+.bn-tr .tr-scan{z-index:6;
   background:linear-gradient(180deg,transparent 0,rgba(198,238,255,.5) 46%,rgba(120,190,235,.1) 60%,transparent 100%);
   background-size:100% 24%;background-repeat:no-repeat;
   animation:trScan 2.7s linear infinite}
 @keyframes trScan{from{background-position:0 -34%}to{background-position:0 132%}}
 /* The destination is RECEIVING: one bloom per arrival. .9s is the icon stagger, so a pulse always
    coincides with something landing. Opacity only - a scale would push the bloom past the bezel. */
-.bn-tr .tr-land{z-index:5;opacity:0;
+.bn-tr .tr-land{z-index:6;opacity:0;
   background:radial-gradient(72% 42% at 50% 62%,rgba(140,215,255,.55),rgba(110,190,240,.16) 52%,transparent 78%);
   animation:trLand .9s linear infinite}
 @keyframes trLand{0%{opacity:0}20%{opacity:.55}100%{opacity:0}}
@@ -701,7 +768,7 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* The bridge: a breathing pool plus two pulses running the lane, so the only thing spanning the two
    devices is never static. The radial mask fades it INTO both phones instead of stopping on an edge -
    a hard edge is exactly what every crop of the old photo kept producing. */
-.bn-tr .tr-beam{position:absolute;top:50%;left:17%;width:67%;height:54%;transform:translateY(-50%);
+.bn-tr .tr-beam{position:absolute;top:50%;left:19%;width:62%;height:50%;transform:translateY(-50%);
   z-index:1;pointer-events:none;overflow:hidden;
   background:radial-gradient(56% 46% at 50% 50%,rgba(120,205,250,.26),rgba(90,175,225,.1) 58%,transparent 76%);
   -webkit-mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
@@ -719,7 +786,7 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* Every icon is the same object on the same lane; only size, height, start time and parked position
    differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
    contain:paint - the 16px outer glow would be shaved). */
-.bn-tr .tr-flow{position:absolute;inset:0;z-index:4;pointer-events:none;contain:layout}
+.bn-tr .tr-flow{position:absolute;inset:0;z-index:7;pointer-events:none;contain:layout}
 .bn-tr .tr-flow i{position:absolute;top:var(--t);left:var(--rest);width:var(--sz);aspect-ratio:1;
   transform:translate(-50%,-50%);border-radius:27%;
   display:flex;align-items:center;justify-content:center;
@@ -729,57 +796,67 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
     inset 0 -1px 0 rgba(188,224,245,.55);
   animation:trFly 5.4s linear infinite}
 .bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce}
-/* --t height in the lane, --sz size, --rest where it parks when motion is off. Delays are NEGATIVE so
+/* --t height in the lane, --sz size, --rest where it parks when motion is off. Sizes are a touch under
+   the old ones now that the phones are bigger: a flying icon should read as one app leaving the grid,
+   about half again the 22px of an icon on the screen, not as a floating tile. Delays are NEGATIVE so
    the lane is already full on the first frame instead of filling over 4.5s. 5.4/6 = one every .9s. */
-.bn-tr .tr-flow i:nth-child(1){--t:22%;--sz:12%;  --rest:78%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){--t:62%;--sz:10.5%;--rest:66%;animation-delay:-.9s}
-.bn-tr .tr-flow i:nth-child(3){--t:34%;--sz:12.8%;--rest:54%;animation-delay:-1.8s}
-.bn-tr .tr-flow i:nth-child(4){--t:76%;--sz:10%;  --rest:42%;animation-delay:-2.7s}
-.bn-tr .tr-flow i:nth-child(5){--t:16%;--sz:11%;  --rest:30%;animation-delay:-3.6s}
-.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:11.8%;--rest:20%;animation-delay:-4.5s}
-/* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon materialises
-   out of a display and sinks into the other rather than sliding past them. The crossing fills 72% of
-   the cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
+.bn-tr .tr-flow i:nth-child(1){--t:24%;--sz:10.4%;--rest:78%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){--t:60%;--sz:9.2%; --rest:66%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(3){--t:36%;--sz:11%;  --rest:54%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(4){--t:72%;--sz:8.8%; --rest:42%;animation-delay:-2.7s}
+.bn-tr .tr-flow i:nth-child(5){--t:20%;--sz:9.6%; --rest:30%;animation-delay:-3.6s}
+.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:10.2%;--rest:20%;animation-delay:-4.5s}
+/* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon lifts off a
+   home screen and sinks into the other one rather than sliding past them. The Y term now also drifts
+   downwards over the flight, because the source sits 7% higher than the destination and a flat lane
+   between two phones at different heights looks detached from both. The crossing fills 72% of the
+   cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
    ever parked visibly, since for the other 28% it sits off-stage at opacity 0. linear and one shared
-   5.4s (with the beam on its exact 1.8s/2.7s harmonics) because the icons, the sweeps and the arrival
-   bloom are one mechanism: easing them apart would let the bloom fire while nothing is landing. */
+   5.4s (with the beam on its exact 1.8s/2.7s harmonics, and the arriving apps on the same 5.4s)
+   because all of it is one mechanism: easing them apart would let the bloom fire while nothing lands. */
 @keyframes trFly{
-  0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
-  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 3px))  scale(1)    rotate(-7deg)}
-  40% {         opacity:1;transform:translate(-50%,calc(-50% - 12px)) scale(1.03) rotate(0deg)}
-  64% {         opacity:1;transform:translate(-50%,calc(-50% - 9px))  scale(1)    rotate(4deg)}
-  72% {left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
-  100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
+  0%  {left:84%;opacity:0;transform:translate(-50%,calc(-50% - 6px))  scale(.4)  rotate(-14deg)}
+  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 11px)) scale(1)   rotate(-7deg)}
+  40% {         opacity:1;transform:translate(-50%,calc(-50% - 7px))  scale(1.03)rotate(0deg)}
+  64% {         opacity:1;transform:translate(-50%,calc(-50% + 5px))  scale(1)   rotate(4deg)}
+  72% {left:17%;opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.4)  rotate(11deg)}
+  100%{left:17%;opacity:0;transform:translate(-50%,calc(-50% + 12px)) scale(.4)  rotate(11deg)}
 }
 
 /* Both kill switches, per the file convention. Not decorative here: the global reduced-motion rule
-   drops each element to its BASE style, which for .tr-land is opacity:0 and for .tr-scan is a light
-   bar parked at the top of the screen - a defect. These leave a still frame that still tells the
-   story: two tilted phones, a lit bridge, six icons parked along the lane. */
+   drops each element to its BASE style, which for .tr-land is opacity:0, for .tr-scan is a light bar
+   parked at the top of the screen, and for a destination app is a slot stuck at opacity .14 - three
+   defects. These leave a still frame that still tells the story: two phones turned towards each other,
+   both home screens complete, a lit bridge, six icons parked along the lane. */
 @media(prefers-reduced-motion:reduce){
   .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
   .bn-tr .tr-beam::before,.bn-tr .tr-beam::after{animation:none;opacity:0}
   .bn-tr .tr-scan{animation:none;opacity:0}
   .bn-tr .tr-land{animation:none;opacity:.34}
+  .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transform:none}
 }
 html.a11y-stop-motion .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
 html.a11y-stop-motion .bn-tr .tr-beam::before,html.a11y-stop-motion .bn-tr .tr-beam::after{animation:none;opacity:0}
 html.a11y-stop-motion .bn-tr .tr-scan{animation:none;opacity:0}
 html.a11y-stop-motion .bn-tr .tr-land{animation:none;opacity:.34}
+html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transform:none}
 
 /* The carousel keeps all five slides in the DOM and only translates the track, so off-screen copies
    would animate for ever. Same convention as .slide[aria-hidden="true"] .pg-sim-face. */
-.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i),
+.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i,.tr-grid i),
 .slide[aria-hidden="true"] .tr-beam::before,
 .slide[aria-hidden="true"] .tr-beam::after{animation-play-state:paused}
 
 @media(max-width:720px){
   /* .slide-art is hidden globally on phones, so this slide has to opt back in */
   .bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}
-  /* cap the scene, ease the tilt the way .scr-stage does, thin the bezel again, and drop to four
-     icons so the lane stays a stream rather than a crowd. One --tilt knob, read by the bob keyframes. */
-  .bn-tr .tr-scene{max-width:262px;--tilt:7deg}
-  .bn-tr .tr-wall{border-width:1px 2px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
+  /* Cap the scene and straighten the pair slightly - at 100px a 12 degree turn costs more legibility
+     on the home screens than it buys in depth. Everything on the screen is in cqw and needs no mobile
+     value at all. Four icons in the lane rather than six, so it stays a stream, not a crowd. */
+  .bn-tr .tr-scene{max-width:268px}
+  .bn-tr .tr-src{--ry:-9deg}
+  .bn-tr .tr-dst{--ry:9deg}
+  .bn-tr .tr-wall{border-width:1px 1.5px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
   .bn-tr .tr-flow i:nth-child(n+5){display:none}
   .bn-tr .tr-flow i:nth-child(1){animation-delay:0s}
   .bn-tr .tr-flow i:nth-child(2){animation-delay:-1.35s}
@@ -1639,15 +1716,33 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
           <div class="slide-art">
             <!-- Both devices are the site's own phone: iphone-frame.png with a wallpaper, a Dynamic
-                 Island and a sheen laid over it, exactly as on the screen-protector slide. The <svg>s
-                 sit three levels down on purpose, so .slide-art:has(>svg)::before (the glass tile meant
-                 for the plain icon slides) and .slide-art>svg (dealFloat) cannot match this scene. -->
+                 Island and a sheen laid over it, exactly as on the screen-protector slide, plus a live
+                 iOS home screen inside so they read as switched-on phones rather than blank glass.
+                 The two are identical markup; only the last layer differs (the source is being scanned,
+                 the destination is receiving). Every app carries --i, its place in the arrival order,
+                 which is all .tr-dst needs to fill up in a wave. The <svg>s sit three levels down on
+                 purpose, so .slide-art:has(>svg)::before (the glass tile meant for the plain icon
+                 slides) and .slide-art>svg (dealFloat) cannot match this scene. -->
             <div class="tr-scene" role="img" aria-label="התוכן מהמכשיר הישן עובר אל המכשיר החדש: אנשי קשר, תמונות, הודעות, מוזיקה, מסמכים וסרטונים">
               <span class="tr-beam" aria-hidden="true"></span>
               <span class="tr-ph tr-src" aria-hidden="true">
                 <span class="tr-dev">
                   <span class="tr-halo"></span>
                   <span class="tr-wall"></span>
+                  <span class="tr-ui">
+                    <span class="tr-stat"><i></i><i></i></span>
+                    <span class="tr-grid">
+                      <i style="--i:0;--c:52,199,89"></i><i style="--i:1"></i><i style="--i:2;--c:10,132,255"></i><i style="--i:3"></i>
+                      <i style="--i:4"></i><i style="--i:5;--c:255,159,10"></i><i style="--i:6"></i><i style="--i:7;--c:45,190,200"></i>
+                      <i style="--i:8;--c:255,69,58"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11;--c:191,90,242"></i>
+                      <i style="--i:12"></i><i style="--i:13;--c:255,214,10"></i><i style="--i:14"></i><i style="--i:15"></i>
+                      <i style="--i:16;--c:100,210,255"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19;--c:120,180,255"></i>
+                      <i style="--i:20"></i><i style="--i:21"></i><i style="--i:22;--c:88,214,141"></i><i style="--i:23"></i>
+                    </span>
+                    <span class="tr-dots"><i></i><i></i><i></i></span>
+                    <span class="tr-dock"><i style="--c:52,199,89"></i><i style="--c:10,132,255"></i><i style="--c:45,190,200"></i><i style="--c:255,159,10"></i></span>
+                    <span class="tr-home"></span>
+                  </span>
                   <span class="tr-punch"></span>
                   <span class="tr-refl"></span>
                   <img class="tr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
@@ -1658,6 +1753,20 @@ document.addEventListener('DOMContentLoaded',function(){
                 <span class="tr-dev">
                   <span class="tr-halo"></span>
                   <span class="tr-wall"></span>
+                  <span class="tr-ui">
+                    <span class="tr-stat"><i></i><i></i></span>
+                    <span class="tr-grid">
+                      <i style="--i:0;--c:52,199,89"></i><i style="--i:1"></i><i style="--i:2;--c:10,132,255"></i><i style="--i:3"></i>
+                      <i style="--i:4"></i><i style="--i:5;--c:255,159,10"></i><i style="--i:6"></i><i style="--i:7;--c:45,190,200"></i>
+                      <i style="--i:8;--c:255,69,58"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11;--c:191,90,242"></i>
+                      <i style="--i:12"></i><i style="--i:13;--c:255,214,10"></i><i style="--i:14"></i><i style="--i:15"></i>
+                      <i style="--i:16;--c:100,210,255"></i><i style="--i:17"></i><i style="--i:18"></i><i style="--i:19;--c:120,180,255"></i>
+                      <i style="--i:20"></i><i style="--i:21"></i><i style="--i:22;--c:88,214,141"></i><i style="--i:23"></i>
+                    </span>
+                    <span class="tr-dots"><i></i><i></i><i></i></span>
+                    <span class="tr-dock"><i style="--c:52,199,89"></i><i style="--c:10,132,255"></i><i style="--c:45,190,200"></i><i style="--c:255,159,10"></i></span>
+                    <span class="tr-home"></span>
+                  </span>
                   <span class="tr-punch"></span>
                   <span class="tr-refl"></span>
                   <img class="tr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
