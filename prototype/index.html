@@ -604,7 +604,30 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    The artwork is a baked image, so the flow lane is expressed as a % box over it: the old phone's
    screen ends at ~20% of the image width, the new one starts at ~33%, and the light bridge between
    them sits between 42% and 68% of the height. Percentages keep it aligned at any banner width. */
-.bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:2}
+/* above the anchors: a travelling icon half-hidden behind a resting one reads as a glitch, while
+   passing in front of it reads as exactly what it is */
+.bn-tr .tr-flow{position:absolute;left:19.5%;width:14%;top:43%;height:22%;pointer-events:none;z-index:4}
+/* ---- anchors: one card per printed icon, sized 5.2% of the banner against the printed 3.9% so a
+   gentle drift can never uncover what is underneath. Positions come from measuring the artwork. ---- */
+.bn-tr .tr-anchors{position:absolute;inset:0;pointer-events:none;z-index:3}
+.bn-tr .tr-anchors i,.bn-tr .tr-flow i{border-radius:26%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#fff,#e8f2fc);
+  box-shadow:0 4px 12px rgba(18,66,124,.26),0 0 0 1px rgba(255,255,255,.85)}
+/* 6.6% against the printed 3.9%: each printed card also drops a soft shadow below it, and covering
+   the card alone left that shadow showing as a second outline under the floating one. */
+.bn-tr .tr-anchors i{position:absolute;width:6.6%;aspect-ratio:1}
+.bn-tr .tr-anchors i svg{width:52%;height:52%;fill:#1f86d8}
+.bn-tr .tr-anchors .a1{left:21.95%;top:39.9%;animation:trBob 5.4s ease-in-out infinite}
+.bn-tr .tr-anchors .a2{left:28.33%;top:45.4%;animation:trBob 6.2s ease-in-out infinite -2.1s}
+.bn-tr .tr-anchors .a3{left:21.67%;top:54.9%;animation:trBob 5.8s ease-in-out infinite -4.3s}
+/* Percentages resolve against the icon's own box, so the drift scales with the banner and the
+   printed card stays hidden at every width. Measured spare room is 8% of the icon horizontally
+   and about 25% vertically, so 3% and 12% keep a wide safety margin. */
+@keyframes trBob{
+  0%,100%{transform:translate(0,0)}
+  30%    {transform:translate(3%,-12%)}
+  65%    {transform:translate(-2.5%,9%)}
+}
 /* App-icon cards matching the three baked into the artwork: white tile, soft shadow, blue glyph.
    Sized as a % of the lane so they scale with the banner and stay in proportion to the baked ones. */
 .bn-tr .tr-flow i{position:absolute;width:27%;aspect-ratio:1;border-radius:26%;
@@ -619,12 +642,10 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    the chat icon below — so packets read as travelling along it instead of landing on the artwork. */
 /* staggered evenly across the loop so one icon is always mid-flight, and offset vertically so they
    don't march along a single line */
-.bn-tr .tr-flow i:nth-child(1){top:0%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){top:38%;animation-delay:.77s;width:24%}
-.bn-tr .tr-flow i:nth-child(3){top:68%;animation-delay:1.53s}
-.bn-tr .tr-flow i:nth-child(4){top:14%;animation-delay:2.3s;width:23%}
-.bn-tr .tr-flow i:nth-child(5){top:52%;animation-delay:3.07s;width:25%}
-.bn-tr .tr-flow i:nth-child(6){top:26%;animation-delay:3.83s;width:24%}
+.bn-tr .tr-flow i:nth-child(1){top:4%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){top:62%;animation-delay:1.15s;width:24%}
+.bn-tr .tr-flow i:nth-child(3){top:30%;animation-delay:2.3s;width:25%}
+.bn-tr .tr-flow i:nth-child(4){top:72%;animation-delay:3.45s;width:23%}
 /* Emerges from the old phone, drifts up slightly as it crosses, is absorbed into the new one.
    The crossing takes only the first 42% of the cycle and the icon waits out the rest off-stage —
    with six of them staggered that keeps two or three in flight instead of all six at once. */
@@ -635,8 +656,14 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   42% {left:102%;opacity:0;transform:translateY(-14%) scale(.5)}
   100%{left:102%;opacity:0;transform:translateY(-14%) scale(.5)}
 }
-@media(prefers-reduced-motion:reduce){.bn-tr .tr-flow{display:none}}
+/* With motion off the anchors must stay put — they are covering the printed icons, so hiding them
+   would reveal a duplicate underneath. Only the travelling icons go away. */
+@media(prefers-reduced-motion:reduce){
+  .bn-tr .tr-flow{display:none}
+  .bn-tr .tr-anchors i{animation:none}
+}
 html.a11y-stop-motion .bn-tr .tr-flow{display:none}
+html.a11y-stop-motion .bn-tr .tr-anchors i{animation:none}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
 .s-banner .slide-banner:hover img{transform:scale(1.015)}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
@@ -1477,15 +1504,20 @@ document.addEventListener('DOMContentLoaded',function(){
         <article class="slide s-banner bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
           <a class="slide-banner" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש" aria-label="העברת נתונים מלאה ללא עלות, לתיאום בוואטסאפ">
             <img src="promo_transfers.jpg" alt="העברת נתונים מלאה ללא עלות: קונים מכשיר חדש? נעביר עבורכם אנשי קשר, תמונות ותוכן חשוב מהמכשיר הישן. ברכישת מכשיר חדש בפון גת." width="1832" height="859" loading="lazy" decoding="async">
-            <!-- app icons flying from the old phone into the new one. The lane is expressed in % of
-                 the banner image so it stays locked to the two devices at every width. -->
+            <!-- The three icons in the artwork are baked into the photo and cannot move, and a mix of
+                 static and moving ones reads as broken. So each is covered by a slightly larger card
+                 of its own that drifts gently: the printed one never shows, and everything on screen
+                 is in motion. More icons stream across the bridge behind them. -->
+            <span class="tr-anchors" aria-hidden="true">
+              <i class="a1"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
+              <i class="a2"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
+              <i class="a3"><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
+            </span>
             <span class="tr-flow" aria-hidden="true">
-              <i><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
               <i><svg viewBox="0 0 24 24"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
               <i><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
               <i><svg viewBox="0 0 24 24"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
+              <i><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
             </span>
           </a>
           <div class="slide-in">
