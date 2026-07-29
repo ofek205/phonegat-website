@@ -88,7 +88,9 @@ p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block
 :focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .skip{position:absolute;inset-inline-start:-9999px;top:0;background:var(--teal);color:#fff;padding:.6rem 1rem;z-index:300}.skip:focus{inset-inline-start:0}
 bdo,.ltr{unicode-bidi:isolate;direction:ltr}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-weight:700;font-size:1rem;border-radius:4px;padding:9px 20px;border:none;cursor:pointer;transition:background .25s,transform .2s;white-space:nowrap}
+/* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
+   button renders in the UA default (Arial) while the ones that are <a> render in Assistant. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:inherit;font-weight:700;font-size:1rem;line-height:1.65;border-radius:4px;padding:9px 20px;border:none;cursor:pointer;transition:background .25s,transform .2s;white-space:nowrap}
 .btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:var(--teal-d)}
 .btn-wa{background:#25D366;color:#0a2e18}.btn-wa:hover{background:#20c15c}
 .wa-ico{border-radius:22%;flex:none;object-fit:contain}
@@ -505,17 +507,22 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .bn-kb{background:#132a3e}      /* matches the keyboard banner's dark edge */
 .bn-tr{background:#fefefe}      /* matches the data-transfer banner's white edge */
 /* ===== screen-protector slide: light card like the ad, glass animating onto the phone ===== */
-.s-scr{background:radial-gradient(72% 62% at 31% 52%,#dbe8f7,transparent 62%),linear-gradient(135deg,#f5f8fb,#e6edf5);color:var(--ink-strong)}
+/* deep blue, in the same family as the other promo slides (.bn-kb / .bn-tr) — the pale version made
+   this slide the odd one out in the carousel, and washed out the phone and the glass sitting on it */
+.s-scr{background:radial-gradient(78% 64% at 30% 46%,rgba(70,140,220,.42),transparent 62%),linear-gradient(135deg,#1b3a63,#0b1a30);color:#eaf2fb}
 .s-scr::before,.s-scr::after{display:none}
-.s-scr .scr-excl{display:inline-flex;align-items:center;gap:6px;background:#1d4f91;color:#fff;font-weight:800;font-size:.78rem;border-radius:999px;padding:6px 15px;margin-bottom:.85rem}
+/* same glass surface as .slide .badge (alpha, border, blur) so both read as one component.
+   It stays smaller because this one carries a full sentence, not a two-word price tag. */
+.s-scr .scr-excl{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;font-weight:900;font-size:.92rem;line-height:1;border-radius:14px;padding:.5em .85em;margin-bottom:1rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
 .s-scr .scr-excl .st{color:#ffc94d}
-.s-scr h3{color:#0f2d52;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.12;margin:0}
-.s-scr .scr-price{display:flex;align-items:baseline;gap:.3rem;margin:.45rem 0 0;color:#1f6fd0;font-weight:900;font-size:clamp(1.05rem,2vw,1.3rem)}
+.s-scr h3{color:#fff;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.12;margin:0}
+.s-scr .scr-price{display:flex;align-items:baseline;gap:.3rem;margin:.45rem 0 0;color:#6fc0ff;font-weight:900;font-size:clamp(1.05rem,2vw,1.3rem)}
 .s-scr .scr-price b{font-size:clamp(2.5rem,6vw,4.1rem);line-height:.95;letter-spacing:-2px}
 .s-scr .scr-price .cur{font-size:clamp(1.15rem,2.4vw,1.65rem);font-weight:800}
-.s-scr .scr-sub{color:#3c4a5c;font-size:clamp(.95rem,1.5vw,1.08rem);margin:.35rem 0 0;max-width:34ch}
-.s-scr .scr-fine{color:#7c8797;font-size:.8rem;margin:.25rem 0 0}
-.s-scr .scr-cta{background:#fff;color:#1f6fd0;font-weight:900;box-shadow:0 10px 26px -12px rgba(15,45,82,.5);margin-top:1rem}
+/* same type scale as .slide p / .slide .fine on every other slide, so the carousel reads as one set */
+.s-scr .scr-sub{color:#c3d6ec;font-size:clamp(1rem,1.5vw,1.14rem);line-height:1.5;margin:.35rem 0 0;max-width:34ch}
+.s-scr .scr-fine{color:#8ba3bf;font-size:.82rem;margin:.25rem 0 0}
+.s-scr .scr-cta{background:#fff;color:#1f6fd0;box-shadow:0 10px 26px -12px rgba(15,45,82,.5);margin-top:1rem}
 .s-scr .scr-cta:hover{background:#f1f7ff}
 /* the frame image stays in flow so the stage box equals it exactly — the % offsets below depend on that */
 .scr-stage{position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(15,45,82,.3))}
