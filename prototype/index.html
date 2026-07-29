@@ -512,7 +512,9 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
 .bn-kb{background:linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}      /* matches the keyboard banner's dark edge */
 /* charcoal behind the artwork too: the white frame made this the one slide that broke the run */
-.bn-tr{background:linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}      /* matches the data-transfer banner's white edge */
+/* This slide's own accent, in the cyan its scene carries. It used to be added only on phones, because
+   on desktop the slide was a photo that brought its own light with it; the scene is CSS at every width now. */
+.bn-tr{background:radial-gradient(118% 88% at 79% 8%,rgba(64,178,214,.30),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
 /* ===== screen-protector slide: light card like the ad, glass animating onto the phone ===== */
 /* deep blue, in the same family as the other promo slides (.bn-kb / .bn-tr) — the pale version made
    this slide the odd one out in the carousel, and washed out the phone and the glass sitting on it */
@@ -607,74 +609,194 @@ html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
 .s-banner::before,.s-banner::after{display:none}
 .s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
-/* ===== data-transfer artwork: two device windows with a live gap between them =====
-   The artwork prints three app icons in the space between the phones. They cannot move, so the
-   icons drawn over them had to stay put while the rest travelled, and two kinds of motion in one
-   picture read as broken. Each device now gets its own window onto the photo and the printed icons
-   fall outside both, which leaves the gap empty and lets every icon travel the same way. */
-.bn-tr .tr-stage{position:relative;display:flex;align-items:center;justify-content:center;
-  width:100%;max-width:430px;aspect-ratio:1/.8}
-/* window on to one phone: 15.5% of the image wide, 76% tall. The image inside keeps its own
-   proportions and is simply offset so the wanted device lands in the frame. */
-.bn-tr .tr-dev{position:relative;flex:0 0 34%;aspect-ratio:284/653;overflow:hidden}
-/* the shared .slide-art img rule caps art at 220x108 and contains it; these are windows on to a
-   much larger picture, so those caps have to be lifted or the crop collapses */
-.bn-tr .tr-dev img{position:absolute;top:-18.4%;width:645.2%;height:auto;
-  max-width:none;max-height:none;object-fit:fill;border-radius:0;
-  filter:brightness(.72) contrast(1.12) saturate(1.06)}
-.bn-tr .tr-dev-a img{left:-38.7%}
-.bn-tr .tr-dev-b img{left:-203.2%}
-/* Fade every edge, not just the one facing the gap. Each window still carries the artwork's pale
-   studio backdrop around its phone, and two bright rectangles on the charcoal were the last thing
-   breaking the run; softening all four sides leaves the device itself floating, the way the other
-   slides present their products. */
-.bn-tr .tr-dev{-webkit-mask-image:radial-gradient(86% 66% at 50% 50%,#000 46%,rgba(0,0,0,.65) 76%,transparent 100%);
-  mask-image:radial-gradient(86% 66% at 50% 50%,#000 46%,rgba(0,0,0,.65) 76%,transparent 100%)}
-/* the bridge itself, drawn rather than cropped, so it spans the gap at full strength */
-.bn-tr .tr-gap{position:relative;flex:0 0 32%;align-self:stretch;
-  background:radial-gradient(62% 26% at 50% 50%,rgba(120,205,250,.38),transparent 72%)}
-/* every icon in the gap is the same object on the same path — only size and start time differ */
-.bn-tr .tr-gap i{position:absolute;width:29%;aspect-ratio:1;border-radius:27%;
+/* ===== data-transfer slide: two live iPhones, content flying from one into the other =====
+   Rebuilt from the site's own parts. The previous version cropped windows out of promo_transfers.jpg,
+   whose pale studio backdrop, three PRINTED app icons and baked marketing type fought the charcoal at
+   every attempt: crops arrived as bright hard-edged rectangles, and the printed icons could not move,
+   so their covers had to stay put while the rest travelled. Two kinds of motion in one picture is what
+   read as broken. Both devices are now the same CSS phone the screen-protector slide uses, so nothing
+   here is baked and everything can move.
+
+   RTL: .slide-art is grid column 2, which under dir=rtl sits on the LEFT, and a Hebrew reader reaches
+   it moving leftwards. Source phone on the right, destination on the left, cargo travelling right to
+   left WITH the reading direction. Every offset below is physical (left/right) on purpose; a single
+   inset-inline-* here would silently mirror the story. */
+
+/* Sized as a share of the art column, never of the viewport: that column peaks at ~390px at a 1080px
+   viewport and then SHRINKS back to ~379px, so a vw-based width would keep growing after the column
+   stopped and push the pair out of the grid cell. width:100%+max-width cannot overflow by construction. */
+.bn-tr .tr-scene{position:relative;width:100%;max-width:352px;aspect-ratio:1/.8;margin-inline:auto;--tilt:8deg}
+
+/* placement only - tilt and float live on .tr-dev, so no keyframe ever restates this transform */
+.bn-tr .tr-ph{position:absolute;top:50%;width:31%;transform:translateY(-50%)}
+.bn-tr .tr-src{right:0;z-index:2}
+.bn-tr .tr-dst{left:0;z-index:3}
+
+/* the frame image stays IN FLOW, so this box IS the image box and every % below is valid */
+.bn-tr .tr-dev{position:relative;display:block;line-height:0}
+.bn-tr .tr-frame{position:relative;display:block;width:100%;height:auto;z-index:1;pointer-events:none;
+  /* shadow on the image, not the wrapper: on the wrapper the 134% halo would cast it too, i.e. a dark
+     blob under a glow */
+  filter:drop-shadow(0 15px 22px rgba(0,0,0,.52))}
+
+/* The four numbers that map a layer onto iphone-frame.png's display area, taken verbatim from .scr-*
+   where they are known to line up. */
+.bn-tr .tr-wall,.bn-tr .tr-refl,.bn-tr .tr-scan,.bn-tr .tr-land{
+  position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;pointer-events:none;
+  /* .scr-* hard-codes border-radius:36px, correct only at its own 156px frame. These phones are ~105px
+     (~80px on mobile), where 36px rounds the screen into a lozenge and stops matching the frame's own
+     scaled corners. On the reference screen box (147.76x325.18) 36px is 24.36% of width and 11.07% of
+     height, and 24.36/11.07 equals that box's 2.2 aspect - so this pair draws the same corner as a
+     CIRCLE at any size. */
+  border-radius:24.36%/11.07%}
+.bn-tr .tr-wall{box-sizing:border-box;z-index:2;
+  background:#0f3f66 url(phone-wall.png) center/cover no-repeat;
+  /* .scr-wall's 2px/4px bezel was drawn for a 156px frame; unscaled at 105px it reads as a fat black
+     picture frame rather than an edge */
+  border:solid #000;border-width:1px 2.5px;
+  box-shadow:inset 0 0 4px 1.5px rgba(0,0,0,.5)}
+/* Dynamic Island - the detail that makes a small mock-up read as an iPhone at a glance */
+.bn-tr .tr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:29%;height:4.2%;
+  min-height:5px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.5);
+  z-index:3;pointer-events:none}
+.bn-tr .tr-refl{z-index:4;background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
+
+/* Both devices are deliberately identical - same size, same brightness, same halo. Direction is told
+   by motion alone (one is being read, one is receiving), never by making a phone look worse. */
+.bn-tr .tr-src .tr-dev{transform:rotate(calc(var(--tilt,8deg)*-1));animation:trBobA 7.1s ease-in-out infinite}
+.bn-tr .tr-dst .tr-dev{transform:rotate(var(--tilt,8deg));animation:trBobB 6.2s ease-in-out infinite}
+/* Durations that do not divide into each other, so the pair never falls into lockstep. The rotate is
+   restated inside each keyframe so switching motion off leaves the tilt standing. Always var(--tilt,8deg)
+   with a fallback: a missing custom property inside transform computes the WHOLE transform to none and
+   the phones would silently go flat. */
+@keyframes trBobA{0%,100%{transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(0)}
+                  50%    {transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(-5px)}}
+@keyframes trBobB{0%,100%{transform:rotate(var(--tilt,8deg)) translateY(0)}
+                  50%    {transform:rotate(var(--tilt,8deg)) translateY(-7px)}}
+
+/* halo in % of the frame box so it scales; breathing on the master half-beat (2.7s = 5.4/2) */
+.bn-tr .tr-halo{position:absolute;left:50%;top:52%;width:134%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);
+  animation:trHalo 2.7s ease-in-out infinite alternate}
+.bn-tr .tr-dst .tr-halo{animation-delay:-1.35s}
+@keyframes trHalo{from{opacity:.72;transform:translate(-50%,-50%) scale(.94)}
+                  to  {opacity:1;  transform:translate(-50%,-50%) scale(1.06)}}
+
+/* The source phone is being READ: a light bar runs down its screen. background-position rather than a
+   transform because the band must be clipped by the screen's own rounded box, and that box is this
+   element. With background-size 100% 24%, -34% parks it fully above the glass and 132% fully below. */
+.bn-tr .tr-scan{z-index:5;
+  background:linear-gradient(180deg,transparent 0,rgba(198,238,255,.5) 46%,rgba(120,190,235,.1) 60%,transparent 100%);
+  background-size:100% 24%;background-repeat:no-repeat;
+  animation:trScan 2.7s linear infinite}
+@keyframes trScan{from{background-position:0 -34%}to{background-position:0 132%}}
+/* The destination is RECEIVING: one bloom per arrival. .9s is the icon stagger, so a pulse always
+   coincides with something landing. Opacity only - a scale would push the bloom past the bezel. */
+.bn-tr .tr-land{z-index:5;opacity:0;
+  background:radial-gradient(72% 42% at 50% 62%,rgba(140,215,255,.55),rgba(110,190,240,.16) 52%,transparent 78%);
+  animation:trLand .9s linear infinite}
+@keyframes trLand{0%{opacity:0}20%{opacity:.55}100%{opacity:0}}
+
+/* The bridge: a breathing pool plus two pulses running the lane, so the only thing spanning the two
+   devices is never static. The radial mask fades it INTO both phones instead of stopping on an edge -
+   a hard edge is exactly what every crop of the old photo kept producing. */
+.bn-tr .tr-beam{position:absolute;top:50%;left:17%;width:67%;height:54%;transform:translateY(-50%);
+  z-index:1;pointer-events:none;overflow:hidden;
+  background:radial-gradient(56% 46% at 50% 50%,rgba(120,205,250,.26),rgba(90,175,225,.1) 58%,transparent 76%);
+  -webkit-mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
+  mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
+  animation:trBeam 2.7s ease-in-out infinite alternate}
+@keyframes trBeam{from{opacity:.72}to{opacity:1}}
+/* 1.8s = 5.4/3: three sweeps per master cycle, phase-locked to the icon stagger for ever rather than
+   drifting against it. % travel, so the speed tracks the scene at every width. */
+.bn-tr .tr-beam::before,.bn-tr .tr-beam::after{content:"";position:absolute;top:0;bottom:0;width:30%;
+  background:linear-gradient(90deg,rgba(150,220,255,0),rgba(170,230,255,.34) 50%,rgba(150,220,255,0));
+  filter:blur(5px);animation:trSweep 1.8s linear infinite}
+.bn-tr .tr-beam::after{width:18%;opacity:.6;animation-delay:-.9s}
+@keyframes trSweep{from{left:100%}to{left:-32%}}
+
+/* Every icon is the same object on the same lane; only size, height, start time and parked position
+   differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
+   contain:paint - the 16px outer glow would be shaved). */
+.bn-tr .tr-flow{position:absolute;inset:0;z-index:4;pointer-events:none;contain:layout}
+.bn-tr .tr-flow i{position:absolute;top:var(--t);left:var(--rest);width:var(--sz);aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:27%;
   display:flex;align-items:center;justify-content:center;
   background:linear-gradient(155deg,#fff 0%,#f6fcff 42%,#dff0fc 100%);
-  box-shadow:0 10px 20px -6px rgba(30,105,160,.30),0 2px 5px -1px rgba(30,105,160,.20),
+  box-shadow:0 10px 20px -6px rgba(30,105,160,.3),0 2px 5px -1px rgba(30,105,160,.2),
     0 0 16px rgba(125,205,245,.32),inset 0 1px 0 rgba(255,255,255,.95),
     inset 0 -1px 0 rgba(188,224,245,.55);
-  animation:trFlow 5.4s linear infinite backwards}
-.bn-tr .tr-gap i svg{width:53%;height:53%;fill:#1b87ce}
-.bn-tr .tr-gap i:nth-child(1){top:6%;animation-delay:0s}
-.bn-tr .tr-gap i:nth-child(2){top:56%;animation-delay:.9s;width:26%}
-.bn-tr .tr-gap i:nth-child(3){top:30%;animation-delay:1.8s;width:31%}
-.bn-tr .tr-gap i:nth-child(4){top:70%;animation-delay:2.7s;width:25%}
-.bn-tr .tr-gap i:nth-child(5){top:18%;animation-delay:3.6s;width:27%}
-.bn-tr .tr-gap i:nth-child(6){top:46%;animation-delay:4.5s;width:29%}
-/* out of the old phone, across the gap, absorbed by the new one. The crossing takes 46% of the
-   cycle and the icon waits off-stage for the rest, so two or three are in flight at a time. */
-@keyframes trFlow{
-  0%  {left:-34%;opacity:0;transform:translateY(10%) scale(.5)}
-  8%  {opacity:1;transform:translateY(2%) scale(1)}
-  38% {opacity:1;transform:translateY(-8%) scale(1)}
-  46% {left:104%;opacity:0;transform:translateY(-14%) scale(.5)}
-  100%{left:104%;opacity:0;transform:translateY(-14%) scale(.5)}
+  animation:trFly 5.4s linear infinite}
+.bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce}
+/* --t height in the lane, --sz size, --rest where it parks when motion is off. Delays are NEGATIVE so
+   the lane is already full on the first frame instead of filling over 4.5s. 5.4/6 = one every .9s. */
+.bn-tr .tr-flow i:nth-child(1){--t:22%;--sz:12%;  --rest:78%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){--t:62%;--sz:10.5%;--rest:66%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(3){--t:34%;--sz:12.8%;--rest:54%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(4){--t:76%;--sz:10%;  --rest:42%;animation-delay:-2.7s}
+.bn-tr .tr-flow i:nth-child(5){--t:16%;--sz:11%;  --rest:30%;animation-delay:-3.6s}
+.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:11.8%;--rest:20%;animation-delay:-4.5s}
+/* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon materialises
+   out of a display and sinks into the other rather than sliding past them. The crossing fills 72% of
+   the cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
+   ever parked visibly, since for the other 28% it sits off-stage at opacity 0. linear and one shared
+   5.4s (with the beam on its exact 1.8s/2.7s harmonics) because the icons, the sweeps and the arrival
+   bloom are one mechanism: easing them apart would let the bloom fire while nothing is landing. */
+@keyframes trFly{
+  0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
+  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 3px))  scale(1)    rotate(-7deg)}
+  40% {         opacity:1;transform:translate(-50%,calc(-50% - 12px)) scale(1.03) rotate(0deg)}
+  64% {         opacity:1;transform:translate(-50%,calc(-50% - 9px))  scale(1)    rotate(4deg)}
+  72% {left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
+  100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
 }
-@media(prefers-reduced-motion:reduce){.bn-tr .tr-gap i{animation:none;opacity:0}}
-html.a11y-stop-motion .bn-tr .tr-gap i{animation:none;opacity:0}
-/* mobile keeps the artwork rather than the plain icon the other text slides fall back to */
-@media(max-width:720px){.bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}}
+
+/* Both kill switches, per the file convention. Not decorative here: the global reduced-motion rule
+   drops each element to its BASE style, which for .tr-land is opacity:0 and for .tr-scan is a light
+   bar parked at the top of the screen - a defect. These leave a still frame that still tells the
+   story: two tilted phones, a lit bridge, six icons parked along the lane. */
+@media(prefers-reduced-motion:reduce){
+  .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
+  .bn-tr .tr-beam::before,.bn-tr .tr-beam::after{animation:none;opacity:0}
+  .bn-tr .tr-scan{animation:none;opacity:0}
+  .bn-tr .tr-land{animation:none;opacity:.34}
+}
+html.a11y-stop-motion .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
+html.a11y-stop-motion .bn-tr .tr-beam::before,html.a11y-stop-motion .bn-tr .tr-beam::after{animation:none;opacity:0}
+html.a11y-stop-motion .bn-tr .tr-scan{animation:none;opacity:0}
+html.a11y-stop-motion .bn-tr .tr-land{animation:none;opacity:.34}
+
+/* The carousel keeps all five slides in the DOM and only translates the track, so off-screen copies
+   would animate for ever. Same convention as .slide[aria-hidden="true"] .pg-sim-face. */
+.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i),
+.slide[aria-hidden="true"] .tr-beam::before,
+.slide[aria-hidden="true"] .tr-beam::after{animation-play-state:paused}
+
+@media(max-width:720px){
+  /* .slide-art is hidden globally on phones, so this slide has to opt back in */
+  .bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}
+  /* cap the scene, ease the tilt the way .scr-stage does, thin the bezel again, and drop to four
+     icons so the lane stays a stream rather than a crowd. One --tilt knob, read by the bob keyframes. */
+  .bn-tr .tr-scene{max-width:262px;--tilt:7deg}
+  .bn-tr .tr-wall{border-width:1px 2px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
+  .bn-tr .tr-flow i:nth-child(n+5){display:none}
+  .bn-tr .tr-flow i:nth-child(1){animation-delay:0s}
+  .bn-tr .tr-flow i:nth-child(2){animation-delay:-1.35s}
+  .bn-tr .tr-flow i:nth-child(3){animation-delay:-2.7s}
+  .bn-tr .tr-flow i:nth-child(4){animation-delay:-4.05s}
+}
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
 .s-banner .slide-banner:hover img{transform:scale(1.015)}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
-.bn-tr .slide-banner:focus-visible{outline-color:#1478a8}   /* white outline would vanish on this light banner */
 .s-banner .slide-in,.s-banner .slide-art{display:none}
 @media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
 @media(max-width:720px){
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
   .s-banner{padding:clamp(24px,5vw,38px) 46px}
-  /* Same charcoal as the rest of the carousel. The logo green was tried here and went olive over a
-     warm near-black, so this slide takes the cyan of the light bridge in its own artwork instead,
-     and the orange accent carries the keyboard slide. */
+  /* Same charcoal as the rest of the carousel, with the orange logo accent. (The transfer slide's own
+     cyan accent moved out of this block: its scene is CSS at every width now, not a photo on desktop.) */
   .bn-kb{background:radial-gradient(118% 88% at 79% 8%,rgba(224,145,63,.28),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
-  .bn-tr{background:radial-gradient(118% 88% at 79% 8%,rgba(64,178,214,.30),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
   /* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
   .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
   .s-scr .scr-fine{display:none}
@@ -1503,10 +1625,11 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <!-- A normal slide, not a baked banner: the artwork's right half is marketing text rendered
-             into the photo, which can never match the site's own type, and that mismatch is why this
-             slide read as foreign next to the others. The text below is real HTML now, and only the
-             two devices are kept from the artwork. -->
+        <!-- A normal slide, not a baked banner. The artwork it used to crop (promo_transfers.jpg) carries
+             a pale studio backdrop, three app icons printed between the phones and marketing type; no
+             crop of it survived on the charcoal without bright edges, and the printed icons could not
+             move. Both devices are built from the site's own phone parts now, so this slide is made of
+             the same material as its neighbours and every part of it can animate. -->
         <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
@@ -1515,21 +1638,41 @@ document.addEventListener('DOMContentLoaded',function(){
             <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
           </div>
           <div class="slide-art">
-           <!-- Each device gets its own window onto the artwork, and the three icons printed between
-                them fall outside both windows. Nothing on screen is fixed any more, so every icon can
-                travel and the motion is finally of one kind. -->
-           <span class="tr-stage" aria-hidden="true">
-            <span class="tr-dev tr-dev-a"><img src="promo_transfers.jpg" alt="" width="1832" height="859" loading="lazy" decoding="async"></span>
-            <span class="tr-gap">
-              <i><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
-              <i><svg viewBox="0 0 24 24"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
-            </span>
-            <span class="tr-dev tr-dev-b"><img src="promo_transfers.jpg" alt="" width="1832" height="859" loading="lazy" decoding="async"></span>
-           </span>
+            <!-- Both devices are the site's own phone: iphone-frame.png with a wallpaper, a Dynamic
+                 Island and a sheen laid over it, exactly as on the screen-protector slide. The <svg>s
+                 sit three levels down on purpose, so .slide-art:has(>svg)::before (the glass tile meant
+                 for the plain icon slides) and .slide-art>svg (dealFloat) cannot match this scene. -->
+            <div class="tr-scene" role="img" aria-label="התוכן מהמכשיר הישן עובר אל המכשיר החדש: אנשי קשר, תמונות, הודעות, מוזיקה, מסמכים וסרטונים">
+              <span class="tr-beam" aria-hidden="true"></span>
+              <span class="tr-ph tr-src" aria-hidden="true">
+                <span class="tr-dev">
+                  <span class="tr-halo"></span>
+                  <span class="tr-wall"></span>
+                  <span class="tr-punch"></span>
+                  <span class="tr-refl"></span>
+                  <img class="tr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <span class="tr-scan"></span>
+                </span>
+              </span>
+              <span class="tr-ph tr-dst" aria-hidden="true">
+                <span class="tr-dev">
+                  <span class="tr-halo"></span>
+                  <span class="tr-wall"></span>
+                  <span class="tr-punch"></span>
+                  <span class="tr-refl"></span>
+                  <img class="tr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <span class="tr-land"></span>
+                </span>
+              </span>
+              <span class="tr-flow" aria-hidden="true">
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
+              </span>
+            </div>
           </div>
         </article>
 
