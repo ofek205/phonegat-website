@@ -1,6 +1,6 @@
 ---
 name: muzli-editorial-design
-description: Design system for PHONE GAT content pages, derived from measured muz.li tokens — serif display headings against a light sans body, zero corner radius, hairline rules instead of cards, and no tinted panels. Use when building or restyling any content/guide/article page in this project, when the user says a design "looks generic", "looks like AI", "נראה קלוד", "גנרי", when asked to follow the muz.li reference, or before adding any card, badge, pill, chip or coloured callout to a page. Covers the type scale with Hebrew font substitutions, RTL specifics, component recipes (header, hero, index, numbered steps, labelled variants, notes, CTA), an anti-pattern checklist, and a measurable browser acceptance test. Do NOT use for the home page (index.html), which keeps its own heavy-sans landing-page identity.
+description: Design system for PHONE GAT content pages, derived from measured muz.li tokens, serif display headings against a light sans body, zero corner radius, hairline rules instead of cards, and no tinted panels. Use when building or restyling any content/guide/article page in this project, when the user says a design "looks generic", "looks like AI", "נראה קלוד", "גנרי", when asked to follow the muz.li reference, or before adding any card, badge, pill, chip or coloured callout to a page. Covers the type scale with Hebrew font substitutions, RTL specifics, component recipes (header, hero, index, numbered steps, labelled variants, notes, CTA), an anti-pattern checklist, and a measurable browser acceptance test. Do NOT use for the home page (index.html), which keeps its own heavy-sans landing-page identity.
 license: MIT
 compatibility: Plain HTML + inline CSS, no build step, no dependencies. Google Fonts only. RTL/Hebrew.
 ---
@@ -11,12 +11,12 @@ compatibility: Plain HTML + inline CSS, no build step, no dependencies. Google F
 
 A design language for PHONE GAT's **content pages** (guides, articles, explainers), measured from
 [muz.li](https://muz.li) on 29 July 2026. It exists because the default output of an AI assistant —
-rounded cards, pill tags, tinted callout boxes, uniform radius, heavy sans headings — is now a
+rounded cards, pill tags, tinted callout boxes, uniform radius, heavy sans headings, is now a
 recognisable style that reads as generic. The reference solves the same problem with typography and
 white space instead.
 
 **Take the system, never the site.** Tokens, scale and structural patterns are fair game. Muzli's
-logo, wordmark, copy, imagery and brand blue are not — substitute the project's own.
+logo, wordmark, copy, imagery and brand blue are not, substitute the project's own.
 
 ## The five rules
 
@@ -37,10 +37,10 @@ logo, wordmark, copy, imagery and brand blue are not — substitute the project'
 | Display face | Instrument Serif 400 | **Frank Ruhl Libre 400/500** | The Hebrew editorial serif. `--serif:"Frank Ruhl Libre","David Libre",Georgia,serif` |
 | Text face | Poppins 200–600 | **Assistant 300–800** | Already cached site-wide; add weight 300 to the Google Fonts URL |
 | H1 | 84.8px / lh 1.375 / weight 400 | `clamp(2.6rem,7vw,5.3rem)` / lh 1.14 / weight 400 | |
-| Section heading | — | `clamp(1.5rem,3vw,2.15rem)` / weight 500 serif | |
+| Section heading | n/a | `clamp(1.5rem,3vw,2.15rem)` / weight 500 serif | |
 | Lede / standfirst | 20px weight 200 | `clamp(1.1rem,1.5vw,1.3rem)` weight **300** | Hebrew at 200 gets too fragile; 300 is the floor |
 | Body | 16px | 18px | Hebrew needs the extra size |
-| Small label | 14px | `.86rem` weight 700, `letter-spacing:.07em` | Hebrew has no caps — letter-spacing does that job |
+| Small label | 14px | `.86rem` weight 700, `letter-spacing:.07em` | Hebrew has no caps, letter-spacing does that job |
 | Page width | 1280px | `--maxw:1400px` (site) with a 900–1000px reading column | |
 | Header height | 65px | 64–68px | |
 | CTA button | radius 9999px, padding 12px 48px, 18px | same, in `--teal` | The one permitted pill |
@@ -49,41 +49,41 @@ logo, wordmark, copy, imagery and brand blue are not — substitute the project'
 
 ## Component recipes
 
-**Header** — white, hairline bottom, no shadow. Logo at the start, nav links in sans 500 at `.95rem`,
+**Header**: white, hairline bottom, no shadow. Logo at the start, nav links in sans 500 at `.95rem`,
 one teal pill CTA at the end. Sticky. On a white header the logo needs no white box behind it.
 
-**Hero** — white, centred, `max-width:min(1100px,92vw)`. Serif H1, then a 300-weight lede at ~54ch,
+**Hero**: white, centred, `max-width:min(1100px,92vw)`. Serif H1, then a 300-weight lede at ~54ch,
 then byline and trust line as one hairline-separated row of plain text. No badge, no gradient bar,
 no dark background.
 
-**Index / contents** — a numbered two-column list. `counter(x,decimal-leading-zero)` set in the serif
+**Index / contents**: a numbered two-column list. `counter(x,decimal-leading-zero)` set in the serif
 at `.95rem` in the accent, `border-top:1px solid var(--line)` on each row. Not pills.
 
-**Numbered steps** — hanging serif numeral in the accent, hairline between steps, no bullets and no
+**Numbered steps**: hanging serif numeral in the accent, hairline between steps, no bullets and no
 circles. `counter-increment` + `::before`, so the numbers never enter the text layer (screen readers
 and Google read the sentence, not "1The device...").
 
-**Section number** — `decimal-leading-zero` serif numeral on its own line *above* the heading, in the
+**Section number**: `decimal-leading-zero` serif numeral on its own line *above* the heading, in the
 section's accent colour. Never a coloured square beside the heading.
 
-**Labelled variants** (per-device instructions, specs, comparisons) — a two-column grid: `8rem` label
+**Labelled variants** (per-device instructions, specs, comparisons), a two-column grid: `8rem` label
 column in sans 700, text column beside it, `border-top` hairline per row. Collapses to stacked label
 + text under 640px. Not cards.
 
-**Note / warning** — `border-inline-start: 3px solid` + `padding-inline-start: 1.1rem`, no background,
+**Note / warning**: `border-inline-start: 3px solid` + `padding-inline-start: 1.1rem`, no background,
 no border on the other three sides, no radius. The lead-in words carry the colour, not a panel.
 
-**Closing CTA** — the one dark band on the page (`--dark`), serif heading at weight 400, light body,
+**Closing CTA**: the one dark band on the page (`--dark`), serif heading at weight 400, light body,
 pill buttons.
 
-## Anti-patterns — stop if you are about to write any of these
+## Anti-patterns, stop if you are about to write any of these
 
 - `border-radius` on anything that is not a CTA button
 - `background:#eef6f9` / `#fdf3f2` / any tint behind a block of text
 - `box-shadow` on a content element
 - a `<span>` styled as a pill for a tag, category, device name or filter
 - `font-weight:800` on a heading (that's the sans-headline reflex)
-- alternating grey/white section backgrounds to create rhythm — use rules and space
+- alternating grey/white section backgrounds to create rhythm, use rules and space
 - emoji as section icons
 - four equal cards in a grid
 
@@ -107,7 +107,7 @@ resolves to the serif.
 
 ## RTL and Hebrew specifics
 
-- Always logical properties: `border-inline-start`, `padding-inline`, `margin-inline` — never `left`/`right`.
+- Always logical properties: `border-inline-start`, `padding-inline`, `margin-inline`, never `left`/`right`.
 - Alternating image/text rows flip with `order` on the figure, and must reset to `order:0` under 900px
   so the image always sits above the text on a phone.
 - `letter-spacing` substitutes for the uppercase labels the reference uses; Hebrew has no case.
@@ -117,7 +117,7 @@ resolves to the serif.
 ## Project constraints this must respect
 
 - Everything inline in one `.html` file. No `package.json`, no dependencies (see `CLAUDE.md`).
-- The header, footer, WhatsApp rail and mobile bar are shared with the site — restyle them for the
+- The header, footer, WhatsApp rail and mobile bar are shared with the site, restyle them for the
   page, keep their markup and links identical so navigation stays consistent.
 - `index.html` is **out of scope**. It is a landing page with its own identity; this system is for
   content pages only.

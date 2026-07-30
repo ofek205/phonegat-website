@@ -2176,7 +2176,7 @@ document.addEventListener('DOMContentLoaded',function(){
     <details><summary>יש אחריות על התיקון?</summary><p>כן. אנחנו נותנים אחריות על כל תיקון ועומדים מאחורי העבודה שלנו. משך האחריות משתנה בהתאם לסוג התיקון והמכשיר, ואתם מקבלים על כך אישור בכתב. אם משהו לא תקין, חוזרים אלינו ונדאג לכם.</p></details>
     <details><summary>המסך שבור, אפשר לשמור את הנתונים שלי?</summary><p>כן. אנחנו דואגים לשמור ולהעביר את הנתונים שלכם, אנשי קשר ותמונות, גם ממכשיר שבור וגם בקניית מכשיר חדש.</p></details>
 
-    <h3 class="faq-cat"><span aria-hidden="true">📱</span> תקלות נפוצות — מה עושים?</h3>
+    <h3 class="faq-cat"><span aria-hidden="true">📱</span> תקלות נפוצות: מה עושים?</h3>
     <details><summary>המכשיר לא נדלק בכלל או שהמסך שחור, יש סיכוי לתקן?</summary><p>לרוב כן. מסך שחור או מכשיר שלא נדלק יכולים לנבוע ממסך, מסוללה, משקע טעינה או מתקלת לוח. האבחון והצעת המחיר אצלנו ללא עלות וללא התחייבות, אז שווה להביא אלינו למעבדה בקרית גת ונבדוק על המקום.</p></details>
     <details><summary>המסך לא מגיב למגע, או שיש פסים וכתמים בתצוגה</summary><p>פסים או כתמים בתצוגה הם לרוב תקלת מסך שמצריכה החלפה. מסך שלא מגיב למגע לא תמיד מצריך החלפת מסך, לעיתים מדובר בתקלת מגעים או חיבור שאפשר לתקן. נאבחן אצלנו ונגיד לכם בדיוק מה נדרש. ברוב הדגמים, אייפון, סמסונג גלקסי ושיאומי, החלפת מסך מבוצעת במקום ובזמן קצר, עם אחריות.</p></details>
     <details><summary>המכשיר לא מזהה כרטיס SIM או שאין קליטה</summary><p>קודם נבדוק אם מדובר במגש הסים, בשקע, בהגדרות או בכרטיס הסים עצמו, והחלפת סים לכל חברות הסלולר, פתיחת קו וניוד מספר אפשר לעשות אצלנו באותו ביקור. ואם התקלה עמוקה יותר, אנחנו מטפלים גם בבעיות קליטה ברמת החומרה, תיקון או החלפת אנטנה, החלפת מגשר ותיקון רכיבים על הלוח.</p></details>
@@ -2838,7 +2838,7 @@ document.addEventListener('DOMContentLoaded',function(){
       .then(function(r){
         /* an offer missing from the server allowlist would otherwise fail silently into the
            9xxx range — the site keeps working but that offer never gets counted. Say so loudly. */
-        if(r.status===400&&window.console)console.warn('[pg] מבצע "'+k+'" חסר ברשימת ההיתר ב-api/coupon.js — הקודים שלו לא ייספרו');
+        if(r.status===400&&window.console)console.warn('[pg] מבצע "'+k+'" חסר ברשימת ההיתר ב-api/coupon.js, הקודים שלו לא ייספרו');
         return r.ok?r.json():null;})
       .then(function(j){return (j&&typeof j.n==='number')?j.n:null;})
       .catch(function(){return null;})
