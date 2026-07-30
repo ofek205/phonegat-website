@@ -474,12 +474,11 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .deals-head .lead{color:var(--ink-soft);margin:.8rem 0 0;font-size:1.05rem}
 .carousel{position:relative;max-width:1080px;margin-inline:auto;padding-inline:clamp(46px,6vw,66px)}
 .car-vp{overflow:hidden;border-radius:20px;box-shadow:0 26px 54px -26px rgba(0,0,0,.4)}
-/* No transform here on purpose. This used to be transform:translateX(calc(var(--i,0)*100%)) with the
-   transition below, and it silently never moved: an unregistered custom property is not
-   interpolatable, so transition:transform had nothing to animate between and the transform froze at
-   its very first value. The dots and aria-hidden went on advancing over a viewport that never
-   scrolled, which is what read as the carousel snapping back to the start. The JS writes two plain
-   translateX values instead, which transition properly. */
+/* No transform here on purpose: the JS writes translateX directly. It used to be
+   transform:translateX(calc(var(--i,0)*100%)) driven by a custom property, which worked, but the
+   seamless wrap needs to move the track and then re-seat it on the identical real slide within the
+   same frame and with the transition suppressed. That is a sequencing job, and doing it by hand in JS
+   is far clearer than trying to express it through a variable the CSS also transitions. */
 .car-track{display:flex;transition:transform .55s var(--ease);will-change:transform}
 .slide{flex:0 0 100%;box-sizing:border-box;min-height:clamp(290px,30vw,360px);display:grid;grid-template-columns:1fr .85fr;align-items:center;gap:1rem;padding:clamp(28px,4vw,54px);color:#fff;position:relative;overflow:hidden}
 .slide::before{content:"";position:absolute;inset-block-start:-38%;inset-inline-start:-10%;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);pointer-events:none;z-index:0}
@@ -1914,30 +1913,120 @@ document.addEventListener('DOMContentLoaded',function(){
 (function(){
   var root=document.getElementById('deals');if(!root)return;
   var track=root.querySelector('.car-track');
-  var slides=[].slice.call(root.querySelectorAll('.slide'));
-  var dotsWrap=root.querySelector('.car-dots');
   var vp=root.querySelector('.car-vp');
-  var n=slides.length,i=0,timer=null,paused=false;
+  var dotsWrap=root.querySelector('.car-dots');
+  var real=[].slice.call(track.querySelectorAll('.slide'));
+  var n=real.length;if(!n)return;
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var dots=slides.map(function(s,k){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','מעבר למבצע '+(k+1));b.addEventListener('click',function(){go(k,true);});dotsWrap.appendChild(b);return b;});
-  function render(){track.style.setProperty('--i',i);dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});slides.forEach(function(s,k){var act=k===i;s.setAttribute('aria-hidden',act?'false':'true');if(act)s.removeAttribute('inert');else s.setAttribute('inert','');});}
-  function go(k,user){i=(k+n)%n;render();if(user)restart();}
-  function start(){if(reduce||paused)return;stop();timer=setInterval(function(){go(i+1);},7000);}
+
+  /* A copy of the last slide before the first, and a copy of the first after the last. That is what
+     makes the run continuous: "next" from the last offer and "prev" from the first both move ONE step
+     in the direction you were already going, instead of winding the whole strip back to the start.
+     Once the copy is on screen the track jumps to its real twin with the transition switched off, and
+     because the two show the same slide there is nothing to see.
+     The copies are scenery only. inert keeps them out of the tab order and out of the pointer path,
+     and the id/data-pg-coupon strip stops a copy from answering to getElementById('hstage') or from
+     opening the coupon popup - that popup listens on the document for any [data-pg-coupon]. */
+  function copyOf(node){
+    var c=node.cloneNode(true);
+    c.setAttribute('aria-hidden','true');
+    c.setAttribute('inert','');
+    c.removeAttribute('aria-label');
+    [].slice.call(c.querySelectorAll('[id]')).forEach(function(el){el.removeAttribute('id');});
+    [].slice.call(c.querySelectorAll('[data-pg-coupon]')).forEach(function(el){el.removeAttribute('data-pg-coupon');});
+    return c;
+  }
+  track.insertBefore(copyOf(real[n-1]),real[0]);
+  track.appendChild(copyOf(real[0]));
+
+  /* pos is the position in the track: 0 is the trailing copy, 1..n the real slides, n+1 the leading
+     copy. i stays the logical offer number, which is what the dots and the ARIA state talk about. */
+  var i=0,pos=1,timer=null,paused=false,hover=false,focused=false;
+
+  /* The transform is written from here rather than from a custom property in the CSS, so that the wrap
+     can move and then re-seat without animating. See the note on .car-track. */
+  function place(p,animate){
+    if(animate&&!reduce){
+      track.style.transform='translateX('+(p*100)+'%)';
+      return;
+    }
+    track.style.transition='none';
+    track.style.transform='translateX('+(p*100)+'%)';
+    void track.offsetWidth;              /* commit the jump before the transition comes back */
+    track.style.transition='';
+  }
+  /* Never linger on a copy. Called after the wrap animation ends, and again before any new move, so
+     that a fast series of clicks can never walk past the ends of the track. */
+  function normalise(){
+    if(pos===n+1){pos=1;place(pos,false);}
+    else if(pos===0){pos=n;place(pos,false);}
+  }
+  function render(){
+    dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});
+    real.forEach(function(s,k){
+      var act=k===i;
+      s.setAttribute('aria-hidden',act?'false':'true');
+      if(act)s.removeAttribute('inert');else s.setAttribute('inert','');
+    });
+  }
+  function step(dir,user){
+    normalise();
+    pos+=dir;
+    i=((pos-1)%n+n)%n;
+    place(pos,true);
+    render();
+    if(user)restart();
+  }
+  function jump(k,user){                 /* the dots address an offer directly, so this one is absolute */
+    normalise();
+    i=((k%n)+n)%n;
+    pos=i+1;
+    place(pos,true);
+    render();
+    if(user)restart();
+  }
+  track.addEventListener('transitionend',function(e){
+    if(e.target!==track||e.propertyName!=='transform')return;
+    normalise();
+  });
+
+  var dots=real.map(function(s,k){
+    var b=document.createElement('button');b.type='button';
+    b.setAttribute('aria-label','מעבר למבצע '+(k+1));
+    b.addEventListener('click',function(){jump(k,true);});
+    dotsWrap.appendChild(b);return b;
+  });
+
+  function start(){if(reduce||paused||hover||focused||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
-  root.querySelector('.car-next').addEventListener('click',function(){go(i+1,true);});
-  root.querySelector('.car-prev').addEventListener('click',function(){go(i-1,true);});
-  root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',start);
-  root.addEventListener('focusin',stop);root.addEventListener('focusout',start);
+
+  root.querySelector('.car-next').addEventListener('click',function(){step(1,true);});
+  root.querySelector('.car-prev').addEventListener('click',function(){step(-1,true);});
+  /* hover and focus are held as flags rather than acted on directly. They used to call stop and start
+     straight, so a focusout - which fires on every click inside the carousel - restarted the timer
+     while the pointer was still resting on the slide, and the offer moved out from under the reader. */
+  root.addEventListener('mouseenter',function(){hover=true;stop();});
+  root.addEventListener('mouseleave',function(){hover=false;start();});
+  root.addEventListener('focusin',function(){focused=true;stop();});
+  root.addEventListener('focusout',function(){focused=false;start();});
   var x0=null;
   vp.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;stop();},{passive:true});
-  vp.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){if(dx<0)go(i+1,true);else go(i-1,true);}else start();x0=null;},{passive:true});
-  root.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){go(i+1,true);}else if(e.key==='ArrowRight'){go(i-1,true);}});
+  vp.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>40){if(dx<0)step(1,true);else step(-1,true);}else start();
+    x0=null;
+  },{passive:true});
+  root.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){step(1,true);}else if(e.key==='ArrowRight'){step(-1,true);}});
   document.addEventListener('visibilitychange',function(){if(document.hidden)stop();else start();});
+
   var pauseBtn=document.createElement('button');pauseBtn.type='button';pauseBtn.className='car-pause';pauseBtn.setAttribute('aria-label','השהיית מעבר אוטומטי');pauseBtn.setAttribute('aria-pressed','false');
   pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
   pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
   if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  place(pos,false);                      /* park on the first real slide, past the leading copy */
   render();start();
 })();
 </script>
