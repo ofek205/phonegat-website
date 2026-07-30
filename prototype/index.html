@@ -568,6 +568,13 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
    slide is separated only by a low-opacity glow in its own brand accent. Neutral ground also lets
    the four logo colours and the product photography carry the colour instead of competing with it. */
 .s-teal{background:radial-gradient(120% 95% at 80% 10%,rgba(24,120,168,.34),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+/* Two restored offers. They keep the same charcoal ground as the rest and differ only by the accent
+   hue and where it sits, which is the whole point of the neutral base above. Their old flat brown and
+   magenta panels (.s-orange / .s-pink, still in the file) are NOT reused - those are the five-brand
+   look this section was moved away from. The accents come from the logo palette: --orange for screen
+   work, --green for accessories, and each is placed away from its neighbours' glow. */
+.s-fix{background:radial-gradient(118% 92% at 22% 14%,rgba(224,145,63,.30),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+.s-acc{background:radial-gradient(112% 88% at 78% 88%,rgba(99,162,68,.28),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
 .s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#632854,#421838)}
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
@@ -1853,7 +1860,7 @@ document.addEventListener('DOMContentLoaded',function(){
              crop of it survived on the charcoal without bright edges, and the printed icons could not
              move. Both devices are built from the site's own phone parts now, so this slide is made of
              the same material as its neighbours and every part of it can animate. -->
-        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 5">
+        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 7">
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
             <h3>העברת נתונים מלאה</h3>
@@ -1968,7 +1975,7 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
+        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 7">
           <div class="slide-in">
             <span class="badge">בתשלומים</span>
             <h3>מכשירים חדשים, ועוזרים לכם לבחור</h3>
@@ -1986,7 +1993,7 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 7">
           <div class="slide-in">
             <span class="scr-excl">רק באתר</span>
             <h3>מגן מסך כולל הדבקה</h3>
@@ -2008,7 +2015,17 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
+        <article class="slide s-fix" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 7">
+          <div class="slide-in">
+            <span class="badge">30<small>דק'</small></span>
+            <h3>החלפת מסך, במקום</h3>
+            <p>מסך שבור? רוב התיקונים מבוצעים אצלנו במקום, תוך כחצי שעה, עם אחריות.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח להצעת מחיר להחלפת מסך"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+          </div>
+          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.7 6.3a5 5 0 0 1-6.6 4.7l-7.7 7.7a2.1 2.1 0 0 1-3-3l7.7-7.7a5 5 0 0 1 6.4-6.2l-2.8 2.8a1 1 0 0 0 0 1.4l1.1 1.1a1 1 0 0 0 1.4 0l2.8-2.8c.4.6.5 1.3.5 2Z"/></svg></div>
+        </article>
+
+        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 7">
           <div class="slide-in">
             <span class="badge">כל החברות</span>
             <h3>ניוד ופתיחת קו, בלי להמתין למוקד</h3>
@@ -2027,7 +2044,17 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
         </article>
 
-        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+        <article class="slide s-acc" aria-roledescription="שקופית" aria-label="מבצע 6 מתוך 7">
+          <div class="slide-in">
+            <span class="badge">מבחר</span>
+            <h3>אבזור ומגנים לכל דגם</h3>
+            <p>כיסויים, מגנים, מטענים, אוזניות וציוד סלולר לרכב, במבחר גדול ובמחירים משתלמים.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על אבזור ומגנים"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+          </div>
+          <div class="slide-art"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 0 0-9 9v5a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H5a7 7 0 0 1 14 0h-2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h1a3 3 0 0 0 3-3v-5a9 9 0 0 0-9-9Z"/></svg></div>
+        </article>
+
+        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 7 מתוך 7">
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
             <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
           </button>
