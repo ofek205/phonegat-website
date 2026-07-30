@@ -3,18 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Environment guard. Only the real domain is production; localhost and every
+     *.vercel.app preview is a test environment. Four things must never happen from a
+     test environment, because each one corrupts something we cannot undo: a fake visit
+     counted in GA4, a test enquiry landing in Baruch & Sigal's inbox, a burnt coupon
+     number (the counter IS the "how many were issued" metric), and Google indexing a
+     preview URL instead of the real site. Everything below hangs off PG_PROD. -->
+<script>
+  window.PG_ENV=(function(h){
+    if(h==='www.phonegat.co.il'||h==='phonegat.co.il')return 'production';
+    if(h==='localhost'||h==='127.0.0.1'||h===''||/^(192\.168|10)\./.test(h))return 'local';
+    return 'preview';
+  })(location.hostname);
+  window.PG_PROD=(window.PG_ENV==='production');
+  /* Belt to vercel.json's X-Robots-Tag braces: keeps localhost and any future test host out
+     of the index even where we control no headers. */
+  if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
+  /* Unmissable marker, so a staging tab is never mistaken for the live site. Styles are
+     inline and pointer-events:none on purpose: nothing to collide with the stylesheet, and
+     it can never swallow a click on whatever sits underneath. */
+  if(!window.PG_PROD){document.addEventListener('DOMContentLoaded',function(){
+    var b=document.createElement('div');
+    b.textContent='סביבת בדיקות · '+window.PG_ENV;
+    b.setAttribute('aria-hidden','true');
+    b.style.cssText='position:fixed;top:0;left:0;z-index:99999;pointer-events:none;background:#b3261e;color:#fff;font:700 11px/1 system-ui,sans-serif;padding:5px 10px;border-bottom-right-radius:7px;letter-spacing:.02em;box-shadow:0 1px 6px rgba(0,0,0,.35)';
+    document.body.appendChild(b);
+  });}
+</script>
 <!-- Consent Mode v2: analytics denied by default until the visitor accepts (see cookie banner) -->
 <script>
   window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
   var pgC='denied';try{if(localStorage.getItem('pgConsent')==='granted')pgC='granted';}catch(e){}
   gtag('consent','default',{ad_storage:pgC,ad_user_data:pgC,ad_personalization:pgC,analytics_storage:pgC,functionality_storage:'granted',security_storage:'granted',wait_for_update:500});
 </script>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+<!-- Google Tag Manager — production only. track() still pushes to dataLayer everywhere, so
+     event wiring stays testable; the events simply never reach GA4 off production.
+     ?pg_gtm=1 forces it on when a tag genuinely needs testing on staging. -->
+<script>if(window.PG_PROD||location.search.indexOf('pg_gtm=1')>-1){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WZSVD7Z5');</script>
+})(window,document,'script','dataLayer','GTM-WZSVD7Z5');}</script>
 <!-- End Google Tag Manager -->
 <title>פון גת | תיקון וקניית סלולר בקרית גת וכרמי גת · מעבדה וותיקה</title>
 <meta name="description" content="מעבדת הסלולר הוותיקה בקרית גת וכרמי גת (30+ שנה). תיקון מסך וסוללה לכל המכשירים, קניית מכשירים בתשלומים, סלקום וכל החברות. חייגו 052-5893366.">
@@ -2180,6 +2209,8 @@ document.addEventListener('DOMContentLoaded',function(){
   function startLead(topic){ctx.topic=topic||ctx.topic||'כללי';track('chat_lead_start',{topic:ctx.topic});if(ctx.name){flow={type:'lead',step:'phone'};botReply('מעולה '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');}else{flow={type:'lead',step:'name'};botReply('בשמחה נחזור אליכם. איך קוראים לכם?');}}
   function saveLead(name,phone,topic){
     try{var a=JSON.parse(localStorage.getItem('pg_leads')||'[]');a.push({name:name,phone:phone,topic:topic,ts:(new Date()).toISOString()});localStorage.setItem('pg_leads',JSON.stringify(a));}catch(e){}
+    /* Same rule as the contact form: a chat lead from staging must not reach the inbox. */
+    if(!window.PG_PROD){if(window.console)console.warn('[pg] '+window.PG_ENV+': הליד נשמר מקומית ולא נשלח במייל');return;}
     try{var kf=document.querySelector('#contactForm input[name=access_key]');var key=kf?kf.value:'';if(key&&key.indexOf('YOUR_')!==0){fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'ליד חדש מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם':name,'טלפון':phone,'נושא':topic})});}}catch(e){}
   }
   function handleFlow(text){
@@ -2357,6 +2388,16 @@ document.addEventListener('DOMContentLoaded',function(){
     if(csEl&&!csEl.checked)return fail(csEl,'כדי לשלוח את הפנייה יש לאשר את מדיניות הפרטיות.');
     ok(phEl);
     if(!KEY||KEY.indexOf('YOUR_')===0){say('הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.');return;}
+    /* Test environment: every validation above already ran, so the form is genuinely
+       exercised — we just stop short of the send, because a test enquiry in the owners'
+       inbox is indistinguishable from a real customer. The dataLayer event still fires so
+       the tracking wiring stays testable. */
+    if(!window.PG_PROD){
+      form.reset();note.classList.add('sent');note.setAttribute('role','status');
+      note.innerHTML='<b>הטופס עבד — אבל לא נשלח מייל.</b> זו סביבת בדיקות ('+window.PG_ENV+'), הפנייה לא הגיעה לברוך וסיגל. בפרודקשן היא הייתה נשלחת.';
+      try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}
+      return;
+    }
     btn.disabled=true;say('שולח...');
     var _fd=new FormData(form),_o={};_fd.forEach(function(v,k){_o[k]=v;});
     fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(_o)})
@@ -2494,6 +2535,10 @@ document.addEventListener('DOMContentLoaded',function(){
 
   /* one request per offer even on a double-click, so no number gets consumed and thrown away */
   function fetchSeq(k){
+    /* A test coupon must never consume a real number — the counter's value IS the answer to
+       "how many coupons were issued". Resolving null sends the caller to the reserved 9xxx
+       fallback, which is precisely what a code not issued by the counter should look like. */
+    if(!window.PG_PROD)return Promise.resolve(null);
     if(seqPending[k])return seqPending[k];
     var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
     var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
