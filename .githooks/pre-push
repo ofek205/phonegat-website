@@ -1,0 +1,74 @@
+#!/bin/sh
+# PHONE GAT — שער לפרודקשן.
+#
+# מופעל אוטומטית בכל `git push`. חוסם דחיפה ל-main אלא אם כן:
+#   1. בדיקות טרום-ההעלאה עוברות.
+#   2. בדיוק הקומיט הזה כבר נפרס לסביבת הבדיקות (קיים ב-origin/staging).
+#
+# תנאי 2 הוא הלב: הוא הופך "קודם טסטים" מהמלצה למשהו שאי אפשר לדלג עליו
+# בשוגג. אם לא ראית את הקוד הזה רץ ב-staging — הוא לא יעלה לאתר החי.
+#
+# דחיפות לענפים אחרים (כולל staging) עוברות בלי הפרעה.
+#
+# הפעלה חד-פעמית: git config core.hooksPath .githooks
+# מעקף לחירום:    PG_FORCE=1 git push origin main
+
+REMOTE_NAME="$1"
+BLOCKED=0
+
+while read local_ref local_sha remote_ref remote_sha; do
+  # רק דחיפה ל-main מעניינת אותנו
+  case "$remote_ref" in
+    refs/heads/main) ;;
+    *) continue ;;
+  esac
+
+  # מחיקת ענף — לא נוגעים
+  case "$local_sha" in
+    *[^0]*) ;;
+    *) continue ;;
+  esac
+
+  if [ "$PG_FORCE" = "1" ]; then
+    echo "⚠  PG_FORCE=1 — עוקפים את שער הפרודקשן. שיהיה בהצלחה."
+    continue
+  fi
+
+  echo ""
+  echo "── שער פרודקשן ─────────────────────────────"
+
+  # 1. בדיקות
+  if ! node .claude/preflight.js; then
+    echo "✗ הבדיקות נכשלו. תקן, ואז שוב: node .claude/ship.js stage"
+    BLOCKED=1
+    continue
+  fi
+
+  # 2. האם הקומיט הזה עבר דרך סביבת הבדיקות?
+  git fetch -q "$REMOTE_NAME" staging 2>/dev/null
+  if ! git rev-parse -q --verify "$REMOTE_NAME/staging" >/dev/null 2>&1; then
+    echo "✗ אין ענף staging ב-$REMOTE_NAME. הרץ קודם: node .claude/ship.js stage"
+    BLOCKED=1
+    continue
+  fi
+
+  if ! git merge-base --is-ancestor "$local_sha" "$REMOTE_NAME/staging"; then
+    short=$(git rev-parse --short "$local_sha")
+    echo "✗ הקומיט $short לא נפרס לסביבת הבדיקות, ולכן לא ראית אותו עובד."
+    echo ""
+    echo "  מה לעשות:"
+    echo "    node .claude/ship.js stage     # מעלה לבדיקות ומדפיס את הכתובת"
+    echo "    (בודקים בדפדפן, גם בטלפון)"
+    echo "    node .claude/ship.js prod      # ואז לאתר החי"
+    echo ""
+    echo "  אם זה תיקון חירום שחייב לעלות עכשיו:"
+    echo "    PG_FORCE=1 git push origin main"
+    BLOCKED=1
+    continue
+  fi
+
+  echo "✓ הבדיקות עוברות והקוד נבדק ב-staging — ממשיכים לאתר החי."
+  echo "────────────────────────────────────────────"
+done
+
+exit $BLOCKED
