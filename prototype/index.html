@@ -772,10 +772,10 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    5.4s cycle, so at any instant most apps are already there and three or four are still landing. iOS
    shows restoring apps exactly like this, so the loop point reads as more apps arriving rather than as
    a reset. The source phone is deliberately left alone: it is the library, it should look settled. */
-/* -.27s = 5.4/20, one slot per app, so the wave crosses the grid exactly once per cycle. Now that the
-   apps are coloured, an arriving one greys out rather than nearly vanishing - which is also what iOS
-   does to an app that is still restoring. */
-.bn-tr .tr-dst .tr-grid i{animation:trSlot 5.4s linear infinite;animation-delay:calc(var(--i,0)*-.27s)}
+/* -.135s = 2.7/20, one slot per app, so the wave crosses the grid exactly once per cycle and keeps
+   step with the icons arriving. Now that the apps are coloured, an arriving one greys out rather than
+   nearly vanishing - which is also what iOS does to an app that is still restoring. */
+.bn-tr .tr-dst .tr-grid i{animation:trSlot 2.7s linear infinite;animation-delay:calc(var(--i,0)*-.135s)}
 @keyframes trSlot{
   0%,3%  {opacity:.42;filter:grayscale(1) brightness(.6);transform:scale(.82)}
   9%     {opacity:1;  filter:none;                       transform:scale(1.08)}
@@ -813,13 +813,15 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 .bn-tr .tr-scan{z-index:6;
   background:linear-gradient(180deg,transparent 0,rgba(198,238,255,.5) 46%,rgba(120,190,235,.1) 60%,transparent 100%);
   background-size:100% 24%;background-repeat:no-repeat;
-  animation:trScan 2.7s linear infinite}
+  animation:trScan 1.35s linear infinite}
 @keyframes trScan{from{background-position:0 -34%}to{background-position:0 132%}}
-/* The destination is RECEIVING: one bloom per arrival. .9s is the icon stagger, so a pulse always
-   coincides with something landing. Opacity only - a scale would push the bloom past the bezel. */
+/* The destination is RECEIVING. .675s = the master cycle quartered, i.e. a bloom every third arrival
+   rather than one per arrival: at the new pace arrivals land every .225s, and a glow keeping up with
+   that would be four flashes a second - past what WCAG 2.3.1 allows anyone to sit in front of.
+   Opacity only - a scale would push the bloom past the bezel. */
 .bn-tr .tr-land{z-index:6;opacity:0;
   background:radial-gradient(72% 42% at 50% 62%,rgba(140,215,255,.55),rgba(110,190,240,.16) 52%,transparent 78%);
-  animation:trLand .9s linear infinite}
+  animation:trLand .675s linear infinite}
 @keyframes trLand{0%{opacity:0}20%{opacity:.55}100%{opacity:0}}
 
 /* The bridge: a breathing pool plus two pulses running the lane, so the only thing spanning the two
@@ -832,13 +834,35 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
   animation:trBeam 2.7s ease-in-out infinite alternate}
 @keyframes trBeam{from{opacity:.72}to{opacity:1}}
-/* 1.8s = 5.4/3: three sweeps per master cycle, phase-locked to the icon stagger for ever rather than
+/* .9s = 2.7/3: three sweeps per master cycle, phase-locked to the icon stagger for ever rather than
    drifting against it. % travel, so the speed tracks the scene at every width. */
 .bn-tr .tr-beam::before,.bn-tr .tr-beam::after{content:"";position:absolute;top:0;bottom:0;width:30%;
   background:linear-gradient(90deg,rgba(150,220,255,0),rgba(170,230,255,.34) 50%,rgba(150,220,255,0));
-  filter:blur(5px);animation:trSweep 1.8s linear infinite}
-.bn-tr .tr-beam::after{width:18%;opacity:.6;animation-delay:-.9s}
+  filter:blur(5px);animation:trSweep .9s linear infinite}
+.bn-tr .tr-beam::after{width:18%;opacity:.6;animation-delay:-.45s}
 @keyframes trSweep{from{left:100%}to{left:-32%}}
+
+/* The wires. Five tracks of dashes flowing right to left, which is the one thing in the scene that
+   says "a link is carrying this" rather than "objects are being handed over". Each track is one
+   repeating gradient scrolled by background-position, so five lines cost five elements and no
+   per-frame layout. Deliberately at the beam's z-index, BEHIND both phones: the mask fades the ends
+   before they reach the glass, so the dashes appear to run out of one device and into the other
+   instead of being drawn on top of the home screens. Durations are close but unequal, so the tracks
+   never lock into one marching band. */
+.bn-tr .tr-wire{position:absolute;top:50%;left:15%;width:70%;height:44%;transform:translateY(-50%);
+  z-index:1;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%)}
+.bn-tr .tr-wire i{position:absolute;left:0;top:var(--y);width:100%;height:1.5px;opacity:var(--o,.85);
+  background:repeating-linear-gradient(90deg,transparent 0 13px,rgba(168,230,255,.9) 13px 29px,transparent 29px 46px);
+  background-size:46px 100%;
+  animation:trWire var(--wd) linear infinite}
+@keyframes trWire{from{background-position:0 0}to{background-position:-46px 0}}
+.bn-tr .tr-wire i:nth-child(1){--y:9%; --wd:.66s;--o:.6}
+.bn-tr .tr-wire i:nth-child(2){--y:29%;--wd:.52s;--o:.9}
+.bn-tr .tr-wire i:nth-child(3){--y:50%;--wd:.44s;--o:1}
+.bn-tr .tr-wire i:nth-child(4){--y:71%;--wd:.58s;--o:.85}
+.bn-tr .tr-wire i:nth-child(5){--y:91%;--wd:.72s;--o:.55}
 
 /* Every icon is the same object on the same lane; only size, height, start time and parked position
    differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
@@ -851,23 +875,31 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   box-shadow:0 10px 20px -6px rgba(30,105,160,.3),0 2px 5px -1px rgba(30,105,160,.2),
     0 0 16px rgba(125,205,245,.32),inset 0 1px 0 rgba(255,255,255,.95),
     inset 0 -1px 0 rgba(188,224,245,.55);
-  animation:trFly 5.4s linear infinite}
-.bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce}
-/* --t height in the lane, --sz size, --rest where it parks when motion is off. Sizes are a touch under
-   the old ones now that the phones are bigger: a flying icon should read as one app leaving the grid,
-   about half again the 22px of an icon on the screen, not as a floating tile. Delays are NEGATIVE so
-   the lane is already full on the first frame instead of filling over 4.5s. 5.4/6 = one every .9s. */
-.bn-tr .tr-flow i:nth-child(1){--t:24%;--sz:9.4%;--rest:78%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2){--t:60%;--sz:8.2%;--rest:66%;animation-delay:-.9s}
-.bn-tr .tr-flow i:nth-child(3){--t:36%;--sz:9.9%;--rest:54%;animation-delay:-1.8s}
-.bn-tr .tr-flow i:nth-child(4){--t:72%;--sz:7.9%;--rest:42%;animation-delay:-2.7s}
-.bn-tr .tr-flow i:nth-child(5){--t:20%;--sz:8.6%;--rest:30%;animation-delay:-3.6s}
-.bn-tr .tr-flow i:nth-child(6){--t:50%;--sz:9.2%;--rest:20%;animation-delay:-4.5s}
+  animation:trFly 2.7s linear infinite}
+.bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce;color:#1b87ce}
+/* --t height in the lane, --sz size, --rest where it parks when motion is off. Twelve on a 2.7s cycle
+   is one leaving every .225s, and since the crossing fills 72% of it, about nine are in the air at any
+   moment - which is what makes it read as a transfer running at speed rather than as a few objects
+   being carried across. They are a shade smaller than the six were, or nine at the old size would have
+   been a wall. Delays are NEGATIVE so the lane is already full on the first frame. Heights are
+   deliberately out of order: a tidy top-to-bottom sweep looks like a machine indexing a list. */
+.bn-tr .tr-flow i:nth-child(1) {--t:22%;--sz:8.2%;--rest:80%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2) {--t:62%;--sz:7%;  --rest:74%;animation-delay:-.225s}
+.bn-tr .tr-flow i:nth-child(3) {--t:38%;--sz:8.4%;--rest:68%;animation-delay:-.45s}
+.bn-tr .tr-flow i:nth-child(4) {--t:80%;--sz:6.8%;--rest:62%;animation-delay:-.675s}
+.bn-tr .tr-flow i:nth-child(5) {--t:14%;--sz:7.6%;--rest:56%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(6) {--t:50%;--sz:8%;  --rest:50%;animation-delay:-1.125s}
+.bn-tr .tr-flow i:nth-child(7) {--t:30%;--sz:7.2%;--rest:44%;animation-delay:-1.35s}
+.bn-tr .tr-flow i:nth-child(8) {--t:71%;--sz:8.3%;--rest:38%;animation-delay:-1.575s}
+.bn-tr .tr-flow i:nth-child(9) {--t:44%;--sz:6.9%;--rest:32%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(10){--t:18%;--sz:8.1%;--rest:26%;animation-delay:-2.025s}
+.bn-tr .tr-flow i:nth-child(11){--t:57%;--sz:7.4%;--rest:20%;animation-delay:-2.25s}
+.bn-tr .tr-flow i:nth-child(12){--t:84%;--sz:7.8%;--rest:14%;animation-delay:-2.475s}
 /* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon lifts off a
    home screen and sinks into the other one rather than sliding past them. The crossing fills 72% of
    the cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
    ever parked visibly, since for the other 28% it sits off-stage at opacity 0. linear and one shared
-   5.4s (with the beam on its exact 1.8s/2.7s harmonics, and the arriving apps on the same 5.4s)
+   2.7s (with the beam on its exact .9s/1.35s harmonics, and the arriving apps on the same 2.7s)
    because all of it is one mechanism: easing them apart would let the bloom fire while nothing lands. */
 @keyframes trFly{
   0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
@@ -882,15 +914,16 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    drops each element to its BASE style, which for .tr-land is opacity:0, for .tr-scan is a light bar
    parked at the top of the screen, and for a destination app is a slot stuck at opacity .14 - three
    defects. These leave a still frame that still tells the story: two phones turned towards each other,
-   both home screens complete, a lit bridge, six icons parked along the lane. */
+   both home screens complete, a lit bridge with its wires drawn across it, twelve icons parked along
+   the lane. The wires need no opacity fix - stopped, they are simply five dotted lines. */
 @media(prefers-reduced-motion:reduce){
-  .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
+  .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i,.tr-wire i){animation:none}
   .bn-tr .tr-beam::before,.bn-tr .tr-beam::after{animation:none;opacity:0}
   .bn-tr .tr-scan{animation:none;opacity:0}
   .bn-tr .tr-land{animation:none;opacity:.34}
   .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transform:none}
 }
-html.a11y-stop-motion .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i){animation:none}
+html.a11y-stop-motion .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i,.tr-wire i){animation:none}
 html.a11y-stop-motion .bn-tr .tr-beam::before,html.a11y-stop-motion .bn-tr .tr-beam::after{animation:none;opacity:0}
 html.a11y-stop-motion .bn-tr .tr-scan{animation:none;opacity:0}
 html.a11y-stop-motion .bn-tr .tr-land{animation:none;opacity:.34}
@@ -898,7 +931,7 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 
 /* The carousel keeps all five slides in the DOM and only translates the track, so off-screen copies
    would animate for ever. Same convention as .slide[aria-hidden="true"] .pg-sim-face. */
-.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i,.tr-grid i),
+.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i,.tr-grid i,.tr-wire i),
 .slide[aria-hidden="true"] .tr-beam::before,
 .slide[aria-hidden="true"] .tr-beam::after{animation-play-state:paused}
 
@@ -906,18 +939,25 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   /* .slide-art is hidden globally on phones, so this slide has to opt back in */
   .bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}
   /* Cap the scene, ease the tilt the way .scr-stage does, thin the bezel again. Everything on the home
-     screen is in cqw and needs no mobile value at all. Four icons in the lane rather than six, so it
-     stays a stream, not a crowd. */
+     screen is in cqw and needs no mobile value at all. Six icons in the lane rather than twelve: the
+     gap here is 58px, and twelve at once would be a solid bar of tiles rather than a stream. */
   .bn-tr .tr-scene{max-width:274px;--tilt:7deg}
   .bn-tr .tr-wall{border-width:1px 1.5px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
   /* the art column leaves only 6px either side here, and a 134% halo reaches 16px past its phone -
      enough to cross the slide edge. 120% keeps the glow inside and reads tighter at this size anyway. */
   .bn-tr .tr-halo{width:120%}
-  .bn-tr .tr-flow i:nth-child(n+5){display:none}
+  /* three wires, not five: at 44% of a 249px scene the five tracks sit 18px apart, which closes up */
+  .bn-tr .tr-wire i:nth-child(n+4){display:none}
+  .bn-tr .tr-wire i:nth-child(1){--y:16%}
+  .bn-tr .tr-wire i:nth-child(2){--y:50%}
+  .bn-tr .tr-wire i:nth-child(3){--y:84%}
+  .bn-tr .tr-flow i:nth-child(n+7){display:none}
   .bn-tr .tr-flow i:nth-child(1){animation-delay:0s}
-  .bn-tr .tr-flow i:nth-child(2){animation-delay:-1.35s}
-  .bn-tr .tr-flow i:nth-child(3){animation-delay:-2.7s}
-  .bn-tr .tr-flow i:nth-child(4){animation-delay:-4.05s}
+  .bn-tr .tr-flow i:nth-child(2){animation-delay:-.45s}
+  .bn-tr .tr-flow i:nth-child(3){animation-delay:-.9s}
+  .bn-tr .tr-flow i:nth-child(4){animation-delay:-1.35s}
+  .bn-tr .tr-flow i:nth-child(5){animation-delay:-1.8s}
+  .bn-tr .tr-flow i:nth-child(6){animation-delay:-2.25s}
 }
 .s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
 .s-banner .slide-banner:hover img{transform:scale(1.015)}
@@ -1858,6 +1898,11 @@ document.addEventListener('DOMContentLoaded',function(){
                   <span class="tr-land"></span>
                 </span>
               </span>
+              <!-- five tracks of flowing dashes, behind both phones; see .tr-wire -->
+              <span class="tr-wire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+              <!-- Twelve packets in flight. The first six keep their own glyphs, drawn for this lane;
+                   the six added to double the rate borrow from the home-screen sprite above rather than
+                   adding more path data for shapes that already exist in the file. -->
               <span class="tr-flow" aria-hidden="true">
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
@@ -1865,6 +1910,12 @@ document.addEventListener('DOMContentLoaded',function(){
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-mail"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-notes"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-health"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-books"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-maps"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-voice"/></svg></i>
               </span>
             </div>
           </div>
