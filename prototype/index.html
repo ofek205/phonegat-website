@@ -474,7 +474,13 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .deals-head .lead{color:var(--ink-soft);margin:.8rem 0 0;font-size:1.05rem}
 .carousel{position:relative;max-width:1080px;margin-inline:auto;padding-inline:clamp(46px,6vw,66px)}
 .car-vp{overflow:hidden;border-radius:20px;box-shadow:0 26px 54px -26px rgba(0,0,0,.4)}
-.car-track{display:flex;transform:translateX(calc(var(--i,0)*100%));transition:transform .55s var(--ease)}
+/* No transform here on purpose. This used to be transform:translateX(calc(var(--i,0)*100%)) with the
+   transition below, and it silently never moved: an unregistered custom property is not
+   interpolatable, so transition:transform had nothing to animate between and the transform froze at
+   its very first value. The dots and aria-hidden went on advancing over a viewport that never
+   scrolled, which is what read as the carousel snapping back to the start. The JS writes two plain
+   translateX values instead, which transition properly. */
+.car-track{display:flex;transition:transform .55s var(--ease);will-change:transform}
 .slide{flex:0 0 100%;box-sizing:border-box;min-height:clamp(290px,30vw,360px);display:grid;grid-template-columns:1fr .85fr;align-items:center;gap:1rem;padding:clamp(28px,4vw,54px);color:#fff;position:relative;overflow:hidden}
 .slide::before{content:"";position:absolute;inset-block-start:-38%;inset-inline-start:-10%;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);pointer-events:none;z-index:0}
 .slide::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.14) 1.1px,transparent 1.3px);background-size:20px 20px;-webkit-mask-image:linear-gradient(to right,#000,transparent 60%);mask-image:linear-gradient(to right,#000,transparent 60%);opacity:.6}

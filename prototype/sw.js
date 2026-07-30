@@ -1,8 +1,8 @@
 /* PHONE GAT service worker — enables installability + offline fallback.
    Strategy: network-first for all same-origin GETs (content always fresh online),
    fall back to cache when offline. Bump CACHE to invalidate on major asset changes. */
-const CACHE = 'pg-v1';
-const SHELL = ['./', './index.html', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+const CACHE = 'pg-v2';
+const SHELL = ['./', './index.html', './phone-problems.html', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
