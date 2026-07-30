@@ -641,9 +641,20 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    each side of its own layout box, which is 36px taken out of the lane the icons fly down. At 38% the
    lane closed to 48px and the cargo had nowhere to go. */
 .bn-tr .tr-scene{position:relative;width:100%;max-width:364px;aspect-ratio:1/.84;margin-inline:auto;--tilt:8deg}
+/* Desktop only: hand the illustration column more room than the .85fr the other slides use, so the two
+   devices read at a size where their home screens are legible. Scoped to min-width so the single-column
+   mobile rule further down still wins there. */
+@media(min-width:721px){
+  .bn-tr{grid-template-columns:1fr 1.12fr}
+  .bn-tr .tr-scene{max-width:446px}
+}
 
 /* placement only - tilt and float live on .tr-dev, so no keyframe ever restates this transform */
 .bn-tr .tr-ph{position:absolute;top:50%;width:35%;transform:translateY(-50%)}
+/* Narrower devices only where the scene is wide, so the flight lane between them opens up. Must come
+   after the 35% base rule, not inside the earlier block - equal specificity, so source order decides.
+   On mobile they stay at 35%: there the scene is 270px and 31.5% would cost home-screen legibility. */
+@media(min-width:721px){.bn-tr .tr-ph{width:31.5%}}
 .bn-tr .tr-src{right:0;z-index:2}
 .bn-tr .tr-dst{left:0;z-index:3}
 
@@ -775,12 +786,17 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
 /* -.135s = 2.7/20, one slot per app, so the wave crosses the grid exactly once per cycle and keeps
    step with the icons arriving. Now that the apps are coloured, an arriving one greys out rather than
    nearly vanishing - which is also what iOS does to an app that is still restoring. */
-.bn-tr .tr-dst .tr-grid i{animation:trSlot 2.7s linear infinite;animation-delay:calc(var(--i,0)*-.135s)}
+/* The stagger is deliberately SHORTER than the cycle (24 icons * .0625s = 1.5s of 2.7s). At the old
+   .135s the spread exceeded the cycle, so every phase was occupied at once and the grid only shimmered.
+   Clustering the phase leaves a visible block of not-yet-arrived apps, so the screen reads as filling
+   up rather than twinkling. The 2.7s cycle itself is untouched - it is the same mechanism as the flying
+   icons and the beam harmonics, and decoupling it would let the bloom fire while nothing lands. */
+.bn-tr .tr-dst .tr-grid i{animation:trSlot 2.7s linear infinite;animation-delay:calc(var(--i,0)*-.0625s)}
 @keyframes trSlot{
-  0%,3%  {opacity:.42;filter:grayscale(1) brightness(.6);transform:scale(.82)}
-  9%     {opacity:1;  filter:none;                       transform:scale(1.08)}
-  14%,90%{opacity:1;  filter:none;                       transform:scale(1)}
-  100%   {opacity:.42;filter:grayscale(1) brightness(.6);transform:scale(.82)}
+  0%,30% {opacity:.34;filter:grayscale(1) brightness(.55);transform:scale(.8)}
+  37%    {opacity:1;  filter:none;                        transform:scale(1.1)}
+  43%,93%{opacity:1;  filter:none;                        transform:scale(1)}
+  100%   {opacity:.34;filter:grayscale(1) brightness(.55);transform:scale(.8)}
 }
 
 /* Both devices are deliberately identical - same size, same brightness, same halo. Direction is told
@@ -868,7 +884,7 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
    contain:paint - the 16px outer glow would be shaved). */
 .bn-tr .tr-flow{position:absolute;inset:0;z-index:7;pointer-events:none;contain:layout}
-.bn-tr .tr-flow i{position:absolute;top:var(--t);left:var(--rest);width:var(--sz);aspect-ratio:1;
+.bn-tr .tr-flow i{position:absolute;top:var(--t);left:var(--rest);width:calc(var(--sz)*1.28);aspect-ratio:1;
   transform:translate(-50%,-50%);border-radius:27%;
   display:flex;align-items:center;justify-content:center;
   background:linear-gradient(155deg,#fff 0%,#f6fcff 42%,#dff0fc 100%);
