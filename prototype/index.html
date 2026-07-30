@@ -19,16 +19,37 @@
   /* Belt to vercel.json's X-Robots-Tag braces: keeps localhost and any future test host out
      of the index even where we control no headers. */
   if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
-  /* Unmissable marker, so a staging tab is never mistaken for the live site. Styles are
-     inline and pointer-events:none on purpose: nothing to collide with the stylesheet, and
-     it can never swallow a click on whatever sits underneath. */
-  if(!window.PG_PROD){document.addEventListener('DOMContentLoaded',function(){
-    var b=document.createElement('div');
-    b.textContent='סביבת בדיקות · '+window.PG_ENV;
-    b.setAttribute('aria-hidden','true');
-    b.style.cssText='position:fixed;top:0;left:0;z-index:99999;pointer-events:none;background:#b3261e;color:#fff;font:700 11px/1 system-ui,sans-serif;padding:5px 10px;border-bottom-right-radius:7px;letter-spacing:.02em;box-shadow:0 1px 6px rgba(0,0,0,.35)';
-    document.body.appendChild(b);
-  });}
+  /* Sticky yellow bar across the top, so there is never a moment of doubt about which
+     environment a tab is showing. It reserves its own height on <body> and pushes the sticky
+     header down by the same amount — a bar that simply floats on top would hide the header
+     we usually came here to look at. pointer-events:none so it can never swallow a click;
+     only the escape hatch back to the live site opts back in. */
+  if(!window.PG_PROD){
+    document.documentElement.classList.add('pg-testenv');
+    var pgTS=document.createElement('style');
+    pgTS.textContent=
+      'html.pg-testenv{--pg-test-h:32px}'+
+      'html.pg-testenv body{padding-top:var(--pg-test-h)}'+
+      'html.pg-testenv header.site{top:var(--pg-test-h)}'+
+      '.pg-testbar{position:fixed;top:0;inset-inline:0;height:var(--pg-test-h);z-index:100001;'+
+        'pointer-events:none;display:flex;align-items:center;justify-content:center;gap:.5em;'+
+        'padding:0 10px;white-space:nowrap;overflow:hidden;text-align:center;'+
+        'background:#ffd400;color:#1b1500;font:800 13px/1 system-ui,sans-serif;'+
+        'border-bottom:2px solid #1b1500;box-shadow:0 2px 10px rgba(0,0,0,.28)}'+
+      '.pg-testbar a{pointer-events:auto;color:#1b1500;text-decoration:underline}'+
+      '.pg-testbar .pg-tb-env{opacity:.7;font-weight:700}'+
+      '@media(max-width:520px){html.pg-testenv{--pg-test-h:28px}.pg-testbar{font-size:11px;gap:.35em}}'+
+      '@media(max-width:400px){.pg-testbar .pg-tb-env{display:none}}';
+    document.head.appendChild(pgTS);
+    document.addEventListener('DOMContentLoaded',function(){
+      var b=document.createElement('div');
+      b.className='pg-testbar';
+      b.innerHTML='<span aria-hidden="true">⚠</span> סביבת בדיקות — זה לא האתר החי'+
+        ' <span class="pg-tb-env">('+window.PG_ENV+')</span>'+
+        ' <a href="https://www.phonegat.co.il/">לאתר החי ↗</a>';
+      document.body.appendChild(b);
+    });
+  }
 </script>
 <!-- Consent Mode v2: analytics denied by default until the visitor accepts (see cookie banner) -->
 <script>
