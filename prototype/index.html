@@ -892,7 +892,9 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
    Opacity only - a scale would push the bloom past the bezel. */
 .bn-tr .tr-land{z-index:6;opacity:0;
   background:radial-gradient(72% 42% at 50% 62%,rgba(140,215,255,.55),rgba(110,190,240,.16) 52%,transparent 78%);
-  animation:trLand .675s linear infinite}
+  /* .9s = 2.7/3, so the bloom fires once every third landing now that nine packets land every .3s.
+     At the old .675s it fired every 2.25 landings, i.e. off the beat it was tuned to. */
+  animation:trLand .9s linear infinite}
 @keyframes trLand{0%{opacity:0}20%{opacity:.55}100%{opacity:0}}
 
 /* The bridge: a breathing pool plus two pulses running the lane, so the only thing spanning the two
@@ -929,11 +931,15 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   background-size:46px 100%;
   animation:trWire var(--wd) linear infinite}
 @keyframes trWire{from{background-position:0 0}to{background-position:-46px 0}}
-.bn-tr .tr-wire i:nth-child(1){--y:9%; --wd:.66s;--o:.6}
-.bn-tr .tr-wire i:nth-child(2){--y:29%;--wd:.52s;--o:.9}
-.bn-tr .tr-wire i:nth-child(3){--y:50%;--wd:.44s;--o:1}
-.bn-tr .tr-wire i:nth-child(4){--y:71%;--wd:.58s;--o:.85}
-.bn-tr .tr-wire i:nth-child(5){--y:91%;--wd:.72s;--o:.55}
+/* Opacity ramp runs OUTWARD, not inward. It used to peak at the centre line (1) and fade at the edges,
+   which is exactly where the white packets now fly: a bright line behind a white tile bleeds into its
+   edges and softens them. Now the outer tracks are the rails you read, and the inner ones are quiet
+   movement underneath the cargo. The durations stay non-harmonic on purpose. */
+.bn-tr .tr-wire i:nth-child(1){--y:9%; --wd:.66s;--o:.8}
+.bn-tr .tr-wire i:nth-child(2){--y:29%;--wd:.52s;--o:.5}
+.bn-tr .tr-wire i:nth-child(3){--y:50%;--wd:.44s;--o:.42}
+.bn-tr .tr-wire i:nth-child(4){--y:71%;--wd:.58s;--o:.55}
+.bn-tr .tr-wire i:nth-child(5){--y:91%;--wd:.72s;--o:.75}
 
 /* Every icon is the same object on the same lane; only size, height, start time and parked position
    differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
@@ -948,35 +954,44 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
     inset 0 -1px 0 rgba(188,224,245,.55);
   animation:trFly 2.7s linear infinite}
 .bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce;color:#1b87ce}
-/* --t height in the lane, --sz size, --rest where it parks when motion is off. Twelve on a 2.7s cycle
-   is one leaving every .225s, and since the crossing fills 72% of it, about nine are in the air at any
-   moment - which is what makes it read as a transfer running at speed rather than as a few objects
-   being carried across. They are a shade smaller than the six were, or nine at the old size would have
-   been a wall. Delays are NEGATIVE so the lane is already full on the first frame. Heights are
-   deliberately out of order: a tidy top-to-bottom sweep looks like a machine indexing a list. */
-.bn-tr .tr-flow i:nth-child(1) {--t:22%;--sz:8.2%;--rest:80%;animation-delay:0s}
-.bn-tr .tr-flow i:nth-child(2) {--t:62%;--sz:7%;  --rest:74%;animation-delay:-.225s}
-.bn-tr .tr-flow i:nth-child(3) {--t:38%;--sz:8.4%;--rest:68%;animation-delay:-.45s}
-.bn-tr .tr-flow i:nth-child(4) {--t:80%;--sz:6.8%;--rest:62%;animation-delay:-.675s}
-.bn-tr .tr-flow i:nth-child(5) {--t:14%;--sz:7.6%;--rest:56%;animation-delay:-.9s}
-.bn-tr .tr-flow i:nth-child(6) {--t:50%;--sz:8%;  --rest:50%;animation-delay:-1.125s}
-.bn-tr .tr-flow i:nth-child(7) {--t:30%;--sz:7.2%;--rest:44%;animation-delay:-1.35s}
-.bn-tr .tr-flow i:nth-child(8) {--t:71%;--sz:8.3%;--rest:38%;animation-delay:-1.575s}
-.bn-tr .tr-flow i:nth-child(9) {--t:44%;--sz:6.9%;--rest:32%;animation-delay:-1.8s}
-.bn-tr .tr-flow i:nth-child(10){--t:18%;--sz:8.1%;--rest:26%;animation-delay:-2.025s}
-.bn-tr .tr-flow i:nth-child(11){--t:57%;--sz:7.4%;--rest:20%;animation-delay:-2.25s}
-.bn-tr .tr-flow i:nth-child(12){--t:84%;--sz:7.8%;--rest:14%;animation-delay:-2.475s}
+/* --t height in the lane, --sz size, --rise how far it arcs off the line, --rest where it parks when
+   motion is off.
+   The lane is 34%-66%, which is the band .tr-beam (25-75%) and .tr-wire (28-72%) already draw. Before
+   this the packets ran 14%-84%, so a third of them crossed unlit space above and below the glow - the
+   scene drew a channel and then sent the cargo around it. 14% also lifted off the Dynamic Island and
+   84% off the dock, missing the app grid (21.5-72%) the whole scene exists to show.
+   Nine, not twelve: one leaves every .3s (2.7/9 exactly) and about six are in the air. At twelve the
+   34-point band forced neighbours 12+ points apart, which can only zigzag top-third to bottom-third -
+   and a zigzag is the "machine indexing a list" the note below warns about.
+   Heights stay deliberately out of order, and --t is uncorrelated with animation-delay: the range is
+   narrow now, the ORDER is not. 64->52->34 at the tail is two drops in a row on purpose, so the
+   sequence never reads as weaving. --rise is negative on three of the nine, so those dip under the line
+   instead of arcing over it - with one shared arc, nine paths in a narrow band become a stiff bundle.
+   Delays are NEGATIVE so the lane is already full on the first frame. */
+.bn-tr .tr-flow i:nth-child(1){--t:34%;--rise:10px; --sz:8.2%;--rest:80%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){--t:57%;--rise:-9px; --sz:7%;  --rest:72%;animation-delay:-.3s}
+.bn-tr .tr-flow i:nth-child(3){--t:43%;--rise:13px; --sz:8.4%;--rest:65%;animation-delay:-.6s}
+.bn-tr .tr-flow i:nth-child(4){--t:66%;--rise:5px;  --sz:6.8%;--rest:57%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(5){--t:48%;--rise:-12px;--sz:7.6%;--rest:50%;animation-delay:-1.2s}
+.bn-tr .tr-flow i:nth-child(6){--t:61%;--rise:8px;  --sz:8%;  --rest:43%;animation-delay:-1.5s}
+.bn-tr .tr-flow i:nth-child(7){--t:38%;--rise:-10px;--sz:7.2%;--rest:35%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(8){--t:64%;--rise:6px;  --sz:8.3%;--rest:28%;animation-delay:-2.1s}
+.bn-tr .tr-flow i:nth-child(9){--t:52%;--rise:14px; --sz:6.9%;--rest:20%;animation-delay:-2.4s}
 /* left runs 84% -> 17%: the middle of one screen to the middle of the other, so an icon lifts off a
    home screen and sinks into the other one rather than sliding past them. The crossing fills 72% of
    the cycle, which keeps about four in the lane at once - a stream, never a collision - and no icon is
    ever parked visibly, since for the other 28% it sits off-stage at opacity 0. linear and one shared
    2.7s (with the beam on its exact .9s/1.35s harmonics, and the arriving apps on the same 2.7s)
    because all of it is one mechanism: easing them apart would let the bloom fire while nothing lands. */
+/* The arc is per-icon now (--rise) and scaled per-breakpoint (--arc), instead of one shared 12px lift.
+   Both carry fallbacks for the reason already documented at --tilt: a missing custom property makes the
+   WHOLE transform compute to none, which would silently drop every packet onto the centre line at full
+   size. The three keyframe lifts keep their old proportions (.25 / 1 / .75 of the peak). */
 @keyframes trFly{
   0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
-  8%  {         opacity:1;transform:translate(-50%,calc(-50% - 3px))  scale(1)    rotate(-7deg)}
-  40% {         opacity:1;transform:translate(-50%,calc(-50% - 12px)) scale(1.03) rotate(0deg)}
-  64% {         opacity:1;transform:translate(-50%,calc(-50% - 9px))  scale(1)    rotate(4deg)}
+  8%  {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * .25 * var(--arc,1))) scale(1)    rotate(-7deg)}
+  40% {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * var(--arc,1)))       scale(1.03) rotate(0deg)}
+  64% {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * .75 * var(--arc,1))) scale(1)    rotate(4deg)}
   72% {left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
   100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
 }
@@ -1012,7 +1027,9 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   /* Cap the scene, ease the tilt the way .scr-stage does, thin the bezel again. Everything on the home
      screen is in cqw and needs no mobile value at all. Six icons in the lane rather than twelve: the
      gap here is 58px, and twelve at once would be a solid bar of tiles rather than a stream. */
-  .bn-tr .tr-scene{max-width:274px;--tilt:7deg}
+  /* --arc scales the per-packet lift. The arcs are in px, so on a 227px-tall scene an unscaled 14px
+     rise carries ~60% more visual weight than it does on the 368px desktop scene. */
+  .bn-tr .tr-scene{max-width:274px;--tilt:7deg;--arc:.68}
   .bn-tr .tr-wall{border-width:1px 1.5px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
   /* the art column leaves only 6px either side here, and a 134% halo reaches 16px past its phone -
      enough to cross the slide edge. 120% keeps the glow inside and reads tighter at this size anyway. */
@@ -1971,9 +1988,11 @@ document.addEventListener('DOMContentLoaded',function(){
               </span>
               <!-- five tracks of flowing dashes, behind both phones; see .tr-wire -->
               <span class="tr-wire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-              <!-- Twelve packets in flight. The first six keep their own glyphs, drawn for this lane;
-                   the six added to double the rate borrow from the home-screen sprite above rather than
-                   adding more path data for shapes that already exist in the file. -->
+              <!-- Nine packets in flight. The first six keep their own glyphs, drawn for this lane; the
+                   three added to raise the rate borrow from the home-screen sprite above rather than
+                   adding more path data for shapes that already exist in the file. Mobile shows the
+                   first six (see the nth-child(n+7) rule), which is why those six read as a complete
+                   sequence on their own. -->
               <span class="tr-flow" aria-hidden="true">
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
@@ -1984,9 +2003,6 @@ document.addEventListener('DOMContentLoaded',function(){
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-mail"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-notes"/></svg></i>
                 <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-health"/></svg></i>
-                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-books"/></svg></i>
-                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-maps"/></svg></i>
-                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-voice"/></svg></i>
               </span>
             </div>
           </div>
