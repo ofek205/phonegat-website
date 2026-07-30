@@ -1,11 +1,12 @@
 // Minimal dependency-free static server for the PHONE GAT prototype.
-// Serves the ../prototype folder over http://localhost:8000
+// Serves the ../prototype folder over http://localhost:<PORT> (8000 when PORT is unset).
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..', 'prototype');
-const port = 8000;
+// Take the port the harness assigns, so parallel sessions don't collide on 8000.
+const port = Number(process.env.PORT) || 8000;
 const types = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8',

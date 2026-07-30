@@ -5,7 +5,8 @@
       "name": "phonegat-static",
       "runtimeExecutable": "node",
       "runtimeArgs": [".claude/static-server.js"],
-      "port": 8000
+      "port": 8000,
+      "autoPort": true
     }
   ]
 }
