@@ -146,7 +146,8 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
 /* ===== header: white and light, like the reference: logo, plain nav, one pill CTA ===== */
 header.site{background:#fff;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
 .hrow{display:flex;align-items:center;gap:1rem;min-height:66px}
-.logo{display:inline-flex}
+/* the logo is the way back to the home page — 44px of height to tap, without resizing the mark */
+.logo{display:inline-flex;align-items:center;min-height:44px}
 .logo img{height:38px;width:auto}
 nav.main{display:flex;gap:1.4rem;font-weight:500;font-size:.95rem;margin-inline-start:auto;flex-wrap:wrap}
 nav.main a{color:var(--ink);padding:.3rem 0}nav.main a:hover{color:#000}
@@ -213,11 +214,20 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 html[dir="ltr"] .prog{transform-origin:left center}
 /* on a phone the bar stays one scrollable line instead of stacking to a third of the screen */
 @media(max-width:760px){
-  .picker .row{flex-wrap:nowrap;overflow-x:auto;gap:1.1rem;padding-block:.6rem;scrollbar-width:none}
+  .picker{position:relative}          /* holds the fade that signals more chips off-screen */
+  .picker .row{flex-wrap:nowrap;overflow-x:auto;gap:1.1rem;padding-block:.35rem;scrollbar-width:none;
+    align-items:center;-webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
   .picker .row::-webkit-scrollbar{display:none}
   .picker .lbl,.picker .tabs{flex:none}
   .picker .hint{display:none}
-  .chip{white-space:nowrap}
+  /* 44px of tappable height. The chip is an underline tab, so the height comes from padding and
+     the indicator simply sits lower — the row reads the same, the target is twice the size. */
+  .chip{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;padding-block:0}
+  /* A scrollable filter row with no edge cue reads as the whole set of options. This fade says
+     "there is more this way" without adding a control to tap. */
+  .picker::after{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:34px;
+    background:linear-gradient(to left,rgba(255,255,255,0),rgba(255,255,255,.96));
+    pointer-events:none;z-index:1}
 }
 /* ===== contents: an index, the way a magazine sets one ===== */
 .toc{padding:clamp(34px,5vw,58px) 0 0}
@@ -331,6 +341,16 @@ header.site h4,footer.site h4{font-family:var(--font);font-weight:700}
 .pwa-hint b{color:#fff;font-weight:800}
 .pwa-hint svg{width:16px;height:16px;fill:currentColor;vertical-align:-3px;margin:0 2px}
 footer .fl{list-style:none;padding:0;margin:0;display:grid;gap:.45rem}footer a:hover{color:#fff}
+/* A person holding a broken phone came here to call. On a touch screen those two numbers were
+   23px tall — under half the 44px guideline, and the smallest targets on the page despite being
+   the most important. They get a real target and a size that reads as a phone number. */
+@media(max-width:820px){
+  footer .fl a{display:inline-flex;align-items:center;min-height:44px}
+  /* 1.3rem, not 1.12rem: rem resolves against <html> at 16px while the body runs at 18px, so
+     anything under ~1.15rem here would come out smaller than the surrounding text. */
+  footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
+  footer .copy a{display:inline-block;padding-block:.72rem}
+}
 footer .flogo{background:#fff;border-radius:8px;padding:5px;display:inline-flex}footer .flogo img{height:42px;width:auto}
 footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
 footer .copy a{text-decoration:underline}
@@ -341,7 +361,9 @@ footer .copy a{text-decoration:underline}
 @media(max-width:820px){.rail{display:none}}
 .mbar{position:fixed;inset-block-end:0;inset-inline:0;z-index:90;display:none;grid-template-columns:1fr 1fr 1fr;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.1);padding-bottom:env(safe-area-inset-bottom)}
 .mbar a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:.5rem;font-size:.75rem;font-weight:700;color:var(--ink)}.mbar a .mi{font-size:1.2rem}
-@media(max-width:820px){.mbar{display:grid}body{padding-block-end:calc(60px + env(safe-area-inset-bottom))}}
+/* 72px, not 60px: the bar measures 70px, so the old value left the last ~10px of every page
+   sitting underneath it. The same 60px is still in index.html and wants the same fix. */
+@media(max-width:820px){.mbar{display:grid}body{padding-block-end:calc(72px + env(safe-area-inset-bottom))}}
 
 /* ===== device filtering (progressive enhancement: without JS everything stays visible) ===== */
 html[data-pgdev="ios"] .dev:not([data-dev="ios"]),
@@ -882,6 +904,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   chips.forEach(function(c){c.addEventListener('click',function(){apply(c.getAttribute('data-dev'));});});
   var saved='all';try{saved=localStorage.getItem('pg_dev')||'all';}catch(e){}
   apply(saved);
+  /* On a phone the chip row scrolls sideways, so a returning visitor's choice can start off-screen
+     and the row would look unset. Bring the pressed chip into view — inline only, so the page
+     itself never jumps. */
+  (function(){
+    var row=document.querySelector('.picker .row');
+    var on=document.querySelector('.chip[aria-pressed="true"]');
+    if(!row||!on||row.scrollWidth<=row.clientWidth)return;
+    if(on.scrollIntoView){try{on.scrollIntoView({block:'nearest',inline:'center'});}catch(e){}}
+  })();
 })();
 
 /* reading rule + section counter + section reveal.
