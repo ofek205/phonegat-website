@@ -3,6 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Environment guard, compact form. The full version with the test-environment banner lives in
+     index.html and phone-problems.html; this page only needs the two things that must never
+     happen off production: GTM loading (a test visit counted as real) and a test host getting
+     indexed. Keep in sync with index.html — preflight.js fails the build if GTM is left ungated. -->
+<script>
+  window.PG_ENV=(function(h){
+    if(h==='www.phonegat.co.il'||h==='phonegat.co.il')return 'production';
+    if(h==='localhost'||h==='127.0.0.1'||h===''||/^(192\.168|10)\./.test(h))return 'local';
+    return 'preview';
+  })(location.hostname);
+  window.PG_PROD=(window.PG_ENV==='production');
+  /* Appended rather than edited: the page's own robots meta is parsed after this script, and
+     Google honours the most restrictive directive when two are present. */
+  if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
+</script>
 <!-- Assistant web font (same URL as the home page, so it loads from shared cache) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,12 +29,12 @@
   var pgC='denied';try{if(localStorage.getItem('pgConsent')==='granted')pgC='granted';}catch(e){}
   gtag('consent','default',{ad_storage:pgC,ad_user_data:pgC,ad_personalization:pgC,analytics_storage:pgC,functionality_storage:'granted',security_storage:'granted',wait_for_update:500});
 </script>
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+<!-- Google Tag Manager — production only; ?pg_gtm=1 forces it on when a tag needs testing -->
+<script>if(window.PG_PROD||location.search.indexOf('pg_gtm=1')>-1){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WZSVD7Z5');</script>
+})(window,document,'script','dataLayer','GTM-WZSVD7Z5');}</script>
 <!-- End Google Tag Manager -->
 <title>הצהרת נגישות | פון גת</title>
 <meta name="description" content="הצהרת הנגישות של אתר פון גת, בהתאם לתקן הישראלי ת&quot;י 5568 (WCAG 2.0 AA) ותקנות שוויון זכויות לאנשים עם מוגבלות.">

@@ -191,6 +191,46 @@ var opens = countAll(html, /<details(?=[\s>])/g), closes = countAll(html, /<\/de
 if (opens !== closes) bad('תגי details לא מאוזנים: ' + opens + ' נפתחו, ' + closes + ' נסגרו');
 else ok('תגי details מאוזנים (' + opens + ')');
 
+/* ---------- 8. כל דף שטוען GTM חייב לגדר אותו ----------
+ * המדריך נוצר כקובץ נפרד עם head משלו, ולכן קיבל GTM לא מגודר בלי שאף בדיקה תפסה את זה.
+ * בדיקה 4 מסתכלת רק על index.html; זו סורקת כל דף, כדי שהדף הבא לא יחזור על התקלה. */
+var pagesDir = P('prototype'), pageFiles = [];
+try {
+  pageFiles = fs.readdirSync(pagesDir).filter(function (f) { return /\.html$/.test(f); });
+} catch (e) { warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים'); }
+
+var ungated = [], guardless = [], scanned = 0;
+pageFiles.forEach(function (f) {
+  var src;
+  try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+  if (src.indexOf('googletagmanager.com/gtm.js') < 0) return;   /* אין GTM, אין מה לגדר */
+  scanned++;
+  if (src.indexOf('window.PG_PROD=') < 0) guardless.push(f);
+  if (!/if\(window\.PG_PROD\|\|location\.search/.test(src)) ungated.push(f);
+});
+if (guardless.length) {
+  bad('דפים ללא מזהה סביבה: ' + guardless.join(', ') +
+      ' — כל אחד מהם טוען GTM ואין לו PG_PROD להיתלות בו');
+}
+if (ungated.length) {
+  bad('GTM לא מגודר בדפים: ' + ungated.join(', ') +
+      ' — ביקור בדיקה בהם ייספר ב-GA4 כלקוח אמיתי, וזה נתון שאי אפשר להחזיר');
+}
+if (scanned && !ungated.length && !guardless.length) {
+  ok('כל ' + scanned + ' הדפים שטוענים GTM מגודרים ב-PG_PROD');
+}
+
+/* canonical בכל דף תוכן, לא רק בדף הבית */
+var badCanon = [];
+pageFiles.forEach(function (f) {
+  var src;
+  try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+  var c = src.match(/<link[^>]+rel="canonical"[^>]+href="([^"]+)"/);
+  if (c && c[1].indexOf(PROD_HOST) < 0) badCanon.push(f + ' (' + c[1] + ')');
+});
+if (badCanon.length) bad('canonical לא מצביע לפרודקשן: ' + badCanon.join(', '));
+else if (pageFiles.length) ok('כל ה-canonical מצביעים לפרודקשן');
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
