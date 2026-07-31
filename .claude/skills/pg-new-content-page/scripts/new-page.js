@@ -163,7 +163,7 @@ var skeleton = openTag + '\n\n' +
 '  <div class="wrap">\n' +
 '    <h2 id="cta-h">TODO שאלת סגירה</h2>\n' +
 '    <p>TODO. אנחנו כאן ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
-'    <div class="cta-btns">\n' +
+'    <div class="row">\n' +
 '      <a class="btn btn-wa" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>\n' +
 '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
 '      <a class="btn btn-teal" href="index.html#services">כל השירותים שלנו</a>\n' +
