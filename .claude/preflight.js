@@ -268,8 +268,12 @@ else if (pageFiles.length) ok('כל ההפניות ל-@id נפתרות בתוך 
  * ככה נוצר הבאג המקורי: מדריך התקלות נבנה בלי PG_PROD ובלי תפריט נגישות, ואף בדיקה לא תפסה.
  * הבדיקות כאן הופכות שכחה כזאת לכשל גלוי במקום לפער שקט.
  *
- * דפי תוכן בלבד — לא privacy/accessibility, שהם מסמכים משפטיים קצרים ולא צריכים את הווידג'טים. */
-var CONTENT_PAGES = ['index.html', 'phone-problems.html'];
+ * דפי תוכן בלבד — לא privacy/accessibility, שהם מסמכים משפטיים קצרים ולא צריכים את הווידג'טים.
+ * הרשימה נגזרת מהתיקייה ולא כתובה קשיח, אחרת דף חדש לא נבדק עד שמישהו יזכור לרשום אותו כאן. */
+var LEGAL_PAGES = ['privacy.html', 'accessibility.html'];
+var CONTENT_PAGES = pageFiles.filter(function (f) {
+  return LEGAL_PAGES.indexOf(f) < 0 && f.charAt(0) !== '_';   /* _ = טיוטה מקומית */
+});
 var missingA11y = [], missingCookie = [], missingSW = [];
 CONTENT_PAGES.forEach(function (f) {
   var src;
@@ -292,6 +296,117 @@ if (missingCookie.length) {
 if (missingSW.length) {
   warn('אין רישום service worker בדפים: ' + missingSW.join(', ') + ' — מבקר שנוחת שם לא יקבל את האפליקציה');
 } else ok('ה-service worker נרשם בכל דפי התוכן');
+
+/* ---------- 11. התקן לכל דף: נגישות, מבנה, מסגרת, מובייל ----------
+ * כל בדיקה כאן היא דבר שנשכח בדף אמיתי פעם אחת. הן זולות, סטטיות, וחלות אוטומטית על כל דף
+ * חדש בתיקייה — כדי שהתקן יהיה מצב של הקוד ולא כוונה שצריך לזכור. */
+function readPage(f) { try { return fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return null; } }
+var ref = readPage('index.html') || '';
+
+/* חתימת הניווט והפוטר של דף הבית — המסגרת המשותפת חייבת להיראות זהה בכל דף */
+function navLabels(src) {
+  var nav = (src.match(/<nav class="main"[\s\S]*?<\/nav>/) || [''])[0];
+  return (nav.match(/>[^<>]+<\/a>/g) || []).map(function (s) { return s.slice(1, -4).trim(); });
+}
+var refNav = navLabels(ref).join('|');
+
+var f_h1 = [], f_alt = [], f_lang = [], f_marks = [], f_skip = [], f_main = [],
+    f_nav = [], f_footer = [], f_btn = [], f_bar = [];
+
+CONTENT_PAGES.forEach(function (f) {
+  var s = readPage(f); if (!s) return;
+
+  /* כותרת ראשית אחת בדיוק — יותר מאחת מפצלת את נושא הדף בעיני גוגל */
+  var h1 = (s.match(/<h1[\s>]/g) || []).length;
+  if (h1 !== 1) f_h1.push(f + ' (' + h1 + ')');
+
+  /* alt לכל תמונה. alt="" מותר ונכון לדקורציה, חסר לגמרי אינו */
+  var imgs = s.match(/<img\b[^>]*>/g) || [];
+  var noAlt = imgs.filter(function (t) { return !/\salt=/.test(t); }).length;
+  if (noAlt) f_alt.push(f + ' (' + noAlt + ' מתוך ' + imgs.length + ')');
+
+  if (!/<html lang="he" dir="rtl">/.test(s)) f_lang.push(f);
+
+  if (!/role="banner"/.test(s) || !/role="main"/.test(s) || !/role="contentinfo"/.test(s)) f_marks.push(f);
+
+  /* הדילוג חייב להיות לוגי; left פיזי מציב אותו בצד הלא נכון ב-RTL */
+  var skip = (s.match(/\.skip\{[^}]*\}/) || [''])[0];
+  if (!/class="skip"/.test(s) || !/inset-inline-start/.test(skip)) f_skip.push(f);
+
+  if (!/<main[^>]*tabindex="-1"/.test(s)) f_main.push(f);
+
+  if (f !== 'index.html') {
+    /* the page's own entry is an addition, not a mismatch — compare the rest */
+    var mine = navLabels(s).filter(function (l) { return refNav.split('|').indexOf(l) > -1; }).join('|');
+    if (mine !== refNav) f_nav.push(f);
+  }
+
+  if (f !== 'index.html') {
+    if (!/facebook\.com\/phonegat/.test(s) || !/instagram\.com\/phonegat/.test(s) ||
+        !/id="pwaCta"/.test(s) || !/סימן מסחר של סלקום/.test(s)) f_footer.push(f);
+  }
+
+  /* כפתורים: אותה צורה בכל האתר. גלולה בדף אחד ומלבן באחר נקרא כשני אתרים */
+  var btn = (s.match(/^\.btn\{[^}]*\}/m) || [''])[0];
+  if (!/border-radius:4px/.test(btn) || !/font-weight:700/.test(btn)) f_btn.push(f);
+
+  /* הסרגל התחתון 70px; padding קטן ממנו מסתיר את סוף כל גלילה */
+  /* only the value inside the ≤820px query counts — above that the bar is display:none, so the
+     desktop base value is irrelevant and matching it first produced a phantom failure */
+  var pad = (s.match(/@media\(max-width:820px\)\{[\s\S]{0,400}?body\{padding-block-end:calc\((\d+)px/) || [])[1];
+  if (pad && +pad < 70) f_bar.push(f + ' (' + pad + 'px)');
+});
+
+function verdict(list, okMsg, badMsg, fatal) {
+  if (!list.length) { ok(okMsg); return; }
+  (fatal ? bad : warn)(badMsg + ': ' + list.join(', '));
+}
+verdict(f_h1,    'כותרת h1 אחת בכל דף',            'יותר מ-h1 אחת, או אפס', true);
+verdict(f_alt,   'לכל התמונות יש alt',              'תמונות בלי alt', true);
+verdict(f_lang,  'lang="he" dir="rtl" בכל דף',      'חסר lang/dir נכון', true);
+verdict(f_marks, 'תגיות נחיתה בכל דף',              'חסרות תגיות נחיתה (banner/main/contentinfo)', true);
+verdict(f_skip,  'קישור דילוג לוגי בכל דף',          'קישור דילוג חסר או משתמש ב-left פיזי', true);
+verdict(f_main,  'main הוא יעד דילוג תקין',          'main בלי tabindex="-1"', true);
+verdict(f_nav,   'הניווט זהה בכל הדפים',            'הניווט לא תואם ל-index.html', false);
+verdict(f_footer,'הפוטר מלא בכל דפי התוכן',         'בפוטר חסר רשתות/כפתור אפליקציה/ויתור סימנים', false);
+verdict(f_btn,   'הכפתורים בצורת האתר בכל דף',      'הכפתורים לא תואמים ל-index.html (4px/700)', false);
+verdict(f_bar,   'התוכן מפנה את הסרגל התחתון',      'padding קטן מגובה הסרגל (70px)', false);
+
+/* ---------- 12. הצהרות שיוצרות חשיפה משפטית ----------
+ * שלושתן קרו. כל אחת עלתה בתיקון של דקה אחרי שנמצאה, ואפס אם נתפסת כאן. */
+var claimFails = [];
+pageFiles.forEach(function (f) {
+  var s = readPage(f); if (!s) return;
+  /* הבטחה גורפת שהדף עצמו מכחיש בהמשך */
+  if (/אחריות על כל תיקון/.test(s)) claimFails.push(f + ': "אחריות על כל תיקון" גורף — נזקי נוזלים ללא אחריות');
+  /* התניה בתקנון שלא מפורסם */
+  if (/בכפוף לתקנון/.test(s) && !fs.existsSync(path.join(pagesDir, 'terms.html'))) {
+    claimFails.push(f + ': "בכפוף לתקנון" ואין terms.html לקשר אליו');
+  }
+  /* מוסכמת המותג */
+  if (/וואטסאפ/.test(s)) claimFails.push(f + ': "וואטסאפ" בעברית — המותג נכתב WhatsApp');
+});
+if (claimFails.length) bad('הצהרות בעייתיות: ' + claimFails.join(' · '));
+else ok('אין הצהרות גורפות, תקנון רפאים או שם מותג בעברית');
+
+/* תאריך ביקורת הנגישות מול הדף החדש ביותר: הצהרה שמכסה "כל הדפים" ומתוארכת לפני
+ * הדף האחרון מצהירה על כיסוי שאין לה, וזה הדבר הקל ביותר להצביע עליו בתביעה */
+(function () {
+  var st = readPage('accessibility.html'); if (!st) return;
+  var m = st.match(/תאריך עריכת ביקורת הנגישות האחרונה:\s*<span[^>]*>(\d{2})\/(\d{2})\/(\d{4})/);
+  if (!m) { warn('לא נמצא תאריך ביקורת בהצהרת הנגישות'); return; }
+  var audit = new Date(+m[3], +m[2] - 1, +m[1]);
+  var newest = 0, newestFile = '';
+  CONTENT_PAGES.forEach(function (f) {
+    try { var t = fs.statSync(path.join(pagesDir, f)).mtime.getTime();
+          if (t > newest) { newest = t; newestFile = f; } } catch (e) {}
+  });
+  /* יום חסד: עריכה קטנה באותו יום אינה מחייבת ביקורת מחדש */
+  if (newest - audit.getTime() > 36 * 3600 * 1000) {
+    warn('תאריך ביקורת הנגישות (' + m[1] + '/' + m[2] + '/' + m[3] + ') מקדים את ' + newestFile +
+         ' — ההצהרה מכסה "כל הדפים", ולכן היא מצהירה על כיסוי שאין לה');
+  } else ok('תאריך ביקורת הנגישות מעודכן מול הדפים');
+})();
 
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
