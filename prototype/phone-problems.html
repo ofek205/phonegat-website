@@ -264,13 +264,16 @@ html[dir="ltr"] .prog{transform-origin:left center}
    it detaches the image from the step it illustrates. It sits at the top of its cell instead. */
 .fig{margin:0;align-self:start}
 /* placeholder reads like a plate on a spec sheet: hairline frame, corner marks, mono caption */
-.fig .ph{position:relative;aspect-ratio:4/3;background:#f7f6f5;border:1px solid var(--line);display:grid;place-items:center;gap:.7rem;text-align:center;padding:1rem}
+.fig .ph{position:relative;aspect-ratio:3/4;background:#f7f6f5;border:1px solid var(--line);display:grid;place-items:center;gap:.7rem;text-align:center;padding:1rem}
 .fig .ph::before,.fig .ph::after{content:"";position:absolute;width:14px;height:14px;border:1px solid var(--ink-soft);opacity:.45}
 .fig .ph::before{inset-block-start:8px;inset-inline-start:8px;border-block-end:0;border-inline-end:0}
 .fig .ph::after{inset-block-end:8px;inset-inline-end:8px;border-block-start:0;border-inline-start:0}
 .fig .ph svg{width:clamp(56px,8vw,88px);height:auto;opacity:.3}
 .fig .ph span{font-family:var(--mono);font-size:.86rem;letter-spacing:.03em;color:var(--ink-soft)}
-.fig img{width:100%;height:auto}
+/* Portrait on desktop, because the text column beside it runs ~1440px tall: a 4:3 photo left
+   over 1000px of white next to it, which is what the old position:sticky was compensating for.
+   3:4 closes most of that gap without any scroll trickery. */
+.fig img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
 .fig figcaption{font-size:.82rem;color:var(--ink-soft);margin-top:.6rem;line-height:1.5}
 .prob h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.2}
 /* the badge number is a CSS counter, so it never lands in the heading's text layer
@@ -403,6 +406,11 @@ html[data-pgdev="xia"] .dev:not([data-dev="xia"]){display:none}
 @media(max-width:900px){
   .prob .row{grid-template-columns:1fr;gap:1.4rem}
   .prob:nth-of-type(even) .fig{order:0}
+  /* Stacked here, so the photo sits above the instructions. A 3:4 portrait would run ~468px tall
+     and push the steps below the fold — on a page people open while something is broken, that is
+     the wrong trade. Same file, cropped to a landscape band: ~263px instead of ~468px. */
+  .fig img,.fig .ph{aspect-ratio:4/3}
+  .fig img{object-fit:cover;object-position:center}
   .cards{grid-template-columns:1fr}
   .lab{flex-direction:column;align-items:flex-start}
 }
@@ -433,7 +441,8 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
 @media(max-width:820px){.a11y-panel{inset-block-end:0;inset-inline:0;width:100%;max-height:82vh;border-radius:16px 16px 0 0}}
 .a11y-head{background:var(--teal);color:#fff;padding:.85rem 1rem;display:flex;align-items:center;gap:.6rem;position:sticky;top:0}
 .a11y-head b{flex:1;font-size:1.02rem;font-weight:800;font-family:var(--font)}
-.a11y-head .x{background:rgba(255,255,255,.16);border:none;color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
+/* 44px: an accessibility menu whose own close button is too small to hit is a contradiction */
+.a11y-head .x{background:rgba(255,255,255,.16);border:none;color:#fff;width:46px;height:46px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
 .a11y-head .x:hover{background:rgba(255,255,255,.3)}
 .a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.8rem}
 .a11y-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.28rem;text-align:center;background:#f6f6f8;border:1.5px solid var(--line);border-radius:12px;padding:.7rem .4rem;min-height:76px;font-family:var(--font);font-weight:700;font-size:.9rem;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s}
@@ -444,9 +453,11 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
 .a11y-card[aria-pressed="true"] svg,.a11y-card.on svg{color:#fff}
 .a11y-card[aria-pressed="true"] .val,.a11y-card.on .val{color:#eaf4fa}
 .a11y-foot{padding:.1rem .8rem 1rem;display:flex;flex-direction:column;gap:.55rem}
-.a11y-reset{background:#fff;border:1.5px solid var(--teal);color:var(--teal-d);border-radius:8px;padding:.7rem;font-family:var(--font);font-weight:800;font-size:.95rem;cursor:pointer;min-height:44px}
+/* min-height alone left these at 43px and 39px — the border and line-box eat into it, so the
+   padding has to carry the target rather than the declared minimum */
+.a11y-reset{background:#fff;border:1.5px solid var(--teal);color:var(--teal-d);border-radius:8px;padding:.8rem .7rem;font-family:var(--font);font-weight:800;font-size:.95rem;cursor:pointer;min-height:46px}
 .a11y-reset:hover{background:var(--teal);color:#fff}
-.a11y-foot a{color:var(--teal-d);font-size:.9rem;text-align:center;font-weight:700;padding-block:.5rem}
+.a11y-foot a{color:var(--teal-d);font-size:.9rem;text-align:center;font-weight:700;padding-block:.75rem;display:block}
 .a11y-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .a11y-trigger:focus-visible,.a11y-card:focus-visible,.a11y-reset:focus-visible,.a11y-head .x:focus-visible{outline:3px solid #ff8c00;outline-offset:2px}
 /* inline links: the rule under the word grows on hover instead of switching on */
@@ -543,9 +554,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="no-power" style="--nc:var(--teal)" aria-labelledby="h-no-power">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/no-power.jpg" alt="מכשיר כבוי על שולחן העבודה במעבדה של פון גת" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: מכשיר כבוי על שולחן המעבדה</span></div>
-    </figure>
+              <img src="problems/no-power.jpg" alt="מכשיר כבוי על שולחן העבודה במעבדה של פון גת" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-no-power">הטלפון לא נדלק, או שהמסך נשאר שחור</h2>
       <p class="intro">מכשיר שלא נדלק לא בהכרח מת. ברוב המקרים שמגיעים אלינו זה אחד משלושה: סוללה שהתרוקנה לגמרי ולא מגיבה מיד, מכשיר שנתקע ורק נראה כבוי, או מכשיר שדווקא עובד ורק המסך שלו חשוך.</p>
@@ -588,9 +598,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob alt" id="charging" style="--nc:var(--orange)" aria-labelledby="h-charging">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/charging.jpg" alt="קלוז אפ על שקע הטעינה של מכשיר במעבדה" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8" transform="rotate(270)"/></g></svg><span>תמונה: שקע טעינה, קלוז אפ</span></div>
-    </figure>
+              <img src="problems/charging.jpg" alt="קלוז אפ על שקע הטעינה של מכשיר במעבדה" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-charging">הטלפון לא נטען, או מתנתק כל הזמן מהטעינה</h2>
       <p class="intro">ברוב המקרים שמגיעים אלינו שקע הטעינה עצמו תקין לגמרי. או שהכבל נשחק מבפנים, או שהצטבר בשקע מוך דחוס מהכיס, והתקע כבר לא נכנס עד הסוף.</p>
@@ -634,9 +643,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="battery" style="--nc:var(--green)" aria-labelledby="h-battery">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/battery.jpg" alt="החלפת סוללה במעבדת פון גת" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(270)"/></g></svg><span>תמונה: החלפת סוללה במעבדה</span></div>
-    </figure>
+              <img src="problems/battery.jpg" alt="החלפת סוללה במעבדת פון גת" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-battery">הסוללה נגמרת מהר, או שהטלפון מתחמם</h2>
       <p class="intro">סוללה היא חלק מתכלה, כמו צמיג. אחרי שנתיים-שלוש של טעינה יומיומית היא מחזיקה פחות, וזו שחיקה רגילה. השאלה היחידה היא אם הגעתם לנקודה שבה שווה להחליף אותה, או שיש אפליקציה אחת שמושכת לכם את היום.</p>
@@ -680,9 +688,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob alt" id="water" style="--nc:var(--purple)" aria-labelledby="h-water">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/water.jpg" alt="טיפול במכשיר שנרטב במעבדת פון גת" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(270)"/></g></svg><span>תמונה: טיפול במכשיר שנרטב</span></div>
-    </figure>
+              <img src="problems/water.jpg" alt="טיפול במכשיר שנרטב במעבדת פון גת" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-water">הטלפון נפל למים, או שנשפך עליו נוזל</h2>
       <p class="intro">חלק גדול מהמכשירים שמגיעים אלינו אחרי מים חוזרים לעבוד. מה שעושים בשעה הראשונה קובע כמעט הכל, כי הקורוזיה מתחילה ברגע שעובר חשמל דרך לוח רטוב.</p>
@@ -726,9 +733,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="signal" style="--nc:var(--teal)" aria-labelledby="h-signal">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/signal.jpg" alt="מגש כרטיס SIM וכרטיסי סים של חברות הסלולר" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(270)"/></g></svg><span>תמונה: מגש סים וכרטיסי SIM</span></div>
-    </figure>
+              <img src="problems/signal.jpg" alt="מגש כרטיס SIM וכרטיסי סים של חברות הסלולר" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-signal">אין קליטה, או שהטלפון לא מזהה את כרטיס הסים</h2>
       <p class="intro">לפני שמאשימים את המכשיר: החשודים כאן מתחלקים לשלושה, הקו והכרטיס עצמו, הגדרות הרשת במכשיר, ורק בסוף חומרה. יש בדיקה אחת פשוטה שחוסכת המון זמן, והיא מחכה לכם בשלב 5.</p>
@@ -771,9 +777,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob alt" id="slow" style="--nc:var(--orange)" aria-labelledby="h-slow">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/slow.jpg" alt="מסך מכשיר עם התראת אחסון מלא" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(270)"/></g></svg><span>תמונה: התראת אחסון מלא</span></div>
-    </figure>
+              <img src="problems/slow.jpg" alt="מסך מכשיר עם התראת אחסון מלא" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-slow">הטלפון איטי, נתקע, או שאין בו מקום</h2>
       <p class="intro">זו כמעט אף פעם לא תקלת חומרה, וזו הקטגוריה שבה הכי הרבה יוצא לנו להגיד ללקוחות "אל תשלמו על תיקון". שני החשודים הם אחסון שנגמר וסוללה מותשת. באייפון, מערכת ההפעלה אפילו מאטה את עצמה בכוונה כשהסוללה חלשה, כדי שהמכשיר לא ייכבה באמצע.</p>
@@ -818,9 +823,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="virus" style="--nc:var(--green)" aria-labelledby="h-virus">
   <div class="wrap row">
     <figure class="fig">
-      <!-- כשתגיע התמונה: <img src="problems/virus.jpg" alt="מסך טלפון עם פרסומת קופצת מטעה" width="1200" height="900" loading="lazy" decoding="async"> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: פרסומת קופצת מטעה</span></div>
-    </figure>
+              <img src="problems/virus.jpg" alt="מסך טלפון עם פרסומת קופצת מטעה" width="1086" height="1448" loading="lazy" decoding="async">
+            </figure>
     <div class="txt">
       <h2 id="h-virus">פרסומות קופצות, אפליקציות מוזרות ו״וירוס בטלפון״</h2>
       <p class="intro">נתחיל מהאמת: כמעט כל מה שמגיע אלינו בתור "וירוס" הוא לא וירוס. באייפון זה כמעט לא קיים, ובאנדרואיד מדובר בדרך כלל באפליקציה שהותקנה מחוץ לחנות הרשמית, בפרסומת אגרסיבית בדפדפן או במנוי יומן זדוני. את רוב המקרים אפשר לפתור לבד.</p>
