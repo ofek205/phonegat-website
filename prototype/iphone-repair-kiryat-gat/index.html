@@ -475,11 +475,12 @@ html.a11y-stop-motion .prog{display:none}
 /* breadcrumbs. Logical properties throughout: a physical margin-left puts the separator on the
    wrong side in RTL, which is the single most common RTL bug in a component this small. */
 .crumbs{border-block-end:1px solid var(--line);background:#fff}
-.crumbs ol{max-width:min(1100px,92vw);margin-inline:auto;padding-block:.85rem;display:flex;flex-wrap:wrap;
+.crumbs ol{max-width:min(1100px,92vw);margin-inline:auto;display:flex;flex-wrap:wrap;
   gap:.35rem;list-style:none;font-size:.92rem;color:var(--ink-soft)}
 .crumbs li{display:flex;align-items:center;gap:.35rem}
 .crumbs li+li::before{content:"\203A";color:var(--line);transform:scaleX(-1)}  /* flipped: RTL points the other way */
-.crumbs a{color:var(--ink-soft);padding-block:.35rem}
+.crumbs a,.crumbs [aria-current]{display:inline-flex;align-items:center;min-height:44px}
+.crumbs a{color:var(--ink-soft)}
 .crumbs a:hover{color:var(--teal-d)}
 .crumbs [aria-current="page"]{color:var(--ink-strong);font-weight:600}
 
@@ -546,7 +547,7 @@ html.a11y-stop-motion .prog{display:none}
 .does{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.5rem 1.4rem;
   list-style:none;margin-top:1.2rem}
 .does li{padding-block:.55rem;border-block-end:1px solid var(--line);color:var(--ink-strong);font-weight:600}
-.does li a{color:var(--teal-d);text-decoration:underline;display:inline-block;padding-block:.35rem}
+.does li a{color:var(--teal-d);text-decoration:underline;display:inline-flex;align-items:center;min-height:44px}
 
 /* a placeholder that is impossible to mistake for finished copy. It is meant to be seen on
    staging and to be embarrassing enough that it never reaches production by accident. */
