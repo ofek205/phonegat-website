@@ -263,6 +263,36 @@ pageFiles.forEach(function (f) {
 if (unresolved.length) warn('ישות מוזכרת אך לא מוגדרת באותו דף: ' + unresolved.join(', '));
 else if (pageFiles.length) ok('כל ההפניות ל-@id נפתרות בתוך הדף');
 
+/* ---------- 10. מסגרת משותפת: הרכיבים שדף חדש שוכח ----------
+ * אין שלב build, ולכן כל דף נושא עותק משלו של השומר, של תפריט הנגישות ושל באנר הקוקיז.
+ * ככה נוצר הבאג המקורי: מדריך התקלות נבנה בלי PG_PROD ובלי תפריט נגישות, ואף בדיקה לא תפסה.
+ * הבדיקות כאן הופכות שכחה כזאת לכשל גלוי במקום לפער שקט.
+ *
+ * דפי תוכן בלבד — לא privacy/accessibility, שהם מסמכים משפטיים קצרים ולא צריכים את הווידג'טים. */
+var CONTENT_PAGES = ['index.html', 'phone-problems.html'];
+var missingA11y = [], missingCookie = [], missingSW = [];
+CONTENT_PAGES.forEach(function (f) {
+  var src;
+  try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+  /* תפריט ההתאמות הוא דרישה רגולטורית, לא נוחות */
+  if (src.indexOf('id="a11yTrigger"') < 0 || src.indexOf("var KEY='pg_a11y_v1'") < 0) missingA11y.push(f);
+  /* בלי באנר, מי שנוחת מגוגל נשאר ב-denied ואין לו איך לאשר — הדף עיוור ב-GA4 */
+  if (src.indexOf('id="cookieOk"') < 0) missingCookie.push(f);
+  /* דף נחיתה הוא לעיתים הדף הראשון והיחיד שנפתח; בלי רישום כאן אין PWA בכלל */
+  if (src.indexOf("register('sw.js')") < 0) missingSW.push(f);
+});
+if (missingA11y.length) {
+  bad('אין תפריט נגישות בדפים: ' + missingA11y.join(', ') +
+      ' — תפריט ההתאמות נדרש בתקנות, ודף בלי כפתור מחייב את המשתמש לעבור לדף אחר כדי להגדיל טקסט');
+} else ok('תפריט הנגישות קיים בכל דפי התוכן');
+if (missingCookie.length) {
+  bad('אין באנר קוקיז בדפים: ' + missingCookie.join(', ') +
+      ' — מי שנוחת שם מחיפוש נשאר ב-analytics_storage denied ואין לו דרך לאשר, כלומר התנועה לא נמדדת');
+} else ok('באנר הקוקיז קיים בכל דפי התוכן');
+if (missingSW.length) {
+  warn('אין רישום service worker בדפים: ' + missingSW.join(', ') + ' — מבקר שנוחת שם לא יקבל את האפליקציה');
+} else ok('ה-service worker נרשם בכל דפי התוכן');
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
