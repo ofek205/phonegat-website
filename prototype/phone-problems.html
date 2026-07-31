@@ -215,11 +215,16 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 /* The small type came off an English reference. Hebrew needs the same uplift the body already
    got (16px -> 18px there), so the labels, hints and numerals below are sized up to match —
    this page is read under stress, often by older customers. */
-.picker .lbl{font-weight:700;font-size:.98rem;color:var(--ink-soft)}
+/* This is the page's one required decision, and it was reading as metadata: a grey label beside
+   grey chips whose underline was transparent until selected, so nothing said "choose". The label is
+   now the loudest thing in the bar and the chips carry a resting border, so the row reads as a
+   question with answers rather than a caption. */
+.picker .lbl{font-weight:800;font-size:1.06rem;color:var(--ink-strong)}
 /* a tab strip, not pills: the active device is marked by a rule under the word */
 .chip{font-family:inherit;font-size:.98rem;font-weight:500;color:var(--ink-soft);background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:.2rem 0;cursor:pointer;transition:color .2s,border-color .2s}
-.chip:hover{color:var(--ink-strong)}
-.chip[aria-pressed="true"]{color:var(--ink-strong);font-weight:700;border-bottom-color:var(--teal)}
+.chip{color:var(--ink);font-weight:600;border-bottom-color:var(--line);padding-inline:.1rem}
+.chip:hover{color:var(--teal-d);border-bottom-color:var(--teal-d)}
+.chip[aria-pressed="true"]{color:var(--teal-d);font-weight:800;border-bottom-color:var(--teal)}
 .picker .tabs{display:flex;flex-wrap:wrap;gap:1.3rem}
 .picker .hint{font-size:.94rem;color:var(--ink-soft);margin-inline-start:auto}
 /* where you are in the guide, in the technical register: 03 / 07 */
@@ -228,20 +233,31 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 /* a 2px reading rule across the top: the page's only moving part */
 .prog{position:fixed;inset-block-start:0;inset-inline:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:right center;z-index:120;will-change:transform}
 html[dir="ltr"] .prog{transform-origin:left center}
-/* on a phone the bar stays one scrollable line instead of stacking to a third of the screen */
+/* On a phone this was one scrolling line holding the question and the chips together — so scrolling
+   right to reach "הצג הכל" pushed the question itself off screen, and the reader lost the only thing
+   telling them a choice was being asked for. Two lines instead: the question stays put, and only the
+   chips scroll under it. */
 @media(max-width:760px){
-  .picker{position:relative}          /* holds the fade that signals more chips off-screen */
-  .picker .row{flex-wrap:nowrap;overflow-x:auto;gap:1.1rem;padding-block:.35rem;scrollbar-width:none;
-    align-items:center;-webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
-  .picker .row::-webkit-scrollbar{display:none}
-  .picker .lbl,.picker .tabs{flex:none}
+  .picker{position:relative}
+  .picker .row{flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:.15rem;
+    padding-block:.45rem;overflow:visible}
+  /* line 1: the question, with the position indicator parked at the end of it */
+  .picker .lbl{flex:none;display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+  .picker .lbl::after{content:attr(data-pos);font-family:var(--mono);font-size:.86rem;
+    font-weight:400;letter-spacing:.06em;color:var(--ink-soft)}
+  .pos{display:none}                  /* its value is mirrored onto the label above */
+  /* line 2: only this scrolls */
+  .picker .tabs{flex:none;flex-wrap:nowrap;overflow-x:auto;gap:1.25rem;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;scroll-padding-inline:14px}
+  .picker .tabs::-webkit-scrollbar{display:none}
   .picker .hint{display:none}
   /* 44px of tappable height. The chip is an underline tab, so the height comes from padding and
      the indicator simply sits lower — the row reads the same, the target is twice the size. */
   .chip{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;padding-block:0}
   /* A scrollable filter row with no edge cue reads as the whole set of options. This fade says
-     "there is more this way" without adding a control to tap. */
-  .picker::after{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:34px;
+     "there is more this way" without adding a control to tap. It covers the chip line only. */
+  .picker.can-scroll::after{content:"";position:absolute;inset-block-end:.45rem;height:44px;
+    inset-inline-start:0;width:34px;
     background:linear-gradient(to left,rgba(255,255,255,0),rgba(255,255,255,.96));
     pointer-events:none;z-index:1}
 }
@@ -537,7 +553,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button type="button" class="chip" data-dev="xia" aria-pressed="false">שיאומי / רדמי</button>
       <button type="button" class="chip" data-dev="all" aria-pressed="true">הצג הכל</button>
     </div>
-    <span class="hint">מכשיר אנדרואיד אחר? ההוראות של גלקסי או שיאומי יתאימו לכם ברוב המקרים.</span>
+    <span class="hint">הבחירה מסננת את כל המדריך להוראות של המכשיר שלכם. מכשיר אנדרואיד אחר? גלקסי או שיאומי יתאימו ברוב המקרים.</span>
     <span class="pos" id="pos" aria-hidden="true"><b>01</b> / 07</span>
   </div>
 </div>
@@ -1151,10 +1167,24 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      and the row would look unset. Bring the pressed chip into view — inline only, so the page
      itself never jumps. */
   (function(){
-    var row=document.querySelector('.picker .row');
+    /* the scroller is the chip row itself now, not the whole picker line */
+    var tabs=document.querySelector('.picker .tabs');
+    var picker=document.getElementById('picker');
     var on=document.querySelector('.chip[aria-pressed="true"]');
-    if(!row||!on||row.scrollWidth<=row.clientWidth)return;
-    if(on.scrollIntoView){try{on.scrollIntoView({block:'nearest',inline:'center'});}catch(e){}}
+    if(!tabs||!picker)return;
+    var mark=function(){
+      /* the edge fade claims there is more to scroll to. Only say so when there is — at 375px all
+         four chips fit, and a gradient over "הצג הכל" would be a small lie. */
+      picker.classList.toggle('can-scroll', tabs.scrollWidth > tabs.clientWidth + 1);
+    };
+    mark();
+    /* the webfont arrives after first paint, and the chips change width when it does — measuring
+       only once leaves the fade stuck on from the fallback font's metrics */
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(mark).catch(function(){});
+    addEventListener('resize', mark, {passive:true});
+    if(on && tabs.scrollWidth > tabs.clientWidth && on.scrollIntoView){
+      try{on.scrollIntoView({block:'nearest',inline:'center'});}catch(e){}
+    }
   })();
 })();
 
@@ -1184,7 +1214,13 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     var pad=function(n){return (n<10?'0':'')+n;};
     var io=new IntersectionObserver(function(entries){
       entries.forEach(function(en){
-        if(en.isIntersecting)num.textContent=pad(probs.indexOf(en.target)+1);
+        if(!en.isIntersecting)return;
+        var at=pad(probs.indexOf(en.target)+1);
+        num.textContent=at;
+        /* on a phone the indicator is rendered from the label's data-pos, because the row splits
+           into two lines there and the question must not scroll away with the chips */
+        var lbl=document.getElementById('picker-lbl');
+        if(lbl)lbl.setAttribute('data-pos',at+' / '+pad(probs.length));
       });
     },{rootMargin:'-45% 0px -45% 0px'});
     probs.forEach(function(p){io.observe(p);});
