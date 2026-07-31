@@ -24,7 +24,12 @@ logo, wordmark, copy, imagery and brand blue are not, substitute the project's o
    is the single strongest signal that a human set this page.
 2. **Body copy carries the light weights.** Standfirsts and ledes at 300; never bold a whole paragraph.
 3. **`border-radius: 0` on everything structural.** In the reference, 175 of ~200 measured elements
-   are square. The *only* rounded things are call-to-action buttons, which are full pills.
+   are square. The only rounded things are call-to-action buttons.
+   **Buttons are the one place this system yields to the site.** The reference uses full pills, and
+   `phone-problems.html` shipped that way at first — then the owner compared the two pages and the
+   same WhatsApp button changing shape and weight between them read as two different sites. Buttons
+   now match `index.html` exactly: `border-radius:4px`, `font-weight:700`, `padding:9px 20px`,
+   `gap:.4rem`. Do not "restore" the pill — it was tried and rejected on 31 Jul 2026.
 4. **No filled surfaces.** No tinted panels, no card backgrounds, no coloured chips. The page is
    white; a single dark band at the end is the maximum contrast move.
 5. **Separate with hairlines and space.** A 1px rule and 2rem of air replace every box you were
@@ -43,14 +48,14 @@ logo, wordmark, copy, imagery and brand blue are not, substitute the project's o
 | Small label | 14px | `.86rem` weight 700, `letter-spacing:.07em` | Hebrew has no caps, letter-spacing does that job |
 | Page width | 1280px | `--maxw:1400px` (site) with a 900–1000px reading column | |
 | Header height | 65px | 64–68px | |
-| CTA button | radius 9999px, padding 12px 48px, 18px | same, in `--teal` | The one permitted pill |
+| CTA button | radius 9999px, padding 12px 48px, 18px | **radius 4px, weight 700, padding 9px 20px** in `--teal` | Matches index.html, not the reference — see rule 3 |
 | Accent | `#2E54FF` | `--teal:#1878A8` | One accent. The other three brand colours are section marks only |
 | Hero top space | 160px | `clamp(64px,11vw,150px)` | Generosity here is most of the effect |
 
 ## Component recipes
 
 **Header**: white, hairline bottom, no shadow. Logo at the start, nav links in sans 500 at `.95rem`,
-one teal pill CTA at the end. Sticky. On a white header the logo needs no white box behind it.
+one teal CTA at the end, same shape as the site's buttons. Sticky. On a white header the logo needs no white box behind it.
 
 **Hero**: white, centred, `max-width:min(1100px,92vw)`. Serif H1, then a 300-weight lede at ~54ch,
 then byline and trust line as one hairline-separated row of plain text. No badge, no gradient bar,
@@ -74,7 +79,7 @@ column in sans 700, text column beside it, `border-top` hairline per row. Collap
 no border on the other three sides, no radius. The lead-in words carry the colour, not a panel.
 
 **Closing CTA**: the one dark band on the page (`--dark`), serif heading at weight 400, light body,
-pill buttons.
+buttons in the site's shape (4px, weight 700).
 
 ## Anti-patterns, stop if you are about to write any of these
 
@@ -102,8 +107,9 @@ Run in the browser pane against the finished page. It should read like the refer
 ```
 
 Pass conditions: `0px` is the dominant radius by a wide margin; the only other radii belong to
-buttons and icons; `fills` contains nothing but button colours, the dark CTA band, and white; `h1`
-resolves to the serif.
+buttons (`4px`) and icons; `fills` contains nothing but button colours, the dark CTA band, and
+white; `h1` resolves to the serif. A `9999px` radius anywhere means the pill crept back in — see
+rule 3 before "fixing" it.
 
 ## RTL and Hebrew specifics
 

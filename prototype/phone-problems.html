@@ -150,8 +150,11 @@ p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block
 :focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 .skip{position:absolute;inset-inline-start:-9999px;top:0;background:var(--teal);color:#fff;padding:.6rem 1rem;z-index:300}.skip:focus{inset-inline-start:0}
 bdo,.ltr{unicode-bidi:isolate;direction:ltr}
-/* every button on this page is a pill, the reference's single rounded element */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font-family:inherit;font-weight:500;font-size:1rem;line-height:1.5;border-radius:9999px;padding:11px 26px;border:none;cursor:pointer;transition:background .25s;white-space:nowrap}
+/* Buttons match index.html exactly — 4px radius, weight 700. The editorial reference this page
+   is built from calls for a full pill instead, and that was the original choice here, but a
+   WhatsApp button that changes shape and weight between two pages of the same site reads as two
+   different sites. Same-site consistency wins over the reference on this one element. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:inherit;font-weight:700;font-size:1rem;line-height:1.65;border-radius:4px;padding:9px 20px;border:none;cursor:pointer;transition:background .25s,transform .2s;white-space:nowrap}
 .btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:var(--teal-d)}
 .btn-wa{background:#25D366;color:#0a2e18}.btn-wa:hover{background:#20c15c}
 .wa-ico{border-radius:22%;flex:none;object-fit:contain}
@@ -168,10 +171,9 @@ nav.main a{color:var(--ink);padding:.3rem 0}nav.main a:hover{color:#000}
 nav.main a[aria-current="page"]{color:#000;font-weight:700}
 .hicons{display:flex;align-items:center;gap:1rem;margin-inline-start:1.6rem}
 .hicons .ic{color:var(--ink);display:inline-flex}
-/* the one pill on the page, exactly as the reference uses it: full round, accent fill */
-.pill{display:inline-flex;align-items:center;gap:.45rem;background:var(--teal);color:#fff;font-family:inherit;font-weight:500;font-size:.9rem;line-height:1.4;padding:8px 20px;border:0;border-radius:9999px;white-space:nowrap;transition:background .2s}
-.pill:hover{background:var(--teal-d)}
-.pill-lg{font-size:1.1rem;padding:17px 48px}
+/* The hero CTA, sized and coloured like the home page's hero WhatsApp button, including its green
+   glow. It stands alone here instead of sitting in a pair, so it gets a little more width. */
+.btn-hero{font-size:1.05rem;padding:14px 32px;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
 .burger{display:none;background:none;border:none;color:var(--ink-strong);font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
 /* same laptop-width tightening as the home page, so both headers stay a single row */
 @media(min-width:1101px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
@@ -487,7 +489,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
-      <a class="pill" href="https://wa.me/97286812050">דברו איתנו</a>
+      <a class="btn btn-wa btn-sm" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a>
     </div>
   </div>
 </header>
@@ -499,7 +501,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="inner">
       <h1 id="gh">משהו לא בסדר עם הטלפון? רגע לפני שרצים למעבדה</h1>
       <p class="sub">אחרי יותר מ-30 שנה ליד שולחן העבודה, אנחנו יודעים דבר אחד: חלק לא קטן מהמכשירים שמגיעים אלינו היו נפתרים בבית תוך חמש דקות. כתבנו כאן מה לנסות, לפי המכשיר שיש לכם ביד, ואיפה עובר הגבול שממנו זו כבר עבודה לטכנאי.</p>
-      <div class="hcta"><a class="pill pill-lg" href="https://wa.me/97286812050?text=היי, קראתי את מדריך התקלות ואשמח להתייעץ">שאלו אותנו ב-WhatsApp</a></div>
+      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=היי, קראתי את מדריך התקלות ואשמח להתייעץ"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שאלו אותנו ב-WhatsApp</a></div>
       <p class="meta">
         <span>נכתב על ידי <b>ברוך אדלשטיין</b>, טכנאי ראשי בפון גת</span>
         <span>עודכן ביולי 2026</span>
