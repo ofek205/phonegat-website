@@ -1,14 +1,40 @@
 {
   "_": "מניפסט עמודי השירות. מקור אמת אחד לרשימה: פאנל הסקירה בסביבת הבדיקות קורא ממנו, וכל קישור הדדי עתידי ייגזר ממנו במקום להיכתב ידנית בחמישה מקומות. עמוד חדש מתווסף כאן ובקובץ שלו בלבד.",
   "pages": [
-    { "slug": "iphone-repair-kiryat-gat",            "name": "תיקון אייפון",       "status": "review" },
-    { "slug": "phone-battery-replacement-kiryat-gat", "name": "החלפת סוללה",       "status": "review" },
-    { "slug": "charging-port-repair-kiryat-gat",      "name": "תיקון שקע טעינה",   "status": "review" },
-    { "slug": "phone-screen-replacement-kiryat-gat",  "name": "החלפת מסך",         "status": "wip" },
-    { "slug": "mobile-phone-repair-kiryat-gat",       "name": "מעבדת סלולר",       "status": "planned" }
+    {
+      "slug": "iphone-repair-kiryat-gat",
+      "name": "תיקון אייפון",
+      "status": "review"
+    },
+    {
+      "slug": "phone-battery-replacement-kiryat-gat",
+      "name": "החלפת סוללה",
+      "status": "review"
+    },
+    {
+      "slug": "charging-port-repair-kiryat-gat",
+      "name": "תיקון שקע טעינה",
+      "status": "review"
+    },
+    {
+      "slug": "phone-screen-replacement-kiryat-gat",
+      "name": "החלפת מסך",
+      "status": "review"
+    },
+    {
+      "slug": "mobile-phone-repair-kiryat-gat",
+      "name": "מעבדת סלולר",
+      "status": "review"
+    }
   ],
   "existing": [
-    { "url": "/",                     "name": "דף הבית" },
-    { "url": "/phone-problems.html",  "name": "מדריך תקלות" }
+    {
+      "url": "/",
+      "name": "דף הבית"
+    },
+    {
+      "url": "/phone-problems.html",
+      "name": "מדריך תקלות"
+    }
   ]
 }
