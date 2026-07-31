@@ -21,8 +21,6 @@ var fs = require('fs'), path = require('path');
 
 var ROOT = path.resolve(__dirname, '..', '..', '..', '..');   /* repo root */
 var PROTO = path.join(ROOT, 'prototype');
-var SOURCE = 'phone-problems.html';   /* the reference implementation of the standard */
-
 /* ---------- args ---------- */
 var args = {};
 process.argv.slice(2).forEach(function (a, i, all) {
@@ -40,6 +38,14 @@ if (!/^[a-z][a-z0-9-]*$/.test(args.slug)) {
   console.error('slug חייב להיות אנגלית קטנה עם מקפים בלבד: ' + args.slug);
   process.exit(1);
 }
+
+/* המקור שממנו נלקחת המסגרת. ברירת המחדל היא המדריך, שהוא מימוש הייחוס של התקן.
+ * --from <file> מצביע על עמוד אחר, וזה הכרחי לעמודי השירות: הרכיבים שלהם (פירורי לחם, כרטיסי
+ * סימפטום, בדיקת ההתאמה, הפלייסהולדר) נולדו בעמוד האייפון ואינם קיימים במדריך. בלי זה העמוד
+ * השני היה נבנה בהעתקה ידנית, כלומר בדיוק הסדק שהסקריפט הזה קיים כדי למנוע.
+ *
+ * המשמעות התפעולית: תקן קודם את עמוד המקור, ורק אחר כך פגם ממנו. פגם שנשאר במקור משוכפל הלאה. */
+var SOURCE = args.from || 'phone-problems.html';
 
 /* --flat מייצר את התבנית הישנה (slug.html). ברירת המחדל היא תיקייה עם index.html, כך שהכתובת היא
  * /slug/ ולא /slug.html — כך אושר מבנה ה-URL לעמודי השירות. המחיר: כל נתיב יחסי שהמסגרת נושאת
@@ -98,10 +104,12 @@ h = h.replace(/(\{"@type":"ListItem","position":2,"name":")[^"]*(","item":")[^"]
 /* ---------- nav: this page becomes the current one ---------- */
 h = h.replace(/<a href="phone-problems\.html" aria-current="page">([^<]*)<\/a>/,
   '<a href="phone-problems.html">$1</a>');
-h = h.replace(/(<nav class="main"[^>]*>\s*)/, '$1');
-h = h.replace(/<a href="index\.html#contact">צרו קשר<\/a>/,
-  '<a href="index.html#contact">צרו קשר</a><a href="' + (FLAT ? outName : '/' + args.slug + '/') +
-  '" aria-current="page">' + args.h1.slice(0, 18) + '</a>');
+/* הניווט נשאר תשעה פריטים, בדיוק כמו בכל שאר הדפים.
+ * הגרסה הקודמת הוסיפה פריט עשירי עם תווית חתוכה ל-18 תווים, וזה יצר שלוש תקלות בבת אחת:
+ * מילה קטועה באמצע ("תיקון אייפון בקריי"), הדר שנשבר לשתי שורות בין 981px ל-1100px, וכשהגופן
+ * התחלף מגופן הנפילה ל-Assistant ההדר התכווץ מ-92px ל-66px ומשך את כל הדף מעלה: CLS של 0.578
+ * מול סף "גרוע" של 0.25 בגוגל.
+ * קישור פנימי לעמוד החדש מגיע מהתוכן, לא מהתפריט. */
 
 /* ---------- main: emptied to a working skeleton ---------- */
 var mainStart = h.indexOf('<main id="main"');
@@ -200,6 +208,9 @@ fs.writeFileSync(outPath, h);
 /* ---------- register the page ---------- */
 var notes = [];
 
+/* לא נוגעים ב-sitemap. עמוד נכנס אליו רק אחרי אישור לפרודקשן, ולכן זו פעולה של ההשקה
+ * ולא של הפיגום. --sitemap מוסיף במפורש למי שיודע שהוא בשלב הזה. */
+if (args.sitemap) {
 var smPath = path.join(PROTO, 'sitemap.xml');
 try {
   var sm = fs.readFileSync(smPath, 'utf8');
@@ -210,6 +221,7 @@ try {
     notes.push('נוסף ל-sitemap.xml');
   }
 } catch (e) { notes.push('⚠ לא ניתן לעדכן sitemap.xml — הוסף ידנית'); }
+} else { notes.push("לא נוסף ל-sitemap (מצטרף בהשקה, או --sitemap)"); }
 
 var swPath = path.join(PROTO, 'sw.js');
 /* בעמוד עומק מה שמאוחסן הוא הכתובת שהדפדפן מבקש (/slug/), לא נתיב הקובץ */

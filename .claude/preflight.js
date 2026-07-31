@@ -458,6 +458,35 @@ if (swFails.length) {
       " — ה-scope מצטמצם לתיקיית העמוד וה-PWA נשבר בשקט. register('/sw.js',{scope:'/'})");
 } else ok('ה-service worker נרשם בנתיב שורשי');
 
+/* ---------- 16. מחלקה ב-HTML שאין לה שום כלל CSS ----------
+ * ארבעה פגמים בעמוד האייפון נבעו כולם מאותו שורש: ה-HTML הפנה למחלקה שלא קיימת בגיליון, או
+ * שקיימת רק בהקשר אחר. cta-btns לא היה מוגדר בכלל, ו-btn-call מוגדר רק בתוך .cta ולכן בהירו
+ * הכפתור יצא בלי רקע ובלי מסגרת. שום דבר לא נשבר, לא הייתה שגיאה, והדף פשוט נראה רע.
+ *
+ * אין build ואין linter, ולכן זו הבדיקה היחידה שיכולה לתפוס את המשפחה הזאת. מחלקות שמוזכרות
+ * ב-JS מסוננות, כי הן נוספות בזמן ריצה ולגיטימי שלא יהיה להן כלל סטטי. */
+var classFails = [];
+CONTENT_PAGES.forEach(function (f) {
+  var s = readPage(f); if (!s) return;
+  var styles = (s.match(/<style[\s\S]*?<\/style>/g) || []).join('\n');
+  var scripts = (s.match(/<script[\s\S]*?<\/script>/g) || []).join('\n');
+  var body = s.replace(/<style[\s\S]*?<\/style>/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
+  var used = {};
+  (body.match(/\sclass="([^"]+)"/g) || []).forEach(function (m) {
+    m.slice(8, -1).trim().split(/\s+/).forEach(function (c) { if (c) used[c] = 1; });
+  });
+  var orphans = Object.keys(used).filter(function (c) {
+    if (new RegExp('\\.' + c.replace(/[-]/g, '\\-') + '(?![\\w-])').test(styles)) return false;
+    if (scripts.indexOf(c) > -1) return false;          /* נוספת או נבדקת בזמן ריצה */
+    return true;
+  });
+  if (orphans.length) classFails.push(f + ': ' + orphans.join(', '));
+});
+if (classFails.length) {
+  warn('מחלקות בלי כלל CSS: ' + classFails.join(' · ') +
+       ' — הדף לא נשבר ולא מדווח שגיאה, הוא פשוט מוצג בלי העיצוב שהתכוונו לו');
+} else ok('לכל מחלקה ב-HTML יש כלל CSS');
+
 /* ---------- 15. קניבליזציה: h1 ו-title ייחודיים בין העמודים ----------
  * חמישה עמודי שירות באותה עיר הם המקרה הקלאסי שבו גוגל בוחר עמוד אחד ומתעלם מהשאר.
  * האפיון קובע ביטוי מרכזי אחד לכל עמוד; זו הבדיקה שהכלל לא יישחק בעריכה מאוחרת. */
