@@ -458,6 +458,41 @@ if (swFails.length) {
       " — ה-scope מצטמצם לתיקיית העמוד וה-PWA נשבר בשקט. register('/sw.js',{scope:'/'})");
 } else ok('ה-service worker נרשם בנתיב שורשי');
 
+/* ---------- 17. כללי ההשפעה של תפריט הנגישות קיימים בפועל ----------
+ * בדיקה 10 מוודאת שהכפתור קיים. היא לא מוודאת שהוא עושה משהו, וזה בדיוק מה שנשבר:
+ * המדריך העתיק את html.a11y-text-150 body אבל לא את html.a11y-text-150 עצמו, ולכן שורש הדף
+ * נשאר 16px וכל מה שמוגדר ב-rem או ב-clamp לא זז. 12 מתוך 15 אלמנטים לא הגיבו ל-150%,
+ * הכפתור הצהיר על הגדלה ולא סיפק אותה, וזו דרישה רגולטורית.
+ *
+ * ספירת שמות המחלקות לא הייתה תופסת את זה, כי השם מופיע בשתי הצורות. לכן ההשוואה היא על
+ * הסלקטור המלא. נבדקים רק כללי המנוע (html.a11y-X ו-html.a11y-X body); כללים שמכוונים לרכיב
+ * ספציפי מושמטים, כי לגיטימי שרכיב קיים בדף אחד ולא באחר. */
+(function () {
+  var engine = /(^|\})\s*(html\.a11y-[a-z0-9-]+(?: body)?)\s*\{/g, m, refRules = [];
+  while ((m = engine.exec(ref))) if (refRules.indexOf(m[2]) < 0) refRules.push(m[2]);
+  if (!refRules.length) { warn('לא נמצאו כללי a11y ב-index.html להשוואה'); return; }
+  /* שכבה שנייה: אף מחלקת השפעה לא נשמטה כליל. כללי המנוע למעלה נבדקים מילה במילה, אבל רובם
+   * מכוונים לרכיב ספציפי ולכן לא ניתן להשוות אותם ככה. לפחות נדע שהמחלקה קיימת בדף. */
+  var refNames = [];
+  (ref.match(/html\.a11y-[a-z0-9-]+/g) || []).forEach(function (c) { if (refNames.indexOf(c) < 0) refNames.push(c); });
+  var gaps = [];
+  CONTENT_PAGES.forEach(function (f) {
+    if (f === 'index.html') return;
+    var s = readPage(f); if (!s) return;
+    if (s.indexOf('id="a11yTrigger"') < 0) return;      /* דף בלי הווידג'ט אינו מבטיח כלום */
+    var missing = refRules.filter(function (sel) {
+      return !new RegExp('(^|\\})\\s*' + sel.replace(/[-]/g, '\\-') + '\\s*\\{').test(s);
+    });
+    var absent = refNames.filter(function (c) { return s.indexOf(c) < 0; });
+    var all = missing.concat(absent.map(function (c) { return c + ' (נעדרת לגמרי)'; }));
+    if (all.length) gaps.push(f + ': ' + all.join(', '));
+  });
+  if (gaps.length) {
+    bad('לתפריט הנגישות חסרים כללי השפעה: ' + gaps.join(' · ') +
+        ' — הכפתור קיים ולא עושה כלום. בקרה שמציגה מצב ולא מחילה אותו גרועה מהיעדר בקרה');
+  } else ok('כללי ההשפעה של תפריט הנגישות קיימים בכל דף (' + refRules.length + ')');
+})();
+
 /* ---------- 16. מחלקה ב-HTML שאין לה שום כלל CSS ----------
  * ארבעה פגמים בעמוד האייפון נבעו כולם מאותו שורש: ה-HTML הפנה למחלקה שלא קיימת בגיליון, או
  * שקיימת רק בהקשר אחר. cta-btns לא היה מוגדר בכלל, ו-btn-call מוגדר רק בתוך .cta ולכן בהירו
