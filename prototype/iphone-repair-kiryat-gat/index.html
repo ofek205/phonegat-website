@@ -42,6 +42,7 @@
       '@media(max-width:520px){html.pg-testenv{--pg-test-h:42px}.pg-testbar{font-size:12.5px;gap:.35em}}'+
       '@media(max-width:400px){.pg-testbar .pg-tb-env{display:none}}';
     document.head.appendChild(pgTS);
+    var pgRev=document.createElement('script');pgRev.src='/_staging-nav.js';pgRev.defer=true;document.head.appendChild(pgRev);
     document.addEventListener('DOMContentLoaded',function(){
       var b=document.createElement('div');
       b.className='pg-testbar';
