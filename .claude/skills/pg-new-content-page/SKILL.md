@@ -1,6 +1,6 @@
 ---
 name: pg-new-content-page
-description: Build-and-ship checklist for a new PHONE GAT content page (guide, article, explainer, landing page). Use when creating any new .html page in prototype/, when a page is "almost done" and about to be pushed, or when auditing an existing page for the standard. Covers the shared chrome every page must carry (environment guard, GTM gating, accessibility menu, cookie banner, service worker, schema), Hebrew typography sizing, 44px touch targets and the standard's exemptions, portrait images with a mobile crop plus WebP/srcset, the legal claims that create real exposure, analytics that GTM cannot infer on its own, and how to verify each item given this environment's limits. Every rule here exists because it was actually missed once. Do NOT use for visual/typographic design decisions — that is muzli-editorial-design; this is the compliance-and-shipping layer that sits under it.
+description: Build-and-ship checklist for a new PHONE GAT content page (guide, article, explainer, landing page). Use when creating any new .html page in prototype/, when a page is "almost done" and about to be pushed, or when auditing an existing page for the standard. Covers the shared chrome every page must carry (environment guard, GTM gating, accessibility menu, cookie banner, service worker, schema), Hebrew typography sizing, 44px touch targets and the standard's exemptions, portrait images with a mobile crop plus WebP/srcset, copy that does not read as machine-written (the banned em dash and the other tells), the legal claims that create real exposure, analytics that GTM cannot infer on its own, and how to verify each item given this environment's limits. Every rule here exists because it was actually missed once. Do NOT use for visual/typographic design decisions — that is muzli-editorial-design; this is the compliance-and-shipping layer that sits under it.
 license: MIT
 compatibility: Plain HTML + inline CSS/JS, no build step, no dependencies. Hebrew RTL. Vercel, root = prototype/.
 ---
@@ -31,7 +31,7 @@ footer already in place, plus `sitemap.xml` and the `sw.js` shell updated. You w
 
 ## What is enforced, and what is not
 
-`node .claude/preflight.js` runs **19 checks** and exits 1 on failure. `.githooks/pre-push` blocks a
+`node .claude/preflight.js` runs **20 checks** and exits 1 on failure. `.githooks/pre-push` blocks a
 push to `main` unless it passes *and* the exact commit is already on `origin/staging`. The list of
 content pages is read from the directory, so **a new page is covered the moment it exists** — nothing
 to register.
@@ -41,16 +41,19 @@ present · service worker registered · canonical → production · `#business` 
 referenced · one `<h1>` · `alt` on every image · `lang="he" dir="rtl"` · landmarks · skip link using
 a logical inset · `<main tabindex="-1">` · nav matches `index.html` · footer complete · buttons in the
 site's shape · mobile-bar clearance · no sweeping warranty claim · no reference to an unpublished
-תקנון · no Hebrew "וואטסאפ" · accessibility-audit date not older than the newest page · JSON-LD parses
-· FAQ count matches its schema · coupon offers in sync client↔server.
+תקנון · no Hebrew "וואטסאפ" · **no em dash in reader-facing text** · accessibility-audit date not
+older than the newest page · JSON-LD parses · FAQ count matches its schema · coupon offers in sync
+client↔server.
 
 **Not enforced — these still need a person:** colour contrast, 44px touch targets, the reading
-experience on a real phone, whether the copy is any good, and the crawler word count. §4, §9 say how
-to measure each.
+experience on a real phone, the machine-written shapes an em-dash check cannot see (§7), and the
+crawler word count. §4, §7, §10 say how to measure each.
 
 *Proof the checks bite: breaking five things in a scratch copy — removing the accessibility menu,
 restoring the sweeping warranty claim, switching the skip link to physical `left`, dropping one `alt`,
-removing the consent banner — produced exactly five failures, each naming what breaks for whom.*
+removing the consent banner — produced exactly five failures, each naming what breaks for whom.
+Check 13 was proved the same way: an em dash planted in a heading and another inside an `alt` were
+both named, while the 59 in `index.html`'s code comments stayed correctly ignored.*
 
 ---
 
@@ -259,7 +262,51 @@ or they reach `dataLayer` and stop there.
 
 ---
 
-## 7. Legal — the four that create real exposure
+## 7. Copy — the page must not read as machine-written
+
+A guide that reads as generated destroys the one thing it exists to build: that a person in Kiryat
+Gat knows phones and will handle yours. Two passes were needed on `phone-problems.html` after it was
+already "finished", and neither was about facts being wrong.
+
+**The em dash (—) is banned from every character a reader or a crawler can see.** Body copy,
+headings, `alt`, `title`, `meta description`, JSON-LD strings, button labels. In Hebrew it is not
+a typographic convention people write by hand, so it is the single loudest tell. Use a comma, a full
+stop, or a colon — whichever the sentence actually wanted. **This is check 13; it fails the push.**
+
+What stays legal: the **en dash (–) inside a range** — `א׳–ה׳`, `9:00–18:30`. Those are correct and
+the check leaves them alone. And code comments are **not** policed: `index.html` carries 59 em dashes
+in English comments that were deliberately left, because rewriting them would collide with whatever
+the parallel session is editing. *(Worth knowing how fast a documented-only rule rots: the guide's
+comments were cleaned to zero on 30 Jul and were back to 22 by 31 Jul. Nothing was enforcing them.)*
+
+**The other machine tells**, from the Wikipedia list, all found in the guide's own text:
+
+| Tell | What it looked like | Fix |
+|---|---|---|
+| Every list item opening with a bolded lead-in | seven "mistakes" built identically | make them sentences |
+| Parallel blocks each headed by a question | four of them in one section | two paragraphs of prose |
+| The "לא X אלא Y" shape | four times on one page | keep the strongest one |
+| Verbal tics | "בדיוק" ×6, "מדובר ב" ×5, two sections opening "חדשות טובות" | 1, 2, and gone |
+| Two paragraphs asserting the same thing | water-and-electricity said twice | each says something different |
+
+None of these is catchable by a regex, and the count is the giveaway: a human writes one bolded
+lead-in, not seven. **Read the finished page top to bottom in one sitting and count the shapes.**
+
+**Brand conventions** (also in CLAUDE.md, and this is where a new page breaks them):
+- **"WhatsApp", never "וואטסאפ"** — enforced, check 12.
+- **Never "חינם"** — it cheapens the brand. Write **"ללא עלות"**.
+- Phone numbers read `052-5893366` / `08-6812050`; digits only inside `tel:` and `wa.me`.
+
+**Write the headings in the words people type into Google.** The guide's headings said *המכשיר* and
+were changed to *הטלפון*, and the `<title>` was rewritten around the three most-searched faults.
+Same meaning, different traffic.
+
+**Never touch a customer review.** They are real. Fixing a fact elsewhere on the site does not
+license editing a quote.
+
+---
+
+## 8. Legal — the four that create real exposure
 
 Statutory damages are up to **50,000 ₪ without proof of harm**, so these are not hygiene.
 *(There is a 60-day cure period: a claim needs a prior fix notice. Route accessibility complaints
@@ -282,7 +329,7 @@ otherwise self-declared), and the fact that revenue-based exemptions almost cert
 
 ---
 
-## 8. SEO — one rule, and it is easy to break
+## 9. SEO — one rule, and it is easy to break
 
 **Everything must be in the HTML with JavaScript switched off.**
 
@@ -301,9 +348,14 @@ Also: one `h1`; no heading-level skips; `alt` on every content image and `alt=""
 readability, but **do not promise rich results from it** — Google restricted FAQ rich results to
 government and health sites, and removed HowTo entirely.
 
+**No scroll-reveal animations. Deliberately.** Text that starts at `opacity:0` and waits on an
+IntersectionObserver is text that can fail to appear — and §10 documents an environment where that
+observer never fires at all. The page is for someone whose phone is broken; nothing it says should
+be conditional on a callback.
+
 ---
 
-## 9. Verification — and what this environment cannot tell you
+## 10. Verification — and what this environment cannot tell you
 
 Run in order. The first two are cheap and catch most regressions.
 
@@ -335,7 +387,7 @@ real phone.
 
 ---
 
-## 10. Shipping alongside another session
+## 11. Shipping alongside another session
 
 The folder is often shared with a second chat editing `index.html` at the same time.
 

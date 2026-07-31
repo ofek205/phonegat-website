@@ -194,10 +194,22 @@ else ok('תגי details מאוזנים (' + opens + ')');
 /* ---------- 8. כל דף שטוען GTM חייב לגדר אותו ----------
  * המדריך נוצר כקובץ נפרד עם head משלו, ולכן קיבל GTM לא מגודר בלי שאף בדיקה תפסה את זה.
  * בדיקה 4 מסתכלת רק על index.html; זו סורקת כל דף, כדי שהדף הבא לא יחזור על התקלה. */
+/* דפים שטוחים בשורש, ובנוסף עמודי שירות שיושבים כתיקייה עם index.html כדי לקבל כתובת עם לוכסן
+ * סוגר (/iphone-repair-kiryat-gat/). הסריקה חייבת לרדת רמה אחת: readdirSync שטוח היה משאיר כל עמוד
+ * כזה מחוץ לכל הבדיקות כאן, וזו בדיוק התקלה שבגללה הקובץ הזה נכתב מלכתחילה. */
 var pagesDir = P('prototype'), pageFiles = [];
 try {
-  pageFiles = fs.readdirSync(pagesDir).filter(function (f) { return /\.html$/.test(f); });
+  fs.readdirSync(pagesDir, { withFileTypes: true }).forEach(function (e) {
+    if (e.isFile() && /\.html$/.test(e.name)) { pageFiles.push(e.name); return; }
+    if (!e.isDirectory() || e.name === 'api') return;
+    /* תיקיית נכסים (problems/, logos/) אינה עמוד; עמוד הוא תיקייה שיש בה index.html */
+    if (fs.existsSync(path.join(pagesDir, e.name, 'index.html'))) pageFiles.push(e.name + '/index.html');
+  });
 } catch (e) { warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים'); }
+
+/* עמוד עומק = כל עמוד שאינו בשורש. הנתיבים היחסיים שלו נפתרים אחרת, ולכן יש לו בדיקה משלו */
+function isDeep(f) { return f.indexOf('/') > -1; }
+function baseName(f) { return f.slice(f.lastIndexOf('/') + 1); }
 
 var ungated = [], guardless = [], scanned = 0;
 pageFiles.forEach(function (f) {
@@ -272,7 +284,7 @@ else if (pageFiles.length) ok('כל ההפניות ל-@id נפתרות בתוך 
  * הרשימה נגזרת מהתיקייה ולא כתובה קשיח, אחרת דף חדש לא נבדק עד שמישהו יזכור לרשום אותו כאן. */
 var LEGAL_PAGES = ['privacy.html', 'accessibility.html'];
 var CONTENT_PAGES = pageFiles.filter(function (f) {
-  return LEGAL_PAGES.indexOf(f) < 0 && f.charAt(0) !== '_';   /* _ = טיוטה מקומית */
+  return LEGAL_PAGES.indexOf(f) < 0 && baseName(f).charAt(0) !== '_';   /* _ = טיוטה מקומית */
 });
 var missingA11y = [], missingCookie = [], missingSW = [];
 CONTENT_PAGES.forEach(function (f) {
@@ -283,7 +295,8 @@ CONTENT_PAGES.forEach(function (f) {
   /* בלי באנר, מי שנוחת מגוגל נשאר ב-denied ואין לו איך לאשר — הדף עיוור ב-GA4 */
   if (src.indexOf('id="cookieOk"') < 0) missingCookie.push(f);
   /* דף נחיתה הוא לעיתים הדף הראשון והיחיד שנפתח; בלי רישום כאן אין PWA בכלל */
-  if (src.indexOf("register('sw.js')") < 0) missingSW.push(f);
+  /* עמוד עומק חייב לרשום בנתיב שורשי (ראו בדיקה 14), ולכן שתי הצורות תקינות */
+  if (!/register\((['"])\/?sw\.js\1/.test(src)) missingSW.push(f);
 });
 if (missingA11y.length) {
   bad('אין תפריט נגישות בדפים: ' + missingA11y.join(', ') +
@@ -388,6 +401,78 @@ pageFiles.forEach(function (f) {
 });
 if (claimFails.length) bad('הצהרות בעייתיות: ' + claimFails.join(' · '));
 else ok('אין הצהרות גורפות, תקנון רפאים או שם מותג בעברית');
+
+/* ---------- 13. מקף ארוך בטקסט שהקורא רואה ----------
+ * המקף הארוך (—) הוא הסימן הבולט ביותר לטקסט שנכתב במכונה, כי בעברית אף אחד לא מקליד אותו ביד.
+ * הוא נוקה ידנית מכל הטקסט הגלוי ב-30/07 — ותוך יממה חזרו 22 מופעים להערות הקוד של אותו דף.
+ * מסמך לא מחזיק כלל כזה; רק בדיקה מחזיקה.
+ *
+ * נבדק רק מה שקורא או זחלן רואה: טקסט, alt/title/content, ומחרוזות JSON-LD. הערות קוד לא נבדקות
+ * במכוון — ב-index.html יש 59 מופעים בהערות אנגלית שהוחלט לא לגעת בהן, כדי לא להתנגש בסשן מקביל.
+ *
+ * מקף בינוני (–) בטווחים הוא טיפוגרפיה נכונה ולא נגזר ממנו כלום: א׳–ה׳, 9:00–18:30. */
+var EM = '—';
+var dashFails = [];
+pageFiles.forEach(function (f) {
+  var s = readPage(f); if (!s) return;
+  /* מחרוזות JSON-LD נספרות, שאר ה-script וה-style יורדים יחד עם הערות ה-HTML */
+  var ld = (s.match(/<script[^>]*application\/ld\+json[^>]*>[\s\S]*?<\/script>/gi) || []).join('\n');
+  var visible = s.replace(/<script[\s\S]*?<\/script>/gi, '')
+                 .replace(/<style[\s\S]*?<\/style>/gi, '')
+                 .replace(/<!--[\s\S]*?-->/g, '');
+  /* טקסט חופשי + הערכים של התכונות שהקורא או גוגל רואים */
+  var attrs = (visible.match(/(?:alt|title|content|aria-label|placeholder)="[^"]*"/gi) || []).join('\n');
+  var text = visible.replace(/<[^>]+>/g, ' ');
+  var n = countAll(text, /—/g) + countAll(attrs, /—/g) + countAll(ld, /—/g);
+  if (n) dashFails.push(f + ' (' + n + ')');
+});
+if (dashFails.length) {
+  bad('מקף ארוך (' + EM + ') בטקסט גלוי: ' + dashFails.join(', ') +
+      ' — הסימן הבולט ביותר לטקסט שנכתב במכונה. פסיק, נקודה או נקודתיים במקומו');
+} else ok('אין מקף ארוך בטקסט שהקורא רואה');
+
+/* ---------- 14. עמוד עומק: נתיבים שורשיים בלבד ----------
+ * כל האתר נכתב בנתיבים יחסיים (whatsapp-logo.png, index.html). עמוד שיושב ב-/slug/index.html
+ * פותר כל אחד מהם לתיקייה של עצמו ומקבל 404. התמונות פשוט לא נטענות, וזה נראה מיד;
+ * register('sw.js') לעומת זאת נכשל בשקט ומצמצם את ה-scope של ה-service worker לתיקייה אחת,
+ * כלומר PWA שבור בלי שום סימן על המסך. לכן זו בדיקה ולא כלל במסמך. */
+var pathFails = [], swFails = [];
+CONTENT_PAGES.filter(isDeep).forEach(function (f) {
+  var s = readPage(f); if (!s) return;
+  var bad1 = [];
+  (s.match(/\b(?:src|href)="([^"]+)"/g) || []).forEach(function (m) {
+    var v = m.slice(m.indexOf('"') + 1, -1);
+    if (/^(?:\/|#|https?:|mailto:|tel:|data:|\?)/.test(v)) return;
+    if (bad1.indexOf(v) < 0) bad1.push(v);
+  });
+  if (bad1.length) pathFails.push(f + ': ' + bad1.slice(0, 4).join(', ') + (bad1.length > 4 ? ' ועוד ' + (bad1.length - 4) : ''));
+  /* ה-scope נגזר מנתיב הקובץ, ולכן חייב להיות שורשי במפורש */
+  if (/register\((['"])(?!\/)/.test(s)) swFails.push(f);
+});
+if (pathFails.length) {
+  bad('נתיבים יחסיים בעמוד עומק: ' + pathFails.join(' · ') +
+      ' — נפתרים לתוך תיקיית העמוד ומחזירים 404. נתיב שורשי (/…) בלבד');
+} else ok('כל הנתיבים בעמודי העומק שורשיים');
+if (swFails.length) {
+  bad("ה-service worker נרשם בנתיב יחסי ב: " + swFails.join(', ') +
+      " — ה-scope מצטמצם לתיקיית העמוד וה-PWA נשבר בשקט. register('/sw.js',{scope:'/'})");
+} else ok('ה-service worker נרשם בנתיב שורשי');
+
+/* ---------- 15. קניבליזציה: h1 ו-title ייחודיים בין העמודים ----------
+ * חמישה עמודי שירות באותה עיר הם המקרה הקלאסי שבו גוגל בוחר עמוד אחד ומתעלם מהשאר.
+ * האפיון קובע ביטוי מרכזי אחד לכל עמוד; זו הבדיקה שהכלל לא יישחק בעריכה מאוחרת. */
+(function () {
+  var seenH1 = {}, seenTitle = {}, dupes = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    var h1 = ((s.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '').replace(/<[^>]+>/g, '').trim();
+    var ti = ((s.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || '').trim();
+    if (h1) { if (seenH1[h1]) dupes.push('h1 זהה ב-' + seenH1[h1] + ' וב-' + f); else seenH1[h1] = f; }
+    if (ti) { if (seenTitle[ti]) dupes.push('title זהה ב-' + seenTitle[ti] + ' וב-' + f); else seenTitle[ti] = f; }
+  });
+  if (dupes.length) bad('תוכן כפול בין עמודים: ' + dupes.join(' · ') + ' — גוגל יבחר אחד ויתעלם מהשאר');
+  else ok('h1 ו-title ייחודיים בכל עמוד');
+})();
 
 /* תאריך ביקורת הנגישות מול הדף החדש ביותר: הצהרה שמכסה "כל הדפים" ומתוארכת לפני
  * הדף האחרון מצהירה על כיסוי שאין לה, וזה הדבר הקל ביותר להצביע עליו בתביעה */

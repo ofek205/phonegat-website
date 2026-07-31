@@ -41,16 +41,22 @@ if (!/^[a-z][a-z0-9-]*$/.test(args.slug)) {
   process.exit(1);
 }
 
-var outName = args.slug + '.html';
+/* --flat מייצר את התבנית הישנה (slug.html). ברירת המחדל היא תיקייה עם index.html, כך שהכתובת היא
+ * /slug/ ולא /slug.html — כך אושר מבנה ה-URL לעמודי השירות. המחיר: כל נתיב יחסי שהמסגרת נושאת
+ * חייב להפוך לשורשי, אחרת הוא נפתר לתוך תיקיית העמוד. זה קורה ב-toRoot למטה. */
+var FLAT = process.argv.indexOf('--flat') > -1;
+var outName = FLAT ? args.slug + '.html' : args.slug + '/index.html';
 var outPath = path.join(PROTO, outName);
 if (fs.existsSync(outPath)) { console.error(outName + ' כבר קיים — לא דורס.'); process.exit(1); }
+/* בעמוד עומק התמונות נשארות בנתיב שורשי אחד ולא נכפלות בכל תיקיית עמוד */
+var IMGDIR = FLAT ? args.slug : 'img/' + args.slug;
 
 var src;
 try { src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8'); }
 catch (e) { console.error('לא נמצא ' + SOURCE + ' — ממנו נלקחת המסגרת.'); process.exit(1); }
 
 var PROD = 'https://www.phonegat.co.il/';
-var url = PROD + outName;
+var url = PROD + (FLAT ? outName : args.slug + '/');
 var today = new Date().toISOString().slice(0, 10);
 var h = src;
 
@@ -94,7 +100,8 @@ h = h.replace(/<a href="phone-problems\.html" aria-current="page">([^<]*)<\/a>/,
   '<a href="phone-problems.html">$1</a>');
 h = h.replace(/(<nav class="main"[^>]*>\s*)/, '$1');
 h = h.replace(/<a href="index\.html#contact">צרו קשר<\/a>/,
-  '<a href="index.html#contact">צרו קשר</a><a href="' + outName + '" aria-current="page">' + args.h1.slice(0, 18) + '</a>');
+  '<a href="index.html#contact">צרו קשר</a><a href="' + (FLAT ? outName : '/' + args.slug + '/') +
+  '" aria-current="page">' + args.h1.slice(0, 18) + '</a>');
 
 /* ---------- main: emptied to a working skeleton ---------- */
 var mainStart = h.indexOf('<main id="main"');
@@ -126,9 +133,9 @@ var skeleton = openTag + '\n\n' +
 '  <div class="wrap row">\n' +
 '    <figure class="fig">\n' +
 '      <!-- כשתגיע התמונה: <picture>\n' +
-'             <source type="image/webp" sizes="(max-width:900px) 92vw, 53vw" srcset="' + args.slug + '/TODO-700.webp 700w, ' + args.slug + '/TODO.webp 1086w">\n' +
-'             <source type="image/jpeg" sizes="(max-width:900px) 92vw, 53vw" srcset="' + args.slug + '/TODO-700.jpg 700w, ' + args.slug + '/TODO.jpg 1086w">\n' +
-'             <img src="' + args.slug + '/TODO.jpg" alt="TODO תיאור ענייני" width="1086" height="1448" loading="lazy" decoding="async">\n' +
+'             <source type="image/webp" sizes="(max-width:900px) 92vw, 53vw" srcset="' + IMGDIR + '/TODO-700.webp 700w, ' + IMGDIR + '/TODO.webp 1086w">\n' +
+'             <source type="image/jpeg" sizes="(max-width:900px) 92vw, 53vw" srcset="' + IMGDIR + '/TODO-700.jpg 700w, ' + IMGDIR + '/TODO.jpg 1086w">\n' +
+'             <img src="' + IMGDIR + '/TODO.jpg" alt="TODO תיאור ענייני" width="1086" height="1448" loading="lazy" decoding="async">\n' +
 '           </picture> -->\n' +
 '      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: TODO מה מצולם</span></div>\n' +
 '    </figure>\n' +
@@ -159,10 +166,35 @@ var skeleton = openTag + '\n\n' +
 
 h = h.slice(0, mainStart) + skeleton + h.slice(mainEnd);
 
+/* ---------- נתיבים שורשיים לעמוד עומק ----------
+ * המסגרת נכתבה לדף שיושב בשורש, ולכן כולה נתיבים יחסיים: whatsapp-logo.png, index.html, sw.js.
+ * מתוך תיקייה כל אחד מהם נפתר לתיקייה עצמה. התמונות מחזירות 404 וזה נראה מיד; הרישום של
+ * ה-service worker נכשל בשקט ומצמצם את ה-scope לתיקייה אחת, כלומר PWA שבור בלי סימן על המסך.
+ * בדיקה 14 ב-preflight תופסת את שניהם אם משהו כאן יפספס. */
+function toRoot(s) {
+  var SKIP = /^(?:\/|#|https?:|mailto:|tel:|data:|\?|javascript:)/;
+  s = s.replace(/\b(src|href)="([^"]+)"/g, function (m, a, v) {
+    return SKIP.test(v) ? m : a + '="/' + v + '"';
+  });
+  /* srcset הוא רשימה: כל כתובת בה צריכה טיפול נפרד */
+  s = s.replace(/\bsrcset="([^"]+)"/g, function (m, v) {
+    return 'srcset="' + v.split(',').map(function (part) {
+      var t = part.trim(); if (!t) return t;
+      return SKIP.test(t) ? t : '/' + t;
+    }).join(', ') + '"';
+  });
+  s = s.replace(/url\((['"]?)(?!\/|https?:|data:)([^)'"]+)\1\)/g, 'url($1/$2$1)');
+  /* ה-scope נגזר מנתיב הקובץ, ולכן נאמר במפורש */
+  s = s.replace(/register\((['"])\/?sw\.js\1([^)]*)\)/, "register('/sw.js',{scope:'/'})");
+  return s;
+}
+if (!FLAT) h = toRoot(h);
+
 /* page-specific analytics: keep the helper, drop the guide's own events */
 h = h.replace(/\n\s*pgTrack\('guide_device'[^;]*;/g, '');
 h = h.replace(/\n\s*\/\* Which symptoms were actually read[\s\S]*?\n  \}\)\(\);\n/, '\n');
 
+if (!FLAT) fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, h);
 
 /* ---------- register the page ---------- */
@@ -180,10 +212,12 @@ try {
 } catch (e) { notes.push('⚠ לא ניתן לעדכן sitemap.xml — הוסף ידנית'); }
 
 var swPath = path.join(PROTO, 'sw.js');
+/* בעמוד עומק מה שמאוחסן הוא הכתובת שהדפדפן מבקש (/slug/), לא נתיב הקובץ */
+var shellEntry = FLAT ? './' + outName : '/' + args.slug + '/';
 try {
   var sw = fs.readFileSync(swPath, 'utf8');
-  if (sw.indexOf(outName) < 0) {
-    sw = sw.replace(/(const SHELL = \[)/, "$1'./" + outName + "', ");
+  if (sw.indexOf(shellEntry) < 0) {
+    sw = sw.replace(/(const SHELL = \[)/, "$1'" + shellEntry + "', ");
     fs.writeFileSync(swPath, sw);
     notes.push('נוסף למעטפת ה-service worker');
   }
