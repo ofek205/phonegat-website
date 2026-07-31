@@ -596,10 +596,14 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .s-scr .scr-cta{background:#fff;color:#1f6fd0;box-shadow:0 10px 26px -12px rgba(15,45,82,.5);margin-top:1rem}
 .s-scr .scr-cta:hover{background:#f1f7ff}
 /* the frame image stays in flow so the stage box equals it exactly — the % offsets below depend on that */
-.scr-stage{position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(15,45,82,.3))}
+/* --scr-w is the single source of truth for this phone's size: the screen corners, the bezel and the
+   glass rim are all derived from it, so they keep the same proportions at every width instead of a
+   36px radius that reads as a soft blob once the frame drops below ~130px (narrow window / phones). */
+.scr-stage{--scr-w:clamp(104px,11.5vw,156px);--scr-r:calc(var(--scr-w)*.231);
+  position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(15,45,82,.3))}
 .scr-halo{position:absolute;left:50%;top:52%;width:152%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);z-index:0}
 /* the screen sits ABOVE the frame image (its own thin bezel reads as the phone's edge), as in the hero */
-.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:2px 4px;border-radius:36px;z-index:2;background:#0f3f66 url(phone-wall.png) center/cover no-repeat;
+.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:max(1px,calc(var(--scr-w)*.0128)) max(1.5px,calc(var(--scr-w)*.0256));border-radius:var(--scr-r);z-index:2;background:#0f3f66 url(phone-wall.png) center/cover no-repeat;
   /* the display glass darkens slightly where it meets the bezel — without this the screen reads as a flat sticker */
   box-shadow:inset 0 0 6px 2px rgba(0,0,0,.5)}
 /* Dynamic Island — the one detail that makes a small phone mock-up read as an iPhone at a glance.
@@ -607,13 +611,13 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .scr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:29%;height:4.2%;min-height:7px;
   border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.5);z-index:3;pointer-events:none}
 /* diagonal sheen across the display, matching the hero phone */
-.scr-refl{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;border-radius:36px;z-index:4;pointer-events:none;
+.scr-refl{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;border-radius:var(--scr-r);z-index:4;pointer-events:none;
   background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
-.scr-frame{position:relative;display:block;width:clamp(104px,11.5vw,156px);height:auto;z-index:1;pointer-events:none}
+.scr-frame{position:relative;display:block;width:var(--scr-w);height:auto;z-index:1;pointer-events:none}
 /* the glass is drawn in CSS, not an image: a bright rim and a diagonal sheen read as a real pane
    without the grey wash a translucent PNG lays over the screen */
 .scr-glass{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;z-index:5;pointer-events:none;
-  border:1.5px solid rgba(255,255,255,.88);border-radius:36px;
+  border:max(1px,calc(var(--scr-w)*.0096)) solid rgba(255,255,255,.88);border-radius:var(--scr-r);
   background:linear-gradient(148deg,rgba(255,255,255,.36) 0%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.1) 68%,rgba(255,255,255,.28) 100%);
   box-shadow:0 10px 18px rgba(15,45,82,.3),inset 0 1px 0 rgba(255,255,255,.65);
   animation:scrApply 5.6s var(--ease) infinite}
@@ -1061,8 +1065,8 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   /* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
   .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
   .s-scr .scr-fine{display:none}
-  .scr-stage{transform:rotate(-6deg)}
-  .scr-frame{width:min(96px,26vw)}
+  /* drive the size through --scr-w so the corners, bezel and glass rim scale with it */
+  .scr-stage{transform:rotate(-6deg);--scr-w:min(96px,26vw)}
   .s-banner .slide-banner{display:none}
   .s-banner .slide-in{display:block}
   .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
