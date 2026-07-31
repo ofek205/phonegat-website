@@ -231,6 +231,38 @@ pageFiles.forEach(function (f) {
 if (badCanon.length) bad('canonical לא מצביע לפרודקשן: ' + badCanon.join(', '));
 else if (pageFiles.length) ok('כל ה-canonical מצביעים לפרודקשן');
 
+/* ---------- 9. JSON-LD תקין בכל דף, לא רק בדף הבית ----------
+ * בדיקה 1 בודקת את index.html בלבד. משהוסיפו schema למדריך, בלוק שבור שם היה עובר בשקט
+ * וגוגל היה מתעלם מכל ה-schema של הדף. */
+var ldTotal = 0, ldBadPages = [];
+pageFiles.forEach(function (f) {
+  var src;
+  try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+  var blocks = src.match(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g) || [];
+  blocks.forEach(function (b, i) {
+    var body = b.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, '');
+    try { JSON.parse(body); ldTotal++; }
+    catch (e) { ldBadPages.push(f + ' #' + (i + 1) + ' (' + e.message.slice(0, 40) + ')'); }
+  });
+});
+if (ldBadPages.length) bad('JSON-LD שבור: ' + ldBadPages.join(', ') + ' — גוגל יתעלם מכל ה-schema בבלוק');
+else if (ldTotal) ok(ldTotal + ' בלוקי JSON-LD תקינים בכל הדפים');
+
+/* מפרסם שמוזכר ב-@id אך לא מוגדר באותו דף — הפניה שגוגל לא בהכרח תפתור */
+var unresolved = [];
+pageFiles.forEach(function (f) {
+  var src;
+  try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+  var refs = src.match(/"(?:publisher|worksFor)":\{"@id":"([^"]+)"\}/g) || [];
+  refs.forEach(function (r) {
+    var id = r.match(/"@id":"([^"]+)"/)[1];
+    /* מוגדר = אותו @id מופיע גם עם name לידו */
+    if (src.indexOf('"@id":"' + id + '","name"') < 0) unresolved.push(f + ' -> ' + id);
+  });
+});
+if (unresolved.length) warn('ישות מוזכרת אך לא מוגדרת באותו דף: ' + unresolved.join(', '));
+else if (pageFiles.length) ok('כל ההפניות ל-@id נפתרות בתוך הדף');
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
