@@ -17,6 +17,42 @@
   /* Appended rather than edited: the page's own robots meta is parsed after this script, and
      Google honours the most restrictive directive when two are present. */
   if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
+  /* Sticky yellow bar across the top, so there is never a moment of doubt about which
+     environment a tab is showing. It reserves its own height on <body> and pushes the sticky
+     header down by the same amount — a bar that simply floats on top would hide the header
+     we usually came here to look at. pointer-events:none so it can never swallow a click;
+     only the escape hatch back to the live site opts back in. */
+  if(!window.PG_PROD){
+    document.documentElement.classList.add('pg-testenv');
+    var pgTS=document.createElement('style');
+    pgTS.textContent=
+      'html.pg-testenv{--pg-test-h:52px}'+
+      'html.pg-testenv body{padding-top:var(--pg-test-h)}'+
+      'html.pg-testenv header.site{top:var(--pg-test-h)}'+
+      '.pg-testbar{position:fixed;top:0;inset-inline:0;height:var(--pg-test-h);z-index:100001;'+
+        'pointer-events:none;display:flex;align-items:center;justify-content:center;gap:.6em;'+
+        'padding:0 12px 6px;white-space:nowrap;overflow:hidden;text-align:center;'+
+        'background:#ffd400;color:#151100;font:800 17px/1.1 system-ui,sans-serif;letter-spacing:.01em;'+
+        'box-shadow:0 3px 14px rgba(0,0,0,.32)}'+
+      /* פס אזהרה מפוספס בתחתית — קורא מיד כ"עצור, זה לא האתר" */
+      '.pg-testbar::after{content:"";position:absolute;inset-inline:0;bottom:0;height:6px;'+
+        'background:repeating-linear-gradient(45deg,#151100 0 8px,#ffd400 8px 16px)}'+
+      '.pg-testbar .pg-tb-ico{font-size:1.3em;line-height:1}'+
+      '.pg-testbar a{pointer-events:auto;color:#151100;text-decoration:underline;font-weight:800}'+
+      '.pg-testbar .pg-tb-env{opacity:.72;font-weight:700;font-size:.85em}'+
+      '@media(max-width:760px){html.pg-testenv{--pg-test-h:46px}.pg-testbar{font-size:14px;gap:.45em}}'+
+      '@media(max-width:520px){html.pg-testenv{--pg-test-h:42px}.pg-testbar{font-size:12.5px;gap:.35em}}'+
+      '@media(max-width:400px){.pg-testbar .pg-tb-env{display:none}}';
+    document.head.appendChild(pgTS);
+    document.addEventListener('DOMContentLoaded',function(){
+      var b=document.createElement('div');
+      b.className='pg-testbar';
+      b.innerHTML='<span aria-hidden="true">⚠</span> סביבת בדיקות — זה לא האתר החי'+
+        ' <span class="pg-tb-env">('+window.PG_ENV+')</span>'+
+        ' <a href="https://www.phonegat.co.il/">לאתר החי ↗</a>';
+      document.body.appendChild(b);
+    });
+  }
 </script>
 <!-- Assistant web font (same URL as the home page, so it loads from shared cache) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
