@@ -30,7 +30,9 @@
     '.pg-rev-b.wip{background:#8a5a00;color:#fff}.pg-rev-b.planned{background:#3a3a3a;color:#bbb}';
   document.head.appendChild(css);
 
-  document.addEventListener('DOMContentLoaded', function () {
+  /* הסקריפט מוזרק דינמית, ולכן defer עליו מתעלמים ממנו והוא עלול לרוץ אחרי ש-DOMContentLoaded
+   * כבר ירה. במקרה הזה המאזין לעולם לא נקרא והפאנל לא נבנה, בלי שום שגיאה. */
+  function boot() {
     var wrap = document.createElement('div');
     wrap.className = 'pg-rev';
     var panel = document.createElement('div');
@@ -73,5 +75,8 @@
       .catch(function () {
         panel.textContent = 'לא ניתן לקרוא את services.json';
       });
-  });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();
