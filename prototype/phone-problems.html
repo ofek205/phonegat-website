@@ -421,8 +421,11 @@ html[data-pgdev="xia"] .dev:not([data-dev="xia"]){display:none}
    page with no control, because the setting silently does nothing. The contrast filters name
    this page's own landmarks (there is no .announce or .infobar here). */
 html.a11y-links a{text-decoration:underline}
+html.a11y-text-115{font-size:18.4px}
 html.a11y-text-115 body{font-size:20.7px}
+html.a11y-text-130{font-size:20.8px}
 html.a11y-text-130 body{font-size:23.4px}
+html.a11y-text-150{font-size:24px}
 html.a11y-text-150 body{font-size:27px}
 html.a11y-readable-font body{font-family:Arial,"Segoe UI",sans-serif}
 html.a11y-contrast-high :is(header.site,.picker,main,footer.site){filter:contrast(1.35)}
@@ -1085,16 +1088,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){
   var ck=document.getElementById('cookie');
   if(!ck)return;
+  /* הווידג׳טים הצפים יושבים על calc(... + var(--cookie-h)). המשתנה נקרא ב-CSS אבל אף אחד לא
+     הגדיר אותו כאן, ולכן נשאר 0: כפתור הנגישות טיפס על "אישור הכול" במובייל וחסם אותו. מי
+     שנחת מחיפוש בטלפון לא יכול היה לאשר, נשאר ב-denied, והתנועה שלו לא נמדדה. */
+  function syncCookieH(){document.documentElement.style.setProperty('--cookie-h',(ck.classList.contains('hide')?0:ck.offsetHeight)+'px');}
+  syncCookieH();
+  window.addEventListener('resize',syncCookieH);
   var choice=null;try{choice=localStorage.getItem('pgConsent');}catch(e){}
   if(choice!=='granted'&&choice!=='denied'){
-    var reveal=function(){ck.classList.remove('hide');};
+    var reveal=function(){ck.classList.remove('hide');syncCookieH();};
     setTimeout(function(){window.addEventListener('scroll',reveal,{passive:true,once:true});},700);
     setTimeout(reveal,3500);
   }
   function set(state){
     if(state==='granted'&&typeof gtag==='function'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}
     try{localStorage.setItem('pgConsent',state);}catch(e){}
-    ck.classList.add('hide');
+    ck.classList.add('hide');syncCookieH();
   }
   document.getElementById('cookieOk').addEventListener('click',function(){set('granted');});
   document.getElementById('cookieNo').addEventListener('click',function(){set('denied');});
