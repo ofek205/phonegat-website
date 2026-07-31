@@ -1413,8 +1413,17 @@ html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *:
   .btn-sm{padding-block:13px}                      /* tile buttons -> ~44px tap target */
   .tile .tclose{width:44px;height:44px;padding:0;display:grid;place-items:center;font-size:1.5rem}
   .tile.open{aspect-ratio:auto;min-height:330px}   /* room for the detail overlay */
-  .car-btn{width:44px;height:44px}                 /* carousel arrows -> 44px */
-  .slide{padding-inline:46px}                      /* keep slide text clear of the arrows */
+  /* Carousel arrows move down beside the dots instead of floating over the slide. Overlaying them
+     cost 46px of padding on BOTH sides — a quarter of a 375px screen — so headings wrapped early and
+     every slide read cramped. Down here they stay 44px tappable and the slide gets the full width. */
+  .car-btn{width:44px;height:44px;top:auto;bottom:0;transform:none}
+  .car-dots{padding-inline:52px}                   /* clear the arrows now sharing this row */
+  .slide{padding-inline:20px}                       /* was 46px, needed only to dodge the arrows */
+  /* Stacked slides differ in natural height by ~280px (the sparsest offer vs the SIM scene). A
+     stretch track would size every slide to the tallest, leaving the short ones in a big empty box;
+     the viewport follows the active slide instead (see syncHeight in the carousel script). */
+  .car-track{align-items:flex-start}
+  .car-vp{transition:height .45s var(--ease)}
   .car-dots button{box-sizing:content-box;background-clip:content-box;padding:15px 8px}  /* dot tap area */
   .nav-btn{inline-size:56px;block-size:56px}.nav-btn--waze img{height:34px}.nav-btn--maps img{height:40px}  /* waze/maps icon-chips */
   .burger{min-width:44px;min-height:44px;line-height:44px;text-align:center}
@@ -1466,8 +1475,22 @@ html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *:
   .hero .eyebrow{margin-bottom:.5rem}
   .hero h1::after{margin-top:.55rem}
   .hero .sub{margin-top:.6rem}
-  .hero .trust{margin-block-start:.75rem}
-  .hero .hcta{margin-block-start:.8rem;gap:.5rem}
+  /* Phones only: the rating badge comes off. The same 4.9 and the review counts stay in the reviews
+     section and in the JSON-LD aggregateRating, so nothing is lost to a reader or to Google - this is
+     purely about what earns space above the fold on a 390px screen. */
+  .hero .trust{display:none}
+  /* Two actions on ONE row instead of stacked, each carrying its own icon. The long "שלחו הודעה ב-"
+     is dropped so "WhatsApp" fits beside "חייגו", and the phone number is dropped from the button:
+     tapping it dials anyway, and the digits are still in the header, the footer and the bottom bar.
+     The number stays in the link's aria-label, so a screen reader still announces what it dials. */
+  .hero .hcta{margin-block-start:.8rem;gap:.5rem;flex-direction:row;align-items:stretch;flex-wrap:nowrap}
+  .hero .hcta .btn{width:auto;flex:1 1 0;min-width:0;padding-inline:.6rem;white-space:nowrap}
+  .hero .btn-wa .cta-long,.hero .btn-call .num{display:none}
+  /* On a phone the logo sits directly above the heading, so "פון גת" was being read twice in a row.
+     The brand stays in the logo and the heading carries only the claim. The words remain in the H1
+     markup for every viewport, and the brand is in the title, og:title, the LocalBusiness schema and
+     the logo's alt, so nothing is weakened for search - this only removes the visual repetition. */
+  .hero h1 .h1-brand{display:none}
 }
 </style>
 </head>
@@ -1520,7 +1543,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap grid pg-has-phone">
     <div class="htext">
       <p class="eyebrow">שירות אישי כבר יותר מ-30 שנה</p>
-      <h1 id="hero-h">פון גת. הרבה מעבר לחנות סלולר</h1>
+      <h1 id="hero-h"><span class="h1-brand">פון גת. </span>הרבה מעבר לחנות סלולר</h1>
       <p class="sub">מקום אחד למכשירים, תיקונים ושירות אישי, מהאנשים שמכירים אתכם כבר שנים.</p>
       <div class="trust" role="img" aria-label="דירוג 4.9 · מעל 1,500 ביקורות בגוגל, easy ועוד">
         <span class="score">4.9</span>
@@ -1528,8 +1551,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="count">· מעל 1,500 ביקורות בגוגל, easy ועוד</span>
       </div>
       <div class="hcta">
-        <a class="btn btn-wa" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
-        <a class="btn btn-call" href="tel:+972525893366"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg>חייגו <span class="num" dir="ltr">052-5893366</span></a>
+        <a class="btn btn-wa" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async"><span class="cta-long">שלחו הודעה ב-</span>WhatsApp</a>
+        <a class="btn btn-call" href="tel:+972525893366" aria-label="חייגו 052-5893366"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg>חייגו <span class="num" dir="ltr">052-5893366</span></a>
       </div>
     </div>
     <!-- LIVE REVIEWS PHONE (easy). Real reviews sourced from easy; attribution + non-affiliation notice below.
@@ -2136,6 +2159,16 @@ document.addEventListener('DOMContentLoaded',function(){
     if(pos===n+1){pos=1;place(pos,false);}
     else if(pos===0){pos=n;place(pos,false);}
   }
+  /* Phones stack the slides, and their natural heights differ by ~280px between the sparsest offer and
+     the SIM scene. The CSS stops the track from stretching them at that width, so the viewport has to
+     follow the active slide or the strip would be as tall as its tallest member with the rest floating
+     in empty space. Measured off the real slide, never a copy - the copies are identical twins. */
+  var hMq=matchMedia('(max-width:720px)');
+  function syncHeight(){
+    if(!hMq.matches){vp.style.height='';return;}   /* desktop lays the slides side by side; let CSS size it */
+    var el=real[i];
+    if(el&&el.offsetHeight)vp.style.height=el.offsetHeight+'px';
+  }
   function render(){
     dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});
     real.forEach(function(s,k){
@@ -2143,6 +2176,7 @@ document.addEventListener('DOMContentLoaded',function(){
       s.setAttribute('aria-hidden',act?'false':'true');
       if(act)s.removeAttribute('inert');else s.setAttribute('inert','');
     });
+    syncHeight();
   }
   function step(dir,user){
     normalise();
@@ -2200,6 +2234,15 @@ document.addEventListener('DOMContentLoaded',function(){
   pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
   pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
   if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  /* The first measurement can land before the scenes have their final size: the artwork inside them is
+     lazy and decodes later, and rotating the phone re-wraps every heading. Re-measure on all three. */
+  addEventListener('resize',syncHeight,{passive:true});
+  if(hMq.addEventListener)hMq.addEventListener('change',syncHeight);
+  addEventListener('load',syncHeight);
+  [].slice.call(track.querySelectorAll('img')).forEach(function(im){
+    if(!im.complete)im.addEventListener('load',syncHeight,{once:true});
+  });
 
   place(pos,false);                      /* park on the first real slide, past the leading copy */
   render();start();
