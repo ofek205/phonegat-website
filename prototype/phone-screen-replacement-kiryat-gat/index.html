@@ -485,11 +485,14 @@ html.a11y-stop-motion .prog{display:none}
 .prob.solo .lab p{margin-inline-end:auto}
 /* .fine מוגדר רק תחת .cta, וההסתייגות על נזקי נוזלים הוצגה כטקסט גוף צמוד לרשימה */
 .block .fine{margin-top:1.2rem;font-size:.95rem;color:var(--ink-soft);line-height:1.7}
+.block .fig{max-width:420px;margin-inline:auto}
+/* .row מוגדר רק תחת .prob/.cta/.picker. מחוץ להם הכפתורים נצמדים בלי gap */
+.block .row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.2rem}
 .crumbs{border-block-end:1px solid var(--line);background:#fff}
 .crumbs ol{max-width:min(1100px,92vw);margin-inline:auto;display:flex;flex-wrap:wrap;
   gap:.35rem;list-style:none;font-size:.92rem;color:var(--ink-soft)}
 .crumbs li{display:flex;align-items:center;gap:.35rem}
-.crumbs li+li::before{content:"A";color:#b9b5be}
+.crumbs li+li::before{content:"›";color:#b9b5be}
 .crumbs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
 .crumbs a{color:var(--ink-soft)}
 .crumbs a:hover{color:var(--teal-d)}
@@ -529,7 +532,7 @@ html.a11y-stop-motion .prog{display:none}
 .sym-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
 .sym{border:1px solid var(--line);border-radius:6px;padding:1.2rem;background:#fff;display:flex;
   flex-direction:column;gap:.5rem}
-.sym h3{font-size:1.08rem;font-weight:800;color:var(--ink-strong)}
+.sym h3{font-size:1.12rem;font-weight:500;color:var(--ink-strong)}
 .sym p{color:var(--ink-soft);font-size:.98rem;line-height:1.65;flex:1}
 .sym .go{color:var(--teal-d);font-weight:700;font-size:.96rem;padding-block:.65rem;align-self:flex-start}
 .sym .go:hover{text-decoration:underline}
@@ -707,7 +710,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>זה מידע שכדאי שיהיה לכם לפני שאתם בוחרים, ואנחנו מעדיפים שתקבלו אותו מאיתנו מראש ולא תגלו אותו אחר כך.</p>
     <ul class="checks">
       <li>אפל מתעדת החלפות חלקים במכשיר עצמו. אחרי החלפת מסך בחלק שאינו מקורי, מופיעה רשומה במסך <b>הגדרות ← כללי ← אודות ← היסטוריית חלקים ושירות</b>, בדרך כלל בניסוח שהחלק אינו מזוהה.</li>
-      <li>אפל מציינת שמסך שאינו מקורי עלול להשפיע על תכונות שתלויות בכיול המסך, ובהן True Tone, Night Shift ו-Haptic Touch.</li>
+      <li>אפל מציינת שמסך מקורי הוא מה שמבטיח את פעולתן המלאה של תכונות תצוגה כמו True Tone, ושתיקון בחלק שאינו מקורי עלול לפגוע בתפקוד המסך.</li>
       <li>הרשומה הזאת עשויה להשפיע על שווי המכשיר בעסקת טרייד אין.</li>
     </ul>
     <p>לכן אנחנו אומרים לכם מראש איזה חלק נכנס למכשיר. אם ההודעה הזאת מפריעה לכם, זה שיקול לגיטימי לבחור מקורי כשהוא קיים לדגם, ואם הוא לא קיים נאמר לכם גם את זה.</p>
@@ -747,7 +750,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <details data-q="glass-only"><summary>אפשר להחליף רק את הזכוכית?</summary><p>תלוי בדגם ובמבנה המסך שלו. בחלק מהמכשירים הזכוכית והפאנל הם יחידה אחת מולחמת, ואז הפרדה שלהם מסוכנת יותר מהחלפה שלמה. נסתכל על המכשיר שלכם ונגיד לכם מה אפשרי ומה שווה.</p></details>
 
-    <details data-q="data"><summary>הנתונים שלי נמחקים בהחלפת מסך?</summary><p>לא. החלפת מסך היא עבודה על החומרה, והמידע נשאר איפה שהוא. בכל זאת, גיבוי לפני שמביאים מכשיר לתיקון הוא הרגל טוב. ואם המסך שבור עד כדי כך שאי אפשר לגבות, אנחנו יודעים לחלץ ולהעביר אנשי קשר ותמונות גם ממכשיר במצב הזה.</p></details>
+    <details data-q="data"><summary>הנתונים שלי נמחקים בהחלפת מסך?</summary><p>כמעט אף פעם לא. החלפת מסך היא עבודה על החומרה, והמידע לא זז ממקומו. בכל זאת, גיבוי לפני שמביאים מכשיר לתיקון הוא הרגל טוב. ואם המסך שבור עד כדי כך שאי אפשר לגבות, אנחנו יודעים לחלץ ולהעביר אנשי קשר ותמונות גם ממכשיר במצב הזה.</p></details>
 
     <details data-q="types"><summary>מה ההבדל בין סוגי המסכים?</summary><p>יש שתי משפחות: LCD עם תאורה אחורית אחידה, ו-OLED שבו כל פיקסל מאיר בעצמו ולכן השחור עמוק יותר והניגודיות גבוהה יותר. OLED יקר יותר לייצור, ולכן גם להחלפה. איזה יש לכם תלוי בדגם, ואנחנו נגיד לכם.</p></details>
 
@@ -768,6 +771,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="row">
       <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%9E%D7%A6%D7%A8%D7%A3%20%D7%AA%D7%9E%D7%95%D7%A0%D7%94%20%D7%A9%D7%9C%20%D7%94%D7%9E%D7%A1%D7%9A%20%D7%A9%D7%9C%D7%99"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו תמונה ב-WhatsApp</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
+        <a class="btn btn-teal" href="/mobile-phone-repair-kiryat-gat/">מעבדת הסלולר שלנו</a>
       <a class="btn btn-teal" href="/iphone-repair-kiryat-gat/">תיקון אייפון</a>
     </div>
   </div>
@@ -1008,25 +1012,6 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     },{rootMargin:'-45% 0px -45% 0px'});
     probs.forEach(function(p){io.observe(p);});
   }
-
-  /* Which symptoms were actually read. Reported once per section per visit, and only after the
-     section held the middle of the screen for two seconds — scrolling past on the way somewhere
-     else is not reading, and counting it would make every section look equally popular. */
-  (function(){
-    var seen={};
-    var ro=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        var id=en.target.id;
-        if(!en.isIntersecting){ if(seen[id]&&seen[id]!=='sent'){clearTimeout(seen[id]);delete seen[id];} return; }
-        if(seen[id])return;
-        seen[id]=setTimeout(function(){
-          seen[id]='sent';
-          pgTrack('guide_section_read',{problem:id,position:probs.indexOf(en.target)+1});
-        },2000);
-      });
-    },{rootMargin:'-40% 0px -40% 0px'});
-    probs.forEach(function(p){ro.observe(p);});
-  })();
 
 })();
 </script>

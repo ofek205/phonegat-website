@@ -485,11 +485,19 @@ html.a11y-stop-motion .prog{display:none}
 .prob.solo .lab p{margin-inline-end:auto}
 /* .fine מוגדר רק תחת .cta, וההסתייגות על נזקי נוזלים הוצגה כטקסט גוף צמוד לרשימה */
 .block .fine{margin-top:1.2rem;font-size:.95rem;color:var(--ink-soft);line-height:1.7}
+.block .fig{max-width:420px;margin-inline:auto}
+/* .row מוגדר רק תחת .prob/.cta/.picker. מחוץ להם הכפתורים נצמדים בלי gap */
+.block .row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.2rem}
+.quotes{margin-top:1.6rem;display:grid;gap:1.4rem}
+.quote{margin:0;border-inline-start:2px solid var(--line);padding-inline-start:1.1rem}
+.quote blockquote{margin:0}
+.quote p{font-size:1.02rem;line-height:1.8;color:var(--ink)}
+.quote figcaption{margin-top:.5rem;font-size:.98rem;font-weight:700;color:var(--ink-soft)}
 .crumbs{border-block-end:1px solid var(--line);background:#fff}
 .crumbs ol{max-width:min(1100px,92vw);margin-inline:auto;display:flex;flex-wrap:wrap;
   gap:.35rem;list-style:none;font-size:.92rem;color:var(--ink-soft)}
 .crumbs li{display:flex;align-items:center;gap:.35rem}
-.crumbs li+li::before{content:"A";color:#b9b5be}
+.crumbs li+li::before{content:"›";color:#b9b5be}
 .crumbs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
 .crumbs a{color:var(--ink-soft)}
 .crumbs a:hover{color:var(--teal-d)}
@@ -529,7 +537,7 @@ html.a11y-stop-motion .prog{display:none}
 .sym-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
 .sym{border:1px solid var(--line);border-radius:6px;padding:1.2rem;background:#fff;display:flex;
   flex-direction:column;gap:.5rem}
-.sym h3{font-size:1.08rem;font-weight:800;color:var(--ink-strong)}
+.sym h3{font-size:1.12rem;font-weight:500;color:var(--ink-strong)}
 .sym p{color:var(--ink-soft);font-size:.98rem;line-height:1.65;flex:1}
 .sym .go{color:var(--teal-d);font-weight:700;font-size:.96rem;padding-block:.65rem;align-self:flex-start}
 .sym .go:hover{text-decoration:underline}
@@ -743,7 +751,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </figure>
     <div class="txt">
       <h2 id="lab-h">הכירו את המעבדה</h2>
-      <p class="intro">פון גת היא מעבדת הסלולר הוותיקה בקרית גת, בניהול ברוך וסיגל, כבר יותר משלושים שנה באותו מקום. אנחנו לא מרכז שירות שמעביר מכשירים הלאה: הבדיקה נעשית כאן, ואתם מדברים עם מי שמתקן.</p>
+      <p class="intro">פון גת עובדת בקרית גת יותר משלושים שנה, באותה כתובת, בניהול ברוך וסיגל. אנחנו לא מרכז שירות שמעביר מכשירים הלאה: הבדיקה נעשית כאן, ואתם מדברים עם מי שמתקן.</p>
       <div class="lab">
         <p>רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי 9:00–18:30, שישי 9:00–13:00.</p>
         <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5%20%D7%9C%D7%92%D7%91%D7%99%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>
@@ -756,11 +764,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" aria-labelledby="rev-h">
   <div class="wrap box">
     <h2 id="rev-h">מה כותבים עלינו</h2>
-    <ul class="checks">
-      <li>״הייתה לי בעיה בטלפון, הרמקול לא עבד. ניגשתי לפון גת ואחרי המלצות רבות והבעיה נפתרה במקצועיות ובמסירות. תודה לברוך הטכנאי ולסיגל על השירות האדיב והמקצועי, מקרב לב.״ <b>פיבי אסנר</b></li>
-      <li>״פון גת, אתם מיוחדים במינכם... אין כמוכם ישרים, אמינים בתיקונים... מקצועיות 10, אנושיות 10, מחירים 10.״ <b>Michael O</b></li>
-      <li>״הגעתי לחנות כדי לסנכרן בין פלאפון ישן לחדש... קיבלו אותי בחיוך גדול... הכל נעשה בכיף ובחיוך. שירות אדיב.״ <b>ניצן B</b></li>
-    </ul>
+    <div class="quotes">
+      <figure class="quote">
+        <blockquote><p>היתה לי בעיה בטלפון הרמקול לא עבד ניגשתי לפון גת וזאת לאחר המלצות רבות והבעיה נפתרה במקצועיות ובמסירות ולכן אני רוצה לציין את ברוך הטכנאי ואת סיגל על השירות האדיב והמקצועי תודה לכם מקרב לב</p></blockquote>
+        <figcaption>פיבי אסנר</figcaption>
+      </figure>
+      <figure class="quote">
+        <blockquote><p>פון גת, אתם מיוחדים במינכם. כל מי שמגיע מפרגן ואומר שאתם הבסט, ישרים, אמינים, אלופים בתיקונים ואחריות. ממליץ באהבה. מקצועיות 10, אנושיות 10, שירות 10, מחירים 10.</p></blockquote>
+        <figcaption>Michael O.</figcaption>
+      </figure>
+      <figure class="quote">
+        <blockquote><p>הגעתי עם פלאפון ישן להחלפה, וקיבלו אותי בחיוך גדול. בר המקסים שדרג לי את הפלאפון, התקין אפליקציות ועשה סדר בבלאגן. כמישהי שלא מבינה בזה, זה עזר לי מאוד. הכל בכיף ובחיוך, תודה על שירות אדיב.</p></blockquote>
+        <figcaption>Nitzan B</figcaption>
+      </figure>
+    </div>
     <p class="fine">הביקורות מתוך פרופיל Google של פון גת ושייכות לכותביהן. <a href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener">לקריאת כל הביקורות במקור</a>.</p>
   </div>
 </section>
@@ -1044,25 +1061,6 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     },{rootMargin:'-45% 0px -45% 0px'});
     probs.forEach(function(p){io.observe(p);});
   }
-
-  /* Which symptoms were actually read. Reported once per section per visit, and only after the
-     section held the middle of the screen for two seconds — scrolling past on the way somewhere
-     else is not reading, and counting it would make every section look equally popular. */
-  (function(){
-    var seen={};
-    var ro=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        var id=en.target.id;
-        if(!en.isIntersecting){ if(seen[id]&&seen[id]!=='sent'){clearTimeout(seen[id]);delete seen[id];} return; }
-        if(seen[id])return;
-        seen[id]=setTimeout(function(){
-          seen[id]='sent';
-          pgTrack('guide_section_read',{problem:id,position:probs.indexOf(en.target)+1});
-        },2000);
-      });
-    },{rootMargin:'-40% 0px -40% 0px'});
-    probs.forEach(function(p){ro.observe(p);});
-  })();
 
 })();
 </script>
