@@ -98,7 +98,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {"@context":"https://schema.org","@type":"TechArticle","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/#article","headline":"תיקון אייפון בקריית גת","description":"תיקון אייפון בקריית גת: החלפת מסך וסוללה, תיקון שקע טעינה, מצלמה, שמע ותקלות נוספות. אבחון והסבר לפני תחילת התיקון.","inLanguage":"he-IL","datePublished":"2026-07-31","dateModified":"2026-07-31","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/"},"author":{"@type":"Person","name":"ברוך אדלשטיין","jobTitle":"טכנאי ראשי","worksFor":{"@id":"https://www.phonegat.co.il/#business"}},"publisher":{"@id":"https://www.phonegat.co.il/#business"},"image":"https://www.phonegat.co.il/og-home.jpg"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"פון גת","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"תיקון אייפון בקריית גת","item":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"פון גת","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"שירותים","item":"https://www.phonegat.co.il/#services"},{"@type":"ListItem","position":3,"name":"תיקון אייפון בקריית גת","item":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/"}]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"MobilePhoneStore","@id":"https://www.phonegat.co.il/#business","name":"פון גת","url":"https://www.phonegat.co.il/","logo":"https://www.phonegat.co.il/logo-mark.png","telephone":"+972-52-5893366","address":{"@type":"PostalAddress","streetAddress":"רחבת תשרי 2","addressLocality":"קרית גת","addressCountry":"IL"}}
@@ -138,7 +138,7 @@ c.toggle('a11y-stop-motion',!!p.motion);}catch(e){}})();
   --maxw:1400px; --ease:cubic-bezier(.4,0,.2,1); --shadow-sm:0 6px 18px -8px rgba(20,40,60,.22);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:150px}
+html{scroll-behavior:smooth;scroll-padding-top:86px}
 body{margin:0;font-family:var(--font);font-size:18px;line-height:1.65;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* headlines are serif at a normal weight; nothing on this page is a heavy sans headline */
 h1,h2,h3,h4{margin:0;line-height:1.18;color:var(--ink-strong);font-family:var(--serif);font-weight:500}
@@ -474,22 +474,33 @@ html.a11y-stop-motion .prog{display:none}
 
 /* breadcrumbs. Logical properties throughout: a physical margin-left puts the separator on the
    wrong side in RTL, which is the single most common RTL bug in a component this small. */
+/* מקטע בודד שמשתמש בפריסת .prob אינו חלק ממדריך ממוספר, ולכן בלי "/ 01" שאין לו 02 */
+.prob.solo h2::before{content:none}
+/* .lab נבנה לפסקה ולכפתור אחד. עם שניים, space-between זורק אותם לקצוות */
+.prob.solo .lab{justify-content:flex-start;gap:.6rem}
+.prob.solo .lab p{margin-inline-end:auto}
+/* .fine מוגדר רק תחת .cta, וההסתייגות על נזקי נוזלים הוצגה כטקסט גוף צמוד לרשימה */
+.block .fine{margin-top:1.2rem;font-size:.95rem;color:var(--ink-soft);line-height:1.7}
 .crumbs{border-block-end:1px solid var(--line);background:#fff}
 .crumbs ol{max-width:min(1100px,92vw);margin-inline:auto;display:flex;flex-wrap:wrap;
   gap:.35rem;list-style:none;font-size:.92rem;color:var(--ink-soft)}
 .crumbs li{display:flex;align-items:center;gap:.35rem}
-.crumbs li+li::before{content:"\203A";color:var(--line);transform:scaleX(-1)}  /* flipped: RTL points the other way */
-.crumbs a,.crumbs [aria-current]{display:inline-flex;align-items:center;justify-content:center;
-  min-height:44px;min-width:44px}
+.crumbs li+li::before{content:"A";color:#b9b5be}
+.crumbs a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px}
 .crumbs a{color:var(--ink-soft)}
 .crumbs a:hover{color:var(--teal-d)}
 .crumbs [aria-current="page"]{color:var(--ink-strong);font-weight:600}
 
 /* three verified benefits under the hero copy */
-.perks{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:1.8rem}
-.perks span{border:1px solid var(--line);border-radius:4px;padding:.5rem .95rem;font-size:.98rem;
-  font-weight:600;color:var(--ink-strong);background:#fff}
+/* שורת אמון אחת בלבד. הגרסה הקודמת הייתה תגיות במסגרת מעל שורת המטא, כלומר שתי שורות
+   אמון אחת מעל השנייה, ותגיות אסורות במערכת העיצוב של דפי התוכן. */
+.perks span{padding-inline:.9rem;border-inline-start:1px solid var(--line)}
+.perks span:first-child{border-inline-start:0}
 .ghero .hcta{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem}
+/* .btn-call היה מוגדר רק בתוך .cta, ולכן בהירו הלבן יצא בלי רקע ובלי מסגרת, וקיבל בכל זאת
+   את ההילה הירוקה מ-.btn-hero. ההילה שייכת ל-WhatsApp בלבד, כמו בדף הבית. */
+.ghero .btn-call{background:#fff;color:var(--ink-strong);border:1.5px solid var(--line)}
+.ghero .btn-call:hover{border-color:var(--teal);color:var(--teal-d)}
 /* the address is a hero-level fact: someone holding a broken phone should not scroll to find it */
 .ghero .where{margin-top:1.5rem;font-size:1.02rem;color:var(--ink-soft)}
 .ghero .where a{color:var(--teal-d);font-weight:700;text-decoration:underline;
@@ -503,6 +514,9 @@ html.a11y-stop-motion .prog{display:none}
 .jump a{flex:0 0 auto;padding:.7rem .9rem;font-size:.96rem;font-weight:600;color:var(--ink);
   border-block-end:2px solid transparent;white-space:nowrap}
 .jump a:hover{color:var(--teal-d);border-block-end-color:var(--teal)}
+/* ארבעה מתוך ששת הקישורים מחוץ למסך ב-375, ובלי הדהוי הזה שום דבר לא אומר שיש עוד */
+.jump::after{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:44px;pointer-events:none;background:linear-gradient(to left,#fff,rgba(255,255,255,0))}
+@media(min-width:760px){.jump::after{display:none}}
 
 /* symptom cards. Guidance, never a diagnosis: the wording of every card says "may" on purpose. */
 .syms{padding:clamp(40px,6vw,72px) 0}
@@ -525,9 +539,10 @@ html.a11y-stop-motion .prog{display:none}
 .qd fieldset{border:0;padding:0;margin:0 0 1.4rem}
 .qd legend{font-weight:800;font-size:1.02rem;color:#fff;margin-bottom:.7rem;padding:0}
 .qd .opts{display:flex;flex-wrap:wrap;gap:.5rem}
-.qd .opt{background:transparent;color:var(--on-dark-soft);border:1px solid #3a3733;border-radius:4px;
+/* הגבול הוא הדבר היחיד שמזהה אותם ככפתורים. 3a3733 על הרקע הכהה נתן 1.58:1 מול דרישת 3:1 */
+.qd .opt{background:transparent;color:var(--on-dark-soft);border:1px solid #6b6660;border-radius:4px;
   padding:.7rem 1rem;font:inherit;font-size:.98rem;font-weight:600;cursor:pointer;min-height:44px}
-.qd .opt:hover{border-color:#6b6660;color:#fff}
+.qd .opt:hover{border-color:#a8a29a;color:#fff}
 .qd .opt[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
 .qd .out{border-top:1px solid #3a3733;padding-top:1.4rem;margin-top:.4rem}
 .qd .out p{color:var(--on-dark-soft);margin-bottom:1rem}
@@ -548,7 +563,7 @@ html.a11y-stop-motion .prog{display:none}
 .does{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.5rem 1.4rem;
   list-style:none;margin-top:1.2rem}
 .does li{padding-block:.55rem;border-block-end:1px solid var(--line);color:var(--ink-strong);font-weight:600}
-.does li a{color:var(--teal-d);text-decoration:underline;display:inline-flex;align-items:center;min-height:44px}
+.does li a{color:var(--teal-d);text-decoration:underline}
 
 /* a placeholder that is impossible to mistake for finished copy. It is meant to be seen on
    staging and to be embarrassing enough that it never reaches production by accident. */
@@ -576,7 +591,7 @@ html.a11y-stop-motion .prog{display:none}
 }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/#service","name":"תיקון אייפון בקריית גת","serviceType":"תיקון מכשירי iPhone","description":"תיקון אייפון בקריית גת: החלפת מסך וסוללה, תיקון שקע טעינה, מצלמה, שמע ותקלות נוספות. אבחון והסבר לפני תחילת התיקון.","provider":{"@id":"https://www.phonegat.co.il/#business"},"areaServed":[{"@type":"City","name":"קריית גת"},{"@type":"Place","name":"כרמי גת"}],"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/","servicePhone":{"@type":"ContactPoint","telephone":"+972-52-5893366","contactType":"customer service"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"כמה עולה תיקון אייפון?","acceptedAnswer":{"@type":"Answer","text":"המחיר תלוי בדגם, בסוג התקלה ובזמינות החלק, ולכן אנחנו לא נוקבים בו לפני שראינו את המכשיר. האבחון והצעת המחיר אצלנו ללא עלות וללא התחייבות. אפשר גם לשלוח דגם ותיאור ב-WhatsApp ולקבל כיוון ראשוני עוד לפני שמגיעים."}},{"@type":"Question","name":"כמה זמן לוקח להחליף מסך?","acceptedAnswer":{"@type":"Answer","text":"תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות יותר, או לתיקון שתלוי בהזמנת חלק, נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"האם הנתונים נמחקים בתיקון?","acceptedAnswer":{"@type":"Answer","text":"ברוב תיקוני החומרה המידע נשאר במקומו, ועדיין מומלץ לגבות לפני שמביאים מכשיר לתיקון. גם אם המכשיר שבור או לא נדלק, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות."}},{"@type":"Question","name":"האם מקבלים אחריות?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אתם מקבלים על כך אישור בכתב. היוצא מן הכלל הוא תיקון נזקי נוזלים, שעליו אין אחריות בשום מעבדה, ואנחנו אומרים את זה מראש."}},{"@type":"Question","name":"האם ניתן לשלוח תמונה לפני ההגעה?","acceptedAnswer":{"@type":"Answer","text":"כן, וזה עוזר. תמונה של המסך או של השקע, יחד עם הדגם ותיאור קצר של מה שקרה, מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית."}},{"@type":"Question","name":"מתקנים גם אייפון שלא נקנה אצלכם?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו מתקנים מכשירים ללא קשר למקום הרכישה, וגם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/iphone-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"כמה עולה תיקון אייפון?","acceptedAnswer":{"@type":"Answer","text":"המחיר תלוי בדגם, בסוג התקלה ובזמינות החלק, ולכן אנחנו לא נוקבים בו לפני שראינו את המכשיר. האבחון והצעת המחיר אצלנו ללא עלות וללא התחייבות. אפשר גם לשלוח דגם ותיאור ב-WhatsApp ולקבל כיוון ראשוני עוד לפני שמגיעים."}},{"@type":"Question","name":"האם החלק מקורי או תחליפי?","acceptedAnswer":{"@type":"Answer","text":"בחלק מהדגמים יש גם חלק מקורי וגם תחליפי, ובחלק יש רק אחד מהם. אנחנו מסבירים לכם את ההבדל לגבי המכשיר הספציפי שלכם, ואתם בוחרים. בכל מקרה תדעו איזה חלק נכנס למכשיר לפני שאנחנו מתחילים."}},{"@type":"Question","name":"כמה זמן לוקח להחליף מסך?","acceptedAnswer":{"@type":"Answer","text":"תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות יותר, או לתיקון שתלוי בהזמנת חלק, נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"האם הנתונים נמחקים בתיקון?","acceptedAnswer":{"@type":"Answer","text":"ברוב תיקוני החומרה המידע נשאר במקומו, ועדיין מומלץ לגבות לפני שמביאים מכשיר לתיקון. גם אם המכשיר שבור או לא נדלק, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות."}},{"@type":"Question","name":"האם מקבלים אחריות?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אתם מקבלים על כך אישור בכתב. היוצא מן הכלל הוא תיקון נזקי נוזלים, שעליו אין אחריות בשום מעבדה, ואנחנו אומרים את זה מראש."}},{"@type":"Question","name":"האם ניתן לשלוח תמונה לפני ההגעה?","acceptedAnswer":{"@type":"Answer","text":"כן, וזה עוזר. תמונה של המסך או של השקע, יחד עם הדגם ותיאור קצר של מה שקרה, מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית."}},{"@type":"Question","name":"מתקנים גם אייפון שלא נקנה אצלכם?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו מתקנים מכשירים ללא קשר למקום הרכישה, וגם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם."}}]}</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -591,7 +606,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="/index.html" aria-label="פון גת, דף הבית"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="/index.html#team">מי אנחנו</a><a href="/index.html#reviews">ביקורות</a><a href="/index.html#services">שירותים</a><a href="/phone-problems.html">מדריך תקלות</a><a href="/index.html#deals">מבצעים</a><a href="/index.html#press">כתבו עלינו</a><a href="/index.html#map">מיקום</a><a href="/index.html#faq">שאלות נפוצות</a><a href="/index.html#contact">צרו קשר</a><a href="/iphone-repair-kiryat-gat/" aria-current="page">תיקון אייפון בקריי</a>
+      <a href="/index.html#team">מי אנחנו</a><a href="/index.html#reviews">ביקורות</a><a href="/index.html#services">שירותים</a><a href="/phone-problems.html">מדריך תקלות</a><a href="/index.html#deals">מבצעים</a><a href="/index.html#press">כתבו עלינו</a><a href="/index.html#map">מיקום</a><a href="/index.html#faq">שאלות נפוצות</a><a href="/index.html#contact">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -615,18 +630,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="inner">
       <h1 id="gh">תיקון אייפון בקריית גת</h1>
       <p class="sub">האייפון נשבר, לא נטען או נגמר מהר. נבדוק מה קרה, נסביר מה האפשרויות, ונתקן רק אחרי שאישרתם.</p>
-      <div class="perks">
-        <span>אבחון והצעת מחיר ללא עלות</span>
-        <span>הסבר לפני החלפת חלק</span>
-        <span>אחריות בכתב על תיקונים</span>
-      </div>
       <div class="hcta">
         <a class="btn btn-wa btn-hero" data-pg="wa-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%AA%D7%A7%D7%9C%D7%94%20%D7%91%D7%90%D7%99%D7%99%D7%A4%D7%95%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%90%D7%A4%D7%A9%D7%A8%D7%95%D7%AA%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו לנו את התקלה ב-WhatsApp</a>
         <a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
       </div>
       <p class="where">רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי 9:00–18:30, שישי 9:00–13:00. <a href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes" target="_blank" rel="noopener">ניווט לחנות</a></p>
-      <p class="meta">
-        <span>נכתב על ידי <b>ברוך אדלשטיין</b>, טכנאי ראשי בפון גת</span>
+      <p class="meta perks">
+        <span>אבחון והצעת מחיר ללא עלות</span>
+        <span>הסבר לפני החלפת חלק</span>
+        <span>אחריות בכתב על תיקונים</span>
+        <span>נכתב על ידי <b>ברוך אדלשטיין</b></span>
         <span>עודכן ביולי 2026</span>
         <span>מעבדה בקריית גת מעל 30 שנה</span>
       </p>
@@ -754,7 +767,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section class="block" id="models" aria-labelledby="models-h">
-  <div class="wrap">
+  <div class="wrap box">
     <h2 id="models-h">דגמים, חלקים ומה שכדאי לדעת לפני</h2>
 
     <div class="todo" role="note">
@@ -762,10 +775,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>רשימת דגמי ה-iPhone שמטופלים בפועל. האפיון מציע להציג את הסדרות 17, 16, 15, 14, 13 ודגמים מוקדמים יותר בהתאם לזמינות חלקים, אבל דגם נתמך הוא נתון עסקי ולא נכתב כאן בלי אישור.</p>
     </div>
 
-    <div class="todo" role="note">
-      <b>ממתין לאישור בעל העסק</b>
-      <p>סוגי החלקים שניתן להציע והניסוח המאושר לגביהם, כלומר מה נאמר ללקוח ששואל אם החלק מקורי או תחליפי. זו השאלה הראשונה שנשאלת בתיקון אייפון, ואין עליה מידע באתר היום.</p>
-    </div>
+    <h3>מקורי או תחליפי</h3>
+    <p>בחלק מדגמי האייפון קיימים שני סוגי חלקים, מקורי ותחליפי, ובחלק קיים רק אחד. ההבדל נוגע לאיכות התצוגה ולמחיר, והוא משתנה מדגם לדגם. אנחנו מראים לכם מה קיים עבור המכשיר שלכם, מסבירים מה ההבדל בפועל, ואתם מחליטים. מה שנכנס למכשיר ידוע לכם מראש.</p>
 
     <h3>לא כל תקלה מחייבת החלפה של הרכיב שנראה אשם</h3>
     <p>אייפון שלא נטען הוא הדוגמה הטובה ביותר. ברוב המקרים שאנחנו רואים מדובר באבק וסיבים שנדחסו לתוך השקע ומונעים מהכבל להיכנס עד הסוף, וניקוי מקצועי במעבדה פותר את זה. מכשיר שנכבה באחוזים גבוהים יכול להיות סוללה, אבל גם רכיב טעינה. מסך שלא מגיב למגע לא תמיד דורש מסך חדש. לכן הסדר אצלנו הוא בדיקה, ואז הצעה.</p>
@@ -781,7 +792,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section class="block" aria-labelledby="does-h">
-  <div class="wrap">
+  <div class="wrap box">
     <h2 id="does-h">תיקוני אייפון שאנחנו מבצעים</h2>
     <p>מעבר לאייפון עצמו, אנחנו מטפלים גם ב-iPad, ב-Apple Watch ובאוזניות AirPods.</p>
     <ul class="does">
@@ -798,7 +809,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section class="prob" id="lab" style="--nc:var(--teal)" aria-labelledby="lab-h">
+<section class="prob solo" id="lab" style="--nc:var(--teal)" aria-labelledby="lab-h">
   <div class="wrap row">
     <figure class="fig">
       <!-- כשתגיע התמונה: <picture>
@@ -824,19 +835,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap box">
     <h2 id="faq-h">שאלות נפוצות על תיקון אייפון</h2>
 
-    <details><summary>כמה עולה תיקון אייפון?</summary><p>המחיר תלוי בדגם, בסוג התקלה ובזמינות החלק, ולכן אנחנו לא נוקבים בו לפני שראינו את המכשיר. האבחון והצעת המחיר אצלנו ללא עלות וללא התחייבות. אפשר גם לשלוח דגם ותיאור ב-WhatsApp ולקבל כיוון ראשוני עוד לפני שמגיעים.</p></details>
+    <details data-q="price"><summary>כמה עולה תיקון אייפון?</summary><p>המחיר תלוי בדגם, בסוג התקלה ובזמינות החלק, ולכן אנחנו לא נוקבים בו לפני שראינו את המכשיר. האבחון והצעת המחיר אצלנו ללא עלות וללא התחייבות. אפשר גם לשלוח דגם ותיאור ב-WhatsApp ולקבל כיוון ראשוני עוד לפני שמגיעים.</p></details>
 
-    <details><summary>האם החלק מקורי או תחליפי?</summary><p>התשובה המלאה ממתינה לאישור בעל העסק ותתווסף כאן לפני הפרסום. מה שכן אפשר לומר: נאמר לכם מראש איזה חלק מותקן במכשיר שלכם, לפני שמתחילים.</p></details>
+    <details data-q="parts"><summary>האם החלק מקורי או תחליפי?</summary><p>בחלק מהדגמים יש גם חלק מקורי וגם תחליפי, ובחלק יש רק אחד מהם. אנחנו מסבירים לכם את ההבדל לגבי המכשיר הספציפי שלכם, ואתם בוחרים. בכל מקרה תדעו איזה חלק נכנס למכשיר לפני שאנחנו מתחילים.</p></details>
 
-    <details><summary>כמה זמן לוקח להחליף מסך?</summary><p>תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות יותר, או לתיקון שתלוי בהזמנת חלק, נעדכן אתכם מראש בזמן המשוער.</p></details>
+    <details data-q="duration"><summary>כמה זמן לוקח להחליף מסך?</summary><p>תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות יותר, או לתיקון שתלוי בהזמנת חלק, נעדכן אתכם מראש בזמן המשוער.</p></details>
 
-    <details><summary>האם הנתונים נמחקים בתיקון?</summary><p>ברוב תיקוני החומרה המידע נשאר במקומו, ועדיין מומלץ לגבות לפני שמביאים מכשיר לתיקון. גם אם המכשיר שבור או לא נדלק, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות.</p></details>
+    <details data-q="data"><summary>האם הנתונים נמחקים בתיקון?</summary><p>ברוב תיקוני החומרה המידע נשאר במקומו, ועדיין מומלץ לגבות לפני שמביאים מכשיר לתיקון. גם אם המכשיר שבור או לא נדלק, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות.</p></details>
 
-    <details><summary>האם מקבלים אחריות?</summary><p>כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אתם מקבלים על כך אישור בכתב. היוצא מן הכלל הוא תיקון נזקי נוזלים, שעליו אין אחריות בשום מעבדה, ואנחנו אומרים את זה מראש.</p></details>
+    <details data-q="warranty"><summary>האם מקבלים אחריות?</summary><p>כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אתם מקבלים על כך אישור בכתב. היוצא מן הכלל הוא תיקון נזקי נוזלים, שעליו אין אחריות בשום מעבדה, ואנחנו אומרים את זה מראש.</p></details>
 
-    <details><summary>האם ניתן לשלוח תמונה לפני ההגעה?</summary><p>כן, וזה עוזר. תמונה של המסך או של השקע, יחד עם הדגם ותיאור קצר של מה שקרה, מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית.</p></details>
+    <details data-q="photo"><summary>האם ניתן לשלוח תמונה לפני ההגעה?</summary><p>כן, וזה עוזר. תמונה של המסך או של השקע, יחד עם הדגם ותיאור קצר של מה שקרה, מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית.</p></details>
 
-    <details><summary>מתקנים גם אייפון שלא נקנה אצלכם?</summary><p>כן. אנחנו מתקנים מכשירים ללא קשר למקום הרכישה, וגם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם.</p></details>
+    <details data-q="not-bought"><summary>מתקנים גם אייפון שלא נקנה אצלכם?</summary><p>כן. אנחנו מתקנים מכשירים ללא קשר למקום הרכישה, וגם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם.</p></details>
   </div>
 </section>
 
@@ -844,7 +855,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h2 id="cta-h">לא בטוחים מה התקלה?</h2>
     <p>שלחו לנו את דגם המכשיר, תיאור קצר של מה שקרה, ותמונה אם אפשר. ננסה לכוון אתכם עוד לפני שאתם מגיעים. אנחנו כאן ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>
-    <div class="cta-btns">
+    <div class="row">
       <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9C%D7%95%D7%97%20%D7%9C%D7%9B%D7%9D%20%D7%AA%D7%9E%D7%95%D7%A0%D7%94%20%D7%A9%D7%9C%20%D7%94%D7%90%D7%99%D7%99%D7%A4%D7%95%D7%9F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו תמונה ב-WhatsApp</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
       <a class="btn btn-teal" href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes" target="_blank" rel="noopener">ניווט לחנות</a>
@@ -988,16 +999,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){
   var ck=document.getElementById('cookie');
   if(!ck)return;
+  /* הווידג׳טים הצפים יושבים על calc(... + var(--cookie-h)). המשתנה נקרא ב-CSS אבל אף אחד לא
+     הגדיר אותו כאן, ולכן נשאר 0: כפתור הנגישות טיפס על "אישור הכול" במובייל וחסם אותו. מי
+     שנחת מחיפוש בטלפון לא יכול היה לאשר, נשאר ב-denied, והתנועה שלו לא נמדדה. */
+  function syncCookieH(){document.documentElement.style.setProperty('--cookie-h',(ck.classList.contains('hide')?0:ck.offsetHeight)+'px');}
+  syncCookieH();
+  window.addEventListener('resize',syncCookieH);
   var choice=null;try{choice=localStorage.getItem('pgConsent');}catch(e){}
   if(choice!=='granted'&&choice!=='denied'){
-    var reveal=function(){ck.classList.remove('hide');};
+    var reveal=function(){ck.classList.remove('hide');syncCookieH();};
     setTimeout(function(){window.addEventListener('scroll',reveal,{passive:true,once:true});},700);
     setTimeout(reveal,3500);
   }
   function set(state){
     if(state==='granted'&&typeof gtag==='function'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});}
     try{localStorage.setItem('pgConsent',state);}catch(e){}
-    ck.classList.add('hide');
+    ck.classList.add('hide');syncCookieH();
   }
   document.getElementById('cookieOk').addEventListener('click',function(){set('granted');});
   document.getElementById('cookieNo').addEventListener('click',function(){set('denied');});
@@ -1151,6 +1168,9 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
       });
     });
   }
+  /* pointer-events:none חוסם עכבר בלבד. הקישור נשאר עם href ועם tabIndex=0, ולכן Enter
+     במקלדת שלח בפועל הודעה ריקה לברוך. זו החסימה האמיתית. */
+  go.addEventListener("click",function(e){ if(go.getAttribute("aria-disabled")==="true"){e.preventDefault();} });
   var fired=false;
   function render(){
     if(!(pick.model&&pick.fault&&pick.power)){
@@ -1173,7 +1193,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     d.addEventListener("toggle",function(){
       if(!d.open)return;
       var q=d.querySelector("summary");
-      pgTrack("faq_open",{service_page:"iphone-repair",question:q?q.textContent.trim():""});
+      pgTrack("faq_open",{service_page:"iphone-repair",question:d.getAttribute("data-q")||""});
     });
   });
 })();
