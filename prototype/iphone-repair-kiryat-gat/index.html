@@ -479,7 +479,8 @@ html.a11y-stop-motion .prog{display:none}
   gap:.35rem;list-style:none;font-size:.92rem;color:var(--ink-soft)}
 .crumbs li{display:flex;align-items:center;gap:.35rem}
 .crumbs li+li::before{content:"\203A";color:var(--line);transform:scaleX(-1)}  /* flipped: RTL points the other way */
-.crumbs a,.crumbs [aria-current]{display:inline-flex;align-items:center;min-height:44px}
+.crumbs a,.crumbs [aria-current]{display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;min-width:44px}
 .crumbs a{color:var(--ink-soft)}
 .crumbs a:hover{color:var(--teal-d)}
 .crumbs [aria-current="page"]{color:var(--ink-strong);font-weight:600}
