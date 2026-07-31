@@ -2949,7 +2949,16 @@ document.addEventListener('DOMContentLoaded',function(){
     return seqPending[k];
   }
 
-  function storedCode(o){try{return localStorage.getItem(o.key)||null;}catch(_){return null;}}
+  /* A code kept from before this offer's prefix changed (PG9-/PG49- before the SP-/KM- move) was never
+     issued by the counter, so it can never be reconciled with pg:cpn:seq:<offer> — it simply is not
+     counted. Anything that does not carry the current prefix is therefore dropped, and the visitor is
+     minted a real sequential code on the spot. A code the customer already screenshotted stays valid in
+     the shop; this only decides what the site shows from here on. */
+  function storedCode(o){try{
+    var c=localStorage.getItem(o.key);
+    if(c&&c.indexOf(o.prefix)!==0){try{localStorage.removeItem(o.key);}catch(_){}return null;}
+    return c||null;
+  }catch(_){return null;}}
 
   /* draws a fresh number — only ever called when this browser has no code for the offer yet */
   function mintCode(k,o){
