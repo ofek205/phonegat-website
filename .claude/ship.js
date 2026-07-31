@@ -66,8 +66,20 @@ if (cmd === 'stage') {
   dirtyCheck();
   preflight();
   console.log(C.d + 'דוחף ' + headShort + ' לסביבת הבדיקות…' + C.x);
-  try { run('git push -f origin HEAD:staging', true); }
-  catch (e) { die('הדחיפה ל-staging נכשלה.', String(e.stderr || e.message)); }
+  /* בלי -f, בכוונה. staging הוא ענף אינטגרציה ששני chats מקבילים חולקים, ו-force
+     מחליף אותו ב-HEAD של מי שהריץ אחרון ומוחק את עבודת השני בלי שום אזהרה. זה
+     קרה שלוש פעמים ב-31.7.2026 לפני שהשורה הזאת תוקנה.
+     שער ה-prod בודק `--is-ancestor` ולא שוויון מדויק, ולכן דחיפה רגילה מספיקה לו,
+     ו-staging יכול להחזיק את העבודה של שני הסשנים יחד. */
+  try { run('git push origin HEAD:staging', true); }
+  catch (e) {
+    var perr = String(e.stderr || e.message);
+    if (/non-fast-forward|fetch first|rejected/i.test(perr)) {
+      die('staging התקדם מאז. מישהו אחר דחף לשם.',
+          'git fetch origin && git rebase origin/staging\nואז שוב:  node .claude/ship.js stage');
+    }
+    die('הדחיפה ל-staging נכשלה.', perr);
+  }
   console.log('\n' + C.g + C.b + '✓ עלה לסביבת הבדיקות' + C.x);
   console.log('\n  ' + C.b + STAGING_URL + C.x);
   console.log('\n  ' + C.d + 'הפריסה לוקחת ~דקה. חפש את הפס הצהוב למעלה.' + C.x);
