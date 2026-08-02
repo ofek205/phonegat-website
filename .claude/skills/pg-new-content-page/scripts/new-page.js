@@ -45,7 +45,7 @@ if (!/^[a-z][a-z0-9-]*$/.test(args.slug)) {
  * השני היה נבנה בהעתקה ידנית, כלומר בדיוק הסדק שהסקריפט הזה קיים כדי למנוע.
  *
  * המשמעות התפעולית: תקן קודם את עמוד המקור, ורק אחר כך פגם ממנו. פגם שנשאר במקור משוכפל הלאה. */
-var SOURCE = args.from || 'phone-problems.html';
+var SOURCE = args.from || 'phone-problems/index.html';
 
 /* --flat מייצר את התבנית הישנה (slug.html). ברירת המחדל היא תיקייה עם index.html, כך שהכתובת היא
  * /slug/ ולא /slug.html — כך אושר מבנה ה-URL לעמודי השירות. המחיר: כל נתיב יחסי שהמסגרת נושאת
@@ -102,8 +102,8 @@ h = h.replace(/(\{"@type":"ListItem","position":2,"name":")[^"]*(","item":")[^"]
   '$1' + args.h1.slice(0, 40) + '$2' + url + '$3');
 
 /* ---------- nav: this page becomes the current one ---------- */
-h = h.replace(/<a href="phone-problems\.html" aria-current="page">([^<]*)<\/a>/,
-  '<a href="phone-problems.html">$1</a>');
+h = h.replace(/<a href="/phone-problems/" aria-current="page">([^<]*)<\/a>/,
+  '<a href="/phone-problems/">$1</a>');
 /* הניווט נשאר תשעה פריטים, בדיוק כמו בכל שאר הדפים.
  * הגרסה הקודמת הוסיפה פריט עשירי עם תווית חתוכה ל-18 תווים, וזה יצר שלוש תקלות בבת אחת:
  * מילה קטועה באמצע ("תיקון אייפון בקריי"), הדר שנשבר לשתי שורות בין 981px ל-1100px, וכשהגופן

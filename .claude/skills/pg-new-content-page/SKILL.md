@@ -65,7 +65,7 @@ nothing will look broken — the page will render beautifully while silently poi
 failing the accessibility regulations.
 
 **So: start from an existing content page, do not start from a blank file.** Copy
-`phone-problems.html`, gut the `<main>`, keep everything else. That single decision prevents most
+`phone-problems/index.html`, gut the `<main>`, keep everything else. That single decision prevents most
 of what follows.
 
 ---

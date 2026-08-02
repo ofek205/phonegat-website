@@ -1,8 +1,10 @@
 /* PHONE GAT service worker — enables installability + offline fallback.
    Strategy: network-first for all same-origin GETs (content always fresh online),
    fall back to cache when offline. Bump CACHE to invalidate on major asset changes. */
-const CACHE = 'pg-v2';
-const SHELL = ['/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', './index.html', './phone-problems.html', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+/* v3: המדריך עבר מ-/phone-problems.html ל-/phone-problems/. בלי החלפת השם, מבקר חוזר נשאר עם
+   הכתובת הישנה במעטפת השמורה שלו לנצח. */
+const CACHE = 'pg-v3';
+const SHELL = ['/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', './index.html', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
