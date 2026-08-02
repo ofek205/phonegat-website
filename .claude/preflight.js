@@ -197,9 +197,15 @@ else ok('תגי details מאוזנים (' + opens + ')');
 /* דפים שטוחים בשורש, ובנוסף עמודי שירות שיושבים כתיקייה עם index.html כדי לקבל כתובת עם לוכסן
  * סוגר (/iphone-repair-kiryat-gat/). הסריקה חייבת לרדת רמה אחת: readdirSync שטוח היה משאיר כל עמוד
  * כזה מחוץ לכל הבדיקות כאן, וזו בדיוק התקלה שבגללה הקובץ הזה נכתב מלכתחילה. */
+/* קידומת _ = טיוטה מקומית, לא עמוד חי. הסינון הזה חייב לקרות כאן ולא רק ב-CONTENT_PAGES:
+ * הבדיקות סורקות את תיקיית העבודה, ובתיקייה הזאת עובדים כמה chats במקביל. ב-2.8.2026 קובץ טיוטה
+ * לא-מגורסן של סשן אחר (_kbpreview.html) הפיל את בדיקת ה-canonical וחסם דחיפה של סשן אחר לגמרי. */
+function isDraft(name) { return name.charAt(0) === '_'; }
+
 var pagesDir = P('prototype'), pageFiles = [];
 try {
   fs.readdirSync(pagesDir, { withFileTypes: true }).forEach(function (e) {
+    if (isDraft(e.name)) return;
     if (e.isFile() && /\.html$/.test(e.name)) { pageFiles.push(e.name); return; }
     if (!e.isDirectory() || e.name === 'api') return;
     /* תיקיית נכסים (problems/, logos/) אינה עמוד; עמוד הוא תיקייה שיש בה index.html */
@@ -299,9 +305,8 @@ else if (pageFiles.length) ok('כל ההפניות ל-@id נפתרות בתוך 
  * דפי תוכן בלבד — לא privacy/accessibility, שהם מסמכים משפטיים קצרים ולא צריכים את הווידג'טים.
  * הרשימה נגזרת מהתיקייה ולא כתובה קשיח, אחרת דף חדש לא נבדק עד שמישהו יזכור לרשום אותו כאן. */
 var LEGAL_PAGES = ['privacy.html', 'accessibility.html'];
-var CONTENT_PAGES = pageFiles.filter(function (f) {
-  return LEGAL_PAGES.indexOf(f) < 0 && baseName(f).charAt(0) !== '_';   /* _ = טיוטה מקומית */
-});
+/* טיוטות _ כבר סוננו ב-pageFiles, ולכן כאן נשאר רק להוציא את הדפים המשפטיים */
+var CONTENT_PAGES = pageFiles.filter(function (f) { return LEGAL_PAGES.indexOf(f) < 0; });
 var missingA11y = [], missingCookie = [], missingSW = [];
 CONTENT_PAGES.forEach(function (f) {
   var src;
