@@ -12,6 +12,11 @@
       "permanent": true
     },
     {
+      "source": "/:path+/index.html",
+      "destination": "/:path+/",
+      "permanent": true
+    },
+    {
       "source": "/(services.json|_staging-nav.js)",
       "has": [{ "type": "host", "value": "(www\\.)?phonegat\\.co\\.il" }],
       "destination": "/",
