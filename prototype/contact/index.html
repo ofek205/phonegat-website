@@ -417,16 +417,22 @@ footer .copy a{text-decoration:underline}
 .consent a{color:#fff;text-decoration:underline}
 /* the two-column grid stacks on a phone */
 @media(max-width:640px){.fgrid{grid-template-columns:1fr}}
-/* other ways to reach us: a labelled grid, hairlines, no cards — the design system says rules, not boxes */
-.reach{padding:clamp(34px,5vw,60px) 0}
-.reach h2{font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.05em;color:var(--ink-soft);max-width:1000px;margin-inline:auto}
-.reach-grid{max-width:1000px;margin:1rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.reach-grid>div{border-top:1px solid var(--line);padding:1rem .8rem 1.2rem}
-.reach-grid .k{display:block;font-weight:700;font-size:.9rem;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.35rem}
-.reach-grid p{line-height:1.9}
-.reach-grid a{color:var(--teal-d);font-weight:700}
-@media(max-width:760px){.reach-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:430px){.reach-grid{grid-template-columns:1fr}}
+/* Channel choice, using the same white logo tile the home page uses for Waze and Maps — the site
+   should not grow a second visual language for the same idea. Rows, hairlines, no cards. */
+.channels{padding:clamp(34px,5vw,60px) 0}
+.channels h2{font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.05em;color:var(--ink-soft);max-width:1000px;margin-inline:auto}
+.ch-lead{max-width:1000px;margin:.4rem auto 1.2rem;color:var(--ink-soft)}
+.ch-btns{max-width:1000px;margin-inline:auto;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.ch{display:flex;align-items:center;gap:.9rem;padding:1rem .2rem;border-top:1px solid var(--line);color:var(--ink);min-height:44px}
+.ch img,.ch-ic{flex:none;width:40px;height:40px;object-fit:contain;display:grid;place-items:center}
+.ch-ic{background:var(--teal);color:#fff;border-radius:10px}
+.ch span{display:flex;flex-direction:column;line-height:1.35}
+.ch b{font-weight:800;color:var(--ink-strong)}
+.ch span span,.ch b + *{color:var(--ink-soft)}
+.ch b{margin-bottom:.1rem}
+.ch{font-size:.98rem}
+.ch:hover b{color:var(--teal-d)}
+@media(max-width:640px){.ch-btns{grid-template-columns:1fr}}
 
 /* ===== cookie consent =====
    This page is a search landing page, so for most of its visitors it is the first thing they open.
@@ -580,14 +586,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section class="reach" aria-labelledby="reach-h">
+<!-- Not a second copy of the footer. The footer three inches below already carries the phone
+     numbers, the address, the hours and the social links; repeating them here was the whole of
+     the old section. What the page actually owes the reader is the choice of channel, with the
+     same logo buttons the home page uses so the site keeps one visual language. -->
+<section class="channels" aria-labelledby="ch-h">
   <div class="wrap">
-    <h2 id="reach-h">דרכים אחרות להגיע אלינו</h2>
-    <div class="reach-grid">
-      <div><span class="k">טלפון</span><p><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a><br><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></p></div>
-      <div><span class="k">כתובת</span><p>רחבת תשרי 2, קרית גת<br><a href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes">ניווט ב-Waze</a></p></div>
-      <div><span class="k">שעות</span><p>א׳–ה׳: 9:00–18:30<br>ו׳: 9:00–13:00</p></div>
-      <div><span class="k">רשתות</span><p><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a><br><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></p></div>
+    <h2 id="ch-h">מעדיפים בלי טופס?</h2>
+    <p class="ch-lead">כל אחת מהדרכים האלה מגיעה לאותם שני אנשים.</p>
+    <div class="ch-btns">
+      <a class="ch" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%90%D7%99%D7%AA%D7%9B%D7%9D">
+        <img src="/whatsapp-logo.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+        <span><b>WhatsApp</b>הדרך המהירה ביותר</span>
+      </a>
+      <a class="ch" href="tel:+972525893366">
+        <span class="ch-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></span>
+        <span><b><bdo dir="ltr">052-5893366</bdo></b>ברוך וסיגל עונים בעצמם</span>
+      </a>
+      <a class="ch" href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes" target="_blank" rel="noopener">
+        <img src="/waze-logo.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+        <span><b>ניווט ב-Waze</b>רחבת תשרי 2, קרית גת</span>
+      </a>
+      <a class="ch" href="https://www.google.com/maps/dir/?api=1&amp;destination=31.60332,34.775553" target="_blank" rel="noopener">
+        <img src="/google-maps-pin.png" alt="" width="29" height="40" loading="lazy" decoding="async">
+        <span><b>ניווט בגוגל מפות</b>מסלול מהמיקום שלכם</span>
+      </a>
     </div>
     <p class="sources">מחפשים תשובה מהירה? רוב השאלות הנפוצות כבר <a href="/#faq">עונות על עצמן כאן</a>, ואם המכשיר עושה משהו מוזר יש <a href="/phone-problems/">מדריך תקלות מפורט</a>.</p>
   </div>
