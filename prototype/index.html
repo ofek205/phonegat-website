@@ -198,8 +198,8 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hero .hero-mark{position:absolute;z-index:0;pointer-events:none;inset-block-start:-14%;inset-inline-end:-8%;width:clamp(300px,42vw,560px);aspect-ratio:1;opacity:.12;filter:blur(.5px)}
 .hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;align-items:center;min-height:clamp(300px,40vh,420px);padding-block:clamp(56px,8vw,104px)}
 .hero .htext{max-width:34rem;text-align:center;margin-inline:auto}
-/* ��� ����: ���� �����, ���� ���� ����� ���� ��������. ���� ������ ������
-   ��� ������ ���� ����, ���� ���� ������ ����� �������. */
+/* קצב עולה: צפוף למעלה, והכי הרבה אוויר לפני הכפתורים. אחרי שבאדג׳ הדירוג
+   ירד מההירו נשאר מקום, והוא הולך לנשימה במקום להצטמצם. */
 .hero .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--hero-eyebrow);font-weight:700;font-size:.9rem;margin:0 0 1.3rem}
 .hero .eyebrow::before,.hero .eyebrow::after{content:"";width:26px;height:2px;background:var(--hero-eyebrow);flex:none}
 .hero .htext h1{font-family:var(--font);font-weight:800;color:var(--on-dark);font-size:clamp(2.15rem,5vw,3.5rem);line-height:1.1;letter-spacing:0;margin:0}
@@ -214,10 +214,10 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hero .btn-call:hover{background:var(--teal);border-color:var(--teal);color:#fff}
 .hero .btn-call .num{direction:ltr;unicode-bidi:isolate;font-weight:800}
 .hero .hcta .btn:hover{transform:translateY(-1px)}
-/* ��� ����: ����� 1366x768 ���� ���� �� ~650px ���� ���� ������, ��� ������
-   ����� ���� �� ��� �-CTA ���� ������. ����: 91px ����. ���� ����� ����
-   ������ ������ ������� �� ���. ���� �-820px �� �� �������, �� �� .hcta
-   ����� ����� ������ ������ ���� �� ���� ��� �������. */
+/* מסך נמוך: לפטופ 1366x768 נותן חלון של ~650px אחרי כרום הדפדפן, ושם האוויר
+   הנדיב דוחף את שני ה-CTA מתחת לקיפול. נמדד: 91px מתחת. הקצב העולה נשאר
+   במסכים גבוהים ומצטמצם רק כאן. מתחת ל-820px זה לא רלוונטי, כי שם .hcta
+   מוסתר ממילא והסרגל התחתון נושא את אותן שתי הפעולות. */
 @media (max-height:780px) and (min-width:821px){
   .hero .grid{padding-block:clamp(20px,3vh,52px);min-height:0}
   .hero .eyebrow{margin-block-end:.8rem}
@@ -1297,20 +1297,6 @@ html.a11y-stop-motion .reviews .rw-track{animation:none}
 .faq .faq-more a{color:var(--teal-d);font-weight:700;text-decoration:underline}
 
 /* ===== contact ===== */
-.contact{background:var(--dark);color:#fff;padding:clamp(40px,6vw,72px) 0}
-.contact h2{color:#fff;text-align:center;font-size:clamp(1.5rem,3.4vw,2.1rem)}
-.contact .sub{text-align:center;color:var(--teal);font-weight:600;margin:.4rem 0 1.8rem}
-.fbox{max-width:820px;margin-inline:auto}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-.field{display:flex;flex-direction:column;gap:.35rem}.field.full{grid-column:1/-1}
-.field label{font-weight:700;font-size:.95rem}
-.field input,.field select{font-family:inherit;font-size:1rem;padding:.75rem .9rem;border:none;border-radius:6px;background:#fff;color:var(--ink)}
-.fnote{color:var(--on-dark-soft);font-size:.9rem;margin-top:.6rem}
-.fnote.sent{color:var(--on-dark);font-weight:600;line-height:1.7}
-.fnote.sent a{color:#45A6D6;font-weight:800;white-space:nowrap}
-.consent label{flex-direction:row;align-items:flex-start;gap:.55rem;font-weight:500;font-size:.92rem;line-height:1.5;cursor:pointer}
-.consent input{width:18px;height:18px;flex:none;margin-top:.15rem;padding:0;border-radius:4px;accent-color:var(--teal);cursor:pointer}
-.consent a{color:#fff;text-decoration:underline}
 @media(max-width:620px){.fgrid{grid-template-columns:1fr}}
 
 /* ===== footer ===== */
@@ -1560,7 +1546,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="#main" aria-label="פון גת, דף הבית"><picture><source srcset="logo-mark.webp" type="image/webp"><img src="logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="#team">מי אנחנו</a><a href="#reviews">ביקורות</a><a href="#services">שירותים</a><a href="phone-problems/">מדריך תקלות</a><a href="#deals">מבצעים</a><a href="#press">כתבו עלינו</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="#contact">צרו קשר</a>
+      <a href="#team">מי אנחנו</a><a href="#reviews">ביקורות</a><a href="#services">שירותים</a><a href="phone-problems/">מדריך תקלות</a><a href="#deals">מבצעים</a><a href="#press">כתבו עלינו</a><a href="#map">מיקום</a><a href="#faq">שאלות נפוצות</a><a href="/contact/">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -2384,26 +2370,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="contact" aria-labelledby="c-h">
-  <div class="wrap fbox">
-    <h2 id="c-h">השאירו פרטים ונחזור אליכם</h2>
-    <p class="sub">או פשוט חייגו / שלחו WhatsApp, וברוך וסיגל כאן בשבילכם</p>
-    <!-- novalidate: the browser's own validation bubbles announce in the BROWSER's language,
-         not necessarily Hebrew. We validate in JS instead so every message is Hebrew (IS 5568). -->
-    <form class="fgrid" id="contactForm" novalidate>
-      <input type="hidden" name="access_key" value="99c6d9a8-827b-42d7-99f1-22e06a8643fe">
-      <input type="hidden" name="subject" value="פנייה חדשה מאתר פון גת">
-      <input type="hidden" name="from_name" value="אתר פון גת">
-      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
-      <div class="field"><label for="name">שם מלא</label><input id="name" name="שם מלא" type="text" autocomplete="name" placeholder="שם מלא" required aria-required="true"></div>
-      <div class="field"><label for="phone">טלפון</label><input id="phone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-XXXXXXX" required aria-required="true"></div>
-      <div class="field"><label for="topic">נושא</label><select id="topic" name="נושא" required aria-required="true"><option value="">בחרו נושא</option><option>קניית מכשיר</option><option>תיקון</option><option>קו / סלקום</option><option>אבזור</option><option>אחר</option></select></div>
-      <div class="field"><label for="msg">הודעה</label><input id="msg" name="הודעה" type="text" placeholder="ספרו לנו במה נוכל לעזור"></div>
-      <div class="field full consent"><label><input type="checkbox" name="consent" value="כן" required aria-required="true"> קראתי ואני מסכים/ה ל<a href="privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a></label></div>
-      <div class="field full"><button class="btn btn-teal" type="submit">שלחו פרטים</button><p class="fnote" id="formNote" role="status" aria-live="polite">לא נשלח ספאם. הפנייה מגיעה ישירות לברוך וסיגל.</p></div>
-    </form>
-  </div>
-</section>
+
 
 </main>
 
@@ -2701,7 +2668,8 @@ document.addEventListener('DOMContentLoaded',function(){
     try{var a=JSON.parse(localStorage.getItem('pg_leads')||'[]');a.push({name:name,phone:phone,topic:topic,ts:(new Date()).toISOString()});localStorage.setItem('pg_leads',JSON.stringify(a));}catch(e){}
     /* Same rule as the contact form: a chat lead from staging must not reach the inbox. */
     if(!window.PG_PROD){if(window.console)console.warn('[pg] '+window.PG_ENV+': הליד נשמר מקומית ולא נשלח במייל');return;}
-    try{var kf=document.querySelector('#contactForm input[name=access_key]');var key=kf?kf.value:'';if(key&&key.indexOf('YOUR_')!==0){fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'ליד חדש מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם':name,'טלפון':phone,'נושא':topic})});}}catch(e){}
+    try{/* own copy: the contact form moved to /contact/, so there is no #contactForm here to read */
+    var key='99c6d9a8-827b-42d7-99f1-22e06a8643fe';if(key&&key.indexOf('YOUR_')!==0){fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'ליד חדש מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם':name,'טלפון':phone,'נושא':topic})});}}catch(e){}
   }
   function handleFlow(text){
     if(/(^|\s)(ביטול|תפריט|חזרה|עזוב|התחל)(\s|$)/.test(text)){mainMenu();return;}
@@ -2709,7 +2677,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(flow.type==='buy'){var bt=text.slice(0,40);if(flow.step==='model')buyModel(bt);else if(flow.step==='storage')buyStorage(bt);else if(flow.step==='import')buyImport(bt);else buyBrand(bt);return;}
     if(flow.type==='lead'){
       if(flow.step==='name'){ctx.name=text.replace(/[<>]/g,'').slice(0,40);flow.step='phone';botReply('נעים מאוד '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');return;}
-      if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var kEl=document.querySelector('#contactForm input[name=access_key]'),keyOk=!!(kEl&&kEl.value&&kEl.value.indexOf('YOUR_')!==0);var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! כדי שנחזור אליכם הכי מהר, שלחו לנו את הפרטים בלחיצה אחת ב-WhatsApp, או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
+      if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=true;   /* the key is a constant here now — the form moved to /contact/ */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! כדי שנחזור אליכם הכי מהר, שלחו לנו את הפרטים בלחיצה אחת ב-WhatsApp, או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
     }
   }
   function fallback(){fails++;track('chat_fallback',{q:lastUser});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
@@ -2850,55 +2818,6 @@ document.addEventListener('DOMContentLoaded',function(){
     else if(e.key==='Escape'&&panel.classList.contains('open')){close();trigger.focus();}
   });
   apply();render();
-})();
-</script>
-<script>
-/* ===== contact form -> email via Web3Forms (no backend) ===== */
-(function(){
-  var form=document.getElementById('contactForm');if(!form)return;
-  var note=document.getElementById('formNote'), btn=form.querySelector('button[type=submit]');
-  var keyEl=form.querySelector('input[name=access_key]'), KEY=keyEl?keyEl.value:'';
-  /* Errors are announced assertively (role=alert); status/success stays polite (role=status). */
-  function fail(el,msg){
-    note.classList.remove('sent');note.setAttribute('role','alert');note.textContent=msg;
-    if(el){el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby','formNote');el.focus();}
-  }
-  function ok(el){if(el){el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');}}
-  function say(msg){note.setAttribute('role','status');note.textContent=msg;}
-
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    /* We set novalidate on the form, so every required field is checked here — in Hebrew. */
-    var nmEl=form.querySelector('#name'), tpEl=form.querySelector('#topic'), csEl=form.querySelector('input[name=consent]');
-    var phEl=form.querySelector('#phone'), phd=((phEl&&phEl.value)||'').replace(/\D/g,'');
-    [nmEl,phEl,tpEl].forEach(ok);
-    if(!nmEl||!nmEl.value.trim())return fail(nmEl,'נא למלא שם מלא.');
-    if(!/^0\d{8,9}$/.test(phd))return fail(phEl,'מספר הטלפון לא תקין. הזינו מספר ישראלי, למשל 0525893366.');
-    if(!tpEl||!tpEl.value)return fail(tpEl,'נא לבחור נושא לפנייה.');
-    if(csEl&&!csEl.checked)return fail(csEl,'כדי לשלוח את הפנייה יש לאשר את מדיניות הפרטיות.');
-    ok(phEl);
-    if(!KEY||KEY.indexOf('YOUR_')===0){say('הטופס עדיין לא חובר לשליחה. בינתיים חייגו 052-5893366 או שלחו WhatsApp.');return;}
-    /* Test environment: every validation above already ran, so the form is genuinely
-       exercised — we just stop short of the send, because a test enquiry in the owners'
-       inbox is indistinguishable from a real customer. The dataLayer event still fires so
-       the tracking wiring stays testable. */
-    if(!window.PG_PROD){
-      form.reset();note.classList.add('sent');note.setAttribute('role','status');
-      note.innerHTML='<b>הטופס עבד — אבל לא נשלח מייל.</b> זו סביבת בדיקות ('+window.PG_ENV+'), הפנייה לא הגיעה לברוך וסיגל. בפרודקשן היא הייתה נשלחת.';
-      try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}
-      return;
-    }
-    btn.disabled=true;say('שולח...');
-    var _fd=new FormData(form),_o={};_fd.forEach(function(v,k){_o[k]=v;});
-    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(_o)})
-      .then(function(r){return r.json();})
-      .then(function(j){
-        if(j.success){form.reset();note.classList.add('sent');note.setAttribute('role','status');note.innerHTML='<b>תודה! הפנייה נשלחה.</b> ברוך וסיגל יחזרו אליכם בהקדם.<br>בינתיים אפשר גם: <a href="https://wa.me/97286812050">WhatsApp</a> · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a> · <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes" target="_blank" rel="noopener">ניווט</a><br>שעות: א׳–ה׳ 9:00–18:30, ו׳ 9:00–13:00';try{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_form_submit'});}catch(e){}}
-        else{fail(null,'משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.');}
-        btn.disabled=false;
-      })
-      .catch(function(){fail(null,'משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.');btn.disabled=false;});
-  });
 })();
 </script>
 <!-- coupon popup (the offer — opened anywhere via a [data-pg-coupon] trigger) -->
