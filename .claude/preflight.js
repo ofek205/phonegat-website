@@ -638,6 +638,28 @@ if (classFails.length) {
   if (!ghosts.length && !missing.length) ok('הסייטמאפ מכיל בדיוק את ' + live.length + ' הדפים החיים');
 })();
 
+/* ---------- 19. הסקריפטים של הפרויקט בכלל נטענים ----------
+ * new-page.js עלה ל-main כשהוא לא נטען בכלל. החלפת מחרוזת גורפת הכניסה לוכסן לא מוברח לתוך
+ * ליטרל של רגקס, הליטרל נסגר בלוכסן הראשון, ומה שאחריו נקרא כדגלי רגקס. שגיאת תחביר בשורה
+ * הראשונה, כלומר הפיגום לא היה מייצר אף עמוד. אף בדיקה לא הריצה אותו, ולכן זה התגלה במקרה.
+ * vm.Script מהדר בלי להריץ, ולכן הבדיקה בטוחה גם לסקריפטים שכותבים קבצים. */
+(function () {
+  var vm = require('vm');
+  var dirs = [P('.claude'), P('.claude/skills/pg-new-content-page/scripts')];
+  var broken = [], checked = 0;
+  dirs.forEach(function (d) {
+    var names;
+    try { names = fs.readdirSync(d); } catch (e) { return; }
+    names.filter(function (n) { return /\.js$/.test(n); }).forEach(function (n) {
+      var full = path.join(d, n);
+      try { new vm.Script(fs.readFileSync(full, 'utf8'), { filename: full }); checked++; }
+      catch (e) { broken.push(path.relative(P('.'), full) + ': ' + e.message.slice(0, 60)); }
+    });
+  });
+  if (broken.length) bad('סקריפטים שלא נטענים: ' + broken.join(' · ') + ' — שגיאת תחביר, הכלי לא ירוץ בכלל');
+  else if (checked) ok(checked + ' סקריפטים של הפרויקט נטענים');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

@@ -102,7 +102,9 @@ h = h.replace(/(\{"@type":"ListItem","position":2,"name":")[^"]*(","item":")[^"]
   '$1' + args.h1.slice(0, 40) + '$2' + url + '$3');
 
 /* ---------- nav: this page becomes the current one ---------- */
-h = h.replace(/<a href="/phone-problems/" aria-current="page">([^<]*)<\/a>/,
+/* the slashes in the href must be escaped, or the literal closes at the first one and
+   "phone-problems" is parsed as regex flags — the script would not even load */
+h = h.replace(/<a href="\/phone-problems\/" aria-current="page">([^<]*)<\/a>/,
   '<a href="/phone-problems/">$1</a>');
 /* הניווט נשאר תשעה פריטים, בדיוק כמו בכל שאר הדפים.
  * הגרסה הקודמת הוסיפה פריט עשירי עם תווית חתוכה ל-18 תווים, וזה יצר שלוש תקלות בבת אחת:
