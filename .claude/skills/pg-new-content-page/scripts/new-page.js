@@ -200,7 +200,11 @@ if (!FLAT) h = toRoot(h);
 
 /* page-specific analytics: keep the helper, drop the guide's own events */
 h = h.replace(/\n\s*pgTrack\('guide_device'[^;]*;/g, '');
-h = h.replace(/\n\s*\/\* Which symptoms were actually read[\s\S]*?\n  \}\)\(\);\n/, '\n');
+/* \r? בכל מקום: הקבצים כאן שמורים ב-CRLF, והגרסה הקודמת שציפתה ל-LF בלבד לא התאימה ולא
+ * הסירה כלום. הכשל היה שקט לגמרי, ולכן כל חמשת העמודים נשאו את מעקב הקריאה של המדריך
+ * ושלחו guide_section_read מעמוד שירות. ה-swap הצמוד דווקא הצליח, כי הוא מסתיים בנקודה
+ * ופסיק ולא בירידת שורה, וזה מה שהסווה את התקלה. */
+h = h.replace(/\r?\n\s*\/\* Which symptoms were actually read[\s\S]*?\r?\n  \}\)\(\);/, '');
 
 if (!FLAT) fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, h);

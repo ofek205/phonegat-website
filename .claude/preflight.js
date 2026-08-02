@@ -471,8 +471,34 @@ if (swFails.length) {
   var engine = /(^|\})\s*(html\.a11y-[a-z0-9-]+(?: body)?)\s*\{/g, m, refRules = [];
   while ((m = engine.exec(ref))) if (refRules.indexOf(m[2]) < 0) refRules.push(m[2]);
   if (!refRules.length) { warn('לא נמצאו כללי a11y ב-index.html להשוואה'); return; }
-  /* שכבה שנייה: אף מחלקת השפעה לא נשמטה כליל. כללי המנוע למעלה נבדקים מילה במילה, אבל רובם
-   * מכוונים לרכיב ספציפי ולכן לא ניתן להשוות אותם ככה. לפחות נדע שהמחלקה קיימת בדף. */
+  /* שכבה שנייה: אף מחלקת השפעה לא נשמטה כליל. */
+  /* שכבה שלישית: הכלל לא רק קיים, הוא גם מחיל את אותו דבר.
+   *
+   * זה הפער שהאודיט מצא, והשכבות הקודמות לא תפסו אותו: html.a11y-readable-font הוגדר בדף
+   * הבית על "body, body *" עם important, ובמדריך ובחמשת עמודי השירות רק על "body". הכפתור
+   * החליף את גופן הטקסט והשאיר את הכותרות בסריף, כלומר עבד חלקית, וזה גרוע מפקד שלא עובד.
+   *
+   * השוואה לפי מפתח הסלקטור לא עוזרת כאן, כי דווקא הסלקטור הוא מה שהשתנה. לכן ההשוואה היא
+   * לפי שם המחלקה: אוספים לכל מחלקה את כל כללי המנוע שלה, מנרמלים, ומשווים כמקשה אחת.
+   *
+   * "כלל מנוע" = סלקטור שאין בו מחלקה נוספת מלבד ה-a11y עצמה. כללים שמכוונים לרכיב ספציפי
+   * (למשל .pg-fab שקיים רק בדף הבית) מושמטים, אחרת כל דף היה נופל על הבדל לגיטימי. */
+  /* סורק כל כלל בגיליון ומסנן. הגרסה הקודמת דרשה } לפני הסלקטור, ומכיוון שההתאמה בולעת
+   * את הסוגר, כלל שיושב מיד אחרי כלל אחר נדלג עליו. זה נתן חיובי שגוי על שישה דפים תקינים. */
+  function engineRulesByClass(src) {
+    var out = {}, rx = /([^{}]+)\{([^{}]*)\}/g, mm;
+    while ((mm = rx.exec(src))) {
+      var sel = mm[1].trim();
+      if (sel.indexOf('html.a11y-') !== 0) continue;
+      var cls = sel.match(/html\.(a11y-[a-z0-9-]+)/)[1];
+      var rest = sel.replace(/html\.a11y-[a-z0-9-]+/g, '');
+      if (/\.[a-z]/i.test(rest)) continue;               /* מכוון לרכיב, לא כלל מנוע */
+      (out[cls] = out[cls] || []).push((sel + '{' + mm[2] + '}').replace(/\s+/g, ''));
+    }
+    Object.keys(out).forEach(function (k) { out[k] = out[k].sort().join(''); });
+    return out;
+  }
+  var refEngine = engineRulesByClass(ref);
   var refNames = [];
   (ref.match(/html\.a11y-[a-z0-9-]+/g) || []).forEach(function (c) { if (refNames.indexOf(c) < 0) refNames.push(c); });
   var gaps = [];
@@ -484,7 +510,12 @@ if (swFails.length) {
       return !new RegExp('(^|\\})\\s*' + sel.replace(/[-]/g, '\\-') + '\\s*\\{').test(s);
     });
     var absent = refNames.filter(function (c) { return s.indexOf(c) < 0; });
-    var all = missing.concat(absent.map(function (c) { return c + ' (נעדרת לגמרי)'; }));
+    /* המחלקה קיימת, אבל מחילה משהו אחר ממה שדף הבית מחיל */
+    var mine = engineRulesByClass(s), differs = [];
+    Object.keys(refEngine).forEach(function (cls) {
+      if (mine[cls] !== undefined && mine[cls] !== refEngine[cls]) differs.push('html.' + cls + ' (מחיל אחרת)');
+    });
+    var all = missing.concat(absent.map(function (c) { return c + ' (נעדרת לגמרי)'; })).concat(differs);
     if (all.length) gaps.push(f + ': ' + all.join(', '));
   });
   if (gaps.length) {

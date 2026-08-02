@@ -1,5 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/(services.json|_staging-nav.js)",
+      "has": [{ "type": "host", "value": "(www\\.)?phonegat\\.co\\.il" }],
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
