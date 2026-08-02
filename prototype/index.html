@@ -196,15 +196,17 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hero{position:relative;color:var(--on-dark);overflow:hidden;isolation:isolate;background:radial-gradient(40% 50% at 40% 62%, rgba(24,120,168,.14), transparent 70%),radial-gradient(125% 130% at 16% 24%, #241c17 0%, #16110e 58%, #0d0b0a 100%);--hero-eyebrow:#45A6D6}
 .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px}
 .hero .hero-mark{position:absolute;z-index:0;pointer-events:none;inset-block-start:-14%;inset-inline-end:-8%;width:clamp(300px,42vw,560px);aspect-ratio:1;opacity:.12;filter:blur(.5px)}
-.hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;align-items:center;min-height:clamp(300px,40vh,420px);padding-block:clamp(40px,6vw,72px)}
+.hero .grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr;align-items:center;min-height:clamp(300px,40vh,420px);padding-block:clamp(56px,8vw,104px)}
 .hero .htext{max-width:34rem;text-align:center;margin-inline:auto}
-.hero .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--hero-eyebrow);font-weight:700;font-size:.9rem;margin:0 0 .9rem}
+/* çæÑ âÕÜÔ: æäÕã ÜÞâÜÔ, ÕÔÛÙ ÔèÑÔ ÐÕÕÙè ÜäàÙ ÔÛäêÕèÙÝ. Ð×èÙ éÑÐÓÒó ÔÓÙèÕÒ
+   ÙèÓ ÞÔÔÙèÕ àéÐè ÞçÕÝ, ÕÔÕÐ ÔÕÜÚ ÜàéÙÞÔ ÑÞçÕÝ ÜÔæØÞæÝ. */
+.hero .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--hero-eyebrow);font-weight:700;font-size:.9rem;margin:0 0 1.3rem}
 .hero .eyebrow::before,.hero .eyebrow::after{content:"";width:26px;height:2px;background:var(--hero-eyebrow);flex:none}
 .hero .htext h1{font-family:var(--font);font-weight:800;color:var(--on-dark);font-size:clamp(2.15rem,5vw,3.5rem);line-height:1.1;letter-spacing:0;margin:0}
-.hero .htext h1::after{content:"";display:block;height:5px;width:clamp(190px,62%,280px);border-radius:3px;margin:1rem auto 0;background:linear-gradient(90deg,var(--teal) 0 25%,var(--purple) 25% 50%,var(--green) 50% 75%,var(--orange) 75% 100%)}
+.hero .htext h1::after{content:"";display:block;height:5px;width:clamp(190px,62%,280px);border-radius:3px;margin:1.5rem auto 0;background:linear-gradient(90deg,var(--teal) 0 25%,var(--purple) 25% 50%,var(--green) 50% 75%,var(--orange) 75% 100%)}
 .hero .lede{font-family:var(--font);font-weight:700;font-size:clamp(1.35rem,3vw,2rem);line-height:1.28;color:#fff;margin:1.05rem 0 0;max-width:22ch}
-.hero .sub{color:var(--on-dark-soft);font-size:clamp(1.15rem,1.7vw,1.35rem);font-weight:500;line-height:1.55;margin:1.1rem auto 0;max-width:36ch}
-.hero .hcta{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-block-start:1.3rem}
+.hero .sub{color:var(--on-dark-soft);font-size:clamp(1.15rem,1.7vw,1.35rem);font-weight:500;line-height:1.55;margin:1.7rem auto 0;max-width:36ch}
+.hero .hcta{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-block-start:2.4rem}
 .hero .hcta .btn{font-size:1.05rem;padding:13px 24px}
 .hero .btn-wa{background:#25D366;color:#0a2e18;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
 .hero .btn-wa:hover{background:#20c15c}
@@ -212,6 +214,17 @@ nav.main a{color:#eaeaea;padding:.3rem 0}nav.main a:hover{color:var(--teal)}
 .hero .btn-call:hover{background:var(--teal);border-color:var(--teal);color:#fff}
 .hero .btn-call .num{direction:ltr;unicode-bidi:isolate;font-weight:800}
 .hero .hcta .btn:hover{transform:translateY(-1px)}
+/* ÞáÚ àÞÕÚ: ÜäØÕä 1366x768 àÕêß ×ÜÕß éÜ ~650px Ð×èÙ ÛèÕÝ ÔÓäÓäß, ÕéÝ ÔÐÕÕÙè
+   ÔàÓÙÑ ÓÕ×ã Ðê éàÙ Ô-CTA Þê×ê ÜçÙäÕÜ. àÞÓÓ: 91px Þê×ê. ÔçæÑ ÔâÕÜÔ àéÐè
+   ÑÞáÛÙÝ ÒÑÕÔÙÝ ÕÞæØÞæÝ èç ÛÐß. Þê×ê Ü-820px ÖÔ ÜÐ èÜÕÕàØÙ, ÛÙ éÝ .hcta
+   ÞÕáêè ÞÞÙÜÐ ÕÔáèÒÜ Ôê×êÕß àÕéÐ Ðê ÐÕêß éêÙ ÔäâÕÜÕê. */
+@media (max-height:780px) and (min-width:821px){
+  .hero .grid{padding-block:clamp(20px,3vh,52px);min-height:0}
+  .hero .eyebrow{margin-block-end:.8rem}
+  .hero .htext h1::after{margin-block-start:.9rem}
+  .hero .sub{margin-block-start:1rem}
+  .hero .hcta{margin-block-start:1.25rem}
+}
 @media (prefers-reduced-motion:no-preference){.hero .htext>*{animation:heroIn .7s var(--ease) both}.hero .eyebrow{animation-delay:.05s}.hero h1{animation-delay:.12s}.hero .lede{animation-delay:.2s}.hero .sub{animation-delay:.28s}.hero .hcta{animation-delay:.36s}}
 @keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 html.a11y-stop-motion .hero .htext>*{animation:none}
