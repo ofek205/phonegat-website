@@ -6,7 +6,7 @@
    שהיא הפניה, וה-catch שם בולע את זה בשקט, כלומר כתובת מפנה ברשימה מבטלת את כל האחסון.
    בלי החלפת שם המטמון, מבקר חוזר נשאר עם הכתובות הישנות במעטפת השמורה שלו לנצח. */
 const CACHE = 'pg-v4';
-const SHELL = ['/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+const SHELL = ['/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
