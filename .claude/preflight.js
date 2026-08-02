@@ -232,16 +232,32 @@ if (scanned && !ungated.length && !guardless.length) {
   ok('כל ' + scanned + ' הדפים שטוענים GTM מגודרים ב-PG_PROD');
 }
 
-/* canonical בכל דף תוכן, לא רק בדף הבית */
-var badCanon = [];
+/* canonical בכל דף תוכן, לא רק בדף הבית.
+ * שלוש שכבות. הראשונה הייתה כאן מההתחלה, ושתי האחרות נולדו באודיט של 2.8.2026:
+ * privacy.html ו-accessibility.html ישבו בסייטמאפ, מאונדקסים, בלי שום תגית canonical, והבדיקה
+ * לא ראתה אותם כי היא בדקה רק דפים שכבר יש בהם תגית. תגית שמצביעה לדף אחר גרועה עוד יותר
+ * מהיעדרה, כי הדף מוסר לגוגל במפורש שהוא עותק של משהו אחר. */
+function pageUrl(f) {
+  if (f === 'index.html') return 'https://' + PROD_HOST + '/';
+  return 'https://' + PROD_HOST + '/' + f.replace(/\/index\.html$/, '/');
+}
+var badCanon = [], noCanon = [], notSelf = [];
 pageFiles.forEach(function (f) {
   var src;
   try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
   var c = src.match(/<link[^>]+rel="canonical"[^>]+href="([^"]+)"/);
-  if (c && c[1].indexOf(PROD_HOST) < 0) badCanon.push(f + ' (' + c[1] + ')');
+  if (!c) { noCanon.push(f); return; }
+  if (c[1].indexOf(PROD_HOST) < 0) { badCanon.push(f + ' (' + c[1] + ')'); return; }
+  if (c[1] !== pageUrl(f)) notSelf.push(f + ' → ' + c[1]);
 });
 if (badCanon.length) bad('canonical לא מצביע לפרודקשן: ' + badCanon.join(', '));
-else if (pageFiles.length) ok('כל ה-canonical מצביעים לפרודקשן');
+if (noCanon.length) bad('דפים בלי canonical: ' + noCanon.join(', ') +
+    ' — בלי התגית גוגל בוחר לבד איזו כתובת היא המקורית');
+if (notSelf.length) bad('canonical שמצביע לדף אחר: ' + notSelf.join(', ') +
+    ' — הדף מצהיר בעצמו שהוא עותק, ולכן לא יאונדקס');
+if (!badCanon.length && !noCanon.length && !notSelf.length && pageFiles.length) {
+  ok('canonical בכל דף, מצביע לפרודקשן ולדף עצמו');
+}
 
 /* ---------- 9. JSON-LD תקין בכל דף, לא רק בדף הבית ----------
  * בדיקה 1 בודקת את index.html בלבד. משהוסיפו schema למדריך, בלוק שבור שם היה עובר בשקט
@@ -586,6 +602,40 @@ if (classFails.length) {
     warn('תאריך ביקורת הנגישות (' + m[1] + '/' + m[2] + '/' + m[3] + ') מקדים את ' + newestFile +
          ' — ההצהרה מכסה "כל הדפים", ולכן היא מצהירה על כיסוי שאין לה');
   } else ok('תאריך ביקורת הנגישות מעודכן מול הדפים');
+})();
+
+/* ---------- 18. הסייטמאפ מול הדפים שבאמת חיים ----------
+ * חמשת עמודי השירות עלו לאוויר ב-31.7, מוגדרים index,follow ומקושרים מדף הבית, ונשארו מחוץ
+ * לסייטמאפ. איש לא שגה: הפיגום ב-new-page.js בכוונה לא מוסיף עמוד לסייטמאפ, כי עמוד מצטרף
+ * אליו רק בהשקה, ואף אחד לא חזר לעשות את זה אחריה. נמצא רק באודיט ידני ב-2.8.
+ *
+ * אזהרה ולא כישלון: עמוד טרי שנוצר בפיגום אמור לשבת מחוץ לסייטמאפ עד שיאושר, וכישלון כאן היה
+ * חוסם את הפיתוח שלו מהרגע הראשון. הכיוון ההפוך, כתובת בסייטמאפ שאין לה עמוד, הוא כן כישלון:
+ * הוא שולח את גוגל ל-404. */
+(function () {
+  var smPath = path.join(pagesDir, 'sitemap.xml'), sm;
+  try { sm = fs.readFileSync(smPath, 'utf8'); } catch (e) { warn('אין sitemap.xml'); return; }
+  var locs = (sm.match(/<loc>([^<]+)<\/loc>/g) || []).map(function (l) { return l.slice(5, -6); });
+
+  /* עמוד נחשב "חי" רק אם הוא מזמין אינדוקס. noindex בכוונה אינו חוסר */
+  var live = pageFiles.filter(function (f) {
+    var src;
+    try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return false; }
+    return !/<meta[^>]+name="robots"[^>]+content="[^"]*noindex/.test(src) && baseName(f).charAt(0) !== '_';
+  });
+  var missing = live.filter(function (f) { return locs.indexOf(pageUrl(f)) < 0; });
+  var ghosts = locs.filter(function (u) {
+    return live.map(pageUrl).indexOf(u) < 0;
+  });
+
+  if (ghosts.length) {
+    bad('כתובות בסייטמאפ שאין להן עמוד: ' + ghosts.join(', ') + ' — גוגל יישלח ל-404');
+  }
+  if (missing.length) {
+    warn('עמודים מאונדקסים שאינם בסייטמאפ: ' + missing.join(', ') +
+         ' — גוגל ימצא אותם דרך קישורים, אבל הסיגנל המפורש חסר. אם העמוד עוד לא הושק, זה תקין');
+  }
+  if (!ghosts.length && !missing.length) ok('הסייטמאפ מכיל בדיוק את ' + live.length + ' הדפים החיים');
 })();
 
 /* ---------- דוח ---------- */
