@@ -44,17 +44,25 @@ while read local_ref local_sha remote_ref remote_sha; do
     continue
   fi
 
-  # 2. האם הקומיט הזה עבר דרך סביבת הבדיקות?
-  git fetch -q "$REMOTE_NAME" staging 2>/dev/null
-  if ! git rev-parse -q --verify "$REMOTE_NAME/staging" >/dev/null 2>&1; then
-    echo "✗ אין ענף staging ב-$REMOTE_NAME. הרץ קודם: node .claude/ship.js stage"
-    BLOCKED=1
-    continue
-  fi
+  # 2. האם הקומיט הזה עבר דרך סביבת בדיקות כלשהי?
+  # לכל סשן יש ענף משלו, staging-<שם>, כדי שארבעה סשנים שחולקים את התיקייה
+  # לא ידרכו זה על זה. מספיק שהקומיט נמצא באחד מהם. `staging` היחיד והישן
+  # עדיין תקף, כדי שלא נשבור clone שטרם עודכן.
+  git fetch -q --prune "$REMOTE_NAME" 2>/dev/null
 
-  if ! git merge-base --is-ancestor "$local_sha" "$REMOTE_NAME/staging"; then
+  STAGED_ON=""
+  for ref in $(git for-each-ref --format='%(refname:short)' \
+                 "refs/remotes/$REMOTE_NAME/staging" \
+                 "refs/remotes/$REMOTE_NAME/staging-*"); do
+    if git merge-base --is-ancestor "$local_sha" "$ref" 2>/dev/null; then
+      STAGED_ON="$ref"
+      break
+    fi
+  done
+
+  if [ -z "$STAGED_ON" ]; then
     short=$(git rev-parse --short "$local_sha")
-    echo "✗ הקומיט $short לא נפרס לסביבת הבדיקות, ולכן לא ראית אותו עובד."
+    echo "✗ הקומיט $short לא נפרס לאף סביבת בדיקות, ולכן לא ראית אותו עובד."
     echo ""
     echo "  מה לעשות:"
     echo "    node .claude/ship.js stage     # מעלה לבדיקות ומדפיס את הכתובת"
@@ -67,7 +75,7 @@ while read local_ref local_sha remote_ref remote_sha; do
     continue
   fi
 
-  echo "✓ הבדיקות עוברות והקוד נבדק ב-staging — ממשיכים לאתר החי."
+  echo "✓ הבדיקות עוברות והקוד נבדק ב-${STAGED_ON#$REMOTE_NAME/} — ממשיכים לאתר החי."
   echo "────────────────────────────────────────────"
 done
 

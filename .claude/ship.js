@@ -11,11 +11,63 @@
  * ללא תלויות npm — הפרויקט נשאר בלי package.json.
  */
 'use strict';
-var cp = require('child_process'), path = require('path');
+var cp = require('child_process'), path = require('path'), fs = require('fs');
 
 var ROOT = path.join(__dirname, '..');
-var STAGING_URL = 'https://phonegat-website-git-staging-ofek205s-projects.vercel.app';
 var LIVE_URL = 'https://www.phonegat.co.il';
+
+/* ── ענף בדיקות לכל סשן ───────────────────────────────────────────────────
+   פעם אחת כל הסשנים דחפו לענף `staging` אחד. עם סשן אחד זה עבד; עם ארבעה
+   שחולקים את אותה תיקייה זו הייתה התנגשות קבועה, ובגרסה שעוד הריצה `-f` זו
+   הייתה מחיקה שקטה של עבודת האחרים (קרה ארבע פעמים ב-31.7.2026).
+
+   עכשיו כל סשן דוחף ל-`staging/<slug>` משלו. Vercel פורס כל ענף בנפרד, ולכן
+   לכל סשן יש כתובת בדיקות משלו ואף אחד לא דורך על השני. `main` נשאר נקודת
+   האינטגרציה: דחיפה אליו היא fast-forward, ולכן מי שמגיע שני חייב rebase
+   ובדיקה מחדש — וזה בדיוק הרגע שבו העבודות נפגשות.
+
+   מאיפה מגיע ה-slug, לפי סדר: PG_SESSION, הקובץ .claude/session-name,
+   ואז שם הענף הנוכחי. הוא נשמר בקובץ כדי שתצטרך לתת אותו רק פעם אחת. */
+var SESSION_FILE = path.join(__dirname, 'session-name');
+/* התווית של Vercel מוגבלת ל-63 תווים, והמעטפת תופסת 47. */
+var MAX_SLUG = 16;
+
+function slugify(s) {
+  return String(s || '').trim().toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function previewUrl(slug) {
+  return 'https://phonegat-website-git-staging-' + slug + '-ofek205s-projects.vercel.app';
+}
+
+function sessionSlug() {
+  var fromFile = '';
+  try { fromFile = fs.readFileSync(SESSION_FILE, 'utf8').trim(); } catch (e) {}
+  var raw = process.argv[3] || process.env.PG_SESSION || fromFile;
+  if (!raw) {
+    var br = out('git rev-parse --abbrev-ref HEAD') || '';
+    if (br && br !== 'HEAD' && br !== 'main' && br !== 'staging') raw = br;
+  }
+  var slug = slugify(raw);
+  if (!slug) {
+    die('אין שם לסשן הזה, ובלעדיו אי אפשר לדעת לאיזה ענף בדיקות לדחוף.',
+        'תן שם קצר באנגלית, פעם אחת:\n' +
+        '  ' + C.b + 'node .claude/ship.js stage animations' + C.x + '\n\n' +
+        C.d + 'הוא נשמר ב-.claude/session-name ולא תצטרך לחזור עליו.' + C.x);
+  }
+  /* לא חותכים בשקט: שני סשנים שנחתכים לאותו slug חוזרים בדיוק לבאג
+     שהמנגנון הזה בא למנוע. */
+  if (slug.length > MAX_SLUG) {
+    die('שם הסשן "' + slug + '" ארוך מדי (' + slug.length + ' תווים, המקסימום ' + MAX_SLUG + ').',
+        'כתובת ה-Vercel לא תיווצר נכון. בחר שם קצר יותר:\n' +
+        '  ' + C.b + 'node .claude/ship.js stage <שם-קצר>' + C.x);
+  }
+  if (slug !== fromFile) {
+    try { fs.writeFileSync(SESSION_FILE, slug + '\n'); } catch (e) {}
+  }
+  return slug;
+}
 
 var C = { r: '[31m', g: '[32m', y: '[33m', b: '[1m', d: '[2m', x: '[0m' };
 
@@ -65,39 +117,58 @@ var cmd = (process.argv[2] || '').toLowerCase();
 if (cmd === 'stage') {
   dirtyCheck();
   preflight();
-  console.log(C.d + 'דוחף ' + headShort + ' לסביבת הבדיקות…' + C.x);
-  /* בלי -f, בכוונה. staging הוא ענף אינטגרציה ששני chats מקבילים חולקים, ו-force
-     מחליף אותו ב-HEAD של מי שהריץ אחרון ומוחק את עבודת השני בלי שום אזהרה. זה
-     קרה שלוש פעמים ב-31.7.2026 לפני שהשורה הזאת תוקנה.
-     שער ה-prod בודק `--is-ancestor` ולא שוויון מדויק, ולכן דחיפה רגילה מספיקה לו,
-     ו-staging יכול להחזיק את העבודה של שני הסשנים יחד. */
-  try { run('git push origin HEAD:staging', true); }
+  var slug = sessionSlug();
+  /* מקף ולא לוכסן: ref הוא נתיב בקובץ, ולכן `staging` ו-`staging/animations`
+     לא יכולים להתקיים יחד — הענף הישן היה חוסם כל ענף סשן חדש. המקף גם נותן
+     בדיוק את הכתובת ש-Vercel מייצר. */
+  var branch = 'staging-' + slug;
+  console.log(C.d + 'דוחף ' + headShort + ' ל-' + branch + '…' + C.x);
+  /* בלי -f, בכוונה. גם כשהענף פרטי לסשן, force מוחק היסטוריה בלי אזהרה, ואם
+     שני worktrees של אותו סשן דוחפים לאותו ענף זה חוזר להיות אותו באג. */
+  try { run('git push origin HEAD:refs/heads/' + branch, true); }
   catch (e) {
     var perr = String(e.stderr || e.message);
     if (/non-fast-forward|fetch first|rejected/i.test(perr)) {
-      die('staging התקדם מאז. מישהו אחר דחף לשם.',
-          'git fetch origin && git rebase origin/staging\nואז שוב:  node .claude/ship.js stage');
+      die(branch + ' התקדם מאז — כנראה דחפת אליו מ-worktree אחר.',
+          'git fetch origin && git rebase origin/' + branch + '\n' +
+          'ואז שוב:  node .claude/ship.js stage');
     }
-    die('הדחיפה ל-staging נכשלה.', perr);
+    die('הדחיפה ל-' + branch + ' נכשלה.', perr);
   }
-  console.log('\n' + C.g + C.b + '✓ עלה לסביבת הבדיקות' + C.x);
-  console.log('\n  ' + C.b + STAGING_URL + C.x);
+  console.log('\n' + C.g + C.b + '✓ עלה לסביבת הבדיקות של הסשן הזה' + C.x);
+  console.log('\n  ' + C.b + previewUrl(slug) + C.x);
   console.log('\n  ' + C.d + 'הפריסה לוקחת ~דקה. חפש את הפס הצהוב למעלה.' + C.x);
   console.log('  ' + C.d + 'בדוק גם בטלפון. כשזה תקין:  node .claude/ship.js prod' + C.x + '\n');
+
+} else if (cmd === 'whoami') {
+  /* בלי דחיפה ובלי בדיקות — רק "לאן אני שולח". שימושי כשארבעה סשנים פתוחים
+     ולא זוכרים מי זה מי. */
+  var who = sessionSlug();
+  console.log('\n  ' + C.d + 'סשן:  ' + C.x + C.b + who + C.x);
+  console.log('  ' + C.d + 'ענף:  ' + C.x + 'staging-' + who);
+  console.log('  ' + C.d + 'כתובת:' + C.x + ' ' + previewUrl(who) + '\n');
 
 } else if (cmd === 'prod') {
   dirtyCheck();
   preflight();
-  run('git fetch -q origin staging', true);
-  /* לא משתמשים ב-`; echo $?` — ב-Windows הפקודה רצה ב-cmd.exe ו-$? לא קיים שם.
+  run('git fetch -q --prune origin', true);
+  /* מספיק שהקומיט נמצא באחד מענפי הבדיקות — של הסשן הזה או של כל סשן אחר.
+     `staging` היחיד נשאר תקף כדי שהמנגנון הישן ימשיך לעבוד.
+     לא משתמשים ב-`; echo $?` — ב-Windows הפקודה רצה ב-cmd.exe ו-$? לא קיים שם.
      קוד יציאה שאינו 0 זורק, וזו הבדיקה. */
-  var staged = true;
-  try { run('git merge-base --is-ancestor ' + head + ' origin/staging', true); }
-  catch (e) { staged = false; }
-  if (!staged) {
-    die('הקומיט ' + headShort + ' לא נפרס לסביבת הבדיקות.',
+  var previews = (out('git for-each-ref --format=%(refname:short) ' +
+                      'refs/remotes/origin/staging refs/remotes/origin/staging-*') || '')
+                 .split('\n').filter(Boolean);
+  var stagedOn = null;
+  for (var i = 0; i < previews.length; i++) {
+    try { run('git merge-base --is-ancestor ' + head + ' ' + previews[i], true); stagedOn = previews[i]; break; }
+    catch (e) {}
+  }
+  if (!stagedOn) {
+    die('הקומיט ' + headShort + ' לא נפרס לאף סביבת בדיקות, ולכן לא ראית אותו עובד.',
         '  ' + C.b + 'node .claude/ship.js stage' + C.x + '   ← קודם לשם, ולבדוק');
   }
+  console.log(C.d + 'נבדק ב-' + stagedOn.replace(/^origin\//, '') + C.x);
   console.log(C.d + 'דוחף ' + headShort + ' לאתר החי…' + C.x);
   try { run('git push origin HEAD:main'); }
   catch (e) {
@@ -113,9 +184,17 @@ if (cmd === 'stage') {
 
 } else {
   console.log('\n' + C.b + 'PHONE GAT — העלאה' + C.x + '\n');
-  console.log('  ' + C.b + 'node .claude/ship.js stage' + C.x + '   בדיקות → סביבת הבדיקות');
-  console.log('  ' + C.b + 'node .claude/ship.js prod' + C.x + '    בדיקות → האתר החי (רק אחרי stage)\n');
-  console.log('  ' + C.d + 'בדיקות: ' + STAGING_URL + C.x);
-  console.log('  ' + C.d + 'חי:     ' + LIVE_URL + C.x + '\n');
+  console.log('  ' + C.b + 'node .claude/ship.js stage' + C.x + '         בדיקות → ענף הבדיקות של הסשן הזה');
+  console.log('  ' + C.b + 'node .claude/ship.js stage <שם>' + C.x + '    קובע את שם הסשן (פעם אחת)');
+  console.log('  ' + C.b + 'node .claude/ship.js prod' + C.x + '          בדיקות → האתר החי (רק אחרי stage)\n');
+  var known = '';
+  try { known = fs.readFileSync(SESSION_FILE, 'utf8').trim(); } catch (e) {}
+  if (known) {
+    console.log('  ' + C.d + 'הסשן הזה: ' + C.x + C.b + known + C.x);
+    console.log('  ' + C.d + 'בדיקות:   ' + previewUrl(known) + C.x);
+  } else {
+    console.log('  ' + C.d + 'לסשן הזה עוד אין שם. הוא ייקבע מהענף הנוכחי, או תן אותו ידנית.' + C.x);
+  }
+  console.log('  ' + C.d + 'חי:       ' + LIVE_URL + C.x + '\n');
   process.exit(process.argv[2] ? 1 : 0);
 }
