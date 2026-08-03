@@ -199,6 +199,15 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 .ghero .meta span{padding-inline:.9rem;border-inline-start:1px solid var(--line)}
 .ghero .meta span:first-child{border-inline-start:0}
 .ghero .meta b{color:var(--ink-strong);font-weight:600}
+/* On a phone this row cannot stay one line. At 360px it wraps to three, and each wrapped line
+   opened with a leftover divider floating in the air, because border-inline-start knows nothing
+   about where the line broke. Below 760px the dividers come off and the spacing carries the
+   separation. The size goes up with them: .86rem measured 13.76px, the smallest text on the page,
+   on the one line that names the author and states the two promises. */
+@media(max-width:760px){
+  .ghero .meta{font-size:.95rem;column-gap:1.15rem;row-gap:.25rem}
+  .ghero .meta span{padding-inline:0;border-inline-start:0}
+}
 
 /* ===== iron rules: a standfirst held by two rules, not a tinted panel ===== */
 .rules{padding:clamp(38px,5vw,64px) 0}
@@ -254,7 +263,11 @@ html[dir="ltr"] .prog{transform-origin:left center}
   .picker .hint{display:none}
   /* 44px of tappable height. The chip is an underline tab, so the height comes from padding and
      the indicator simply sits lower — the row reads the same, the target is twice the size. */
-  .chip{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;padding-block:0}
+  /* min-width too, not only min-height: "אייפון" is five letters and measured 36px across, so the
+     shortest label was the only control on the page under the bar. The underline runs 4px past the
+     word on each side, which reads as deliberate. */
+  .chip{white-space:nowrap;min-width:44px;min-height:44px;display:inline-flex;align-items:center;
+    justify-content:center;padding-block:0}
   /* A scrollable filter row with no edge cue reads as the whole set of options. This fade says
      "there is more this way" without adding a control to tap. It covers the chip line only. */
   .picker.can-scroll::after{content:"";position:absolute;inset-block-end:.45rem;height:44px;
