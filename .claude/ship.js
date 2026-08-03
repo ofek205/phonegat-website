@@ -122,6 +122,25 @@ if (cmd === 'stage') {
      לא יכולים להתקיים יחד — הענף הישן היה חוסם כל ענף סשן חדש. המקף גם נותן
      בדיוק את הכתובת ש-Vercel מייצר. */
   var branch = 'staging-' + slug;
+  /* שער נגד ענף תצוגה מזוהם. אם סשן אחר דחף לענף הזה, `rebase` עליו יכניס את
+     העבודה הלא-מאושרת שלו לתצוגה שלי — כלומר בדיוק מה שהבידוד בא למנוע.
+     קרה ב-2.8.2026: שני chats חלקו תיקייה, ולכן חלקו גם את
+     `.claude/session-name`, קיבלו את אותו slug, ו-staging-general נהיה מעורב.
+     במקרה כזה הפתרון הוא שם סשן אחר ולא rebase, ולכן זו שגיאה ולא אזהרה.
+     `--not` ולא `^`: ב-Windows הפקודה עוברת דרך cmd.exe, ושם `^` הוא תו הבריחה
+     והוא נאכל בשקט. */
+  run('git fetch -q origin', true);
+  if (out('git rev-parse -q --verify origin/' + branch)) {
+    var foreign = (out('git log --oneline origin/' + branch + ' --not HEAD origin/main') || '')
+                  .split('\n').filter(Boolean);
+    if (foreign.length) {
+      die(branch + ' מחזיק ' + foreign.length + ' קומיטים שאינם שלך ואינם בפרודקשן.',
+          C.d + foreign.map(function (l) { return '  ' + l; }).join('\n') + C.x + '\n\n' +
+          'סשן אחר משתמש בשם הזה. ' + C.b + 'אל תעשה rebase עליו' + C.x + ' — זה יכניס את\n' +
+          'העבודה שלו לתצוגה שלך. תן לסשן הזה שם משלו:\n\n' +
+          '  ' + C.b + 'node .claude/ship.js stage <שם-אחר>' + C.x);
+    }
+  }
   console.log(C.d + 'דוחף ' + headShort + ' ל-' + branch + '…' + C.x);
   /* בלי -f, בכוונה. גם כשהענף פרטי לסשן, force מוחק היסטוריה בלי אזהרה, ואם
      שני worktrees של אותו סשן דוחפים לאותו ענף זה חוזר להיות אותו באג. */
@@ -129,8 +148,10 @@ if (cmd === 'stage') {
   catch (e) {
     var perr = String(e.stderr || e.message);
     if (/non-fast-forward|fetch first|rejected/i.test(perr)) {
-      die(branch + ' התקדם מאז — כנראה דחפת אליו מ-worktree אחר.',
-          'git fetch origin && git rebase origin/' + branch + '\n' +
+      /* השער שלמעלה כבר פסל קומיטים זרים, ולכן מה שנשאר הוא שהענף מכיל דברים
+         שכבר בפרודקשן ואצלך לא. הרבייס הוא על main, לא על ענף התצוגה. */
+      die(branch + ' מכיל קומיטים שאתה מפגר אחריהם.',
+          'git fetch origin && git rebase origin/main\n' +
           'ואז שוב:  node .claude/ship.js stage');
     }
     die('הדחיפה ל-' + branch + ' נכשלה.', perr);
