@@ -1106,10 +1106,25 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 @media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
 @media(max-width:720px){
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
-  .s-banner{padding:clamp(24px,5vw,38px) 46px}
-  /* Same charcoal as the rest of the carousel, with the orange logo accent. (The transfer slide's own
-     cyan accent moved out of this block: its scene is CSS at every width now, not a photo on desktop.) */
-  .bn-kb{background:radial-gradient(118% 88% at 79% 8%,rgba(224,145,63,.28),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+  /* the same padding as every other slide, so the banner slide is not inset differently */
+  .s-banner{padding:clamp(28px,4vw,54px)}
+  /* The keyboard banner's own navy and cyan glow, taken from the artwork, so the phone version reads
+     as the same promotion and not as a second one. (The transfer slide's accent moved out of this
+     block: its scene is CSS at every width now, not a photo on desktop.) */
+  .bn-kb{background:radial-gradient(120% 85% at 28% 42%,rgba(37,140,208,.5),transparent 62%),linear-gradient(150deg,#0c3f68 0%,#08294a 55%,#04182c 100%)}
+  .bn-kb .kb-badge{display:inline-block;background:var(--teal);color:#fff;font-weight:800;font-size:.9rem;border-radius:6px;padding:.22em .85em;margin-bottom:.55rem}
+  .bn-kb h3{margin-bottom:.15rem}
+  .bn-kb .kb-price{display:flex;align-items:baseline;justify-content:center;gap:.25rem;color:var(--orange);font-weight:900;max-width:none;margin:.1rem 0 .35rem}
+  .bn-kb .kb-price b{font-size:3.1rem;line-height:.95;letter-spacing:-2px}
+  .bn-kb .kb-price .cur{font-size:1.4rem;font-weight:800}
+  .bn-kb .kb-sub{color:#fff;font-size:1rem;margin:0 auto .15rem;max-width:30ch}
+  .bn-kb .kb-tag{color:#6fc0ff;font-size:1rem;margin:0 auto .7rem;max-width:30ch}
+  .bn-kb .kb-chips{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;padding:0;margin:0 0 .85rem}
+  .bn-kb .kb-chips li{border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:.22em .75em;font-size:.8rem;color:#e8f2fb}
+  /* white on navy, exactly like the screen-protector slide's CTA — one button shape across the site */
+  .bn-kb .kb-cta{background:#fff;color:#0b3b63;box-shadow:0 10px 26px -12px rgba(4,24,44,.6)}
+  .bn-kb .kb-cta:hover{background:#eaf3fd}
+  .bn-kb .kb-fine{color:#8ba3bf;font-size:.78rem;margin:.6rem auto 0;max-width:38ch}
   /* The devices offer was the only slide left with no artwork on phones — text alone inside a box sized
      by its visual neighbours, so ~220px of it was empty. Same opt-in the other slides use. */
   .s-teal .slide-art{display:flex;min-height:168px;margin-top:.6rem}
@@ -1124,7 +1139,11 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   .s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
   /* the product shot was width-capped so tight it rendered 107px tall and left the slide half empty;
      every slide here shares one height, so an undersized image just becomes dead space */
-  .s-banner .slide-art img{width:100%;max-width:290px;max-height:150px;object-fit:contain;height:auto;border-radius:10px}
+  /* the cutout carries its own blue backdrop; a rounded rectangle of it on the slide reads as a
+     pasted card, so the edges are faded out and it sits on the slide's glow like it does in the artwork */
+  .s-banner .slide-art img{width:100%;max-width:290px;max-height:150px;object-fit:contain;height:auto;
+    -webkit-mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%);
+    mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%)}
 }
 .s-green{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.17),transparent 48%),linear-gradient(135deg,#3d6f26,#285d1a)}
 .s-dteal{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.15),transparent 48%),linear-gradient(135deg,#0d5872,#093040)}
@@ -2113,11 +2132,24 @@ document.addEventListener('DOMContentLoaded',function(){
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
             <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
           </button>
+          <!-- Phones only. It mirrors the banner image above part by part, in the same order: the מבצע
+               tag, the product line, the price, the condition, the audience line, the three feature
+               chips and the small print. The image itself is 2.31:1, so inside the carousel's 557px
+               frame it renders 150px tall and leaves 407px of empty charcoal; this is the same design
+               as real text instead. The CTA is the site's own button, like every other slide. -->
           <div class="slide-in">
-            <span class="badge">₪49</span>
+            <span class="kb-badge">מבצע</span>
             <h3>מקלדת + עכבר</h3>
-            <p>ב-49 ₪ בקנייה מעל 100 ₪ בחנות. חיבור USB, שימוש נוח ואיכות אמינה, ללימודים, לבית ולמשרד.</p>
-            <button type="button" class="btn btn-wa" data-pg-coupon="kb">לקבלת קוד קופון</button>
+            <p class="kb-price"><b>49</b><span class="cur">₪</span></p>
+            <p class="kb-sub">בקנייה מעל 100 ₪ בחנות</p>
+            <p class="kb-tag">ללימודים, לבית ולמשרד</p>
+            <ul class="kb-chips">
+              <li>חיבור USB</li>
+              <li>שימוש נוח</li>
+              <li>איכות ואמינות</li>
+            </ul>
+            <button type="button" class="btn kb-cta" data-pg-coupon="kb" aria-label="לקבלת קוד הקופון: מקלדת ועכבר ב-49 שקלים">לקבלת קוד קופון</button>
+            <p class="kb-fine">בלעדי למשתמשי האתר. בכפוף למלאי. ט.ל.ח</p>
           </div>
           <div class="slide-art"><img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async"></div>
         </article>
