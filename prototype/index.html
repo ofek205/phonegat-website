@@ -432,9 +432,16 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn{position:relative;direction:rtl;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;background:#fff;border-radius:20px;box-shadow:0 40px 90px -20px rgba(0,0,0,.6);animation:pgCpnPop .28s cubic-bezier(.2,.8,.25,1)}
 @keyframes pgCpnPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .pg-cpn-hd{position:relative;padding:13px 18px 23px;text-align:center;color:#fff;background:radial-gradient(96% 62% at 50% -6%,rgba(160,98,216,.5),transparent 55%),linear-gradient(160deg,#3d1157 0%,#5a1a80 55%,#7c25a8 100%);border-radius:20px 20px 50% 50%/20px 20px 30px 30px}
-.pg-cpn-x{position:absolute;top:10px;left:10px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
-.pg-cpn-x:hover{background:rgba(255,255,255,.3)}
-.pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* A 28px disc with a 44px tap area. The padding is the target and background-clip keeps the disc at
+   its drawn size, the same trick the carousel dots use, because a 44px disc on this small header would
+   read as a heavy button. It was the one control you must hit to dismiss the popup and the smallest
+   thing in it, while every sibling control was raised to 44 in the mobile pass. Hit testing follows
+   border-radius, so the target is a 44px circle rather than a square; the corners outside it fall on
+   the overlay, which closes the popup too, so every point in the 44 square dismisses. The focus ring
+   is inset so it hugs the disc instead of ringing the invisible target. */
+.pg-cpn-x{position:absolute;top:2px;left:2px;width:28px;height:28px;box-sizing:content-box;padding:8px;border:0;border-radius:50%;background:rgba(255,255,255,.16);background-clip:content-box;color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
+.pg-cpn-x:hover{background:rgba(255,255,255,.3);background-clip:content-box}
+.pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:-6px}
 .pg-cpn-logo{height:27px;width:auto;margin:0 auto 9px;display:block;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.24)}
 .pg-cpn-excl{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:900;color:#3a2405;background:linear-gradient(180deg,#ffe08c,#e0a52f);border-radius:999px;padding:5px 15px;box-shadow:0 3px 12px rgba(224,165,47,.5),inset 0 1px 0 rgba(255,255,255,.55)}
 .pg-cpn-excl .st{color:#8a5a00}
@@ -462,7 +469,8 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-qr canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 .pg-cpn-note{display:flex;align-items:center;justify-content:center;gap:5px;margin:11px 0 0;font-size:.69rem;font-weight:800;color:#c0392b}
 .pg-cpn-note svg{width:14px;height:14px;flex:none;fill:#c0392b}
-.pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
+/* min-height, not more padding: it measured 43.2px and the gradient should not grow to buy 0.8px */
+.pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;min-height:44px;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
 .pg-cpn-go:hover{filter:brightness(1.05)}
 .pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
 .pg-cpn-go img{width:20px;height:20px}
@@ -723,7 +731,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
 .s-banner::before,.s-banner::after{display:none}
-.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
+.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0;overflow:hidden}
 /* ===== data-transfer slide: two live iPhones, content flying from one into the other =====
    Rebuilt from the site's own parts. The previous version cropped windows out of promo_transfers.jpg,
    whose pale studio backdrop, three PRINTED app icons and baked marketing type fought the charcoal at
@@ -1099,11 +1107,23 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   .bn-tr .tr-flow i:nth-child(5){animation-delay:-1.8s}
   .bn-tr .tr-flow i:nth-child(6){animation-delay:-2.25s}
 }
-.s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
-.s-banner .slide-banner:hover img{transform:scale(1.015)}
+/* The banner artwork is a background image declared inside a min-width query, and both halves of that
+   sentence are load-bearing. As an image element it was fetched by every phone: display:none does not
+   stop a src from loading, and loading="lazy" cannot defer an element with no box to compare against
+   the viewport, so 1.5MB of a picture no phone ever renders arrived on every mobile visit (measured at
+   375x812 with scrollY 0). A background image is fetched only when its rule matches and the element
+   renders, so below 721px it costs nothing. Nothing is lost by dropping the alt: phones read the real
+   text version below, which is also what Google sees under mobile-first rendering, and the button
+   still carries the whole offer in its aria-label. */
+@media(min-width:721px){
+  .s-banner .sb-art{display:block;width:100%;aspect-ratio:1855/803;
+    background:url(keyboard-promo-web2.webp) center/cover no-repeat;
+    transition:transform .45s var(--ease)}
+  .s-banner .slide-banner:hover .sb-art{transform:scale(1.015)}
+}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
 .s-banner .slide-in,.s-banner .slide-art{display:none}
-@media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
+@media(prefers-reduced-motion:reduce){.s-banner .sb-art{transition:none}}
 @media(max-width:720px){
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
   /* the same padding as every other slide, so the banner slide is not inset differently */
@@ -1141,7 +1161,8 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
      every slide here shares one height, so an undersized image just becomes dead space */
   /* the cutout carries its own blue backdrop; a rounded rectangle of it on the slide reads as a
      pasted card, so the edges are faded out and it sits on the slide's glow like it does in the artwork */
-  .s-banner .slide-art img{width:100%;max-width:290px;max-height:150px;object-fit:contain;height:auto;
+  .s-banner .kb-art{display:block;width:100%;max-width:290px;aspect-ratio:985/480;
+    background:url(keyboard-product.webp) center/contain no-repeat;
     -webkit-mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%);
     mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%)}
 }
@@ -2129,8 +2150,10 @@ document.addEventListener('DOMContentLoaded',function(){
         </article>
 
         <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+          <!-- The artwork is a CSS background and not an image element, on purpose. See
+               .s-banner .sb-art: as an image it downloaded on every phone, where it is hidden. -->
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
-            <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
+            <span class="sb-art" aria-hidden="true"></span>
           </button>
           <!-- Phones only. It mirrors the banner image above part by part, in the same order: the מבצע
                tag, the product line, the price, the condition, the audience line, the three feature
@@ -2151,7 +2174,9 @@ document.addEventListener('DOMContentLoaded',function(){
             <button type="button" class="btn kb-cta" data-pg-coupon="kb" aria-label="לקבלת קוד הקופון: מקלדת ועכבר ב-49 שקלים">לקבלת קוד קופון</button>
             <p class="kb-fine">בלעדי למשתמשי האתר. בכפוף למלאי. ט.ל.ח</p>
           </div>
-          <div class="slide-art"><img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async"></div>
+          <!-- phones only, and a background for the same reason: as an image element it downloaded on
+               desktop, where .s-banner .slide-art is display:none. It was decorative already. -->
+          <div class="slide-art"><span class="kb-art" aria-hidden="true"></span></div>
         </article>
 
       </div>
@@ -2961,7 +2986,7 @@ document.addEventListener('DOMContentLoaded',function(){
       wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
-      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
+      img:'keyboard-product.webp',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'}
   };
