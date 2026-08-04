@@ -483,6 +483,9 @@ html.a11y-stop-motion .prog{display:none}
 /* .lab נבנה לפסקה ולכפתור אחד. עם שניים, space-between זורק אותם לקצוות */
 .prob.solo .lab{justify-content:flex-start;gap:.6rem}
 .prob.solo .lab p{margin-inline-end:auto}
+/* אין כאן צילום עדיין. .row הוא גריד של שתי עמודות, ובלי התמונה העמודה השנייה נשארת רווח ריק,
+   ולכן עמודה אחת. המידה מוגבלת כי שורת טקסט ברוחב מלא של .wrap ארוכה מדי לקריאה */
+.prob.solo .row{grid-template-columns:minmax(0,1fr);max-width:820px}
 /* .fine מוגדר רק תחת .cta, וההסתייגות על נזקי נוזלים הוצגה כטקסט גוף צמוד לרשימה */
 .block .fine{margin-top:1.2rem;font-size:.95rem;color:var(--ink-soft);line-height:1.7}
 .block .fig{max-width:420px;margin-inline:auto}
@@ -659,7 +662,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#symptoms">מה קרה לאייפון</a>
     <a href="#check">בדיקה מהירה</a>
     <a href="#flow">איך התיקון מתבצע</a>
-    <a href="#models">דגמים וחלקים</a>
+    <a href="#models">חלקים ואבחון</a>
     <a href="#lab">המעבדה</a>
     <a href="#faq">שאלות נפוצות</a>
   </div>
@@ -775,12 +778,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="block" id="models" aria-labelledby="models-h">
   <div class="wrap box">
-    <h2 id="models-h">איזה דגמי אייפון אנחנו מתקנים</h2>
-
-    <div class="todo" role="note">
-      <b>ממתין לאישור בעל העסק</b>
-      <p>רשימת דגמי ה-iPhone שמטופלים בפועל. האפיון מציע להציג את הסדרות 17, 16, 15, 14, 13 ודגמים מוקדמים יותר בהתאם לזמינות חלקים, אבל דגם נתמך הוא נתון עסקי ולא נכתב כאן בלי אישור.</p>
-    </div>
+    <h2 id="models-h">חלקים, אבחון והנתונים שלכם</h2>
 
     <h3>מקורי או תחליפי</h3>
     <p>בחלק מדגמי האייפון קיימים שני סוגי חלקים, מקורי ותחליפי, ובחלק קיים רק אחד. ההבדל נוגע לאיכות התצוגה ולמחיר, והוא משתנה מדגם לדגם. אנחנו מראים לכם מה קיים עבור המכשיר שלכם, מסבירים מה ההבדל בפועל, ואתם מחליטים. מה שנכנס למכשיר ידוע לכם מראש.</p>
@@ -790,11 +788,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <h3>הנתונים שלכם</h3>
     <p>אנחנו לא נוגעים במידע שלכם. בתיקון חומרה המכשיר נפתח, הרכיב מוחלף, והמידע נשאר איפה שהוא. ובכל זאת, לפני שאתם יוצאים מהבית, גבו. לא בגללנו, אלא כי מכשיר שכבר שבור יכול להישבר עוד קצת בדרך. ואם הוא כבר לא נדלק ואי אפשר לגבות ממנו, אל תוותרו: ברוב המקרים אנחנו מצליחים לחלץ אנשי קשר ותמונות גם ממכשיר כזה.</p>
-
-    <div class="todo" role="note">
-      <b>ממתין לאישור בעל העסק</b>
-      <p>המדיניות בנוגע לקוד גישה: מתי הוא נדרש לבדיקה, מה נאמר ללקוח, ואיך המכשיר נשמר בזמן שהוא במעבדה.</p>
-    </div>
   </div>
 </section>
 
@@ -818,14 +811,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="prob solo" id="lab" style="--nc:var(--teal)" aria-labelledby="lab-h">
   <div class="wrap row">
-    <figure class="fig">
-      <!-- כשתגיע התמונה: <picture>
-             <source type="image/webp" sizes="(max-width:900px) 92vw, 53vw" srcset="/img/iphone-repair-kiryat-gat/bench-700.webp 700w, /img/iphone-repair-kiryat-gat/bench.webp 1086w">
-             <source type="image/jpeg" sizes="(max-width:900px) 92vw, 53vw" srcset="/img/iphone-repair-kiryat-gat/bench-700.jpg 700w, /img/iphone-repair-kiryat-gat/bench.jpg 1086w">
-             <img src="/img/iphone-repair-kiryat-gat/bench.jpg" alt="אייפון פתוח על שולחן העבודה במעבדה של פון גת בזמן בדיקה" width="1086" height="1448" loading="lazy" decoding="async">
-           </picture> -->
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: אייפון על שולחן המעבדה בזמן בדיקה. המכשיר במרכז הגובה, שליש עליון ותחתון רקע בלבד</span></div>
-    </figure>
     <div class="txt">
       <h2 id="lab-h">מעבדת האייפון שלנו בקריית גת</h2>
       <p class="intro">המעבדה נמצאת כאן, ואפשר פשוט להיכנס. פון גת עובדת בקרית גת יותר משלושים שנה, באותה כתובת, בניהול ברוך וסיגל. אנחנו לא מרכז שירות שמעביר מכשירים הלאה. הבדיקה נעשית כאן, במקום, ואתם מדברים עם מי שמתקן.</p>
