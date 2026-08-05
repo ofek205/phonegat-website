@@ -29,18 +29,36 @@ var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
 
-/* תוויות המפרט בעברית, בסדר שבו הן מוצגות. שדה ריק נשמט מהטבלה ולא מוצג ריק. */
-var SPEC_LABELS = [
-  ['screen_size', 'גודל מסך'], ['screen_type', 'סוג מסך'], ['resolution', 'רזולוציה'],
-  ['refresh_rate', 'קצב רענון'], ['brightness', 'בהירות'], ['chip', 'מעבד'],
-  ['cpu', 'ליבות CPU'], ['gpu', 'ליבות GPU'], ['ram', 'זיכרון RAM'],
-  ['storage_offered', 'נפחי אחסון'], ['camera_main', 'מצלמה ראשית'],
-  ['camera_extra', 'מצלמות נוספות'], ['zoom', 'זום'], ['camera_front', 'מצלמה קדמית'],
-  ['video', 'וידאו'], ['battery', 'סוללה'], ['charging_wired', 'טעינה חוטית'],
-  ['charging_wireless', 'טעינה אלחוטית'], ['dimensions', 'מידות'], ['weight', 'משקל'],
-  ['sim', 'SIM'], ['esim', 'eSIM'], ['water_resistance', 'עמידות למים ואבק'],
-  ['colors_manufacturer', 'צבעים אצל היצרן'], ['box_contents', 'תכולת האריזה'],
-  ['model_numbers', 'מספרי דגם']
+/* המפרט מקובץ לקטגוריות ולא כרשימה שטוחה של 24 שורות. 24 שורות רצופות הן קיר שאף אחד
+ * לא קורא, ולכן זה הדפוס המקובל בגיליון מפרט. כל קטגוריה היא tbody משלה עם כותרת שמשתרעת
+ * על שתי העמודות ונושאת scope="rowgroup", כלומר קורא מסך יודע לאיזו קבוצה כל שורה שייכת
+ * ולא רק מה התווית שלה. קטגוריה שכל שדותיה ריקים נשמטת כולה. */
+var SPEC_GROUPS = [
+  ['מסך', [
+    ['screen_size', 'גודל מסך'], ['screen_type', 'סוג מסך'], ['resolution', 'רזולוציה'],
+    ['refresh_rate', 'קצב רענון'], ['brightness', 'בהירות']
+  ]],
+  ['ביצועים ואחסון', [
+    ['chip', 'מעבד'], ['cpu', 'ליבות CPU'], ['gpu', 'ליבות GPU'],
+    ['ram', 'זיכרון RAM'], ['storage_offered', 'נפחי אחסון']
+  ]],
+  ['מצלמות', [
+    ['camera_main', 'מצלמה ראשית'], ['camera_extra', 'מצלמות נוספות'], ['zoom', 'זום'],
+    ['camera_front', 'מצלמה קדמית'], ['video', 'וידאו']
+  ]],
+  ['סוללה וטעינה', [
+    ['battery', 'סוללה'], ['charging_wired', 'טעינה חוטית'], ['charging_wireless', 'טעינה אלחוטית']
+  ]],
+  ['גוף ועמידות', [
+    ['dimensions', 'מידות'], ['weight', 'משקל'], ['water_resistance', 'עמידות למים ואבק'],
+    ['colors_manufacturer', 'צבעים אצל היצרן']
+  ]],
+  ['תקשורת', [
+    ['sim', 'SIM'], ['esim', 'eSIM']
+  ]],
+  ['באריזה ובזיהוי', [
+    ['box_contents', 'תכולת האריזה'], ['model_numbers', 'מספרי דגם']
+  ]]
 ];
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 
@@ -53,11 +71,19 @@ function buildMain(d, openTag) {
   var srcDefault = (d.spec_source && d.spec_source.default) || {};
   var atDate = srcDefault.at ? srcDefault.at.split('-').reverse().join('/') : null;
 
-  /* --- שורות המפרט: רק שדות שיש בהם ערך --- */
-  var rows = SPEC_LABELS.map(function (p) {
-    var v = val(S[p[0]]);
-    if (v === null || v === undefined || v === '') return null;
-    return '        <tr><th scope="row">' + esc(p[1]) + '</th><td>' + esc(v) + '</td></tr>';
+  /* --- שורות המפרט, מקובצות. רק שדות שיש בהם ערך, וקטגוריה ריקה נשמטת כולה --- */
+  var specCount = 0;
+  var groups = SPEC_GROUPS.map(function (g) {
+    var rs = g[1].map(function (p) {
+      var v = val(S[p[0]]);
+      if (v === null || v === undefined || v === '') return null;
+      specCount++;
+      return '          <tr><th scope="row">' + esc(p[1]) + '</th><td>' + esc(v) + '</td></tr>';
+    }).filter(Boolean);
+    if (!rs.length) return null;
+    return '        <tbody>\n' +
+      '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(g[0]) + '</th></tr>\n' +
+      rs.join('\n') + '\n        </tbody>';
   }).filter(Boolean);
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
@@ -81,7 +107,7 @@ function buildMain(d, openTag) {
   '    <div class="inner">\n' +
   '      <h1 id="gh">' + ltr(d.name) + '</h1>\n' +
   (E.what_matters ? '      <p class="sub">' + esc(E.what_matters) + '</p>\n' : '') +
-  '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי ב-WhatsApp</a></div>\n' +
+  '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a></div>\n' +
   '      <p class="meta">\n' +
   '        <span>' + esc(d.brand) + (d.os ? ', ' + esc(d.os) : '') + '</span>\n' +
   (atDate ? '        <span>מפרט נבדק ב' + esc(atDate) + '</span>\n' : '') +
@@ -152,10 +178,10 @@ function buildMain(d, openTag) {
   '  <div class="wrap box">\n' +
   '    <h2 id="h-spec">מפרט טכני מלא</h2>\n' +
   '    <div class="cmp-wrap" role="region" aria-labelledby="h-spec" tabindex="0">\n' +
-  '      <table class="cmp">\n' +
-  '        <caption>המפרט כפי שהיצרן מפרסם אותו. ' + (rows.length) + ' שדות.</caption>\n' +
+  '      <table class="cmp cmp-spec">\n' +
+  '        <caption>המפרט כפי שהיצרן מפרסם אותו, ' + specCount + ' שדות ב-' + groups.length + ' קטגוריות.</caption>\n' +
   '        <thead><tr><th scope="col">שדה</th><th scope="col">' + esc(d.name) + '</th></tr></thead>\n' +
-  '        <tbody>\n' + rows.join('\n') + '\n        </tbody>\n' +
+  groups.join('\n') + '\n' +
   '      </table>\n' +
   '    </div>\n' +
   '    <p class="sources">המפרט מבוסס על נתוני היצרן' +
@@ -250,6 +276,29 @@ db.devices.forEach(function (d) {
   h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Article"[\s\S]*?<\/script>/, blocks);
   /* חגורה: אם משהו בסדר הזה יישבר שוב, זה ייפול כאן ולא ישקוט */
   if (h.indexOf('"name":"מכשירים"') < 0) { console.error('✗ ' + d.slug + ': פירור הלחם אינו מצביע ל-/phones/'); process.exit(1); }
+
+  /* ה-CSS של כותרות הקטגוריה מוזרק כאן ולא יושב בעמוד המקור, כי המקור הוא מדריך והטבלה
+   * שלו אינה מקובצת. CSS שלא בשימוש בעמוד המקור הוא בדיוק מה שנוטה להיסחף. */
+  var CSS_ANCHOR = '@media(max-width:640px){.cmp{min-width:520px}.cmp tbody th{width:8.5rem}}';
+  if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ ' + d.slug + ': לא נמצא עוגן ה-CSS של הטבלה'); process.exit(1); }
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' +
+    '/* כותרת קטגוריה בגיליון מפרט: קו כבד מעליה במקום רקע צבוע, ותווית קטנה בסאנס כמו שאר\n' +
+    '   התוויות הקטנות בדף. 1.02rem ולא .86rem, כי rem נפתר מול 16px בשורש בזמן שהגוף 18px,\n' +
+    '   ולכן תווית שנלקחת מרפרנס אנגלי יוצאת קטנה מדי בעברית. */\n' +
+    '.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}\n' +
+    '.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}\n' +
+    '/* הכלל הכללי נותן קו תחתון לשורה האחרונה בכל tbody. עם קיבוץ יש כמה tbody, ולכן הקו\n' +
+    '   הזה היה מוכפל מול הקו הכבד של הקטגוריה הבאה. נשאר רק בסוף הטבלה. */\n' +
+    '.cmp-spec tbody:not(:last-of-type) tr:last-child th,.cmp-spec tbody:not(:last-of-type) tr:last-child td{border-bottom:0}\n' +
+    '/* טבלה בתוך פריט flex או grid: ה-min-width של פריט כזה הוא auto, ולכן טבלה עם\n' +
+    '   min-width:560px מותחת את העמודה ומגלישה את כל הדף. נמדדה גלישה של 157px ב-375px.\n' +
+    '   במדריך זה לא קרה, כי שם הטבלה יושבת בבלוק ולא בשורה, ולכן זה לא נתפס שם.\n' +
+    '   min-width:0 מחזיר לפריט את הרשות להצטמצם, והטבלה גוללת בתוך האזור שלה כמתוכנן. */\n' +
+    '.prob .txt{min-width:0}\n' +
+    '.cmp-wrap{max-width:100%}\n' +
+    '/* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.\n' +
+    '   כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */\n' +
+    '.ghero .btn-hero{white-space:normal;text-align:center}');
 
   var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);

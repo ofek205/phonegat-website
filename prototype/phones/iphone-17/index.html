@@ -353,6 +353,23 @@ main{counter-reset:prob}
 .cmp tbody td{color:var(--ink-soft)}
 .cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.cmp{min-width:520px}.cmp tbody th{width:8.5rem}}
+/* כותרת קטגוריה בגיליון מפרט: קו כבד מעליה במקום רקע צבוע, ותווית קטנה בסאנס כמו שאר
+   התוויות הקטנות בדף. 1.02rem ולא .86rem, כי rem נפתר מול 16px בשורש בזמן שהגוף 18px,
+   ולכן תווית שנלקחת מרפרנס אנגלי יוצאת קטנה מדי בעברית. */
+.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}
+.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}
+/* הכלל הכללי נותן קו תחתון לשורה האחרונה בכל tbody. עם קיבוץ יש כמה tbody, ולכן הקו
+   הזה היה מוכפל מול הקו הכבד של הקטגוריה הבאה. נשאר רק בסוף הטבלה. */
+.cmp-spec tbody:not(:last-of-type) tr:last-child th,.cmp-spec tbody:not(:last-of-type) tr:last-child td{border-bottom:0}
+/* טבלה בתוך פריט flex או grid: ה-min-width של פריט כזה הוא auto, ולכן טבלה עם
+   min-width:560px מותחת את העמודה ומגלישה את כל הדף. נמדדה גלישה של 157px ב-375px.
+   במדריך זה לא קרה, כי שם הטבלה יושבת בבלוק ולא בשורה, ולכן זה לא נתפס שם.
+   min-width:0 מחזיר לפריט את הרשות להצטמצם, והטבלה גוללת בתוך האזור שלה כמתוכנן. */
+.prob .txt{min-width:0}
+.cmp-wrap{max-width:100%}
+/* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.
+   כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */
+.ghero .btn-hero{white-space:normal;text-align:center}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -547,7 +564,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="inner">
       <h1 id="gh"><bdo dir="ltr">iPhone 17</bdo></h1>
       <p class="sub">אייפון 17 הוא הדגם הבסיסי של הדור, ובכל זאת עם מסך ProMotion של 6.3 אינץ׳ עד 120Hz. זה ההבדל שמרגישים ראשון: גלילה וכתיבה נראות חלקות יותר. מעליו שבב A19, ומתחת סוללה שאפל מדרגת בעד 30 שעות וידאו.</p>
-      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20iPhone%2017"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי ב-WhatsApp</a></div>
+      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20iPhone%2017"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a></div>
       <p class="meta">
         <span>Apple, iOS 26</span>
         <span>מפרט נבדק ב05/08/2026</span>
@@ -630,34 +647,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap box">
     <h2 id="h-spec">מפרט טכני מלא</h2>
     <div class="cmp-wrap" role="region" aria-labelledby="h-spec" tabindex="0">
-      <table class="cmp">
-        <caption>המפרט כפי שהיצרן מפרסם אותו. 24 שדות.</caption>
+      <table class="cmp cmp-spec">
+        <caption>המפרט כפי שהיצרן מפרסם אותו, 24 שדות ב-7 קטגוריות.</caption>
         <thead><tr><th scope="col">שדה</th><th scope="col">iPhone 17</th></tr></thead>
         <tbody>
-        <tr><th scope="row">גודל מסך</th><td>6.3 אינץ׳</td></tr>
-        <tr><th scope="row">סוג מסך</th><td>OLED, כל המסך, עם Dynamic Island ותצוגה תמידית</td></tr>
-        <tr><th scope="row">רזולוציה</th><td>2622x1206 פיקסלים, 460 ppi</td></tr>
-        <tr><th scope="row">קצב רענון</th><td>ProMotion, קצב רענון משתנה עד 120Hz</td></tr>
-        <tr><th scope="row">בהירות</th><td>3000 ניט שיא בחוץ</td></tr>
-        <tr><th scope="row">מעבד</th><td>שבב A19</td></tr>
-        <tr><th scope="row">ליבות CPU</th><td>6 ליבות</td></tr>
-        <tr><th scope="row">ליבות GPU</th><td>5 ליבות</td></tr>
-        <tr><th scope="row">נפחי אחסון</th><td>256GB, 512GB</td></tr>
-        <tr><th scope="row">מצלמה ראשית</th><td>48MP Dual Fusion, ראשית 48MP בצמצם ƒ/1.6</td></tr>
-        <tr><th scope="row">מצלמות נוספות</th><td>רחבה במיוחד 48MP בצמצם ƒ/2.2</td></tr>
-        <tr><th scope="row">זום</th><td>זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x</td></tr>
-        <tr><th scope="row">מצלמה קדמית</th><td>18MP Center Stage בצמצם ƒ/1.9</td></tr>
-        <tr><th scope="row">וידאו</th><td>4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה. הילוך אט ב-1080p ב-120 או 240</td></tr>
-        <tr><th scope="row">סוללה</th><td>עד 30 שעות הפעלת וידאו</td></tr>
-        <tr><th scope="row">טעינה חוטית</th><td>עד 50 אחוז ב-20 דקות עם מתאם 40W ומעלה</td></tr>
-        <tr><th scope="row">טעינה אלחוטית</th><td>MagSafe עד 25W</td></tr>
-        <tr><th scope="row">מידות</th><td>149.6 x 71.5 x 7.95 מ״מ</td></tr>
-        <tr><th scope="row">משקל</th><td>177 גרם</td></tr>
-        <tr><th scope="row">SIM</th><td>Dual SIM: nano-SIM ו-eSIM</td></tr>
-        <tr><th scope="row">eSIM</th><td>תמיכה בשני eSIM</td></tr>
-        <tr><th scope="row">עמידות למים ואבק</th><td>IP68, עד 6 מטר ל-30 דקות</td></tr>
-        <tr><th scope="row">צבעים אצל היצרן</th><td>שחור, לבן, כחול מיסט, מרווה, לבנדר</td></tr>
-        <tr><th scope="row">תכולת האריזה</th><td>מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד</td></tr>
+          <tr class="grp"><th colspan="2" scope="rowgroup">מסך</th></tr>
+          <tr><th scope="row">גודל מסך</th><td>6.3 אינץ׳</td></tr>
+          <tr><th scope="row">סוג מסך</th><td>OLED, כל המסך, עם Dynamic Island ותצוגה תמידית</td></tr>
+          <tr><th scope="row">רזולוציה</th><td>2622x1206 פיקסלים, 460 ppi</td></tr>
+          <tr><th scope="row">קצב רענון</th><td>ProMotion, קצב רענון משתנה עד 120Hz</td></tr>
+          <tr><th scope="row">בהירות</th><td>3000 ניט שיא בחוץ</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">ביצועים ואחסון</th></tr>
+          <tr><th scope="row">מעבד</th><td>שבב A19</td></tr>
+          <tr><th scope="row">ליבות CPU</th><td>6 ליבות</td></tr>
+          <tr><th scope="row">ליבות GPU</th><td>5 ליבות</td></tr>
+          <tr><th scope="row">נפחי אחסון</th><td>256GB, 512GB</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">מצלמות</th></tr>
+          <tr><th scope="row">מצלמה ראשית</th><td>48MP Dual Fusion, ראשית 48MP בצמצם ƒ/1.6</td></tr>
+          <tr><th scope="row">מצלמות נוספות</th><td>רחבה במיוחד 48MP בצמצם ƒ/2.2</td></tr>
+          <tr><th scope="row">זום</th><td>זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x</td></tr>
+          <tr><th scope="row">מצלמה קדמית</th><td>18MP Center Stage בצמצם ƒ/1.9</td></tr>
+          <tr><th scope="row">וידאו</th><td>4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה. הילוך אט ב-1080p ב-120 או 240</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">סוללה וטעינה</th></tr>
+          <tr><th scope="row">סוללה</th><td>עד 30 שעות הפעלת וידאו</td></tr>
+          <tr><th scope="row">טעינה חוטית</th><td>עד 50 אחוז ב-20 דקות עם מתאם 40W ומעלה</td></tr>
+          <tr><th scope="row">טעינה אלחוטית</th><td>MagSafe עד 25W</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">גוף ועמידות</th></tr>
+          <tr><th scope="row">מידות</th><td>149.6 x 71.5 x 7.95 מ״מ</td></tr>
+          <tr><th scope="row">משקל</th><td>177 גרם</td></tr>
+          <tr><th scope="row">עמידות למים ואבק</th><td>IP68, עד 6 מטר ל-30 דקות</td></tr>
+          <tr><th scope="row">צבעים אצל היצרן</th><td>שחור, לבן, כחול מיסט, מרווה, לבנדר</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">תקשורת</th></tr>
+          <tr><th scope="row">SIM</th><td>Dual SIM: nano-SIM ו-eSIM</td></tr>
+          <tr><th scope="row">eSIM</th><td>תמיכה בשני eSIM</td></tr>
+        </tbody>
+        <tbody>
+          <tr class="grp"><th colspan="2" scope="rowgroup">באריזה ובזיהוי</th></tr>
+          <tr><th scope="row">תכולת האריזה</th><td>מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד</td></tr>
         </tbody>
       </table>
     </div>
