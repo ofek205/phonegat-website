@@ -62,6 +62,7 @@ var SPEC_GROUPS = [
   ]]
 ];
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
+function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
 
 /* מחרוזות לטיניות בהקשר RTL מסודרות מחדש על ידי אלגוריתם ה-bidi. iPhone 17 Pro Max הופך
  * ל-Pro Max iPhone 17, ומידה הופכת סדר ספרות. אין רגקס שתופס את זה, ולכן העטיפה כאן. */
@@ -334,6 +335,12 @@ db.devices.forEach(function (d) {
   ['sigal', 'baruch'].forEach(function (w) { if (d.recommendation[w].status !== 'approved') missing.push('המלצת ' + w); });
   if (d.launch_year === null) missing.push('launch_year');
 
+  /* הצורה העברית של שם הדגם חייבת להופיע בגוף העמוד ולא רק ב-title. בישראל מחפשים
+   * "אייפון 17" יותר מ-iPhone 17, וב-5.8.2026 שני עמודים יצאו עם אפס מופעים בגוף. האודיט
+   * תפס את זה בדיעבד, וכאן זה נתפס בזמן החילול. */
+  if (d.name_he && (E_BODY(d).indexOf(d.name_he) < 0)) {
+    console.error('⚠ ' + d.slug + ': השם העברי "' + d.name_he + '" לא מופיע בגוף העמוד. בישראל מחפשים אותו יותר מהלטיני. הוסף אותו ל-editorial.what_matters.');
+  }
   console.log('✓ phones/' + d.slug + '/  ' + (d.status === 'review' ? '[טסטים בלבד]' : '') );
   console.log('   מפרט: ' + Object.keys(d.spec).filter(function (k) { return d.spec[k] !== null; }).length + ' שדות · חסר מאופק: ' + missing.length + ' (' + missing.slice(0, 5).join(', ') + (missing.length > 5 ? '…' : '') + ')');
   made++;

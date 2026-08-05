@@ -62,6 +62,11 @@
       "url": "/phones/redmi-note-14-pro/",
       "name": "רדמי נוט 14 פרו",
       "status": "review"
+    },
+    {
+      "url": "/phones/iphone-17-pro/",
+      "name": "אייפון 17 פרו",
+      "status": "review"
     }
   ]
 }
