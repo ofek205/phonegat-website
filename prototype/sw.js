@@ -7,7 +7,7 @@
    בלי החלפת שם המטמון, מבקר חוזר נשאר עם הכתובות הישנות במעטפת השמורה שלו לנצח.
    v5: /guides/ ו-/guides/official-vs-parallel-import/ נכנסו למעטפת, ולכן השם עולה. */
 const CACHE = 'pg-v5';
-const SHELL = ['/guides/', '/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+const SHELL = ['/phones/', '/phones/iphone-17/', '/guides/', '/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
