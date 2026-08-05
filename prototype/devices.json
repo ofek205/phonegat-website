@@ -208,6 +208,201 @@
         "modified": null
       },
       "name_he": "אייפון 17"
+    },
+    {
+      "slug": "galaxy-s26-ultra",
+      "status": "review",
+      "brand": "Samsung",
+      "name": "Galaxy S26 Ultra",
+      "name_he": "גלקסי S26 אולטרה",
+      "series": "Galaxy S",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s26-ultra/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-05",
+          "note": "העמוד מרונדר ב-JavaScript. נקרא בדפדפן, fetch מחזיר עמוד ריק."
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "water_resistance": {
+          "src": null,
+          "at": null,
+          "note": "דירוג IP לא מופיע בעמוד המפרט הישראלי. לא להשלים ממקור אחר בלי לציין."
+        },
+        "charging_wired": {
+          "src": null,
+          "at": null,
+          "note": "הספק טעינה לא מופיע בעמוד. נשאר ריק."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "תכולת אריזה לא מופיעה בעמוד."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "מספר דגם לפי גרסת יבוא. מהחנות או ריק."
+        }
+      },
+      "spec": {
+        "screen_size": "6.9 אינץ׳ (174.9 מ״מ)",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, תמיכה בעט S",
+        "resolution": "3120x1440 (Quad HD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": "שמונה ליבות, 4.74GHz ו-3.6GHz",
+        "cpu": "8 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "camera_main": "200MP ראשית בצמצם F1.4",
+        "camera_extra": "50MP בצמצם F2.9, 50MP בצמצם F1.9, ו-10MP בצמצם F2.4. ייצוב אופטי",
+        "zoom": "זום אופטי 3x ו-5x, איכות אופטית 2x ו-10x, דיגיטלי עד 100x",
+        "camera_front": "12MP בצמצם F2.2",
+        "video": "8K ב-30 פריימים לשנייה. הילוך אט 240 ב-FHD ו-120 ב-UHD",
+        "battery": "5000mAh טיפוסי (מדורג 4855mAh), עד 31 שעות וידאו",
+        "charging_wired": null,
+        "charging_wireless": null,
+        "dimensions": "163.6 x 78.1 x 7.9 מ״מ",
+        "weight": "214 גרם",
+        "sim": "Dual SIM: Nano-SIM ו-eSIM",
+        "esim": "SIM+SIM, SIM+eSIM או שני eSIM",
+        "water_resistance": null,
+        "colors_manufacturer": [
+          "סגול",
+          "כחול",
+          "שחור",
+          "לבן",
+          "כסוף",
+          "ורוד זהב"
+        ],
+        "box_contents": null,
+        "model_numbers": null,
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
+        "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033"
+      },
+      "commercial": {
+        "price": null,
+        "stock": null,
+        "storage_stocked": null,
+        "colors_stocked": null,
+        "import_official": null,
+        "import_parallel": null,
+        "importer_name": null,
+        "warranty_by": null,
+        "warranty_months": null,
+        "service_terms": null,
+        "payments": null,
+        "data_transfer": null
+      },
+      "editorial": {
+        "what_matters": "זה הדגם הגדול והמצויד של סמסונג. מסך 6.9 אינץ׳ ב-120Hz, מצלמה ראשית של 200MP, ארבע מצלמות אחוריות, ותמיכה בעט S שאין לאף דגם אחר בסדרה. סמסונג מתחייבת לעדכוני אבטחה עד פברואר 2033, שזה כמעט שבע שנים.",
+        "good_for": [
+          "מי שמצלם מרחוק. זום אופטי 3x ו-5x, ואיכות אופטית עד 10x, זה משהו שדגם בלי טלפוטו לא עושה.",
+          "מי שכותב או משרטט. עט S נתמך, וזה ייחודי לאולטרה.",
+          "שימוש כבד לאורך יום ארוך. סוללה של 5000mAh ודירוג של עד 31 שעות וידאו.",
+          "מי שרוצה להחזיק את המכשיר שנים. עדכוני אבטחה עד 2033.",
+          "מי שצריך הרבה מקום. עד 1TB, ולא צריך למחוק וידאו כדי לצלם עוד."
+        ],
+        "less_for": [
+          "מי שרוצה מכשיר קטן או קל. 214 גרם ו-6.9 אינץ׳ זה מכשיר גדול, ולא לכל כיס ולכל יד.",
+          "מי שמחזיק את הטלפון ביד אחת כל היום. ברוחב 78 מ״מ זה לא נוח לכולם.",
+          "מי שמחפש את הזול. זה הדגם הגבוה בסדרה, והמחיר בהתאם.",
+          "מי שמגיע מאייפון ולא רוצה ללמוד ממשק חדש. אנחנו מעבירים את הנתונים, אבל ההרגלים שונים."
+        ],
+        "daily_benefits": [
+          [
+            "גודל ומשקל",
+            "163.6 על 78.1 מ״מ ו-214 גרם. מכשיר גדול שמרגישים ביד, וכדאי להחזיק אותו לפני שקונים."
+          ],
+          [
+            "צילום מרחוק",
+            "זום אופטי אמיתי, ולא הגדלה דיגיטלית. הבדל שרואים בהופעה של ילד על במה או בנוף."
+          ],
+          [
+            "יום ארוך",
+            "5000mAh ודירוג של עד 31 שעות וידאו. בשימוש מעורב זה בדרך כלל יום שלם בנוחות."
+          ],
+          [
+            "עט",
+            "עט S נתמך, למי שרושם הערות או חותם על מסמכים."
+          ],
+          [
+            "שני מספרים",
+            "שני כרטיסי SIM, או SIM עם eSIM, או שני eSIM. גמיש למי שמפריד עבודה מאישי."
+          ],
+          [
+            "לטווח ארוך",
+            "עדכוני אבטחה מוכרזים עד פברואר 2033. מכשיר שנשאר בטוח לשימוש שנים."
+          ],
+          [
+            "רשת",
+            "5G, Wi-Fi 7 ו-Bluetooth 6.0. שווה לוודא שהגרסה שהגיעה תומכת בתדרים של הרשת שלכם, וזו שאלה שנוגעת גם למסלול היבוא."
+          ]
+        ],
+        "pros": [
+          "מצלמה 200MP",
+          "זום אופטי 3x ו-5x",
+          "עט S",
+          "5000mAh",
+          "עד 1TB",
+          "עדכונים עד 2033"
+        ],
+        "cons": [
+          "גדול וכבד",
+          "לא מכשיר ליד אחת",
+          "הדגם היקר בסדרה"
+        ],
+        "similar": [],
+        "comparisons": []
+      },
+      "recommendation": {
+        "sigal": {
+          "text": null,
+          "status": "missing"
+        },
+        "baruch": {
+          "text": null,
+          "status": "missing"
+        }
+      },
+      "seo": {
+        "keywords": [
+          "Galaxy S26 Ultra",
+          "גלקסי S26 אולטרה",
+          "סמסונג S26 אולטרה",
+          "S26 Ultra מפרט",
+          "S26 Ultra מחיר"
+        ],
+        "title": "גלקסי S26 אולטרה (Galaxy S26 Ultra): מפרט מלא ומה לבדוק לפני קנייה | פון גת",
+        "description": "המפרט המלא של גלקסי S26 אולטרה מהאתר של סמסונג, מה הנתונים אומרים בשימוש יומיומי, למי הוא מתאים ולמי פחות. מכירה וליווי בפון גת קרית גת.",
+        "canonical": "https://www.phonegat.co.il/phones/galaxy-s26-ultra/",
+        "schema": [
+          "Product",
+          "Brand",
+          "BreadcrumbList"
+        ]
+      },
+      "media": {
+        "hero": null,
+        "gallery": [],
+        "alt": "Galaxy S26 Ultra על דלפק המעבדה בפון גת, מסך קדימה"
+      },
+      "dates": {
+        "published": null,
+        "modified": null
+      }
     }
   ],
   "_candidates": {

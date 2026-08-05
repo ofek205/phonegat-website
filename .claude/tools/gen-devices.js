@@ -54,10 +54,10 @@ var SPEC_GROUPS = [
     ['colors_manufacturer', 'צבעים אצל היצרן']
   ]],
   ['תקשורת', [
-    ['sim', 'SIM'], ['esim', 'eSIM']
+    ['sim', 'SIM'], ['esim', 'eSIM'], ['connectivity', 'קישוריות']
   ]],
   ['באריזה ובזיהוי', [
-    ['box_contents', 'תכולת האריזה'], ['model_numbers', 'מספרי דגם']
+    ['box_contents', 'תכולת האריזה'], ['security_updates', 'עדכוני אבטחה'], ['model_numbers', 'מספרי דגם']
   ]]
 ];
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }

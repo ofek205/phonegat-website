@@ -52,6 +52,11 @@
       "url": "/phones/iphone-17/",
       "name": "אייפון 17",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-s26-ultra/",
+      "name": "גלקסי S26 אולטרה",
+      "status": "review"
     }
   ]
 }
