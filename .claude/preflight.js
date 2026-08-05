@@ -202,16 +202,33 @@ else ok('תגי details מאוזנים (' + opens + ')');
  * לא-מגורסן של סשן אחר (_kbpreview.html) הפיל את בדיקת ה-canonical וחסם דחיפה של סשן אחר לגמרי. */
 function isDraft(name) { return name.charAt(0) === '_'; }
 
+/* הסריקה רקורסיבית לכל עומק, ולא רמה אחת. הגרסה הקודמת ירדה בדיוק רמה אחת, וזה הספיק לעמודי
+ * השירות אבל לא לרמה שמתחתיהם. כל עמוד עמוק בשתיים (phones/all/, phones/<דגם>/,
+ * compare/<השוואה>/, guides/<מדריך>/, upcoming-phones/<דגם>/) היה נופל מחוץ לכל הבדיקות כאן.
+ * זו אותה תקלה שההערה למעלה מתארת, רמה אחת מתחת: הדף נראה גמור, ובשקט אין לו שומר סביבה,
+ * גידור GTM, canonical, תפריט נגישות ובאנר קוקיז. נמצא ב-4.8.2026 בתכנון אזור המכשירים,
+ * לפני שנוצר הדף הראשון, ולכן הפעם לפני התקלה ולא אחריה.
+ *
+ * עמוד = כל קובץ html מתחת ל-prototype, ולא רק index.html בתיקייה. Vercel מגיש את התיקייה
+ * כמו שהיא, ולכן כל קובץ html שם הוא כתובת שגולש יכול להגיע אליה, כלומר משהו שצריך להיבדק.
+ * יורדים גם לתיקייה שאין בה index.html: תיקיית אב (guides/) יכולה להיות ריקה בזמן שהבנים
+ * שלה הם עמודים. תיקיית נכסים (problems/, logos/, layers/) לא תתרום כלום, כי אין בה html.
+ * קישור סימבולי מדווח כ-isSymbolicLink ולא כ-isDirectory, ולכן הרקורסיה לא יכולה להיתקע. */
 var pagesDir = P('prototype'), pageFiles = [];
-try {
-  fs.readdirSync(pagesDir, { withFileTypes: true }).forEach(function (e) {
+(function collectPages(dir, prefix) {
+  var entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); }
+  catch (e) {
+    if (!prefix) warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים');
+    return;
+  }
+  entries.forEach(function (e) {
     if (isDraft(e.name)) return;
-    if (e.isFile() && /\.html$/.test(e.name)) { pageFiles.push(e.name); return; }
+    if (e.isFile()) { if (/\.html$/.test(e.name)) pageFiles.push(prefix + e.name); return; }
     if (!e.isDirectory() || e.name === 'api') return;
-    /* תיקיית נכסים (problems/, logos/) אינה עמוד; עמוד הוא תיקייה שיש בה index.html */
-    if (fs.existsSync(path.join(pagesDir, e.name, 'index.html'))) pageFiles.push(e.name + '/index.html');
+    collectPages(path.join(dir, e.name), prefix + e.name + '/');
   });
-} catch (e) { warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים'); }
+})(pagesDir, '');
 
 /* עמוד עומק = כל עמוד שאינו בשורש. הנתיבים היחסיים שלו נפתרים אחרת, ולכן יש לו בדיקה משלו */
 function isDeep(f) { return f.indexOf('/') > -1; }

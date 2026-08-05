@@ -34,8 +34,27 @@ if (missing.length) {
     ' --slug screen-repair --title "…" --desc "…" --h1 "…"');
   process.exit(1);
 }
-if (!/^[a-z][a-z0-9-]*$/.test(args.slug)) {
-  console.error('slug חייב להיות אנגלית קטנה עם מקפים בלבד: ' + args.slug);
+/* slug מקונן מותר: phones/all, phones/iphone-17, guides/how-to-choose-a-phone.
+ * נוסף ב-5.8.2026 לקראת אזור המכשירים, שכל הכתובות שלו עמוקות בשתי רמות. הרגקס הקודם דרש
+ * מקטע אחד, ולכן החלופה היחידה הייתה כתיבת HTML ביד, כלומר בדיוק מה ש-§0 בסקיל אוסר ומה
+ * שיצר את 14 הפערים במדריך התקלות.
+ *
+ * העומק עצמו לא דורש שום התאמה אחרת: toRoot למטה הופך כל נתיב יחסי לשורשי־מוחלט (/logo.png)
+ * ולא ל-../, ולכן הוא נכון באותה מידה בכל רמה. הנתיבים, ה-canonical, מעטפת ה-sw ותיקיית
+ * התמונות כולם נגזרים מ-args.slug ומטפלים בלוכסן מעצמם.
+ *
+ * הגבולות שכן צריך לאכוף: בלי לוכסן בהתחלה או בסוף, בלי לוכסן כפול, ובלי נקודות. slug מגיע
+ * לתוך path.join ואל תוך כתובת ציבורית, ולכן ".." שם הוא כתיבה מחוץ ל-prototype. */
+if (!/^[a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]*)*$/.test(args.slug)) {
+  console.error('slug חייב להיות אנגלית קטנה עם מקפים, ואפשר לקנן בלוכסן: ' + args.slug);
+  console.error('תקין:   screen-repair · phones/all · phones/iphone-17 · guides/how-to-choose-a-phone');
+  console.error('פסול:   /phones · phones/ · phones//all · phones/../x · Phones/All');
+  process.exit(1);
+}
+var DEPTH = args.slug.split('/').length;
+if (process.argv.indexOf('--flat') > -1 && DEPTH > 1) {
+  console.error('--flat לא יכול לקבל slug מקונן: ' + args.slug);
+  console.error('הכתובת השטוחה היא slug.html אחד, ואין לה איפה להחזיק היררכיה.');
   process.exit(1);
 }
 
@@ -247,8 +266,18 @@ notes.forEach(function (n) { console.log('  ' + n); });
 console.log('\nמה שכבר בפנים: שומר PG_PROD · GTM מגודר · תפריט נגישות · באנר קוקיז ·');
 console.log('service worker · canonical · ישות #business · דילוג לתוכן · כפתורי האתר · הפוטר המלא');
 console.log('\nמה שנשאר לך:');
-console.log('  1. להחליף כל TODO ב-<main>');
-console.log('  2. להוסיף קישור לדף הזה מ-index.html (הניווט שם לא מתעדכן לבד)');
-console.log('  3. תמונות 3:4 →  node .claude/skills/pg-new-content-page/scripts/prep-images.js ' + args.slug);
-console.log('  4. עדכון שני התאריכים ב-accessibility.html');
-console.log('  5. node .claude/preflight.js  ואז  node .claude/ship.js stage\n');
+var step = 0, S = function () { return '  ' + (++step) + '. '; };
+console.log(S() + 'להחליף כל TODO ב-<main>');
+/* פירורי הלחם שהועתקו הם שתי רמות (בית › הדף). עמוד עמוק צריך את האמצע, ואת השם העברי של
+ * ההורה הסקריפט לא יכול לדעת. הוא לא ממציא, ולכן הוא אומר. */
+if (DEPTH > 1) {
+  console.log(S() + 'פירורי לחם: הועתקו ' + 2 + ' רמות, ולעמוד הזה צריך ' + (DEPTH + 1) + '.');
+  console.log('     להוסיף את ' + args.slug.split('/').slice(0, -1).join(' › ') +
+    ' גם ב-JSON-LD (BreadcrumbList) וגם ב-<nav> שבדף.');
+}
+console.log(S() + 'להוסיף קישור לדף הזה מ-index.html (הניווט שם לא מתעדכן לבד)');
+/* התמונות של עמוד עומק יושבות ב-prototype/img/<slug>/ ולא בתיקיית העמוד, ולכן זה מה שצריך
+ * להעביר ל-prep-images. הגרסה הקודמת הדפיסה את ה-slug לבד והצביעה על תיקייה שלא קיימת. */
+console.log(S() + 'תמונות 3:4 →  node .claude/skills/pg-new-content-page/scripts/prep-images.js ' + IMGDIR);
+console.log(S() + 'עדכון שני התאריכים ב-accessibility.html');
+console.log(S() + 'node .claude/preflight.js  ואז  node .claude/ship.js stage\n');
