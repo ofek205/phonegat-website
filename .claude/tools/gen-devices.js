@@ -245,7 +245,7 @@ function swap(h, re, to, label, slug) {
   return h.replace(re, to);
 }
 
-var made = 0, skipped = [];
+var made = 0, skipped = [], swGrew = false;
 db.devices.forEach(function (d) {
   if (only && d.slug !== only) return;
   if (d.status === 'draft' && !only) { skipped.push(d.slug + ' (draft)'); return; }
@@ -313,7 +313,10 @@ db.devices.forEach(function (d) {
   /* מעטפת ה-sw: השוואה למחרוזת המצוטטת, אחרת עמוד אב נבלע בבן שלו */
   var swPath = path.join(PROTO, 'sw.js'), entry = "'/phones/" + d.slug + "/'";
   var sw = fs.readFileSync(swPath, 'utf8');
-  if (sw.indexOf(entry) < 0) fs.writeFileSync(swPath, sw.replace('const SHELL = [', 'const SHELL = [' + entry + ', '));
+  if (sw.indexOf(entry) < 0) {
+    fs.writeFileSync(swPath, sw.replace('const SHELL = [', 'const SHELL = [' + entry + ', '));
+    swGrew = true;   /* שם המטמון יעלה פעם אחת בסוף ההרצה, לא פעם לכל דגם */
+  }
 
   /* רישום בפאנל הסקירה. זה לא נוחות, זה הדרך שבה אופק רואה עמוד חדש בסביבת הבדיקות: הפאנל
    * קורא מ-services.json, ולכן עמוד שלא רשום שם פשוט לא קיים מבחינת סקירה. ב-5.8.2026נוצרו
@@ -386,6 +389,20 @@ if (!only) {
       console.log('✓ /phones/ עודכן: ' + live.length + ' מכשירים ברשימה וב-ItemList');
     }
   } catch (e) { console.error('⚠ לא ניתן לעדכן את /phones/ — ' + e.message); }
+}
+
+/* הכתובת נכנסה למעטפת, ועכשיו חייב לעלות גם שם המטמון. בלי זה מבקר חוזר נשאר עם המעטפת
+ * הישנה שלו לנצח, כי activate מוחק רק מטמונים בשם אחר. זה היה צעד ידני, נשכח בהרצה של
+ * 5.8.2026 שהוסיפה שלוש כתובות, ולכן הוא כאן. עולה פעם אחת להרצה ולא פעם לכל דגם. */
+if (swGrew) {
+  var swP = path.join(PROTO, 'sw.js'), swSrc = fs.readFileSync(swP, 'utf8');
+  var m = swSrc.match(/const CACHE = 'pg-v(\d+)'/);
+  if (!m) console.error('⚠ לא נמצא שם המטמון ב-sw.js — העלה ידנית, אחרת מבקר חוזר לא יקבל את העמודים החדשים');
+  else {
+    var next = 'pg-v' + (parseInt(m[1], 10) + 1);
+    fs.writeFileSync(swP, swSrc.replace(m[0], "const CACHE = '" + next + "'"));
+    console.log('✓ sw.js: המעטפת גדלה, שם המטמון עלה ל-' + next);
+  }
 }
 
 console.log('\n' + made + ' עמודי מכשיר נוצרו. הרצה: node .claude/preflight.js');

@@ -67,6 +67,21 @@
       "url": "/phones/iphone-17-pro/",
       "name": "אייפון 17 פרו",
       "status": "review"
+    },
+    {
+      "url": "/phones/iphone-17-pro-max/",
+      "name": "אייפון 17 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/phones/iphone-16/",
+      "name": "אייפון 16",
+      "status": "review"
+    },
+    {
+      "url": "/phones/iphone-17e/",
+      "name": "אייפון 17e",
+      "status": "review"
     }
   ]
 }
