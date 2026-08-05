@@ -246,6 +246,44 @@ function swap(h, re, to, label, slug) {
 }
 
 var made = 0, skipped = [], swGrew = false;
+
+/* סדר הרשימה ב-/phones/.
+ *
+ * בלי זה הסדר הוא סדר ההוספה ל-devices.json, כלומר לפי היום שבו נכתב כל דגם. בעמוד עם שנים
+ * עשר דגמים זה נראה כך: אייפון 17, גלקסי S26 אולטרה, רדמי נוט 14 פרו, אייפון 17 פרו. מותגים
+ * משורגים באקראי, וזו רשימה שאף אחד לא סידר. גם הסכימה של ItemList נגזרת מאותו סדר.
+ *
+ * ממוין ולא מסודר ביד ב-JSON, כי כל דגם חדש היה דורש להזיז אותו למקום הנכון וזה נשכח. שלוש
+ * מדרגות: מותג, קו המוצר בתוך המותג, ואז הדור מהחדש לישן ובתוך אותו דור מהחזק לבסיסי. */
+var BRAND_ORDER = ['Apple', 'Samsung', 'Xiaomi'];
+function lineRank(n) {
+  if (/^Galaxy S/.test(n)) return 0;
+  if (/^Galaxy A/.test(n)) return 1;
+  if (/^Galaxy Z/.test(n)) return 2;
+  if (/^Redmi/.test(n)) return 1;      /* Xiaomi לפני Redmi */
+  return 0;
+}
+function tierRank(n) {
+  if (/Pro Max|Ultra/.test(n)) return 0;
+  if (/Pro\b|\+/.test(n)) return 1;
+  if (/\de\b/.test(n)) return 3;       /* iPhone 17e הוא דגם הכניסה של הדור */
+  return 2;
+}
+function generation(n) {
+  var m = n.match(/\d+/g);
+  return m ? Math.max.apply(null, m.map(Number)) : 0;
+}
+function hubOrder(a, b) {
+  var ba = BRAND_ORDER.indexOf(a.brand), bb = BRAND_ORDER.indexOf(b.brand);
+  if (ba < 0) ba = BRAND_ORDER.length;                 /* מותג חדש נופל לסוף ולא לראש */
+  if (bb < 0) bb = BRAND_ORDER.length;
+  if (ba !== bb) return ba - bb;
+  var la = lineRank(a.name), lb = lineRank(b.name);
+  if (la !== lb) return la - lb;
+  var ga = generation(a.name), gb = generation(b.name);
+  if (ga !== gb) return gb - ga;                       /* הדור החדש קודם */
+  return tierRank(a.name) - tierRank(b.name);
+}
 db.devices.forEach(function (d) {
   if (only && d.slug !== only) return;
   if (d.status === 'draft' && !only) { skipped.push(d.slug + ' (draft)'); return; }
@@ -359,7 +397,7 @@ if (!only) {
   var hubPath = path.join(PROTO, 'phones', 'index.html');
   try {
     var hub = fs.readFileSync(hubPath, 'utf8');
-    var live = db.devices.filter(function (x) { return x.status !== 'draft'; });
+    var live = db.devices.filter(function (x) { return x.status !== 'draft'; }).sort(hubOrder);
     var items = live.map(function (x) {
       var bits = [x.brand];
       if (x.spec.screen_size) bits.push('מסך ' + x.spec.screen_size);

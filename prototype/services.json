@@ -97,6 +97,16 @@
       "url": "/phones/galaxy-a36/",
       "name": "גלקסי A36",
       "status": "review"
+    },
+    {
+      "url": "/phones/xiaomi-15/",
+      "name": "שיאומי 15",
+      "status": "review"
+    },
+    {
+      "url": "/phones/redmi-note-14/",
+      "name": "רדמי נוט 14",
+      "status": "review"
     }
   ]
 }
