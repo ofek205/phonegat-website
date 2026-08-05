@@ -40,7 +40,8 @@ var SPEC_GROUPS = [
   ]],
   ['ביצועים ואחסון', [
     ['chip', 'מעבד'], ['cpu', 'ליבות CPU'], ['gpu', 'ליבות GPU'],
-    ['ram', 'זיכרון RAM'], ['storage_offered', 'נפחי אחסון']
+    ['ram', 'זיכרון RAM'], ['storage_offered', 'נפחי אחסון'],
+    ['storage_expandable', 'הרחבת אחסון']
   ]],
   ['מצלמות', [
     ['camera_main', 'מצלמה ראשית'], ['camera_extra', 'מצלמות נוספות'], ['zoom', 'זום'],
@@ -339,4 +340,45 @@ db.devices.forEach(function (d) {
 });
 
 if (skipped.length) console.log('\nדולג: ' + skipped.join(', '));
+
+/* ---------- רענון רשימת המכשירים ב-/phones/ ----------
+ * הרשימה שם נגזרת מ-devices.json, אבל המרכז אינו מחולל בכל הרצה, ולכן דגם שנוסף אחרי
+ * שהמרכז נבנה לא הופיע בו. ב-5.8.2026 המרכז הציג מכשיר אחד בזמן שהיו שלושה. אותו היגיון
+ * כמו הרישום ב-services.json: מה שאפשר לגזור, נגזר, ולא נזכר. */
+if (!only) {
+  var hubPath = path.join(PROTO, 'phones', 'index.html');
+  try {
+    var hub = fs.readFileSync(hubPath, 'utf8');
+    var live = db.devices.filter(function (x) { return x.status !== 'draft'; });
+    var items = live.map(function (x) {
+      var bits = [x.brand];
+      if (x.spec.screen_size) bits.push('מסך ' + x.spec.screen_size);
+      if (x.spec.chip) bits.push(x.spec.chip);
+      if (x.spec.storage_offered) bits.push(x.spec.storage_offered.join(' / '));
+      return '        <li><a href="/phones/' + x.slug + '/"><b><bdo dir="ltr">' + esc(x.name) +
+             '</bdo></b><span>' + esc(bits.join(' · ')) + '</span></a></li>';
+    }).join('\n');
+    var re = /(<section class="block" id="devices"[\s\S]*?<ul class="hub">\n)[\s\S]*?(\n      <\/ul>)/;
+    if (!re.test(hub)) { console.error('⚠ לא נמצאה רשימת המכשירים ב-/phones/ — עדכן ידנית'); }
+    else {
+      hub = hub.replace(re, '$1' + items + '$2');
+      /* גם השורה שמונה אותם, אחרת היא אומרת מספר אחר ממה שמוצג */
+      hub = hub.replace(/<p class="lead">[^<]*<\/p>\n      <ul class="hub">/,
+        '<p class="lead">' + (live.length === 1
+          ? 'עמוד ראשון באוויר. הדגמים הנוספים נכנסים בימים הקרובים.'
+          : live.length + ' דגמים, ונוסיף עוד.') +
+        ' לכל דגם עמוד עם המפרט המלא מאתר היצרן, ומה הנתונים אומרים בשימוש יומיומי.</p>\n      <ul class="hub">');
+      /* ItemList ב-schema חייב להישאר תואם למה שמוצג */
+      var il = { '@context': 'https://schema.org', '@type': 'ItemList',
+        itemListElement: live.map(function (x, i) {
+          return { '@type': 'ListItem', position: i + 1, name: x.name,
+                   url: PROD + 'phones/' + x.slug + '/' }; }) };
+      hub = hub.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"ItemList"[\s\S]*?<\/script>/,
+        '<script type="application/ld+json">\n' + JSON.stringify(il) + '\n</script>');
+      fs.writeFileSync(hubPath, hub);
+      console.log('✓ /phones/ עודכן: ' + live.length + ' מכשירים ברשימה וב-ItemList');
+    }
+  } catch (e) { console.error('⚠ לא ניתן לעדכן את /phones/ — ' + e.message); }
+}
+
 console.log('\n' + made + ' עמודי מכשיר נוצרו. הרצה: node .claude/preflight.js');

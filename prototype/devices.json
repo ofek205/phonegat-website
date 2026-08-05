@@ -403,6 +403,190 @@
         "published": null,
         "modified": null
       }
+    },
+    {
+      "slug": "redmi-note-14-pro",
+      "status": "review",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 14 Pro",
+      "name_he": "רדמי נוט 14 פרו",
+      "series": "Redmi Note",
+      "os": "Xiaomi HyperOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/redmi-note-14-pro/specs/",
+          "kind": "אתר היצרן, גלובלי",
+          "at": "2026-08-05",
+          "note": "לשיאומי אין עמוד מפרט ישראלי לדגם הזה, ולכן המקור גלובלי. העמוד חוסם fetch ונקרא בדפדפן."
+        },
+        "variant": {
+          "note": "זו גרסת ה-4G עם Helio G100-Ultra. קיימות גם Redmi Note 14 Pro 5G ו-Pro+ 5G עם מפרט אחר לגמרי. אין לערבב ביניהן, וכשלקוח שואל על הדגם צריך לברר איזו גרסה."
+        },
+        "box_contents": {
+          "note": "העמוד עצמו מציין שתכולת האריזה משתנה בין אזורים. לכן מה שכתוב כאן הוא מה שהיצרן מפרסם ולא הבטחה למה שיהיה בקופסה שתגיע."
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "מספר דגם לפי גרסת יבוא. מהחנות או ריק."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, עומק צבע 10 ביט, יחס ניגודיות 5,000,000:1, זכוכית Gorilla Glass Victus 2",
+        "resolution": "2400x1080",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "1800 ניט שיא, 500 ניט טיפוסי",
+        "chip": "MediaTek Helio G100-Ultra, תהליך 6 ננומטר",
+        "cpu": "שמונה ליבות, עד 2.2GHz",
+        "gpu": "Mali-G57 MC2",
+        "ram": "8GB או 12GB",
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "camera_main": "200MP ראשית בצמצם f/1.65, ייצוב אופטי, חיישן בגודל 1/1.4 אינץ׳",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מאקרו בצמצם f/2.4",
+        "zoom": null,
+        "camera_front": "32MP בצמצם f/2.2",
+        "video": "1080p ב-60 או 30 פריימים לשנייה. אין הקלטת 4K",
+        "battery": "5500mAh טיפוסי",
+        "charging_wired": "45W, והמטען בקופסה",
+        "charging_wireless": null,
+        "dimensions": "162.16 x 74.92 x 8.24 מ״מ",
+        "weight": "180 גרם",
+        "sim": "SIM אחד, והשני היברידי: SIM או כרטיס microSD",
+        "esim": null,
+        "water_resistance": "IP64, עמידות בהתזה בלבד",
+        "colors_manufacturer": [
+          "כחול אוקיינוס",
+          "שחור",
+          "סגול",
+          "זהב חול"
+        ],
+        "box_contents": "מכשיר, מטען, כבל USB-C, כלי הוצאת SIM, כיסוי מגן, ומדריך אחריות",
+        "model_numbers": null,
+        "connectivity": "4G LTE, Wi-Fi 802.11ac, Bluetooth 5.3, NFC, שקע אוזניות 3.5 מ״מ, שידור אינפרא אדום",
+        "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD"
+      },
+      "commercial": {
+        "price": null,
+        "stock": null,
+        "storage_stocked": null,
+        "colors_stocked": null,
+        "import_official": null,
+        "import_parallel": null,
+        "importer_name": null,
+        "warranty_by": null,
+        "warranty_months": null,
+        "service_terms": null,
+        "payments": null,
+        "data_transfer": null
+      },
+      "editorial": {
+        "what_matters": "זה מכשיר שנותן הרבה מסך ומצלמה במחיר נמוך משמעותית מהדגמים הגבוהים. מסך AMOLED של 6.67 אינץ׳ ב-120Hz, מצלמה ראשית של 200MP, סוללה של 5500mAh, והמטען מגיע בקופסה. מה שהוא לא נותן: 5G, הקלטת 4K, ו-eSIM.",
+        "good_for": [
+          "מי שרוצה מסך גדול וטוב ומצלמה סבירה בתקציב מוגבל.",
+          "מי שצריך אחסון גדול בזול. אפשר להרחיב בכרטיס microSD עד 1TB, מה שאין באייפון ובגלקסי הגבוהים.",
+          "מי ששומע מוזיקה באוזניות חוט. יש שקע 3.5 מ״מ, וזה נדיר היום.",
+          "מי שלא רוצה לקנות מטען בנפרד. מטען 45W מגיע בקופסה, וגם כיסוי מגן.",
+          "מכשיר ראשון לילד או לנער, או מכשיר משני."
+        ],
+        "less_for": [
+          "מי שצריך 5G. הגרסה הזאת היא 4G בלבד, וקיימת גרסת 5G נפרדת עם מפרט אחר.",
+          "מי שמצלם וידאו. ההקלטה מוגבלת ל-1080p, בלי 4K.",
+          "מי שעובד עם eSIM. הדגם הזה לא תומך, והחריץ השני משותף עם כרטיס הזיכרון.",
+          "מי שמכניס את הטלפון לכל מקום. IP64 זה עמידות בהתזה, לא בטבילה."
+        ],
+        "daily_benefits": [
+          [
+            "מסך",
+            "AMOLED ב-120Hz ובבהירות שיא של 1800 ניט. מסך שלא מתבייש מול דגמים יקרים ממנו."
+          ],
+          [
+            "סוללה",
+            "5500mAh, יותר מרוב המכשירים בכל מחיר. מי שלא מצליח לסיים יום עם הטלפון הנוכחי ירגיש את זה."
+          ],
+          [
+            "טעינה",
+            "45W, והמטען עצמו בקופסה. לא צריך לקנות אותו בנפרד כמו בדגמים אחרים."
+          ],
+          [
+            "מקום",
+            "אפשר להוסיף כרטיס זיכרון עד 1TB. אבל אז החריץ השני תפוס ואי אפשר שני מספרים."
+          ],
+          [
+            "וידאו",
+            "1080p בלבד. למי שמצלם הופעות של ילדים או טיולים ורוצה 4K, זה החיסרון המרכזי כאן."
+          ],
+          [
+            "מים",
+            "IP64 מוגן מהתזה ומאבק, ולא מטבילה. גם היצרן כותב שנזק מטבילה מכוונת אינו מכוסה באחריות."
+          ],
+          [
+            "אוזניות",
+            "שקע 3.5 מ״מ. אפשר לחבר אוזניות חוט בלי מתאם ובלי לחפש Bluetooth."
+          ]
+        ],
+        "pros": [
+          "מסך AMOLED 120Hz",
+          "סוללה 5500mAh",
+          "מטען בקופסה",
+          "הרחבת אחסון",
+          "שקע אוזניות"
+        ],
+        "cons": [
+          "4G בלבד",
+          "וידאו עד 1080p",
+          "בלי eSIM",
+          "IP64 ולא IP68"
+        ],
+        "similar": [],
+        "comparisons": []
+      },
+      "recommendation": {
+        "sigal": {
+          "text": null,
+          "status": "missing"
+        },
+        "baruch": {
+          "text": null,
+          "status": "missing"
+        }
+      },
+      "seo": {
+        "keywords": [
+          "Redmi Note 14 Pro",
+          "רדמי נוט 14 פרו",
+          "רדמי נוט 14 פרו מפרט",
+          "רדמי נוט 14 פרו מחיר",
+          "שיאומי רדמי נוט 14"
+        ],
+        "title": "רדמי נוט 14 פרו (Redmi Note 14 Pro): מפרט מלא ומה לבדוק לפני קנייה | פון גת",
+        "description": "המפרט המלא של רדמי נוט 14 פרו מהאתר של שיאומי, מה הנתונים אומרים בשימוש יומיומי, למי הוא מתאים ולמי פחות. מכירה וליווי בפון גת קרית גת.",
+        "canonical": "https://www.phonegat.co.il/phones/redmi-note-14-pro/",
+        "schema": [
+          "Product",
+          "Brand",
+          "BreadcrumbList"
+        ]
+      },
+      "media": {
+        "hero": null,
+        "gallery": [],
+        "alt": "Redmi Note 14 Pro על דלפק המעבדה בפון גת, מסך קדימה"
+      },
+      "dates": {
+        "published": null,
+        "modified": null
+      }
     }
   ],
   "_candidates": {
