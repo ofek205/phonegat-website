@@ -43,6 +43,15 @@
     {
       "url": "/guides/official-vs-parallel-import/",
       "name": "יבוא רשמי מול מקביל"
+    },
+    {
+      "url": "/phones/",
+      "name": "מרכז המכשירים"
+    },
+    {
+      "url": "/phones/iphone-17/",
+      "name": "אייפון 17",
+      "status": "review"
     }
   ]
 }

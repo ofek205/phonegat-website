@@ -70,7 +70,9 @@
       .then(function (d) {
         (d.pages || []).forEach(function (p) { link('/' + p.slug + '/', p.name, p.status); });
         if ((d.existing || []).length) panel.appendChild(document.createElement('hr'));
-        (d.existing || []).forEach(function (p) { link(p.url, p.name); });
+        /* status מועבר גם כאן. עמוד מכשיר נמצא ב-review עד שהנתונים המסחריים מגיעים, וזה
+         * בדיוק מה שסוקר צריך לראות ליד השם ולא לנחש. הפריטים הישנים בלי status נשארים נקיים. */
+        (d.existing || []).forEach(function (p) { link(p.url, p.name, p.status); });
       })
       .catch(function () {
         panel.textContent = 'לא ניתן לקרוא את services.json';

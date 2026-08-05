@@ -264,6 +264,21 @@ db.devices.forEach(function (d) {
   var sw = fs.readFileSync(swPath, 'utf8');
   if (sw.indexOf(entry) < 0) fs.writeFileSync(swPath, sw.replace('const SHELL = [', 'const SHELL = [' + entry + ', '));
 
+  /* רישום בפאנל הסקירה. זה לא נוחות, זה הדרך שבה אופק רואה עמוד חדש בסביבת הבדיקות: הפאנל
+   * קורא מ-services.json, ולכן עמוד שלא רשום שם פשוט לא קיים מבחינת סקירה. ב-5.8.2026נוצרו
+   * /phones/ ועמוד מכשיר ואף אחד מהם לא נרשם, והם לא הופיעו. רישום ידני היה נשכח שוב, ולכן
+   * הסקריפט עושה את זה בעצמו. */
+  var svcPath = path.join(PROTO, 'services.json');
+  try {
+    var svc = JSON.parse(fs.readFileSync(svcPath, 'utf8'));
+    svc.existing = svc.existing || [];
+    var pageUrl = '/phones/' + d.slug + '/';
+    var row = svc.existing.filter(function (p) { return p.url === pageUrl; })[0];
+    if (row) { row.name = d.name_he || d.name; row.status = d.status; }
+    else { svc.existing.push({ url: pageUrl, name: d.name_he || d.name, status: d.status }); }
+    fs.writeFileSync(svcPath, JSON.stringify(svc, null, 2) + '\n');
+  } catch (e) { console.error('⚠ ' + d.slug + ': לא ניתן לעדכן services.json — הוסף ידנית'); }
+
   var missing = [];
   Object.keys(d.commercial).forEach(function (k) { if (d.commercial[k] === null) missing.push(k); });
   ['sigal', 'baruch'].forEach(function (w) { if (d.recommendation[w].status !== 'approved') missing.push('המלצת ' + w); });
