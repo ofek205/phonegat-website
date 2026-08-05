@@ -357,6 +357,20 @@ main{counter-reset:prob}
 .cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.cmp{min-width:520px}.cmp tbody th{width:8.5rem}}
 
+/* ===== hub list: an index, the way a magazine sets one =====
+   שורות מופרדות בקו שערה, מספר סריף בהתחלה, בלי כרטיסים ובלי גריד של ריבועים שווים
+   (שני אנטי-פטרנים מפורשים במערכת העיצוב). המספר יושב ב-::before ולכן אינו נכנס לשכבת
+   הטקסט, וקורא מסך קורא את שם המדריך ולא "01שם המדריך". ישמש שוב ב-/compare/ וב-/phones/. */
+.hub{list-style:none;counter-reset:hub;margin:1.9rem 0 0;padding:0;display:grid}
+.hub li{counter-increment:hub;border-top:1px solid var(--line)}
+.hub li:last-child{border-bottom:1px solid var(--line)}
+.hub a{display:grid;grid-template-columns:2.7rem 1fr;gap:.35rem 1rem;align-items:baseline;padding-block:1.4rem;text-decoration:none;color:inherit}
+.hub a::before{content:counter(hub,decimal-leading-zero);grid-row:1/span 2;font-family:var(--serif);font-size:1.02rem;color:var(--teal)}
+.hub b{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.58rem);line-height:1.32;color:var(--ink-strong)}
+.hub span{color:var(--ink-soft);font-weight:300;line-height:1.75;max-width:64ch}
+.hub a:hover b,.hub a:focus-visible b{color:var(--teal-d)}
+@media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
+
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
 .block .box{max-width:900px;margin-inline:auto}
