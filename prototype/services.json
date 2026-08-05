@@ -35,6 +35,14 @@
     {
       "url": "/phone-problems/",
       "name": "מדריך תקלות"
+    },
+    {
+      "url": "/guides/",
+      "name": "מרכז המדריכים"
+    },
+    {
+      "url": "/guides/official-vs-parallel-import/",
+      "name": "יבוא רשמי מול מקביל"
     }
   ]
 }

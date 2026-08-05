@@ -4,9 +4,10 @@
 /* v3: המדריך עבר מ-/phone-problems.html ל-/phone-problems/.
    v4: /index.html ירד מהמעטפת ומהגיבוי הלא-מקוון, כי הוא מפנה עכשיו ל-/. addAll דוחה תשובה
    שהיא הפניה, וה-catch שם בולע את זה בשקט, כלומר כתובת מפנה ברשימה מבטלת את כל האחסון.
-   בלי החלפת שם המטמון, מבקר חוזר נשאר עם הכתובות הישנות במעטפת השמורה שלו לנצח. */
-const CACHE = 'pg-v4';
-const SHELL = ['/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+   בלי החלפת שם המטמון, מבקר חוזר נשאר עם הכתובות הישנות במעטפת השמורה שלו לנצח.
+   v5: /guides/ ו-/guides/official-vs-parallel-import/ נכנסו למעטפת, ולכן השם עולה. */
+const CACHE = 'pg-v5';
+const SHELL = ['/guides/', '/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();

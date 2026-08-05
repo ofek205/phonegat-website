@@ -251,13 +251,16 @@ try {
 var swPath = path.join(PROTO, 'sw.js');
 /* בעמוד עומק מה שמאוחסן הוא הכתובת שהדפדפן מבקש (/slug/), לא נתיב הקובץ */
 var shellEntry = FLAT ? './' + outName : '/' + args.slug + '/';
+/* ההשוואה היא למחרוזת המצוטטת ולא למחרוזת החלקית. עמוד אב נבלע בבן שלו: '/guides/' הוא
+ * תת-מחרוזת של '/guides/official-vs-parallel-import/', ולכן אחרי שהבן נוסף, האב דולג בשקט
+ * ולא נכנס למעטפת מעולם. קרה ב-5.8.2026 בדיוק כך, ובלי הודעת שגיאה. */
 try {
   var sw = fs.readFileSync(swPath, 'utf8');
-  if (sw.indexOf(shellEntry) < 0) {
+  if (sw.indexOf("'" + shellEntry + "'") < 0) {
     sw = sw.replace(/(const SHELL = \[)/, "$1'" + shellEntry + "', ");
     fs.writeFileSync(swPath, sw);
     notes.push('נוסף למעטפת ה-service worker');
-  }
+  } else { notes.push('כבר במעטפת ה-service worker'); }
 } catch (e) { notes.push('⚠ לא ניתן לעדכן sw.js — הוסף ידנית'); }
 
 /* ---------- report ---------- */
