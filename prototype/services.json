@@ -82,6 +82,21 @@
       "url": "/phones/iphone-17e/",
       "name": "אייפון 17e",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-s26/",
+      "name": "גלקסי S26",
+      "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a56/",
+      "name": "גלקסי A56",
+      "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a36/",
+      "name": "גלקסי A36",
+      "status": "review"
     }
   ]
 }

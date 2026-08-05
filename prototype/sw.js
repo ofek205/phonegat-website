@@ -11,8 +11,8 @@
    v8: iPhone 17 Pro.
    v9 והלאה: gen-devices.js מעלה את השם בעצמו בכל הרצה שהוסיפה כתובת למעטפת. עד v8 זה היה
    צעד ידני, והוא נשכח בהרצה שהוסיפה שלושה דגמים בבת אחת. אין יותר צורך לתעד כאן כל גרסה. */
-const CACHE = 'pg-v9';
-const SHELL = ['/phones/iphone-17e/', '/phones/iphone-16/', '/phones/iphone-17-pro-max/', '/phones/iphone-17-pro/', '/phones/redmi-note-14-pro/', '/phones/galaxy-s26-ultra/', '/phones/', '/phones/iphone-17/', '/guides/', '/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
+const CACHE = 'pg-v10';
+const SHELL = ['/phones/galaxy-a36/', '/phones/galaxy-a56/', '/phones/galaxy-s26/', '/phones/iphone-17e/', '/phones/iphone-16/', '/phones/iphone-17-pro-max/', '/phones/iphone-17-pro/', '/phones/redmi-note-14-pro/', '/phones/galaxy-s26-ultra/', '/phones/', '/phones/iphone-17/', '/guides/', '/guides/official-vs-parallel-import/', '/contact/', '/mobile-phone-repair-kiryat-gat/', '/phone-screen-replacement-kiryat-gat/', '/charging-port-repair-kiryat-gat/', '/phone-battery-replacement-kiryat-gat/', '/iphone-repair-kiryat-gat/', './', '/phone-problems/', './manifest.json', './logo.jpg', './logo-mark.png', './icon-192.png', './whatsapp-logo.png'];
 
 self.addEventListener('install', function (e) {
   self.skipWaiting();
