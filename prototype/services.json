@@ -151,6 +151,11 @@
     {
       "url": "/compare/",
       "name": "מרכז ההשוואות"
+    },
+    {
+      "url": "/phones/compare/",
+      "name": "כלי ההשוואה",
+      "status": "review"
     }
   ]
 }

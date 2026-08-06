@@ -240,6 +240,188 @@ var CSS = [
   '.ticks li:last-child{border-bottom:0}'
 ].join('\n') + '\n' + hubCss();
 
+/* .chip נשלף ממדריך התקלות, המקום שבו הרכיב נולד. אותו שיקול כמו ב-.hub: עותק שני של כלל
+ * עיצוב מתפצל בשקט. הרכיב שם הוא בדיוק מה שמערכת העיצוב מבקשת ולא צ׳יפ מקובע: בלי רקע, בלי
+ * מסגרת, radius אפס, וקו תחתון שמסמן בחירה. גם aria-pressed כבר שם, וזה הדפוס הנכון למתג. */
+function chipCss() {
+  var g = fs.readFileSync(path.join(PROTO, 'phone-problems/index.html'), 'utf8');
+  var want = [/^\.chip\{font-family:inherit[^}]*\}/m, /^\.chip:hover\{[^}]*\}/m, /^\.chip\[aria-pressed="true"\]\{[^}]*\}/m];
+  var got = want.map(function (re) {
+    var m = g.match(re);
+    if (!m) { console.error('✗ לא נמצא כלל .chip במדריך התקלות (' + re + '). הרכיב נולד שם, ואם הוא זז צריך לעדכן את המחולל.'); process.exit(1); }
+    return m[0];
+  });
+  return '/* .chip — נשלף מ-phone-problems/index.html בזמן החילול. עותק אחד. */\n' + got.join('\n');
+}
+
+var TOOL_CSS = [
+  chipCss(),
+  '/* 12 מתגי דגם. גריד ולא מסנן דביק: המסנן במדריך התקלות מחזיק ארבעה צ׳יפים בפס דביק,',
+  '   ושנים עשר בפס כזה היו 3 שורות של כרום דביק מעל כותרת של 64px. במקום זה הגריד רגיל,',
+  '   ורק שורת הסיכום דביקה. auto-fill עם מינימום 9.5rem נותן שתי עמודות ב-375px. */',
+  '.dpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:.2rem 1.4rem;margin-top:1.6rem;list-style:none;padding:0}',
+  '.dpick li{border-top:1px solid var(--line)}',
+  '.dpick .chip{display:block;width:100%;text-align:start;padding-block:.95rem;font-size:1.02rem;border-bottom:0}',
+  '.dpick .chip[aria-pressed="true"]{border-bottom:0}',
+  '/* הסימן שנבחר: מקף לפני השם, ולא רקע צבוע. אין משטחים מלאים במערכת הזאת. */',
+  '.dpick .chip::before{content:"";display:inline-block;inline-size:1.1rem;border-block-start:2px solid transparent;vertical-align:.35em;margin-inline-end:.5rem;transition:border-color .2s}',
+  '.dpick .chip[aria-pressed="true"]::before{border-block-start-color:var(--teal)}',
+  '/* שורת הסיכום. sticky מתחת לכותרת האתר (66px) ולא fixed, ולכן אין התנגשות עם סרגל',
+  '   המובייל של 70px ואין צורך בפינוי. */',
+  '.dstate{position:sticky;inset-block-start:66px;z-index:70;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block-end:1px solid var(--line);padding-block:.9rem;margin-block-start:1.8rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}',
+  '.dstate p{margin:0;color:var(--ink-soft);font-size:1rem}',
+  '.dstate b{color:var(--ink-strong);font-weight:700}',
+  '.dstate button{margin-inline-start:auto}',
+  '/* btn-sm הוא 36px, ונמדד 36x117 ב-375px. יעד מגע חייב 44px, וה-padding הוא שנושא אותו',
+  '   ולא min-height: גובה מוצהר נאכל על ידי המסגרת ותיבת השורה ויוצא 43. זה בדיוק הדפוס',
+  '   שהצ׳קליסט מתאר לגבי .cookie .btn-sm, שגם הוא עוקף padding כללי במקום לשנות אותו. */',
+  '.dstate .btn-sm{padding-block:.78rem}',
+  '.dempty{margin-top:1.8rem;border-block-start:1px solid var(--line);padding-block-start:1.4rem;color:var(--ink-soft);line-height:1.8}'
+].join('\n');
+
+function toolMain(openTag, index, order, pairCount) {
+  var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(function (a, b) {
+    return a.brand === b.brand ? 0 : (a.brand < b.brand ? -1 : 1);
+  });
+  var waPick = wa('היי, אני מתלבט בין כמה דגמים ואשמח לעזרה בבחירה');
+  /* \\u003c ולא <: מחרוזת שמכילה סוגר סקריפט בתוך <script> סוגרת אותו, וזו תקלה שמפילה
+   * את כל ה-JS בעמוד בשקט. אין כאן סוגרים כאלה, וזו חגורה. */
+  var json = function (o) { return JSON.stringify(o).replace(/</g, '\\u003c'); };
+
+  return openTag + '\n\n' +
+  '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
+  '      <h1 id="h1">השוואת מכשירים</h1>\n' +
+  '      <p class="sub">בחרו שני דגמים, או שלושה, והטבלה תציג רק את השדות שבהם הם באמת שונים. הנתונים מאתרי היצרנים.</p>\n' +
+  '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + waPick + '">' +
+  '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+  '      <p class="meta">\n        <span>' + live.length + ' דגמים</span>\n        <span>' + pairCount + ' זוגות</span>\n' +
+  '        <span>רק מה שונה</span>\n        <span>בלי מחיר, כי הוא משתנה</span>\n      </p>\n    </div>\n  </div>\n</section>\n\n' +
+
+  '<section class="block" id="pick" aria-labelledby="pick-h">\n  <div class="wrap box">\n' +
+  '    <h2 id="pick-h">בחרו דגמים</h2>\n' +
+  '    <p class="lead">עד שלושה. הטבלה מתעדכנת מיד, ואין צורך ללחוץ על כלום.</p>\n' +
+  '    <ul class="dpick" id="dpick">\n' +
+  live.map(function (d) {
+    return '      <li><button type="button" class="chip" data-slug="' + esc(d.slug) + '" aria-pressed="false">' +
+      ltr(d.name) + '</button></li>';
+  }).join('\n') + '\n    </ul>\n' +
+  '    <div class="dstate">\n' +
+  '      <p id="dstate" role="status">בחרו שני דגמים כדי לראות את ההבדלים.</p>\n' +
+  '      <button type="button" class="btn btn-teal btn-sm" id="dclear" hidden>נקו את הבחירה</button>\n' +
+  '    </div>\n' +
+  '    <div id="dout" aria-live="polite">\n' +
+  /* מצב ריק בתוך ה-HTML ולא רק ב-JS: העמוד noindex, אבל מי שנכנס בלי JavaScript חייב
+   * לקבל משהו שאומר לו לאן ללכת, ולא אזור ריק. */
+  '      <p class="dempty">אחרי שתבחרו, כאן תופיע טבלה עם השדות השונים בלבד. אם JavaScript כבוי, ' +
+  '<a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>\n' +
+  '    </div>\n  </div>\n</section>\n\n' +
+
+  '<section class="block" id="how" aria-labelledby="how-h">\n  <div class="wrap box">\n' +
+  '    <h2 id="how-h">איך הכלי מחשב את ההבדלים</h2>\n' +
+  '    <div class="prose">\n' +
+  '      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>\n' +
+  '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>\n' +
+  '      <p>אין כאן מחיר ואין הכרזה מי טוב יותר. את המחיר תקבלו מאיתנו כי הוא משתנה, ואת ההחלטה נעבור איתכם.</p>\n' +
+  '    </div>\n' +
+  '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>\n' +
+  '  </div>\n</section>\n\n' +
+
+  '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
+  '    <h2 id="cta-h">רוצים לראות אותם ביד?</h2>\n' +
+  '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+  '    <div class="row">\n' +
+  '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
+  '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+  '      <a class="btn btn-teal" href="/compare/">ההשוואות המוכנות</a>\n' +
+  '    </div>\n' +
+  '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
+  '  </div>\n</section>\n\n' +
+
+  '<script>\n' +
+  '/* כלי ההשוואה. אין כאן חישוב הבדלים: PAIRS מכיל את התוצאה של diffSpec מהמחולל, כלומר\n' +
+  '   שמות השדות שנמצאו שונים בכל זוג. הערכים נשלפים מ-devices.json בזמן ריצה. כך ההחלטה\n' +
+  '   "מה שונה" חיה במקום אחד בלבד, ואי אפשר שהכלי והעמוד הקבוע יגידו דברים שונים. */\n' +
+  '(function(){\n' +
+  '  "use strict";\n' +
+  '  var PAIRS=' + json(index) + ';\n' +
+  '  var ORDER=' + json(order) + ';\n' +
+  '  var MAX=3, sel=[], DB=null;\n' +
+  '  var wrap=document.getElementById("dpick"), out=document.getElementById("dout"),\n' +
+  '      state=document.getElementById("dstate"), clear=document.getElementById("dclear");\n' +
+  '  if(!wrap||!out) return;\n' +
+  '  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}\n' +
+  '  function ltr(s){return \'<bdo dir="ltr">\'+esc(s)+"</bdo>";}\n' +
+  '  function dev(sl){for(var i=0;i<DB.devices.length;i++){if(DB.devices[i].slug===sl)return DB.devices[i];}return null;}\n' +
+  '  function keysFor(a,b){var p=PAIRS[a+"|"+b]||PAIRS[b+"|"+a];return p?{k:p.k?p.k.split("|"):[],s:p.s}:null;}\n' +
+  '  function val(v){return Array.isArray(v)?v.join(", "):v;}\n' +
+  '\n' +
+  '  function render(){\n' +
+  '    var names=sel.map(function(s){var d=dev(s);return d?(d.name_he||d.name):s;});\n' +
+  '    if(sel.length<2){\n' +
+  '      state.innerHTML=sel.length?"נבחר "+esc(names[0])+". בחרו עוד אחד לפחות.":"בחרו שני דגמים כדי לראות את ההבדלים.";\n' +
+  '      clear.hidden=!sel.length;\n' +
+  '      out.innerHTML=\'<p class="dempty">אחרי שתבחרו, כאן תופיע טבלה עם השדות השונים בלבד. \'+\n' +
+  '        \'אם JavaScript כבוי, <a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות.</p>\';\n' +
+  '      return;\n' +
+  '    }\n' +
+  '    clear.hidden=false;\n' +
+  '    /* שדה שונה בין שלושה אם ורק אם הוא שונה באחד הזוגות. איחוד קבוצות, לא אלגוריתם חדש. */\n' +
+  '    var set={}, same=null, missingPair=false;\n' +
+  '    for(var i=0;i<sel.length;i++){for(var j=i+1;j<sel.length;j++){\n' +
+  '      var p=keysFor(sel[i],sel[j]);\n' +
+  '      if(!p){missingPair=true;continue;}\n' +
+  '      p.k.forEach(function(k){set[k]=1;});\n' +
+  '      if(sel.length===2) same=p.s;\n' +
+  '    }}\n' +
+  '    if(missingPair){out.innerHTML=\'<p class="dempty">לא הצלחנו לחשב את ההשוואה הזאת. <a href="/compare/">ההשוואות המוכנות</a> זמינות תמיד.</p>\';return;}\n' +
+  '    var diff=ORDER.filter(function(r){return set[r[1]];});\n' +
+  '    state.innerHTML="<b>"+names.map(esc).join(" מול ")+"</b> · "+diff.length+" שדות שונים"+\n' +
+  '      (same!==null?" · "+same+" זהים":"");\n' +
+  '\n' +
+  '    var ds=sel.map(dev), cat=null, html="", bodyOpen=false;\n' +
+  '    diff.forEach(function(r){\n' +
+  '      if(r[0]!==cat){ if(bodyOpen) html+="</tbody>"; cat=r[0];\n' +
+  '        html+=\'<tbody><tr class="grp"><th colspan="2" scope="rowgroup">\'+esc(cat)+"</th></tr>"; bodyOpen=true; }\n' +
+  '      html+=\'<tr class="fld"><th colspan="2" scope="rowgroup">\'+esc(r[1])+"</th></tr>";\n' +
+  '      ds.forEach(function(d){\n' +
+  '        var v=d?val(d.spec[r[2]]):null;\n' +
+  '        var cell=(v===null||v===undefined||v==="")?"<td><i>לא מפורסם אצל היצרן</i></td>":"<td>"+esc(v)+"</td>";\n' +
+  '        html+=\'<tr><th scope="row">\'+ltr(d.name)+"</th>"+cell+"</tr>";\n' +
+  '      });\n' +
+  '    });\n' +
+  '    if(bodyOpen) html+="</tbody>";\n' +
+  '    out.innerHTML=\'<div class="cmp-wrap" tabindex="0" role="region" aria-label="טבלת ההבדלים">\'+\n' +
+  '      \'<table class="cmp cmp-spec cmp-vs"><caption>\'+diff.length+" שדות שבהם יש הבדל"+\n' +
+  '      (same!==null?", ו-"+same+" שדות נוספים זהים ואינם מופיעים כאן":"")+".</caption>"+html+"</table></div>"+\n' +
+  '      \'<p class="aside">\'+ds.map(function(d){return \'<a href="/phones/\'+d.slug+\'/">המפרט המלא של \'+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";\n' +
+  '  }\n' +
+  '\n' +
+  '  wrap.addEventListener("click",function(e){\n' +
+  '    var b=e.target.closest?e.target.closest(".chip"):null;\n' +
+  '    if(!b||!DB) return;\n' +
+  '    var sl=b.getAttribute("data-slug"), at=sel.indexOf(sl);\n' +
+  '    if(at>=0) sel.splice(at,1);\n' +
+  '    else { if(sel.length>=MAX) sel.shift(); sel.push(sl); }\n' +
+  '    Array.prototype.forEach.call(wrap.querySelectorAll(".chip"),function(c){\n' +
+  '      c.setAttribute("aria-pressed", sel.indexOf(c.getAttribute("data-slug"))>=0?"true":"false");\n' +
+  '    });\n' +
+  '    render();\n' +
+  '  });\n' +
+  '  clear.addEventListener("click",function(){\n' +
+  '    sel=[];\n' +
+  '    Array.prototype.forEach.call(wrap.querySelectorAll(".chip"),function(c){c.setAttribute("aria-pressed","false");});\n' +
+  '    render(); wrap.querySelector(".chip").focus();\n' +
+  '  });\n' +
+  '\n' +
+  '  fetch("/devices.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){\n' +
+  '    DB=d; render();\n' +
+  '  }).catch(function(){\n' +
+  '    out.innerHTML=\'<p class="dempty">לא ניתן לטעון את נתוני המכשירים. <a href="/compare/">ההשוואות המוכנות</a> עובדות בלי הכלי.</p>\';\n' +
+  '  });\n' +
+  '})();\n' +
+  '</scr' + 'ipt>\n\n';
+}
+
 var made = 0, swGrew = false;
 db._comparisons.pairs.forEach(function (p) {
   if (only && p.slug !== only) return;
@@ -371,7 +553,8 @@ if (!only) {
       return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc((a.name_he || a.name) + ' מול ' + (b.name_he || b.name)) + '</b>' +
         '<span>' + d.rows.length + ' שדות שונים · ' + d.same + ' זהים</span></a></li>';
     }).join('\n') + '\n      </ul>\n' +
-    '    <p class="aside">לא מצאתם? <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
+    '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מתוך השנים עשר, או שלושה.</p>\n' +
+    '    <p class="aside">ואם הדגם עצמו לא אצלנו באתר, <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
     '  </div>\n</section>\n\n' +
 
     '<section class="block" id="how" aria-labelledby="h-how">\n  <div class="wrap box">\n' +
@@ -406,6 +589,105 @@ if (!only) {
     if (!svc2.existing.filter(function (x) { return x.url === '/compare/'; }).length) {
       svc2.existing.push({ url: '/compare/', name: 'מרכז ההשוואות' });
       fs.writeFileSync(path.join(PROTO, 'services.json'), JSON.stringify(svc2, null, 2) + '\n');
+    }
+  } catch (e) {}
+
+  buildTool();
+}
+
+/* ============================================ D3.1 — הכלי ב-/phones/compare/
+ *
+ * הבעיה ההנדסית כאן אינה הממשק אלא הכפילות. חישוב ההבדלים חי ב-diffSpec, ב-Node. כלי שמריץ
+ * את אותו חישוב בדפדפן פירושו עותק שני של האלגוריתם, ומתוך השבוע הזה כבר יש שלוש דוגמאות
+ * למה שקורה לעותק שני: ה-CSS של .hub לא נסע שלוש פעמים, וטבלת התוויות כמעט התפצלה. עותק
+ * שני של האלגוריתם היה גרוע יותר מכולם, כי הוא לא נראה: הכלי היה מציג הבדל שהעמוד הסטטי
+ * לא מציג, ואף בדיקה לא הייתה תופסת את זה.
+ *
+ * הפתרון: המחולל מחשב מראש את כל 66 הזוגות, ומטמיע **רק את שמות השדות שנמצאו שונים**.
+ * הערכים עצמם נשלפים מ-devices.json בזמן ריצה, כמו שהפאנל שולף services.json. כלומר
+ * ההחלטה מה שונה נשארת במקום אחד, והדפדפן רק מציג את התוצאה שלה.
+ *
+ * שלושה מכשירים נתמכים בלי חישוב חדש: שדה שונה בין שלושה אם ורק אם הוא שונה באחד הזוגות,
+ * ולכן איחוד של שלוש קבוצות מוטמעות נותן את התשובה המדויקת. זו אריתמטיקה של קבוצות ולא
+ * אלגוריתם. זה עובד רק מפני שהפריסה היא מכשיר-כשורה: עמודה לכל מכשיר הייתה נשברת בשלושה.
+ */
+function buildTool() {
+  var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) { return d.slug; });
+  var index = {}, n = 0;
+  for (var i = 0; i < live.length; i++) {
+    for (var j = i + 1; j < live.length; j++) {
+      var a = D(live[i]), b = D(live[j]);
+      var d = diffSpec(a, b, live[i] + '|' + live[j]);
+      index[live[i] + '|' + live[j]] = { k: d.rows.map(function (r) { return r.label; }).join('|'), s: d.same };
+      n++;
+    }
+  }
+  /* התוויות ולא המפתחות, כי התווית היא מה שמוצג ומה שמקבץ. גם שומר על סדר הקטגוריות. */
+  var order = [];
+  GROUPS.forEach(function (g) { g[1].forEach(function (f) { order.push([g[0], f[1], f[0]]); }); });
+
+  var url = PROD + 'compare/';                       /* canonical לעמוד הסטטי, לא לעצמו */
+  var toolUrl = PROD + 'phones/compare/';
+  var title = 'השוואת מכשירים: בחרו שני דגמים | פון גת';
+  var desc = 'כלי להשוואה בין שני דגמים או שלושה, מתוך המכשירים שיש לנו. רק השדות שבהם הם באמת שונים.';
+  var h = src;
+
+  h = swap(h, /<title>[\s\S]*?<\/title>/, '<title>' + esc(title) + '</title>', '<title>', 'tool');
+  h = swap(h, /(<meta name="description" content=")[^"]*(">)/, '$1' + esc(desc) + '$2', 'description', 'tool');
+  /* canonical לעצמו, ו-noindex. התוכנית ביקשה canonical ל-/compare/, ובדיקה 6 ב-preflight
+   * פסלה את זה בצדק: canonical לדף אחר יחד עם noindex הם שני סיגנלים סותרים. ה-canonical
+   * אומר "אנדקס את הכתובת ההיא במקום", וה-noindex אומר "אל תאנדקס בכלל", וגוגל ממליץ
+   * במפורש לא לשלב ביניהם. השילוב ההגיוני היה מתאים אם הכלי היה עותק של /compare/, והוא
+   * לא: שם רשימה של שמונה השוואות מוכנות, וכאן בורר. תוכן אחר שלא רוצים לאנדקס, ולכן
+   * noindex,follow עם canonical לעצמו. */
+  h = swap(h, /(<link rel="canonical" href=")[^"]*(">)/, '$1' + toolUrl + '$2', 'canonical', 'tool');
+  h = swap(h, /(<meta property="og:url" content=")[^"]*(">)/, '$1' + toolUrl + '$2', 'og:url', 'tool');
+  h = swap(h, /(<meta property="og:title" content=")[^"]*(">)/, '$1' + esc(title) + '$2', 'og:title', 'tool');
+  h = swap(h, /(<meta property="og:description" content=")[^"]*(">)/, '$1' + esc(desc) + '$2', 'og:desc', 'tool');
+  h = swap(h, /(<meta name="twitter:title" content=")[^"]*(">)/, '$1' + esc(title) + '$2', 'twitter:title', 'tool');
+  h = swap(h, /(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(desc) + '$2', 'twitter:desc', 'tool');
+  /* החלפה ולא הוספה מותנית. בהרצה הראשונה התנאי "אם אין robots" דילג, כי לעמוד המקור כבר
+   * יש <meta name="robots" content="index,follow">. התוצאה: כלי שמצהיר index עם canonical
+   * לדף אחר, וזה מה שבדיקה 6 תפסה. תנאי שמדלג בשקט גרוע מהיעדר תנאי. */
+  if (/<meta name="robots"[^>]*>/.test(h)) {
+    h = h.replace(/<meta name="robots"[^>]*>/, '<meta name="robots" content="noindex,follow">');
+  } else {
+    h = h.replace(/(<link rel="canonical")/, '<meta name="robots" content="noindex,follow">\n  $1');
+  }
+  if (h.indexOf('content="noindex,follow"') < 0) { console.error('✗ tool: noindex לא נכנס'); process.exit(1); }
+
+  /* אין Product ואין Article: זה כלי ולא תוכן. נשאר BreadcrumbList וה-#business. */
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
+  if (!/"@type":"Product"/.test(h)) { console.error('✗ tool: לא נמצא בלוק Product להחלפה'); process.exit(1); }
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>/,
+    '<script type="application/ld+json">\n' + JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
+        { '@type': 'ListItem', position: 2, name: 'מכשירים', item: PROD + 'phones/' },
+        { '@type': 'ListItem', position: 3, name: 'השוואת מכשירים', item: toolUrl }
+      ]
+    }) + '\n</script>');
+
+  var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
+  if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ tool: לא נמצא עוגן ה-CSS'); process.exit(1); }
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS + '\n' + TOOL_CSS);
+
+  var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
+  var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
+  h = h.slice(0, mS) + toolMain(openTag, index, order, n) + h.slice(mE);
+
+  var out = path.join(PROTO, 'phones', 'compare', 'index.html');
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, h);
+  console.log('✓ phones/compare/ נבנה: ' + n + ' זוגות מחושבים מראש, ' + order.length + ' שדות');
+
+  var swPath = path.join(PROTO, 'sw.js'), sw = fs.readFileSync(swPath, 'utf8');
+  if (sw.indexOf("'/phones/compare/'") < 0) { fs.writeFileSync(swPath, sw.replace('const SHELL = [', "const SHELL = ['/phones/compare/', ")); swGrew = true; }
+  try {
+    var sp = path.join(PROTO, 'services.json'), svc = JSON.parse(fs.readFileSync(sp, 'utf8'));
+    if (!svc.existing.filter(function (x) { return x.url === '/phones/compare/'; }).length) {
+      svc.existing.push({ url: '/phones/compare/', name: 'כלי ההשוואה', status: 'review' });
+      fs.writeFileSync(sp, JSON.stringify(svc, null, 2) + '\n');
     }
   } catch (e) {}
 }
