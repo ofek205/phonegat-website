@@ -110,7 +110,10 @@ function buildMain(d, openTag) {
   '      <p class="intro">הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.</p>\n' +
   '      <div class="cmp-wrap" role="region" aria-labelledby="h-buy" tabindex="0">\n' +
   '        <table class="cmp">\n' +
-  '          <caption>מה שצריך לברר לפני קנייה. שדה שמופיע בהדגשה נטויה עדיין לא עודכן, וכדאי לשאול עליו.</caption>\n' +
+  /* הכיתוב הזה אמר "עדיין לא עודכן" על כל שדה בהדגשה. לגבי המחיר זה הפסיק להיות נכון
+   * ב-6.8.2026, כשהוחלט שאין מחירון באתר: הוא לא ממתין לעדכון, הוא לא יופיע. עמוד שמרמז
+   * שמחיר בדרך מטעה. שאר השדות כן ימולאו, ולכן הכיתוב מפריד בין השניים. */
+  '          <caption>מה שצריך לברר לפני קנייה. שדה בהדגשה נטויה נמסר בשיחה ולא באתר, והמחיר לא יופיע כאן בכלל מפני שהוא משתנה.</caption>\n' +
   '          <thead><tr><th scope="col">מה</th><th scope="col">' + esc(d.name) + '</th></tr></thead>\n' +
   '          <tbody>\n' + facts + '\n          </tbody>\n' +
   '        </table>\n' +
@@ -202,7 +205,12 @@ function buildSchema(d, url) {
     url: url
   };
   /* ⛔ אין Offer, אין price ואין availability בלי מחיר ומלאי אמיתיים שמוצגים בעמוד.
-   * Product בלי offers חוקי לגמרי, פשוט לא זכאי לתוצאות עשירות של מוצר. */
+   * Product בלי offers חוקי לגמרי, פשוט לא זכאי לתוצאות עשירות של מוצר.
+   *
+   * מ-6.8.2026 התנאי הזה לא ייתקיים לעולם, וזו החלטה ולא חוסר: אין מחירון באתר, כי המחיר
+   * משתנה כל הזמן. התוצאה, שאומרים אותה בקול ולא מגלים בדיעבד: עמודי המכשיר לא יהיו זכאים
+   * לתוצאות עשירות של מוצר בגוגל. Offer דורש price, וגם AggregateOffer דורש lowPrice.
+   * הבלוק נשאר כאן ולא נמחק, כי אם ההחלטה תשתנה זה מה שצריך לעבוד. */
   if (C.price && C.stock) {
     product.offers = { '@type': 'Offer', priceCurrency: 'ILS', price: String(C.price),
                        availability: 'https://schema.org/InStock', url: url };
@@ -350,8 +358,15 @@ db.devices.forEach(function (d) {
     fs.writeFileSync(svcPath, JSON.stringify(svc, null, 2) + '\n');
   } catch (e) { console.error('⚠ ' + d.slug + ': לא ניתן לעדכן services.json — הוסף ידנית'); }
 
+  /* המחיר יצא מרשימת "חסר מאופק". הוא null בכוונה מ-6.8.2026, ולספור אותו כחוסר פירושו
+   * שהדוח יבקש לנצח משהו שהוחלט שלא יגיע. במקום זה: התרעה אם מישהו כן מילא אותו, כי זה
+   * מחזיר Offer עם מחיר לסכימה בסתירה להחלטה, ושולח לגוגל מספר שעלול להיות מיושן. */
+  if (d.commercial.price !== null && d.commercial.price !== undefined && d.commercial.price !== '') {
+    console.error('⚠ ' + d.slug + ': commercial.price מולא (' + d.commercial.price + '), בסתירה להחלטה מ-6.8.2026 שאין מחירון באתר. ' +
+      'זה מחזיר Offer עם מחיר לסכימה. אם ההחלטה שונתה, עדכן את _rules ב-devices.json.');
+  }
   var missing = [];
-  Object.keys(d.commercial).forEach(function (k) { if (d.commercial[k] === null) missing.push(k); });
+  Object.keys(d.commercial).forEach(function (k) { if (k !== 'price' && d.commercial[k] === null) missing.push(k); });
   ['sigal', 'baruch'].forEach(function (w) { if (d.recommendation[w].status !== 'approved') missing.push('המלצת ' + w); });
   if (d.launch_year === null) missing.push('launch_year');
 
