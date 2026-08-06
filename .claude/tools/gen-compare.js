@@ -1,0 +1,424 @@
+#!/usr/bin/env node
+/* PHONE GAT — מחולל עמודי השוואה מתוך prototype/devices.json › _comparisons.
+ *
+ *   node .claude/tools/gen-compare.js                              כל הזוגות
+ *   node .claude/tools/gen-compare.js iphone-17-vs-galaxy-s26      אחד
+ *
+ * למה מחולל: אותה סיבה כמו gen-devices.js. אין build בפרויקט, ולכן ה-HTML נוצר מקומית ומקומט.
+ *
+ * שתי החלטות שהמחולל אוכף:
+ *
+ *   1. הטבלה מציגה רק שדות שבהם שני הדגמים שונים, ואומרת כמה שדות זהים. השוואה שמציגה
+ *      עשרים ושבעה שדות מתוכם עשרים זהים היא לא השוואה, היא גיליון מפרט כפול.
+ *
+ *   2. שתי עמודות, לא שלוש. כל שדה הוא tbody עם כותרת שמשתרעת, ובתוכו שורה לכל מכשיר.
+ *      זו לא בחירה אסתטית אלא תוצאה של מדידה ב-375px, ראה MEASURED למטה.
+ *
+ * MEASURED, 5.8.2026, רוחב מכל 351px, טקסט המפרט האמיתי מ-devices.json:
+ *   שלוש עמודות זה לצד זה  →  עמודת ערך של 76px, והתא הגרוע נשבר ל-16 שורות.
+ *   שתי עמודות זה לצד זה   →  עמודת ערך של 91px, והתא הגרוע נשבר ל-9 שורות.
+ *   הצורה שנבחרה          →  עמודת ערך של 215px, והתא הגרוע נשבר ל-8 שורות, אפס גלישה.
+ *   טבלה בלי גלישה ברוחב מלא של התוכן הייתה דורשת 2162px, כלומר שש מסכים של גלילה הצידה.
+ * המסקנה: עם מחרוזות מפרט בעברית, עמודה לכל מכשיר לא עובדת בטלפון. גם לא שתיים.
+ * הצורה הזאת גם לא נשברת כשמשווים שלושה או ארבעה דגמים, כי מכשיר הוא שורה ולא עמודה.
+ */
+'use strict';
+var fs = require('fs'), path = require('path');
+var ROOT = path.resolve(__dirname, '..', '..');
+var PROTO = path.join(ROOT, 'prototype');
+var PROD = 'https://www.phonegat.co.il/';
+/* המסגרת נלקחת מעמוד מכשיר ולא מהמדריך, כי בעמוד מכשיר ה-CSS של .cmp-spec כבר מוזרק. */
+var SOURCE = 'phones/iphone-17/index.html';
+
+var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
+if (!db._comparisons || !db._comparisons.pairs) { console.error('✗ אין _comparisons ב-devices.json'); process.exit(1); }
+if (!db._spec_groups || !db._spec_groups.groups) { console.error('✗ אין _spec_groups ב-devices.json'); process.exit(1); }
+var GROUPS = db._spec_groups.groups;
+var only = process.argv[2];
+var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
+
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
+function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
+function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
+function D(slug) { return db.devices.filter(function (d) { return d.slug === slug; })[0]; }
+function swap(h, re, to, what, who) {
+  if (!re.test(h)) { console.error('✗ ' + who + ': לא נמצא ' + what); process.exit(1); }
+  return h.replace(re, to);
+}
+
+/* אותה עובדה בשני ניסוחים אינה הבדל. הנרמול כאן קיים כדי לתפוס את זה ולהתריע, לא כדי
+ * להסתיר: עמוד שאומר "יש הבדל" כשאין הוא שקר, והתיקון הוא ב-devices.json. קרה בפועל
+ * ב-5.8.2026 בין "שמונה ליבות, עד 2.2GHz" ל-"8 ליבות, עד 2.2GHz". */
+var NUMWORDS = { 'שמונה': '8', 'עשר': '10', 'תשע': '9', 'שבע': '7', 'שש': '6', 'חמש': '5', 'ארבע': '4', 'שלוש': '3', 'שתיים': '2' };
+function normalise(s) {
+  if (s === null || s === undefined) return null;
+  s = String(val(s));
+  Object.keys(NUMWORDS).forEach(function (w) { s = s.split(w).join(NUMWORDS[w]); });
+  return s.replace(/^(הקלטה ב-|הקלטה |עד )/, '')
+    .replace(/[.,:()׳״'"]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+}
+
+var softDiffs = [];
+/* מחזיר { rows, sameCount, missingCount } */
+function diffSpec(a, b, pairSlug) {
+  var rows = [], same = 0, missing = 0;
+  GROUPS.forEach(function (g) {
+    g[1].forEach(function (f) {
+      var key = f[0], label = f[1];
+      var va = val(a.spec[key]), vb = val(b.spec[key]);
+      var ea = va === null || va === undefined, eb = vb === null || vb === undefined;
+      if (ea && eb) return;                      /* אף אחד מהיצרנים לא מפרסם. לא שדה ולא הבדל */
+      if (!ea && !eb) {
+        if (va === vb) { same++; return; }
+        if (normalise(va) === normalise(vb)) {
+          same++;
+          softDiffs.push(pairSlug + ' · ' + label + ':  "' + va + '"  /  "' + vb + '"');
+          return;
+        }
+      } else { missing++; }
+      rows.push({ group: g[0], label: label, a: ea ? null : va, b: eb ? null : vb });
+    });
+  });
+  return { rows: rows, same: same, missing: missing };
+}
+
+function buildTable(a, b, d) {
+  var byGroup = {}, order = [];
+  d.rows.forEach(function (r) {
+    if (!byGroup[r.group]) { byGroup[r.group] = []; order.push(r.group); }
+    byGroup[r.group].push(r);
+  });
+  /* "לא מפורסם" ולא מקף ולא רווח: שדה שהיצרן לא מפרסם אינו אפס, וקורא צריך לדעת
+   * שההיעדר הוא של המידע ולא של התכונה. */
+  function cell(v) {
+    return v === null
+      ? '<td><i>לא מפורסם אצל היצרן</i></td>'
+      : '<td>' + esc(v) + '</td>';
+  }
+  var bodies = order.map(function (gname) {
+    return '        <tbody>\n' +
+      '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(gname) + '</th></tr>\n' +
+      byGroup[gname].map(function (r) {
+        return '          <tr class="fld"><th colspan="2" scope="rowgroup">' + esc(r.label) + '</th></tr>\n' +
+          '          <tr><th scope="row">' + ltr(a.name) + '</th>' + cell(r.a) + '</tr>\n' +
+          '          <tr><th scope="row">' + ltr(b.name) + '</th>' + cell(r.b) + '</tr>';
+      }).join('\n') + '\n        </tbody>';
+  }).join('\n');
+
+  return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
+    '      <table class="cmp cmp-spec cmp-vs">\n' +
+    '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, מתוך המפרט שהיצרנים מפרסמים. ' +
+    d.same + ' שדות נוספים זהים בשני הדגמים ואינם מופיעים כאן.</caption>\n' +
+    bodies + '\n      </table>\n    </div>\n';
+}
+
+function buildMain(p, a, b, d, openTag) {
+  var url = PROD + 'compare/' + p.slug + '/';
+  var waPick = wa('היי, אני מתלבט בין ' + a.name + ' ל-' + b.name + '. אשמח לעזרה בבחירה');
+
+  var s = openTag + '\n\n' +
+    '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
+    '      <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
+    '      <p class="sub">' + esc(p.lede) + '</p>\n' +
+    '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + waPick + '">' +
+    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '      <p class="meta">\n' +
+    '        <span>' + d.rows.length + ' שדות שונים</span>\n' +
+    '        <span>' + d.same + ' שדות זהים</span>\n' +
+    '        <span>המפרטים מאתרי היצרנים</span>\n' +
+    '        <span>בלי הכרזת מנצח</span>\n' +
+    '      </p>\n    </div>\n  </div>\n</section>\n\n' +
+
+    /* שני המכשירים, קישור לעמוד המלא של כל אחד. הרכיב .hub, אותו רכיב של מרכז המכשירים. */
+    '<section class="block" id="devices" aria-labelledby="h-dev">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-dev">שני המכשירים</h2>\n' +
+    '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n' +
+    '      <ul class="hub">\n' +
+    /* כאן לא חוזרים על המפרט. הטבלה נמצאת מיד למטה, וכשמשווים שני דגמים באותו גודל מסך
+     * התוצאה הייתה "מסך 6.3 אינץ׳" פעמיים זה מתחת לזה, ועוד פעם בפסקה הפותחת. */
+    [a, b].map(function (x) {
+      return '        <li><a href="/phones/' + x.slug + '/"><b>' + ltr(x.name) + '</b>' +
+        '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
+    }).join('\n') + '\n      </ul>\n' +
+    '  </div>\n</section>\n\n' +
+
+    '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
+    '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
+    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + d.same +
+    ' שדות נוספים זהים בשניהם, ולכן אין טעם להציג אותם.</p>\n' +
+    buildTable(a, b, d) +
+    '  </div>\n</section>\n\n' +
+
+    '<section class="block" id="who" aria-labelledby="h-who">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-who">למי עדיף כל אחד</h2>\n' +
+    '    <div class="two">\n' +
+    [[a, p.for_a], [b, p.for_b]].map(function (pair) {
+      return '      <div class="col">\n' +
+        '        <h3>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
+        pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') +
+        '\n        </ul>\n' +
+        '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
+        esc(pair[0].name_he || pair[0].name) + '</a></p>\n      </div>';
+    }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n' +
+
+    '<section class="rules" aria-labelledby="h-bl">\n  <div class="wrap">\n    <div class="box">\n' +
+    '      <h2 id="h-bl">השורה התחתונה</h2>\n' +
+    '      <div class="prose"><p>' + esc(p.bottom_line) + '</p></div>\n' +
+    '    </div>\n  </div>\n</section>\n\n' +
+
+    '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
+    '    <h2 id="cta-h">עדיין מתלבטים?</h2>\n' +
+    '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+    '    <div class="row">\n' +
+    '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
+    '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+    '      <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>\n' +
+    '    </div>\n' +
+    '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
+    '  </div>\n</section>\n\n';
+  return s;
+}
+
+function schema(p, a, b, url) {
+  return [
+    { '@context': 'https://schema.org', '@type': 'Article',
+      headline: p.h1, description: p.description,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      about: [a, b].map(function (x) { return { '@type': 'Product', name: x.name, brand: { '@type': 'Brand', name: x.brand } }; }),
+      publisher: { '@id': PROD + '#business' } },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
+        { '@type': 'ListItem', position: 2, name: 'השוואות', item: PROD + 'compare/' },
+        { '@type': 'ListItem', position: 3, name: p.h1, item: url }
+      ] }
+  ];
+}
+
+/* ה-CSS של .hub נשלף מ-guides/index.html, המקום שבו הרכיב נולד, ולא מועתק לכאן.
+ *
+ * זו הפעם השלישית שה-CSS של הרכיב הזה לא נסע יחד עם ה-HTML שלו. פעם ראשונה: /phones/ קיבל
+ * את הרשימה בלי העיצוב, והדגמים הוצגו כטקסט שטוח. פעם שנייה: אותו דבר בעמודי ההשוואה, כי
+ * עמוד המקור כאן הוא עמוד מכשיר ואין בו .hub בכלל. בשתי הפעמים preflight תפס, ובשתי הפעמים
+ * התיקון היה העתקה נוספת של אותו בלוק. העתק שלישי היה מבטיח שאחד מהשלושה יסחף.
+ *
+ * שליפה מהמקור פותרת את זה מעצם המבנה: יש עותק אחד, ומי שיערוך אותו שם יראה את השינוי בכל
+ * העמודים בהרצה הבאה. אם הבלוק לא נמצא, זו שגיאה קשה ולא אזהרה, כי הרשימה היא הניווט. */
+function hubCss() {
+  var g = fs.readFileSync(path.join(PROTO, 'guides/index.html'), 'utf8');
+  var s = g.indexOf('.hub{list-style:none');
+  if (s < 0) { console.error('✗ לא נמצא ה-CSS של .hub ב-guides/index.html. הרכיב נולד שם, ואם הוא זז צריך לעדכן את המחולל.'); process.exit(1); }
+  var e = g.indexOf('\n\n', s);
+  var block = g.slice(s, e < 0 ? s + 1400 : e);
+  var rules = (block.match(/^\.hub|^@media[^{]*\{\.hub/gm) || []).length;
+  if (rules < 6) { console.error('✗ ה-CSS של .hub נשלף חלקי: ' + rules + ' כללים בלבד'); process.exit(1); }
+  return '/* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */\n' + block;
+}
+
+/* ה-CSS של עמוד ההשוואה. מוזרק כאן ולא יושב בעמוד המקור, כי המקור הוא עמוד מכשיר ואין בו
+ * שתי עמודות "למי עדיף" ואין בו שורת שדה בתוך קטגוריה. CSS שלא בשימוש במקור נסחף. */
+var CSS = [
+  '/* עמוד השוואה. שורת שדה בתוך קטגוריה: קו שערה ותווית קטנה, בלי רקע צבוע ובלי מסגרת,',
+  '   כמו כל התוויות הקטנות בדף. הקטגוריה מעליה נשארת עם הקו הכבד. */',
+  '.cmp-vs .fld th{border-top:1px solid var(--line);padding-block:1.15rem .3rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.02em;color:var(--ink-strong);text-align:start;width:auto}',
+  '.cmp-vs .grp+.fld th{border-top:0}',
+  '/* שם המכשיר בשורה הוא כותרת שורה, ולכן הוא צר וקבוע. 7.5rem = 120px, ומשאיר לערך את השאר.',
+  '   נמדד: עמודת ערך של 215px ב-375px, והתא הגרוע נשבר ל-8 שורות במקום 16 בטבלה של שלוש עמודות. */',
+  '.cmp-vs tbody th[scope=row]{width:7.5rem;font-weight:700;color:var(--ink)}',
+  '.cmp-vs td i{font-style:italic;color:var(--ink-soft)}',
+  '/* אין min-width: הטבלה הזאת לא צריכה לגלול הצידה, וזו כל הנקודה בצורה שנבחרה. */',
+  '.cmp-vs{min-width:0}',
+  '@media(max-width:640px){.cmp-vs{min-width:0}.cmp-vs tbody th[scope=row]{width:6.2rem}}',
+  '/* שתי עמודות "למי עדיף". נערמות בטלפון, כי שתי רשימות זו ליד זו ב-375px זה שתי עמודות',
+  '   של 160px ואף אחת מהן לא נקראת. */',
+  '.two{display:grid;gap:2.2rem;margin-top:1.6rem}',
+  '@media(min-width:820px){.two{grid-template-columns:1fr 1fr;gap:3rem}}',
+  '.two .col h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.5rem);margin:0 0 .2rem;padding-block-end:.7rem;border-bottom:2px solid var(--ink-strong)}',
+  '.ticks{list-style:none;margin:0;padding:0}',
+  '.ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}',
+  '.ticks li:last-child{border-bottom:0}'
+].join('\n') + '\n' + hubCss();
+
+var made = 0, swGrew = false;
+db._comparisons.pairs.forEach(function (p) {
+  if (only && p.slug !== only) return;
+  var a = D(p.a), b = D(p.b);
+  if (!a || !b) { console.error('✗ ' + p.slug + ': דגם חסר'); process.exit(1); }
+  var url = PROD + 'compare/' + p.slug + '/';
+  var h = src;
+
+  h = swap(h, /<title>[\s\S]*?<\/title>/, '<title>' + esc(p.title) + '</title>', '<title>', p.slug);
+  h = swap(h, /(<meta name="description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'description', p.slug);
+  h = swap(h, /(<link rel="canonical" href=")[^"]*(">)/, '$1' + url + '$2', 'canonical', p.slug);
+  h = swap(h, /(<meta property="og:title" content=")[^"]*(">)/, '$1' + esc(p.title) + '$2', 'og:title', p.slug);
+  h = swap(h, /(<meta property="og:description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'og:description', p.slug);
+  h = swap(h, /(<meta property="og:url" content=")[^"]*(">)/, '$1' + url + '$2', 'og:url', p.slug);
+  h = swap(h, /(<meta name="twitter:title" content=")[^"]*(">)/, '$1' + esc(p.title) + '$2', 'twitter:title', p.slug);
+  h = swap(h, /(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'twitter:desc', p.slug);
+
+  /* מוחקים קודם, מזריקים אחר כך. אותה מלכודת שהפילה את פירורי הלחם של עמודי המכשיר:
+   * הבלוק החדש מוזרק במקום Product, שיושב לפני ה-BreadcrumbList של המקור, ולכן מחיקה
+   * אחרי ההזרקה מוחקת את החדש. שום בדיקה לא תופסת את זה כי מספר הרמות זהה. */
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
+  if (!/"@type":"Product"/.test(h)) { console.error('✗ ' + p.slug + ': לא נמצא בלוק Product להחלפה'); process.exit(1); }
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>/,
+    schema(p, a, b, url).map(function (o) { return '<script type="application/ld+json">\n' + JSON.stringify(o) + '\n</script>'; }).join('\n'));
+  /* חגורה: אם סדר ההזרקה יישבר שוב, זה ייפול כאן ולא ישקוט */
+  if (h.indexOf('"name":"השוואות"') < 0) { console.error('✗ ' + p.slug + ': פירור הלחם אינו מצביע ל-/compare/'); process.exit(1); }
+  /* Product ברמת העמוד, כלומר בלוק שנפתח בו. בתוך about של ה-Article יש Product מקונן לכל
+   * אחד משני הדגמים, וזה נכון ומכוון, ולכן הבדיקה עוגנת ל-@context שפותח בלוק. */
+  if (/\{"@context":"https:\/\/schema\.org","@type":"Product"/.test(h)) {
+    console.error('✗ ' + p.slug + ': נשאר Product ברמת העמוד. עמוד השוואה אינו מוצר'); process.exit(1);
+  }
+
+  var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
+  if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ ' + p.slug + ': לא נמצא עוגן ה-CSS'); process.exit(1); }
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS);
+
+  var d = diffSpec(a, b, p.slug);
+  if (!d.rows.length) { console.error('✗ ' + p.slug + ': אין אף שדה שונה. אין מה להשוות'); process.exit(1); }
+
+  var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
+  var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
+  h = h.slice(0, mS) + buildMain(p, a, b, d, openTag) + h.slice(mE);
+
+  var out = path.join(PROTO, 'compare', p.slug, 'index.html');
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, h);
+
+  var swPath = path.join(PROTO, 'sw.js'), entry = "'/compare/" + p.slug + "/'";
+  var sw = fs.readFileSync(swPath, 'utf8');
+  if (sw.indexOf(entry) < 0) { fs.writeFileSync(swPath, sw.replace('const SHELL = [', 'const SHELL = [' + entry + ', ')); swGrew = true; }
+
+  var svcPath = path.join(PROTO, 'services.json');
+  try {
+    var svc = JSON.parse(fs.readFileSync(svcPath, 'utf8'));
+    svc.existing = svc.existing || [];
+    var pageUrl = '/compare/' + p.slug + '/';
+    var name = (a.name_he || a.name) + ' מול ' + (b.name_he || b.name);
+    var row = svc.existing.filter(function (x) { return x.url === pageUrl; })[0];
+    if (row) { row.name = name; row.status = 'review'; }
+    else { svc.existing.push({ url: pageUrl, name: name, status: 'review' }); }
+    fs.writeFileSync(svcPath, JSON.stringify(svc, null, 2) + '\n');
+  } catch (e) { console.error('⚠ ' + p.slug + ': לא ניתן לעדכן services.json'); }
+
+  made++;
+  console.log('✓ compare/' + p.slug + '/  [טסטים בלבד]');
+  console.log('   ' + d.rows.length + ' שדות שונים · ' + d.same + ' זהים' +
+    (d.missing ? ' · ' + d.missing + ' שדות שרק אחד היצרנים מפרסם' : ''));
+});
+
+if (softDiffs.length) {
+  console.error('\n⚠ שדות שנחשבו זהים רק אחרי נרמול. זו אי-עקביות בניסוח ב-devices.json, לא הבדל בין המכשירים.');
+  console.error('  לאחד את הניסוח, אחרת השוואה עתידית תדווח על הבדל שאינו קיים:');
+  softDiffs.forEach(function (s) { console.error('  · ' + s); });
+}
+
+/* ------------------------------------------------------- מרכז ההשוואות */
+if (!only) {
+  var hubDir = path.join(PROTO, 'compare');
+  var hubPath = path.join(hubDir, 'index.html');
+  var pairs = db._comparisons.pairs;
+  var hubUrl = PROD + 'compare/';
+  var hubTitle = 'השוואות מכשירים: ' + pairs.length + ' השוואות אמיתיות בין דגמים | פון גת';
+  var hubDesc = 'השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים. רק מה שונה, בלי הכרזת מנצח, ובלי מפרט מומצא. פון גת קרית גת.';
+
+  /* המרכז נבנה מעמוד השוואה כדי לרשת ממנו את ה-CSS, כולל .hub */
+  var hh = fs.readFileSync(path.join(PROTO, 'compare', pairs[0].slug, 'index.html'), 'utf8');
+  hh = hh.replace(/<title>[\s\S]*?<\/title>/, '<title>' + esc(hubTitle) + '</title>');
+  hh = hh.replace(/(<meta name="description" content=")[^"]*(">)/, '$1' + esc(hubDesc) + '$2');
+  hh = hh.replace(/(<link rel="canonical" href=")[^"]*(">)/, '$1' + hubUrl + '$2');
+  hh = hh.replace(/(<meta property="og:title" content=")[^"]*(">)/, '$1' + esc(hubTitle) + '$2');
+  hh = hh.replace(/(<meta property="og:description" content=")[^"]*(">)/, '$1' + esc(hubDesc) + '$2');
+  hh = hh.replace(/(<meta property="og:url" content=")[^"]*(">)/, '$1' + hubUrl + '$2');
+  hh = hh.replace(/(<meta name="twitter:title" content=")[^"]*(">)/, '$1' + esc(hubTitle) + '$2');
+  hh = hh.replace(/(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(hubDesc) + '$2');
+
+  hh = hh.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
+  var hubSchema = [
+    { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'השוואות מכשירים', description: hubDesc,
+      url: hubUrl, publisher: { '@id': PROD + '#business' } },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
+      { '@type': 'ListItem', position: 2, name: 'השוואות', item: hubUrl }
+    ] },
+    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: pairs.map(function (p, i) {
+      return { '@type': 'ListItem', position: i + 1, name: p.h1, url: PROD + 'compare/' + p.slug + '/' };
+    }) }
+  ];
+  hh = hh.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Article"[\s\S]*?<\/script>/,
+    hubSchema.map(function (o) { return '<script type="application/ld+json">\n' + JSON.stringify(o) + '\n</script>'; }).join('\n'));
+
+  var mS2 = hh.indexOf('<main id="main"'), mE2 = hh.indexOf('</main>');
+  var openTag2 = hh.slice(mS2, hh.indexOf('>', mS2) + 1);
+  var hubMain = openTag2 + '\n\n' +
+    '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
+    '      <h1 id="h1">השוואות בין דגמים</h1>\n' +
+    '      <p class="sub">' + pairs.length + ' השוואות, כולן בין דגמים שיש לנו בחנות. בכל אחת רק השדות שבהם שני הדגמים באמת שונים, לפי המפרט שהיצרן מפרסם. אין כאן הכרזת מנצח, כי חנות שמכריזה מנצח מוכרת את המנצח.</p>\n' +
+    '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '">' +
+    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '      <p class="meta">\n        <span>המפרטים מאתרי היצרנים</span>\n        <span>רק מה שונה</span>\n' +
+    '        <span>בלי הכרזת מנצח</span>\n        <span>ייעוץ ללא עלות</span>\n      </p>\n    </div>\n  </div>\n</section>\n\n' +
+
+    '<section class="block" id="list" aria-labelledby="h-list">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-list">ההשוואות</h2>\n' +
+    '    <p class="lead">אם ההשוואה שאתם מחפשים אינה כאן, שלחו לנו את שני הדגמים ונעבור עליהם איתכם.</p>\n' +
+    '      <ul class="hub">\n' +
+    pairs.map(function (p) {
+      var a = D(p.a), b = D(p.b);
+      var d = diffSpec(a, b, p.slug);
+      return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc((a.name_he || a.name) + ' מול ' + (b.name_he || b.name)) + '</b>' +
+        '<span>' + d.rows.length + ' שדות שונים · ' + d.same + ' זהים</span></a></li>';
+    }).join('\n') + '\n      </ul>\n' +
+    '    <p class="aside">לא מצאתם? <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
+    '  </div>\n</section>\n\n' +
+
+    '<section class="block" id="how" aria-labelledby="h-how">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>\n' +
+    '    <div class="prose">\n' +
+    '      <p>כל הנתונים בטבלאות מגיעים מאתר היצרן, וליד כל טבלה כתוב מאיזה עמוד ומאיזה תאריך. שדה שהיצרן לא מפרסם מסומן כלא מפורסם, ולא מנוחש ולא נשלף מאתר אחר.</p>\n' +
+    '      <p>הטבלה מציגה רק שדות שבהם שני הדגמים שונים. אם עשרים שדות זהים בשניהם, אין טעם להציג אותם, וההצגה שלהם רק מסתירה את מה שכן שונה. מספר השדות הזהים מופיע בכל עמוד.</p>\n' +
+    '      <p>בכל השוואה יש מקטע "למי עדיף כל אחד", ואין בשום עמוד קביעה מי המכשיר הטוב יותר. גם אין מחירים בטבלאות. את המחיר תקבלו מאיתנו, והוא משתנה.</p>\n' +
+    '    </div>\n' +
+    '    <p class="aside"><a href="/phones/">כל המכשירים עם המפרט המלא</a>, ו<a href="/guides/official-vs-parallel-import/">המדריך על יבוא רשמי מול מקביל</a>.</p>\n' +
+    '  </div>\n</section>\n\n' +
+
+    '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
+    '    <h2 id="cta-h">מתלבטים בין שני דגמים?</h2>\n' +
+    '    <p>תגידו לנו בין מה למה, ומה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+    '    <div class="row">\n' +
+    '      <a class="btn btn-wa" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
+    '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+    '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
+    '    </div>\n' +
+    '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
+    '  </div>\n</section>\n\n';
+
+  hh = hh.slice(0, mS2) + hubMain + hh.slice(mE2);
+  fs.writeFileSync(hubPath, hh);
+  console.log('✓ /compare/ נבנה: ' + pairs.length + ' השוואות ברשימה וב-ItemList');
+
+  var swPath2 = path.join(PROTO, 'sw.js'), sw2 = fs.readFileSync(swPath2, 'utf8');
+  if (sw2.indexOf("'/compare/'") < 0) { fs.writeFileSync(swPath2, sw2.replace('const SHELL = [', "const SHELL = ['/compare/', ")); swGrew = true; }
+  try {
+    var svc2 = JSON.parse(fs.readFileSync(path.join(PROTO, 'services.json'), 'utf8'));
+    if (!svc2.existing.filter(function (x) { return x.url === '/compare/'; }).length) {
+      svc2.existing.push({ url: '/compare/', name: 'מרכז ההשוואות' });
+      fs.writeFileSync(path.join(PROTO, 'services.json'), JSON.stringify(svc2, null, 2) + '\n');
+    }
+  } catch (e) {}
+}
+
+if (swGrew) {
+  var swP = path.join(PROTO, 'sw.js'), swSrc = fs.readFileSync(swP, 'utf8');
+  var m = swSrc.match(/const CACHE = 'pg-v(\d+)'/);
+  if (!m) console.error('⚠ לא נמצא שם המטמון ב-sw.js — העלה ידנית');
+  else {
+    var next = 'pg-v' + (parseInt(m[1], 10) + 1);
+    fs.writeFileSync(swP, swSrc.replace(m[0], "const CACHE = '" + next + "'"));
+    console.log('✓ sw.js: המעטפת גדלה, שם המטמון עלה ל-' + next);
+  }
+}
+
+console.log('\n' + made + ' עמודי השוואה נוצרו. הרצה: node .claude/preflight.js');

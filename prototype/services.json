@@ -107,6 +107,50 @@
       "url": "/phones/redmi-note-14/",
       "name": "רדמי נוט 14",
       "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-vs-iphone-17-pro/",
+      "name": "אייפון 17 מול אייפון 17 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-pro-vs-iphone-17-pro-max/",
+      "name": "אייפון 17 פרו מול אייפון 17 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-16-vs-iphone-17e/",
+      "name": "אייפון 16 מול אייפון 17e",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-vs-galaxy-s26/",
+      "name": "אייפון 17 מול גלקסי S26",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-s26-vs-galaxy-s26-ultra/",
+      "name": "גלקסי S26 מול גלקסי S26 אולטרה",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-a56-vs-galaxy-a36/",
+      "name": "גלקסי A56 מול גלקסי A36",
+      "status": "review"
+    },
+    {
+      "url": "/compare/redmi-note-14-vs-redmi-note-14-pro/",
+      "name": "רדמי נוט 14 מול רדמי נוט 14 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-a56-vs-redmi-note-14-pro/",
+      "name": "גלקסי A56 מול רדמי נוט 14 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/",
+      "name": "מרכז ההשוואות"
     }
   ]
 }

@@ -33,34 +33,13 @@ function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t
  * לא קורא, ולכן זה הדפוס המקובל בגיליון מפרט. כל קטגוריה היא tbody משלה עם כותרת שמשתרעת
  * על שתי העמודות ונושאת scope="rowgroup", כלומר קורא מסך יודע לאיזו קבוצה כל שורה שייכת
  * ולא רק מה התווית שלה. קטגוריה שכל שדותיה ריקים נשמטת כולה. */
-var SPEC_GROUPS = [
-  ['מסך', [
-    ['screen_size', 'גודל מסך'], ['screen_type', 'סוג מסך'], ['resolution', 'רזולוציה'],
-    ['refresh_rate', 'קצב רענון'], ['brightness', 'בהירות']
-  ]],
-  ['ביצועים ואחסון', [
-    ['chip', 'מעבד'], ['cpu', 'ליבות CPU'], ['gpu', 'ליבות GPU'],
-    ['ram', 'זיכרון RAM'], ['storage_offered', 'נפחי אחסון'],
-    ['storage_expandable', 'הרחבת אחסון']
-  ]],
-  ['מצלמות', [
-    ['camera_main', 'מצלמה ראשית'], ['camera_extra', 'מצלמות נוספות'], ['zoom', 'זום'],
-    ['camera_front', 'מצלמה קדמית'], ['video', 'וידאו']
-  ]],
-  ['סוללה וטעינה', [
-    ['battery', 'סוללה'], ['charging_wired', 'טעינה חוטית'], ['charging_wireless', 'טעינה אלחוטית']
-  ]],
-  ['גוף ועמידות', [
-    ['dimensions', 'מידות'], ['weight', 'משקל'], ['water_resistance', 'עמידות למים ואבק'],
-    ['colors_manufacturer', 'צבעים אצל היצרן']
-  ]],
-  ['תקשורת', [
-    ['sim', 'SIM'], ['esim', 'eSIM'], ['connectivity', 'קישוריות']
-  ]],
-  ['באריזה ובזיהוי', [
-    ['box_contents', 'תכולת האריזה'], ['security_updates', 'עדכוני אבטחה'], ['model_numbers', 'מספרי דגם']
-  ]]
-];
+/* הטבלה עצמה עברה ל-devices.json תחת _spec_groups, כי gen-compare.js קורא אותה גם. עותק שני
+ * שלה בקובץ אחר היה נסחף, והתוצאה הייתה אותו שדה עם תווית אחרת בגיליון המפרט ובטבלת ההשוואה. */
+if (!db._spec_groups || !db._spec_groups.groups) {
+  console.error('✗ אין _spec_groups ב-devices.json. בלעדיו אין תוויות למפרט.');
+  process.exit(1);
+}
+var SPEC_GROUPS = db._spec_groups.groups;
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
 
@@ -406,16 +385,28 @@ if (!only) {
       return '        <li><a href="/phones/' + x.slug + '/"><b><bdo dir="ltr">' + esc(x.name) +
              '</bdo></b><span>' + esc(bits.join(' · ')) + '</span></a></li>';
     }).join('\n');
-    var re = /(<section class="block" id="devices"[\s\S]*?<ul class="hub">\n)[\s\S]*?(\n      <\/ul>)/;
-    if (!re.test(hub)) { console.error('⚠ לא נמצאה רשימת המכשירים ב-/phones/ — עדכן ידנית'); }
-    else {
+    /* \r?\n ולא \n.
+     *
+     * הקבצים ב-prototype מעורבי סופי שורות בכוונה: המחולל כותב את הבלוקים שלו ב-LF, והשאר
+     * CRLF. כל עריכה בכלי טקסט הופכת את הקובץ כולו ל-CRLF, ואז \n מפסיק להתאים כאן. זה קרה
+     * ב-6.8.2026, וזו הייתה תקלה שקטה מהסוג הגרוע: המחולל הדפיס אזהרה אחת והמשיך, ורשימת
+     * הדגמים ב-/phones/ נשארה עם אחד עשר דגמים בזמן שהעמודים היו שנים עשר.
+     * לכן גם הכשל כאן הוא שגיאה קשה ולא אזהרה. רשימה מיושנת גרועה מקריסה. */
+    var re = /(<section class="block" id="devices"[\s\S]*?<ul class="hub">\r?\n)[\s\S]*?(\r?\n      <\/ul>)/;
+    if (!re.test(hub)) {
+      console.error('✗ לא נמצאה רשימת המכשירים ב-/phones/. ' +
+        'סופי השורות בקובץ אולי הומרו, או שהמבנה השתנה. רשימה שלא התעדכנה גרועה מקריסה, ולכן עצירה.');
+      process.exit(1);
+    } else {
       hub = hub.replace(re, '$1' + items + '$2');
       /* גם השורה שמונה אותם, אחרת היא אומרת מספר אחר ממה שמוצג */
-      hub = hub.replace(/<p class="lead">[^<]*<\/p>\n      <ul class="hub">/,
+      var leadRe = /<p class="lead">[^<]*<\/p>(\r?\n\s*)<ul class="hub">/;
+      if (!leadRe.test(hub)) { console.error('✗ לא נמצאה שורת המונה ב-/phones/'); process.exit(1); }
+      hub = hub.replace(leadRe,
         '<p class="lead">' + (live.length === 1
           ? 'עמוד ראשון באוויר. הדגמים הנוספים נכנסים בימים הקרובים.'
           : live.length + ' דגמים, ונוסיף עוד.') +
-        ' לכל דגם עמוד עם המפרט המלא מאתר היצרן, ומה הנתונים אומרים בשימוש יומיומי.</p>\n      <ul class="hub">');
+        ' לכל דגם עמוד עם המפרט המלא מאתר היצרן, ומה הנתונים אומרים בשימוש יומיומי.</p>$1<ul class="hub">');
       /* ItemList ב-schema חייב להישאר תואם למה שמוצג */
       var il = { '@context': 'https://schema.org', '@type': 'ItemList',
         itemListElement: live.map(function (x, i) {
