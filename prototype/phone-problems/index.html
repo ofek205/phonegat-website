@@ -175,6 +175,13 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 /* The hero CTA, sized and coloured like the home page's hero WhatsApp button, including its green
    glow. It stands alone here instead of sitting in a pair, so it gets a little more width. */
 .btn-hero{font-size:1.05rem;padding:14px 32px;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
+/* תווית ארוכה בכפתור ההירו גולשת ב-375px תחת הגדלת טקסט ל-150%. כאן היא נקייה במקרה:
+   348px מתוך 360, כלומר 12px מרווח, ותווית אחת ארוכה יותר שוברת את זה.
+   הכלל יושב דווקא כאן ולא רק בעמודים שנפגעו, כי new-page.js מעתיק את המסגרת מהקובץ הזה,
+   ולכן כל עמוד עתידי יורש אותו. ב-6.8.2026 esim-israel נבנה בפיגום וגלש 34px, בדיוק מפני
+   שהתיקון היה קיים בעמודי המכשיר ולא במקור שהפיגום קורא ממנו.
+   כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה. */
+.ghero .btn-hero{white-space:normal;text-align:center}
 .burger{display:none;background:none;border:none;color:var(--ink-strong);font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
 /* same laptop-width tightening as the home page, so both headers stay a single row */
 @media(min-width:1101px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
