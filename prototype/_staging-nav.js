@@ -68,6 +68,14 @@
     fetch('/services.json', { cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (d) {
+        /* המספר על הכפתור הוא התשובה לשאלה "למה אני לא רואה את העמודים".
+         *
+         * ב-6.8.2026 אופק פתח את הפאנל וראה שבעה עמודים כשהיו 33. הקובץ שנפרס היה תקין,
+         * ואומת מול הכתובת עצמה, כלומר הדפדפן הציג עותק ישן: או service worker ששמר את
+         * services.json מביקור קודם, או פריסה שעוד לא הסתיימה, או כתובת בדיקות של סשן אחר.
+         * בלי מספר על הכפתור אין דרך להבדיל בין השלושה בלי לחקור, ולכן הוא כאן. */
+        var total = (d.pages || []).length + (d.existing || []).length;
+        btn.textContent = 'עמודי סקירה (' + total + ')';
         (d.pages || []).forEach(function (p) { link('/' + p.slug + '/', p.name, p.status); });
         if ((d.existing || []).length) panel.appendChild(document.createElement('hr'));
         /* status מועבר גם כאן. עמוד מכשיר נמצא ב-review עד שהנתונים המסחריים מגיעים, וזה
