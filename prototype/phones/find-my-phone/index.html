@@ -391,6 +391,10 @@ main{counter-reset:prob}
 .budget input{font-family:inherit;font-size:1.05rem;padding:.7rem .9rem;border:1px solid var(--ink-soft);border-radius:0;background:none;color:var(--ink-strong);min-inline-size:11rem;direction:ltr;text-align:start}
 .budget input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .err{margin:.7rem 0 0;color:#b03a2b;font-weight:600;font-size:1rem}
+/* המונה הרץ. sticky מתחת לכותרת האתר, כי בשאלון של שבע שאלות הוא נגלל מהמסך בדיוק
+   כשהוא הופך למעניין. בלי רקע צבוע: קו שערה למעלה ולמטה ורווח, כמו כל דבר אחר כאן. */
+.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}
+.dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}
 .q[data-bad="1"] legend{color:#b03a2b}
 .qgo{margin-block-start:2.2rem;display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
 .qgo .fine{margin:0}
@@ -698,6 +702,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </fieldset>
       </div>
+      <p class="qcount" id="qcount" role="status" aria-live="polite"></p>
       <p class="err" id="qerr" role="alert" hidden></p>
       <div class="qgo">
         <button type="submit" class="btn btn-teal" id="qsubmit">הראו לי מה מתאים</button>
@@ -740,7 +745,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   "use strict";
   var T=[{"slug":"iphone-17","name":"iPhone 17","name_he":"אייפון 17","brand":"Apple","ios":1,"inch":6.3,"grams":177,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-s26-ultra","name":"Galaxy S26 Ultra","name_he":"גלקסי S26 אולטרה","brand":"Samsung","ios":0,"inch":6.9,"grams":214,"optX":5,"zoomTxt":"זום אופטי 3x ו-5x, איכות אופטית 2x ו-10x, דיגיטלי עד 100x","uw":0,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":5000,"updYear":2033,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"redmi-note-14-pro","name":"Redmi Note 14 Pro","name_he":"רדמי נוט 14 פרו","brand":"Xiaomi","ios":0,"inch":6.67,"grams":180,"optX":null,"zoomTxt":null,"uw":1,"sd":1,"minGB":128,"maxGB":512,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500mAh"},{"slug":"iphone-17-pro","name":"iPhone 17 Pro","name_he":"אייפון 17 פרו","brand":"Apple","ios":1,"inch":6.3,"grams":204,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"iphone-17-pro-max","name":"iPhone 17 Pro Max","name_he":"אייפון 17 פרו מקס","brand":"Apple","ios":1,"inch":6.9,"grams":231,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":2048,"hrs":37,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 37 שעות וידאו"},{"slug":"iphone-16","name":"iPhone 16","name_he":"אייפון 16","brand":"Apple","ios":1,"inch":6.1,"grams":170,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":22,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 22 שעות וידאו"},{"slug":"iphone-17e","name":"iPhone 17e","name_he":"אייפון 17e","brand":"Apple","ios":1,"inch":6.1,"grams":170,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x","uw":0,"sd":null,"minGB":256,"maxGB":512,"hrs":26,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 26 שעות וידאו"},{"slug":"galaxy-s26","name":"Galaxy S26","name_he":"גלקסי S26","brand":"Samsung","ios":0,"inch":6.3,"grams":167,"optX":3,"zoomTxt":"זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x","uw":0,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":4300,"updYear":2033,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-a56","name":"Galaxy A56 5G","name_he":"גלקסי A56","brand":"Samsung","ios":0,"inch":6.7,"grams":198,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":0,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2032,"batt":0,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a36","name":"Galaxy A36 5G","name_he":"גלקסי A36","brand":"Samsung","ios":0,"inch":6.7,"grams":195,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":0,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2031,"batt":0,"battTxt":"עד 29 שעות וידאו"},{"slug":"xiaomi-15","name":"Xiaomi 15","name_he":"שיאומי 15","brand":"Xiaomi","ios":0,"inch":6.36,"grams":191,"optX":"yes","zoomTxt":"טלפוטו אופטי 60 מ״מ, וזום דיגיטלי עד 60x","uw":1,"sd":0,"minGB":256,"maxGB":512,"hrs":null,"mah":5240,"updYear":null,"batt":1,"battTxt":"5240mAh"},{"slug":"redmi-note-14","name":"Redmi Note 14","name_he":"רדמי נוט 14","brand":"Xiaomi","ios":0,"inch":6.67,"grams":196.5,"optX":0,"zoomTxt":"אין עדשת טלפוטו. זום דיגיטלי בלבד","uw":0,"sd":1,"minGB":128,"maxGB":256,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500mAh"}];
   var form=document.getElementById("qform"), res=document.getElementById("qres"), err=document.getElementById("qerr");
-  if(!form||!res) return;
+  var counter=document.getElementById("qcount");
+  if(!form||!res||!counter) return;
   function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   function ltr(s){return '<bdo dir="ltr">'+esc(s)+"</bdo>";}
   function val(n){var e=form.querySelector('input[name="'+n+'"]:checked');return e?e.value:null;}
@@ -772,17 +778,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return {pts:pts,why:why};
   }
 
-  form.addEventListener("submit",function(e){
-    e.preventDefault();
+  /* run(validate) — אותו מסלול לשני הטריגרים.
+     שליחה מריצה ולידציה, ושינוי תשובה מריץ בלי ולידציה. הסיבה: השאלון צריך להרגיש שהוא
+     מצטמצם תוך כדי, ולא שהוא מחשב בסוף. אבל שגיאה שמופיעה לפני שהמשתמש בכלל סיים לענות
+     היא נדנוד, ולכן הודעת השגיאה קשורה לשליחה בלבד. */
+  function run(validate){
     var a={os:val("os"),size:val("size"),weight:val("weight"),cam:val("cam"),store:val("store"),batt:val("batt"),upd:val("upd")};
-    /* ולידציה בעברית, ומיקוד לשאלה הראשונה שחסרה. aria-invalid על הקבוצה ולא על רדיו בודד. */
-    var missing=[];
-    [["os","איזו מערכת הפעלה"],["size","איזה גודל מכשיר"]].forEach(function(p){
-      var fs=document.getElementById("fs-"+p[0]);
-      if(!a[p[0]]){ missing.push(p[1]); fs.setAttribute("data-bad","1"); fs.setAttribute("aria-invalid","true"); }
-      else { fs.removeAttribute("data-bad"); fs.removeAttribute("aria-invalid"); }
-    });
-    if(missing.length){
+    /* המונה הרץ. זה מה שנותן את התחושה שמשהו קורה: 12 דגמים שהופכים ל-5 בזמן שעונים. */
+    var viable=T.map(function(t){return score(t,a)?1:0;}).reduce(function(x,y){return x+y;},0);
+    var answered=["os","size","weight","cam","store","batt","upd"].filter(function(k){return a[k];}).length;
+    /* המונה אומר את מה שקורה באמת, וזה לא מה שכתוב בו בגרסה הראשונה.
+
+       הגרסה ההיא אמרה "X מתוך 12 עונים על מה שסימנתם עד כה", והמספר נתקע על 5 ולא זז יותר.
+       הסיבה: רק שאלת מערכת ההפעלה מסננת. כל השאר מדרגות ולא מוציאות אף דגם, וזו החלטה
+       מכוונת, כי שאלון שמעלים דגמים מסתיר מהלקוח את מה שיש בחנות. מונה שמראה מספר קפוא
+       ומבטיח סינון הוא מונה שמשקר, ולכן הוא מנוסח עכשיו לפי מה שהוא באמת מודד. */
+    if(!answered) counter.textContent = T.length+" דגמים במאגר. ענו על שתי השאלות הראשונות ונתחיל לדרג";
+    else if(!a.size) counter.textContent = viable+" דגמים ב"+(a.os==="ios"?"אייפון":(a.os==="and"?"אנדרואיד":"מאגר"))+". עוד שאלה אחת ונדרג אותם";
+    else counter.textContent = "מדרג "+viable+" דגמים לפי "+answered+" התשובות שסימנתם";
+
+    /* ולידציה בעברית, ומיקוד לשאלה הראשונה שחסרה. aria-invalid על הקבוצה ולא על רדיו בודד.
+       רצה רק בשליחה: סימון שדה כשגוי לפני שהמשתמש הגיע אליו הוא נדנוד ולא עזרה. */
+    if(!a.os||!a.size){
+      if(!validate){ res.innerHTML='<p class="dhint">עוד שאלה או שתיים, ונציג שלושה דגמים עם הסבר למה כל אחד.</p>'; return; }
+      var missing=[];
+      [["os","איזו מערכת הפעלה"],["size","איזה גודל מכשיר"]].forEach(function(p){
+        var fs=document.getElementById("fs-"+p[0]);
+        if(!a[p[0]]){ missing.push(p[1]); fs.setAttribute("data-bad","1"); fs.setAttribute("aria-invalid","true"); }
+        else { fs.removeAttribute("data-bad"); fs.removeAttribute("aria-invalid"); }
+      });
       err.hidden=false;
       err.textContent = missing.length===1 ? ("צריך לענות על השאלה: "+missing[0]+".") : ("צריך לענות על שתי השאלות הראשונות: "+missing.join(", ")+".");
       res.innerHTML="";
@@ -790,6 +814,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if(first) first.focus();
       return;
     }
+    Array.prototype.forEach.call(document.querySelectorAll(".q"),function(fs){fs.removeAttribute("data-bad");fs.removeAttribute("aria-invalid");});
     err.hidden=true;
 
     var ranked=T.map(function(t){var s=score(t,a);return s?{t:t,s:s}:null;})
@@ -823,13 +848,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '<a class="qwa">שלחו לנו את התוצאה ב-WhatsApp</a> ונגיד מה המחיר ומה במלאי.</p>';
     res.querySelector(".qall").href="/phones/";
     res.querySelector(".qwa").href=link;
-    res.scrollIntoView({block:"nearest"});
-  });
+    if(validate) res.scrollIntoView({block:"nearest"});
+  }
 
+  /* שינוי תשובה מריץ בלי ולידציה ובלי גלילה, שליחה מריצה עם שניהם. הכפתור נשאר כי הוא
+     הפעולה המפורשת למי שמנווט במקלדת, וכי הוא מה שמפעיל את הודעות השגיאה. */
+  form.addEventListener("change",function(){ run(false); });
+  form.addEventListener("submit",function(e){ e.preventDefault(); run(true); });
   form.addEventListener("reset",function(){
     res.innerHTML=""; err.hidden=true;
     Array.prototype.forEach.call(document.querySelectorAll(".q"),function(f){f.removeAttribute("data-bad");f.removeAttribute("aria-invalid");});
+    setTimeout(function(){ run(false); },0);
   });
+  run(false);
 })();
 </script>
 

@@ -30,6 +30,7 @@ var PROD = 'https://www.phonegat.co.il/';
 /* המסגרת נלקחת מעמוד מכשיר ולא מהמדריך, כי בעמוד מכשיר ה-CSS של .cmp-spec כבר מוזרק. */
 var SOURCE = 'phones/iphone-17/index.html';
 
+var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 if (!db._comparisons || !db._comparisons.pairs) { console.error('✗ אין _comparisons ב-devices.json'); process.exit(1); }
 if (!db._spec_groups || !db._spec_groups.groups) { console.error('✗ אין _spec_groups ב-devices.json'); process.exit(1); }
@@ -77,7 +78,7 @@ function diffSpec(a, b, pairSlug) {
           return;
         }
       } else { missing++; }
-      rows.push({ group: g[0], label: label, a: ea ? null : va, b: eb ? null : vb });
+      rows.push({ group: g[0], key: key, label: label, a: ea ? null : va, b: eb ? null : vb });
     });
   });
   return { rows: rows, same: same, missing: missing };
@@ -96,13 +97,35 @@ function buildTable(a, b, d) {
       ? '<td><i>לא מפורסם אצל היצרן</i></td>'
       : '<td>' + esc(v) + '</td>';
   }
+  /* קו יחסי לשורה שיש בה מספר בשני הצדדים.
+   *
+   * זה מה שהופך את הטבלה מרשימה לקריאה: 167 גרם מול 214 גרם הם שני מספרים שצריך להחסיר,
+   * ושני קווים באורך שונה הם הבדל שרואים. הקו הוא 2px, בלי רקע ובלי מסגרת, כלומר בדיוק
+   * מה שמערכת העיצוב קוראת לו "קו שערה ורווח במקום קופסה".
+   *
+   * הרוחב יושב במשתנה CSS ולא ב-inline style של width, כדי שאפשר יהיה לכבות אותו ב-media
+   * אחד אם יתברר שהוא מפריע, בלי לגעת ב-HTML המחולל. */
+  function bars(fieldKey, a, b) {
+    var fn = T.NUMERIC_BY_FIELD[fieldKey];
+    if (!fn) return null;
+    var r = T.ratioPair(fn(a.spec), fn(b.spec));
+    if (!r) return null;
+    return r;
+  }
   var bodies = order.map(function (gname) {
     return '        <tbody>\n' +
       '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(gname) + '</th></tr>\n' +
       byGroup[gname].map(function (r) {
+        var bar = bars(r.key, a, b);
+        /* aria-hidden על הקו: הוא חזרה חזותית על המספר שכבר נמצא בתא, וקורא מסך שיקרא
+         * אותו פעמיים לא יקבל שום מידע נוסף. */
+        function withBar(td, side) {
+          if (!bar) return td;
+          return td.replace('</td>', '<span class="dbar" style="--w:' + bar[side] + '%" aria-hidden="true"></span></td>');
+        }
         return '          <tr class="fld"><th colspan="2" scope="rowgroup">' + esc(r.label) + '</th></tr>\n' +
-          '          <tr><th scope="row">' + ltr(a.name) + '</th>' + cell(r.a) + '</tr>\n' +
-          '          <tr><th scope="row">' + ltr(b.name) + '</th>' + cell(r.b) + '</tr>';
+          '          <tr><th scope="row">' + ltr(a.name) + '</th>' + withBar(cell(r.a), 'a') + '</tr>\n' +
+          '          <tr><th scope="row">' + ltr(b.name) + '</th>' + withBar(cell(r.b), 'b') + '</tr>';
       }).join('\n') + '\n        </tbody>';
   }).join('\n');
 
@@ -142,6 +165,40 @@ function buildMain(p, a, b, d, openTag) {
         '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
     }).join('\n') + '\n      </ul>\n' +
     '  </div>\n</section>\n\n' +
+
+    /* "ההבדלים הגדולים" — הבלוק שהופך את העמוד מטבלה למשהו שקרא את הטבלה.
+     *
+     * מחושב מ-traits.js: לכל שדה שאפשר להשוות במספרים יש רף, וההפרשים מדורגים לפי כמה הם
+     * עוברים אותו. הניסוח אומר מי גדול יותר ולא מי טוב יותר, ולכן משקל מופיע כ"כבד יותר".
+     *
+     * ואם אין אף הפרש מעל הרף, הבלוק אומר את זה במקום להיעלם. שני דגמים שנבדלים רק בזיכרון
+     * ובמעבד הם מקרה אמיתי (A56 מול A36), וזו תשובה שימושית יותר מרשימה ריקה. */
+    (function () {
+      var ds = T.deltas(a.spec, b.spec).slice(0, 4);
+      var nm = function (side) { return side === 'a' ? (a.name_he || a.name) : (b.name_he || b.name); };
+      if (!ds.length) {
+        return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
+          '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
+          /* "גדול" ולא "אין בכלל": בין A56 ל-A36 יש הפרש של 3 גרם, כלומר קיים ומתחת לרף.
+           * ניסוח שאומר "אין הבדל מדיד" בזמן שבטבלה מתחתיו מצוירים קווים הוא ניסוח שקורא
+           * ישים עליו את האצבע. */
+          '    <p class="lead">בין שני הדגמים האלה <b>אין הבדל מדיד גדול</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים, וזה מה שהקווים בטבלה למטה מראים. מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.</p>\n' +
+          '  </div>\n</section>\n\n';
+      }
+      return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
+        '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
+        '    <p class="lead">' + (ds.length === 1
+          ? 'מתוך ' + d.rows.length + ' השדות השונים, יש <b>הבדל אחד</b> שאפשר למדוד במספרים.'
+          : 'מתוך ' + d.rows.length + ' השדות השונים, אלה <b>' + ds.length + ' ההבדלים הגדולים</b> שאפשר למדוד במספרים.') +
+        ' השאר מופיעים בטבלה.</p>\n' +
+        '    <ul class="gaps">\n' +
+        ds.map(function (x) {
+          return '      <li><b>' + esc(x.label) + '</b><span>' + esc(x.phrase) + '</span>' +
+            '<em>' + esc(nm(x.higher)) + ': ' + esc(x.more) + '</em></li>';
+        }).join('\n') + '\n    </ul>\n' +
+        '    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם, זה בדיוק מה שנעבור עליו יחד.</p>\n' +
+        '  </div>\n</section>\n\n';
+    })() +
 
     '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
     '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
@@ -237,7 +294,22 @@ var CSS = [
   '.two .col h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.5rem);margin:0 0 .2rem;padding-block-end:.7rem;border-bottom:2px solid var(--ink-strong)}',
   '.ticks{list-style:none;margin:0;padding:0}',
   '.ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}',
-  '.ticks li:last-child{border-bottom:0}'
+  '.ticks li:last-child{border-bottom:0}',
+  '/* ===== ההבדלים הגדולים ===== */',
+  '/* שורות בקו שערה ולא כרטיסים. שלוש עמודות בדסקטופ, נערם בטלפון. */',
+  '.gaps{list-style:none;margin:1.7rem 0 0;padding:0}',
+  '.gaps li{border-block-start:1px solid var(--line);padding-block:1.15rem;display:grid;gap:.15rem .9rem;align-items:baseline}',
+  '@media(min-width:700px){.gaps li{grid-template-columns:11rem 1fr auto}}',
+  '.gaps b{font-family:var(--serif);font-weight:400;font-size:clamp(1.12rem,1.9vw,1.3rem);color:var(--ink-strong)}',
+  '.gaps span{color:var(--ink);line-height:1.7}',
+  '/* "מי גדול יותר" בסאנס קטן ומרוסן. זה נתון ולא פסק דין, ולכן לא מודגש ולא צבוע חזק. */',
+  '.gaps em{font-style:normal;font-size:1rem;color:var(--ink-soft)}',
+  '/* ===== הקו היחסי בטבלה ===== */',
+  '/* 2px, בצבע המבטא, באורך יחסי לערך הגדול בשורה. בלי רקע ובלי מסגרת ובלי radius:',
+  '   שני מספרים דורשים חיסור, שני קווים באורך שונה נקראים במבט אחד. */',
+  '.dbar{display:block;block-size:2px;inline-size:var(--w,0);min-inline-size:2px;max-inline-size:100%;background:var(--teal);margin-block-start:.5rem;opacity:.75}',
+  '/* בהיפוך צבעים ובניגודיות גבוהה הקו לוקח את צבע הטקסט, אחרת הוא נעלם */',
+  'html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:1}'
 ].join('\n') + '\n' + hubCss();
 
 /* .chip נשלף ממדריך התקלות, המקום שבו הרכיב נולד. אותו שיקול כמו ב-.hub: עותק שני של כלל

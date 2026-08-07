@@ -389,6 +389,21 @@ main{counter-reset:prob}
 .ticks{list-style:none;margin:0;padding:0}
 .ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}
 .ticks li:last-child{border-bottom:0}
+/* ===== ההבדלים הגדולים ===== */
+/* שורות בקו שערה ולא כרטיסים. שלוש עמודות בדסקטופ, נערם בטלפון. */
+.gaps{list-style:none;margin:1.7rem 0 0;padding:0}
+.gaps li{border-block-start:1px solid var(--line);padding-block:1.15rem;display:grid;gap:.15rem .9rem;align-items:baseline}
+@media(min-width:700px){.gaps li{grid-template-columns:11rem 1fr auto}}
+.gaps b{font-family:var(--serif);font-weight:400;font-size:clamp(1.12rem,1.9vw,1.3rem);color:var(--ink-strong)}
+.gaps span{color:var(--ink);line-height:1.7}
+/* "מי גדול יותר" בסאנס קטן ומרוסן. זה נתון ולא פסק דין, ולכן לא מודגש ולא צבוע חזק. */
+.gaps em{font-style:normal;font-size:1rem;color:var(--ink-soft)}
+/* ===== הקו היחסי בטבלה ===== */
+/* 2px, בצבע המבטא, באורך יחסי לערך הגדול בשורה. בלי רקע ובלי מסגרת ובלי radius:
+   שני מספרים דורשים חיסור, שני קווים באורך שונה נקראים במבט אחד. */
+.dbar{display:block;block-size:2px;inline-size:var(--w,0);min-inline-size:2px;max-inline-size:100%;background:var(--teal);margin-block-start:.5rem;opacity:.75}
+/* בהיפוך צבעים ובניגודיות גבוהה הקו לוקח את צבע הטקסט, אחרת הוא נעלם */
+html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:1}
 /* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */
 .hub{list-style:none;counter-reset:hub;margin:1.9rem 0 0;padding:0;display:grid}
 .hub li{counter-increment:hub;border-top:1px solid var(--line)}
@@ -577,7 +592,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="/" aria-label="פון גת, דף הבית"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="/#team">מי אנחנו</a><a href="/#reviews">ביקורות</a><a href="/#services">שירותים</a><a href="/phones/" aria-current="page">מכשירים</a><a href="/phone-problems/">מדריך תקלות</a><a href="/#deals">מבצעים</a><a href="/#press">כתבו עלינו</a><a href="/#map">מיקום</a><a href="/#faq">שאלות נפוצות</a><a href="/contact/">צרו קשר</a>
+      <a href="/#team">מי אנחנו</a><a href="/#reviews">ביקורות</a><a href="/#services">שירותים</a><a href="/phones/">מכשירים</a><a href="/phone-problems/">מדריך תקלות</a><a href="/#deals">מבצעים</a><a href="/#press">כתבו עלינו</a><a href="/#map">מיקום</a><a href="/#faq">שאלות נפוצות</a><a href="/contact/">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -615,6 +630,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<section class="block" id="gaps" aria-labelledby="gaps-h">
+  <div class="wrap box">
+    <h2 id="gaps-h">ההבדלים הגדולים</h2>
+    <p class="lead">מתוך 18 השדות השונים, אלה <b>2 ההבדלים הגדולים</b> שאפשר למדוד במספרים. השאר מופיעים בטבלה.</p>
+    <ul class="gaps">
+      <li><b>אחסון מקסימלי</b><span>256GB מול 512GB</span><em>רדמי נוט 14 פרו: אחסון גדול יותר</em></li>
+      <li><b>משקל</b><span>הפרש של 17 גרם</span><em>רדמי נוט 14: כבד יותר</em></li>
+    </ul>
+    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם, זה בדיוק מה שנעבור עליו יחד.</p>
+  </div>
+</section>
+
 <section class="block" id="table" aria-labelledby="cmp-h">
   <div class="wrap box">
     <h2 id="cmp-h">מה שונה ביניהם</h2>
@@ -643,8 +670,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>6GB או 8GB, מסוג LPDDR4X</td></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>8GB או 12GB</td></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">נפחי אחסון</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>128GB, 256GB</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>128GB, 256GB, 512GB</td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>128GB, 256GB<span class="dbar" style="--w:50%" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>128GB, 256GB, 512GB<span class="dbar" style="--w:100%" aria-hidden="true"></span></td></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">הרחבת אחסון</th></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>ניתן להרחיב עד 1TB בכרטיס microSD. החריץ משותף עם ה-SIM השני</td></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>ניתן להרחיב עד 1TB בכרטיס microSD</td></tr>
@@ -676,8 +703,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>163.25 x 76.55 x 8.16 מ״מ</td></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>162.16 x 74.92 x 8.24 מ״מ</td></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">משקל</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>196.5 גרם</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>180 גרם</td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>196.5 גרם<span class="dbar" style="--w:100%" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>180 גרם<span class="dbar" style="--w:92%" aria-hidden="true"></span></td></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">עמידות למים ואבק</th></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14</bdo></th><td>IP54, עמידות בהתזה ובאבק בלבד. היצרן מציין שהאחריות אינה מכסה נזק נוזלים מעל תנאי הבדיקה</td></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td>IP64, עמידות בהתזה בלבד. היצרן מציין שהאחריות אינה מכסה נזק נוזלים מעל תנאי הבדיקה</td></tr>

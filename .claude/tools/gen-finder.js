@@ -218,6 +218,10 @@ var CSS = [
   '.budget input{font-family:inherit;font-size:1.05rem;padding:.7rem .9rem;border:1px solid var(--ink-soft);border-radius:0;background:none;color:var(--ink-strong);min-inline-size:11rem;direction:ltr;text-align:start}',
   '.budget input:focus-visible{outline:2px solid var(--teal);outline-offset:2px}',
   '.err{margin:.7rem 0 0;color:#b03a2b;font-weight:600;font-size:1rem}',
+  '/* המונה הרץ. sticky מתחת לכותרת האתר, כי בשאלון של שבע שאלות הוא נגלל מהמסך בדיוק',
+  '   כשהוא הופך למעניין. בלי רקע צבוע: קו שערה למעלה ולמטה ורווח, כמו כל דבר אחר כאן. */',
+  '.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}',
+  '.dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}',
   '.q[data-bad="1"] legend{color:#b03a2b}',
   '.qgo{margin-block-start:2.2rem;display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}',
   '.qgo .fine{margin:0}',
@@ -314,6 +318,7 @@ QUESTIONS.map(function (q) {
 '          </div>\n' +
 '        </fieldset>\n' +
 '      </div>\n' +
+'      <p class="qcount" id="qcount" role="status" aria-live="polite"></p>\n' +
 '      <p class="err" id="qerr" role="alert" hidden></p>\n' +
 '      <div class="qgo">\n' +
 '        <button type="submit" class="btn btn-teal" id="qsubmit">הראו לי מה מתאים</button>\n' +
@@ -352,7 +357,8 @@ QUESTIONS.map(function (q) {
 '  "use strict";\n' +
 '  var T=' + json(TRAITS) + ';\n' +
 '  var form=document.getElementById("qform"), res=document.getElementById("qres"), err=document.getElementById("qerr");\n' +
-'  if(!form||!res) return;\n' +
+'  var counter=document.getElementById("qcount");\n' +
+'  if(!form||!res||!counter) return;\n' +
 '  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}\n' +
 '  function ltr(s){return \'<bdo dir="ltr">\'+esc(s)+"</bdo>";}\n' +
 '  function val(n){var e=form.querySelector(\'input[name="\'+n+\'"]:checked\');return e?e.value:null;}\n' +
@@ -384,17 +390,35 @@ QUESTIONS.map(function (q) {
 '    return {pts:pts,why:why};\n' +
 '  }\n' +
 '\n' +
-'  form.addEventListener("submit",function(e){\n' +
-'    e.preventDefault();\n' +
+'  /* run(validate) — אותו מסלול לשני הטריגרים.\n' +
+'     שליחה מריצה ולידציה, ושינוי תשובה מריץ בלי ולידציה. הסיבה: השאלון צריך להרגיש שהוא\n' +
+'     מצטמצם תוך כדי, ולא שהוא מחשב בסוף. אבל שגיאה שמופיעה לפני שהמשתמש בכלל סיים לענות\n' +
+'     היא נדנוד, ולכן הודעת השגיאה קשורה לשליחה בלבד. */\n' +
+'  function run(validate){\n' +
 '    var a={os:val("os"),size:val("size"),weight:val("weight"),cam:val("cam"),store:val("store"),batt:val("batt"),upd:val("upd")};\n' +
-'    /* ולידציה בעברית, ומיקוד לשאלה הראשונה שחסרה. aria-invalid על הקבוצה ולא על רדיו בודד. */\n' +
-'    var missing=[];\n' +
-'    [["os","איזו מערכת הפעלה"],["size","איזה גודל מכשיר"]].forEach(function(p){\n' +
-'      var fs=document.getElementById("fs-"+p[0]);\n' +
-'      if(!a[p[0]]){ missing.push(p[1]); fs.setAttribute("data-bad","1"); fs.setAttribute("aria-invalid","true"); }\n' +
-'      else { fs.removeAttribute("data-bad"); fs.removeAttribute("aria-invalid"); }\n' +
-'    });\n' +
-'    if(missing.length){\n' +
+'    /* המונה הרץ. זה מה שנותן את התחושה שמשהו קורה: 12 דגמים שהופכים ל-5 בזמן שעונים. */\n' +
+'    var viable=T.map(function(t){return score(t,a)?1:0;}).reduce(function(x,y){return x+y;},0);\n' +
+'    var answered=["os","size","weight","cam","store","batt","upd"].filter(function(k){return a[k];}).length;\n' +
+'    /* המונה אומר את מה שקורה באמת, וזה לא מה שכתוב בו בגרסה הראשונה.\n' +
+'\n' +
+'       הגרסה ההיא אמרה "X מתוך 12 עונים על מה שסימנתם עד כה", והמספר נתקע על 5 ולא זז יותר.\n' +
+'       הסיבה: רק שאלת מערכת ההפעלה מסננת. כל השאר מדרגות ולא מוציאות אף דגם, וזו החלטה\n' +
+'       מכוונת, כי שאלון שמעלים דגמים מסתיר מהלקוח את מה שיש בחנות. מונה שמראה מספר קפוא\n' +
+'       ומבטיח סינון הוא מונה שמשקר, ולכן הוא מנוסח עכשיו לפי מה שהוא באמת מודד. */\n' +
+'    if(!answered) counter.textContent = T.length+" דגמים במאגר. ענו על שתי השאלות הראשונות ונתחיל לדרג";\n' +
+'    else if(!a.size) counter.textContent = viable+" דגמים ב"+(a.os==="ios"?"אייפון":(a.os==="and"?"אנדרואיד":"מאגר"))+". עוד שאלה אחת ונדרג אותם";\n' +
+'    else counter.textContent = "מדרג "+viable+" דגמים לפי "+answered+" התשובות שסימנתם";\n' +
+'\n' +
+'    /* ולידציה בעברית, ומיקוד לשאלה הראשונה שחסרה. aria-invalid על הקבוצה ולא על רדיו בודד.\n' +
+'       רצה רק בשליחה: סימון שדה כשגוי לפני שהמשתמש הגיע אליו הוא נדנוד ולא עזרה. */\n' +
+'    if(!a.os||!a.size){\n' +
+'      if(!validate){ res.innerHTML=\'<p class="dhint">עוד שאלה או שתיים, ונציג שלושה דגמים עם הסבר למה כל אחד.</p>\'; return; }\n' +
+'      var missing=[];\n' +
+'      [["os","איזו מערכת הפעלה"],["size","איזה גודל מכשיר"]].forEach(function(p){\n' +
+'        var fs=document.getElementById("fs-"+p[0]);\n' +
+'        if(!a[p[0]]){ missing.push(p[1]); fs.setAttribute("data-bad","1"); fs.setAttribute("aria-invalid","true"); }\n' +
+'        else { fs.removeAttribute("data-bad"); fs.removeAttribute("aria-invalid"); }\n' +
+'      });\n' +
 '      err.hidden=false;\n' +
 '      err.textContent = missing.length===1 ? ("צריך לענות על השאלה: "+missing[0]+".") : ("צריך לענות על שתי השאלות הראשונות: "+missing.join(", ")+".");\n' +
 '      res.innerHTML="";\n' +
@@ -402,6 +426,7 @@ QUESTIONS.map(function (q) {
 '      if(first) first.focus();\n' +
 '      return;\n' +
 '    }\n' +
+'    Array.prototype.forEach.call(document.querySelectorAll(".q"),function(fs){fs.removeAttribute("data-bad");fs.removeAttribute("aria-invalid");});\n' +
 '    err.hidden=true;\n' +
 '\n' +
 '    var ranked=T.map(function(t){var s=score(t,a);return s?{t:t,s:s}:null;})\n' +
@@ -435,13 +460,19 @@ QUESTIONS.map(function (q) {
 '      \'<a class="qwa">שלחו לנו את התוצאה ב-WhatsApp</a> ונגיד מה המחיר ומה במלאי.</p>\';\n' +
 '    res.querySelector(".qall").href="/phones/";\n' +
 '    res.querySelector(".qwa").href=link;\n' +
-'    res.scrollIntoView({block:"nearest"});\n' +
-'  });\n' +
+'    if(validate) res.scrollIntoView({block:"nearest"});\n' +
+'  }\n' +
 '\n' +
+'  /* שינוי תשובה מריץ בלי ולידציה ובלי גלילה, שליחה מריצה עם שניהם. הכפתור נשאר כי הוא\n' +
+'     הפעולה המפורשת למי שמנווט במקלדת, וכי הוא מה שמפעיל את הודעות השגיאה. */\n' +
+'  form.addEventListener("change",function(){ run(false); });\n' +
+'  form.addEventListener("submit",function(e){ e.preventDefault(); run(true); });\n' +
 '  form.addEventListener("reset",function(){\n' +
 '    res.innerHTML=""; err.hidden=true;\n' +
 '    Array.prototype.forEach.call(document.querySelectorAll(".q"),function(f){f.removeAttribute("data-bad");f.removeAttribute("aria-invalid");});\n' +
+'    setTimeout(function(){ run(false); },0);\n' +
 '  });\n' +
+'  run(false);\n' +
 '})();\n' +
 '</scr' + 'ipt>\n\n';
 
