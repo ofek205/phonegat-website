@@ -52,61 +52,34 @@ function swap(h, re, to, what) {
 }
 function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
 
-/* ---------------------------------------------------------------- גזירת התכונות */
-function num(s, re) { if (!s) return null; var m = String(s).match(re); return m ? parseFloat(m[1].replace(/,/g, '')) : null; }
+/* ---------------------------------------------------------------- גזירת התכונות
+ *
+ * כל הגזירות באות מ-lib/traits.js ואף אחת אינה נכתבת כאן שוב.
+ *
+ * הקובץ הזה החזיק עד 7.8.2026 עותק פרטי של num, פענוח הזום, זיהוי העדשה הרחבה וחריץ הזיכרון,
+ * למרות שהתיעוד ב-traits.js מצהיר שהוא אחד משלושת הצרכנים שלו. שני העותקים הסכימו, ולכן שום
+ * בדיקה לא תפסה — עד שהתברר שהם מסכימים גם על באג: העדשה הרחבה הייתה בינארית בשניהם, ולכן
+ * התיקון היה צריך לקרות פעמיים ואיש לא היה יודע שהשני קיים. זה בדיוק מה ש-traits.js נוצר למנוע. */
+var T = require('./lib/traits.js');
 
 var live = db.devices.filter(function (d) { return d.status !== 'draft'; });
 var fail = [];
 var TRAITS = live.map(function (d) {
   var S = d.spec;
-  var inch = num(S.screen_size, /([\d.]+)\s*אינץ/);
-  var grams = num(S.weight, /([\d.]+)\s*גרם/);
-  var gb = (S.storage_offered || []).map(function (x) {
-    var m = String(x).match(/(\d+)\s*(GB|TB)/i);
-    return m ? (m[2].toUpperCase() === 'TB' ? parseInt(m[1], 10) * 1024 : parseInt(m[1], 10)) : null;
-  }).filter(function (x) { return x !== null; });
+  var inch = T.inches(S);
+  var grams = T.grams(S);
+  var gb = T.storageGB(S);
 
   if (inch === null) fail.push(d.slug + '.screen_size');
   if (grams === null) fail.push(d.slug + '.weight');
   if (!gb.length) fail.push(d.slug + '.storage_offered');
 
-  /* זום.
-   *
-   * הניסיון הראשון היה לזהות "עדשת טלפוטו נפרדת" לפי המילה טלפוטו, וזה נכשל בשני כיוונים:
-   * iphone-17e סומן כבעל טלפוטו למרות שהמפרט שלו אומר במפורש שהוא "מופק מאותו חיישן",
-   * ו-galaxy-s26 לא סומן למרות שיש לו זום אופטי 3x, כי סמסונג פשוט לא משתמשת במילה.
-   * שלושה יצרנים, שלוש אוצרות מילים, ולכן המילה אינה סיגנל.
-   *
-   * מה שכן מתפרסם ומשותף: **המקדם האופטי**. הדירוג נעשה לפיו, והנימוק שמוצג הוא המשפט של
-   * היצרן עצמו. כך הכלי מדרג לפי מספר שפורסם ואינו מצהיר שום דבר על מבנה העדשה, שזו הייתה
-   * הסקה שלנו ולא עובדה. זה גם מה שמתקן דירוג שגוי: 2x של אפל הוא חיתוך חיישן, 4x הוא
-   * עדשה, והמקדם מפריד ביניהם בלי שנצטרך לטעון את זה.
-   *
-   * optX: מספר, או 'yes' כשהיצרן אומר אופטי בלי מקדם, או 0 כשהוא אומר דיגיטלי בלבד,
-   * או null כשאין שורת זום. null אינו "אין", ולכן אינו מעניש ואינו מתגמל.
-   */
-  var optX = null, zt = S.zoom || '';
-  if (S.zoom != null) {
-    var optical = /(זום|טלפוטו)\s*אופטי/.test(zt);
-    if (!optical) optX = 0;                     /* "זום דיגיטלי בלבד", "אין עדשת טלפוטו" */
-    else {
-      /* רק המקדם שצמוד לצירוף "זום אופטי" או "טלפוטו אופטי", ועד הפסיק.
-       *
-       * ניסיון קודם לקח את המקסימום מכל המקדמים במחרוזת, והוא החזיר מספרים בטוחים ושגויים:
-       * iphone-17 יצא 4x כי כתוב "טווח אופטי 4x", והזום האופטי שלו הוא 2x. iphone-17-pro
-       * יצא 16x מ"טווח 16x" במקום 4x, ו-s26-ultra יצא 10x מ"איכות אופטית 10x" במקום 5x.
-       * היצרנים מפרסמים שלושה דברים שונים באותה שורה: זום אופטי, "איכות אופטית", וטווח.
-       * רק הראשון הוא עדשה, ולכן רק הוא נספר. */
-      var m = zt.match(/(?:זום|טלפוטו)\s*אופטי[^,]*/);
-      var f = m ? (m[0].match(/([\d.]+)x/g) || []).map(function (x) { return parseFloat(x); }) : [];
-      optX = f.length ? Math.max.apply(null, f) : 'yes';   /* 'yes' = אופטי בלי מקדם, כמו 60 מ״מ */
-    }
-  }
-  /* רחבה במיוחד: נגזר מ-12/12, כי מי שאין לו אומר את זה במפורש ("אין עדשה רחבה במיוחד") */
-  var uw = /אין עדשה רחבה/.test(S.camera_extra || '') ? 0
-         : (/רחבה במיוחד/.test((S.camera_extra || '') + (S.camera_main || '')) ? 1 : 0);
-  /* חריץ זיכרון: זיהוי חיובי בלבד. היעדר הנתון אינו הוכחה להיעדר החריץ. */
-  var sd = S.storage_expandable == null ? null : (/^אין/.test(S.storage_expandable) ? 0 : 1);
+  /* optX: מספר, או 'yes' כשהיצרן אומר אופטי בלי מקדם, או 0 כשהוא אומר דיגיטלי בלבד,
+   * או null כשאין שורת זום. uw ו-sd תלת-מצביים מאותה סיבה. null אינו "אין", ולכן אינו
+   * מעניש ואינו מתגמל. הנימוקים לשלוש הגזירות האלה יושבים ב-traits.js. */
+  var optX = T.opticalZoom(S), zt = S.zoom || '';
+  var uw = T.ultraWide(S);
+  var sd = T.sdCard(S);
 
   return {
     slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand,
@@ -114,9 +87,9 @@ var TRAITS = live.map(function (d) {
     inch: inch, grams: grams,
     optX: optX, zoomTxt: S.zoom || null, uw: uw, sd: sd,
     minGB: Math.min.apply(null, gb), maxGB: Math.max.apply(null, gb),
-    hrs: num(S.battery, /עד\s*([\d]+)\s*שעות/),
-    mah: num(S.battery, /([\d,]+)\s*mAh/i),
-    updYear: num(S.security_updates, /(\d{4})/)
+    hrs: T.battHours(S),
+    mah: T.battMah(S),
+    updYear: T.updateYear(S)
   };
 });
 if (fail.length) {
@@ -198,6 +171,8 @@ function hubCss() {
 
 var CSS = [
   '/* ===== השאלון ===== */',
+  'fieldset{min-inline-size:0}',   /* ברירת המחדל היא min-content, ואז #fs-os לא מתכווץ וגולש 97px ב-200% */
+  '.qwrap .btn,.qres .btn{white-space:normal}',
   '/* fieldset ולא div עם role: זה טופס אמיתי, והקבוצה של רדיו היא בדיוק מה ש-fieldset+legend',
   '   נועדו לו. הדפדפן וקורא המסך מקבלים את הקישור בין השאלה לתשובות בלי ARIA בכלל. */',
   '.qs{margin-top:2rem;display:grid;gap:0}',
@@ -220,6 +195,7 @@ var CSS = [
   '.err{margin:.7rem 0 0;color:#b03a2b;font-weight:600;font-size:1rem}',
   '/* המונה הרץ. sticky מתחת לכותרת האתר, כי בשאלון של שבע שאלות הוא נגלל מהמסך בדיוק',
   '   כשהוא הופך למעניין. בלי רקע צבוע: קו שערה למעלה ולמטה ורווח, כמו כל דבר אחר כאן. */',
+  '@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}',
   '.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}',
   '.dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}',
   '.q[data-bad="1"] legend{color:#b03a2b}',
@@ -381,10 +357,14 @@ QUESTIONS.map(function (q) {
 '      else if(x>=3){ pts+=6; why.push("זום אופטי "+x+"x"); }\n' +
 '      else { pts+=2; why.push("זום אופטי "+x+"x"); }\n' +
 '    }\n' +
-'    if(a.cam==="wide"){ if(t.uw===1){pts+=5;why.push("עדשה רחבה במיוחד");} else pts-=4; }\n' +
+'    /* uw ו-sd תלת-מצביים, ולכן null נבדק בנפרד מ-0 בשניהם. הגרסה הראשונה איחדה אותם\n' +
+'       לאותו עונש, ומכיוון ש-uw היה גם בינארי, ארבעת דגמי הגלקסי נענשו 9 נקודות על עדשה\n' +
+'       רחבה שיש להם: סמסונג פשוט לא כותבת "רחבה במיוחד" אלא רזולוציה וצמצם. נמדד: S26 Ultra\n' +
+'       יצא שווה ל-A56 הבסיסי ומאחורי Xiaomi 15. שתיקה של היצרן אינה תשובה שלילית. */\n' +
+'    if(a.cam==="wide"){ if(t.uw===1){pts+=5;why.push("עדשה רחבה במיוחד");} else if(t.uw===0) pts-=4; }\n' +
 '    if(a.store==="256"){ if(t.minGB>=256){pts+=4;why.push("מתחיל ב-"+t.minGB+"GB");} else if(t.maxGB>=256){pts+=1;} else pts-=3; }\n' +
 '    if(a.store==="128"){ if(t.minGB<=128){pts+=2;why.push("קיים ב-"+t.minGB+"GB");} }\n' +
-'    if(a.store==="sd"){ if(t.sd===1){pts+=6;why.push("חריץ זיכרון");} else pts-=5; }\n' +
+'    if(a.store==="sd"){ if(t.sd===1){pts+=6;why.push("חריץ זיכרון");} else if(t.sd===0) pts-=5; }\n' +
 '    if(a.batt==="high"){ if(t.batt===1){pts+=4;if(t.battTxt)why.push(t.battTxt);} else if(t.batt===-1){pts-=3;} }\n' +
 '    if(a.upd==="yes"){ if(t.updYear){pts+=4;why.push("עדכונים עד "+t.updYear);} else pts-=2; }\n' +
 '    return {pts:pts,why:why};\n' +

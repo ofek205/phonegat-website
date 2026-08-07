@@ -383,8 +383,12 @@ main{counter-reset:prob}
 @media(max-width:640px){.cmp-vs{min-width:0}.cmp-vs tbody th[scope=row]{width:6.2rem}}
 /* שתי עמודות "למי עדיף". נערמות בטלפון, כי שתי רשימות זו ליד זו ב-375px זה שתי עמודות
    של 160px ואף אחת מהן לא נקראת. */
+@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}
+main .btn{white-space:normal}
 .two{display:grid;gap:2.2rem;margin-top:1.6rem}
 @media(min-width:820px){.two{grid-template-columns:1fr 1fr;gap:3rem}}
+.two .col p.aside{margin-block:.55rem}
+.two .col p.aside a{display:inline-block;padding-block:12px}
 .two .col h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.5rem);margin:0 0 .2rem;padding-block-end:.7rem;border-bottom:2px solid var(--ink-strong)}
 .ticks{list-style:none;margin:0;padding:0}
 .ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}
@@ -707,8 +711,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <tbody>
           <tr class="grp"><th colspan="2" scope="rowgroup">סוללה וטעינה</th></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">סוללה</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy A56 5G</bdo></th><td>עד 29 שעות וידאו, <bdo dir="ltr">5000 mAh</bdo> טיפוסית (קיבולת מדורגת 4905)<span class="dbar" style="--w:1%" aria-hidden="true"></span></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td><bdo dir="ltr">5500mAh</bdo> טיפוסי<span class="dbar" style="--w:100%" aria-hidden="true"></span></td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Galaxy A56 5G</bdo></th><td>עד 29 שעות וידאו, <bdo dir="ltr">5000 mAh</bdo> טיפוסית (קיבולת מדורגת 4905)</td></tr>
+          <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td><bdo dir="ltr">5500mAh</bdo> טיפוסי</td></tr>
           <tr class="fld"><th colspan="2" scope="rowgroup">טעינה חוטית</th></tr>
           <tr><th scope="row"><bdo dir="ltr">Galaxy A56 5G</bdo></th><td><i>לא מפורסם אצל היצרן</i></td></tr>
           <tr><th scope="row"><bdo dir="ltr">Redmi Note 14 Pro</bdo></th><td><bdo dir="ltr">45W</bdo>, והמטען בקופסה</td></tr>

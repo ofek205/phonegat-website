@@ -315,6 +315,7 @@ db.devices.forEach(function (d) {
     '/* כותרת קטגוריה בגיליון מפרט: קו כבד מעליה במקום רקע צבוע, ותווית קטנה בסאנס כמו שאר\n' +
     '   התוויות הקטנות בדף. 1.02rem ולא .86rem, כי rem נפתר מול 16px בשורש בזמן שהגוף 18px,\n' +
     '   ולכן תווית שנלקחת מרפרנס אנגלי יוצאת קטנה מדי בעברית. */\n' +
+    'main .btn{white-space:normal}',   /* nowrap גולש 86px בהגדלת טקסט ל-200% */
     '.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}\n' +
     '.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}\n' +
     '/* הכלל הכללי נותן קו תחתון לשורה האחרונה בכל tbody. עם קיבוץ יש כמה tbody, ולכן הקו\n' +

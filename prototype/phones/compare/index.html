@@ -380,8 +380,12 @@ main{counter-reset:prob}
 @media(max-width:640px){.cmp-vs{min-width:0}.cmp-vs tbody th[scope=row]{width:6.2rem}}
 /* שתי עמודות "למי עדיף". נערמות בטלפון, כי שתי רשימות זו ליד זו ב-375px זה שתי עמודות
    של 160px ואף אחת מהן לא נקראת. */
+@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}
+main .btn{white-space:normal}
 .two{display:grid;gap:2.2rem;margin-top:1.6rem}
 @media(min-width:820px){.two{grid-template-columns:1fr 1fr;gap:3rem}}
+.two .col p.aside{margin-block:.55rem}
+.two .col p.aside a{display:inline-block;padding-block:12px}
 .two .col h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.5rem);margin:0 0 .2rem;padding-block-end:.7rem;border-bottom:2px solid var(--ink-strong)}
 .ticks{list-style:none;margin:0;padding:0}
 .ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}
@@ -708,6 +712,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   if(!wrap||!out) return;
   function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   function ltr(s){return '<bdo dir="ltr">'+esc(s)+"</bdo>";}
+  var RUN=/[A-Za-z0-9][A-Za-z0-9.,:%\/+–\-]*(?:[ ]+[A-Za-z0-9][A-Za-z0-9.,:%\/+–\-]*)*/g;
+  function ltrRuns(raw) {
+    if (raw === null || raw === undefined) return '';
+    var s = String(raw), out = '', last = 0, m;
+    RUN.lastIndex = 0;
+    while ((m = RUN.exec(s)) !== null) {
+      var run = m[0];
+      /* פיסוק בסוף הריצה הוא של המשפט העברי ולא של הריצה, ולכן הוא נשאר בחוץ */
+      var core = run.replace(/[.,:\s]+$/, '');
+      var tail = run.slice(core.length);
+      out += esc(s.slice(last, m.index));
+      if (/[A-Za-z]/.test(core)) out += '<bdo dir="ltr">' + esc(core) + '</bdo>' + esc(tail);
+      else out += esc(run);
+      last = m.index + run.length;
+    }
+    return out + esc(s.slice(last));
+  }
+  
   function dev(sl){for(var i=0;i<DB.devices.length;i++){if(DB.devices[i].slug===sl)return DB.devices[i];}return null;}
   function keysFor(a,b){var p=PAIRS[a+"|"+b]||PAIRS[b+"|"+a];return p?{k:p.k?p.k.split("|"):[],s:p.s}:null;}
   function val(v){return Array.isArray(v)?v.join(", "):v;}
@@ -742,7 +764,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       html+='<tr class="fld"><th colspan="2" scope="rowgroup">'+esc(r[1])+"</th></tr>";
       ds.forEach(function(d){
         var v=d?val(d.spec[r[2]]):null;
-        var cell=(v===null||v===undefined||v==="")?"<td><i>לא מפורסם אצל היצרן</i></td>":"<td>"+esc(v)+"</td>";
+        var cell=(v===null||v===undefined||v==="")?"<td><i>לא מפורסם אצל היצרן</i></td>":"<td>"+ltrRuns(v)+"</td>";
         html+='<tr><th scope="row">'+ltr(d.name)+"</th>"+cell+"</tr>";
       });
     });

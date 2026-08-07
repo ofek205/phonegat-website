@@ -64,4 +64,11 @@ function ltrRuns(raw) {
   return out + esc(s.slice(last));
 }
 
-module.exports = { esc: esc, ltrRuns: ltrRuns };
+/* הכלי ב-/phones/compare/ בונה תאים בזמן ריצה בדפדפן, ולכן הוא צריך את אותה פונקציה שם.
+ * מוחזר כאן ה-toString של הפונקציה עצמה, ולא עותק שנכתב ביד, כי עותק שנכתב ביד הוא בדיוק
+ * הדבר שהמודול הזה נוצר כדי למנוע. הכלי מגדיר esc בעצמו, ולכן רק RUN ו-ltrRuns נדרשים. */
+function clientSource() {
+  return 'var RUN=' + RUN.toString() + ';\n' + ltrRuns.toString() + '\n';
+}
+
+module.exports = { esc: esc, ltrRuns: ltrRuns, clientSource: clientSource };

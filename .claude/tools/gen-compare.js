@@ -53,10 +53,18 @@ function swap(h, re, to, what, who) {
  * להסתיר: עמוד שאומר "יש הבדל" כשאין הוא שקר, והתיקון הוא ב-devices.json. קרה בפועל
  * ב-5.8.2026 בין "שמונה ליבות, עד 2.2GHz" ל-"8 ליבות, עד 2.2GHz". */
 var NUMWORDS = { 'שמונה': '8', 'עשר': '10', 'תשע': '9', 'שבע': '7', 'שש': '6', 'חמש': '5', 'ארבע': '4', 'שלוש': '3', 'שתיים': '2' };
+/* ההחלפה חייבת גבול מילה עברי. הגרסה הראשונה עשתה split/join גורף, ו"עשר" הוא תת-מחרוזת של
+ * "עשרים" בעוד "שלוש" הוא תת-מחרוזת של "שלושים": normalise('עשרים דקות') החזיר '10ים דקות'.
+ * כלומר המנגנון שנבנה כדי לתפוס "אותה עובדה בשני ניסוחים" היה קורס בדיוק במקרה שהוא נועד לו,
+ * ומכריז הבדל בין שני צדדים שאומרים את אותו דבר. הבאג היה רדום כי המילים האלה מופיעות היום
+ * רק ב-editorial, שאינו מנורמל. */
+var HE = 'א-ת';
 function normalise(s) {
   if (s === null || s === undefined) return null;
   s = String(val(s));
-  Object.keys(NUMWORDS).forEach(function (w) { s = s.split(w).join(NUMWORDS[w]); });
+  Object.keys(NUMWORDS).forEach(function (w) {
+    s = s.replace(new RegExp('(^|[^' + HE + '])' + w + '(?![' + HE + '])', 'g'), '$1' + NUMWORDS[w]);
+  });
   return s.replace(/^(הקלטה ב-|הקלטה |עד )/, '')
     .replace(/[.,:()׳״'"]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
 }
@@ -107,12 +115,10 @@ function buildTable(a, b, d) {
    *
    * הרוחב יושב במשתנה CSS ולא ב-inline style של width, כדי שאפשר יהיה לכבות אותו ב-media
    * אחד אם יתברר שהוא מפריע, בלי לגעת ב-HTML המחולל. */
+  /* ratioField ולא ratioPair: היא בודקת שהיחידות זהות לפני שהיא מחזירה יחס. ראו את ההערה
+   * ליד NUMERIC_BY_FIELD ב-traits.js — כאן הקו הציג 1% מול 100% כי הוא השווה שעות ל-mAh. */
   function bars(fieldKey, a, b) {
-    var fn = T.NUMERIC_BY_FIELD[fieldKey];
-    if (!fn) return null;
-    var r = T.ratioPair(fn(a.spec), fn(b.spec));
-    if (!r) return null;
-    return r;
+    return T.ratioField(fieldKey, a.spec, b.spec);
   }
   var bodies = order.map(function (gname) {
     return '        <tbody>\n' +
@@ -291,8 +297,12 @@ var CSS = [
   '@media(max-width:640px){.cmp-vs{min-width:0}.cmp-vs tbody th[scope=row]{width:6.2rem}}',
   '/* שתי עמודות "למי עדיף". נערמות בטלפון, כי שתי רשימות זו ליד זו ב-375px זה שתי עמודות',
   '   של 160px ואף אחת מהן לא נקראת. */',
+  '@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}',
+  'main .btn{white-space:normal}',   /* nowrap הוא ברירת המחדל של .btn, והוא גולש בהגדלת טקסט ל-200% */
   '.two{display:grid;gap:2.2rem;margin-top:1.6rem}',
   '@media(min-width:820px){.two{grid-template-columns:1fr 1fr;gap:3rem}}',
+  '.two .col p.aside{margin-block:.55rem}',
+  '.two .col p.aside a{display:inline-block;padding-block:12px}',   /* 20.8 → 44.8. הפסקה הזאת מכילה רק את הקישור, ולכן אין ריווח שורות שנפגע */
   '.two .col h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.22rem,2.2vw,1.5rem);margin:0 0 .2rem;padding-block-end:.7rem;border-bottom:2px solid var(--ink-strong)}',
   '.ticks{list-style:none;margin:0;padding:0}',
   '.ticks li{border-bottom:1px solid var(--line);padding-block:1rem;line-height:1.75}',
@@ -425,6 +435,9 @@ function toolMain(openTag, index, order, pairCount) {
   '  if(!wrap||!out) return;\n' +
   '  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}\n' +
   '  function ltr(s){return \'<bdo dir="ltr">\'+esc(s)+"</bdo>";}\n' +
+  /* אותה ltrRuns בדיוק כמו בצד המחולל, מוזרקת מ-lib/bidi.js דרך toString. בלעדיה תא שנבנה
+     בזמן ריצה מציג "12MP 50MP" במקום "50MP, 12MP" — הבאג של 20 העמודים, רק בכלי. */
+  '  ' + BIDI.clientSource().replace(/\n/g, '\n  ') + '\n' +
   '  function dev(sl){for(var i=0;i<DB.devices.length;i++){if(DB.devices[i].slug===sl)return DB.devices[i];}return null;}\n' +
   '  function keysFor(a,b){var p=PAIRS[a+"|"+b]||PAIRS[b+"|"+a];return p?{k:p.k?p.k.split("|"):[],s:p.s}:null;}\n' +
   '  function val(v){return Array.isArray(v)?v.join(", "):v;}\n' +
@@ -459,7 +472,7 @@ function toolMain(openTag, index, order, pairCount) {
   '      html+=\'<tr class="fld"><th colspan="2" scope="rowgroup">\'+esc(r[1])+"</th></tr>";\n' +
   '      ds.forEach(function(d){\n' +
   '        var v=d?val(d.spec[r[2]]):null;\n' +
-  '        var cell=(v===null||v===undefined||v==="")?"<td><i>לא מפורסם אצל היצרן</i></td>":"<td>"+esc(v)+"</td>";\n' +
+  '        var cell=(v===null||v===undefined||v==="")?"<td><i>לא מפורסם אצל היצרן</i></td>":"<td>"+ltrRuns(v)+"</td>";\n' +
   '        html+=\'<tr><th scope="row">\'+ltr(d.name)+"</th>"+cell+"</tr>";\n' +
   '      });\n' +
   '    });\n' +

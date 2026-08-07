@@ -56,11 +56,20 @@ function opticalZoom(spec) {
   return f.length ? Math.max.apply(null, f) : 'yes';
 }
 
-/* עדשה רחבה במיוחד. נגזר מ-12/12 כי מי שאין לו אומר את זה במפורש. */
+/* עדשה רחבה במיוחד. תלת-מצבי, בדיוק כמו sdCard.
+ *
+ * ההערה כאן קודם אמרה "נגזר מ-12/12 כי מי שאין לו אומר את זה במפורש", והטענה הזאת שגויה
+ * בפועל. סמסונג אינה משתמשת בתווית "רחבה במיוחד" אלא מפרטת רזולוציה וצמצם, ולכן ארבעת דגמי
+ * הגלקסי קיבלו 0, כלומר "אין עדשה רחבה", כברירת מחדל. ההשפעה נמדדה בסימולציה על הנתונים
+ * האמיתיים: מי שביקש אנדרואיד, מסך גדול ולצלם קבוצות, קיבל את Galaxy S26 Ultra מדורג שווה
+ * ל-A56 הבסיסי ומאחורי Xiaomi 15. אחרי התיקון ה-Ultra עולה למקום הראשון.
+ *
+ * זו בדיוק המלכודת שהכותרת של הקובץ מזהירה ממנה: היעדר מידע אינו היעדר תכונה. */
 function ultraWide(spec) {
   var blob = (spec.camera_extra || '') + ' ' + (spec.camera_main || '');
   if (/אין עדשה רחבה/.test(blob)) return 0;
-  return /רחבה במיוחד/.test(blob) ? 1 : 0;
+  if (/רחבה במיוחד/.test(blob)) return 1;
+  return null;
 }
 
 /* חריץ זיכרון. זיהוי חיובי בלבד: אפל וסמסונג אינן מפרסמות "אין הרחבה",
@@ -129,19 +138,41 @@ function ratioPair(a, b) {
   return { a: Math.round((a / hi) * 100), b: Math.round((b / hi) * 100) };
 }
 
-/* שדה מפרט → פונקציית שליפה, לשימוש כשרוצים קו יחסי בשורה מסוימת בטבלה */
+/* שדה מפרט → שליפה ליחידה, לשימוש כשרוצים קו יחסי בשורה מסוימת בטבלה.
+ *
+ * כל שליפה מחזירה `{u, v}` ולא מספר חשוף, כי **שדה אחד יכול לחזור בשתי יחידות.** הגרסה
+ * הראשונה החזירה מספר, ובשורת הסוללה היא לקחה שעות אם היצרן פרסם שעות ואחרת mAh. אפל
+ * מפרסמת שעות וסמסונג mAh, ולכן בעמוד galaxy-a56-vs-redmi-note-14-pro הקו השווה 29 שעות
+ * מול 5500 mAh והציג **1% מול 100%** — אמירה לקורא שהסוללה של האחד היא מאית מזו של האחר,
+ * כשבפועל 5000 מול 5500 mAh. הקו נועד להיות התרגום החזותי של המספר, ולכן קו שגוי גרוע
+ * מהיעדר קו: הוא נקרא במבט אחד ואף אחד לא בודק אותו מול הטקסט שלידו.
+ *
+ * לכן `ratioField` מסרבת להשוות שתי יחידות שונות ומחזירה null, ואז לא נצבע קו בכלל. */
 var NUMERIC_BY_FIELD = {
-  weight: grams,
-  screen_size: inches,
-  battery: function (s) { var h = battHours(s); return h !== null ? h : battMah(s); },
-  storage_offered: function (s) { var g = storageGB(s); return g.length ? g[g.length - 1] : null; },
-  zoom: function (s) { var z = opticalZoom(s); return typeof z === 'number' ? z : null; }
+  weight: function (s) { return unit('גרם', grams(s)); },
+  screen_size: function (s) { return unit('אינץ׳', inches(s)); },
+  battery: function (s) {
+    var h = battHours(s);
+    return h !== null ? unit('שעות', h) : unit('mAh', battMah(s));
+  },
+  storage_offered: function (s) { var g = storageGB(s); return unit('GB', g.length ? g[g.length - 1] : null); },
+  zoom: function (s) { var z = opticalZoom(s); return unit('x', typeof z === 'number' ? z : null); }
 };
+function unit(u, v) { return v === null || v === undefined ? null : { u: u, v: v }; }
+
+/* היחס לשורה אחת בטבלה, כולל בדיקת היחידות. null = אין קו. */
+function ratioField(fieldKey, specA, specB) {
+  var fn = NUMERIC_BY_FIELD[fieldKey];
+  if (!fn) return null;
+  var a = fn(specA), b = fn(specB);
+  if (!a || !b || a.u !== b.u) return null;
+  return ratioPair(a.v, b.v);
+}
 
 module.exports = {
   num: num, inches: inches, grams: grams, storageGB: storageGB,
   battHours: battHours, battMah: battMah, opticalZoom: opticalZoom,
   ultraWide: ultraWide, sdCard: sdCard, updateYear: updateYear,
-  deltas: deltas, ratioPair: ratioPair, gb: gb,
+  deltas: deltas, ratioPair: ratioPair, ratioField: ratioField, gb: gb,
   NUMERIC_BY_FIELD: NUMERIC_BY_FIELD, DELTAS: DELTAS
 };
