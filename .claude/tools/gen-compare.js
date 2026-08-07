@@ -31,6 +31,7 @@ var PROD = 'https://www.phonegat.co.il/';
 var SOURCE = 'phones/iphone-17/index.html';
 
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
+var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 if (!db._comparisons || !db._comparisons.pairs) { console.error('✗ אין _comparisons ב-devices.json'); process.exit(1); }
 if (!db._spec_groups || !db._spec_groups.groups) { console.error('✗ אין _spec_groups ב-devices.json'); process.exit(1); }
@@ -95,7 +96,8 @@ function buildTable(a, b, d) {
   function cell(v) {
     return v === null
       ? '<td><i>לא מפורסם אצל היצרן</i></td>'
-      : '<td>' + esc(v) + '</td>';
+      /* ltrRuns ולא esc, מאותה סיבה שבעמודי המכשיר: bidi הפך את סדר המספרים בתא. */
+      : '<td>' + BIDI.ltrRuns(v) + '</td>';
   }
   /* קו יחסי לשורה שיש בה מספר בשני הצדדים.
    *

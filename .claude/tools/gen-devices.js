@@ -21,6 +21,7 @@ var PROTO = path.join(ROOT, 'prototype');
 var SOURCE = 'guides/official-vs-parallel-import/index.html';  /* המסגרת + ה-CSS של הטבלה */
 var PROD = 'https://www.phonegat.co.il/';
 
+var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 var PH = db._placeholder_copy;
 var only = process.argv[2];
@@ -59,7 +60,9 @@ function buildMain(d, openTag) {
       var v = val(S[p[0]]);
       if (v === null || v === undefined || v === '') return null;
       specCount++;
-      return '          <tr><th scope="row">' + esc(p[1]) + '</th><td>' + esc(v) + '</td></tr>';
+      /* ltrRuns ולא esc: ערך מפרט מערבב עברית ולטינית, ואלגוריתם ה-bidi סידר מחדש
+       * את המספרים. "50MP, 12MP" הוצג "12MP 50MP", כלומר הראשית נראתה 12MP. */
+      return '          <tr><th scope="row">' + esc(p[1]) + '</th><td>' + BIDI.ltrRuns(v) + '</td></tr>';
     }).filter(Boolean);
     if (!rs.length) return null;
     return '        <tbody>\n' +
@@ -79,7 +82,7 @@ function buildMain(d, openTag) {
   ].map(function (f) {
     var real = f[1] !== null && f[1] !== undefined && f[1] !== '';
     return '        <tr><th scope="row">' + esc(f[0]) + '</th><td>' +
-      (real ? esc(f[1]) : '<em>' + esc(f[2]) + '</em>') + '</td></tr>';
+      (real ? BIDI.ltrRuns(f[1]) : '<em>' + esc(f[2]) + '</em>') + '</td></tr>';
   }).join('\n');
 
   var out = openTag + '\n\n' +
