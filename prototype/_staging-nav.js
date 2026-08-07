@@ -18,8 +18,21 @@
       'z-index:100000;font:700 13px/1.2 system-ui,sans-serif;direction:rtl}' +
     '.pg-rev-t{background:#151100;color:#ffd400;border:2px solid #ffd400;border-radius:6px;' +
       'padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;box-shadow:0 6px 18px rgba(0,0,0,.4)}' +
+    /* גלילה בתוך הפאנל.
+     *
+     * בלי max-height ובלי overflow, 33 פריטים בגובה 44px כל אחד הם רשימה של יותר מ-1400px
+     * בתוך אלמנט position:fixed. התוצאה: הרשימה יוצאת מהמסך למעלה ואי אפשר להגיע לתחילתה.
+     * זה עבד כשהיו שבעה פריטים והפסיק לעבוד בשקט כשהאזור גדל, וזה נמצא כשאופק ניסה לגלול.
+     *
+     * הגובה מחושב מול מה שתופס מקום מתחת לפאנל: הכפתור עצמו, הפינוי שלו מסרגל המובייל,
+     * ובאנר הקוקיז כשהוא פתוח. overscroll-behavior:contain מונע מהגלילה לזלוג לדף שמאחור
+     * כשמגיעים לסוף הרשימה. */
     '.pg-rev-p{display:none;margin-bottom:8px;background:#151100;border:2px solid #ffd400;border-radius:8px;' +
-      'padding:8px;max-width:min(300px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.5)}' +
+      'padding:8px;max-width:min(300px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.5);' +
+      'max-height:calc(100vh - 190px - var(--cookie-h,0px));overflow-y:auto;' +
+      'overscroll-behavior:contain;-webkit-overflow-scrolling:touch}' +
+    /* אין tabindex על הפאנל בכוונה: הוא מכיל קישורים, ולכן Tab מגלגל אותו ממילא, ותחנת
+     * מיקוד נוספת על המכל הייתה רק מוסיפה עצירה מיותרת. */
     '.pg-rev.open .pg-rev-p{display:block}' +
     '.pg-rev-p a{display:flex;align-items:center;gap:.5em;min-height:44px;padding:0 10px;' +
       'color:#ffd400;text-decoration:none;border-radius:4px}' +
@@ -45,6 +58,13 @@
     btn.addEventListener('click', function () {
       var open = wrap.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      /* עם 33 פריטים ורשימה שגוללת, הפתיחה על ההתחלה מחייבת לחפש איפה אתה נמצא. הגלילה
+       * לעמוד הנוכחי הופכת את הפאנל למשהו שאומר "אתה כאן" ולא רק "אלה כל העמודים".
+       * scrollIntoView בתוך מכל שגולל מזיז את המכל ולא את הדף, ולכן זה בטוח כאן. */
+      if (open) {
+        var cur = panel.querySelector('a[aria-current]');
+        if (cur && panel.scrollHeight > panel.clientHeight) cur.scrollIntoView({ block: 'center' });
+      }
     });
     wrap.appendChild(panel);
     wrap.appendChild(btn);
