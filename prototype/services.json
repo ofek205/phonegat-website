@@ -156,6 +156,11 @@
       "url": "/phones/compare/",
       "name": "כלי ההשוואה",
       "status": "review"
+    },
+    {
+      "url": "/phones/find-my-phone/",
+      "name": "שאלון התאמה",
+      "status": "review"
     }
   ]
 }
