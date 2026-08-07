@@ -310,8 +310,8 @@ QUESTIONS.map(function (q) {
     '        </fieldset>';
 }).join('\n') + '\n' +
 '        <fieldset class="q" id="fs-budget">\n' +
-'          <legend>תקציב, אם יש לכם אחד בראש</legend>\n' +
-'          <p class="why">השדה הזה <b>אינו מסנן שום דבר</b>, ולא בגלל שהוא לא חשוב. אין מחירון באתר כי המחירים משתנים, ולכן מה שתכתבו כאן פשוט ייכנס להודעה שתשלחו לנו, ונענה עליו במחיר אמיתי.</p>\n' +
+'          <legend>תקציב, אם יש לכם סכום בראש</legend>\n' +
+'          <p class="why">השדה הזה <b>אינו מסנן שום דבר</b>, ולא מפני שהוא לא חשוב. אין מחירון באתר כי המחירים משתנים, ולכן מה שתכתבו כאן פשוט ייכנס להודעה שתשלחו לנו, ונענה עליו במחיר אמיתי.</p>\n' +
 '          <div class="budget">\n' +
 '            <label for="q-budget">שקלים</label>\n' +
 '            <input type="text" id="q-budget" name="budget" inputmode="numeric" autocomplete="off" dir="ltr" placeholder="2500">\n' +
@@ -406,7 +406,7 @@ QUESTIONS.map(function (q) {
 '       מכוונת, כי שאלון שמעלים דגמים מסתיר מהלקוח את מה שיש בחנות. מונה שמראה מספר קפוא\n' +
 '       ומבטיח סינון הוא מונה שמשקר, ולכן הוא מנוסח עכשיו לפי מה שהוא באמת מודד. */\n' +
 '    if(!answered) counter.textContent = T.length+" דגמים במאגר. ענו על שתי השאלות הראשונות ונתחיל לדרג";\n' +
-'    else if(!a.size) counter.textContent = viable+" דגמים ב"+(a.os==="ios"?"אייפון":(a.os==="and"?"אנדרואיד":"מאגר"))+". עוד שאלה אחת ונדרג אותם";\n' +
+'    else if(!a.size) counter.textContent = viable+" "+(a.os==="ios"?"דגמי אייפון":(a.os==="and"?"דגמי אנדרואיד":"דגמים במאגר"))+". עוד שאלה אחת ונדרג אותם";\n' +
 '    else counter.textContent = "מדרג "+viable+" דגמים לפי "+answered+" התשובות שסימנתם";\n' +
 '\n' +
 '    /* ולידציה בעברית, ומיקוד לשאלה הראשונה שחסרה. aria-invalid על הקבוצה ולא על רדיו בודד.\n' +
@@ -442,7 +442,7 @@ QUESTIONS.map(function (q) {
 '    }\n' +
 '    var top=ranked.slice(0,3);\n' +
 '    var txt="היי, מלאתי את השאלון באתר. יצא לי: "+top.map(function(r){return r.t.name;}).join(", ")+\n' +
-'      (a.budget?"":"")+". אשמח לדעת מה מחיר ומה במלאי";\n' +
+'      ". אשמח לדעת מה המחיר ומה במלאי";\n' +
 '    var b=(document.getElementById("q-budget").value||"").trim();\n' +
 '    if(b) txt+=". התקציב שלי בסביבות "+b+" שקלים";\n' +
 '    var link="https://wa.me/97286812050?text="+encodeURIComponent(txt);\n' +

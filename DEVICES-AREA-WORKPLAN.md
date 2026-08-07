@@ -82,7 +82,7 @@
 | **D0.2** ✅ | `new-page.js` מקבל slug מקונן | `new-page.js` | **עבר.** `--slug pgtest/deep-scaffold` מייצר דף שעובר preflight בלי אף כשל, `canonical` נכון לעומק שתיים, `register('/sw.js')` שורשי, מעטפת ה-sw קיבלה את הכתובת. `phones/../evil` נדחה. **`toRoot` לא נגעתי, היא הייתה נכונה מלכתחילה** (שורשי־מוחלט, לא `../`) |
 | **D0.3** | סכמת `devices.json` | `prototype/devices.json` | 54 השדות מ-§8, **`spec_source` ו-`spec_checked` לכל שדה מפרט** ולא לכל מכשיר. `recommendation_status` קיים |
 | **D0.4** | סקריפט המחולל | `.claude/tools/gen-devices.js` | קורא `devices.json`, כותב HTML סטטי + `devices-public.json`. **טיוטת המלצה לא נכנסת ל-HTML** |
-| **D0.5** | הגנה על `devices.json` בפרודקשן | `prototype/vercel.json` | `/devices.json` מפנה כמו `services.json`. `/devices-public.json` נגיש |
+| **D0.5** ✅ | הגנה על `devices.json` בפרודקשן | `prototype/vercel.json` | **עבר 6.8.2026, אחרי שסקירת אבטחה תפסה שזה לא נעשה.** `devices.json` מפנה בפרודקשן כמו `services.json`, ו-`devices-public.json` נגזר במחולל עם 4 שדות בלבד (15KB מול 137KB). לכלי ההשוואה יש חגורה שנופלת אם שדה פרטי ימצא את דרכו לקובץ הציבורי |
 | **D0.6** | הרכיבים החדשים ב-CSS | הדף הראשון | **13 הרכיבים מ-§6, בצורות המתוקנות.** מבחן הקבלה של מערכת העיצוב עובר: `0px` דומיננטי, `fills` נקי, `h1` סריף |
 | **D0.7** | בידוד LTR | אותו מקום | מחלקת `.ltr` / `<bdo>` על כל מחרוזת לטינית ותא נתונים. **הבדיקה היא הסתכלות בעין, אין רגקס** |
 | **D0.8** | בדיקות preflight חדשות | `.claude/preflight.js` | 7 הבדיקות מ-§16: אין `Offer` בלי מחיר · אין `Product` בעמוד שמועות · מקור לכל שדה מפרט · `devices.json` ↔ HTML מסונכרנים · `status != approved` לא בפרודקשן · מצב מלאי קיים |

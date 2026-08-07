@@ -449,4 +449,38 @@ if (swGrew) {
   }
 }
 
+/* ============================================ devices-public.json
+ *
+ * שורה 2 ב-devices.json מצהירה שהוא "הצד הפרטי", ושקובץ ציבורי נגזר ממנו ומכיל רק את מה
+ * שכבר מוצג בעמוד. הקובץ הציבורי הזה **לא נבנה מעולם**, וזו הייתה משימה D0.5 בתוכנית.
+ * בינתיים נבנה כלי ההשוואה, והוא שולף /devices.json בזמן ריצה. כלומר בקשת GET אחת ללא
+ * אימות מחזירה את _rules (החלטות עסקיות עם תאריכים), את _candidates_findings (מחקר
+ * מתחרים ושאלות פתוחות), את spec_source (מתודולוגיית אימות), את commercial (סכימה
+ * שנועדה להכיל מחירים ושמות יבואנים), ואת recommendation (ציטוטים של ברוך וסיגל לפני
+ * אישור פרסום). כרגע השדות המסחריים והציטוטים ריקים, ולכן אין דלף בפועל, אבל הגידור
+ * של "רק approved נכנס" חי במחולל ה-HTML ולא בקובץ ה-JSON.
+ *
+ * מה שנכנס לקובץ הציבורי: בדיוק ארבעת השדות שהכלי קורא בזמן ריצה, ולא יותר.
+ * נמדד מהקוד עצמו: DB.devices, d.slug, d.name, d.name_he, d.spec[key]. */
+(function buildPublic() {
+  var pub = {
+    _: 'נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך. מכיל רק את השדות שכלי ההשוואה קורא בזמן ריצה, וכולם מוצגים בעמודי המכשיר בכל מקרה.',
+    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
+      return { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
+    })
+  };
+  var out = path.join(PROTO, 'devices-public.json');
+  fs.writeFileSync(out, JSON.stringify(pub, null, 2) + '\n');
+
+  /* חגורה: אם שדה פרטי ימצא את דרכו לקובץ הציבורי, זה ייפול כאן ולא יישלח לרשת. */
+  var leaked = ['_rules', '_candidates', '_candidates_findings', 'spec_source',
+                'recommendation', 'commercial', 'editorial', 'seo', 'media', '_comparisons']
+    .filter(function (k) { return JSON.stringify(pub).indexOf('"' + k + '"') >= 0; });
+  if (leaked.length) {
+    console.error('✗ devices-public.json מכיל שדות פרטיים: ' + leaked.join(', '));
+    process.exit(1);
+  }
+  console.log('✓ devices-public.json: ' + pub.devices.length + ' מכשירים, 4 שדות לכל אחד, אפס שדות פרטיים');
+})();
+
 console.log('\n' + made + ' עמודי מכשיר נוצרו. הרצה: node .claude/preflight.js');

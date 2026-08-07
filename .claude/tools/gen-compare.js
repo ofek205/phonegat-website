@@ -196,7 +196,7 @@ function buildMain(p, a, b, d, openTag) {
           return '      <li><b>' + esc(x.label) + '</b><span>' + esc(x.phrase) + '</span>' +
             '<em>' + esc(nm(x.higher)) + ': ' + esc(x.more) + '</em></li>';
         }).join('\n') + '\n    </ul>\n' +
-        '    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם, זה בדיוק מה שנעבור עליו יחד.</p>\n' +
+        '    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם? זה בדיוק מה שנעבור עליו יחד.</p>\n' +
         '  </div>\n</section>\n\n';
     })() +
 
@@ -393,7 +393,7 @@ function toolMain(openTag, index, order, pairCount) {
   '    <div class="prose">\n' +
   '      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>\n' +
   '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>\n' +
-  '      <p>אין כאן מחיר ואין הכרזה מי טוב יותר. את המחיר תקבלו מאיתנו כי הוא משתנה, ואת ההחלטה נעבור איתכם.</p>\n' +
+  '      <p>אין כאן מחיר ואין הכרזה מי טוב יותר. את המחיר תקבלו מאיתנו כי הוא משתנה, ועל ההחלטה נעבור איתכם.</p>\n' +
   '    </div>\n' +
   '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>\n' +
   '  </div>\n</section>\n\n' +
@@ -465,7 +465,10 @@ function toolMain(openTag, index, order, pairCount) {
   '    out.innerHTML=\'<div class="cmp-wrap" tabindex="0" role="region" aria-label="טבלת ההבדלים">\'+\n' +
   '      \'<table class="cmp cmp-spec cmp-vs"><caption>\'+diff.length+" שדות שבהם יש הבדל"+\n' +
   '      (same!==null?", ו-"+same+" שדות נוספים זהים ואינם מופיעים כאן":"")+".</caption>"+html+"</table></div>"+\n' +
-  '      \'<p class="aside">\'+ds.map(function(d){return \'<a href="/phones/\'+d.slug+\'/">המפרט המלא של \'+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";\n' +
+  '      /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא\n' +
+  '         מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML, וזו סטייה\n' +
+  '         מהמשמעת שכל שאר הקובץ שומר עליה. */\n' +
+  '      \'<p class="aside">\'+ds.map(function(d){return \'<a href="/phones/\'+esc(d.slug)+\'/">המפרט המלא של \'+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";\n' +
   '  }\n' +
   '\n' +
   '  wrap.addEventListener("click",function(e){\n' +
@@ -485,7 +488,12 @@ function toolMain(openTag, index, order, pairCount) {
   '    render(); wrap.querySelector(".chip").focus();\n' +
   '  });\n' +
   '\n' +
-  '  fetch("/devices.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){\n' +
+  '  /* הקובץ הציבורי ולא devices.json. הפרטי מכיל _rules, _candidates_findings, spec_source,\n' +
+'     commercial ו-recommendation: החלטות עסקיות עם תאריכים, מחקר מתחרים, ומקום לציטוטים של\n' +
+'     ברוך וסיגל לפני אישור פרסום. הגידור של "רק approved נכנס" חי במחולל ה-HTML ולא בקובץ\n' +
+'     ה-JSON, ולכן בקשת GET אחת הייתה מחזירה טיוטה. gen-devices.js גוזר קובץ ציבורי עם\n' +
+'     ארבעת השדות שהקוד כאן באמת קורא, ולא יותר. */\n' +
+'  fetch("/devices-public.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){\n' +
   '    DB=d; render();\n' +
   '  }).catch(function(){\n' +
   '    out.innerHTML=\'<p class="dempty">לא ניתן לטעון את נתוני המכשירים. <a href="/compare/">ההשוואות המוכנות</a> עובדות בלי הכלי.</p>\';\n' +

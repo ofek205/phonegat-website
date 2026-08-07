@@ -675,7 +675,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="prose">
       <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>
       <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>
-      <p>אין כאן מחיר ואין הכרזה מי טוב יותר. את המחיר תקבלו מאיתנו כי הוא משתנה, ואת ההחלטה נעבור איתכם.</p>
+      <p>אין כאן מחיר ואין הכרזה מי טוב יותר. את המחיר תקבלו מאיתנו כי הוא משתנה, ועל ההחלטה נעבור איתכם.</p>
     </div>
     <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>
   </div>
@@ -750,7 +750,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     out.innerHTML='<div class="cmp-wrap" tabindex="0" role="region" aria-label="טבלת ההבדלים">'+
       '<table class="cmp cmp-spec cmp-vs"><caption>'+diff.length+" שדות שבהם יש הבדל"+
       (same!==null?", ו-"+same+" שדות נוספים זהים ואינם מופיעים כאן":"")+".</caption>"+html+"</table></div>"+
-      '<p class="aside">'+ds.map(function(d){return '<a href="/phones/'+d.slug+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";
+      /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא
+         מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML, וזו סטייה
+         מהמשמעת שכל שאר הקובץ שומר עליה. */
+      '<p class="aside">'+ds.map(function(d){return '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";
   }
 
   wrap.addEventListener("click",function(e){
@@ -770,7 +773,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     render(); wrap.querySelector(".chip").focus();
   });
 
-  fetch("/devices.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
+  /* הקובץ הציבורי ולא devices.json. הפרטי מכיל _rules, _candidates_findings, spec_source,
+     commercial ו-recommendation: החלטות עסקיות עם תאריכים, מחקר מתחרים, ומקום לציטוטים של
+     ברוך וסיגל לפני אישור פרסום. הגידור של "רק approved נכנס" חי במחולל ה-HTML ולא בקובץ
+     ה-JSON, ולכן בקשת GET אחת הייתה מחזירה טיוטה. gen-devices.js גוזר קובץ ציבורי עם
+     ארבעת השדות שהקוד כאן באמת קורא, ולא יותר. */
+  fetch("/devices-public.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
     DB=d; render();
   }).catch(function(){
     out.innerHTML='<p class="dempty">לא ניתן לטעון את נתוני המכשירים. <a href="/compare/">ההשוואות המוכנות</a> עובדות בלי הכלי.</p>';
