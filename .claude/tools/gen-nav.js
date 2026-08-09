@@ -199,10 +199,13 @@ var CSS = [
   CSS_A,
   '/* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */',
   'nav.main .ndrop{position:relative}',
-  'nav.main .ntrig{background:none;border:0;color:#eaeaea;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.34rem;min-height:44px;padding:.3rem 0}',
+  /* הקישורים הישירים חייבים אותו ארגז כמו הכפתורים. הכפתור ממורכז אנכית ב-44
+     פיקסלים, והקישור נמתח לאותו גובה אבל הטקסט שלו נשאר בראש הארגז, ולכן
+     "מבצעים" ו"צרו קשר" ישבו גבוה משאר הפריטים. */
+  'nav.main>a{display:inline-flex;align-items:center;min-height:44px}',
+  'nav.main .ntrig{background:none;border:0;color:#eaeaea;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}',
+  /* אין חץ. מצב פתוח מסומן בצבע, וזה מספיק. */
   'nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}',
-  'nav.main .ntrig::after{content:"";inline-size:.4em;block-size:.4em;border-inline-end:2px solid currentColor;border-block-end:2px solid currentColor;transform:rotate(45deg);margin-block-start:-.28em;transition:transform .18s}',
-  'nav.main .ntrig[aria-expanded="true"]::after{transform:rotate(225deg);margin-block-start:.16em}',
   'nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#111;border:1px solid #262626;padding:1.15rem 1.35rem;z-index:130}',
   'nav.main .npanel.open{display:flex}',
   'nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}',
@@ -218,7 +221,11 @@ var CSS = [
   'nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}',
   '@media(max-width:980px){',
   '  nav.main .ndrop{display:block}',
-  '  nav.main .ntrig{display:flex;inline-size:100%;justify-content:space-between;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid #1c1c1c;min-height:48px}',
+  '  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid #1c1c1c;min-height:48px}',
+  /* ה-padding מוצהר במפורש ולא בירושה: לאתר יש nav.main a{padding-block:14px}
+     באותה ספציפיות בדיוק, והוא נערם על ה-padding של השורה והפך את הקישורים
+     ל-55 פיקסלים מול 49 של הכפתורים. */
+  '  nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}',
   '  nav.main .npanel{position:static;border:0;background:#0b0b0b;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}',
   '  nav.main .nrow{flex-direction:column;gap:0}',
   '  nav.main .ncol{min-inline-size:0}',
