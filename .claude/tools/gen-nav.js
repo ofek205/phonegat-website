@@ -114,7 +114,8 @@ function structure() {
           head: null, items: [
             { href: '/guides/phone-warranty-israel/', label: 'אחריות על טלפון' },
             { href: '/guides/new-or-previous-generation/', label: 'הדגם החדש או הקודם' },
-            { href: '/guides/first-day-checklist/', label: 'מה לבדוק ביום הראשון' }
+            { href: '/guides/first-day-checklist/', label: 'מה לבדוק ביום הראשון' },
+            { href: '/guides/first-phone-for-kid/', label: 'טלפון ראשון לילד' }
           ]
         }
       ],
