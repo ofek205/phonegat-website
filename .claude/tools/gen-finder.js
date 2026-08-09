@@ -199,7 +199,9 @@ var CSS = [
   '/* המונה הרץ. sticky מתחת לכותרת האתר, כי בשאלון של שבע שאלות הוא נגלל מהמסך בדיוק',
   '   כשהוא הופך למעניין. בלי רקע צבוע: קו שערה למעלה ולמטה ורווח, כמו כל דבר אחר כאן. */',
   '@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}',
+  '.q legend .req{font-family:var(--font);font-size:.98rem;font-weight:400;color:var(--ink-soft);margin-inline-start:.4rem}',
   '.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}',
+  '@media(max-width:980px){.qcount,.dstate{inset-block-start:0}}',   /* ההדר אינו דביק כאן, ולכן היסט של 66px היה משאיר רווח ריק */
   '.dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}',
   '.q[data-bad="1"] legend{color:#b03a2b}',
   '.qgo{margin-block-start:2.2rem;display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}',
