@@ -947,6 +947,47 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 27. עמוד שמדבר על העתיד ומתיישן ----------
+ * עמוד כמו /upcoming-phones/ אומר לקורא מה המצב היום, ולכן הוא נכון רק כל עוד מישהו
+ * בדק אותו. עמוד כזה לא נשבר כשהוא מתיישן, הוא פשוט הופך למטעה, ואין שום סימן חיצוני.
+ *
+ * הפתרון: העמוד נושא <time id="pg-checked" datetime="YYYY-MM-DD">, והבדיקה הזאת חוסמת
+ * העלאה כשהתאריך ישן מ-90 יום. זה גנרי בכוונה, כך שכל עמוד עתידי שנשען על טריות
+ * יקבל את אותו שער בלי לגעת כאן.
+ *
+ * הכיול: 90 יום נכשל, 75 מזהיר כדי שיהיה זמן לטפל, ותאריך עתידי נכשל כי הוא תמיד טעות. */
+(function () {
+  var MAX = 90, WARN_AT = 75;
+  var found = 0, stale = [], soon = [], future = [], broken = [];
+  var now = new Date();
+
+  CONTENT_PAGES.forEach(function (f) {
+    var src = readPage(f); if (!src) return;
+    var m = src.match(/<time[^>]+id="pg-checked"[^>]*>/);
+    if (!m) return;
+    found++;
+    var d = (m[0].match(/datetime="(\d{4}-\d{2}-\d{2})"/) || [])[1];
+    if (!d) { broken.push(f + ' (אין datetime תקין)'); return; }
+    var age = Math.floor((now - new Date(d + 'T00:00:00')) / 86400000);
+    if (age < 0) future.push(f + ' (' + d + ')');
+    else if (age > MAX) stale.push(f + ' (' + d + ', לפני ' + age + ' יום)');
+    else if (age > WARN_AT) soon.push(f + ' (' + d + ', לפני ' + age + ' יום)');
+  });
+
+  if (broken.length) bad('תגית pg-checked בלי datetime תקין: ' + broken.join(', ') +
+    ' — בלי תאריך קריא אין מה לאכוף, והשער פתוח בשקט');
+  if (future.length) bad('תאריך בדיקה עתידי: ' + future.join(', ') +
+    ' — תאריך שעוד לא הגיע הוא תמיד טעות הקלדה, והוא משתיק את השער לחודשים');
+  if (stale.length) {
+    bad('עמודים שמדברים על ההווה ולא נבדקו מעל ' + MAX + ' יום: ' + stale.join(', ') +
+      ' — העמוד לא נשבר, הוא הפך למטעה. לבדוק את התוכן ולעדכן את pg-checked');
+  } else if (soon.length) {
+    warn('מתקרב לפקיעה: ' + soon.join(', ') + ' — יש עוד זמן, אבל שווה לבדוק עכשיו');
+  } else if (found) {
+    ok(found + ' עמודים תלויי טריות, כולם נבדקו בתוך ' + MAX + ' הימים האחרונים');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

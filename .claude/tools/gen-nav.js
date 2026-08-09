@@ -68,7 +68,8 @@ function structure() {
         /* כלי ההשוואה, שונה מ-/compare/ שהוא ריכוז ההשוואות הכתובות. נשכח
            בגרסה הראשונה של הניווט ואותר בביקורת כיסוי מול הדיסק. */
         { href: '/phones/compare/', label: 'השוואת מכשירים' },
-        { href: '/phones/find-my-phone/', label: 'איזה מכשיר מתאים לי' }
+        { href: '/phones/find-my-phone/', label: 'איזה מכשיר מתאים לי' },
+        { href: '/upcoming-phones/', label: 'לחכות לדגם הבא?' }
       ]
     },
     {
