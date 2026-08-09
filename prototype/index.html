@@ -2360,15 +2360,32 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- INTRO + SERVICE TILES -->
 <style>
-.svc-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem .75rem;margin:1.4rem 0 0}
-.svc-trust span{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem;color:var(--ink-strong);background:#fff;border:1px solid var(--line);border-radius:11px;padding:.5rem 1.05rem;box-shadow:0 5px 16px -11px rgba(0,0,0,.28)}
-.svc-trust span::before{content:"✓";flex:none;width:19px;height:19px;border-radius:50%;background:var(--teal);color:#fff;font-weight:900;font-size:.66rem;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+/* A stated fact, not a control. The white fill, the border, the drop shadow and the rounded corners
+   were all raised-card cues, and together with a filled disc icon they read as three buttons you could
+   press, on a section whose only real controls are the "לפרטים" buttons below. On a white section the
+   words and a check are enough. The space between two items is four times the space inside one, so
+   they still group as three items without needing a box drawn around each. */
+.svc-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.7rem;margin:1.5rem 0 0}
+.svc-trust span{display:inline-flex;align-items:center;gap:.42rem;font-weight:600;font-size:1rem;color:var(--ink)}
+.svc-trust span::before{content:"✓";flex:none;color:var(--teal);font-weight:900;font-size:1.05rem;line-height:1}
+/* The three need 564px of content width to sit on one line. Left to wrap on its own the row broke
+   1+2 at 375 and 2+1 at 430, the two commonest phone widths, which reads as an accident rather than
+   a decision. Below that it becomes a stack instead. flex-start aligns the checks into a column, and
+   max-content plus auto margins centre the block as a whole, so the group stays centred like the rest
+   of the intro while the ticks still line up under each other. */
+@media(max-width:640px){
+  .svc-trust{flex-direction:column;align-items:flex-start;gap:.55rem;width:max-content;max-width:100%;margin-inline:auto}
+}
 </style>
 <section id="services" class="wrap">
   <div class="intro">
     <h2>כל עולם הסלולר במקום אחד</h2>
     <p>מעבדת הסלולר הוותיקה בקרית גת, בניהול ברוך וסיגל, כבר יותר מ-30 שנה. תיקון, מכירת מכשירים, קווי סלקום וכל החברות ואבזור, בליווי אישי ועם אחריות בכתב בהתאם למוצר ולסוג התיקון.</p>
-    <div class="svc-trust"><span>אבחון והצעת מחיר ללא עלות, ללא התחייבות</span><span>תיקונים רבים באותו יום</span><span>אחריות בכתב על תיקונים</span></div>
+    <!-- One chip per pillar, not three about the lab. This strip heads "כל עולם הסלולר במקום אחד"
+         and six service tiles, so three repair-only claims described a sixth of what follows. Each
+         line here is already stated in the tile it belongs to, so nothing new is being claimed, and
+         the two repair claims that came out still appear on the repair pages themselves. -->
+    <div class="svc-trust"><span>אבחון והצעת מחיר ללא עלות</span><span>מכשירים בתשלומים נוחים</span><span>משווק מורשה סלקום</span></div>
     <div class="kicker">השירותים שלנו</div>
   </div>
 </section>
