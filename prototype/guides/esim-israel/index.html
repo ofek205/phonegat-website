@@ -522,7 +522,36 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
    text that can fail to appear. The movement on this page is the reading rule and nothing else. */
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.prog{display:none}}
 html.a11y-stop-motion .prog{display:none}
-main .btn{white-space:normal}</style>
+main .btn{white-space:normal}/* ==== gen-nav:css:start ==== */
+/* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
+nav.main .ndrop{position:relative}
+nav.main .ntrig{background:none;border:0;color:#eaeaea;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.34rem;min-height:44px;padding:.3rem 0}
+nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}
+nav.main .ntrig::after{content:"";inline-size:.4em;block-size:.4em;border-inline-end:2px solid currentColor;border-block-end:2px solid currentColor;transform:rotate(45deg);margin-block-start:-.28em;transition:transform .18s}
+nav.main .ntrig[aria-expanded="true"]::after{transform:rotate(225deg);margin-block-start:.16em}
+nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#111;border:1px solid #262626;padding:1.15rem 1.35rem;z-index:130}
+nav.main .npanel.open{display:flex}
+nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}
+nav.main .ncol{min-inline-size:8.6rem}
+nav.main .nhead{color:#9a9a9a;font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}
+nav.main .npanel a{display:flex;align-items:center;color:#eaeaea;font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}
+nav.main .npanel a:hover{color:var(--teal)}
+nav.main .npanel a[aria-current="page"]{color:var(--teal)}
+nav.main .nall{border-top:1px solid #2a2a2a;padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
+nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
+@media(max-width:980px){
+  nav.main .ndrop{display:block}
+  nav.main .ntrig{display:flex;inline-size:100%;justify-content:space-between;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid #1c1c1c;min-height:48px}
+  nav.main .npanel{position:static;border:0;background:#0b0b0b;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}
+  nav.main .nrow{flex-direction:column;gap:0}
+  nav.main .ncol{min-inline-size:0}
+  nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}
+  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid #171717}
+  nav.main .nall{border-top:1px solid #2a2a2a;margin:0;padding-block-start:0;flex-direction:column;gap:0}
+  nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}
+}
+/* ==== gen-nav:css:end ==== */
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -537,7 +566,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="/" aria-label="פון גת, דף הבית"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
-      <a href="/#team">מי אנחנו</a><a href="/#reviews">ביקורות</a><a href="/#services">שירותים</a><a href="/phones/">מכשירים</a><a href="/phone-problems/">מדריך תקלות</a><a href="/#deals">מבצעים</a><a href="/#press">כתבו עלינו</a><a href="/#map">מיקום</a><a href="/#faq">שאלות נפוצות</a><a href="/contact/">צרו קשר</a>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-devices-t" aria-expanded="false" aria-controls="nd-devices">מכשירים</button>
+        <div class="npanel" id="nd-devices" role="group" aria-labelledby="nd-devices-t">
+          <div class="nrow">
+            <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
+            <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a17/">Galaxy A17</a></div>
+            <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
+          </div>
+          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">השוואות בין דגמים</a><a href="/phones/find-my-phone/">איזה מכשיר מתאים לי</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-repairs-t" aria-expanded="false" aria-controls="nd-repairs">תיקונים</button>
+        <div class="npanel" id="nd-repairs" role="group" aria-labelledby="nd-repairs-t">
+          <div class="nrow">
+            <div class="ncol"><p class="nhead">לפי תקלה</p><a href="/phone-screen-replacement-kiryat-gat/">החלפת מסך</a><a href="/phone-battery-replacement-kiryat-gat/">החלפת סוללה</a><a href="/charging-port-repair-kiryat-gat/">שקע טעינה</a><a href="/phone-camera-repair-kiryat-gat/">מצלמה</a><a href="/phone-speaker-microphone-repair-kiryat-gat/">רמקול ומיקרופון</a><a href="/phone-back-glass-repair-kiryat-gat/">גב אחורי</a><a href="/face-id-repair-kiryat-gat/">Face ID</a></div>
+            <div class="ncol"><p class="nhead">לפי מותג</p><a href="/iphone-repair-kiryat-gat/">תיקון אייפון</a><a href="/galaxy-a-screen-replacement-kiryat-gat/">מסך גלקסי A</a><a href="/galaxy-a-battery-replacement-kiryat-gat/">סוללה גלקסי A</a><a href="/redmi-repair-kiryat-gat/">תיקון רדמי נוט</a><a href="/xiaomi-repair-kiryat-gat/">שיאומי ופוקו</a></div>
+          </div>
+          <div class="nall"><a href="/mobile-phone-repair-kiryat-gat/">מעבדת הסלולר</a><a href="/phone-problems/">מדריך תקלות</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
+        <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/guides/esim-israel/" aria-current="page">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-day-checklist/">מה לבדוק ביום הראשון</a></div>
+          </div>
+          <div class="nall"><a href="/guides/">כל המדריכים</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-areas-t" aria-expanded="false" aria-controls="nd-areas">אזורי שירות</button>
+        <div class="npanel" id="nd-areas" role="group" aria-labelledby="nd-areas-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/mobile-phone-repair-kiryat-gat/">קריית גת</a><a href="/phone-repair-kiryat-malachi/">קריית מלאכי</a><a href="/phone-repair-lachish/">מועצה אזורית לכיש</a><a href="/phone-repair-yoav/">מועצה אזורית יואב</a><a href="/phone-repair-shafir/">מועצה אזורית שפיר</a><a href="/phone-repair-beer-tuvia/">מועצה אזורית באר טוביה</a></div>
+          </div>
+        </div>
+      </div>
+      <a href="/#deals">מבצעים</a>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-about-t" aria-expanded="false" aria-controls="nd-about">פון גת</button>
+        <div class="npanel" id="nd-about" role="group" aria-labelledby="nd-about-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/#team">מי אנחנו</a><a href="/#reviews">ביקורות</a><a href="/#services">שירותים</a></div>
+            <div class="ncol"><a href="/#press">כתבו עלינו</a><a href="/#map">מיקום</a><a href="/#faq">שאלות נפוצות</a></div>
+          </div>
+        </div>
+      </div>
+      <a href="/contact/">צרו קשר</a>
     </nav>
     <div class="hicons">
       <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
@@ -960,5 +1038,28 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
   });
 })();
 </script>
+<!-- gen-nav:js:start -->
+<script>/* ניווט נפתח — .claude/tools/gen-nav.js. אל תערוך ידנית. */
+(function(){var nav=document.getElementById("nav");if(!nav)return;
+var trigs=[].slice.call(nav.querySelectorAll(".ntrig"));
+function pan(t){return document.getElementById(t.getAttribute("aria-controls"))}
+function shut(t){t.setAttribute("aria-expanded","false");var p=pan(t);if(p)p.classList.remove("open")}
+function shutAll(x){trigs.forEach(function(t){if(t!==x)shut(t)})}
+function open(t){shutAll(t);t.setAttribute("aria-expanded","true");var p=pan(t);if(p)p.classList.add("open")}
+trigs.forEach(function(t){
+  t.addEventListener("click",function(){t.getAttribute("aria-expanded")==="true"?shut(t):open(t)});
+  t.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){e.preventDefault();open(t);var a=pan(t).querySelector("a");if(a)a.focus()}
+    else if(e.key==="Escape"){shut(t)}});
+  var p=pan(t);if(!p)return;
+  p.addEventListener("keydown",function(e){
+    var L=[].slice.call(p.querySelectorAll("a")),i=L.indexOf(document.activeElement);
+    if(e.key==="Escape"){e.preventDefault();shut(t);t.focus()}
+    else if(e.key==="ArrowDown"&&i>-1){e.preventDefault();L[(i+1)%L.length].focus()}
+    else if(e.key==="ArrowUp"&&i>-1){e.preventDefault();L[(i-1+L.length)%L.length].focus()}})});
+document.addEventListener("click",function(e){if(!nav.contains(e.target))shutAll()});
+nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))shutAll()});
+})();</script>
+<!-- gen-nav:js:end -->
 </body>
 </html>
