@@ -169,6 +169,31 @@
       "url": "/phones/find-my-phone/",
       "name": "שאלון התאמה",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a57/",
+      "name": "גלקסי A57",
+      "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a37/",
+      "name": "גלקסי A37",
+      "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a17/",
+      "name": "גלקסי A17",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-a57-vs-galaxy-a37/",
+      "name": "גלקסי A57 מול גלקסי A37",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-a37-vs-galaxy-a17/",
+      "name": "גלקסי A37 מול גלקסי A17",
+      "status": "review"
     }
   ]
 }
