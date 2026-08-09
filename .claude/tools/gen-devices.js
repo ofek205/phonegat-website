@@ -48,6 +48,20 @@ function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
  * ל-Pro Max iPhone 17, ומידה הופכת סדר ספרות. אין רגקס שתופס את זה, ולכן העטיפה כאן. */
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 
+/* .hub נולד ב-guides/index.html, ונשלף משם בזמן החילול במקום להיכתב כאן שוב.
+ * זה אותו דפוס שכבר קיים ב-gen-compare וב-gen-finder, והוא התשובה לכשל שחזר בפרויקט
+ * חמש פעמים: רכיב שמועתק לעמוד חדש בלי הכלל שלו נראה שבור בלי להיכשל בשום דבר. */
+function hubCss() {
+  var g = fs.readFileSync(path.join(PROTO, 'guides/index.html'), 'utf8');
+  var s = g.indexOf('.hub{list-style:none');
+  if (s < 0) { console.error('✗ לא נמצא ה-CSS של .hub ב-guides/index.html. הרכיב נולד שם, ואם הוא זז צריך לעדכן את המחולל.'); process.exit(1); }
+  var e = g.indexOf('\n\n', s);
+  var block = g.slice(s, e < 0 ? s + 1400 : e);
+  var rules = (block.match(/^\.hub|^@media[^{]*\{\.hub/gm) || []).length;
+  if (rules < 6) { console.error('✗ ה-CSS של .hub נשלף חלקי: ' + rules + ' כללים בלבד'); process.exit(1); }
+  return '/* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */\n' + block;
+}
+
 function buildMain(d, openTag) {
   var S = d.spec, C = d.commercial, E = d.editorial || {};
   var srcDefault = (d.spec_source && d.spec_source.default) || {};
@@ -177,6 +191,31 @@ function buildMain(d, openTag) {
   '. זמינות גרסאות, צבעים, נפחים ותכולת האריזה עשויה להשתנות, וגם בין מסלולי יבוא. ' +
   (S.model_numbers ? '' : 'מספר הדגם המדויק תלוי בגרסה שהגיעה לחנות, ואפשר לבקש לראות אותו לפני הקנייה.') +
   '</p>\n  </div>\n</section>\n\n';
+
+  /* --- ההשוואות שהדגם הזה משתתף בהן ---
+   *
+   * שמונת עמודי ההשוואה היו מקושרים ממקום אחד בלבד, מרכז ההשוואות, ובדיקה 26 תפסה את זה.
+   * עמוד מכשיר שאינו מקשר להשוואה שהוא עצמו צד בה הוא גם קישור חסר וגם שירות חסר לקורא:
+   * מי שקורא על דגם מסוים הוא בדיוק מי שרוצה לדעת במה הוא שונה מהשכן שלו. */
+  var pairs = ((db._comparisons || {}).pairs || []).filter(function (p) {
+    return p.a === d.slug || p.b === d.slug;
+  });
+  if (pairs.length) {
+    var bySlug = function (s) { return db.devices.filter(function (x) { return x.slug === s; })[0]; };
+    var other = function (p) { return bySlug(p.a === d.slug ? p.b : p.a); };
+    out += '<section class="block" id="vs" aria-labelledby="h-vs">\n' +
+    '  <div class="wrap box">\n' +
+    '    <h2 id="h-vs">מול מה שווה להשוות אותו</h2>\n' +
+    '    <ul class="hub">\n' +
+    pairs.map(function (p) {
+      var o = other(p);
+      return '      <li><a href="/compare/' + esc(p.slug) + '/"><b>' + ltr(d.name) + ' מול ' + ltr(o ? o.name : '') +
+             '</b><span>' + esc(p.lede ? p.lede.split('.')[0] + '.' : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
+    }).join('\n') + '\n' +
+    '    </ul>\n' +
+    '    <p class="aside">רוצים להשוות מול דגם שאינו ברשימה? <a href="/phones/compare/">הכלי בונה כל השוואה</a>, ו<a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>\n' +
+    '  </div>\n</section>\n\n';
+  }
 
   /* --- CTA --- */
   out += '<section class="cta" aria-labelledby="cta-h">\n' +
@@ -318,6 +357,9 @@ db.devices.forEach(function (d) {
     /* nowrap הוא ברירת המחדל של .btn במסגרת המשותפת, והוא גולש 86px בהגדלת טקסט ל-200%.
        מוגבל ל-main בכוונה, כדי שה-CTA בהדר והסרגל התחתון לא ישנו צורה. */
     'main .btn{white-space:normal}\n' +
+    /* מקטע "מול מה שווה להשוות" משתמש ב-.hub, והכלל שלו נולד ב-guides/index.html.
+       בדיקה 21 תפסה את זה בהרצה הראשונה: 11 עמודי מכשיר עם הרכיב ובלי ה-CSS שלו. */
+    hubCss() + '\n' +
     '.btn-hero{white-space:normal;text-align:center}\n' +
     '.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}\n' +
     '.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}\n' +

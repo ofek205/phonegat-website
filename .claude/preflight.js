@@ -902,6 +902,51 @@ if (classFails.length) {
   else if (worst) ok('אין שכפול בין עמודים. הגבוה ביותר: ' + worst.pct + '% (' + worst.pair.replace(/\/index\.html/g, '') + '), הסף 70%');
 })();
 
+/* ---------- 26. עמוד שאף אחד לא מקשר אליו ----------
+ * בדיקה 24 מוודאת שקישור מצביע לעמוד קיים. היא לא מוודאת שלעמוד יש למי להצביע אליו,
+ * וזה חור שהתגלה ביום שבו נבנו 15 עמודים: שבעה מהם היו תלויים בקישור נכנס יחיד, וחמישה
+ * מהם באותו משפט בודד. מישהו שיערוך את המשפט הזה מנתק חמישה עמודים בבת אחת, ושום בדיקה
+ * לא הייתה נכשלת.
+ *
+ * נספרים רק קישורים מתוך <main>. קישורי הדר, פוטר וניווט זהים בכל עמוד ולכן אינם מעידים
+ * על כלום: הם הופכים עמוד לנגיש, לא למקושר.
+ *
+ * הכיול: אפס הוא יתום ונכשל. אחד הוא שביר ומקבל אזהרה, כי עמוד חדש לגיטימי מתחיל שם. */
+(function () {
+  /* דף הבית ועמודי החובה מגיעים מהפוטר בכל עמוד, ולכן אינם נמדדים כאן */
+  var EXEMPT = ['index.html', 'privacy.html', 'accessibility.html', 'contact/index.html'];
+  var inb = {};
+  CONTENT_PAGES.forEach(function (f) {
+    if (EXEMPT.indexOf(f.replace(/\\/g, '/')) >= 0) return;
+    inb[f] = 0;
+  });
+  CONTENT_PAGES.forEach(function (from) {
+    var s = readPage(from); if (!s) return;
+    var m = s.match(/<main[\s\S]*?<\/main>/); if (!m) return;
+    var body = m[0].replace(/<script[\s\S]*?<\/script>/g, ' ');
+    Object.keys(inb).forEach(function (to) {
+      if (to === from) return;
+      var url = '/' + to.replace(/\\/g, '/').replace(/index\.html$/, '');
+      if (body.indexOf('href="' + url + '"') >= 0) inb[to]++;
+    });
+  });
+  var orphans = [], fragile = [];
+  Object.keys(inb).forEach(function (f) {
+    var n = f.replace(/[\\\/]index\.html$/, '');
+    if (inb[f] === 0) orphans.push(n);
+    else if (inb[f] === 1) fragile.push(n);
+  });
+  if (orphans.length) {
+    bad('עמודים שאף עמוד אחר לא מקשר אליהם מתוך התוכן: ' + orphans.join(', ') +
+      ' — גוגל מגיע אליהם רק דרך הסייטמאפ, ומבקר לא מגיע אליהם בכלל');
+  } else if (fragile.length) {
+    warn('עמודים עם קישור נכנס יחיד: ' + fragile.join(', ') +
+      ' — עריכה אחת במקום שממנו הם מקושרים מנתקת אותם');
+  } else {
+    ok(Object.keys(inb).length + ' עמודים, ולכל אחד לפחות שני קישורים נכנסים מתוך התוכן');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
