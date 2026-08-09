@@ -222,8 +222,6 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
 .idf .btn-idf{position:relative;overflow:hidden;background:#D4BE7A;color:#20260f;font-weight:800;min-height:44px;padding:13px 26px;font-size:1rem;gap:.5rem;box-shadow:0 12px 28px -14px rgba(0,0,0,.8)}
 .idf .btn-idf:hover{background:#E3D5A8}
 .idf .btn-idf svg{width:15px;height:15px;flex:none}
-/* the code is drawn per visitor from the counter, so this shows its shape and never a number */
-.idf .idf-chip{display:inline-flex;align-items:center;min-height:44px;padding:0 1rem;border:1.5px dashed #D4BE7A;border-radius:8px;color:#D4BE7A;font-weight:700;letter-spacing:.06em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1rem}
 .idf .idf-art{flex:0 0 auto;order:3;position:relative;display:flex;align-items:flex-end;justify-content:center}
 /* ~210px, not ~124px. This is the size the whole direction rests on: at 124px the figure was 62px
    of actual drawing, where a face is 45px and a uniform button is 4px, and no amount of detail
@@ -857,9 +855,6 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
   box-shadow:0 10px 26px -12px rgba(0,0,0,.6)}
 .s-idf .idf-cta:hover{background:#D6C79A;transform:translateY(-1px)}
 /* the code's shape, not a code: see the note in the markup */
-.s-idf .idf-chip{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;
-  border:1.5px dashed #C9BC8A;border-radius:8px;color:#C9BC8A;font-weight:700;letter-spacing:.06em;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:1.02rem}
 .s-idf .idf-fine{color:#a8a077;font-size:.8rem;margin:0;opacity:1}
 /* khaki halo instead of the screen-protector slide's blue, so the reused stage matches this palette */
 .s-idf .scr-halo{background:radial-gradient(circle,rgba(201,188,138,.5),rgba(201,188,138,.18) 55%,transparent 72%)}
@@ -2096,8 +2091,7 @@ document.addEventListener('DOMContentLoaded',function(){
             <p class="terms">לחיילים במדים · סדיר, קבע ומילואים</p>
           </div>
           <div class="act">
-            <span class="idf-chip" aria-hidden="true">TZ-••••</span>
-            <button type="button" class="btn btn-idf" data-pg-coupon="idf" aria-label="קבלו קוד הטבה לחיילי צה״ל: מגן מסך זכוכית והדבקה, ללא עלות">קבלו קוד הטבה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <button type="button" class="btn btn-idf" data-pg-coupon="idf" aria-label="קבלו קוד הטבה לחיילי צה״ל: מגן מסך זכוכית והדבקה, ללא עלות">קבלו קוד הטבה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
           </div>
         </div>
         <!-- Proportions measured, not eyeballed. The previous build had the head at 23.6% of
@@ -2243,7 +2237,7 @@ document.addEventListener('DOMContentLoaded',function(){
           </svg>
         </div>
       </div>
-      <p class="fine">קופון אחד לאדם · בכפוף למלאי · ט.ל.ח.</p>
+      <p class="fine">קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.</p>
     </div>
   </div>
 </section>
@@ -2421,9 +2415,8 @@ document.addEventListener('DOMContentLoaded',function(){
               <!-- The real code is drawn per visitor from the counter, so the strip can only ever show
                    the shape of one. Printing a specific number here would tell every visitor the same
                    code and quietly break the one metric the counter exists to give. -->
-              <span class="idf-chip" aria-hidden="true">TZ-••••</span>
-            </div>
-            <p class="idf-fine">קופון אחד לאדם · בכפוף למלאי · ט.ל.ח.</p>
+                </div>
+            <p class="idf-fine">קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.</p>
           </div>
           <div class="slide-art">
             <span class="slide-troops" aria-hidden="true">
@@ -3605,7 +3598,7 @@ document.addEventListener('DOMContentLoaded',function(){
     idf:{title:'מגן מסך כולל הדבקה',desc:'הטבה לחיילי צה״ל, במדים',price:'0',priceHtml:'<b>ללא עלות</b>',
       img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-olive',qr:'#2F3821',key:'pg_idf_coupon',prefix:'TZ-',
       wa:'היי! אני רוצה לממש את הטבת חיילי צה״ל, מגן מסך כולל הדבקה. קוד הקופון שלי: ',
-      fine:'בהצגת הקוד ובמדים · קופון אחד לאדם · בכפוף למלאי · ט.ל.ח.'}
+      fine:'בהצגת הקוד ובמדים · קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'}
   };
   var FOCUSABLE='a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])';
 
