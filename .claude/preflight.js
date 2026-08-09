@@ -667,19 +667,59 @@ if (classFails.length) {
  * vm.Script מהדר בלי להריץ, ולכן הבדיקה בטוחה גם לסקריפטים שכותבים קבצים. */
 (function () {
   var vm = require('vm');
-  var dirs = [P('.claude'), P('.claude/skills/pg-new-content-page/scripts')];
+  /* סריקה רקורסיבית ולא רשימה קבועה של שתי תיקיות. הרשימה הקבועה החמיצה את .claude/tools
+   * לגמרי, כלומר את ארבעת המחוללים ואת lib/, שהם הקוד שרץ הכי הרבה בפרויקט. הוכח בשחזור:
+   * שגיאת תחביר שנשתלה ב-gen-devices.js עברה, והבדיקה דיווחה "הכול תקין".
+   * מה שהבדיקה הזאת כן תופסת הוא שגיאות תחביר בלבד. באג סמנטי בקוד תקין, כמו ארגומנט
+   * שלישי ל-replace, אינו נתפס כאן אלא בבדיקה 21. */
   var broken = [], checked = 0;
-  dirs.forEach(function (d) {
+  (function walk(d) {
     var names;
-    try { names = fs.readdirSync(d); } catch (e) { return; }
-    names.filter(function (n) { return /\.js$/.test(n); }).forEach(function (n) {
-      var full = path.join(d, n);
+    try { names = fs.readdirSync(d, { withFileTypes: true }); } catch (e) { return; }
+    names.forEach(function (e) {
+      if (e.name === 'node_modules' || e.name.charAt(0) === '.' && e.name !== '.claude') return;
+      var full = path.join(d, e.name);
+      if (e.isDirectory()) return walk(full);
+      if (!/\.js$/.test(e.name)) return;
       try { new vm.Script(fs.readFileSync(full, 'utf8'), { filename: full }); checked++; }
-      catch (e) { broken.push(path.relative(P('.'), full) + ': ' + e.message.slice(0, 60)); }
+      catch (err) { broken.push(path.relative(P('.'), full) + ': ' + err.message.slice(0, 60)); }
     });
-  });
+  })(P('.claude'));
   if (broken.length) bad('סקריפטים שלא נטענים: ' + broken.join(' · ') + ' — שגיאת תחביר, הכלי לא ירוץ בכלל');
   else if (checked) ok(checked + ' סקריפטים של הפרויקט נטענים');
+})();
+
+/* ---------- 21. רכיב שיש לו HTML חייב שיהיה לו גם ה-CSS ----------
+ * זה הכשל שחזר בפרויקט הזה חמש פעמים: .hub פעמיים, .chip, .cmp, וכפתור ההירו. אין שלב
+ * build, ולכן כל עמוד נושא עותק משלו של ה-CSS, ורכיב שמועתק בלי הכלל שלו נראה שבור בלי
+ * להיכשל בשום דבר. שום בדיקה קודמת לא כיסתה את זה: 10 בודקת את תפריט הנגישות בלבד.
+ *
+ * ומה שהוליד את הבדיקה עכשיו: סקריפט הזריק כלל CSS לתוך h.replace כארגומנט שלישי במקום
+ * לחבר אותו במחרוזת. replace מקבל שניים, ולכן כל בלוק ה-CSS האמיתי נזרק בשקט מ-12 עמודי
+ * מכשיר. הקוד תקין תחבירית, ולכן בדיקה 19 לא יכלה לתפוס. מה שתפס היה מקרי לגמרי.
+ *
+ * הכלל: אם ה-HTML משתמש ברכיב, ה-CSS שלו חייב להיות באותו קובץ. */
+(function () {
+  var PAIRS = [
+    /* הבדיקה על האלמנט ולא על המקטע: יכול להיות ghero בלי כפתור, ואז הכלל מיותר */
+    { when: /class="[^"]*\bbtn-hero\b/,  need: '.btn-hero{white-space:normal',
+      why: 'כפתור ההירו גולש מהעמודה בלי הכלל הזה' },
+    { when: /class="[^"]*\bcmp-spec\b/,  need: '.cmp-spec .grp th{',
+      why: 'כותרות הקטגוריה בטבלת המפרט חוזרות לעיצוב ברירת המחדל' },
+    { when: /class="[^"]*\bhub\b/,       need: '.hub li',
+      why: 'רשימת המרכז מאבדת את קו השערה ואת המספור' }
+  ];
+  var miss = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    /* ה-HTML נבדק בלי ה-style, אחרת סלקטור בתוך גיליון הסגנונות נספר כשימוש ברכיב */
+    var html = s.replace(/<style[\s\S]*?<\/style>/g, ' ');
+    PAIRS.forEach(function (p) {
+      if (p.when.test(html) && s.indexOf(p.need) < 0) miss.push(f + ': ' + p.need + ' (' + p.why + ')');
+    });
+  });
+  if (miss.length) bad('רכיב בלי ה-CSS שלו: ' + miss.join(' · '));
+  else ok('כל רכיב שמופיע בעמוד נושא איתו את ה-CSS שלו');
 })();
 
 /* ---------- דוח ---------- */

@@ -318,6 +318,7 @@ db.devices.forEach(function (d) {
     /* nowrap הוא ברירת המחדל של .btn במסגרת המשותפת, והוא גולש 86px בהגדלת טקסט ל-200%.
        מוגבל ל-main בכוונה, כדי שה-CTA בהדר והסרגל התחתון לא ישנו צורה. */
     'main .btn{white-space:normal}\n' +
+    '.btn-hero{white-space:normal;text-align:center}\n' +
     '.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}\n' +
     '.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}\n' +
     '/* הכלל הכללי נותן קו תחתון לשורה האחרונה בכל tbody. עם קיבוץ יש כמה tbody, ולכן הקו\n' +
