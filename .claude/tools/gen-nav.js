@@ -65,6 +65,9 @@ function structure() {
       all: [
         { href: '/phones/', label: 'כל המכשירים' },
         { href: '/compare/', label: 'השוואות בין דגמים' },
+        /* כלי ההשוואה, שונה מ-/compare/ שהוא ריכוז ההשוואות הכתובות. נשכח
+           בגרסה הראשונה של הניווט ואותר בביקורת כיסוי מול הדיסק. */
+        { href: '/phones/compare/', label: 'השוואת מכשירים' },
         { href: '/phones/find-my-phone/', label: 'איזה מכשיר מתאים לי' }
       ]
     },
@@ -208,6 +211,10 @@ var CSS = [
   'nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}',
   'nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#111;border:1px solid #262626;padding:1.15rem 1.35rem;z-index:130}',
   'nav.main .npanel.open{display:flex}',
+  /* גשר שקוף מעל הפאנל, שמכסה את הרווח שבינו לבין הכפתור. בלעדיו העכבר בדרך
+     מהכפתור לפאנל עובר מעל כלום, mouseleave יורה, והתפריט נסגר באמצע התנועה.
+     הוא צאצא של .ndrop ולכן המעבר מעליו אינו יציאה ממנה. */
+  'nav.main .npanel::before{content:"";position:absolute;inset-inline:0;inset-block-end:100%;block-size:.7rem}',
   'nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}',
   'nav.main .ncol{min-inline-size:8.6rem}',
   'nav.main .nhead{color:#9a9a9a;font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}',
@@ -227,6 +234,7 @@ var CSS = [
      ל-55 פיקסלים מול 49 של הכפתורים. */
   '  nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}',
   '  nav.main .npanel{position:static;border:0;background:#0b0b0b;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}',
+  '  nav.main .npanel::before{content:none}',
   '  nav.main .nrow{flex-direction:column;gap:0}',
   '  nav.main .ncol{min-inline-size:0}',
   '  nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}',
@@ -238,8 +246,12 @@ var CSS = [
 ].join('\n');
 
 /* ── JS ──────────────────────────────────────────────────────────
- * קליק ולא hover: hover אינו קיים במגע, והוא גם הכשל הנגישותי הנפוץ
- * ביותר בתפריטים כאלה. מקלדת: Escape סוגר ומחזיר פוקוס, חיצים מנווטים. */
+ * במסך עם עכבר התפריט נפתח גם במעבר עכבר, ובמגע בקליק בלבד. hover *בנוסף*
+ * לקליק זה בסדר, hover *במקום* קליק זה הכשל הנגישותי הנפוץ בתפריטים כאלה,
+ * ולכן הקליק נשאר עובד בכל מצב.
+ * השער הוא (hover:hover) and (pointer:fine): בלעדיו מכשיר מגע יורה
+ * mouseenter סינתטי בהקשה, והתפריט נפתח ונסגר מעצמו.
+ * מקלדת: Escape סוגר ומחזיר פוקוס, חיצים מנווטים. */
 var JS_A = '<!-- gen-nav:js:start -->';
 var JS_Z = '<!-- gen-nav:js:end -->';
 
@@ -252,8 +264,12 @@ var JS = [
   'function shut(t){t.setAttribute("aria-expanded","false");var p=pan(t);if(p)p.classList.remove("open")}',
   'function shutAll(x){trigs.forEach(function(t){if(t!==x)shut(t)})}',
   'function open(t){shutAll(t);t.setAttribute("aria-expanded","true");var p=pan(t);if(p)p.classList.add("open")}',
+  'var HQ=window.matchMedia?window.matchMedia("(hover:hover) and (pointer:fine) and (min-width:981px)"):null;',
   'trigs.forEach(function(t){',
   '  t.addEventListener("click",function(){t.getAttribute("aria-expanded")==="true"?shut(t):open(t)});',
+  '  var d=t.parentNode;',
+  '  d.addEventListener("mouseenter",function(){if(HQ&&HQ.matches)open(t)});',
+  '  d.addEventListener("mouseleave",function(){if(HQ&&HQ.matches)shut(t)});',
   '  t.addEventListener("keydown",function(e){',
   '    if(e.key==="ArrowDown"){e.preventDefault();open(t);var a=pan(t).querySelector("a");if(a)a.focus()}',
   '    else if(e.key==="Escape"){shut(t)}});',
