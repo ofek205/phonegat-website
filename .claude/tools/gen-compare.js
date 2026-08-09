@@ -43,6 +43,10 @@ function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
+/* עברית מבחינה בין יחיד, זוגי ורבים, והמחולל הדפיס "1 שדות זהים".
+ * שלושה מקומות מרנדרים את אותו מספר, ולכן פונקציה אחת ולא שלוש מחרוזות. */
+function sameTxt(n){ return n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
+function sameMoreTxt(n){ return n === 1 ? 'שדה אחד נוסף זהה' : (n === 2 ? 'שני שדות נוספים זהים' : n + ' שדות נוספים זהים'); }
 function D(slug) { return db.devices.filter(function (d) { return d.slug === slug; })[0]; }
 function swap(h, re, to, what, who) {
   if (!re.test(h)) { console.error('✗ ' + who + ': לא נמצא ' + what); process.exit(1); }
@@ -140,7 +144,7 @@ function buildTable(a, b, d) {
   return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
     '      <table class="cmp cmp-spec cmp-vs">\n' +
     '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, מתוך המפרט שהיצרנים מפרסמים. ' +
-    d.same + ' שדות נוספים זהים בשני הדגמים ואינם מופיעים כאן.</caption>\n' +
+    sameMoreTxt(d.same) + ' בשני הדגמים ואינם מופיעים כאן.</caption>\n' +
     bodies + '\n      </table>\n    </div>\n';
 }
 
@@ -156,7 +160,7 @@ function buildMain(p, a, b, d, openTag) {
     '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
     '      <p class="meta">\n' +
     '        <span>' + d.rows.length + ' שדות שונים</span>\n' +
-    '        <span>' + d.same + ' שדות זהים</span>\n' +
+    '        <span>' + sameTxt(d.same) + '</span>\n' +
     '        <span>המפרטים מאתרי היצרנים</span>\n' +
     '        <span>בלי הכרזת מנצח</span>\n' +
     '      </p>\n    </div>\n  </div>\n</section>\n\n' +
@@ -210,8 +214,8 @@ function buildMain(p, a, b, d, openTag) {
 
     '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
     '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
-    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + d.same +
-    ' שדות נוספים זהים בשניהם, ולכן אין טעם להציג אותם.</p>\n' +
+    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + sameMoreTxt(d.same) +
+    ' בשניהם, ולכן אין טעם להציג אותם.</p>\n' +
     buildTable(a, b, d) +
     '  </div>\n</section>\n\n' +
 
