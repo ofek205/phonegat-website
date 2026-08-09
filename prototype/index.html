@@ -189,7 +189,10 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
    reached about 48% of the card, past where the copy now starts at 35%. 34% at 10% stops near
    31%, which keeps the gold copy over plain background. Widening these takes the contrast with
    them, and nothing on screen says so. */
-.idf{padding-block:clamp(18px,3vw,38px);background:#fff}
+/* More air above than below, on purpose. Above is the hero, a full-bleed dark block that ends
+   hard, so the card needs room to read as an offer of its own rather than as the hero footer.
+   Below is the white team section, where the card already separates on colour alone. */
+.idf{padding-block:clamp(34px,5.4vw,72px) clamp(22px,3vw,42px);background:#fff}
 .idf-card{position:relative;overflow:hidden;border-radius:18px;color:#fff;
   border:1px solid rgba(212,190,122,.34);box-shadow:0 24px 60px -30px rgba(20,26,12,.8);
   background:
