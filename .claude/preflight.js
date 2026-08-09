@@ -857,6 +857,51 @@ if (classFails.length) {
   } else ok(checked + ' קישורים פנימיים ב-' + seen + ' עמודים, כולם מצביעים לעמוד קיים');
 })();
 
+/* ---------- 25. שני עמודים שאומרים כמעט אותו דבר ----------
+ * גוגל מסווג עמודים שנבדלים רק בשם הדגם או בשם העיר כ-doorway pages, ואז לא רק שהם לא
+ * מדורגים, הם מושכים למטה את כל האתר. זה הסיכון המרכזי של כל תוכנית ההרחבה, והוא גדל
+ * ככל שמוסיפים עוד עמוד מאותה תבנית.
+ *
+ * הבדיקה מודדת חפיפה של רצפי חמש מילים בין כל שני עמודים. הסף 70% הוא רחב בכוונה: הוא
+ * נועד לתפוס שכפול ולא דמיון. למדידה, ארבעת עמודי גל 3 שנבנו מאותה תבנית ובאותו יום
+ * הגיעו ל-18% לכל היותר, וחמשת עמודי השירות הוותיקים ל-26%.
+ *
+ * שני דברים מוצאים מהמדידה בכוונה:
+ *   · טבלאות. טבלה שחוזרת היא מבנה ולא כתיבה, ובדיוק ההשמטה הזאת כבר תפחה דוח פעם אחת.
+ *   · הדר, פוטר וניווט. הם זהים בכל עמוד מעצם ההגדרה, ואין שלב build שיוציא אותם. */
+(function () {
+  function body(h) {
+    var m = h.match(/<main[\s\S]*?<\/main>/);
+    if (!m) return '';
+    return m[0].replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<table[\s\S]*?<\/table>/g, ' ')
+      .replace(/<svg[\s\S]*?<\/svg>/g, ' ').replace(/<[^>]+>/g, ' ')
+      .replace(/&[a-z#0-9]+;/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  function grams(s) {
+    var w = s.split(' ').filter(Boolean), o = new Set();
+    for (var i = 0; i + 5 <= w.length; i++) o.add(w.slice(i, i + 5).join(' '));
+    return o;
+  }
+  var g = {}, names = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    var t = body(s);
+    /* עמוד קצר מדי מייצר אחוזים חסרי משמעות */
+    if (t.split(' ').length < 120) return;
+    g[f] = grams(t); names.push(f);
+  });
+  var worst = null, over = [];
+  for (var i = 0; i < names.length; i++) for (var j = i + 1; j < names.length; j++) {
+    var a = g[names[i]], b = g[names[j]], sh = 0;
+    a.forEach(function (x) { if (b.has(x)) sh++; });
+    var pct = Math.round(sh / Math.min(a.size, b.size) * 100);
+    if (!worst || pct > worst.pct) worst = { pct: pct, pair: names[i] + ' ↔ ' + names[j] };
+    if (pct >= 70) over.push(names[i] + ' ↔ ' + names[j] + ' (' + pct + '%)');
+  }
+  if (over.length) bad('עמודים שכמעט זהים: ' + over.join(' · ') + ' — גוגל מסווג את זה כ-doorway ומוריד את כל האתר');
+  else if (worst) ok('אין שכפול בין עמודים. הגבוה ביותר: ' + worst.pct + '% (' + worst.pair.replace(/\/index\.html/g, '') + '), הסף 70%');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
