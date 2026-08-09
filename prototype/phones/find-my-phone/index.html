@@ -858,9 +858,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     res.innerHTML='<h3>שלושה דגמים שכדאי לבדוק</h3>'+
       '<ul class="hub">'+top.map(function(r){
-        return '<li><a href="/phones/'+r.t.slug+'/"><b>'+ltr(r.t.name)+"</b>"+
+        return '<li><span><a href="/phones/'+r.t.slug+'/"><b>'+ltr(r.t.name)+"</b>"+
           '<span>'+esc(r.t.brand)+"</span></a>"+
-          (r.s.why.length?'<ul class="why-list">'+r.s.why.map(function(w){return "<li>"+esc(w)+"</li>";}).join("")+"</ul>":"")+
+          (r.s.why.length?'<ul class="why-list">'+r.s.why.map(function(w){return "<li>"+esc(w)+"</span></li>";}).join("")+"</ul>":"")+
           "</li>";
       }).join("")+"</ul>"+
       '<p class="res-note">אלה שלושה להתחיל מהם, ולא פסק דין. '+
