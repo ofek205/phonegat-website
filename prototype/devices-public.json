@@ -541,6 +541,138 @@
         "security_updates": null,
         "model_numbers": null
       }
+    },
+    {
+      "slug": "galaxy-a57",
+      "name": "Galaxy A57 5G",
+      "name_he": "גלקסי A57",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (171.1 מ״מ)",
+        "screen_type": "Super AMOLED Plus, עומק צבע 16M",
+        "resolution": "2340x1080 פיקסלים (FHD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": null,
+        "cpu": "8 ליבות, 2.9GHz, 2.6GHz ו-1.9GHz",
+        "gpu": null,
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
+        "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
+        "camera_front": "12MP בצמצם F2.2",
+        "video": "4K (3840x2160) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-HD",
+        "battery": "עד 29 שעות וידאו, 5000 mAh טיפוסית",
+        "charging_wired": "Super Fast Charging 2.0, עד 60% בתוך 30 דקות. ההספק בוואט אינו מצוין בעמוד",
+        "charging_wireless": null,
+        "dimensions": "161.5 x 76.8 x 6.9 מ״מ",
+        "weight": "179 גרם",
+        "water_resistance": "IP68 לפי היצרן: שיקוע בעד 1.5 מטר מים מתוקים למשך 30 דקות. היצרן מציין שאין להשתמש בחוף הים או בבריכה, ושהעמידות אינה קבועה ופוחתת עם הזמן",
+        "colors_manufacturer": [
+          "כחול",
+          "תכלת",
+          "אפור",
+          "סגול"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "USB-C בגרסת USB 2.0, Wi-Fi 802.11ax ב-2.4GHz, 5GHz ו-6GHz, Bluetooth 6.0, NFC",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
+        "model_numbers": "SM-A576B"
+      }
+    },
+    {
+      "slug": "galaxy-a37",
+      "name": "Galaxy A37 5G",
+      "name_he": "גלקסי A37",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (170.1 מ״מ)",
+        "screen_type": "Super AMOLED, עומק צבע 16M",
+        "resolution": "2340x1080 פיקסלים (FHD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": "Exynos 1480",
+        "cpu": "8 ליבות, 2.75GHz ו-2GHz",
+        "gpu": null,
+        "ram": "6GB",
+        "storage_offered": [
+          "128GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "8MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
+        "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
+        "camera_front": "12MP בצמצם F2.2",
+        "video": "4K (3840x2160) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-HD",
+        "battery": "עד 29 שעות וידאו, 5000 mAh טיפוסית",
+        "charging_wired": "Super Fast Charging 2.0, עד 60% בתוך 30 דקות. ההספק בוואט אינו מצוין בעמוד",
+        "charging_wireless": null,
+        "dimensions": "162.9 x 78.2 x 7.4 מ״מ",
+        "weight": "196 גרם",
+        "water_resistance": "IP68 לפי היצרן: שיקוע בעד 1.5 מטר מים מתוקים למשך 30 דקות. היצרן מציין שאין להשתמש בחוף הים או בבריכה, ושהעמידות אינה קבועה ופוחתת עם הזמן",
+        "colors_manufacturer": [
+          "ירוק",
+          "סגול",
+          "אפור",
+          "לבן"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "USB-C בגרסת USB 2.0, Wi-Fi 802.11ax ב-2.4GHz ו-5GHz, Bluetooth 5.3, NFC",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
+        "model_numbers": "SM-A376B"
+      }
+    },
+    {
+      "slug": "galaxy-a17",
+      "name": "Galaxy A17",
+      "name_he": "גלקסי A17",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (169.1 מ״מ)",
+        "screen_type": "Super AMOLED, עומק צבע 16M",
+        "resolution": "2340x1080 פיקסלים (FHD+)",
+        "refresh_rate": "עד 90Hz",
+        "brightness": null,
+        "chip": null,
+        "cpu": "8 ליבות, 2.2GHz ו-2GHz",
+        "gpu": null,
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": "כרטיס MicroSD עד 2TB. החריץ משותף עם ה-SIM השני",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "5MP רחבה במיוחד בצמצם F2.2, ו-2MP מאקרו בצמצם F2.4",
+        "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
+        "camera_front": "13MP בצמצם F2.0",
+        "video": "FHD (1920x1080) ב-30 פריימים לשנייה. אין הקלטת 4K. הילוך אט ב-120 פריימים ב-HD",
+        "battery": "עד 18 שעות וידאו, 5000 mAh טיפוסית",
+        "charging_wired": null,
+        "charging_wireless": null,
+        "dimensions": "164.4 x 77.9 x 7.5 מ״מ",
+        "weight": "190 גרם",
+        "water_resistance": "IP54 לפי היצרן: הגנה מהתזות. הבדיקה היא ריסוס ב-10 ליטר מים מתוקים, ולא שיקוע. זו אינה עמידות לטבילה",
+        "colors_manufacturer": [
+          "תכלת",
+          "שחור"
+        ],
+        "sim": "SIM כפול פיזי בלבד: nano-SIM, והחריץ השני משותף עם כרטיס הזיכרון. אין eSIM",
+        "esim": "אין תמיכה ב-eSIM",
+        "connectivity": "רשתות 2G, 3G ו-4G LTE. אין 5G. USB-C בגרסת USB 2.0, Wi-Fi 802.11ac ב-2.4GHz ו-5GHz, Bluetooth 5.3, NFC",
+        "box_contents": null,
+        "security_updates": "שישה דורות שדרוג של מערכת ההפעלה ושש שנים של עדכוני אבטחה מתאריך ההשקה העולמי. סמסונג אינה נוקבת בתאריך סיום מדויק בעמוד הזה, בשונה מ-A57 ומ-A37",
+        "model_numbers": "SM-A175F"
+      }
     }
   ]
 }

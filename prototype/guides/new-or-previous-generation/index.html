@@ -507,6 +507,17 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
    text that can fail to appear. The movement on this page is the reading rule and nothing else. */
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.prog{display:none}}
 html.a11y-stop-motion .prog{display:none}
+/* .cmp — נשלף מ-compare/index.html. הרכיב נולד שם, וזה עותק תצוגה בלבד. */
+.cmp-wrap{margin-top:1.8rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cmp-wrap:focus-visible{outline:2px solid var(--teal);outline-offset:4px}
+.cmp{width:100%;min-width:560px;border-collapse:collapse;text-align:start}
+.cmp caption{text-align:start;color:var(--ink-soft);font-size:.98rem;font-weight:300;line-height:1.7;padding-block-end:1.1rem;max-width:72ch}
+.cmp th,.cmp td{border-top:1px solid var(--line);padding-block:.95rem;padding-inline-end:1.3rem;vertical-align:top;line-height:1.7}
+.cmp thead th{border-top:0;border-bottom:2px solid var(--ink-strong);font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.03em;padding-block:0 .7rem}
+.cmp tbody th{font-family:var(--font);font-weight:700;color:var(--ink-strong);width:11rem}
+.cmp tbody td{color:var(--ink-soft)}
+.cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:1px solid var(--line)}
+@media(max-width:640px){.cmp{min-width:520px}.cmp tbody th{width:8.5rem}}
 </style>
 </head>
 <body>
