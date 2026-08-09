@@ -722,6 +722,48 @@ if (classFails.length) {
   else ok('כל רכיב שמופיע בעמוד נושא איתו את ה-CSS שלו');
 })();
 
+/* ---------- 22. לכל שדה מפרט ריק יש הערה שאומרת למה ----------
+ * זו אחת משבע הבדיקות ש-D0.8 מגדיר, והיא לא הייתה קיימת. הכלל היה כתוב ב-_rules ולא נאכף,
+ * וזה איפשר שלושה ממצאים שונים באודיט, כולם מאותו שורש: null נקרא כ"לא".
+ *
+ *   · מדריך ה-eSIM כתב "שני דגמי רדמי נוט 14 אינם תומכים" על שדה שהוא null.
+ *   · השאלון העניש ארבעה דגמי סמסונג על עדשה רחבה שיש להם, כי היעדר תיוג נקרא כהיעדר עדשה.
+ *   · 25 תאים בעמודי ההשוואה אמרו "לא מפורסם אצל היצרן" על נתון שכן מפורסם, בשדה אחר.
+ *
+ * ההערה היא מה שמפריד בין "היצרן לא מפרסם" לבין "עוד לא בדקנו", ובלעדיה שתי המשמעויות
+ * נראות אותו דבר לכל מי שקורא את הקובץ אחר כך.
+ *
+ * ובנוסף: כל שדה שמופיע ב-_spec_groups חייב להתקיים במפורש, גם כ-null. שדה חסר לגמרי
+ * אינו יכול לשאת הערה, ולכן undefined הוא חור שהבדיקה הזאת לא הייתה רואה. */
+(function () {
+  var raw;
+  try { raw = fs.readFileSync(path.join(pagesDir, 'devices.json'), 'utf8'); } catch (e) { return; }
+  var db;
+  try { db = JSON.parse(raw); } catch (e) { bad('devices.json אינו נפרס: ' + e.message.slice(0, 60)); return; }
+  if (!db.devices || !db._spec_groups) return;
+
+  var fields = [];
+  db._spec_groups.groups.forEach(function (g) { g[1].forEach(function (p) { fields.push(p[0]); }); });
+
+  var missing = [], noNote = [], checked = 0;
+  db.devices.forEach(function (d) {
+    var src = d.spec_source || {};
+    fields.forEach(function (f) {
+      if (!(f in d.spec)) { missing.push(d.slug + '.' + f); return; }
+      checked++;
+      if (d.spec[f] === null && !(src[f] && src[f].note)) noNote.push(d.slug + '.' + f);
+    });
+  });
+
+  var probs = [];
+  if (missing.length) probs.push(missing.length + ' שדות חסרים לגמרי מ-spec (' + missing.slice(0, 4).join(', ') +
+    (missing.length > 4 ? '…' : '') + ') — שדה שאינו קיים אינו יכול לשאת הערת מקור');
+  if (noNote.length) probs.push(noNote.length + ' שדות ריקים בלי הערה (' + noNote.slice(0, 4).join(', ') +
+    (noNote.length > 4 ? '…' : '') + ') — בלי הערה אי אפשר לדעת אם היצרן לא מפרסם או שעוד לא בדקנו, וכותב עלול לכתוב "אינו תומך"');
+  if (probs.length) bad('מקורות המפרט: ' + probs.join(' · '));
+  else ok(checked + ' שדות מפרט נבדקו: לכל שדה ריק יש הערה שאומרת למה');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

@@ -41,7 +41,10 @@
           "לבנדר"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null
+        "model_numbers": null,
+        "storage_expandable": null,
+        "connectivity": null,
+        "security_updates": null
       }
     },
     {
@@ -88,7 +91,8 @@
         "box_contents": null,
         "model_numbers": null,
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
-        "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033"
+        "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
+        "storage_expandable": null
       }
     },
     {
@@ -133,7 +137,8 @@
         "box_contents": "מכשיר, מטען, כבל USB-C, כלי הוצאת SIM, כיסוי מגן, ומדריך אחריות",
         "model_numbers": null,
         "connectivity": "4G LTE, Wi-Fi 802.11ac, Bluetooth 5.3, NFC, שקע אוזניות 3.5 מ״מ, שידור אינפרא אדום",
-        "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD"
+        "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD",
+        "security_updates": null
       }
     },
     {
@@ -175,7 +180,10 @@
           "כחול עמוק"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C, ותיעוד",
-        "model_numbers": null
+        "model_numbers": null,
+        "storage_expandable": null,
+        "connectivity": null,
+        "security_updates": null
       }
     },
     {
@@ -218,7 +226,10 @@
           "כחול עמוק"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null
+        "model_numbers": null,
+        "storage_expandable": null,
+        "connectivity": null,
+        "security_updates": null
       }
     },
     {
@@ -260,7 +271,10 @@
           "אולטרהמרין"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null
+        "model_numbers": null,
+        "storage_expandable": null,
+        "connectivity": null,
+        "security_updates": null
       }
     },
     {
@@ -301,7 +315,10 @@
           "ורוד עדין"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null
+        "model_numbers": null,
+        "storage_expandable": null,
+        "connectivity": null,
+        "security_updates": null
       }
     },
     {
