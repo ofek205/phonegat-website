@@ -764,6 +764,64 @@ if (classFails.length) {
   else ok(checked + ' שדות מפרט נבדקו: לכל שדה ריק יש הערה שאומרת למה');
 })();
 
+/* ---------- 23. devices.json והעמודים המחוללים מסונכרנים ----------
+ * שתי בדיקות מ-D0.8 שלא היו קיימות, ושתיהן על אותו פער: המאגר הוא מקור האמת, אבל מה
+ * שמוגש הוא HTML שנכתב בהרצה קודמת. עריכה של devices.json בלי הרצת המחולל מייצרת אתר
+ * שמציג נתון ישן בזמן שהקובץ מציג חדש, ואין שום סימן לכך.
+ *
+ * זה לא תרחיש תיאורטי: בסשן אחד נערך devices.json שבע פעמים, וכל שכחה אחת של המחולל
+ * הייתה משאירה עמוד שסותר את המאגר בלי אזהרה.
+ *
+ * הבדיקה משווה ערכי מפרט אמיתיים מול הטקסט בעמוד. התגיות מוסרות קודם, כי ltrRuns עוטפת
+ * ריצות לטיניות ב-bdo ולכן indexOf על ה-HTML הגולמי היה נכשל על כל ערך מעורב.
+ *
+ * ובנוסף, ההגנה על ההמלצות: טיוטה של סיגל או ברוך לא מגיעה ל-HTML. זה נאכף היום במחולל
+ * בלבד, כלומר שינוי אחד שם היה מפיל אותה בלי שאף אחד ידע. */
+(function () {
+  var db;
+  try { db = JSON.parse(fs.readFileSync(path.join(pagesDir, 'devices.json'), 'utf8')); } catch (e) { return; }
+  if (!db.devices) return;
+
+  function textOf(html) {
+    return html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
+      .replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/\s+/g, ' ');
+  }
+  var stale = [], leaked = [], pagesSeen = 0, valsSeen = 0;
+
+  db.devices.forEach(function (d) {
+    if (d.status === 'draft') return;
+    var html = readPage('phones/' + d.slug + '/index.html');
+    if (!html) { stale.push(d.slug + ': אין עמוד'); return; }
+    pagesSeen++;
+    var txt = textOf(html);
+
+    /* ערכי מפרט קצרים בלבד. ערך ארוך עלול להישבר בין תגיות בדרכים שקשה לנרמל,
+     * וקצרים מספיקים לגמרי כדי לזהות שהעמוד נבנה מגרסה אחרת של הקובץ. */
+    Object.keys(d.spec).forEach(function (f) {
+      var v = d.spec[f];
+      if (typeof v !== 'string' || v.length < 3 || v.length > 60) return;
+      valsSeen++;
+      if (txt.indexOf(v.replace(/\s+/g, ' ')) < 0) stale.push(d.slug + '.' + f + ' ("' + v.slice(0, 28) + '")');
+    });
+
+    /* המלצה שאינה approved לא מופיעה בעמוד */
+    ['sigal', 'baruch'].forEach(function (who) {
+      var r = (d.recommendation || {})[who];
+      if (!r || !r.text || r.status === 'approved') return;
+      var probe = String(r.text).replace(/\s+/g, ' ').slice(0, 40);
+      if (probe.length > 12 && txt.indexOf(probe) >= 0) leaked.push(d.slug + '.' + who + ' (' + r.status + ')');
+    });
+  });
+
+  var probs = [];
+  if (stale.length) probs.push(stale.length + ' ערכים בעמוד אינם תואמים ל-devices.json (' +
+    stale.slice(0, 3).join(', ') + (stale.length > 3 ? '…' : '') + ') — כנראה נערך המאגר ולא הורץ gen-devices.js');
+  if (leaked.length) probs.push('טיוטת המלצה הגיעה ל-HTML: ' + leaked.join(', ') + ' — רק status approved מותר בעמוד');
+  if (probs.length) bad('סנכרון המאגר: ' + probs.join(' · '));
+  else ok(pagesSeen + ' עמודי מכשיר מסונכרנים עם devices.json (' + valsSeen + ' ערכים), ואין טיוטת המלצה בהם');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
