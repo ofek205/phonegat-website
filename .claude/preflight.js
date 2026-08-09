@@ -822,6 +822,41 @@ if (classFails.length) {
   else ok(pagesSeen + ' עמודי מכשיר מסונכרנים עם devices.json (' + valsSeen + ' ערכים), ואין טיוטת המלצה בהם');
 })();
 
+/* ---------- 24. קישור פנימי שמצביע לעמוד שלא קיים ----------
+ * 38 עמודים שמקשרים זה לזה בלי שלב build, כלומר כל קישור נכתב ביד או מחולל, ואף אחד לא
+ * מאמת אותו. שינוי slug או עמוד שנדחה להמשך משאיר 404 שנראה בסדר גמור בקוד.
+ *
+ * זה כמעט קרה: /phones/ הוחזק בכוונה עד ש-D2 נבנה, בדיוק כי שלושת המסלולים שלו היו
+ * מצביעים לעמודים שלא קיימים. ההחזקה ההיא הייתה החלטה של אדם שזכר, ולא בדיקה.
+ *
+ * נבדקים רק קישורים שורשיים. יחסיים נדירים כאן, ומי שכן משתמש בהם מכוסה בבדיקה 17. */
+(function () {
+  function target(u) {
+    if (u === '/') return path.join(pagesDir, 'index.html');
+    var c = u.replace(/^\//, '').replace(/\/$/, '');
+    return /\.html$/.test(c) ? path.join(pagesDir, c) : path.join(pagesDir, c, 'index.html');
+  }
+  var dead = {}, checked = 0, seen = 0;
+  pageFiles.concat(LEGAL_PAGES).forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    seen++;
+    var body = s.replace(/<script[\s\S]*?<\/script>/g, ' ');
+    var m, re = /href="(\/[^"#?]*)"/g;
+    while ((m = re.exec(body)) !== null) {
+      var u = m[1];
+      if (/\.(jpg|jpeg|png|webp|svg|ico|xml|json|js|txt|pdf)$/i.test(u)) continue;
+      checked++;
+      if (!fs.existsSync(target(u))) (dead[u] = dead[u] || []).push(f);
+    }
+  });
+  var keys = Object.keys(dead);
+  if (keys.length) {
+    bad('קישורים ליעד שלא קיים: ' + keys.slice(0, 5).map(function (u) {
+      return u + ' (מ-' + dead[u].length + ' עמודים)';
+    }).join(' · ') + (keys.length > 5 ? ' ועוד ' + (keys.length - 5) : '') + ' — 404 למי שילחץ');
+  } else ok(checked + ' קישורים פנימיים ב-' + seen + ' עמודים, כולם מצביעים לעמוד קיים');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
