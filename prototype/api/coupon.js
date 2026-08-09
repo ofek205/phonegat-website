@@ -16,7 +16,7 @@
 
 /* Only these offers get a counter. Without an allowlist anyone could POST
    arbitrary names and litter the database with junk keys. */
-var OFFERS = { screen: 1, kb: 1 };
+var OFFERS = { screen: 1, kb: 1, idf: 1 };
 
 /* Abuse cap. Inflating the counter would destroy the one metric this whole
    server exists to provide, so it matters more here than typical rate limits. */
