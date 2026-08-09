@@ -55,8 +55,8 @@
         "resolution": "3120x1440 פיקסלים (Quad HD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": null,
-        "chip": "8 ליבות, 4.74GHz ו-3.6GHz",
-        "cpu": "8 ליבות",
+        "chip": null,
+        "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
         "gpu": null,
         "ram": "12GB",
         "storage_offered": [
@@ -315,8 +315,8 @@
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": null,
-        "chip": "10 ליבות, 3.8GHz, 3.26GHz ו-2.76GHz",
-        "cpu": "10 ליבות",
+        "chip": null,
+        "cpu": "10 ליבות, 3.8GHz, 3.26GHz ו-2.76GHz",
         "gpu": null,
         "ram": "12GB",
         "storage_offered": [
@@ -362,8 +362,8 @@
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": "1200 ניט במצב בהירות גבוהה",
-        "chip": "8 ליבות, 2.9GHz, 2.6GHz ו-1.9GHz",
-        "cpu": "8 ליבות",
+        "chip": null,
+        "cpu": "8 ליבות, 2.9GHz, 2.6GHz ו-1.9GHz",
         "gpu": null,
         "ram": "8GB",
         "storage_offered": [
@@ -401,8 +401,8 @@
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": "1200 ניט במצב בהירות גבוהה",
-        "chip": "8 ליבות, 2.4GHz ו-1.8GHz",
-        "cpu": "8 ליבות",
+        "chip": null,
+        "cpu": "8 ליבות, 2.4GHz ו-1.8GHz",
         "gpu": null,
         "ram": "6GB",
         "storage_offered": [
