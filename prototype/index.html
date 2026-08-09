@@ -2024,7 +2024,7 @@ document.addEventListener('DOMContentLoaded',function(){
     '<div class="pg-ad-hd"><span class="pg-ad-brand">פון גת <span class="pg-ad-vf">✓</span></span><span class="pg-ad-spon">ממומן</span></div>'+
     '<span class="pg-ad-excl"><span class="st">★</span> בלעדי למשתמשי האתר</span>'+
     '<div class="pg-ad-main"><div class="pg-ad-txt"><h4>מגן מסך + הדבקה מקצועית</h4><p class="pg-ad-sub">מגן זכוכית איכותי · <b>הדבקה מקצועית במקום</b></p></div>'+
-    '<img class="pg-ad-shield" src="iphone-protector.png" alt="" width="664" height="1428" decoding="async">'+
+    '<img class="pg-ad-shield" src="iphone-protector.webp" alt="" width="224" height="482" decoding="async">'+
     '</div>'+
     '<div class="pg-ad-price"><span class="lbl">רק ב־</span><b>9<span class="cur">₪</span></b><span class="pg-ad-incl">כולל<br>הדבקה</span></div>'+
     '<p class="pg-ad-fine">מבצע למשתמשי האתר בלבד · למעט מכשירים מעוגלים</p>'+
@@ -3589,7 +3589,12 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       <button class="pg-cpn-x" id="pgCpnX" type="button" aria-label="סגירה"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <picture><source srcset="logo-mark.webp" type="image/webp"><img class="pg-cpn-logo" src="logo-mark.png" alt="פון גת" width="295" height="112"></picture>
       <span class="pg-cpn-excl"><span class="st">★</span> בלעדי למשתמשי האתר</span>
-      <img class="pg-cpn-dev" id="pgCpnDev" src="iphone-protector.png" alt="" width="664" height="1428" decoding="async">
+      <!-- No real src here on purpose. build() sets src, width and height from the offer before the
+           overlay is ever shown, so whatever sits here is never displayed to anyone. It used to point
+           at the screen-protector cutout, which meant every visitor downloaded that file for a popup
+           that would immediately overwrite it. The 1x1 transparent GIF keeps the element valid and
+           costs no request. -->
+      <img class="pg-cpn-dev" id="pgCpnDev" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" decoding="async">
       <h3 id="pgCpnTitle">מגן מסך + הדבקה מקצועית</h3>
       <p class="desc" id="pgCpnDesc">מגן זכוכית איכותי + הדבקה מקצועית במקום</p>
       <span class="pg-cpn-price" id="pgCpnPrice">רק ב־ <b>9<span class="cur">₪</span></b></span>
@@ -3696,7 +3701,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
      accurate and completely wrong in tone. It reuses the screen-protector photo: same product. */
   var OFFERS={
     screen:{title:'מגן מסך כולל הדבקה',desc:'מגן זכוכית איכותי והתקנה מקצועית במקום',price:'9',
-      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'SP-',
+      img:'screen-product.webp',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'SP-',
       wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
@@ -3704,7 +3709,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'},
     idf:{title:'מגן מסך כולל הדבקה',desc:'הטבה לחיילי צה״ל, במדים',price:'0',priceHtml:'<b>ללא עלות</b>',
-      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-olive',qr:'#2F3821',key:'pg_idf_coupon',prefix:'TZ-',
+      img:'screen-product.webp',imgW:615,imgH:730,photo:true,theme:'t-olive',qr:'#2F3821',key:'pg_idf_coupon',prefix:'TZ-',
       wa:'היי! אני רוצה לממש את הטבת חיילי צה״ל, מגן מסך כולל הדבקה. קוד הקופון שלי: ',
       fine:'בהצגת הקוד ובמדים · קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'}
   };
