@@ -136,7 +136,7 @@ function buildMain(d, openTag) {
   '        </table>\n' +
   '      </div>\n' +
   '      <div class="lab">\n' +
-  '        <p>מה ההבדל בין יבוא רשמי למקביל, ומי נותן את האחריות בכל אחד מהם: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n' +
+  '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n' +
   '        <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +

@@ -627,12 +627,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" id="guides" aria-labelledby="h-guides">
   <div class="wrap box">
     <h2 id="h-guides">לפני שמחליטים</h2>
-    <p class="lead">שני מדריכים שכתבנו מהניסיון במעבדה.</p>
+    <p class="lead">ארבעה מדריכים שכתבנו מהניסיון במעבדה.</p>
       <ul class="hub">
         <li><a href="/guides/official-vs-parallel-import/"><b>יבוא מקביל או יבואן רשמי</b><span>מה שונה בפועל, מי נותן את האחריות, ואילו שאלות כדאי לשאול לפני שמשלמים.</span></a></li>
+        <li><a href="/guides/phone-warranty-israel/"><b>אחריות: מה מכוסה ומה לא</b><span>שנה בדין על כל טלפון חדש, מה היצרנים מחריגים בעצמם, ומה קורה כשמגיעים עם תקלה למעבדה.</span></a></li>
+        <li><a href="/guides/how-much-storage/"><b>כמה אחסון צריך בטלפון</b><span>איך בודקים כמה נפח אתם באמת צריכים, ולמה מה שקונים אינו מה שמקבלים.</span></a></li>
         <li><a href="/phone-problems/"><b>מדריך תקלות בטלפון</b><span>לפני שקונים חדש, שווה לדעת אם מה שיש לכם עוד שווה תיקון. אנחנו אומרים את זה בכל מקרה.</span></a></li>
       </ul>
-    <p class="aside">אלה שני המדריכים שנוגעים לקנייה. <a href="/guides/">מרכז המדריכים</a> מרכז את כולם.</p>
+    <p class="aside">אלה המדריכים שנוגעים לקנייה. <a href="/guides/">מרכז המדריכים</a> מרכז את כולם.</p>
   </div>
 </section>
 
@@ -839,7 +841,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      visit would look like a fresh decision and the numbers would mean nothing. */
   chips.forEach(function(c){c.addEventListener('click',function(){
     var d=c.getAttribute('data-dev');
-    apply(d);
+    apply(d);
   });});
   var saved='all';try{saved=localStorage.getItem('pg_dev')||'all';}catch(e){}
   apply(saved);
