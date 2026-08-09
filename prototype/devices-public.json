@@ -673,6 +673,97 @@
         "security_updates": "שישה דורות שדרוג של מערכת ההפעלה ושש שנים של עדכוני אבטחה מתאריך ההשקה העולמי. סמסונג אינה נוקבת בתאריך סיום מדויק בעמוד הזה, בשונה מ-A57 ומ-A37",
         "model_numbers": "SM-A175F"
       }
+    },
+    {
+      "slug": "galaxy-s26-plus",
+      "name": "Galaxy S26+",
+      "name_he": "גלקסי S26+",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (169.1 מ״מ)",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "3120x1440 פיקסלים (Quad HD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": null,
+        "cpu": "10 ליבות, 3.8GHz, 3.26GHz ו-2.76GHz",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "10MP בצמצם F2.4 ו-12MP בצמצם F2.2. היצרן אינו מציין איזו עדשה היא איזו",
+        "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "8K (7680x4320) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-FHD וב-120 ב-UHD",
+        "battery": "עד 31 שעות וידאו, 4900 mAh טיפוסית",
+        "charging_wired": null,
+        "charging_wireless": null,
+        "dimensions": "158.4 x 75.8 x 7.3 מ״מ",
+        "weight": "190 גרם",
+        "water_resistance": null,
+        "colors_manufacturer": [
+          "סגול",
+          "כחול",
+          "שחור",
+          "לבן",
+          "כסוף",
+          "ורוד זהב"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "USB-C בגרסת USB 3.2 Gen 1, Wi-Fi 802.11be ב-2.4GHz, 5GHz ו-6GHz, Bluetooth 6.0, NFC, ו-UWB",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
+        "model_numbers": null
+      }
+    },
+    {
+      "slug": "redmi-note-15",
+      "name": "Redmi Note 15",
+      "name_he": "רדמי נוט 15",
+      "brand": "Xiaomi",
+      "spec": {
+        "screen_size": "6.77 אינץ׳",
+        "screen_type": "AMOLED, משרעת צבעים DCI-P3 מלאה וקידוד צבע 12 ביט",
+        "resolution": "2392x1080 פיקסלים (FHD+), 447 פיקסלים לאינץ׳",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "3200 ניט בשיא, 800 ניט טיפוסית",
+        "chip": "MediaTek Helio G100-Ultra, תהליך 6 ננומטר",
+        "cpu": "8 ליבות, עד 2.2GHz",
+        "gpu": "Mali-G57 MC2",
+        "ram": "8GB LPDDR4X, עם הרחבה וירטואלית של עד 8GB נוספים",
+        "storage_offered": [
+          "256GB"
+        ],
+        "storage_expandable": "כרטיס microSD עד 2TB. המגש היברידי, ולכן הכרטיס תופס את מקומו של ה-SIM השני",
+        "camera_main": "108MP בצמצם F1.7, חיישן בגודל 1/1.67 אינץ׳, עם איחוד תשעה פיקסלים לאחד",
+        "camera_extra": "2MP חיישן עומק שדה בצמצם F2.4. אין עדשה רחבה במיוחד",
+        "zoom": "זום 3x בתוך החיישן וזום דיגיטלי עד 20x. אין עדשת טלפוטו",
+        "camera_front": "20MP בצמצם F2.2",
+        "video": "FHD (1920x1080) ב-30 או 60 פריימים לשנייה. אין הקלטת 4K. הילוך אט ב-120 פריימים ב-HD",
+        "battery": "6000 mAh סיליקון-פחמן. עד 24 שעות וידאו ועד 50 שעות שיחה. היצרן מציין שמירה על 80 אחוז מהקיבולת גם אחרי 1600 מחזורי טעינה",
+        "charging_wired": "33W חוטי. יש גם טעינה חוטית הפוכה של עד 18W להטענת מכשירים אחרים",
+        "charging_wireless": null,
+        "dimensions": "164.03 x 75.42 x 7.94 מ״מ",
+        "weight": "183.7 גרם",
+        "water_resistance": "IP64 לפי היצרן. היצרן מציין במפורש שאין אחריות יצרן על נזקי חדירת נוזל, אבק או קורוזיה",
+        "colors_manufacturer": [
+          "כחול",
+          "שחור",
+          "סגול",
+          "ירוק"
+        ],
+        "sim": "מגש היברידי: שני כרטיסי nano-SIM, או כרטיס nano-SIM אחד וכרטיס זיכרון",
+        "esim": null,
+        "connectivity": "רשתות 2G, 3G ו-4G LTE. אין 5G. Wi-Fi 802.11ac ב-2.4GHz ו-5GHz, Bluetooth 5.3, NFC עם תמיכה ב-Google Pay, ומשדר אינפרא-אדום",
+        "box_contents": "מתאם טעינה 33W כלול בערכה",
+        "security_updates": null,
+        "model_numbers": null
+      }
     }
   ]
 }

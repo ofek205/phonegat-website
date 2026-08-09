@@ -194,6 +194,26 @@
       "url": "/compare/galaxy-a37-vs-galaxy-a17/",
       "name": "גלקסי A37 מול גלקסי A17",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-s26-plus/",
+      "name": "גלקסי S26+",
+      "status": "review"
+    },
+    {
+      "url": "/phones/redmi-note-15/",
+      "name": "רדמי נוט 15",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-s26-plus-vs-galaxy-s26/",
+      "name": "גלקסי S26+ מול גלקסי S26",
+      "status": "review"
+    },
+    {
+      "url": "/compare/redmi-note-15-vs-galaxy-a17/",
+      "name": "רדמי נוט 15 מול גלקסי A17",
+      "status": "review"
     }
   ]
 }
