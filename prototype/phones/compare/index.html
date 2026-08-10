@@ -537,7 +537,6 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 .cmp-grid tr.mean{display:none}
 .cmp-grid tr.mean.open{display:table-row}
 @media(hover:hover) and (pointer:fine){
-  .cmp-grid tr.vrow:hover+tr.mean,.cmp-grid tr.mean:hover{display:table-row}
   /* Baymard recommends hover highlighting so the eye can trace one attribute across the columns.
      Here it does a second job: saying the row opens. */
   .cmp-grid tr.vrow:hover>*{background:#f6fafb}
@@ -571,6 +570,20 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 
 /* half the values open with a figure. The figure is the answer; the unit is the footnote. */
 .cmp-grid .nv{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--ink-strong);line-height:1.25}
+
+/* The marker is an i, not a question mark: it offers information rather than asking something.
+   And it is a real element, not ::after, so hover can be scoped to the marker alone. Hovering the
+   whole label would pop a panel open at every field the pointer crosses on its way down. */
+.cmp-grid .fx::after{content:none}
+.cmp-grid .fxi{display:inline-grid;place-items:center;inline-size:1.2rem;block-size:1.2rem;border:1px solid var(--line);border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:700;font-style:normal;color:var(--ink-soft);flex:none;transition:background .15s,border-color .15s,color .15s}
+.cmp-grid .fxi:hover,.cmp-grid .fx:focus-visible .fxi{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* One panel, reused, positioned in document coordinates and living outside the table. A reveal
+   that reflows the table moves the thing you are trying to read, and a panel inside the wrapper
+   would be clipped by the horizontal scroll on a phone. */
+.minfo{position:absolute;z-index:80;max-inline-size:min(34rem,88vw);background:#fff;border:1px solid var(--ink-strong);border-radius:8px;box-shadow:var(--shadow-sm);padding:.85rem 1rem;color:var(--ink);font-size:.98rem;line-height:1.7}
+.minfo b{color:var(--teal-d);font-weight:700}
+.minfo::before{content:"";position:absolute;left:var(--ax,16px);inset-block-start:-6px;inline-size:10px;block-size:10px;background:#fff;border-inline-start:1px solid var(--ink-strong);border-block-start:1px solid var(--ink-strong);transform:rotate(45deg)}
 
 /* the table behaves like an instrument, so it reads as one: a defined surface rather than bare
    hairlines on the page. A deliberate departure from the editorial default. */
@@ -921,6 +934,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <!-- deliberately NOT aria-live: render() replaces this whole subtree, so a live region here
        reads out the entire table on every press. #dstate announces the summary instead. -->
+    <!-- one panel, reused by every field marker. Outside #dout so a re-render cannot destroy it. -->
+    <div class="minfo" id="minfo" role="status" hidden></div>
     <div id="dout">
       <p class="dempty">אחרי שתבחרו, כאן תופיע טבלה עם השדות השונים בלבד. אם JavaScript כבוי, <a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>
     </div>
@@ -1001,6 +1016,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   var SLOT=["א׳","ב׳","ג׳"];
   function d0(id){return id?document.getElementById(id):null;}
+  /* The panel: one element, placed under whichever marker asked for it. Document coordinates, so
+     it travels with the page and needs no repositioning on scroll. */
+  var panel=document.getElementById("minfo"), infoFor=null;
+  var canHover=false; try{canHover=window.matchMedia("(hover:hover) and (pointer:fine)").matches;}catch(e){}
+  function hideInfo(){ if(!panel) return; panel.hidden=true; infoFor=null; }
+  function showInfo(btn,on){
+    if(!panel) return;
+    if(!on){ hideInfo(); return; }
+    var key=btn.getAttribute("data-mean"); if(!MEANS[key]) return;
+    panel.innerHTML='<b>מה זה אומר</b> '+esc(MEANS[key]);
+    panel.hidden=false;
+    var r=(btn.querySelector(".fxi")||btn).getBoundingClientRect();
+    var top=r.bottom+window.scrollY+8;
+    /* anchored to the marker, then pulled back inside the viewport if it would hang off the edge */
+    panel.style.insetInlineStart="auto"; panel.style.insetInlineEnd="auto";
+    panel.style.left="0px"; panel.style.top=top+"px";
+    var w=panel.offsetWidth;
+    var left=Math.min(Math.max(8,r.right-w),document.documentElement.clientWidth-w-8);
+    panel.style.left=left+"px";
+    var arrow=Math.min(Math.max(10,r.left+r.width/2-left-5),w-20);
+    panel.style.setProperty("--ax",arrow+"px");
+    infoFor=btn;
+  }
+  /* Hover is scoped to the marker itself, not the whole label: hovering the label would open a
+     panel at every field the pointer crosses on its way down the column. And hover is only ever an
+     addition, never the only way in, since a phone has no hover and a keyboard has no pointer. */
+  if(canHover){
+    out.addEventListener("pointerover",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i) showInfo(i.closest(".fx"),true);});
+    out.addEventListener("pointerout",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i&&i.closest(".fx")===infoFor) hideInfo();});
+  }
+  out.addEventListener("focusin",function(e){var b=e.target.closest&&e.target.closest(".fx"); if(b) showInfo(b,true);});
+  out.addEventListener("focusout",function(e){var b=e.target.closest&&e.target.closest(".fx"); if(b&&b===infoFor) hideInfo();});
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") hideInfo(); });
+  document.addEventListener("click",function(e){ if(infoFor&&!(e.target.closest&&(e.target.closest(".fx")||e.target.closest("#minfo")))) hideInfo(); });
   function catsOf(rows){var out=[],m={};rows.forEach(function(r){if(!m[r[0]]){m[r[0]]=1;out.push(r[0]);}});return out;}
   function syncChips(){Array.prototype.forEach.call(wrap.querySelectorAll(".chip"),function(c){
     var i=sel.indexOf(c.getAttribute("data-slug"));
@@ -1070,7 +1119,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         body+='<tbody><tr class="grp"><th colspan="'+span+'" scope="colgroup">'+esc(cat)+"</th></tr>"; bodyOpen=true; }
       var mid="m-"+r[2];
       body+='<tr class="vrow"><th scope="row">'+(MEANS[r[2]]
-        ? '<button type="button" class="fx" aria-expanded="'+(means?"true":"false")+'" aria-controls="'+mid+'">'+esc(r[1])+'</button>'
+        ? '<button type="button" class="fx" aria-describedby="'+mid+'d" data-mean="'+esc(r[2])+'">'+esc(r[1])+'<span class="fxi" aria-hidden="true">i</span></button>'+
+          '<span class="a11y-sr" id="'+mid+'d">'+esc(MEANS[r[2]])+'</span>'
         : esc(r[1]))+"</th>";
       ds.forEach(function(d){
         var raw=d?d.spec[r[2]]:null;
@@ -1088,7 +1138,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       });
       body+="</tr>";
-      if(MEANS[r[2]]) body+='<tr class="mean'+(means?" open":"")+'" id="'+mid+'"><td colspan="'+span+'"><span><b>מה זה אומר</b> '+esc(MEANS[r[2]])+'</span></td></tr>';
+      if(means&&MEANS[r[2]]) body+='<tr class="mean open" id="'+mid+'"><td colspan="'+span+'"><span><b>מה זה אומר</b> '+esc(MEANS[r[2]])+'</span></td></tr>';
     });
     if(bodyOpen) body+="</tbody>";
     var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){return '<th scope="col" class="sc'+i+'">'+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
@@ -1133,13 +1183,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   out.addEventListener("click",function(e){
     if(!e.target.closest) return;
     var fx=e.target.closest(".fx");
-    if(fx){
-      var row=d0(fx.getAttribute("aria-controls"));
-      var isOpen=fx.getAttribute("aria-expanded")==="true";
-      fx.setAttribute("aria-expanded",isOpen?"false":"true");
-      if(row) row.classList.toggle("open",!isOpen);
-      return;
-    }
+    if(fx){ showInfo(fx,fx!==infoFor); return; }
     var mb=e.target.closest("[data-means]");
     if(mb){means=!means;render();return;}
     var f=e.target.closest(".dfocus button");
