@@ -68,6 +68,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   bdo,.ltr{unicode-bidi:isolate;direction:ltr}
   a:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 </style>
+<style>/* pg-prose-links */
+/* Links inside running text were indistinguishable from the text around them: same colour as the body
+   ink, no underline, and no hover cue either. That was 341 links across 65 pages, so every internal
+   link these pages carry was doing its job for a crawler and nothing at all for a reader, and a link
+   with no distinguishing feature fails WCAG 1.4.1, which IS 5568 is anchored to.
+   The selector is deliberately narrow rather than "main a": card links wrap a <b> plus a <span> and
+   are meant to read as cards, and the jump strip lives in its own <nav>. Both keep their own look.
+   The underline is what carries the fix; the colour is a second cue, not the only one. */
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)){color:var(--teal,#1878A8);text-decoration:underline;text-underline-offset:2px}
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)):hover{color:var(--teal-d,#12617F)}
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
