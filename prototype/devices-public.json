@@ -850,6 +850,50 @@
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A276B"
       }
+    },
+    {
+      "slug": "galaxy-a07",
+      "name": "Galaxy A07",
+      "name_he": "גלקסי A07",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (171.3 מ״מ)",
+        "screen_type": "PLS LCD, עומק צבע 16M. זה אינו מסך AMOLED",
+        "resolution": "1600x720 פיקסלים (HD+)",
+        "refresh_rate": null,
+        "brightness": null,
+        "chip": "MediaTek Helio G99, תהליך 6 ננומטר",
+        "cpu": "8 ליבות, 2.2GHz ו-2GHz",
+        "gpu": null,
+        "ram": "4GB",
+        "storage_offered": [
+          "64GB",
+          "128GB"
+        ],
+        "storage_expandable": "כרטיס MicroSD עד 2TB, בחריץ ייעודי משלו. אפשר שני כרטיסי SIM וגם כרטיס זיכרון יחד",
+        "camera_main": "50MP בצמצם F1.8. אין ייצוב אופטי",
+        "camera_extra": "2MP בצמצם F2.4. שתי מצלמות אחוריות בסך הכול",
+        "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
+        "camera_front": "8MP בצמצם F2.0",
+        "video": "FHD (1920x1080) ב-30 פריימים לשנייה. אין הקלטת 4K. הילוך אט ב-120 פריימים ב-HD",
+        "battery": "5000 mAh טיפוסית",
+        "charging_wired": null,
+        "charging_wireless": null,
+        "dimensions": "167.4 x 77.4 x 7.6 מ״מ",
+        "weight": "184 גרם",
+        "water_resistance": "IP54 לפי היצרן: אבק והתזות מים מכל הכיוונים. זו אינה עמידות לשיקוע",
+        "colors_manufacturer": [
+          "שחור",
+          "סגול בהיר",
+          "ירוק"
+        ],
+        "sim": "SIM כפול פיזי: שני nano-SIM, ובנוסף חריץ נפרד לכרטיס זיכרון. אין eSIM",
+        "esim": "אין תמיכה ב-eSIM",
+        "connectivity": "רשתות 2G, 3G ו-4G LTE. אין 5G. USB-C בגרסת USB 2.0, שקע אוזניות 3.5 מ״מ, Wi-Fi 802.11ac ב-2.4GHz ו-5GHz, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 31 באוגוסט 2031, ושישה דורות שדרוג של מערכת ההפעלה",
+        "model_numbers": "SM-A075F"
+      }
     }
   ]
 }

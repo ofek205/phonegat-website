@@ -234,6 +234,16 @@
       "url": "/compare/galaxy-a37-vs-galaxy-a27/",
       "name": "גלקסי A37 מול גלקסי A27",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-a07/",
+      "name": "גלקסי A07",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-a17-vs-galaxy-a07/",
+      "name": "גלקסי A17 מול גלקסי A07",
+      "status": "review"
     }
   ]
 }
