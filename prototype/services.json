@@ -244,6 +244,16 @@
       "url": "/compare/galaxy-a17-vs-galaxy-a07/",
       "name": "גלקסי A17 מול גלקסי A07",
       "status": "review"
+    },
+    {
+      "url": "/phones/redmi-note-15-pro/",
+      "name": "רדמי נוט 15 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/redmi-note-15-pro-vs-redmi-note-15/",
+      "name": "רדמי נוט 15 פרו מול רדמי נוט 15",
+      "status": "review"
     }
   ]
 }
