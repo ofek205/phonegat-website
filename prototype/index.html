@@ -2456,6 +2456,14 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}
 }
 /* ==== gen-nav:css:end ==== */
+/* ==== יעדי מגע 44px: נמדדו ב-375 ותוקנו ==== */
+/* min-height לבדו יצא 43 במדידה, כי הגבול והשורה אוכלים אותו. box-sizing
+   מכריע את זה, ו-flex ממרכז את התוכן בלי לשנות את המראה. */
+.pg-ad-cta{min-block-size:44px;box-sizing:border-box}
+.pg-chip{box-sizing:border-box;min-block-size:44px;display:inline-flex;align-items:center}
+.pg-send{inline-size:44px;block-size:44px}
+.pg-refresh{block-size:44px}
+.x{inline-size:44px;block-size:44px;box-sizing:border-box}
 </style>
 <section id="services" class="wrap">
   <div class="intro">
