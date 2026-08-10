@@ -154,6 +154,11 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
 .btn-wa{background:#25D366;color:#0a2e18}.btn-wa:hover{background:#20c15c}
 .wa-ico{border-radius:22%;flex:none;object-fit:contain}
 .btn-sm{padding:6px 16px;font-size:.9rem}
+/* The UA sheet's [hidden]{display:none} is a plain attribute selector, so any author rule that
+   sets display beats it. .btn{display:inline-flex} did exactly that, and #dclear sat on screen
+   with its hidden attribute set. Declared here so no element on the page can be hidden and
+   painted at the same time. */
+[hidden]{display:none!important}
 
 /* ===== header: white and light, like the reference: logo, plain nav, one pill CTA ===== */
 header.site{background:#fff;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
@@ -861,7 +866,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p id="dstate" role="status">בחרו שני דגמים כדי לראות את ההבדלים.</p>
       <button type="button" class="btn btn-teal btn-sm" id="dclear" hidden>נקו את הבחירה</button>
     </div>
-    <div id="dout" aria-live="polite">
+    <!-- deliberately NOT aria-live: render() replaces this whole subtree, so a live region here
+       reads out the entire table on every press. #dstate announces the summary instead. -->
+    <div id="dout">
       <p class="dempty">אחרי שתבחרו, כאן תופיע טבלה עם השדות השונים בלבד. אם JavaScript כבוי, <a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>
     </div>
   </div>
@@ -962,8 +969,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       focus=null;
       state.innerHTML=sel.length?"נבחר "+esc(names[0])+". בחרו עוד אחד לפחות.":"בחרו שני דגמים כדי לראות את ההבדלים.";
       clear.hidden=!sel.length;
-      out.innerHTML='<p class="dempty">אחרי שתבחרו, כאן תופיע טבלה עם השדות השונים בלבד. '+
-        'אם JavaScript כבוי, <a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות.</p>';
+      out.innerHTML='<p class="dempty">אחרי שתבחרו שני דגמים, כאן תופיע טבלה עם השדות שבהם הם שונים, '+
+        'ומתחת לכל שדה הסבר מה ההבדל אומר בפועל.</p>';
       return;
     }
     clear.hidden=false;
