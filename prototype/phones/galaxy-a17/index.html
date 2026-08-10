@@ -377,7 +377,7 @@ main .btn{white-space:normal}
    min-width:560px מותחת את העמודה ומגלישה את כל הדף. נמדדה גלישה של 157px ב-375px.
    במדריך זה לא קרה, כי שם הטבלה יושבת בבלוק ולא בשורה, ולכן זה לא נתפס שם.
    min-width:0 מחזיר לפריט את הרשות להצטמצם, והטבלה גוללת בתוך האזור שלה כמתוכנן. */
-.prob .txt{min-width:0}
+.prob .txt{min-width:0;max-width:900px;margin-inline:auto}
 .cmp-wrap{max-width:100%}
 /* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.
    כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */
@@ -668,10 +668,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section class="prob" id="buy" style="--nc:var(--teal)" aria-labelledby="h-buy">
-  <div class="wrap row">
-    <figure class="fig">
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: Galaxy A17 על דלפק המעבדה, המכשיר בשליש האמצעי של הגובה. התמונות יתווספו בהמשך</span></div>
-    </figure>
+  <div class="wrap">
     <div class="txt">
       <h2 id="h-buy">מחיר, מלאי ואחריות</h2>
       <p class="intro">הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.</p>
