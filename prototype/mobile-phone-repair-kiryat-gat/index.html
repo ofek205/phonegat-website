@@ -648,6 +648,50 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)){color:var(--teal,#1878A8);text-decoration:underline;text-underline-offset:2px}
 main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)):hover{color:var(--teal-d,#12617F)}
 </style>
+<style>/* pg-sticky-header */
+/* Below 980px the header was position:relative, so the only way back to the menu from deep in a
+   12,959px page was to scroll all the way up. Always-on sticky was the wrong trade here: the header
+   is 78px and the bottom action bar is already 70px, which would have parked 148px, 17.5% of an
+   844px screen, permanently, to show a logo and a burger while the three converting actions already
+   sit in the bottom bar. So it hides on the way down and comes back the moment you scroll up, which
+   costs nothing while reading. The menu panel is 361px and fits, so nothing here endangers it.
+   scroll-padding-top is already 86px or more on every page, which clears the 78px header, so anchor
+   targets need no change. */
+@media(max-width:980px){
+  header.site{position:sticky;top:var(--pg-test-h,0px);transition:transform .28s var(--ease,cubic-bezier(.4,0,.2,1))}
+  header.site.hd-away{transform:translateY(-100%)}
+}
+@media(prefers-reduced-motion:reduce){header.site{transition:none}}
+html.a11y-stop-motion header.site{transition:none}
+</style>
+<script>/* pg-sticky-header */
+(function(){
+ /* this block sits in <head>, so the header does not exist yet at parse time; binding immediately
+    would silently find null and do nothing at all */
+ function init(){
+  var hd=document.querySelector('header.site'); if(!hd) return;
+  var de=document.documentElement, last=0;
+  /* someone who asked for less motion gets a header that simply stays put, not one that snaps */
+  function calm(){ return de.classList.contains('a11y-stop-motion') ||
+    (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches); }
+  function y(){ return window.scrollY || de.scrollTop || document.body.scrollTop || 0; }
+  /* deliberately not wrapped in requestAnimationFrame: the whole job is a scrollY read and a class
+     toggle, and rAF would add a frame of latency to the reveal, which is the one moment that has to
+     feel immediate */
+  function upd(){
+    var n=y(), nav=document.querySelector('nav.main');
+    /* never pull the header out from under an open menu, and never hide it near the top */
+    if(calm() || (nav && nav.classList.contains('open')) || n<=200){ hd.classList.remove('hd-away'); last=n; return; }
+    if(n>last+4) hd.classList.add('hd-away');
+    else if(n<last-4) hd.classList.remove('hd-away');
+    last=n;
+  }
+  last=y();
+  addEventListener('scroll',upd,{passive:true});
+ }
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
