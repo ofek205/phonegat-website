@@ -92,7 +92,12 @@ function buildMain(d, openTag) {
     ['צבעים בחנות', val(C.colors_stocked), PH.colors],
     ['יבוא', [C.import_official ? 'רשמי' : null, C.import_parallel ? 'מקביל' : null].filter(Boolean).join(' ו') || null, 'לבדיקת מסלולי היבוא הזמינים'],
     ['אחריות', C.warranty_months ? C.warranty_months + ' חודשים' + (C.warranty_by ? ', ' + C.warranty_by : '') : null, PH.warranty],
-    ['תשלומים', C.payments, 'לבדיקת פריסת תשלומים']
+    ['תשלומים', C.payments, 'לבדיקת פריסת תשלומים'],
+    /* שתי השורות האלה נוספו ב-10.8.2026. הן היו במאגר ולא הוצגו, וזה בזבוז:
+       טלפון חלופי בזמן תיקון והעברת נתונים ממכשיר שבור הם בדיוק הדברים שאף
+       אתר מתחרה לא כותב, ולכן הם שווים יותר מכל שורת מפרט. */
+    ['בזמן תיקון באחריות', C.service_terms, 'לשאול מה קורה עם מכשיר חלופי'],
+    ['העברת נתונים', C.data_transfer, 'לשאול על העברת נתונים מהמכשיר הישן']
   ].map(function (f) {
     var real = f[1] !== null && f[1] !== undefined && f[1] !== '';
     return '        <tr><th scope="row">' + esc(f[0]) + '</th><td>' +
