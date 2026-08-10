@@ -439,8 +439,8 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 .dpick .chip{display:block;width:100%;text-align:start;padding-block:.95rem;font-size:1.02rem;border-bottom:0}
 .dpick .chip[aria-pressed="true"]{border-bottom:0}
 /* הסימן שנבחר: מקף לפני השם, ולא רקע צבוע. אין משטחים מלאים במערכת הזאת. */
-.dpick .chip::before{content:"";display:inline-block;inline-size:1.1rem;border-block-start:2px solid transparent;vertical-align:.35em;margin-inline-end:.5rem;transition:border-color .2s}
-.dpick .chip[aria-pressed="true"]::before{border-block-start-color:var(--teal)}
+.dpick .chip::before{content:"";display:inline-block;inline-size:.5rem;block-size:.5rem;border:1px solid var(--line);border-radius:50%;margin-inline-end:.55rem;vertical-align:.08em;transition:background .2s,border-color .2s}
+.dpick .chip[aria-pressed="true"]::before{background:var(--teal);border-color:var(--teal)}
 /* שורת הסיכום. sticky מתחת לכותרת האתר (66px) ולא fixed, ולכן אין התנגשות עם סרגל
    המובייל של 70px ואין צורך בפינוי. */
 .dstate{position:sticky;inset-block-start:66px;z-index:70;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block-end:1px solid var(--line);padding-block:.9rem;margin-block-start:1.8rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}
@@ -452,6 +452,10 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
    ולא min-height: גובה מוצהר נאכל על ידי המסגרת ותיבת השורה ויוצא 43. זה בדיוק הדפוס
    שהצ׳קליסט מתאר לגבי .cookie .btn-sm, שגם הוא עוקף padding כללי במקום לשנות אותו. */
 .dstate .btn-sm{padding-block:.78rem}
+/* the least important action in this row was the loudest: a filled block right above the focus
+   chips. Outlined, so the chips stay the first thing the eye lands on. */
+.dstate .btn-teal{background:none;color:var(--teal-d);border:1px solid var(--line)}
+.dstate .btn-teal:hover{background:#f2f6f8;border-color:var(--teal-d)}
 .dempty{margin-top:1.8rem;border-block-start:1px solid var(--line);padding-block-start:1.4rem;color:var(--ink-soft);line-height:1.8}
 
 /* ===== the instrument: slots, brand groups, category focus, and a table you read across =====
@@ -980,7 +984,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא
        מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML. */
     out.innerHTML=fh+'<div class="cmp-wrap" tabindex="0" role="region" aria-label="טבלת ההבדלים">'+
-      '<table class="cmp cmp-grid"><caption>'+cap+"</caption>"+head+body+"</table></div>"+share+
+      '<table class="cmp cmp-grid"><caption'+(focus?"":' class="a11y-sr"')+">"+cap+"</caption>"+head+body+"</table></div>"+share+
       '<p class="aside">'+ds.map(function(d){return '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";
   }
 
