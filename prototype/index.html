@@ -1813,6 +1813,17 @@ html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *:
   .hero .sub{margin-top:1.25rem}
 }
 </style>
+<style>/* pg-prose-links */
+/* Links inside running text were indistinguishable from the text around them: same colour as the body
+   ink, no underline, and no hover cue either. That was 341 links across 65 pages, so every internal
+   link these pages carry was doing its job for a crawler and nothing at all for a reader, and a link
+   with no distinguishing feature fails WCAG 1.4.1, which IS 5568 is anchored to.
+   The selector is deliberately narrow rather than "main a": card links wrap a <b> plus a <span> and
+   are meant to read as cards, and the jump strip lives in its own <nav>. Both keep their own look.
+   The underline is what carries the fix; the colour is a second cue, not the only one. */
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)){color:var(--teal,#1878A8);text-decoration:underline;text-underline-offset:2px}
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)):hover{color:var(--teal-d,#12617F)}
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -2362,7 +2373,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <a class="chip" href="https://www.b144.co.il/" target="_blank" rel="noopener" aria-label="ביקורות פון גת ב-B144, דירוג 5"><img class="lg" src="b144.png" alt="B144" width="26" height="26" loading="lazy"> 5/5 <span>· 41</span></a>
     </div>
     <div class="rev-cta"><a class="btn btn-teal" href="tel:+972525893366">חייגו עכשיו</a></div>
-    <p class="rev-attr" style="color:rgba(214,236,245,.85);font-size:.76rem;line-height:1.55;max-width:62ch;margin:1.3rem auto 0">הדירוגים והביקורות מתוך Google, easy, דפי זהב ו-B144, נכון ליולי 2026. שייכים לבעליהם ומוצגים לצורך הפניה למקור בלבד. פון גת אינה מסונפת אליהם. לחצו על כל מקור לצפייה.</p>
+    <p style="color:rgba(214,236,245,.85);font-size:.76rem;line-height:1.55;max-width:62ch;margin:1.3rem auto 0">הדירוגים והביקורות מתוך Google, easy, דפי זהב ו-B144, נכון ליולי 2026. שייכים לבעליהם ומוצגים לצורך הפניה למקור בלבד. פון גת אינה מסונפת אליהם. לחצו על כל מקור לצפייה.</p>
   </div>
 </section>
 <script>

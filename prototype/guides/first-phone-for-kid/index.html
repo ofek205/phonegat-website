@@ -550,6 +550,17 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 .cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:1px solid var(--line)}
 @media(max-width:640px){.cmp{min-width:520px}.cmp tbody th{width:8.5rem}}
 </style>
+<style>/* pg-prose-links */
+/* Links inside running text were indistinguishable from the text around them: same colour as the body
+   ink, no underline, and no hover cue either. That was 341 links across 65 pages, so every internal
+   link these pages carry was doing its job for a crawler and nothing at all for a reader, and a link
+   with no distinguishing feature fails WCAG 1.4.1, which IS 5568 is anchored to.
+   The selector is deliberately narrow rather than "main a": card links wrap a <b> plus a <span> and
+   are meant to read as cards, and the jump strip lives in its own <nav>. Both keep their own look.
+   The underline is what carries the fix; the colour is a second cue, not the only one. */
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)){color:var(--teal,#1878A8);text-decoration:underline;text-underline-offset:2px}
+main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)):hover{color:var(--teal-d,#12617F)}
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -665,7 +676,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <thead><tr><th scope="col">דירוג</th><th scope="col">מה זה אומר בפועל</th><th scope="col">הדגמים</th></tr></thead>
         <tbody>
           <tr><th scope="row"><bdo dir="ltr">IP68</bdo></th><td>עומד בשיקוע במים</td><td>כל דגמי האייפון שאנחנו מוכרים, ואצלם עד שישה מטר לחצי שעה. וגם <a href="/phones/galaxy-a57/">גלקסי A57</a>, <a href="/phones/galaxy-a37/">A37</a> ו<a href="/phones/xiaomi-15/">שיאומי 15</a>, שם זה מטר וחצי.</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">IP67</bdo></th><td>שיקוע במטר מים לחצי שעה</td><td><a href="/phones/galaxy-a56/">גלקסי A56</a> ו<a href="/phones/galaxy-a36/">A36</a></td></tr>
+          <tr><th scope="row"><bdo dir="ltr">IP67</bdo></th><td>שיקוע במטר מים לחצי שעה</td><td><a href="/phones/galaxy-a56/">גלקסי A56</a> ו-<a href="/phones/galaxy-a36/">A36</a></td></tr>
           <tr><th scope="row"><bdo dir="ltr">IP64</bdo></th><td>התזה מכל כיוון, לא טבילה</td><td><a href="/phones/redmi-note-15/">רדמי נוט 15</a> ו<a href="/phones/redmi-note-14-pro/">רדמי נוט 14 פרו</a></td></tr>
           <tr><th scope="row"><bdo dir="ltr">IP54</bdo></th><td>התזה בלבד</td><td><a href="/phones/galaxy-a17/">גלקסי A17</a> ו<a href="/phones/redmi-note-14/">רדמי נוט 14</a></td></tr>
         </tbody>
@@ -713,7 +724,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap box">
     <h2 id="h-updates">כמה שנים המכשיר יישאר מעודכן</h2>
     <p class="lead">זה הסעיף שהכי קל לדלג עליו בחנות, והוא דווקא הרלוונטי ביותר כשקונים לילד. מכשיר ראשון נשאר ביד הרבה יותר זמן ממכשיר שני של מבוגר.</p>
-    <p>סמסונג מבטיחה בסדרת A שישה דורות של שדרוגי מערכת הפעלה ושש שנות עדכוני אבטחה, ובחלק מהדגמים היא גם נוקבת בתאריך סיום מדויק. ב<a href="/phones/galaxy-a57/">A57</a> וב<a href="/phones/galaxy-a37/">A37</a> התאריך הוא 31 במרץ 2032. ב<a href="/phones/galaxy-a17/">A17</a> ההתחייבות היא שש שנים מתאריך ההשקה העולמי, בלי תאריך מדויק בעמוד.</p>
+    <p>סמסונג מבטיחה בסדרת A שישה דורות של שדרוגי מערכת הפעלה ושש שנות עדכוני אבטחה, ובחלק מהדגמים היא גם נוקבת בתאריך סיום מדויק. ב-<a href="/phones/galaxy-a57/">A57</a> וב-<a href="/phones/galaxy-a37/">A37</a> התאריך הוא 31 במרץ 2032. ב-<a href="/phones/galaxy-a17/">A17</a> ההתחייבות היא שש שנים מתאריך ההשקה העולמי, בלי תאריך מדויק בעמוד.</p>
     <p>שיאומי אינה נוקבת בתקופה בכלל בעמודי המוצר הישראליים, ואפל אינה מפרסמת מספר שנים מראש. זו לא אמירה שהמכשירים שלהן מתעדכנים פחות, זו אמירה שאי אפשר לדעת מראש כמה, ובהחלטה לטווח של חמש שנים זה הבדל אמיתי.</p>
   </div>
 </section>
