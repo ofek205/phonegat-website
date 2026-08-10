@@ -202,16 +202,32 @@ else ok('תגי details מאוזנים (' + opens + ')');
  * לא-מגורסן של סשן אחר (_kbpreview.html) הפיל את בדיקת ה-canonical וחסם דחיפה של סשן אחר לגמרי. */
 function isDraft(name) { return name.charAt(0) === '_'; }
 
+/* הסריקה רקורסיבית ולא רמה אחת, וזו אותה תקלה שהקובץ הזה נכתב בשבילה, רק עמוק יותר.
+ * הגרסה הקודמת ירדה רמה אחת בלבד, ולכן ראתה את phones/index.html אבל לא את
+ * phones/galaxy-s26/index.html. נמדד 10.8.2026 על devices-area: 26 עמודים נבדקו מתוך 64,
+ * כלומר 38 עמודים ב-compare/, guides/ ו-phones/ לא עברו אף בדיקה כאן. לא canonical, לא
+ * תפריט נגישות, לא באנר קוקיז, לא מקף ארוך, לא h1 ייחודי.
+ *
+ * במקרה הם היו כולם תקינים, כי מי שבנה אותם הקפיד ידנית. זו בדיוק הסיבה שזה לא התגלה:
+ * שער שלא רץ נראה זהה לשער שעובר. */
 var pagesDir = P('prototype'), pageFiles = [];
-try {
-  fs.readdirSync(pagesDir, { withFileTypes: true }).forEach(function (e) {
+(function scan(dir, prefix, depth) {
+  if (depth > 3) return;                       /* חסם בטיחות, לא מגבלה אמיתית על העומק */
+  var entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); }
+  catch (e) { if (!depth) warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים'); return; }
+  entries.forEach(function (e) {
     if (isDraft(e.name)) return;
-    if (e.isFile() && /\.html$/.test(e.name)) { pageFiles.push(e.name); return; }
+    if (e.isFile() && /\.html$/.test(e.name)) {
+      /* בשורש כל קובץ html הוא עמוד; בתוך תיקייה רק index.html, כדי שקובץ עזר לא ייחשב עמוד */
+      if (!depth || e.name === 'index.html') pageFiles.push(prefix + e.name);
+      return;
+    }
+    /* תיקיית נכסים (problems/, logos/) פשוט לא תחזיר index.html ולכן לא תוסיף עמוד */
     if (!e.isDirectory() || e.name === 'api') return;
-    /* תיקיית נכסים (problems/, logos/) אינה עמוד; עמוד הוא תיקייה שיש בה index.html */
-    if (fs.existsSync(path.join(pagesDir, e.name, 'index.html'))) pageFiles.push(e.name + '/index.html');
+    scan(path.join(dir, e.name), prefix + e.name + '/', depth + 1);
   });
-} catch (e) { warn('לא ניתן לקרוא את תיקיית prototype לסריקת דפים'); }
+})(pagesDir, '', 0);
 
 /* עמוד עומק = כל עמוד שאינו בשורש. הנתיבים היחסיים שלו נפתרים אחרת, ולכן יש לו בדיקה משלו */
 function isDeep(f) { return f.indexOf('/') > -1; }
@@ -663,6 +679,57 @@ if (classFails.length) {
   });
   if (broken.length) bad('סקריפטים שלא נטענים: ' + broken.join(' · ') + ' — שגיאת תחביר, הכלי לא ירוץ בכלל');
   else if (checked) ok(checked + ' סקריפטים של הפרויקט נטענים');
+})();
+
+/* ---------- 20. אותה צורה חוזרת בין עמודים ----------
+ * האודיט מ-9.8.2026 מצא שכל 17 העמודים תחת phones/ מחזיקים רשימה של 7 עד 9 פריטים שבה כל
+ * פריט בלי יוצא מן הכלל נפתח בליד-אין מודגש, באותו מקום ובאותו אורך בערך. כל עמוד בנפרד
+ * מוצדק לגמרי, והמילה המודגשת היא מונח שהקורא סורק. מי שפותח שניים ברצף רואה את הצורה
+ * פעמיים ומפסיק לקרוא את זה ככתיבה, וזה בדיוק מה שקורה בעמודי מכשיר כי אדם שמתלבט בין
+ * דגמים קורא כמה מהם.
+ *
+ * שום בדיקה שמסתכלת על עמוד אחד לא יכולה לתפוס את זה, ולכן זו הבדיקה הראשונה כאן שמשווה
+ * עמודים זה לזה מלבד בדיקה 15.
+ *
+ * אזהרה ולא כשל, בכוונה: כחוסמת היא הייתה עוצרת כל דחיפה ל-main עד ש-17 העמודים יתוקנו,
+ * כלומר בדיקה חדשה הייתה מוציאה משימוש את המסלול לפרודקשן. אחרי שהתוכן יתוקן מעבירים את
+ * שתי הקריאות ל-bad. */
+(function () {
+  function boldLists(src) {
+    var body = src.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<!--[\s\S]*?-->/g, ' ');
+    var out = [];
+    (body.match(/<(ul|ol)\b[\s\S]*?<\/\1>/g) || []).forEach(function (L) {
+      var items = L.match(/<li\b[\s\S]*?(?=<li\b|<\/(?:ul|ol)>)/g) || [];
+      if (items.length < 4) return;
+      var bold = items.filter(function (i) { return /<li[^>]*>\s*<(b|strong)\b/.test(i); }).length;
+      /* רק רשימה שכל פריט בה מודגש. אחד או שניים הם הדגשה אמיתית ולא צורה */
+      if (bold === items.length) out.push({ n: items.length, ol: /^<ol\b/.test(L) });
+    });
+    return out;
+  }
+  var byDir = {}, redundant = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    var found = boldLists(s); if (!found.length) return;
+    found.forEach(function (x) { if (x.ol) redundant.push(f + ' (' + x.n + ' פריטים)'); });
+    var dir = f.indexOf('/') > -1 ? f.slice(0, f.indexOf('/')) : '.';
+    (byDir[dir] = byDir[dir] || []).push(f + ':' + found[0].n);
+  });
+
+  /* המספור כבר נותן לקורא את מבנה הסריקה, וההדגשה חוזרת עליו. זה החד-משמעי מבין השניים */
+  if (redundant.length) {
+    warn('רשימה ממוספרת שכל פריט בה גם מודגש, כלומר המספור וההדגשה עושים אותה עבודה: ' +
+      redundant.join(' · '));
+  } else { ok('אין רשימה ממוספרת עם הדגשה כפולה'); }
+
+  var tmpl = Object.keys(byDir).filter(function (d) { return d !== '.' && byDir[d].length >= 3; });
+  if (tmpl.length) {
+    warn('אותה צורת רשימה חוזרת בין עמודים: ' + tmpl.map(function (d) {
+      var lens = byDir[d].map(function (x) { return +x.split(':')[1]; });
+      return byDir[d].length + ' עמודים ב-' + d + '/ (' + Math.min.apply(null, lens) + '-' +
+        Math.max.apply(null, lens) + ' פריטים)';
+    }).join(', ') + ' — כל עמוד מוצדק לבדו, ברצף זה נקרא כתבנית');
+  } else { ok('אין צורת רשימה שחוזרת ביותר משני עמודים בתיקייה'); }
 })();
 
 /* ---------- דוח ---------- */

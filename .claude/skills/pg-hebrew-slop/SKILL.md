@@ -89,9 +89,13 @@ the rest into statements that answer themselves. Note that questions inside a ge
 **"לא X אלא Y".** The imported binary contrast. "זו לא רק מעבדה, אלא בית." Say Y and stop.
 "זו מעבדה שאנשים חוזרים אליה."
 
-**The adjective triad.** "מהיר, אמין ומקצועי", "שירות, מחיר ואמינות." Three abstract nouns in a row
-is the most recognizable shape in Israeli marketing copy, and a machine produces it every time.
-Replace with one concrete fact.
+**The abstract triad, and only the abstract one.** "מהיר, אמין ומקצועי", "וותק, אמון ושירות",
+"תשובה, פתרון וחיוך". Three abstract nouns in a row is the most recognizable shape in Israeli
+marketing copy. Replace with one concrete fact.
+
+A three-item list of real things is **not** this tell. "המשקל, האחסון והסוללה" and "מסך, סוללה
+ותקלות" name objects and stay. Measured 9.8.2026: a regex for the shape returned 119 hits and only
+about a quarter were rhetorical. Judge the nouns, not the commas.
 
 **Self-answered question as a header.** "אז מה עושים?", "מה זה אומר בפועל?" Delete the question and
 state the answer as the heading.
@@ -105,6 +109,20 @@ next action (a phone number, a link, an opening hour).
 
 **Summary endings.** "לסיכום", "בשורה התחתונה", a final paragraph that repeats the page. The reader
 was just there.
+
+## The tell that no single page shows
+
+The strongest finding of the 9.8.2026 audit was invisible page by page. All 17 pages under
+`phones/` carry a list of 7 to 9 items where every item opens with a bolded lead-in, in the same
+position, at roughly the same length. **Every one of those pages is defensible on its own.** The
+reader who opens two of them in a row sees the shape twice and stops reading it as writing.
+
+So when a set of pages was generated from one template, audit the set and not the page. Open three
+side by side and ask what is identical that did not have to be: list length, item order, whether the
+lead-in is bold at all, where the list sits on the page. Change enough that two out of three look
+like someone wrote them separately.
+
+Replacing one uniform shape with a different uniform shape fixes nothing.
 
 ## Translationese, the Hebrew-specific layer
 
@@ -158,8 +176,10 @@ in a long draft. In Hebrew nobody types it by hand, so it is the loudest single 
 
 **En dash (–) is legal inside a range only:** `א׳–ה׳`, `9:00–18:30`.
 
-**Gershayim, not a straight quote.** `צה״ל` and `ר״ת` use ״ (U+05F4). `ד׳` uses ׳ (U+05F3).
-A straight `"` inside an acronym is a keyboard shortcut a machine takes and a typesetter does not.
+**Do not "fix" a straight quote inside an acronym.** `בע״מ` set with real gershayim is prettier,
+but `בע"מ` with a straight quote is what an Israeli keyboard produces, so it is evidence of a person
+rather than a machine. An earlier draft of this skill had this backwards. Measured 9.8.2026: 65 hits
+across the site, every single one `בע"מ` in the footer. Leave them alone.
 
 **Curly English quotes (“ ”) never appear in hand-typed Hebrew.** Their presence means the text was
 pasted out of a model or a word processor.

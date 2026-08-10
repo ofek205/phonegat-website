@@ -39,7 +39,8 @@ short fix, with no rewriting.
 17. Zero em dashes (—) in anything a reader or a crawler sees, including `alt`, `title`, `meta` and
     JSON-LD?
 18. Are en dashes (–) present only inside ranges?
-19. Do acronyms use ״ and ׳ rather than straight quotes?
+19. Were straight quotes inside acronyms (`בע"מ`, `ש"ח`) left untouched? Changing them to ״ is not
+    an improvement and makes the text look less hand-typed, not more.
 20. Are there no curly English quotes (“ ”)?
 
 ## Brand
