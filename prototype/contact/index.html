@@ -394,30 +394,30 @@ html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *:
 /* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
 nav.main .ndrop{position:relative}
 nav.main>a{display:inline-flex;align-items:center;min-height:44px}
-nav.main .ntrig{background:none;border:0;color:#eaeaea;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}
+nav.main .ntrig{background:none;border:0;color:var(--ink);font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}
 nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}
-nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#111;border:1px solid #262626;padding:1.15rem 1.35rem;z-index:130}
+nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#fff;border:1px solid var(--line);padding:1.15rem 1.35rem;z-index:130}
 nav.main .npanel.open{display:flex}
 nav.main .npanel::before{content:"";position:absolute;inset-inline:0;inset-block-end:100%;block-size:.7rem}
 nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}
 nav.main .ncol{min-inline-size:8.6rem}
-nav.main .nhead{color:#9a9a9a;font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}
-nav.main .npanel a{display:flex;align-items:center;color:#eaeaea;font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}
+nav.main .nhead{color:var(--ink-soft);font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}
+nav.main .npanel a{display:flex;align-items:center;color:var(--ink);font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}
 nav.main .npanel a:hover{color:var(--teal)}
 nav.main .npanel a[aria-current="page"]{color:var(--teal)}
-nav.main .nall{border-top:1px solid #2a2a2a;padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
+nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 @media(max-width:980px){
   nav.main .ndrop{display:block}
-  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid #1c1c1c;min-height:48px}
+  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid var(--line);min-height:48px}
   nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}
-  nav.main .npanel{position:static;border:0;background:#0b0b0b;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}
+  nav.main .npanel{position:static;border:0;background:#fff;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}
   nav.main .npanel::before{content:none}
   nav.main .nrow{flex-direction:column;gap:0}
   nav.main .ncol{min-inline-size:0}
   nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}
-  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid #171717}
-  nav.main .nall{border-top:1px solid #2a2a2a;margin:0;padding-block-start:0;flex-direction:column;gap:0}
+  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid var(--line)}
+  nav.main .nall{border-top:1px solid var(--line);margin:0;padding-block-start:0;flex-direction:column;gap:0}
   nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}
 }
 /* ==== gen-nav:css:end ==== */

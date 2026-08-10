@@ -200,7 +200,25 @@ function buildNav(selfHref) {
 var CSS_A = '/* ==== gen-nav:css:start ==== */';
 var CSS_Z = '/* ==== gen-nav:css:end ==== */';
 
-var CSS = [
+/* ── ערכת הצבעים נגזרת מהעמוד, ולא מקובעת ─────────────────────────
+ * דף הבית נושא הדר שחור וקישורי ניווט בהירים, ועמודי התוכן הדר בהיר
+ * וקישורים כהים. גרסה קודמת קיבעה #eaeaea על הכפתורים, והתוצאה הייתה
+ * שבעמודי תוכן חמישה מתוך שבעה פריטי ניווט היו טקסט בהיר על רקע בהיר,
+ * כלומר כמעט בלתי נראים. זה נראה כאילו הם "נעלמים" אחרי מעבר עמוד.
+ *
+ * הצבע נקרא מהכלל שכבר קיים בעמוד, nav.main a{color:…}, ולכן הוא נשאר
+ * נכון גם אם מישהו ישנה את ערכת הצבעים בעתיד. */
+function theme(pageHtml) {
+  var m = pageHtml.match(/nav\.main a\{[^}]*color:\s*([^;}]+)/);
+  var fg = m ? m[1].trim() : '#eaeaea';
+  var dark = /eaeaea|#fff|255,\s*255,\s*255/i.test(fg);
+  return dark
+    ? { fg: fg, panelBg: '#111', line: '#262626', head: '#9a9a9a', rule: '#2a2a2a' }
+    : { fg: fg, panelBg: '#fff', line: 'var(--line)', head: 'var(--ink-soft)', rule: 'var(--line)' };
+}
+
+function CSS(t) {
+  return [
   CSS_A,
   '/* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */',
   'nav.main .ndrop{position:relative}',
@@ -208,10 +226,10 @@ var CSS = [
      פיקסלים, והקישור נמתח לאותו גובה אבל הטקסט שלו נשאר בראש הארגז, ולכן
      "מבצעים" ו"צרו קשר" ישבו גבוה משאר הפריטים. */
   'nav.main>a{display:inline-flex;align-items:center;min-height:44px}',
-  'nav.main .ntrig{background:none;border:0;color:#eaeaea;font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}',
+  'nav.main .ntrig{background:none;border:0;color:'+t.fg+';font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}',
   /* אין חץ. מצב פתוח מסומן בצבע, וזה מספיק. */
   'nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}',
-  'nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#111;border:1px solid #262626;padding:1.15rem 1.35rem;z-index:130}',
+  'nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:'+t.panelBg+';border:1px solid '+t.line+';padding:1.15rem 1.35rem;z-index:130}',
   'nav.main .npanel.open{display:flex}',
   /* גשר שקוף מעל הפאנל, שמכסה את הרווח שבינו לבין הכפתור. בלעדיו העכבר בדרך
      מהכפתור לפאנל עובר מעל כלום, mouseleave יורה, והתפריט נסגר באמצע התנועה.
@@ -219,33 +237,34 @@ var CSS = [
   'nav.main .npanel::before{content:"";position:absolute;inset-inline:0;inset-block-end:100%;block-size:.7rem}',
   'nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}',
   'nav.main .ncol{min-inline-size:8.6rem}',
-  'nav.main .nhead{color:#9a9a9a;font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}',
+  'nav.main .nhead{color:'+t.head+';font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}',
   /* min-block-size ולא padding בלבד: גובה השורה משתנה בין דפדפנים, ו-44 שנשען
      על padding יצא 43 במדידה. flex עם מרכוז נותן את היעד בוודאות. */
-  'nav.main .npanel a{display:flex;align-items:center;color:#eaeaea;font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}',
+  'nav.main .npanel a{display:flex;align-items:center;color:'+t.fg+';font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}',
   'nav.main .npanel a:hover{color:var(--teal)}',
   'nav.main .npanel a[aria-current="page"]{color:var(--teal)}',
-  'nav.main .nall{border-top:1px solid #2a2a2a;padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}',
+  'nav.main .nall{border-top:1px solid '+t.rule+';padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}',
   /* התפריט של המכשירים רחב, ולכן הוא נפתח לכיוון פנים המסך ולא החוצה */
   'nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}',
   '@media(max-width:980px){',
   '  nav.main .ndrop{display:block}',
-  '  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid #1c1c1c;min-height:48px}',
+  '  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid '+t.line+';min-height:48px}',
   /* ה-padding מוצהר במפורש ולא בירושה: לאתר יש nav.main a{padding-block:14px}
      באותה ספציפיות בדיוק, והוא נערם על ה-padding של השורה והפך את הקישורים
      ל-55 פיקסלים מול 49 של הכפתורים. */
   '  nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}',
-  '  nav.main .npanel{position:static;border:0;background:#0b0b0b;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}',
+  '  nav.main .npanel{position:static;border:0;background:'+t.panelBg+';padding:.15rem 0 .45rem;gap:0;min-inline-size:0}',
   '  nav.main .npanel::before{content:none}',
   '  nav.main .nrow{flex-direction:column;gap:0}',
   '  nav.main .ncol{min-inline-size:0}',
   '  nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}',
-  '  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid #171717}',
-  '  nav.main .nall{border-top:1px solid #2a2a2a;margin:0;padding-block-start:0;flex-direction:column;gap:0}',
+  '  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid '+t.line+'}',
+  '  nav.main .nall{border-top:1px solid '+t.rule+';margin:0;padding-block-start:0;flex-direction:column;gap:0}',
   '  nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}',
   '}',
   CSS_Z
-].join('\n');
+  ].join('\n');
+}
 
 /* ── JS ──────────────────────────────────────────────────────────
  * במסך עם עכבר התפריט נפתח גם במעבר עכבר, ובמגע בקליק בלבד. hover *בנוסף*
@@ -341,6 +360,7 @@ function put(h, blockRe, block, anchor, rel, what) {
 }
 
 var stats = { nav: 0, css: 0, js: 0, skipped: [] };
+var themes = {};
 
 pages().forEach(function (rel) {
   var f = path.join(PROTO, rel);
@@ -351,7 +371,11 @@ pages().forEach(function (rel) {
   h = h.replace(NAV_RE, function () { return buildNav(selfHref); });
   stats.nav++;
 
-  var r1 = put(h, CSS_BLOCK_RE, CSS, '</style>', rel, 'CSS'); h = r1.h; stats.css += r1.added;
+  /* הערכה נקראת מהעמוד עצמו לפני שנוגעים בו, כי הבלוק הקודם של המחולל
+     עלול להכיל צבע מהרצה קודמת ולזהם את הזיהוי. */
+  var t = theme(h.replace(CSS_BLOCK_RE, ''));
+  themes[t.panelBg] = (themes[t.panelBg] || 0) + 1;
+  var r1 = put(h, CSS_BLOCK_RE, CSS(t), '</style>', rel, 'CSS'); h = r1.h; stats.css += r1.added;
   var r2 = put(h, JS_BLOCK_RE, JS, '</body>', rel, 'JS'); h = r2.h; stats.js += r2.added;
 
   fs.writeFileSync(f, Buffer.from(h, 'utf8'));
@@ -369,5 +393,6 @@ console.log('✓ הניווט נכתב ל-' + stats.nav + ' עמודים');
 console.log('  ' + s.filter(function (n) { return n.type === 'drop'; }).length + ' תפריטים נפתחים, ' +
   s.filter(function (n) { return n.type === 'link'; }).length + ' קישורים ישירים, ' + links + ' יעדים בסך הכול');
 console.log('  CSS נוסף ל-' + stats.css + ' עמודים, JS ל-' + stats.js);
+console.log('  ערכות צבע לפי העמוד: ' + Object.keys(themes).map(function(k){return k+' × '+themes[k];}).join(' · '));
 if (stats.skipped.length) console.log('  דילג (אין nav.main): ' + stats.skipped.join(', '));
 console.log('\nהרצה: node .claude/preflight.js');
