@@ -168,7 +168,7 @@ nav.main{display:flex;gap:1.4rem;font-weight:500;font-size:.95rem;margin-inline-
 nav.main a{color:var(--ink);padding:.3rem 0}nav.main a:hover{color:#000}
 nav.main a[aria-current="page"]{color:#000;font-weight:700}
 .hicons{display:flex;align-items:center;gap:1rem;margin-inline-start:1.6rem}
-.hicons .ic{color:var(--ink);display:inline-flex;align-items:center;justify-content:center;inline-size:44px;block-size:44px;margin-inline:-12px}
+.hicons .ic{color:var(--ink);display:inline-flex}
 /* The hero CTA, sized and coloured like the home page's hero WhatsApp button, including its green
    glow. It stands alone here instead of sitting in a pair, so it gets a little more width. */
 .btn-hero{font-size:1.05rem;padding:14px 32px;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
@@ -192,7 +192,7 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
 .ghero .sub{color:var(--ink-soft);font-weight:300;font-size:clamp(1.12rem,1.7vw,1.4rem);line-height:1.7;margin:1.6rem auto 0;max-width:54ch}
 .ghero .hcta{margin-top:2.2rem}
 /* byline and trust marks: one quiet line of plain text, hairline separated */
-.ghero .meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line);max-width:820px;margin-inline:auto;color:var(--ink-soft);font-size:1rem}
+.ghero .meta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:2.6rem;padding-top:1.2rem;border-top:1px solid var(--line);max-width:820px;margin-inline:auto;color:var(--ink-soft);font-size:.86rem}
 .ghero .meta span{padding-inline:.9rem;border-inline-start:1px solid var(--line)}
 .ghero .meta span:first-child{border-inline-start:0}
 .ghero .meta b{color:var(--ink-strong);font-weight:600}
@@ -269,12 +269,12 @@ html[dir="ltr"] .prog{transform-origin:left center}
 .fig .ph::before{inset-block-start:8px;inset-inline-start:8px;border-block-end:0;border-inline-end:0}
 .fig .ph::after{inset-block-end:8px;inset-inline-end:8px;border-block-start:0;border-inline-start:0}
 .fig .ph svg{width:clamp(56px,8vw,88px);height:auto;opacity:.3}
-.fig .ph span{font-family:var(--mono);font-size:.98rem;letter-spacing:.03em;color:var(--ink-soft)}
+.fig .ph span{font-family:var(--mono);font-size:.86rem;letter-spacing:.03em;color:var(--ink-soft)}
 /* Portrait on desktop, because the text column beside it runs ~1440px tall: a 4:3 photo left
    over 1000px of white next to it, which is what the old position:sticky was compensating for.
    3:4 closes most of that gap without any scroll trickery. */
 .fig img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
-.fig figcaption{font-size:.95rem;color:var(--ink-soft);margin-top:.6rem;line-height:1.5}
+.fig figcaption{font-size:.82rem;color:var(--ink-soft);margin-top:.6rem;line-height:1.5}
 .prob h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.2}
 /* the badge number is a CSS counter, so it never lands in the heading's text layer
    (a screen reader and Google both read "המכשיר לא נדלק", not "1המכשיר לא נדלק").
@@ -306,7 +306,7 @@ main{counter-reset:prob}
 .lab{margin-top:1.8rem;padding-top:1.2rem;border-top:1px solid var(--ink-strong);background:none;border-radius:0;display:flex;flex-wrap:wrap;align-items:center;gap:1.1rem;justify-content:space-between}
 .lab p{font-size:1rem;line-height:1.7;max-width:58ch}
 .lab .btn{flex:none}
-.aside{margin-top:1.1rem;font-size:1rem;color:var(--ink-soft)}
+.aside{margin-top:1.1rem;font-size:.93rem;color:var(--ink-soft)}
 .aside a{color:var(--teal-d);text-decoration:underline;font-weight:600}
 
 /* ===== closing blocks ===== */
@@ -324,7 +324,7 @@ main{counter-reset:prob}
 .checks{list-style:none;padding:0;margin:2rem 0 0;display:grid}
 .checks li{border-top:1px solid var(--line);padding:.9rem 0;display:flex;gap:.9rem;align-items:baseline;line-height:1.75}
 .checks li::before{content:"✓";flex:none;width:auto;height:auto;background:none;border-radius:0;color:var(--teal);font-size:.95rem;margin:0}
-.sources{max-width:900px;margin:2.4rem auto 0;font-size:1rem;color:var(--ink-soft);line-height:1.7;border-top:1px solid var(--line);padding-top:1.1rem}
+.sources{max-width:900px;margin:2.4rem auto 0;font-size:.95rem;color:var(--ink-soft);line-height:1.7;border-top:1px solid var(--line);padding-top:1.1rem}
 
 /* ===== closing CTA (same dark band as the contact section) ===== */
 .cta{background:var(--dark);color:#fff;padding:clamp(38px,5.5vw,68px) 0;text-align:center}
@@ -334,7 +334,7 @@ main{counter-reset:prob}
 .cta .btn{font-size:1.05rem;padding:13px 24px}
 .cta .btn-call{background:transparent;color:#fff;border:1.5px solid var(--teal)}
 .cta .btn-call:hover{background:var(--teal)}
-.cta .fine{font-size:.98rem;color:rgba(255,255,255,.6);margin-top:1.2rem}
+.cta .fine{font-size:.88rem;color:rgba(255,255,255,.6);margin-top:1.2rem}
 
 /* ===== footer + rails (identical to the home page) ===== */
 footer.site{background:#000;color:var(--on-dark-soft);padding:2.6rem 0 5.5rem}
@@ -596,7 +596,7 @@ html.a11y-stop-motion .prog{display:none}
   .sym-grid,.flow ol{grid-template-columns:1fr}
   .does{grid-template-columns:1fr}
 }
-.btn-hero{white-space:normal;text-align:center}/* ==== gen-nav:css:start ==== */
+/* ==== gen-nav:css:start ==== */
 /* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
 nav.main .ndrop{position:relative}
 nav.main>a{display:inline-flex;align-items:center;min-height:44px}
@@ -627,9 +627,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}
 }
 /* ==== gen-nav:css:end ==== */
+/* כפתור ההירו גולש בעברית אם לא מרשים לו לרדת שורה. */
+.btn-hero{white-space:normal}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.phonegat.co.il/charging-port-repair-kiryat-gat/#service","name":"תיקון שקע טעינה בקריית גת","serviceType":"תיקון וניקוי שקע טעינה למכשירי סלולר","description":"בדיקת שקע טעינה בקריית גת, ניקוי במידת הצורך ותיקון לאחר אבחון ואישור.","provider":{"@id":"https://www.phonegat.co.il/#business"},"areaServed":[{"@type":"City","name":"קריית גת"},{"@type":"Place","name":"כרמי גת"}],"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://www.phonegat.co.il/charging-port-repair-kiryat-gat/","servicePhone":{"@type":"ContactPoint","telephone":"+972-52-5893366","contactType":"customer service"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/charging-port-repair-kiryat-gat/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/charging-port-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"ניקוי באמת פותר את זה?","acceptedAnswer":{"@type":"Answer","text":"ברוב המקרים שמגיעים אלינו, כן. הצטברות של אבק וסיבים מונעת מהכבל להיכנס עד הסוף, וניקוי מקצועי במעבדה מחזיר את המצב לקדמותו בלי להחליף שום חלק. ניקוי שקע אצלנו נעשה ללא עלות."}},{"@type":"Question","name":"למה הטלפון נטען רק בזווית מסוימת?","acceptedAnswer":{"@type":"Answer","text":"כי המגע קורה רק בחלק מהמגעים, ורק כשהכבל נדחף לכיוון אחד. זה יכול לנבוע מלכלוך שתופס מקום בתחתית, ממגעים שנשחקו, או ממחבר שהתעקם. הבדיקה מבדילה ביניהם, וזה משנה אם צריך ניקוי או החלפה."}},{"@type":"Question","name":"אפשר לנקות את השקע לבד בבית?","acceptedAnswer":{"@type":"Answer","text":"אנחנו ממליצים שלא. חפץ מתכתי בשקע מכופף את המגעים העדינים שבפנים, והופך בעיה של ניקוי לבעיה של החלפה. גם אוויר דחוס דוחף את הלכלוך פנימה. הבדיקה אצלנו ללא עלות, ובאמת לא שווה להסתכן."}},{"@type":"Question","name":"כמה עולה תיקון שקע טעינה?","acceptedAnswer":{"@type":"Answer","text":"אם מדובר בניקוי, הוא נעשה ללא עלות. אם השקע עצמו פגום וצריך תיקון או החלפה, המחיר תלוי בדגם ובזמינות החלק, ונאמר לכם אותו אחרי הבדיקה ולפני שמתחילים."}},{"@type":"Question","name":"כמה זמן זה לוקח?","acceptedAnswer":{"@type":"Answer","text":"ניקוי נעשה במקום ובזמן קצר. תיקון או החלפה של השקע עצמו תלויים בדגם, ואם נדרשת הזמנת חלק נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"הנתונים שלי נמחקים?","acceptedAnswer":{"@type":"Answer","text":"לא. גם ניקוי וגם החלפת שקע הם עבודה על החומרה, והמידע נשאר איפה שהוא. גיבוי לפני שמביאים מכשיר לתיקון הוא בכל מקרה הרגל טוב."}},{"@type":"Question","name":"יש אחריות על התיקון?","acceptedAnswer":{"@type":"Answer","text":"כן, אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אם השקע ניזוק בעקבות נוזלים, זה המקרה היוצא מן הכלל שאין עליו אחריות בשום מעבדה, ונגיד לכם את זה מראש."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/charging-port-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"ניקוי באמת פותר את זה?","acceptedAnswer":{"@type":"Answer","text":"ברוב המקרים שמגיעים אלינו, כן. הצטברות של אבק וסיבים מונעת מהכבל להיכנס עד הסוף, וניקוי מקצועי במעבדה מחזיר את המצב לקדמותו בלי להחליף שום חלק. ניקוי שקע אצלנו נעשה ללא עלות."}},{"@type":"Question","name":"למה הטלפון נטען רק בזווית מסוימת?","acceptedAnswer":{"@type":"Answer","text":"כי המגע קורה רק בחלק מהמגעים, ורק כשהכבל נדחף לכיוון אחד. זה יכול לנבוע מלכלוך שתופס מקום בתחתית, ממגעים שנשחקו, או ממחבר שהתעקם. הבדיקה מבדילה ביניהם, וזה משנה אם צריך ניקוי או החלפה."}},{"@type":"Question","name":"אפשר לנקות את השקע לבד בבית?","acceptedAnswer":{"@type":"Answer","text":"אנחנו ממליצים שלא. חפץ מתכתי בשקע מכופף את המגעים העדינים שבפנים, והופך בעיה של ניקוי לבעיה של החלפה. גם אוויר דחוס דוחף את הלכלוך פנימה. הבדיקה אצלנו ללא עלות, ובאמת לא שווה להסתכן."}},{"@type":"Question","name":"כמה עולה תיקון שקע טעינה?","acceptedAnswer":{"@type":"Answer","text":"אם מדובר בניקוי, הוא נעשה ללא עלות. אם השקע עצמו פגום וצריך תיקון או החלפה, המחיר תלוי בדגם ובזמינות החלק, ונאמר לכם אותו אחרי הבדיקה ולפני שמתחילים."}},{"@type":"Question","name":"כמה זמן זה לוקח?","acceptedAnswer":{"@type":"Answer","text":"ניקוי נעשה במקום ובזמן קצר. תיקון או החלפה של השקע עצמו תלויים בדגם, ואם נדרשת הזמנת חלק נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"הנתונים שלי נמחקים?","acceptedAnswer":{"@type":"Answer","text":"כמעט אף פעם לא. גם ניקוי וגם החלפת שקע הם עבודה על החומרה, והמידע לא זז ממקומו. גיבוי לפני שמביאים מכשיר לתיקון הוא בכל מקרה הרגל טוב."}},{"@type":"Question","name":"יש אחריות על התיקון?","acceptedAnswer":{"@type":"Answer","text":"כן, אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים, ומשך האחריות משתנה לפי סוג התיקון והמכשיר. אם השקע ניזוק בעקבות נוזלים, זה המקרה היוצא מן הכלל שאין עליו אחריות בשום מעבדה, ונגיד לכם את זה מראש."}}]}</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -706,8 +708,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="crumbs" aria-label="מיקום בתוך האתר">
   <ol class="wrap">
-    <li><span><a href="/">פון גת</a></span></li>
-    <li><span><a href="/#services">שירותים</a></span></li>
+    <li><a href="/">פון גת</a></li>
+    <li><a href="/#services">שירותים</a></li>
     <li><span aria-current="page">תיקון שקע טעינה בקריית גת</span></li>
   </ol>
 </nav>
@@ -716,7 +718,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="inner">
       <h1 id="gh">תיקון שקע טעינה בקריית גת</h1>
-      <p class="sub">הטלפון לא נטען? לפני שמחליפים את השקע, כדאי לבדוק אם הבעיה בכלל שם. הרבה פעמים היא לא.</p>
+      <p class="sub">רוב השקעים שמגיעים אלינו לא צריכים החלפה. הם צריכים ניקוי, וזה נגמר באותו ביקור.</p>
       <div class="hcta">
         <a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%94%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%20%D7%9C%D7%90%20%D7%A0%D7%98%D7%A2%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%99%D7%A7%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו לנו את הדגם ב-WhatsApp</a>
         <a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
@@ -751,8 +753,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>מבחוץ זה נראה בדיוק כמו שקע מקולקל. הכבל מתנדנד, הטעינה מתחילה ונפסקת, ואם מחזיקים אותו בזווית מסוימת זה פתאום עובד. אצלנו רוב המקרים האלה נגמרים בניקוי מקצועי במעבדה, בלי להחליף שום דבר.</p>
     <p>לכן הסדר אצלנו הוא בדיקה, ניקוי אם צריך, ורק אם השקע באמת פגום ממשיכים להצעת תיקון. <b>ניקוי שקע במעבדה נעשה אצלנו ללא עלות.</b></p>
 
-    <p class="aside">רוב המכשירים יוצאים מכאן עם שקע שנוקה ובלי חלק חדש בכלל. אם בכל זאת יתברר שהמכשיר בסוף הדרך, נראה לכם גם <a href="/phones/">את החלופות</a>.</p>
-  </div>
+    </div>
 </section>
 
 <section class="block" id="whats" aria-labelledby="whats-h">
@@ -784,11 +785,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" id="types" aria-labelledby="types-h">
   <div class="wrap box">
     <h2 id="types-h">שלושה סוגי חיבור, ואיך לדעת מה יש לכם</h2>
-    <ul class="checks">
-      <li><b>USB-C.</b> חיבור סגלגל וסימטרי, נכנס משני הכיוונים. באייפון החל מסדרה 15, וברוב מכשירי האנדרואיד החדשים.</li>
-      <li><span><b>Lightning.</b> צר ושטוח, גם הוא נכנס משני הכיוונים. באייפונים עד סדרה 14. שאר תקלות האייפון מרוכזות בעמוד <a href="/iphone-repair-kiryat-gat/">תיקון אייפון</a>.</span></li>
-      <li><b>Micro-USB.</b> טרפז, נכנס רק בכיוון אחד. במכשירים ותיקים יותר, וזה גם החיבור שהכי סובל משימוש בכוח בכיוון הלא נכון.</li>
-    </ul>
+    <p>USB-C הוא החיבור הסגלגל והסימטרי שנכנס משני הכיוונים. תמצאו אותו באייפון החל מסדרה 15, וברוב מכשירי האנדרואיד החדשים. באייפונים עד סדרה 14 יש Lightning. הוא צר ושטוח, וגם הוא נכנס משני הכיוונים.</p>
+    <p>במכשירים ותיקים יותר יש Micro-USB בצורת טרפז, שנכנס רק בכיוון אחד. זה גם החיבור שהכי סובל אצלנו, כי מספיק פעם אחת להידחף בכוח בכיוון ההפוך.</p>
     <p>לא בטוחים? צלמו את תחתית המכשיר ושלחו לנו, ונגיד לכם מה יש לכם.</p>
   </div>
 </section>
@@ -797,12 +795,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h2 id="flow-h">איך אנחנו מטפלים בזה</h2>
     <ol>
-      <li><b>מסתכלים פנימה</b><span>בהגדלה, כדי לראות אם יש שם משהו ובאיזה מצב המגעים.</span></li>
-      <li><b>מנקים אם צריך</b><span>ניקוי מקצועי בכלים שמתאימים לשקע, לא בחפץ מאולתר. ברוב המקרים כאן זה נגמר.</span></li>
-      <li><b>בודקים שוב</b><span>מחברים ובודקים טעינה בפועל, לפני שממשיכים לשלב הבא.</span></li>
-      <li><b>אם השקע פגום, אומרים לכם</b><span>מה נדרש וכמה זה עולה. האבחון וההצעה ללא עלות וללא התחייבות, והתיקון מתבצע רק אחרי אישורכם.</span></li>
-      <li><b>בודקים ומוסרים</b><span>טעינה מלאה, יציבות הכבל, והסבר על האחריות ואישור בכתב עליה.</span></li>
+      <li><b>מסתכלים פנימה בהגדלה</b><span>כדי לראות אם הצטבר שם משהו, ובאיזה מצב המגעים.</span></li>
+      <li><b>מנקים</b><span>בכלים שמתאימים לשקע, לא בחפץ מאולתר. מחברים כבל ובודקים טעינה על המקום.</span></li>
     </ol>
+    <p>אצל רוב מי שמגיע, כאן זה נגמר. וגם אם התברר שזו הייתה רק כרית מוך, נראה לכם אותה לפני שאתם הולכים.</p>
+    <p>ואם הטעינה עדיין מקרטעת, השקע עצמו שחוק או שהבעיה ברכיב על הלוח. אז נגיד לכם מה נדרש וכמה זה עולה עוד לפני שנוגעים, ומתקנים רק אחרי שאישרתם. לפני שאתם יוצאים נטעין ונוודא שהכבל יושב יציב, ותקבלו אישור בכתב על האחריות.</p>
   </div>
 </section>
 
@@ -829,7 +826,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="cta" aria-labelledby="cta-h">
   <div class="wrap">
     <h2 id="cta-h">תנו לנו להסתכל לפני שמחליפים משהו</h2>
-    <p>שלחו לנו את דגם המכשיר ותיאור קצר של מה שקורה בטעינה. הבדיקה אצלנו ללא עלות, ואנחנו כאן ברחבת תשרי 2.</p>
+    <p>צלמו את השקע מקרוב, ואם אפשר עם פנס. לא פעם רואים את כרית המוך כבר בתמונה. הבדיקה אצלנו ללא עלות, ואנחנו ברחבת תשרי 2.</p>
     <div class="row">
       <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%91%D7%A2%D7%99%D7%94%20%D7%91%D7%98%D7%A2%D7%99%D7%A0%D7%94%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%99%D7%A7%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
@@ -1028,7 +1025,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      visit would look like a fresh decision and the numbers would mean nothing. */
   chips.forEach(function(c){c.addEventListener('click',function(){
     var d=c.getAttribute('data-dev');
-    apply(d);
+    apply(d);
   });});
   var saved='all';try{saved=localStorage.getItem('pg_dev')||'all';}catch(e){}
   apply(saved);

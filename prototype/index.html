@@ -169,6 +169,194 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
 .announce button svg{width:15px;height:15px}
 .announce .prev{inset-inline-start:0}.announce .next{inset-inline-end:0}
 
+/* ===== IDF support band (olive) =====
+   Deliberately flat where the rest of the page is glossy. This is a support message, not a sale,
+   so the olive carries the meaning and nothing else raises its voice: no gradient, no glow, no
+   floating art. It sits directly under the hero so it reads as a statement the shop is making
+   rather than as another offer competing in the carousel.
+   Contrast is measured, not eyeballed: #fff on #2F3821 is 12.29:1, the khaki #C9BC8A on it is
+   6.46:1, and #20260f on the khaki button is 10.35:1. All hold at 150% text. */
+/* ===== IDF support card (olive, contained) =====
+   A card inset from the page, not a full-bleed strip: flush against the hero it read as the hero's
+   own footer rather than as an offer of its own.
+   COLOUR RULE, measured and load-bearing: the two coloured glows lift the background to about
+   #60733f where they are brightest, and gold text there falls to 2.85:1 — a fail. Every glow is
+   therefore parked behind the ART side. All text sits over the plain gradient, where gold is
+   5.41:1 at its worst stop and white is 9.93:1. Do not move text over the glow and do not raise
+   the glow alphas without re-measuring both numbers.
+   The radii are part of that rule, not styling. A radial-gradient carries colour to roughly its
+   position plus 0.62 of its radius before the fade completes, so the earlier 56% radius at 13%
+   reached about 48% of the card, past where the copy now starts at 35%. 34% at 10% stops near
+   31%, which keeps the gold copy over plain background. Widening these takes the contrast with
+   them, and nothing on screen says so. */
+/* More air above than below, on purpose. Above is the hero, a full-bleed dark block that ends
+   hard, so the card needs room to read as an offer of its own rather than as the hero footer.
+   Below is the white team section, where the card already separates on colour alone. */
+.idf{padding-block:clamp(34px,5.4vw,72px) clamp(22px,3vw,42px);background:#fff}
+.idf-card{position:relative;overflow:hidden;border-radius:18px;color:#fff;
+  border:1px solid rgba(212,190,122,.34);box-shadow:0 24px 60px -30px rgba(20,26,12,.8);
+  background:
+    radial-gradient(34% 110% at 10% 48%,rgba(99,162,68,.30),transparent 62%),
+    radial-gradient(26% 80% at 4% 96%,rgba(212,190,122,.18),transparent 66%),
+    linear-gradient(145deg,#3A472A 0%,#2C3719 58%,#212A13 100%)}
+/* the dot field the promo slides use, faded off the text side so it never sits under a word */
+.idf-card::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1.1px,transparent 1.3px);background-size:20px 20px;
+  -webkit-mask-image:linear-gradient(to left,#000,transparent 62%);mask-image:linear-gradient(to left,#000,transparent 62%)}
+.idf-main{position:relative;z-index:1;display:flex;align-items:center;gap:clamp(14px,2.6vw,34px);flex-wrap:wrap;
+  padding:clamp(18px,2.6vw,30px) clamp(18px,3vw,38px)}
+/* Copy and buttons are one column, so the row is three blocks: product, message, people. At the
+   figure size this direction needs, four separate blocks no longer fit on one line and the row
+   wrapped, which threw the text back over the glow where the gold drops to 2.85:1. */
+.idf .idf-copy{flex:1 1 330px;min-width:0;order:1;display:flex;flex-direction:column;gap:1rem}
+.idf .txt{min-width:0}
+.idf .eyebrow{display:flex;align-items:center;gap:.7rem;color:#D4BE7A;font-size:clamp(.84rem,1.4vw,.95rem);font-weight:700;letter-spacing:.05em;margin:0 0 .55rem}
+.idf .eyebrow::after{content:"";flex:1;height:1px;background:linear-gradient(to left,rgba(212,190,122,.55),transparent);max-width:190px}
+/* the hook, in the same shape the other promo slides use so the page has one ad language */
+.idf .idf-badge{display:inline-flex;background:#D4BE7A;color:#20260f;font-weight:900;
+  font-size:clamp(1.45rem,3vw,2.1rem);line-height:1;border-radius:12px;padding:.24em .46em;margin:0 0 .6rem;
+  box-shadow:0 12px 26px -14px rgba(0,0,0,.8)}
+.idf h2{color:#fff;font-size:clamp(1.2rem,2.4vw,1.65rem);line-height:1.25;margin:0 0 .35rem;font-weight:800}
+/* "ללא עלות" is the hook, so it is the second line of the headline rather than a separate badge:
+   one heading the eye reads straight down, instead of two competing blocks. */
+.idf h2 .free{display:block;color:#D4BE7A;font-size:1.28em;line-height:1.15;margin-top:.12em}
+.idf .terms{color:#E3D5A8;font-size:clamp(.9rem,1.35vw,1rem);line-height:1.55;margin:0}
+.idf .act{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.idf .btn-idf{position:relative;overflow:hidden;background:#D4BE7A;color:#20260f;font-weight:800;min-height:44px;padding:13px 26px;font-size:1rem;gap:.5rem;box-shadow:0 12px 28px -14px rgba(0,0,0,.8)}
+.idf .btn-idf:hover{background:#E3D5A8}
+.idf .btn-idf svg{width:15px;height:15px;flex:none}
+.idf .idf-art{flex:0 0 auto;order:3;position:relative;display:flex;align-items:flex-end;justify-content:center}
+/* ~210px, not ~124px. This is the size the whole direction rests on: at 124px the figure was 62px
+   of actual drawing, where a face is 45px and a uniform button is 4px, and no amount of detail
+   survives that. At this size the illustration reads as an illustration. */
+/* ~188px. The earlier drawn pass rendered 62px wide, where a face is 45px and a button 4px, and
+   no amount of detail survives that. At this size the drawing can carry a beret and a belt. */
+.idf .troop{width:clamp(112px,12vw,146px);height:auto;overflow:visible;filter:drop-shadow(0 12px 20px rgba(0,0,0,.45))}
+.troop{stroke-linejoin:round;stroke-linecap:round}
+/* PASS 1: every body part drawn dark and fat, so the parts merge into a single silhouette and
+   the contour lands around their union instead of between them. PASS 2 paints colour on top. */
+/* RIM, and it is load-bearing. Measured against the card background #2C3719 the dark contour
+   scores 1.31, the beret 1.33, the belt 1.17, the boots 1.03 and the male hair 1.07 — the whole
+   outline of the figure is invisible against the panel it stands on, which left only the skin
+   reading and made the figures look like floating heads and hands. A light stroke drawn wider
+   than the dark one puts a bright edge around the silhouette. Do not remove it without giving the
+   figures a lighter ground to stand on. */
+.troop .rim-pass .ink{fill:#D8CDA4;stroke:#D8CDA4;stroke-width:9}
+.troop .rim-pass .ink-s{stroke:#D8CDA4;stroke-width:21}
+.troop .rim-pass .ink-f{stroke:#D8CDA4;stroke-width:18}
+.troop .ink-pass .ink{fill:#241E14;stroke:#241E14;stroke-width:5}
+.troop .ink-pass .ink-s{stroke:#241E14;stroke-width:22;fill:none}
+.troop .ink{fill:#241E14}
+.troop .ink-s{stroke:#241E14;stroke-width:17;fill:none}
+.troop .ink-f{stroke:#241E14;stroke-width:14;fill:none}
+.troop .uni{fill:#8B9A63}
+.troop .unid{fill:#414A27}
+.troop .sk{fill:#F5CFA6}
+.troop .uni-s{stroke:#8B9A63;stroke-width:12;fill:none}
+.troop .sk-f{stroke:#F5CFA6;stroke-width:9;fill:none}
+.troop .fing{stroke:#DFAF85;stroke-width:1.3;fill:none}
+.troop .blush{fill:#EE9E86;opacity:.4}
+.troop .limb{stroke-linecap:round}
+/* internal detail carries no outline of its own: an outline here would put the parts back */
+.troop .pocket{fill:#6A7845}
+.troop .btn{fill:#D4BE7A}
+.troop .belt{fill:#4E5828}
+.troop .trous{fill:#778551}
+.troop .boot{fill:#43492A}
+.troop .buckle{fill:#D4BE7A}
+.troop .epa{fill:#5A6740}
+.troop .stitch{stroke:#4E5732;stroke-width:1.5;fill:none}
+.troop .cuff{stroke:#3A4222;stroke-width:2;fill:none}
+.troop .beret{fill:#72844A}
+.troop .beretd{fill:#556434}
+.troop .badge{fill:#D4BE7A}
+.troop .ew{fill:#fff}
+.troop .pupil{fill:#241E14}
+.troop .spark{fill:#fff}
+.troop .sksh{fill:#E8BC8E}
+.troop .brow{stroke-width:2.2;fill:none}
+.troop .mouth{stroke:#A9603F;stroke-width:2;fill:none}
+.t-m .hair{fill:#6B4A2C}
+.t-m .brow{stroke:#4A3320}
+.t-f .hair{fill:#3A322B}
+.t-f .brow{stroke:#1E1A17}
+/* rotate about 0 0: the pivot is placed there by translate(), because a px transform-origin
+   resolves against the rendered box and drifts with viewport width. Zero has no scale. */
+.up-arm,.fore-arm{transform-box:view-box;transform-origin:0 0}
+/* resting state IS the salute, so reduced motion shows two figures saluting, not two arms down */
+.up-arm{transform:rotate(138deg)}
+.fore-arm{transform:rotate(69deg)}
+/* a small overlap so the two read as one group standing together, not two cut-outs in a row */
+.idf .t-f{margin-inline-start:clamp(-20px,-1.6vw,-10px)}
+/* The pivots. transform-box:view-box makes these the SVG's own coordinates, so each joint sits
+   exactly where the geometry put it rather than at the element's bounding box. */
+/* the phone, back on the right of the copy: it is the product the offer is actually about */
+.idf .idf-phone{flex:0 0 auto;order:0;position:relative;display:flex;align-items:center;justify-content:center;width:clamp(104px,12vw,148px)}
+.idf .idf-phone .scr-stage{--scr-w:clamp(74px,8vw,96px)}
+.idf .idf-phone .scr-halo{background:radial-gradient(circle,rgba(212,190,122,.42),rgba(212,190,122,.14) 55%,transparent 72%)}
+.idf .fine{position:relative;z-index:1;background:rgba(0,0,0,.26);color:#E3D5A8;font-size:.79rem;text-align:center;margin:0;padding:.5rem 12px}
+/* The generic slide rule hides .slide-art below 720px, which on this slide would delete both the
+   figures and the product shot on a phone. They return here as a centred row under the copy. */
+@media(max-width:720px){
+  .s-idf .slide-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-top:.5rem;min-height:0}
+  .s-idf .slide-troops .troop{width:clamp(62px,18vw,84px)}
+  .s-idf .scr-stage{--scr-w:clamp(46px,13vw,60px)}
+}
+@media(max-width:820px){
+  .idf-main{gap:12px;padding:16px}
+  .idf .txt{order:1;flex:1 1 100%}
+  .idf .act{order:2;flex:1 1 100%;flex-wrap:wrap}
+  .idf .btn-idf{flex:1 1 auto;justify-content:center}
+  /* The figures ARE the ad, so they stay on a phone rather than being dropped. They share the
+     first line with the product shot: stacked on separate lines the two together pushed the copy
+     260px down the card and made it 521px tall on a 390px screen. */
+  .idf .idf-phone{order:0;flex:0 0 auto;width:clamp(58px,16vw,76px)}
+  .idf .idf-phone .scr-stage{--scr-w:clamp(48px,13vw,62px)}
+  .idf .idf-art{order:1;flex:1 1 auto;justify-content:flex-start;margin-bottom:2px}
+  /* Not smaller than desktop. The whole reason these are illustrations rather than drawn shapes
+     is that the drawing needs room to read, and 24vw put them at 90px on a 390px screen, below
+     the size that was already rejected. 33vw with the phone alongside fills the line. */
+  .idf .troop{width:clamp(84px,24vw,108px)}
+  .idf .idf-copy{order:2;flex:1 1 100%}
+  .idf .eyebrow::after{display:none}
+  /* The glows exist only to sit behind the art. With the art hidden the text spans the full card
+     and lands on top of them, where gold measures 2.85:1 instead of 6.86:1. So the glows come off
+     here rather than the text moving. Keep these two rules together: re-enabling the glows on a
+     phone silently drops the gold copy below AA. */
+  .idf-card{background:linear-gradient(145deg,#3A472A 0%,#2C3719 58%,#212A13 100%)}
+  .idf-card::after{opacity:.3}
+}
+/* Entrance and shine are declared ONLY inside no-preference, the same inversion the hero uses on
+   line 252. The other way round leaves the card at opacity:0 whenever motion is suppressed. */
+@media (prefers-reduced-motion:no-preference){
+  .idf .eyebrow,.idf .idf-badge,.idf h2,.idf .terms,.idf .act{animation:heroIn .6s var(--ease) both}
+  .idf .idf-badge{animation-delay:.06s}
+  .idf h2{animation-delay:.13s}
+  .idf .terms{animation-delay:.2s}
+  .idf .act{animation-delay:.27s}
+  /* One entrance, then still. They are already saluting in the drawing, so a looping bob would
+     only add motion the picture does not need, and a loop is exactly what read as "just a
+     floating image" before. The card animates what it honestly can: the glass landing on the
+     phone, and the light crossing the button. */
+  /* The salute. Timing is LINEAR on purpose: var(--ease) applies its accelerate-decelerate to
+     EVERY segment, so a six-keyframe sweep stops and restarts six times on the way up, which is
+     exactly what read as "not continuous". The shaping lives in the keyframe spacing instead.
+     The two figures are offset, because a synchronised pair reads as one looping graphic. */
+  .idf .troop{animation:idfEnter .7s var(--ease) both}
+  .idf .t-f{animation-delay:.18s}
+  .up-arm{animation:saluteUp 6.5s linear infinite}
+  .fore-arm{animation:saluteFore 6.5s linear infinite}
+  .t-f .up-arm,.t-f .fore-arm{animation-delay:.9s}
+  /* one slow pass of light across the button, long gap between passes so it invites rather than nags */
+  .idf .btn-idf::after{content:"";position:absolute;top:0;bottom:0;width:38%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:translateX(-160%);animation:idfShine 5.5s var(--ease) 1.8s infinite}
+}
+@keyframes idfEnter{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes saluteUp{0%,8%{transform:rotate(0)}14%{transform:rotate(20deg)}22%{transform:rotate(70deg)}30%{transform:rotate(113deg)}36%,74%{transform:rotate(138deg)}82%{transform:rotate(70deg)}90%,100%{transform:rotate(0)}}
+@keyframes saluteFore{0%,8%{transform:rotate(0)}14%{transform:rotate(102deg)}22%{transform:rotate(122deg)}30%{transform:rotate(92deg)}36%,74%{transform:rotate(69deg)}82%{transform:rotate(116deg)}90%,100%{transform:rotate(0)}}
+@keyframes idfShine{0%{transform:translateX(-160%)}22%,100%{transform:translateX(330%)}}
+
 /* ===== info bar (black) ===== */
 
 /* ===== header (black) ===== */
@@ -432,9 +620,16 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn{position:relative;direction:rtl;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;background:#fff;border-radius:20px;box-shadow:0 40px 90px -20px rgba(0,0,0,.6);animation:pgCpnPop .28s cubic-bezier(.2,.8,.25,1)}
 @keyframes pgCpnPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .pg-cpn-hd{position:relative;padding:13px 18px 23px;text-align:center;color:#fff;background:radial-gradient(96% 62% at 50% -6%,rgba(160,98,216,.5),transparent 55%),linear-gradient(160deg,#3d1157 0%,#5a1a80 55%,#7c25a8 100%);border-radius:20px 20px 50% 50%/20px 20px 30px 30px}
-.pg-cpn-x{position:absolute;top:10px;left:10px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
-.pg-cpn-x:hover{background:rgba(255,255,255,.3)}
-.pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:2px}
+/* A 28px disc with a 44px tap area. The padding is the target and background-clip keeps the disc at
+   its drawn size, the same trick the carousel dots use, because a 44px disc on this small header would
+   read as a heavy button. It was the one control you must hit to dismiss the popup and the smallest
+   thing in it, while every sibling control was raised to 44 in the mobile pass. Hit testing follows
+   border-radius, so the target is a 44px circle rather than a square; the corners outside it fall on
+   the overlay, which closes the popup too, so every point in the 44 square dismisses. The focus ring
+   is inset so it hugs the disc instead of ringing the invisible target. */
+.pg-cpn-x{position:absolute;top:2px;left:2px;width:28px;height:28px;box-sizing:content-box;padding:8px;border:0;border-radius:50%;background:rgba(255,255,255,.16);background-clip:content-box;color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
+.pg-cpn-x:hover{background:rgba(255,255,255,.3);background-clip:content-box}
+.pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:-6px}
 .pg-cpn-logo{height:27px;width:auto;margin:0 auto 9px;display:block;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.24)}
 .pg-cpn-excl{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:900;color:#3a2405;background:linear-gradient(180deg,#ffe08c,#e0a52f);border-radius:999px;padding:5px 15px;box-shadow:0 3px 12px rgba(224,165,47,.5),inset 0 1px 0 rgba(255,255,255,.55)}
 .pg-cpn-excl .st{color:#8a5a00}
@@ -462,7 +657,8 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-qr canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 .pg-cpn-note{display:flex;align-items:center;justify-content:center;gap:5px;margin:11px 0 0;font-size:.69rem;font-weight:800;color:#c0392b}
 .pg-cpn-note svg{width:14px;height:14px;flex:none;fill:#c0392b}
-.pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
+/* min-height, not more padding: it measured 43.2px and the gradient should not grow to buy 0.8px */
+.pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;min-height:44px;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
 .pg-cpn-go:hover{filter:brightness(1.05)}
 .pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
 .pg-cpn-go img{width:20px;height:20px}
@@ -495,6 +691,22 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .t-navy .pg-cpn-code .tk{color:#1a86bd}
 .t-navy .pg-cpn-code b{color:#0b2f4a}
 .t-navy .pg-cpn-copied{color:#5b8ba8}
+/* olive coupon theme — the IDF band's palette, so the popup does not arrive in a different colour
+   than the button that opened it. Flatter than its two siblings on purpose: same reason as the band. */
+.pg-cpn-ov.t-olive{background:rgba(18,23,10,.66)}
+.t-olive .pg-cpn-hd{background:linear-gradient(160deg,#3E4A2A 0%,#2F3821 58%,#232a18 100%)}
+.t-olive .pg-cpn-hd .desc{color:#D6C79A}
+/* no numeral here, so the badge holds words: it needs to read as a statement, not as a price tag */
+.t-olive .pg-cpn-price{background:rgba(201,188,138,.14);border-color:#C9BC8A;box-shadow:0 4px 14px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+.t-olive .pg-cpn-price b{color:#C9BC8A}
+.t-olive .pg-cpn-codeLab{color:#4B5320}
+.t-olive .pg-cpn-codeLab::before,.t-olive .pg-cpn-codeLab::after{border-color:#b9bf94}
+.t-olive .pg-cpn-code{border-color:#8a8f6a;background:#f6f6ee}
+.t-olive .pg-cpn-code:hover{background:#eeeee0}
+.t-olive .pg-cpn-code:focus-visible{outline-color:#8a8f6a}
+.t-olive .pg-cpn-code .tk{color:#5c6338}
+.t-olive .pg-cpn-code b{color:#2F3821}
+.t-olive .pg-cpn-copied{color:#6d7255}
 @media(prefers-reduced-motion:reduce){.pg-cpn-ov.open,.pg-cpn{animation:none}}
 html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:none}
 
@@ -547,10 +759,6 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .tile .tdetail h4{margin:0;font-size:clamp(1.3rem,2.8vw,1.6rem);font-weight:800;line-height:1.2;color:#fff}
 .tile .tdetail p{margin:0;font-size:clamp(1.02rem,1.8vw,1.18rem);line-height:1.55;color:#ececed}
 .tile .tdetail .tcta{align-self:flex-start;margin-top:.15rem}
-/* שני כפתורים בפאנל של אריח. align-self על כל אחד בנפרד מתח אותם לרוחב, ולכן עטיפה אחת
-   שנשברת לשורה שנייה כשנגמר המקום ב-375px. */
-.tile .tdetail .tctas{display:flex;flex-wrap:wrap;gap:.5rem;align-self:flex-start;margin-top:.15rem}
-.tile .tdetail .tctas .tcta{margin-top:0;align-self:auto}
 .tile .tclose{position:absolute;inset-block-start:6px;inset-inline-end:8px;background:none;border:none;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer;opacity:.85;padding:2px 6px}
 .tile .tclose:hover{opacity:1}
 @media(max-width:900px){.tiles{grid-template-columns:repeat(2,1fr)}}
@@ -618,6 +826,55 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
    slide is separated only by a low-opacity glow in its own brand accent. Neutral ground also lets
    the four logo colours and the product photography carry the colour instead of competing with it. */
 .s-teal{background:radial-gradient(120% 95% at 80% 10%,rgba(24,120,168,.34),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+/* IDF slide: the same olive as the band above, so the two readings of this offer look like one
+   offer. The khaki badge and button replace the white/teal the other slides use. */
+.s-idf{background:linear-gradient(150deg,#3E4A2A 0%,#2F3821 55%,#232a18 100%)}
+/* same as .s-scr: the generic slide glow and dot field fight a flat olive, so they are dropped */
+.s-idf::before,.s-idf::after{display:none}
+/* The kicker carries the message, so it stays live text at a readable weight rather than lettering
+   baked into artwork: baked type cannot grow with the 150% control in the accessibility menu, and
+   this line is the whole point of the band. The hand-drawn feel comes from the swash under it,
+   which is decoration and can be drawn. */
+.s-idf .idf-kicker{position:relative;display:inline-block;color:#C9BC8A;font-weight:800;
+  font-size:clamp(1rem,1.9vw,1.28rem);letter-spacing:.01em;line-height:1.35;margin:0 0 .7rem;padding-bottom:.55rem}
+.s-idf .idf-swash{position:absolute;inset-inline:0;bottom:0;width:100%;height:9px;overflow:visible}
+.s-idf .idf-swash path{fill:none;stroke:#C9BC8A;stroke-width:2.4;stroke-linecap:round;opacity:.85}
+.s-idf h3{color:#fff;font-size:clamp(1.4rem,3vw,2.15rem);margin:0 0 .5rem}
+.s-idf .idf-terms{color:#E3D5A8;opacity:1;font-size:clamp(.98rem,1.45vw,1.08rem);margin:0 0 1.1rem;max-width:36ch}
+/* the offer leads; the product shot supports it. At the default stage width the phone filled
+   69.4% of the slide height against the copy 59.9%, so the eye landed on the handset first. */
+.s-idf{grid-template-columns:1.15fr 1fr}
+.s-idf .scr-stage{--scr-w:clamp(64px,7vw,88px)}
+/* three objects share this column now, so they are sized against each other rather than each
+   against the slide. The figures keep the card's proportions; only the scale changes. */
+.s-idf .slide-art{gap:clamp(4px,1vw,14px)}
+.slide-troops{display:flex;align-items:flex-end;flex:0 0 auto}
+.slide-troops .troop{width:clamp(78px,8.5vw,108px);height:auto;overflow:visible;
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.slide-troops .t-f{margin-inline-start:clamp(-14px,-1.1vw,-6px)}
+.s-idf h3 .free{display:block;color:#D4BE7A;font-size:1.22em;line-height:1.15;margin-top:.1em}
+.s-idf .idf-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.6rem}
+.s-idf .idf-cta{background:#C9BC8A;color:#20260f;font-weight:800;min-height:44px;padding:12px 26px;
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.6)}
+.s-idf .idf-cta:hover{background:#D6C79A;transform:translateY(-1px)}
+/* the code's shape, not a code: see the note in the markup */
+.s-idf .idf-fine{color:#a8a077;font-size:.8rem;margin:0;opacity:1}
+/* khaki halo instead of the screen-protector slide's blue, so the reused stage matches this palette */
+.s-idf .scr-halo{background:radial-gradient(circle,rgba(201,188,138,.5),rgba(201,188,138,.18) 55%,transparent 72%)}
+/* Entrance is declared ONLY inside no-preference, the same inversion the hero uses on line 252.
+   Declaring it the other way round leaves the text at opacity:0 whenever the animation is
+   suppressed, which ships an invisible slide. */
+@media (prefers-reduced-motion:no-preference){
+  .s-idf .idf-kicker,.s-idf h3,.s-idf .idf-terms,.s-idf .idf-row,.s-idf .idf-fine{animation:heroIn .6s var(--ease) both}
+  .s-idf h3{animation-delay:.08s}
+  .s-idf .idf-terms{animation-delay:.16s}
+  .s-idf .idf-row{animation-delay:.24s}
+  .s-idf .idf-fine{animation-delay:.32s}
+  /* the swash draws itself once, after the line it underlines has arrived */
+  .s-idf .idf-swash path{stroke-dasharray:280;stroke-dashoffset:280;animation:idfDraw 1s var(--ease) .45s both}
+}
+@keyframes idfDraw{to{stroke-dashoffset:0}}
+html.a11y-stop-motion .s-idf .idf-swash path{stroke-dashoffset:0}
 .s-purple{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.16),transparent 48%),linear-gradient(135deg,#632854,#421838)}
 .s-orange{background:radial-gradient(130% 90% at 82% 12%,rgba(255,255,255,.2),transparent 48%),linear-gradient(135deg,#a5641e,#9c5318)}
 .s-navy{background:radial-gradient(115% 85% at 79% 8%,rgba(124,58,237,.5),transparent 56%),linear-gradient(135deg,#232b73,#111637)}
@@ -727,7 +984,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
 html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
 .s-banner::before,.s-banner::after{display:none}
-.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0}
+.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0;overflow:hidden}
 /* ===== data-transfer slide: two live iPhones, content flying from one into the other =====
    Rebuilt from the site's own parts. The previous version cropped windows out of promo_transfers.jpg,
    whose pale studio backdrop, three PRINTED app icons and baked marketing type fought the charcoal at
@@ -1103,11 +1360,23 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
   .bn-tr .tr-flow i:nth-child(5){animation-delay:-1.8s}
   .bn-tr .tr-flow i:nth-child(6){animation-delay:-2.25s}
 }
-.s-banner .slide-banner img{display:block;width:100%;height:auto;transition:transform .45s var(--ease)}
-.s-banner .slide-banner:hover img{transform:scale(1.015)}
+/* The banner artwork is a background image declared inside a min-width query, and both halves of that
+   sentence are load-bearing. As an image element it was fetched by every phone: display:none does not
+   stop a src from loading, and loading="lazy" cannot defer an element with no box to compare against
+   the viewport, so 1.5MB of a picture no phone ever renders arrived on every mobile visit (measured at
+   375x812 with scrollY 0). A background image is fetched only when its rule matches and the element
+   renders, so below 721px it costs nothing. Nothing is lost by dropping the alt: phones read the real
+   text version below, which is also what Google sees under mobile-first rendering, and the button
+   still carries the whole offer in its aria-label. */
+@media(min-width:721px){
+  .s-banner .sb-art{display:block;width:100%;aspect-ratio:1855/803;
+    background:url(keyboard-promo-web2.webp) center/cover no-repeat;
+    transition:transform .45s var(--ease)}
+  .s-banner .slide-banner:hover .sb-art{transform:scale(1.015)}
+}
 .s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
 .s-banner .slide-in,.s-banner .slide-art{display:none}
-@media(prefers-reduced-motion:reduce){.s-banner .slide-banner img{transition:none}}
+@media(prefers-reduced-motion:reduce){.s-banner .sb-art{transition:none}}
 @media(max-width:720px){
   /* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
   /* the same padding as every other slide, so the banner slide is not inset differently */
@@ -1145,7 +1414,8 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
      every slide here shares one height, so an undersized image just becomes dead space */
   /* the cutout carries its own blue backdrop; a rounded rectangle of it on the slide reads as a
      pasted card, so the edges are faded out and it sits on the slide's glow like it does in the artwork */
-  .s-banner .slide-art img{width:100%;max-width:290px;max-height:150px;object-fit:contain;height:auto;
+  .s-banner .kb-art{display:block;width:100%;max-width:290px;aspect-ratio:985/480;
+    background:url(keyboard-product.webp) center/contain no-repeat;
     -webkit-mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%);
     mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%)}
 }
@@ -1843,6 +2113,187 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+<!-- IDF SUPPORT BAND
+     Sits between the hero and the team block on purpose. Above the hero it would push the brand
+     statement under the fold on a phone; further down it would read as one more offer. Here it is
+     the first thing after the hero, which is what "top of the page" buys without that cost.
+     No official emblem or insignia is used anywhere in this band. Those marks are protected, and
+     borrowing one would imply an official endorsement that does not exist. The olive palette and
+     the wording carry the meaning instead. -->
+<section class="idf" aria-labelledby="idf-h">
+  <div class="wrap">
+    <div class="idf-card">
+      <div class="idf-main">
+        <!-- the product itself, kept on the right of the copy: the offer is a screen protector,
+             and this is the same live stage the screen-protector slide uses, glass and all -->
+        <div class="idf-phone" aria-hidden="true">
+          <div class="scr-stage">
+            <span class="scr-halo"></span>
+            <span class="scr-wall"></span>
+            <span class="scr-punch"></span>
+            <span class="scr-refl"></span>
+            <img class="scr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+            <span class="scr-glass"></span>
+          </div>
+        </div>
+        <div class="idf-copy">
+          <div class="txt">
+            <p class="eyebrow">פון גת מצדיעה לחיילי צה״ל</p>
+            <h2 id="idf-h">מגן מסך זכוכית והדבקה<span class="free">ללא עלות</span></h2>
+            <p class="terms">לחיילים במדים · סדיר, קבע ומילואים</p>
+          </div>
+          <div class="act">
+              <button type="button" class="btn btn-idf" data-pg-coupon="idf" aria-label="קבלו קוד הטבה לחיילי צה״ל: מגן מסך זכוכית והדבקה, ללא עלות">קבלו קוד הטבה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          </div>
+        </div>
+        <!-- Proportions measured, not eyeballed. The previous build had the head at 23.6% of
+             the figure (4.2 heads tall) but the LEGS at only 25% of height, against roughly 40%
+             for a stylised figure and 47-50% anatomically — short legs are what read as a toy even
+             once the head is right. Shoulders were 1.36 head-widths against a norm of about 2.
+             Now: head 28 of a 144 tall figure (21%, ~5 heads), legs 55 (38%), shoulders 42 wide
+             against a 28 wide head (1.5, and 2.0 counting the sleeves).
+             Rig recomputed for the new skeleton: shoulder (47,56), temple (48,25), bones 19 and 18,
+             elbow from the circle intersection at (37.4,39.6) = 138deg shoulder, 69deg elbow. -->
+        <div class="idf-art" aria-hidden="true">
+          <svg class="troop t-m" viewBox="0 0 120 168" fill="none">
+        <g class="rim-pass">
+        <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+        <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="ink-s limb" d="M76 52 82 82"/>
+        <path class="ink-f limb" d="M82 82 84 104"/>
+        <circle class="ink" cx="60" cy="30" r="14"/>
+        <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        </g>
+        <g class="ink-pass">
+        <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+        <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="ink-s limb" d="M76 52 82 82"/>
+        <path class="ink-f limb" d="M82 82 84 104"/>
+        <circle class="ink" cx="60" cy="30" r="14"/>
+        <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        </g>
+        <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="uni" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+        <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="uni-s limb" d="M76 52 82 82"/>
+        <path class="sk-f limb" d="M82 82 84 104"/>
+        <circle class="sk" cx="60" cy="30" r="14"/>
+        <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+        <path class="hair" d="M50 28a13 12 0 0 1 25-1q1 3-3 2-5-3-10-2-5 1-8 4-2 3-3 3-2 0-1-6Z"/>
+        <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+        <circle class="badge" cx="52" cy="19" r="2"/>
+        <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+        <path class="stitch" d="M60 59v37"/>
+        <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+        <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+        <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+        <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+        <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+        <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+        <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+        <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+        <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+        <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+        <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+        <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+        <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+        <g transform="translate(47 56)">
+          <g class="up-arm">
+            <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+            <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+            <g transform="translate(-4 18.6)">
+              <g class="fore-arm">
+                <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                <g transform="rotate(-10 -3 17.7)">
+                  <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                  <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+          </svg>
+          <svg class="troop t-f" viewBox="0 0 120 168" fill="none">
+        <path class="ink" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+        <path class="hair" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+        <g class="rim-pass">
+        <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+        <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="ink-s limb" d="M76 52 82 82"/>
+        <path class="ink-f limb" d="M82 82 84 104"/>
+        <circle class="ink" cx="60" cy="30" r="14"/>
+        <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        </g>
+        <g class="ink-pass">
+        <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+        <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="ink-s limb" d="M76 52 82 82"/>
+        <path class="ink-f limb" d="M82 82 84 104"/>
+        <circle class="ink" cx="60" cy="30" r="14"/>
+        <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        </g>
+        <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+        <path class="uni" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+        <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+        <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+        <path class="uni-s limb" d="M76 52 82 82"/>
+        <path class="sk-f limb" d="M82 82 84 104"/>
+        <circle class="sk" cx="60" cy="30" r="14"/>
+        <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+        <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+        <path class="hair" d="M49 29a14 13 0 0 1 26-1q1 4-3 2-5-4-11-3-6 1-9 5-2 3-3 3-2 0-1-6Z"/>
+        <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+        <circle class="badge" cx="52" cy="19" r="2"/>
+        <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+        <path class="stitch" d="M60 59v37"/>
+        <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+        <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+        <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+        <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+        <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+        <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+        <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+        <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+        <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+        <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+        <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+        <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+        <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+        <g transform="translate(47 56)">
+          <g class="up-arm">
+            <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+            <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+            <g transform="translate(-4 18.6)">
+              <g class="fore-arm">
+                <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                <g transform="rotate(-10 -3 17.7)">
+                  <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                  <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+          </svg>
+        </div>
+      </div>
+      <p class="fine">קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.</p>
+    </div>
+  </div>
+</section>
+
 <!-- TEAM: BARUCH & SIGAL -->
 <section id="team" class="people" aria-label="ברוך וסיגל, הבעלים של פון גת">
   <div class="wrap">
@@ -1958,13 +2409,22 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <!-- INTRO + SERVICE TILES -->
 <style>
-.svc-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:.6rem .75rem;margin:1.4rem 0 0}
-.svc-trust span{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem;color:var(--ink-strong);background:#fff;border:1px solid var(--line);border-radius:11px;padding:.5rem 1.05rem;box-shadow:0 5px 16px -11px rgba(0,0,0,.28)}
-.svc-trust span::before{content:"✓";flex:none;width:19px;height:19px;border-radius:50%;background:var(--teal);color:#fff;font-weight:900;font-size:.66rem;line-height:1;display:inline-flex;align-items:center;justify-content:center}
-
-/* קישור בפרוזה בתוך תשובה: הכלל הגלובלי הוא color:inherit ובלי קו תחתון, ולכן קישור
-   כאן היה בלתי נראה כקישור. צבע לבד אינו סימן מספיק, לכן גם קו. */
-#faq details p a{color:var(--teal-d);text-decoration:underline;text-underline-offset:.18em;font-weight:600}
+/* A stated fact, not a control. The white fill, the border, the drop shadow and the rounded corners
+   were all raised-card cues, and together with a filled disc icon they read as three buttons you could
+   press, on a section whose only real controls are the "לפרטים" buttons below. On a white section the
+   words and a check are enough. The space between two items is four times the space inside one, so
+   they still group as three items without needing a box drawn around each. */
+.svc-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.7rem;margin:1.5rem 0 0}
+.svc-trust span{display:inline-flex;align-items:center;gap:.42rem;font-weight:600;font-size:1rem;color:var(--ink)}
+.svc-trust span::before{content:"✓";flex:none;color:var(--teal);font-weight:900;font-size:1.05rem;line-height:1}
+/* The three need 564px of content width to sit on one line. Left to wrap on its own the row broke
+   1+2 at 375 and 2+1 at 430, the two commonest phone widths, which reads as an accident rather than
+   a decision. Below that it becomes a stack instead. flex-start aligns the checks into a column, and
+   max-content plus auto margins centre the block as a whole, so the group stays centred like the rest
+   of the intro while the ticks still line up under each other. */
+@media(max-width:640px){
+  .svc-trust{flex-direction:column;align-items:flex-start;gap:.55rem;width:max-content;max-width:100%;margin-inline:auto}
+}
 /* ==== gen-nav:css:start ==== */
 /* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
 nav.main .ndrop{position:relative}
@@ -2001,12 +2461,16 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   <div class="intro">
     <h2>כל עולם הסלולר במקום אחד</h2>
     <p>מעבדת הסלולר הוותיקה בקרית גת, בניהול ברוך וסיגל, כבר יותר מ-30 שנה. תיקון, מכירת מכשירים, קווי סלקום וכל החברות ואבזור, בליווי אישי ועם אחריות בכתב בהתאם למוצר ולסוג התיקון.</p>
-    <div class="svc-trust"><span>אבחון והצעת מחיר ללא עלות, ללא התחייבות</span><span>תיקונים רבים באותו יום</span><span>אחריות בכתב על תיקונים</span></div>
+    <!-- One chip per pillar, not three about the lab. This strip heads "כל עולם הסלולר במקום אחד"
+         and six service tiles, so three repair-only claims described a sixth of what follows. Each
+         line here is already stated in the tile it belongs to, so nothing new is being claimed, and
+         the two repair claims that came out still appear on the repair pages themselves. -->
+    <div class="svc-trust"><span>אבחון והצעת מחיר ללא עלות</span><span>מכשירים בתשלומים נוחים</span><span>משווק מורשה סלקום</span></div>
     <div class="kicker">השירותים שלנו</div>
   </div>
 </section>
 <div class="tiles" aria-label="שירותים">
-  <article class="tile"><img class="tphoto" src="svc-devices.jpg" alt="מכשירים חדשים למכירה בפון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מכירת מכשירים</h3><span class="tdesc">מכשירים חדשים מכל המותגים, בתשלומים בתנאים נוחים ובליווי אישי</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מכירת מכשירים</h4><p>סמארטפונים חדשים מכל המותגים, אייפון, סמסונג גלקסי, שיאומי ורדמי ועוד, וגם טאבלטים, ביבוא רשמי ומקביל ובתשלומים נוחים. כולל העברת נתונים מהמכשיר הישן, בהתאם למצבו, ואבזור, ובליווי אישי שיעזור לכם לבחור בדיוק את מה שמתאים לכם ולתקציב.</p><div class="tctas"><a class="btn btn-teal btn-sm tcta" href="/phones/">לכל המכשירים</a><a class="btn btn-wa btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על מכשיר חדש"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" loading="lazy" decoding="async">WhatsApp</a></div></div></article>
+  <article class="tile"><img class="tphoto" src="svc-devices.jpg" alt="מכשירים חדשים למכירה בפון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מכירת מכשירים</h3><span class="tdesc">מכשירים חדשים מכל המותגים, בתשלומים בתנאים נוחים ובליווי אישי</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מכירת מכשירים</h4><p>סמארטפונים חדשים מכל המותגים, אייפון, סמסונג גלקסי, שיאומי ורדמי ועוד, וגם טאבלטים, ביבוא רשמי ומקביל ובתשלומים נוחים. כולל העברת נתונים מהמכשיר הישן, בהתאם למצבו, ואבזור, ובליווי אישי שיעזור לכם לבחור בדיוק את מה שמתאים לכם ולתקציב.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-lines.jpg" alt="כרטיסי SIM וקווי סלקום" loading="lazy"><div class="tinfo"><h3 class="tname">קווים וסלקום</h3><span class="tdesc">שירות לכל חברות הסלולר: פתיחת קו חדש, ניוד ומסלולים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>קווים וסלקום</h4><p>אצלנו מקבלים שירות קווים מלא לכל חברות הסלולר: פתיחת קו חדש, ניוד מספר, החלפת סים ו-eSIM, מעבר בין מסלולים וחבילות גלישה, וגם טעינת טוקמן. ובנוסף, פון גת הוא גם הסניף הראשון והיחיד של סלקום בקרית גת.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-repair.jpg" alt="תיקון מכשיר במעבדת פון גת" loading="lazy"><div class="tinfo"><h3 class="tname">מעבדת תיקונים</h3><span class="tdesc">מסך, סוללה ותקלות מורכבות, עם אחריות. גם נזקי מים</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>מעבדת תיקונים</h4><p>מעבדת סלולר מקצועית עם מעל 30 שנה ניסיון, לכל היצרנים: אייפון, סמסונג גלקסי (כולל סדרת A), שיאומי ורדמי ועוד. החלפת מסך, סוללה, שקע טעינה, רמקול ומצלמה, וטיפול בתקלות מורכבות שאחרים ויתרו עליהן, ומתקנים גם אייפד, שעוני Apple Watch ואוזניות AirPods. תיקונים נפוצים מבוצעים במקום ובזמן קצר, עם אחריות. אנחנו מטפלים גם בנזקי מים, אך מטבע הדברים תיקוני נזקי מים ניתנים ללא אחריות.</p><p style="font-size:.95rem;color:#cfd2d6">יש לכם תקלה ואתם רוצים לנסות קודם לבד? <a href="phone-problems/" style="color:#45A6D6;text-decoration:underline;font-weight:700">מדריך התקלות שלנו</a> מסביר בדיוק מה לעשות, לפי המכשיר שלכם.</p><p style="font-size:.95rem;color:#cfd2d6"><a href="mobile-phone-repair-kiryat-gat/" style="color:#45A6D6;text-decoration:underline;font-weight:700">מעבדת הסלולר שלנו</a>, ובתוכה עמודים לפי שירות: <a href="phone-screen-replacement-kiryat-gat/" style="color:#45A6D6;text-decoration:underline;font-weight:700">החלפת מסך</a>, <a href="phone-battery-replacement-kiryat-gat/" style="color:#45A6D6;text-decoration:underline;font-weight:700">החלפת סוללה</a>, <a href="charging-port-repair-kiryat-gat/" style="color:#45A6D6;text-decoration:underline;font-weight:700">תיקון שקע טעינה</a> ו<a href="iphone-repair-kiryat-gat/" style="color:#45A6D6;text-decoration:underline;font-weight:700">תיקון אייפון</a>.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
   <article class="tile"><img class="tphoto" src="svc-accessories.jpg" alt="אבזור וציוד לסלולר" loading="lazy"><div class="tinfo"><h3 class="tname">אבזור וציוד</h3><span class="tdesc">כיסויים, מגני מסך, מטענים וכלל האבזור הנדרש</span></div><button class="btn btn-teal btn-sm shop" type="button" aria-expanded="false">לפרטים</button><div class="tdetail"><button class="tclose" type="button" aria-label="סגירת הפרטים">×</button><h4>אבזור וציוד</h4><p>כלל האבזור הנדרש לסמארטפון שלכם במקום אחד: כיסויים, מגני זכוכית עם הדבקה, מטענים וכבלים, אוזניות, מטענים ניידים ומעמדים לרכב. הטבה לקוראי האתר: מגן זכוכית כולל הדבקה ב-9 ₪.</p><a class="btn btn-teal btn-sm tcta" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על השירות של פון גת">דברו איתנו</a></div></article>
@@ -2037,12 +2501,178 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     <div class="car-vp">
       <div class="car-track">
 
+        <!-- The IDF offer leads the carousel and also has its own band under the hero. Both
+             triggers carry data-pg-coupon="idf", so the title, the wording and the terms live in
+             one OFFERS record and cannot drift apart between the two placements.
+             The artwork is a drawn shield, not any official emblem or insignia. -->
+        <article class="slide s-idf" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 6">
+          <div class="slide-in">
+            <p class="idf-kicker">פון גת מצדיעה לחיילי צה״ל<svg class="idf-swash" viewBox="0 0 260 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 9C58 3 132 2 196 5c22 1 44 3 60 5"/></svg></p>
+            <h3>מגן מסך זכוכית והדבקה<span class="free">ללא עלות</span></h3>
+            <p class="idf-terms">לחיילים במדים · סדיר, קבע ומילואים</p>
+            <div class="idf-row">
+              <button type="button" class="btn idf-cta" data-pg-coupon="idf" aria-label="קבלו קוד הטבה לחיילי צה״ל: מגן מסך זכוכית והדבקה, ללא עלות">קבלו קוד הטבה</button>
+              <!-- The real code is drawn per visitor from the counter, so the strip can only ever show
+                   the shape of one. Printing a specific number here would tell every visitor the same
+                   code and quietly break the one metric the counter exists to give. -->
+                </div>
+            <p class="idf-fine">קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.</p>
+          </div>
+          <div class="slide-art">
+            <span class="slide-troops" aria-hidden="true">
+              <svg class="troop t-m" viewBox="0 0 120 168" fill="none">
+          <g class="rim-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <g class="ink-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="uni" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="uni-s limb" d="M76 52 82 82"/>
+          <path class="sk-f limb" d="M82 82 84 104"/>
+          <circle class="sk" cx="60" cy="30" r="14"/>
+          <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+          <path class="hair" d="M50 28a13 12 0 0 1 25-1q1 3-3 2-5-3-10-2-5 1-8 4-2 3-3 3-2 0-1-6Z"/>
+          <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+          <circle class="badge" cx="52" cy="19" r="2"/>
+          <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+          <path class="stitch" d="M60 59v37"/>
+          <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+          <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+          <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+          <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+          <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+          <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+          <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+          <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+          <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+          <g transform="translate(47 56)">
+            <g class="up-arm">
+              <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <g transform="translate(-4 18.6)">
+                <g class="fore-arm">
+                  <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <g transform="rotate(-10 -3 17.7)">
+                    <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                    <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+            </svg>
+              <svg class="troop t-f" viewBox="0 0 120 168" fill="none">
+          <path class="ink" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+          <path class="hair" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+          <g class="rim-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <g class="ink-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="uni" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="uni-s limb" d="M76 52 82 82"/>
+          <path class="sk-f limb" d="M82 82 84 104"/>
+          <circle class="sk" cx="60" cy="30" r="14"/>
+          <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+          <path class="hair" d="M49 29a14 13 0 0 1 26-1q1 4-3 2-5-4-11-3-6 1-9 5-2 3-3 3-2 0-1-6Z"/>
+          <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+          <circle class="badge" cx="52" cy="19" r="2"/>
+          <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+          <path class="stitch" d="M60 59v37"/>
+          <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+          <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+          <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+          <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+          <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+          <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+          <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+          <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+          <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+          <g transform="translate(47 56)">
+            <g class="up-arm">
+              <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <g transform="translate(-4 18.6)">
+                <g class="fore-arm">
+                  <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <g transform="rotate(-10 -3 17.7)">
+                    <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                    <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+            </svg>
+            </span>
+            <!-- the same live product shot the screen-protector slide uses: the glass drifts up and
+                 settles onto the phone. Reused rather than rebuilt, so there is one glass animation
+                 on this page and it is already covered by the reduced-motion guards. -->
+            <div class="scr-stage" role="img" aria-label="מגן זכוכית נצמד אל מסך האייפון">
+              <span class="scr-halo" aria-hidden="true"></span>
+              <span class="scr-wall" aria-hidden="true"></span>
+              <span class="scr-punch" aria-hidden="true"></span>
+              <span class="scr-refl" aria-hidden="true"></span>
+              <img class="scr-frame" src="iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <span class="scr-glass" aria-hidden="true"></span>
+            </div>
+          </div>
+        </article>
+
         <!-- A normal slide, not a baked banner. The artwork it used to crop (promo_transfers.jpg) carries
              a pale studio backdrop, three app icons printed between the phones and marketing type; no
              crop of it survived on the charcoal without bright edges, and the printed icons could not
              move. Both devices are built from the site's own phone parts now, so this slide is made of
              the same material as its neighbours and every part of it can animate. -->
-        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 5">
+        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 6">
           <div class="slide-in">
             <span class="badge">ללא עלות</span>
             <h3>העברת נתונים</h3>
@@ -2157,13 +2787,12 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
           </div>
         </article>
 
-        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
+        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 6">
           <div class="slide-in">
             <span class="badge">בתשלומים</span>
             <h3>מכשירים חדשים, ועוזרים לכם לבחור</h3>
             <p>כל הדגמים החדשים, יבוא רשמי ומקביל, בפריסת תשלומים נוחה, כולל העברת נתונים מהמכשיר הישן.</p>
             <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על מכשיר חדש בתשלומים"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
-            <a class="btn btn-teal" href="phones/">לכל הדגמים באתר</a>
           </div>
           <div class="slide-art">
             <div class="hstage" id="hstage">
@@ -2176,14 +2805,14 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
           </div>
         </article>
 
-        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 6">
           <div class="slide-in">
             <span class="scr-excl">רק באתר</span>
             <h3>מגן מסך כולל הדבקה</h3>
             <p class="scr-price">רק <b>9</b><span class="cur">₪</span></p>
             <p class="scr-sub">מגן זכוכית איכותי והתקנה מקצועית במקום.</p>
             <p class="scr-fine">למעט מכשירים מעוגלים ובכפוף למלאי.</p>
-            <button type="button" class="btn scr-cta" data-pg-coupon aria-label="לקבלת קוד הקופון: מגן מסך כולל הדבקה ב-9 שקלים">לקבלת קוד הקופון</button>
+            <button type="button" class="btn scr-cta" data-pg-coupon aria-label="לקבלת קוד הקופון: מגן מסך כולל הדבקה ב-9 שקלים">קבלו קוד הטבה</button>
           </div>
           <div class="slide-art">
             <!-- live product shot: the glass drifts up and settles onto the phone, like applying it -->
@@ -2198,7 +2827,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
           </div>
         </article>
 
-        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
+        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 6">
           <div class="slide-in">
             <span class="badge">כל החברות</span>
             <h3>ניוד ופתיחת קו, בלי להמתין למוקד</h3>
@@ -2217,9 +2846,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
           </div>
         </article>
 
-        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+        <article class="slide s-banner bn-kb" aria-roledescription="שקופית" aria-label="מבצע 6 מתוך 6">
+          <!-- The artwork is a CSS background and not an image element, on purpose. See
+               .s-banner .sb-art: as an image it downloaded on every phone, where it is hidden. -->
           <button type="button" class="slide-banner" data-pg-coupon="kb" aria-label="מבצע מקלדת ועכבר ב-49 שקלים, לקבלת קוד קופון">
-            <img src="keyboard-promo-web2.png" alt="מבצע מקלדת + עכבר ב-49 ₪ בקנייה מעל 100 ₪ בחנות. ללימודים, לבית ולמשרד. חיבור USB, שימוש נוח, איכות ואמינות." width="1855" height="803" loading="lazy" decoding="async">
+            <span class="sb-art" aria-hidden="true"></span>
           </button>
           <!-- Phones only. It mirrors the banner image above part by part, in the same order: the מבצע
                tag, the product line, the price, the condition, the audience line, the three feature
@@ -2240,7 +2871,9 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
             <button type="button" class="btn kb-cta" data-pg-coupon="kb" aria-label="לקבלת קוד הקופון: מקלדת ועכבר ב-49 שקלים">לקבלת קוד קופון</button>
             <p class="kb-fine">בלעדי למשתמשי האתר. בכפוף למלאי. ט.ל.ח</p>
           </div>
-          <div class="slide-art"><img src="keyboard-product.png" alt="" width="985" height="480" loading="lazy" decoding="async"></div>
+          <!-- phones only, and a background for the same reason: as an image element it downloaded on
+               desktop, where .s-banner .slide-art is display:none. It was decorative already. -->
+          <div class="slide-art"><span class="kb-art" aria-hidden="true"></span></div>
         </article>
 
       </div>
@@ -2475,7 +3108,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     <details><summary>נפל לי המכשיר למים, יש מה לעשות?</summary><p>כדאי להביא מהר, ולא לנסות להדליק או להטעין. אנחנו מנקים ומטפלים בלוח ובחלקים, ובחלק גדול מהמקרים המכשיר חוזר לעבוד. חשוב לדעת: בגלל טבע נזקי הנוזלים אין אחריות על תיקון מסוג זה, ונגיד לכם בכנות מה הסיכוי עוד לפני שמתחילים. האבחון ללא עלות.</p></details>
 
     <h3 class="faq-cat"><span aria-hidden="true">🛒</span> קנייה, אבזור ושירות</h3>
-    <details><summary>אפשר לקנות מכשיר חדש? יש תשלומים?</summary><p>כן. מוכרים מכשירים חדשים <a href="/guides/official-vs-parallel-import/">ביבוא רשמי ומקביל</a>, בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור, ובליווי אישי בבחירת המכשיר. <a href="/phones/">כל הדגמים שיש לנו</a> נמצאים באתר עם המפרט המלא, ואם אתם לא בטוחים מה מתאים, <a href="/phones/find-my-phone/">שבע שאלות</a> יצמצמו לשלושה.</p></details>
+    <details><summary>אפשר לקנות מכשיר חדש? יש תשלומים?</summary><p>כן. מוכרים מכשירים חדשים ביבוא רשמי ומקביל, בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור, ובליווי אישי בבחירת המכשיר.</p></details>
     <details><summary>אפשר להעביר נתונים ו-WhatsApp ממכשיר למכשיר?</summary><p>בטח, וזה חלק מהשירות. מעבירים לכם הכל למכשיר החדש: אנשי קשר, תמונות, אפליקציות, וגם היסטוריית WhatsApp, כולל בין אנדרואיד לאייפון. גם אם המכשיר הישן שבור או לא נדלק, ברוב המקרים נצליח לחלץ ולהעביר את המידע. הביאו את שני המכשירים ואנחנו נדאג לכל השאר.</p></details>
     <details><summary>אתם נקודת שירות סלקום?</summary><p>כן. פון גת הוא הסניף הראשון והיחיד של סלקום בקרית גת: פתיחת וניוד קו, החלפת סים ומסלולים, וגם שירות לכל חברות הסלולר.</p></details>
     <details><summary>מתקנים גם טאבלט או אייפד?</summary><p>כן, בשמחה. מטפלים בטאבלטים ובאייפד בדיוק כמו בטלפונים, החלפת מסך, סוללה, שקע טעינה ועוד, וגם אפשר לקנות טאבלט חדש בליווי אישי.</p></details>
@@ -3044,15 +3677,28 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       screen=document.querySelector('.pg-screen');
   var lastFocus=null,builtKey=null;
   /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
+  /* NOTE: keep this object free of prose comments. preflight's allowlist check walks the OFFERS
+     body character by character without stripping comments, so an apostrophe in an English word
+     opens a string and swallows the offer keys after it, and an identifier followed by a colon
+     inside a sentence registers as an offer that does not exist. Both failure modes were hit here.
+     Explanations for individual offers belong above this block, not inside it.
+
+     idf has no number to show, so it carries priceHtml, which overrides the numeric price template
+     in build(). Rendering its zero through that template would print a "0₪" price tag, which is
+     accurate and completely wrong in tone. It reuses the screen-protector photo: same product. */
   var OFFERS={
     screen:{title:'מגן מסך כולל הדבקה',desc:'מגן זכוכית איכותי והתקנה מקצועית במקום',price:'9',
       img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'SP-',
       wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
       fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
     kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
-      img:'keyboard-product.png',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
+      img:'keyboard-product.webp',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
       wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
-      fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'}
+      fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'},
+    idf:{title:'מגן מסך כולל הדבקה',desc:'הטבה לחיילי צה״ל, במדים',price:'0',priceHtml:'<b>ללא עלות</b>',
+      img:'screen-product.png',imgW:615,imgH:730,photo:true,theme:'t-olive',qr:'#2F3821',key:'pg_idf_coupon',prefix:'TZ-',
+      wa:'היי! אני רוצה לממש את הטבת חיילי צה״ל, מגן מסך כולל הדבקה. קוד הקופון שלי: ',
+      fine:'בהצגת הקוד ובמדים · קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'}
   };
   var FOCUSABLE='a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])';
 
@@ -3123,10 +3769,12 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:(o.qr||'#241033'),light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){if(qrBox)qrBox.style.display='none';}}
 
   function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
-    ov.classList.remove('t-navy','t-blue');if(o.theme)ov.classList.add(o.theme);
+    /* Every theme must be listed here. A theme left out is not removed when the next offer opens,
+       so it sticks to the overlay and repaints an unrelated coupon in the wrong palette. */
+    ov.classList.remove('t-navy','t-blue','t-olive');if(o.theme)ov.classList.add(o.theme);
     if(titleEl)titleEl.textContent=o.title;
     if(descEl)descEl.textContent=o.desc;
-    if(priceEl)priceEl.innerHTML='רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>';
+    if(priceEl)priceEl.innerHTML=o.priceHtml||('רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>');
     if(fineEl)fineEl.textContent=o.fine;
     if(devEl){devEl.src=o.img;devEl.setAttribute('width',o.imgW);devEl.setAttribute('height',o.imgH);devEl.classList.toggle('is-photo',!!o.photo);}
     /* a code this browser already holds shows instantly — no placeholder flash, no number drawn */
