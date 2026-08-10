@@ -764,6 +764,51 @@
         "security_updates": null,
         "model_numbers": null
       }
+    },
+    {
+      "slug": "galaxy-s25-fe",
+      "name": "Galaxy S25 FE",
+      "name_he": "גלקסי S25 FE",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (171.1 מ״מ)",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "2340x1080 פיקסלים (FHD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": "Samsung Exynos 2400",
+        "cpu": "10 ליבות, 3.2GHz, 2.9GHz, 2.6GHz ו-1.95GHz",
+        "gpu": null,
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP בצמצם F2.2, ו-8MP בצמצם F2.4",
+        "zoom": "זום אופטי 3x, ובאיכות אופטית 2x. זום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2",
+        "video": "8K (7680x4320) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-FHD וב-120 פריימים ב-4K",
+        "battery": "עד 28 שעות וידאו, 4900 mAh טיפוסית. היצרן מציין לפחות 2000 מחזורי טעינה",
+        "charging_wired": "45W בחיבור חוטי",
+        "charging_wireless": "עד 15W אלחוטי",
+        "dimensions": "161.3 x 76.6 x 7.4 מ״מ",
+        "weight": "190 גרם",
+        "water_resistance": "IP68 לפי היצרן: שיקוע בעד 1.5 מטר מים מתוקים למשך 30 דקות בתנאי מעבדה",
+        "colors_manufacturer": [
+          "נייבי",
+          "תכלת קרח",
+          "שחור"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "USB-C בגרסת USB 3.2 Gen 1, Wi-Fi 802.11ax ב-2.4GHz, 5GHz ו-6GHz, Bluetooth 5.4, NFC",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 30 בספטמבר 2032, ועד שבעה דורות שדרוג של מערכת ההפעלה",
+        "model_numbers": "SM-S731B"
+      }
     }
   ]
 }

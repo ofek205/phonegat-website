@@ -214,6 +214,16 @@
       "url": "/compare/redmi-note-15-vs-galaxy-a17/",
       "name": "רדמי נוט 15 מול גלקסי A17",
       "status": "review"
+    },
+    {
+      "url": "/phones/galaxy-s25-fe/",
+      "name": "גלקסי S25 FE",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-s25-fe-vs-galaxy-a57/",
+      "name": "גלקסי S25 FE מול גלקסי A57",
+      "status": "review"
     }
   ]
 }
