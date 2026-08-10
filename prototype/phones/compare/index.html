@@ -485,6 +485,20 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 /* 17 names in one run gave no way in. Brand headings use the same small-label treatment as the
    rest of the page, so grouping costs no new visual language. */
 .dbrand{font-family:var(--mono);font-size:.98rem;letter-spacing:.08em;color:var(--ink-strong);margin-block:1.7rem .1rem;padding-block-end:.45rem;border-block-end:1px solid var(--ink-strong)}
+/* the heading becomes a row, so the mark sits on the baseline of the name rather than above it */
+.dbrand{display:flex;align-items:center;gap:.55rem}
+/* Optical sizing. The cropped marks are 0.85, 2.86 and 0.97 wide-to-tall, so one height for all
+   three would make the Samsung ellipse dominate and the apple glyph disappear. */
+.blogo{width:auto;flex:none}
+.blogo-apple{height:18px}
+.blogo-samsung{height:12px}
+.blogo-xiaomi{height:16px}
+/* smaller in the table, where the device name is the subject and the mark is only a tag */
+.cmp-grid thead .blogo-apple{height:14px}
+.cmp-grid thead .blogo-samsung{height:10px}
+.cmp-grid thead .blogo-xiaomi{height:13px}
+.cmp-grid thead th{white-space:nowrap}
+.cmp-grid thead th .blogo{display:inline-block;vertical-align:-.12em;margin-inline-end:.4rem}
 
 /* Category focus. 29 fields arrive at once. Only categories that actually differ for the current
    selection get a chip, so pressing one can never produce an empty table. */
@@ -900,7 +914,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="lead">שניים להשוואה, ואפשר להוסיף שלישי. הטבלה מתעדכנת ברגע שבוחרים, ולכל שדה יש הסבר מה ההבדל אומר.</p>
     <ul class="dslots" id="dslots" hidden></ul>
     <div id="dpick">
-      <p class="dbrand">Apple</p>
+      <p class="dbrand"><img class="blogo blogo-apple" src="/logos/apple.png" alt="" width="15" height="18" loading="lazy" decoding="async">Apple</p>
       <ul class="dpick">
         <li><button type="button" class="chip" data-slug="iphone-17-pro-max" aria-pressed="false"><bdo dir="ltr">iPhone 17 Pro Max</bdo></button></li>
         <li><button type="button" class="chip" data-slug="iphone-17-pro" aria-pressed="false"><bdo dir="ltr">iPhone 17 Pro</bdo></button></li>
@@ -908,7 +922,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><button type="button" class="chip" data-slug="iphone-17e" aria-pressed="false"><bdo dir="ltr">iPhone 17e</bdo></button></li>
         <li><button type="button" class="chip" data-slug="iphone-16" aria-pressed="false"><bdo dir="ltr">iPhone 16</bdo></button></li>
       </ul>
-      <p class="dbrand">Samsung</p>
+      <p class="dbrand"><img class="blogo blogo-samsung" src="/logos/samsung.png" alt="" width="34" height="12" loading="lazy" decoding="async">Samsung</p>
       <ul class="dpick">
         <li><button type="button" class="chip" data-slug="galaxy-s26-ultra" aria-pressed="false"><bdo dir="ltr">Galaxy S26 Ultra</bdo></button></li>
         <li><button type="button" class="chip" data-slug="galaxy-s26-plus" aria-pressed="false"><bdo dir="ltr">Galaxy S26+</bdo></button></li>
@@ -920,7 +934,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li><button type="button" class="chip" data-slug="galaxy-a36" aria-pressed="false"><bdo dir="ltr">Galaxy A36 5G</bdo></button></li>
         <li><button type="button" class="chip" data-slug="galaxy-a17" aria-pressed="false"><bdo dir="ltr">Galaxy A17</bdo></button></li>
       </ul>
-      <p class="dbrand">Xiaomi</p>
+      <p class="dbrand"><img class="blogo blogo-xiaomi" src="/logos/xiaomi.png" alt="" width="16" height="16" loading="lazy" decoding="async">Xiaomi</p>
       <ul class="dpick">
         <li><button type="button" class="chip" data-slug="xiaomi-15" aria-pressed="false"><bdo dir="ltr">Xiaomi 15</bdo></button></li>
         <li><button type="button" class="chip" data-slug="redmi-note-15" aria-pressed="false"><bdo dir="ltr">Redmi Note 15</bdo></button></li>
@@ -1141,7 +1155,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if(means&&MEANS[r[2]]) body+='<tr class="mean open" id="'+mid+'"><td colspan="'+span+'"><span><b>מה זה אומר</b> '+esc(MEANS[r[2]])+'</span></td></tr>';
     });
     if(bodyOpen) body+="</tbody>";
-    var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){return '<th scope="col" class="sc'+i+'">'+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
+    /* the mark is decorative here: the device name sits right beside it, so alt stays empty */
+    var LOGO={Apple:["apple",12,14],Samsung:["samsung",29,10],Xiaomi:["xiaomi",13,13]};
+    var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){
+      var b=LOGO[d.brand];
+      var mark=b?'<img class="blogo blogo-'+b[0]+'" src="/logos/'+b[0]+'.png" alt="" width="'+b[1]+'" height="'+b[2]+'" loading="lazy" decoding="async">':"";
+      return '<th scope="col" class="sc'+i+'">'+mark+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
 
     var cap=focus
       ? "מציג את "+esc(focus)+" בלבד, "+shown.length+" שדות מתוך "+diff.length+" שבהם יש הבדל."
