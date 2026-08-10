@@ -205,6 +205,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/phones/galaxy-a27/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/phones/galaxy-a36/</loc>
     <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -308,6 +314,12 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-a37-vs-galaxy-a17/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-a37-vs-galaxy-a27/</loc>
     <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

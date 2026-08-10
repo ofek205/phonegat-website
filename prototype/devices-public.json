@@ -809,6 +809,47 @@
         "security_updates": "עדכוני אבטחה עד 30 בספטמבר 2032, ועד שבעה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-S731B"
       }
+    },
+    {
+      "slug": "galaxy-a27",
+      "name": "Galaxy A27 5G",
+      "name_he": "גלקסי A27",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "6.7 אינץ׳ (169.1 מ״מ)",
+        "screen_type": "Super AMOLED, עומק צבע 16M",
+        "resolution": "2340x1080 פיקסלים (FHD+)",
+        "refresh_rate": "עד 120Hz",
+        "brightness": null,
+        "chip": "Snapdragon 6 Gen 3",
+        "cpu": "8 ליבות, 2.4GHz ו-1.8GHz",
+        "gpu": null,
+        "ram": "6GB",
+        "storage_offered": [
+          "128GB"
+        ],
+        "storage_expandable": "כרטיס MicroSD עד 2TB. החריץ משותף עם ה-SIM השני",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "5MP רחבה במיוחד בצמצם F2.2, ו-2MP מאקרו בצמצם F2.4",
+        "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
+        "camera_front": "12MP בצמצם F2.2",
+        "video": "4K (3840x2160) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-HD",
+        "battery": "עד 23 שעות וידאו, 5000 mAh טיפוסית",
+        "charging_wired": "טעינה מהירה במיוחד, עד 45% בתוך 30 דקות. ההספק בוואט אינו מצוין בעמוד",
+        "charging_wireless": null,
+        "dimensions": "162.4 x 78.2 x 7.8 מ״מ",
+        "weight": "200 גרם",
+        "water_resistance": "IP64 לפי היצרן: הגנה מאבק ומהתזות מים. זו אינה עמידות לשיקוע",
+        "colors_manufacturer": [
+          "ורוד"
+        ],
+        "sim": "SIM כפול פיזי בלבד: nano-SIM, והחריץ השני משותף עם כרטיס הזיכרון. אין eSIM",
+        "esim": "אין תמיכה ב-eSIM",
+        "connectivity": "USB-C בגרסת USB 2.0, Wi-Fi 802.11ac ב-2.4GHz ו-5GHz, Bluetooth 5.1, NFC",
+        "box_contents": null,
+        "security_updates": "עדכוני אבטחה עד 31 ביולי 2032, ושישה דורות שדרוג של מערכת ההפעלה",
+        "model_numbers": "SM-A276B"
+      }
     }
   ]
 }

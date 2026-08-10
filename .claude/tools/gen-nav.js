@@ -26,7 +26,7 @@ var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
  * אינו במאגר בכוונה. דגם שאינו כאן עוצר את המחולל. */
 var DEVICE_ORDER = {
   'אייפון': ['iphone-17-pro-max', 'iphone-17-pro', 'iphone-17', 'iphone-17e', 'iphone-16'],
-  'גלקסי': ['galaxy-s26-ultra', 'galaxy-s26-plus', 'galaxy-s26', 'galaxy-s25-fe', 'galaxy-a57', 'galaxy-a56', 'galaxy-a37', 'galaxy-a36', 'galaxy-a17'],
+  'גלקסי': ['galaxy-s26-ultra', 'galaxy-s26-plus', 'galaxy-s26', 'galaxy-s25-fe', 'galaxy-a57', 'galaxy-a56', 'galaxy-a37', 'galaxy-a36', 'galaxy-a27', 'galaxy-a17'],
   'שיאומי': ['xiaomi-15', 'redmi-note-15', 'redmi-note-14-pro', 'redmi-note-14']
 };
 
