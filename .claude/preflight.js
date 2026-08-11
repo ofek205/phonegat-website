@@ -361,8 +361,14 @@ function navLabels(src) {
 }
 var refNav = navLabels(ref).join('|');
 
+/* nav.main is written by hand into every page, and index.html is the reference for its values.
+ * It drifted, was corrected across 7 pages, drifted again to 64, and was corrected again, and in
+ * between four newly created pages arrived already carrying the old values. Nothing was watching it,
+ * because the nav check above compares the LABELS and not the rule that sizes them. */
+var refNavCss = (ref.match(/^nav\.main\{[^}]*\}/m) || [''])[0];
+
 var f_h1 = [], f_alt = [], f_lang = [], f_marks = [], f_skip = [], f_main = [],
-    f_nav = [], f_footer = [], f_btn = [], f_bar = [];
+    f_nav = [], f_footer = [], f_btn = [], f_bar = [], f_navcss = [];
 
 CONTENT_PAGES.forEach(function (f) {
   var s = readPage(f); if (!s) return;
@@ -401,6 +407,15 @@ CONTENT_PAGES.forEach(function (f) {
   var btn = (s.match(/^\.btn\{[^}]*\}/m) || [''])[0];
   if (!/border-radius:4px/.test(btn) || !/font-weight:700/.test(btn)) f_btn.push(f);
 
+  /* אותו תפריט, אותה מידה. הבדיקה למעלה משווה את התוויות, ולכן עמוד יכול לשאת את אותם קישורים
+   * בדיוק במשקל וגודל אחרים, וזה מה שקרה: אותו תפריט נראה קל וצפוף פחות תלוי באיזה עמוד עומדים.
+   * ההשוואה היא לכלל השלם של index.html ולא לשלושה ערכים, כי כל ערך שיתווסף שם צריך להתפשט גם כאן. */
+  var navCss = (s.match(/^nav\.main\{[^}]*\}/m) || [''])[0];
+  if (refNavCss && navCss && navCss !== refNavCss) {
+    var got = (navCss.match(/gap:[^;}]+|font-weight:[^;}]+|font-size:[^;}]+/g) || []).join(' ');
+    f_navcss.push(f + ' (' + got + ')');
+  }
+
   /* הסרגל התחתון 70px; padding קטן ממנו מסתיר את סוף כל גלילה */
   /* only the value inside the ≤820px query counts — above that the bar is display:none, so the
      desktop base value is irrelevant and matching it first produced a phantom failure */
@@ -421,6 +436,7 @@ verdict(f_main,  'main הוא יעד דילוג תקין',          'main בלי
 verdict(f_nav,   'הניווט זהה בכל הדפים',            'הניווט לא תואם ל-index.html', false);
 verdict(f_footer,'הפוטר מלא בכל דפי התוכן',         'בפוטר חסר רשתות/כפתור אפליקציה/ויתור סימנים', false);
 verdict(f_btn,   'הכפתורים בצורת האתר בכל דף',      'הכפתורים לא תואמים ל-index.html (4px/700)', false);
+verdict(f_navcss,'מידת הניווט זהה בכל דף',          'nav.main לא תואם ל-index.html', false);
 verdict(f_bar,   'התוכן מפנה את הסרגל התחתון',      'padding קטן מגובה הסרגל (70px)', false);
 
 /* ---------- 12. הצהרות שיוצרות חשיפה משפטית ----------
