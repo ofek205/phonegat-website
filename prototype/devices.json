@@ -4963,6 +4963,211 @@
         "gallery": [],
         "alt": "OnePlus 15R 5G"
       }
+    },
+    {
+      "slug": "nothing-phone-3a-pro",
+      "status": "reference",
+      "brand": "Nothing",
+      "name": "Nothing Phone (3a) Pro",
+      "name_he": "נאת׳ינג פון 3a פרו",
+      "series": "Phone (3a)",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "GSMArena, מקור שאינו היצרן",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. פון גת אינה מוכרת Nothing, והדגם קיים במאגר אך ורק כדי להשוות אליו. המכשיר כן נמכר בישראל ביבוא רשמי דרך קמעונאים כמו GoMobile ובאג."
+        },
+        "launch_year": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. הוכרז במרץ 2025."
+        },
+        "gpu": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. Adreno 710 בתדר 940MHz."
+        },
+        "zoom": {
+          "src": null,
+          "at": null,
+          "note": "נתוני זום לא נאספו בסבב הזה."
+        },
+        "camera_front": {
+          "src": null,
+          "at": null,
+          "note": "מפרט המצלמה הקדמית לא נאסף בסבב הזה."
+        },
+        "camera_extra": {
+          "src": null,
+          "at": null,
+          "note": "פירוט העדשות הנוספות לא נאסף בסבב הזה. ידוע שיש מערך מצלמות פרו, בלי פירוט מאומת."
+        },
+        "video": {
+          "src": null,
+          "at": null,
+          "note": "רזולוציות הקלטת וידאו לא נאספו בסבב הזה."
+        },
+        "charging_wireless": {
+          "src": null,
+          "at": null,
+          "note": "טעינה אלחוטית לא אומתה בסבב הזה."
+        },
+        "dimensions": {
+          "src": null,
+          "at": null,
+          "note": "מידות לא נאספו בסבב הזה."
+        },
+        "weight": {
+          "src": null,
+          "at": null,
+          "note": "משקל לא נאסף בסבב הזה."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "רשימת הצבעים לא אומתה מול היצרן."
+        },
+        "sim": {
+          "src": null,
+          "at": null,
+          "note": "תצורת ה-SIM לא אומתה בסבב הזה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "תמיכה ב-eSIM לא אומתה בסבב הזה."
+        },
+        "connectivity": {
+          "src": null,
+          "at": null,
+          "note": "פירוט הקישוריות לא נאסף בסבב הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "תכולת האריזה אינה מפורסמת."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "מדיניות העדכונים לא אומתה מול היצרן בסבב הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "מספר הדגם לא נאסף בסבב הזה."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "לא נבדק בסבב הזה. היעדר נתון אינו הצהרה."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. 800 ניט טיפוסי, 1300 במצב בהירות גבוהה, ו-3000 שיא."
+        },
+        "chip": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. Qualcomm Snapdragon 7s Gen 3, תהליך 4 ננומטר."
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "at": "2026-08-10",
+          "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. IP64: אטום לאבק ועמיד בהתזות מים. זו אינה עמידות לשיקוע."
+        }
+      },
+      "spec": {
+        "screen_size": "6.77 אינץ׳",
+        "screen_type": "AMOLED, מיליארד צבעים, תמיכה ב-HDR10+",
+        "resolution": "2392x1080 פיקסלים, יחס 19.93:9, צפיפות 387ppi",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "800 ניט טיפוסי, 1300 ניט במצב בהירות גבוהה, 3000 ניט שיא",
+        "chip": "Qualcomm Snapdragon 7s Gen 3, תהליך 4 ננומטר",
+        "cpu": "8 ליבות: אחת ב-2.5GHz, שלוש ב-2.4GHz וארבע ב-1.8GHz",
+        "gpu": "Adreno 710 בתדר 940MHz",
+        "ram": "8GB או 12GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP",
+        "camera_extra": null,
+        "zoom": null,
+        "camera_front": null,
+        "video": null,
+        "battery": "5000 mAh",
+        "charging_wired": "50W חוטי. היצרן מצהיר על 50 אחוז ב-19 דקות ומלא ב-56 דקות",
+        "charging_wireless": null,
+        "dimensions": null,
+        "weight": null,
+        "water_resistance": "IP64: אטום לאבק ועמיד בהתזות מים. זו אינה עמידות לשיקוע",
+        "colors_manufacturer": [],
+        "sim": null,
+        "esim": null,
+        "connectivity": null,
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "recommendation": {
+        "sigal": {
+          "text": null,
+          "status": "missing"
+        },
+        "baruch": {
+          "text": null,
+          "status": "missing"
+        }
+      },
+      "editorial": {
+        "what_matters": "נאת׳ינג פון 3a פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא נמכר בישראל ביבוא רשמי דרך קמעונאים. שימו לב שהמפרט שלו כאן חלקי ומגיע ממקור שאינו היצרן, כי Nothing אינה מפרסמת גיליון מפרט מלא, ולכן הוא פחות מלא מכל שאר הדגמים באתר הזה.",
+        "good_for": [],
+        "less_for": [],
+        "daily_benefits": [],
+        "pros": [
+          "בהירות שיא 3000 ניט",
+          "טעינה 50W",
+          "Snapdragon 7s Gen 3"
+        ],
+        "cons": [
+          "IP64 בלבד",
+          "המפרט המלא אינו מפורסם על ידי היצרן"
+        ],
+        "similar": [],
+        "comparisons": []
+      },
+      "seo": {
+        "keywords": [],
+        "title": null,
+        "description": null,
+        "canonical": null,
+        "schema": []
+      },
+      "commercial": {
+        "price": null,
+        "stock": "לא נמכר אצלנו",
+        "storage_stocked": null,
+        "colors_stocked": null,
+        "import_official": null,
+        "import_parallel": null,
+        "importer_name": null,
+        "warranty_by": null,
+        "warranty_months": null,
+        "service_terms": null,
+        "payments": null,
+        "data_transfer": null
+      },
+      "media": {
+        "hero": null,
+        "gallery": [],
+        "alt": "Nothing Phone (3a) Pro"
+      }
     }
   ],
   "_candidates": {
@@ -5637,6 +5842,32 @@
           "אם אתם טוענים בחיפזון. 80W, אבל שימו לב שהמטען לא כלול באריזה."
         ],
         "bottom_line": "במספרים הגולמיים 15R מנצח בכמה שדות, ובגדול. מה שחסר בו הוא דווקא מה שלא מופיע בטבלה: אין דירוג עמידות מפורסם, ואין התחייבות לתקופת עדכונים. למי שמחזיק מכשיר שנתיים זה כנראה לא ישנה, ולמי שמחזיק חמש זה בדיוק מה שישנה. ואנחנו, לגילוי נאות, מוכרים את S26 ולא את 15R, אז קחו את ההמלצה הזאת עם המידע הזה ביד."
+      },
+      {
+        "a": "galaxy-a57",
+        "b": "nothing-phone-3a-pro",
+        "slug": "galaxy-a57-vs-nothing-phone-3a-pro",
+        "h1": "גלקסי A57 או נאת׳ינג פון 3a פרו",
+        "title": "גלקסי A57 או Nothing Phone (3a) Pro: השוואה | פון גת",
+        "description": "ל-Nothing בהירות שיא גבוהה יותר וטעינה מהירה יותר. ל-A57 דירוג IP68 ותאריך מדויק לסיום העדכונים. פון גת קרית גת.",
+        "keywords": [
+          "גלקסי A57 או Nothing",
+          "Nothing Phone 3a Pro מול A57",
+          "נאת׳ינג פון מול סמסונג",
+          "Galaxy A57 vs Nothing Phone 3a Pro"
+        ],
+        "lede": "גילוי נאות לפני הכול: אנחנו מוכרים את A57 ולא מוכרים Nothing, והדגם הזה כאן כדי שתוכלו להשוות. ועוד דבר שחשוב לדעת: המפרט של Nothing כאן חלקי, כי היצרן אינו מפרסם גיליון מפרט מלא, ולכן הנתונים מגיעים ממקור חיצוני. זה בדיוק ההבדל בין שני המכשירים גם מעבר לטבלה.",
+        "for_a": [
+          "אם העמידות למים חשובה לכם. A57 הוא IP68 שעומד בשיקוע, ו-Nothing הוא IP64 שעומד בהתזה בלבד.",
+          "אם אתם רוצים לדעת עד מתי המכשיר מעודכן. סמסונג נוקבת בתאריך, 31 במרץ 2032, ו-Nothing אינה מפרסמת.",
+          "אם אתם רוצים שנתקן ונלווה אתכם. את A57 אנחנו מוכרים, ואת Nothing לא."
+        ],
+        "for_b": [
+          "אם אתם בחוץ הרבה. בהירות שיא של 3000 ניט מול מסך שסמסונג אינה מפרסמת לו נתון בהירות בכלל.",
+          "אם הטעינה המהירה חשובה לכם. 50W, וסמסונג אינה נוקבת בוואט ב-A57.",
+          "אם העיצוב מדבר אליכם. זה מותג עם שפה ויזואלית מובחנת, וזה שיקול לגיטימי."
+        ],
+        "bottom_line": "ההשוואה הזאת חסרה בכוונה: על Nothing יש לנו פחות נתונים מאומתים מאשר על כל דגם אחר באתר, כי היצרן פשוט אינו מפרסם אותם. זה עצמו נתון. אם אתם שוקלים מכשיר שלא נמכר אצלנו, שווה לבדוק מי נותן עליו אחריות בישראל ומה קורה כשצריך תיקון, וזו שאלה שנשמח לעזור לכם לשאול גם אם תקנו במקום אחר."
       }
     ]
   }
