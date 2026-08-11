@@ -44,7 +44,7 @@ function deviceItems() {
     return { head: brand, items: items };
   });
   var missing = db.devices.filter(function (d) {
-    return d.status !== 'draft' && !placed[d.slug];
+    return d.status !== 'draft' && d.status !== 'reference' && !placed[d.slug];
   }).map(function (d) { return d.slug; });
   if (missing.length) {
     fail('דגמים שאינם בתפריט: ' + missing.join(', ') +

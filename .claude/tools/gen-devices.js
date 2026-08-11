@@ -321,6 +321,9 @@ function hubOrder(a, b) {
 db.devices.forEach(function (d) {
   if (only && d.slug !== only) return;
   if (d.status === 'draft' && !only) { skipped.push(d.slug + ' (draft)'); return; }
+  /* מכשיר ייחוס אינו מקבל עמוד. הוא קיים במאגר רק כדי להשוות אליו, ועמוד
+     משלו היה אומר ללקוח שאנחנו מוכרים אותו. */
+  if (d.status === 'reference' && !only) { skipped.push(d.slug + ' (ייחוס, לא נמכר)'); return; }
   var url = PROD + 'phones/' + d.slug + '/';
   var title = (d.seo && d.seo.title) || (d.name + ' | פון גת');
   var desc = (d.seo && d.seo.description) || '';
@@ -445,7 +448,7 @@ if (!only) {
   var hubPath = path.join(PROTO, 'phones', 'index.html');
   try {
     var hub = fs.readFileSync(hubPath, 'utf8');
-    var live = db.devices.filter(function (x) { return x.status !== 'draft'; }).sort(hubOrder);
+    var live = db.devices.filter(function (x) { return x.status !== 'draft' && x.status !== 'reference'; }).sort(hubOrder);
     var items = live.map(function (x) {
       var bits = [x.brand];
       if (x.spec.screen_size) bits.push('מסך ' + x.spec.screen_size);
@@ -519,7 +522,9 @@ if (swGrew) {
 (function buildPublic() {
   var pub = {
     _: 'נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך. מכיל רק את השדות שכלי ההשוואה קורא בזמן ריצה, וכולם מוצגים בעמודי המכשיר בכל מקרה.',
-    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
+    /* מכשיר ייחוס אינו נכנס לקובץ הציבורי: הכלי האינטראקטיבי הוא 'השווה בין מה
+       שאנחנו מוכרים', וההשוואה החוצה-מותגית חיה בעמודי ההשוואה הכתובים. */
+    devices: db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference'; }).map(function (d) {
       return { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
     })
   };

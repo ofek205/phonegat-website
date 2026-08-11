@@ -791,6 +791,9 @@ if (classFails.length) {
 
   db.devices.forEach(function (d) {
     if (d.status === 'draft') return;
+    /* מכשיר ייחוס הוא דגם שאיננו מוכרים, והוא במאגר רק כדי להשוות אליו.
+       עמוד משלו היה אומר ללקוח שאנחנו מוכרים אותו, ולכן היעדרו הוא הכוונה. */
+    if (d.status === 'reference') return;
     var html = readPage('phones/' + d.slug + '/index.html');
     if (!html) { stale.push(d.slug + ': אין עמוד'); return; }
     pagesSeen++;

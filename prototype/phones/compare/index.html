@@ -427,6 +427,8 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 .hub span{color:var(--ink-soft);font-weight:300;line-height:1.75;max-width:64ch}
 .hub a:hover b,.hub a:focus-visible b{color:var(--teal-d)}
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
+.hub .noown{display:block;color:var(--ink-soft)}
+.hub .noown b{color:var(--ink-strong)}
 /* .chip — נשלף מ-phone-problems/index.html בזמן החילול. עותק אחד. */
 .chip{font-family:inherit;font-size:.98rem;font-weight:500;color:var(--ink-soft);background:none;border:0;border-bottom:2px solid transparent;border-radius:0;padding:.2rem 0;cursor:pointer;transition:color .2s,border-color .2s}
 .chip:hover{color:var(--teal-d);border-bottom-color:var(--teal-d)}
@@ -681,7 +683,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
           </div>
-          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">השוואות בין דגמים</a><a href="/phones/compare/" aria-current="page">השוואת מכשירים</a><a href="/phones/find-my-phone/">איזה מכשיר מתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
+          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">השוואות בין דגמים</a><a href="/phones/compare/">השוואת מכשירים</a><a href="/phones/find-my-phone/">איזה מכשיר מתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>
       </div>
       <div class="ndrop">
@@ -698,7 +700,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
-            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/" aria-current="page">יבוא מקביל או רשמי</a></div>
             <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-day-checklist/">מה לבדוק ביום הראשון</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>
@@ -888,7 +890,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא
          מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML, וזו סטייה
          מהמשמעת שכל שאר הקובץ שומר עליה. */
-      '<p class="aside">'+ds.map(function(d){return '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";
+      /* מכשיר ייחוס אין לו עמוד. קישור אליו נבנה בזמן ריצה, ולכן בדיקת הקישורים
+         המתים בפריפלייט סורקת HTML סטטי ולא רואה אותו. השער חייב להיות כאן. */
+      '<p class="aside">'+ds.map(function(d){return d.ref?esc(d.name_he||d.name)+" אינו נמכר אצלנו":'<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";
   }
 
   wrap.addEventListener("click",function(e){

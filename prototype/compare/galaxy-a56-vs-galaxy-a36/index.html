@@ -430,6 +430,8 @@ html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:
 .hub span{color:var(--ink-soft);font-weight:300;line-height:1.75;max-width:64ch}
 .hub a:hover b,.hub a:focus-visible b{color:var(--teal-d)}
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
+.hub .noown{display:block;color:var(--ink-soft)}
+.hub .noown b{color:var(--ink-strong)}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -675,7 +677,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
-            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/" aria-current="page">יבוא מקביל או רשמי</a></div>
             <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-day-checklist/">מה לבדוק ביום הראשון</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>

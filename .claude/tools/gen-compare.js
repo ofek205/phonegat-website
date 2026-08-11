@@ -173,6 +173,12 @@ function buildMain(p, a, b, d, openTag) {
     /* כאן לא חוזרים על המפרט. הטבלה נמצאת מיד למטה, וכשמשווים שני דגמים באותו גודל מסך
      * התוצאה הייתה "מסך 6.3 אינץ׳" פעמיים זה מתחת לזה, ועוד פעם בפסקה הפותחת. */
     [a, b].map(function (x) {
+      /* מכשיר ייחוס אין לו עמוד, ולכן אין למה לקשר. פריט ולא קישור, והטקסט
+         אומר במפורש שאיננו מוכרים אותו. */
+      if (x.status === 'reference') {
+        return '        <li><span class="noown"><b>' + ltr(x.name) + '</b>' +
+          '<span>' + esc(x.brand) + ' · לא נמכר אצלנו, מופיע כאן להשוואה</span></span></li>';
+      }
       return '        <li><a href="/phones/' + x.slug + '/"><b>' + ltr(x.name) + '</b>' +
         '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
     }).join('\n') + '\n      </ul>\n' +
@@ -227,8 +233,9 @@ function buildMain(p, a, b, d, openTag) {
         '        <h3>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
         pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') +
         '\n        </ul>\n' +
-        '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
-        esc(pair[0].name_he || pair[0].name) + '</a></p>\n      </div>';
+        (pair[0].status === 'reference' ? ''
+          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
+            esc(pair[0].name_he || pair[0].name) + '</a></p>') + '\n      </div>';
     }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n' +
 
     '<section class="rules" aria-labelledby="h-bl">\n  <div class="wrap">\n    <div class="box">\n' +
@@ -282,7 +289,10 @@ function hubCss() {
   var block = g.slice(s, e < 0 ? s + 1400 : e);
   var rules = (block.match(/^\.hub|^@media[^{]*\{\.hub/gm) || []).length;
   if (rules < 6) { console.error('✗ ה-CSS של .hub נשלף חלקי: ' + rules + ' כללים בלבד'); process.exit(1); }
-  return '/* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */\n' + block;
+  /* .noown נכתב כאן ולא נשלף, כי הוא נולד בעמוד ההשוואה ואינו קיים בשום מקום
+     אחר: פריט של מכשיר ייחוס, שאין לו עמוד ולכן אין לאן ללחוץ. */
+  return '/* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */\n' + block +
+    '\n.hub .noown{display:block;color:var(--ink-soft)}\n.hub .noown b{color:var(--ink-strong)}';
 }
 
 /* ה-CSS של עמוד ההשוואה. מוזרק כאן ולא יושב בעמוד המקור, כי המקור הוא עמוד מכשיר ואין בו
@@ -369,7 +379,7 @@ var TOOL_CSS = [
 ].join('\n');
 
 function toolMain(openTag, index, order, pairCount) {
-  var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(function (a, b) {
+  var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference'; }).sort(function (a, b) {
     return a.brand === b.brand ? 0 : (a.brand < b.brand ? -1 : 1);
   });
   var waPick = wa('היי, אני מתלבט בין כמה דגמים ואשמח לעזרה בבחירה');
@@ -488,7 +498,9 @@ function toolMain(openTag, index, order, pairCount) {
   '      /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא\n' +
   '         מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML, וזו סטייה\n' +
   '         מהמשמעת שכל שאר הקובץ שומר עליה. */\n' +
-  '      \'<p class="aside">\'+ds.map(function(d){return \'<a href="/phones/\'+esc(d.slug)+\'/">המפרט המלא של \'+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";\n' +
+  '      /* מכשיר ייחוס אין לו עמוד. קישור אליו נבנה בזמן ריצה, ולכן בדיקת הקישורים\n' +
+  '         המתים בפריפלייט סורקת HTML סטטי ולא רואה אותו. השער חייב להיות כאן. */\n' +
+  '      \'<p class="aside">\'+ds.map(function(d){return d.ref?esc(d.name_he||d.name)+" אינו נמכר אצלנו":\'<a href="/phones/\'+esc(d.slug)+\'/">המפרט המלא של \'+esc(d.name_he||d.name)+"</a>";}).join(" · ")+"</p>";\n' +
   '  }\n' +
   '\n' +
   '  wrap.addEventListener("click",function(e){\n' +
@@ -712,7 +724,7 @@ if (!only) {
  * אלגוריתם. זה עובד רק מפני שהפריסה היא מכשיר-כשורה: עמודה לכל מכשיר הייתה נשברת בשלושה.
  */
 function buildTool() {
-  var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) { return d.slug; });
+  var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference'; }).map(function (d) { return d.slug; });
   var index = {}, n = 0;
   for (var i = 0; i < live.length; i++) {
     for (var j = i + 1; j < live.length; j++) {

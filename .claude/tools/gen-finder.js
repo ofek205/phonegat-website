@@ -62,7 +62,7 @@ function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
  * התיקון היה צריך לקרות פעמיים ואיש לא היה יודע שהשני קיים. זה בדיוק מה ש-traits.js נוצר למנוע. */
 var T = require('./lib/traits.js');
 
-var live = db.devices.filter(function (d) { return d.status !== 'draft'; });
+var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && d.status !== 'reference'; });
 var fail = [];
 var TRAITS = live.map(function (d) {
   var S = d.spec;
