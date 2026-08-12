@@ -87,7 +87,7 @@ function structure() {
           ]
         },
         {
-          head: 'לפי מותג', items: [
+          head: 'לפי דגם', items: [
             { href: '/iphone-repair-kiryat-gat/', label: 'תיקון אייפון' },
             { href: '/galaxy-a-screen-replacement-kiryat-gat/', label: 'מסך גלקסי A' },
             { href: '/galaxy-a-battery-replacement-kiryat-gat/', label: 'סוללה גלקסי A' },
