@@ -3533,6 +3533,156 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   function modelRank(d){var m=String(d.name).match(/\d+/);return m?parseInt(m[0],10):0;}
   var BUY_SHOW=5,moreSeq=0;
   /* bot:facts:end */
+
+  /* bot:answers:start — תשובות על דגם מתוך bot-facts.json.
+     כל הערכים מצוטטים מילה במילה מהשדה. אין ניסוח מחדש ואין ברירת מחדל סבירה-לשמע, כי
+     "אחריות סטנדרטית 12 חודשים" שנכתב כדי למנוע מבוי סתום הופך להבטחה של המותג בלי בקרת
+     אדם. שדה null מנתב לאדם, נקודה. */
+  function normDev(s){return String(s).toLowerCase().replace(/[־–_-]/g,' ').replace(/\s+/g,' ').trim();}
+  /* טוקן דגם נכלל רק אם הוא מכיל גם אות לטינית וגם ספרה: a56, s26 ultra, 17e.
+     מספר עירום כמו "17" אינו מזהה דגם, כי הוא מתאים לחצי הקטלוג, וניחוש הוא בדיוק
+     מה שאסור. לאייפון צריך לכתוב "אייפון 17", וכך אנשים כותבים בכל מקרה. */
+  function devTokens(d){
+    var full=normDev(d.name_he),en=normDev(d.name),sl=normDev(d.slug);
+    var t=[full,en,sl];
+    var m=full.replace(/^(רדמי נוט|גלקסי|אייפון|שיאומי|רדמי)\s+/,'');
+    if(m&&m!==full&&/[a-z]/.test(m)&&/\d/.test(m))t.push(m);
+    var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi)\s+/,'');
+    if(me&&me!==en&&/[a-z]/.test(me)&&/\d/.test(me))t.push(me);
+    return t.filter(function(x,i,a){return x&&a.indexOf(x)===i;});
+  }
+  var WORDCH='0-9a-z\\u0590-\\u05ff';
+  function hasToken(hay,tok){
+    var esc=tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return new RegExp('(^|[^'+WORDCH+'])'+esc+'([^'+WORDCH+']|$)').test(hay);
+  }
+  /* מחזיר את הדגמים שהוזכרו, לפי הטוקן הארוך ביותר שהתאים לכל דגם, כדי ש"אייפון 17 פרו"
+     לא ייחשב גם כ"אייפון 17". */
+  function findDevices(text){
+    if(!FACTS)return [];
+    var hay=' '+normDev(text)+' ',hits=[];
+    FACTS.devices.forEach(function(d){
+      var toks=devTokens(d),best='';
+      for(var i=0;i<toks.length;i++)if(hasToken(hay,toks[i])&&toks[i].length>best.length)best=toks[i];
+      if(best)hits.push({d:d,tok:best});
+    });
+    hits.sort(function(a,b){return b.tok.length-a.tok.length;});
+    var out=[],used=[];
+    hits.forEach(function(h){
+      /* אם הטוקן הזה מוכל בטוקן של דגם שכבר נבחר, זו אותה אזכור ולא דגם שני */
+      for(var i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)return;
+      used.push(h.tok);out.push(h.d);
+    });
+    return out;
+  }
+  /* סדר מהספציפי לכללי: "טעינה אלחוטית" לפני "טעינה", "מצלמה קדמית" לפני "מצלמה" */
+  var DEV_FIELDS=[
+    ['__good',['למי מתאים','מתאים לי','שווה לי','כדאי לי','למי זה','למי הוא מתאים']],
+    ['__less',['למי לא מתאים','למי פחות','חסרונות','מה החסרונות']],
+    ['warranty',['אחריות','אחראי']],
+    ['payments',['תשלומים','תשלום','קרדיט','אשראי']],
+    ['data_transfer',['העברת נתונים','להעביר נתונים','העברת מידע','גיבוי','אנשי קשר']],
+    ['service_terms',['מכשיר חלופי','תנאי שירות','זמן תיקון']],
+    ['charging_wireless',['טעינה אלחוטית','אלחוטית']],
+    ['camera_front',['מצלמה קדמית','סלפי']],
+    ['storage_offered',['אחסון','נפח']],
+    ['screen_size',['גודל מסך','אינץ']],
+    ['screen_type',['סוג מסך','אמולד','oled']],
+    ['refresh_rate',['רענון','הרץ']],
+    ['brightness',['בהירות','ניטס']],
+    ['chip',['שבב','מעבד']],
+    ['ram',['זיכרון','רם']],
+    ['camera_main',['מצלמה','מגה פיקסל']],
+    ['zoom',['זום','טלפוטו']],
+    ['video',['וידאו','צילום וידאו']],
+    ['battery',['סוללה','מיליאמפר']],
+    ['charging_wired',['טעינה','וואט']],
+    ['weight',['משקל','שוקל','גרם']],
+    ['water_resistance',['מים','עמידות במים']],
+    ['esim',['esim','אי סים']],
+    ['security_updates',['עדכונים','עדכוני אבטחה']],
+    ['colors_manufacturer',['צבע','צבעים','גוונים']],
+    ['sim',['סים','כמה סימים']]
+  ];
+  function findField(text){
+    var hay=' '+normDev(text)+' ';
+    for(var i=0;i<DEV_FIELDS.length;i++){
+      var kws=DEV_FIELDS[i][1];
+      for(var j=0;j<kws.length;j++)if(hay.indexOf(normDev(kws[j]))>=0)return DEV_FIELDS[i][0];
+    }
+    return null;
+  }
+  /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
+     ולא מצב שנשמר בשיחה. */
+  function refNote(d){
+    return d.kind==='reference'
+      ? 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.'
+      : '';
+  }
+  function devLink(d){
+    return d.kind==='reference'?null:{label:'לעמוד של '+d.name_he,href:'/phones/'+d.slug+'/'};
+  }
+  var COMMERCIAL={warranty:1,payments:1,data_transfer:1,service_terms:1};
+  function fieldAnswer(d,field){
+    var note=refNote(d),pre=note?note+'\n':'';
+    if(field==='__good'||field==='__less'){
+      var arr=field==='__good'?d.good_for:d.less_for;
+      if(!arr||!arr.length)return {text:pre+'על '+d.name_he+' אין לי את החלק הזה כתוב. ברוך וסיגל יסבירו בדיוק, בטלפון או בחנות.',human:true};
+      return {text:pre+(field==='__good'?'למי מתאים ':'למי פחות מתאים ')+d.name_he+':\n• '+arr.slice(0,3).join('\n• ')};
+    }
+    if(COMMERCIAL[field]){
+      /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
+      if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
+      if(field==='warranty'){
+        if(!d.warranty_by)return {text:pre+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
+        var t='האחריות על '+d.name_he+': '+d.warranty_by;
+        if(typeof d.warranty_months==='number')t+='\nלמשך '+d.warranty_months+' חודשים.';
+        if(d.service_terms)t+='\n'+d.service_terms;
+        return {text:pre+t};
+      }
+      var v=d[field];
+      if(!v)return {text:pre+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
+      return {text:pre+v};
+    }
+    /* שדה מפרט. null אינו "בערך", הוא "היצרן לא מפרסם". */
+    var sv=d.spec?d.spec[field]:null;
+    if(Array.isArray(sv))sv=sv.join(', ');
+    if(sv===null||sv===undefined||sv==='')return {text:pre+'את הנתון הזה על '+d.name_he+' היצרן לא מפרסם. אם זה קריטי לבחירה, ברוך יבדוק מול המכשיר עצמו.',human:true};
+    return {text:pre+d.name_he+', '+sv};
+  }
+  /* מנוסה רק כשיש גם דגם וגם שדה. דגם לבד ממשיך להתנהגות הקיימת, כדי לא לחטוף
+     "אני רוצה לקנות אייפון 17" מזרימת הקנייה. */
+  function deviceAnswer(text){
+    var field=findField(text);if(!field)return false;
+    var devs=findDevices(text);
+    if(!devs.length){
+      /* יש שאלה על שדה אבל אין דגם מזוהה. לא מנחשים דגם קרוב. */
+      if(!FACTS)return false;
+      if(!/[a-z]/i.test(text)&&!/\d/.test(text))return false;
+      track('chat_device_unmatched',{query:String(text).slice(0,80)});
+      botReply('לא זיהיתי איזה דגם. אפשר לכתוב את השם המלא, למשל "גלקסי A56" או "אייפון 17 פרו", או לבחור מהרשימה.',{sug:[['רשימת המכשירים',function(){startBuy();}],['לדבר עם ברוך',function(){startLead('שאלה על דגם');}]]});
+      return true;
+    }
+    if(devs.length>1){
+      var sug=[];
+      for(var i=0;i<devs.length&&i<5;i++)(function(d){sug.push([d.name_he,function(){oneDevice(d,field);}]);})(devs[i]);
+      botReply('על איזה מהם?',{sug:sug});
+      return true;
+    }
+    oneDevice(devs[0],field);
+    return true;
+  }
+  function oneDevice(d,field){
+    fails=0;ctx.device=d.name_he;ctx.slug=d.slug;
+    var a=fieldAnswer(d,field);
+    track('chat_device_spec',{slug:d.slug,field:field});
+    if(a.deferred)track('chat_commercial_deferred',{slug:d.slug,field:a.deferred});
+    var link=devLink(d),cta=a.human?contactCta():null,sug=[];
+    if(link)sug.push([link.label,function(){location.href=link.href;}]);
+    if(!a.human)sug.push(['לדבר עם ברוך',function(){startLead('שאלה על '+d.name_he);}]);
+    botReply(a.text,{cta:cta,sug:sug});
+  }
+  /* bot:answers:end */
   function buyParts(){var p=[];if(ctx.rec)p.push('רוצה המלצה על הדגם המתאים');if(ctx.brand)p.push('יצרן: '+ctx.brand);if(ctx.model)p.push('דגם: '+ctx.model);if(ctx.storage)p.push('נפח: '+ctx.storage);if(ctx.imp)p.push('יבוא: '+ctx.imp);return p;}
   function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
   function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
@@ -3676,7 +3826,10 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
      digits_present is the useful one, because it says people are trying to leave details in the
      chat box instead of using the callback flow. None of these three can identify anybody. */
   function fallback(){fails++;track('chat_fallback',{q_len:Math.min(lastUser.length,300),q_words:lastUser.split(/\s+/).length,digits_present:/\d/.test(lastUser)?1:0,attempt:fails});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
-  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}var it=matchIntent(text);if(it)respond(it);else fallback();}
+  /* שאלה על דגם נבדקת לפני matchIntent, כי "אחריות על גלקסי A56" הייתה נתפסת על ידי
+     הכוונה הגנרית warranty ומקבלת תשובה כללית, ולעולם לא מגיעה לנתון של הדגם.
+     deviceAnswer מחזיר false כשאין גם דגם וגם שדה, ואז הזרימה הקיימת נמשכת כרגיל. */
+  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it)respond(it);else fallback();}
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
