@@ -106,6 +106,69 @@ facts.devices.forEach(function (d) {
   });
 });
 
+/* ---------- השוואה: כל צמד שיש לו עמוד, ועוד צמדים שאין ---------- */
+var compareAnswer = sandbox.compareAnswer, comparePage = sandbox.comparePage,
+    isCompareQ = sandbox.isCompareQ, CMP_ORDER = sandbox.CMP_ORDER;
+var cmpFails = [], cmpChecked = 0;
+function bySlug(s) { for (var i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === s) return facts.devices[i]; return null; }
+
+if (compareAnswer && comparePage) {
+  /* כל 19 עמודי ההשוואה, ולכן גם שלושת הצמדים שכוללים מכשיר ייחוס */
+  var pairs = (facts.comparePages || []).map(function (p) {
+    var ix = p.indexOf('-vs-');
+    return [p.slice(0, ix), p.slice(ix + 4)];
+  });
+  /* ועוד צמד שאין לו עמוד, כדי לוודא נפילה לשער ההשוואות ולא ל-404 */
+  pairs.push(['iphone-16', 'galaxy-a07']);
+
+  pairs.forEach(function (pr) {
+    var a = bySlug(pr[0]), b = bySlug(pr[1]);
+    if (!a || !b) { cmpFails.push(pr.join(' vs ') + ': דגם לא נמצא בקובץ'); return; }
+    cmpChecked++;
+    var r, href;
+    try { r = compareAnswer(a, b); href = comparePage(a, b); }
+    catch (e) { cmpFails.push(pr.join(' vs ') + ': נפל — ' + e.message); return; }
+    var t = r.text;
+
+    if (PRICE.test(t)) cmpFails.push(pr.join(' vs ') + ': מחיר בתשובה');
+    if (t.indexOf('—') >= 0) cmpFails.push(pr.join(' vs ') + ': מקף ארוך');
+    if ((a.kind === 'reference' || b.kind === 'reference') && t.indexOf('לא מוכרים') < 0)
+      cmpFails.push(pr.join(' vs ') + ': חסר גילוי נאות למכשיר ייחוס');
+    if ((t.match(/\n•/g) || []).length > 3)
+      cmpFails.push(pr.join(' vs ') + ': יותר משלושה הבדלים');
+
+    /* הקישור חייב להצביע לעמוד שקיים, או לשער */
+    var known = (facts.comparePages || []).indexOf(pr[0] + '-vs-' + pr[1]) >= 0 ||
+                (facts.comparePages || []).indexOf(pr[1] + '-vs-' + pr[0]) >= 0;
+    if (known && href === '/compare/') cmpFails.push(pr.join(' vs ') + ': יש עמוד והקישור נשלח לשער');
+    if (!known && href !== '/compare/') cmpFails.push(pr.join(' vs ') + ': אין עמוד והקישור מוביל ל-404: ' + href);
+
+    /* כל מספר בתשובה חייב לבוא מאחד משדות המפרט של אחד משני הדגמים, או משם דגם */
+    var allowed = a.name_he + ' ' + b.name_he + ' ' + a.name + ' ' + b.name;
+    CMP_ORDER.forEach(function (f) { allowed += ' ' + srcText(a, f[0]) + ' ' + srcText(b, f[0]); });
+    var an = nums(allowed);
+    nums(t).forEach(function (n) {
+      if (an.indexOf(n) < 0) cmpFails.push(pr.join(' vs ') + ': המספר ' + n + ' אינו באף שדה מקור');
+    });
+  });
+
+  /* שאלת השוואה מזהה שני דגמים, גם כשאחד מוכל בשני */
+  [['ההבדל בין אייפון 17 לאייפון 17 פרו', 'iphone-17', 'iphone-17-pro'],
+   ['גלקסי A56 מול גלקסי A36', 'galaxy-a56', 'galaxy-a36'],
+   ['אייפון 17 לעומת פיקסל 10', 'iphone-17', 'pixel-10']
+  ].forEach(function (c) {
+    if (!isCompareQ(c[0])) { cmpFails.push('"' + c[0] + '" לא זוהתה כשאלת השוואה'); return; }
+    var r = findDevices(c[0]);
+    if (r.length < 2 || r[0].slug !== c[1] || r[1].slug !== c[2])
+      cmpFails.push('"' + c[0] + '" → ' + r.map(function (x) { return x.slug; }).join('+') + ', צפוי ' + c[1] + '+' + c[2]);
+  });
+  /* ושאלה על דגם אחד אינה נחשבת השוואה */
+  if (findDevices('אחריות על אייפון 17 פרו').length !== 1)
+    cmpFails.push('"אחריות על אייפון 17 פרו" זוהה כיותר מדגם אחד');
+} else {
+  cmpFails.push('פונקציות ההשוואה לא נמצאו');
+}
+
 /* ---------- זיהוי דגם: לא מנחשים ---------- */
 var idFails = [];
 function expectNone(q) { if (findDevices(q).length) idFails.push('"' + q + '" זוהה כדגם ולא היה צריך'); }
@@ -145,6 +208,7 @@ function report(list, title) {
 }
 var n = 0;
 n += report(fails, 'תשובות: אין מחיר, אין מספר מחוץ למקור, גילוי נאות בכל אזכור ייחוס, אין מקף ארוך');
+n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
 console.log('');

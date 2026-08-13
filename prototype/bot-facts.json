@@ -1468,5 +1468,26 @@
         "model_numbers": null
       }
     }
+  ],
+  "comparePages": [
+    "galaxy-a17-vs-galaxy-a07",
+    "galaxy-a37-vs-galaxy-a17",
+    "galaxy-a37-vs-galaxy-a27",
+    "galaxy-a56-vs-galaxy-a36",
+    "galaxy-a56-vs-redmi-note-14-pro",
+    "galaxy-a57-vs-galaxy-a37",
+    "galaxy-a57-vs-nothing-phone-3a-pro",
+    "galaxy-s25-fe-vs-galaxy-a57",
+    "galaxy-s26-plus-vs-galaxy-s26",
+    "galaxy-s26-vs-galaxy-s26-ultra",
+    "galaxy-s26-vs-oneplus-15r",
+    "iphone-16-vs-iphone-17e",
+    "iphone-17-pro-vs-iphone-17-pro-max",
+    "iphone-17-vs-galaxy-s26",
+    "iphone-17-vs-iphone-17-pro",
+    "iphone-17-vs-pixel-10",
+    "redmi-note-14-vs-redmi-note-14-pro",
+    "redmi-note-15-pro-vs-redmi-note-15",
+    "redmi-note-15-vs-galaxy-a17"
   ]
 }
