@@ -595,7 +595,16 @@ if (swGrew) {
         less_for: Array.isArray(e.less_for) ? e.less_for : [],
         spec: d.spec || {}
       };
-    })
+    }),
+    /* רשימת עמודי ההשוואה נגזרת מהדיסק ולא מ-editorial.comparisons, שריק ב-24 מ-24.
+       כך הבוט מקשר רק לעמוד שבאמת קיים, ולא מייצר 404 בשיחה. */
+    comparePages: (function () {
+      try {
+        return fs.readdirSync(path.join(PROTO, 'compare')).filter(function (n) {
+          return n.indexOf('-vs-') > 0 && fs.existsSync(path.join(PROTO, 'compare', n, 'index.html'));
+        }).sort();
+      } catch (e) { return []; }
+    })()
   };
   var out = path.join(PROTO, 'bot-facts.json');
   fs.writeFileSync(out, JSON.stringify(facts, null, 2) + '\n');
