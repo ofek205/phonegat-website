@@ -18,6 +18,15 @@
    arbitrary names and litter the database with junk keys. */
 var OFFERS = { screen: 1, kb: 1, idf: 1 };
 
+/* Read through the allowlist without the prototype chain. A plain object literal
+   inherits from Object.prototype, so OFFERS['toString'], OFFERS['constructor'],
+   OFFERS['__proto__'] and every other built-in all come back truthy, which let
+   POST {"offer":"toString"} past the check and INCR a junk key, the exact thing
+   the allowlist above exists to prevent. */
+function isOffer(name) {
+  return Object.prototype.hasOwnProperty.call(OFFERS, name);
+}
+
 /* Abuse cap. Inflating the counter would destroy the one metric this whole
    server exists to provide, so it matters more here than typical rate limits. */
 var MAX_PER_IP_PER_HOUR = 5;
@@ -42,10 +51,22 @@ function redis(cfg, parts) {
   }).then(function (j) { return j.result; });
 }
 
+/* The rate-limit key, and therefore the only thing protecting the counter.
+ *
+ * x-forwarded-for is a list the client can start: anything it sends arrives at the
+ * FRONT, and the platform appends what it actually saw. Reading [0] let a caller
+ * pick its own bucket by varying the header, so 5-per-hour was never reached.
+ * The last entry is the one written by the closest proxy we trust, and x-real-ip
+ * is set by the platform rather than forwarded, so it goes first. */
 function clientIp(req) {
+  var real = req.headers['x-real-ip'];
+  if (real) return String(real).trim();
   var xf = req.headers['x-forwarded-for'];
-  if (xf) return String(xf).split(',')[0].trim();
-  return req.headers['x-real-ip'] || 'unknown';
+  if (xf) {
+    var hops = String(xf).split(',');
+    return hops[hops.length - 1].trim();
+  }
+  return 'unknown';
 }
 
 function readBody(req) {
@@ -76,7 +97,7 @@ module.exports = async function handler(req, res) {
 
   var body = await readBody(req);
   var offer = typeof body.offer === 'string' ? body.offer : '';
-  if (!OFFERS[offer]) return res.status(400).json({ error: 'unknown_offer' });
+  if (!isOffer(offer)) return res.status(400).json({ error: 'unknown_offer' });
 
   try {
     /* Rate limit first, so a flood is rejected before it can consume numbers. */

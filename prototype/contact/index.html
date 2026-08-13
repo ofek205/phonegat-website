@@ -574,7 +574,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap fbox">
     <h2 id="c-h">הפרטים שלכם</h2>
     <p class="sub">נחזור אליכם באותו יום עסקים</p>
-    <form class="fgrid" id="contactForm" novalidate>
+    <!-- action/method matter only when the JS below never runs. Without them a form with no
+         action submits GET to its own URL, so the name, the phone, the message and the
+         access_key all landed in the query string, and from there in the access log, the
+         browser history, the Referer header and the GA4 page path. The lead itself went
+         nowhere. Posting to the real endpoint keeps the details in the body and makes the
+         no-JS path actually deliver. The handler calls preventDefault first, so nothing
+         changes when the script does run. -->
+    <form class="fgrid" id="contactForm" action="https://api.web3forms.com/submit" method="post" novalidate>
     <input type="hidden" name="access_key" value="99c6d9a8-827b-42d7-99f1-22e06a8643fe">
     <input type="hidden" name="subject" value="פנייה חדשה מאתר פון גת">
     <input type="hidden" name="from_name" value="אתר פון גת">
