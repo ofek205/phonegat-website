@@ -1057,6 +1057,74 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 29. bot-facts.json: הקובץ שהעוזר בצ'אט קורא ----------
+ * צ'אט אינו נסרק סטטית, ולכן שום בדיקה כאן לא יכולה להוכיח שהבוט עונה נכון. אבל
+ * **הקובץ שהוא קורא כן נסרק**, וזה מכסה את שתי התקלות המסוכנות באמת:
+ *
+ *   1. שדה שאסור לבוט לנקוב בו הגיע לקובץ. מחיר הוא החלטת בעלים נעולה, ומלאי מלא
+ *      ב-12 מ-24 בלבד, כלומר תשובה ממנו היא הבטחה בשם המותג על סמך נתון חלקי.
+ *   2. מישהו הוסיף דגם ל-devices.json ולא הריץ את gen-devices.js. אז הבוט מכיר קטלוג
+ *      ישן, ממשיך לעבוד, ופשוט לא יודע שהדגם קיים. אין לזה שום סימן חיצוני.
+ *
+ * הבדיקה גם מוודאת שלכל דגם נמכר יש שלושת שדות האמון, כי null בהם מנתב לאדם, ואם כולם
+ * null הבוט מנתב תמיד ואין לו טעם. */
+(function () {
+  var raw, facts;
+  try { raw = read('prototype/bot-facts.json'); } catch (e) {
+    warn('bot-facts.json חסר — העוזר בצ\'אט יאבד את נתוני הקטלוג וינתב לאדם בכל שאלה על דגם');
+    return;
+  }
+  try { facts = JSON.parse(raw); } catch (e) {
+    bad('bot-facts.json שבור: ' + e.message.slice(0, 60) + ' — הבוט לא יקבל שום נתון');
+    return;
+  }
+  var list = (facts && facts.devices) || [];
+  if (!list.length) { bad('bot-facts.json ריק מדגמים'); return; }
+
+  /* אסור בקובץ, כל אחד מסיבה אחרת. ראו את ההערה ב-gen-devices.js. */
+  var FORBIDDEN = ['price', 'colors_stocked', 'stock', 'storage_stocked',
+                   'importer_name', 'recommendation', 'commercial', 'editorial'];
+  var leaked = FORBIDDEN.filter(function (k) { return raw.indexOf('"' + k + '"') >= 0; });
+  if (leaked.length) {
+    bad('bot-facts.json מכיל שדה אסור: ' + leaked.join(', ') +
+      ' — הבוט עלול לנקוב בנתון שאין לו אישור לנקוב בו');
+  } else { ok('bot-facts.json בלי שדות אסורים (' + FORBIDDEN.length + ' נבדקו)'); }
+
+  /* סנכרון מול המקור. סופרים באותו סינון שהמחולל מסנן בו. */
+  var srcCount = null;
+  try {
+    var src = JSON.parse(read('prototype/devices.json'));
+    srcCount = (src.devices || []).filter(function (d) { return d.status !== 'draft'; }).length;
+  } catch (e) { /* בדיקה 23 כבר מטפלת ב-devices.json שבור */ }
+  if (srcCount !== null && srcCount !== list.length) {
+    bad('bot-facts.json מחזיק ' + list.length + ' דגמים ו-devices.json מחזיק ' + srcCount +
+      ' — הרץ node .claude/tools/gen-devices.js, אחרת הבוט עובד מול קטלוג ישן בשקט');
+  } else if (srcCount !== null) {
+    ok('bot-facts.json מסונכרן עם devices.json (' + list.length + ' דגמים)');
+  }
+
+  /* שלושת שדות האמון, שהם הליבה של v1 */
+  var missing = list.filter(function (d) {
+    return d.kind === 'sold' && (!d.warranty_by || !d.payments || !d.data_transfer);
+  }).map(function (d) { return d.slug; });
+  if (missing.length) {
+    warn('דגמים נמכרים בלי אחריות/תשלומים/העברת נתונים: ' + missing.join(', ') +
+      ' — הבוט ינתב לאדם בשאלות האלה');
+  } else { ok('לכל הדגמים הנמכרים יש אחריות, תשלומים והעברת נתונים'); }
+
+  /* מכשיר ייחוס אינו נמכר, ולכן תנאי מסחר עליו הם טעות ולא נתון חסר */
+  var refWithTerms = list.filter(function (d) {
+    return d.kind === 'reference' && (d.warranty_by || d.payments || d.warranty_months);
+  }).map(function (d) { return d.slug; });
+  if (refWithTerms.length) {
+    bad('מכשיר ייחוס עם תנאי מסחר: ' + refWithTerms.join(', ') +
+      ' — אנחנו לא מוכרים אותו, ולכן אין לו אחריות ואין לו תשלומים');
+  } else {
+    ok(list.filter(function (d) { return d.kind === 'reference'; }).length +
+      ' מכשירי ייחוס, אף אחד בלי תנאי מסחר');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
