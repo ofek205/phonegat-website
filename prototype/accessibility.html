@@ -14,6 +14,11 @@
     return 'preview';
   })(location.hostname);
   window.PG_PROD=(window.PG_ENV==='production');
+  /* Set before GTM loads, so the container can exclude test traffic on pg_env instead of a
+     hand-kept hostname rule, and segment on page_type instead of a regex over Page Path.
+     No "event" key: this sets Data Layer Variables, it does not fire a trigger. */
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'legal'});
   /* Appended rather than edited: the page's own robots meta is parsed after this script, and
      Google honours the most restrictive directive when two are present. */
   if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
