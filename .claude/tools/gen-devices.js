@@ -551,4 +551,66 @@ if (swGrew) {
   console.log('✓ devices-public.json: ' + pub.devices.length + ' מכשירים, 4 שדות לכל אחד, אפס שדות פרטיים');
 })();
 
+/* ============================================ bot-facts.json
+ *
+ * הקובץ שהעוזר בצ'אט קורא כשהפאנל נפתח. **קובץ נפרד ולא הרחבה של devices-public.json**,
+ * משתי סיבות: לזה יש חוזה מתועד ("בדיוק ארבעת השדות שכלי ההשוואה קורא בזמן ריצה") והוא
+ * מוציא מכשירי ייחוס בכוונה, והבוט צריך אותם דווקא בשביל הגילוי הנאות.
+ *
+ * המפתחות כאן **שטוחים**, כלומר המחרוזות "commercial" ו-"editorial" אינן מופיעות בקובץ.
+ * זה לא נוי: שער הדלף של buildPublic חוסם את שתיהן לפי שם, ולכן דחיפת שדות מסחריים לתוך
+ * הקובץ הציבורי הקיים הייתה מחייבת לרופף שער שכל תפקידו למנוע דלף מחירים. שיטוח פותר את
+ * זה בבנייה במקום בהחרגה.
+ *
+ * מה שלא נכנס, ולמה:
+ *   price, colors_stocked   אין מחירון באתר, החלטת בעלים נעולה. ריקים ב-24 מ-24 בכל מקרה.
+ *   stock, storage_stocked  מלאים ב-12 ו-2 מ-24. בוט שעונה "יש במלאי" מנתון חלקי גרוע
+ *                           מבוט שמנתב לאדם, כי טעות כאן היא הבטחה בשם המותג.
+ *   importer_name           מלא ב-1 מ-24.
+ *   recommendation          48 מ-48 ב-missing. ציטוט אישי מוצג רק ב-approved בדיוק. */
+(function buildBotFacts() {
+  var FORBIDDEN = ['price', 'colors_stocked', 'stock', 'storage_stocked',
+                   'importer_name', 'recommendation', 'commercial', 'editorial'];
+  var facts = {
+    _: 'נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך.',
+    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
+      var c = d.commercial || {}, e = d.editorial || {};
+      var ref = d.status === 'reference';
+      return {
+        slug: d.slug,
+        name: d.name,
+        name_he: d.name_he || d.name,
+        brand: d.brand,
+        kind: ref ? 'reference' : 'sold',
+        /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
+           ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
+        warranty_by: ref ? null : (c.warranty_by || null),
+        warranty_months: ref ? null : (typeof c.warranty_months === 'number' ? c.warranty_months : null),
+        service_terms: ref ? null : (c.service_terms || null),
+        payments: ref ? null : (c.payments || null),
+        data_transfer: ref ? null : (c.data_transfer || null),
+        /* מערכי משפטים שנכתבו ביד. הבוט מצטט מהם מילה במילה ולא מנסח מחדש, וזה מה
+           שמקיים את קריטריון הקבלה "אין מספר שאינו מופיע כטקסט בשדה המקורי". */
+        good_for: Array.isArray(e.good_for) ? e.good_for : [],
+        less_for: Array.isArray(e.less_for) ? e.less_for : [],
+        spec: d.spec || {}
+      };
+    })
+  };
+  var out = path.join(PROTO, 'bot-facts.json');
+  fs.writeFileSync(out, JSON.stringify(facts, null, 2) + '\n');
+
+  var leaked = FORBIDDEN.filter(function (k) {
+    return JSON.stringify(facts).indexOf('"' + k + '"') >= 0;
+  });
+  if (leaked.length) {
+    console.error('✗ bot-facts.json מכיל שדה אסור: ' + leaked.join(', ') +
+      ' — הבוט לא יקבל נתון שאסור לו לנקוב בו');
+    process.exit(1);
+  }
+  var refs = facts.devices.filter(function (d) { return d.kind === 'reference'; }).length;
+  console.log('✓ bot-facts.json: ' + facts.devices.length + ' מכשירים (' + refs +
+    ' ייחוס), אפס שדות אסורים');
+})();
+
 console.log('\n' + made + ' עמודי מכשיר נוצרו. הרצה: node .claude/preflight.js');
