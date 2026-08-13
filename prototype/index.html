@@ -3492,11 +3492,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
         {cta:['wa','tel'],waText:'שיחה חוזרת מהאתר\nשם: '+name+'\nטלפון: '+phone+'\nנושא: '+topic});
     };
     /* Same rule as the contact form: a chat lead from staging must not reach the inbox.
-       And it says so on screen, not only in the console. A tester who sees the production
-       wording walks away believing the lead landed. */
+       The caller says so on screen, through keyOk, because a reply printed from here lands
+       BEFORE the caller's reply and the reassuring production wording would be the last
+       thing a tester reads. */
     if(!window.PG_PROD){
       if(window.console)console.warn('[pg] '+window.PG_ENV+': הליד לא נשלח במייל');
-      botReply('הערה לבודקים: זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הזרימה עצמה עבדה במלואה.');
       return;
     }
     /* own copy: the contact form moved to /contact/, so there is no #contactForm here to read */
@@ -3515,7 +3515,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(flow.type==='buy'){var bt=text.slice(0,40);if(flow.step==='model')buyModel(bt);else if(flow.step==='storage')buyStorage(bt);else if(flow.step==='import')buyImport(bt);else buyBrand(bt);return;}
     if(flow.type==='lead'){
       if(flow.step==='name'){ctx.name=text.replace(/[<>]/g,'').slice(0,40);flow.step='phone';botReply('נעים מאוד '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');return;}
-      if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=true;   /* the key is a constant here now — the form moved to /contact/ */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! כדי שנחזור אליכם הכי מהר, שלחו לנו את הפרטים בלחיצה אחת ב-WhatsApp, או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
+      if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=window.PG_PROD===true;   /* was a dead literal, so the false branch below could never run. It means "this lead is actually on its way": true only in production, where saveLead corrects itself if the request fails. */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הוולידציה והזרימה עבדו במלואן. כדי שנחזור אליכם באמת, שלחו את הפרטים ב-WhatsApp או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
     }
   }
   function fallback(){fails++;track('chat_fallback',{q:lastUser});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
