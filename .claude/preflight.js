@@ -1007,6 +1007,56 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 28. Product שגוגל תדחה ----------
+ * schema.org לא דורש offers, ולכן Product בלי מחיר תקין תחבירית ובדיקה 9 מאשרת אותו. גוגל
+ * דורשת אחד מתוך offers, review ו-aggregateRating, ומה שקורה בפועל אינו התעלמות אלא שגיאה
+ * קריטית ב-Search Console. ב-13.8.2026 הגיע מייל על 21 עמודי המכשיר, כלומר כל אחד מהם.
+ * ההערה במחולל הבטיחה "לא זכאי לתוצאות עשירות", וזה היה חצי נכון.
+ *
+ * ישות מקוננת תחת about או mainEntity פטורה: שם היא ההקשר של המאמר ולא הישות הראשית של
+ * הדף, ולכן אינה מועמדת ל-snippet. זה מה שעמודי ההשוואה עושים, ונכון שיישאר.
+ *
+ * ⚠ הפתרון לכשל כאן אינו aggregateRating. אין ביקורות מוצר לדגמים האלה, וסימון ביקורות
+ * מומצא הוא הפרת מדיניות שגוררת ענישה ידנית. בלי מחיר אמיתי, לא לפלוט Product. */
+(function () {
+  var offenders = [];
+  function inspect(node, nested, file) {
+    if (Object.prototype.toString.call(node) === '[object Array]') {
+      node.forEach(function (n) { inspect(n, nested, file); });
+      return;
+    }
+    if (!node || typeof node !== 'object') return;
+    if (node['@type'] === 'Product' && !nested) {
+      var has = function (k) { return Object.prototype.hasOwnProperty.call(node, k); };
+      if (!has('offers') && !has('aggregateRating') && !has('review')) {
+        offenders.push(file + (node.name ? ' (' + node.name + ')' : ''));
+      }
+    }
+    Object.keys(node).forEach(function (k) {
+      if (k === '@context' || k === '@type') return;
+      /* about / mainEntity מורידים את הישות מדרגת "הישות של הדף" */
+      inspect(node[k], nested || k === 'about' || k === 'mainEntity', file);
+    });
+  }
+  pageFiles.forEach(function (f) {
+    var src;
+    try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
+    var blocks = src.match(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g) || [];
+    blocks.forEach(function (b) {
+      var body = b.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, '');
+      var j;
+      try { j = JSON.parse(body); } catch (e) { return; }   /* בדיקה 9 מדווחת על שבור */
+      inspect(j, false, f);
+    });
+  });
+  if (offenders.length) {
+    bad('ישות Product בלי offers, review או aggregateRating: ' + offenders.join(', ') +
+      ' — גוגל מדווחת על זה כשגיאה קריטית ב-Search Console, לא כאי-זכאות. בלי מחיר אמיתי לא לפלוט Product כלל');
+  } else {
+    ok('אין ישות Product שגוגל תדחה');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
