@@ -3516,7 +3516,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* התווית מקוצרת בצ'יפי דגם: היצרן והסדרה כבר נבחרו בשלב הקודם באותה שיחה, ולכן המילה
      "גלקסי" רק חוזרת. נמדד בדפדפן: "גלקסי A56" הוא 83px ו-"A56" הוא 48px, כלומר חמישה
      בשורה במקום שלושה, ושורה שלמה פחות. */
-  var SHORT_PREFIX=['רדמי נוט','גלקסי','אייפון','שיאומי','רדמי'];
+  var SHORT_PREFIX=['רדמי נוט','גלקסי','אייפון','שיאומי','רדמי','גוגל','וואן פלוס','נאת׳ינג פון'];
   function shortModel(he){
     for(var i=0;i<SHORT_PREFIX.length;i++)if(he.indexOf(SHORT_PREFIX[i]+' ')===0)return he.slice(SHORT_PREFIX[i].length+1);
     return he;
@@ -3534,41 +3534,56 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
      "אחריות סטנדרטית 12 חודשים" שנכתב כדי למנוע מבוי סתום הופך להבטחה של המותג בלי בקרת
      אדם. שדה null מנתב לאדם, נקודה. */
   function normDev(s){return String(s).toLowerCase().replace(/[־–_-]/g,' ').replace(/\s+/g,' ').trim();}
-  /* טוקן דגם נכלל רק אם הוא מכיל גם אות לטינית וגם ספרה: a56, s26 ultra, 17e.
-     מספר עירום כמו "17" אינו מזהה דגם, כי הוא מתאים לחצי הקטלוג, וניחוש הוא בדיוק
-     מה שאסור. לאייפון צריך לכתוב "אייפון 17", וכך אנשים כותבים בכל מקרה. */
+  /* טוקן דגם נכלל רק אם יש בו ספרה **וגם** אות, עברית או לטינית: a56, s26 ultra, 17e,
+     "פיקסל 10", "17 פרו". מספר עירום כמו "17" נדחה, כי הוא מתאים לחצי הקטלוג וניחוש הוא
+     בדיוק מה שאסור. דרישת אות לטינית בלבד הייתה מפילה "פיקסל 10", שהיא הצורה שבה אנשים
+     כותבים בעברית. */
   function devTokens(d){
     var full=normDev(d.name_he),en=normDev(d.name),sl=normDev(d.slug);
     var t=[full,en,sl];
-    var m=full.replace(/^(רדמי נוט|גלקסי|אייפון|שיאומי|רדמי)\s+/,'');
-    if(m&&m!==full&&/[a-z]/.test(m)&&/\d/.test(m))t.push(m);
-    var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi)\s+/,'');
-    if(me&&me!==en&&/[a-z]/.test(me)&&/\d/.test(me))t.push(me);
-    return t.filter(function(x,i,a){return x&&a.indexOf(x)===i;});
+    function ok(x){return x&&/\d/.test(x)&&/[a-z֐-׿]/.test(x);}
+    var i,m;
+    for(i=0;i<SHORT_PREFIX.length;i++){
+      m=full.indexOf(normDev(SHORT_PREFIX[i])+' ')===0?full.slice(normDev(SHORT_PREFIX[i]).length+1):'';
+      if(ok(m)){t.push(m);break;}
+    }
+    var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi|google|oneplus|nothing phone)\s+/,'');
+    if(me!==en&&ok(me))t.push(me);
+    return t.filter(function(x,j,a){return x&&a.indexOf(x)===j;});
   }
   var WORDCH='0-9a-z\\u0590-\\u05ff';
+  /* גבול שמאלי שמתיר תחילית עברית אחת. בעברית "ל", "ב", "ה", "מ", "ו", "ש", "כ" נדבקות
+     למילה, ולכן "לאייפון 17 פרו" לא היה מתאים לטוקן "אייפון 17 פרו" בבדיקת גבול רגילה.
+     זו אותה משפחה של \b שאינו קיים בעברית, והיא הפילה כאן כל שאלת השוואה. */
   function hasToken(hay,tok){
     var esc=tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    return new RegExp('(^|[^'+WORDCH+'])'+esc+'([^'+WORDCH+']|$)').test(hay);
+    return new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'([^'+WORDCH+']|$)').test(hay);
   }
-  /* מחזיר את הדגמים שהוזכרו, לפי הטוקן הארוך ביותר שהתאים לכל דגם, כדי ש"אייפון 17 פרו"
-     לא ייחשב גם כ"אייפון 17". */
+  function countSub(hay,tok){var n=0,i=0;while((i=hay.indexOf(tok,i))>=0){n++;i+=tok.length;}return n;}
+  /* מחזיר את הדגמים שהוזכרו, בסדר ההופעה במשפט.
+     ההכלה נפתרת בספירה ולא בפסילה: "אחריות על אייפון 17 פרו" מזכיר את הטוקן "אייפון 17"
+     פעם אחת, וכולה מוסברת על ידי "אייפון 17 פרו", ולכן אייפון 17 אינו אזכור נפרד.
+     אבל "ההבדל בין אייפון 17 לאייפון 17 פרו" מזכיר אותו פעמיים ואת הארוך פעם אחת, כלומר
+     נשאר אזכור אחד בלתי מוסבר, וזה דגם שני אמיתי. פסילה עיוורת לפי הכלה הייתה מאבדת את
+     הצד השמאלי של כל שאלת השוואה. */
   function findDevices(text){
     if(!FACTS)return [];
     var hay=' '+normDev(text)+' ',hits=[];
     FACTS.devices.forEach(function(d){
       var toks=devTokens(d),best='';
       for(var i=0;i<toks.length;i++)if(hasToken(hay,toks[i])&&toks[i].length>best.length)best=toks[i];
-      if(best)hits.push({d:d,tok:best});
+      if(best)hits.push({d:d,tok:best,at:hay.indexOf(best)});
     });
     hits.sort(function(a,b){return b.tok.length-a.tok.length;});
     var out=[],used=[];
     hits.forEach(function(h){
-      /* אם הטוקן הזה מוכל בטוקן של דגם שכבר נבחר, זו אותה אזכור ולא דגם שני */
-      for(var i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)return;
-      used.push(h.tok);out.push(h.d);
+      var left=countSub(hay,h.tok),i;
+      for(i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)left-=countSub(hay,used[i]);
+      if(left<=0)return;
+      used.push(h.tok);out.push(h);
     });
-    return out;
+    out.sort(function(a,b){return a.at-b.at;});
+    return out.map(function(h){return h.d;});
   }
   /* סדר מהספציפי לכללי: "טעינה אלחוטית" לפני "טעינה", "מצלמה קדמית" לפני "מצלמה" */
   var DEV_FIELDS=[
@@ -3645,11 +3660,52 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(sv===null||sv===undefined||sv==='')return {text:pre+'את הנתון הזה על '+d.name_he+' היצרן לא מפרסם. אם זה קריטי לבחירה, ברוך יבדוק מול המכשיר עצמו.',human:true};
     return {text:pre+d.name_he+', '+sv};
   }
-  /* מנוסה רק כשיש גם דגם וגם שדה. דגם לבד ממשיך להתנהגות הקיימת, כדי לא לחטוף
-     "אני רוצה לקנות אייפון 17" מזרימת הקנייה. */
+  /* ההשוואה מחזירה עד שלושה הבדלים וקישור, ולא טבלה מלאה, כדי לא לקניבל את /compare/
+     ואת /phones/ שנכתבו בשביל בדיוק השאילתה הזאת. הסדר הוא לפי מה שקונה מרגיש, ולא לפי
+     סדר השדות במפרט. */
+  var CMP_ORDER=[
+    ['screen_size','גודל מסך'],['chip','שבב'],['camera_main','מצלמה ראשית'],
+    ['zoom','זום'],['battery','סוללה'],['charging_wired','טעינה'],
+    ['storage_offered','אחסון'],['refresh_rate','קצב רענון'],['weight','משקל'],
+    ['water_resistance','עמידות במים'],['ram','זיכרון']
+  ];
+  function specStr(d,k){var v=d.spec?d.spec[k]:null;if(Array.isArray(v))v=v.join(', ');return (v===null||v===undefined)?'':String(v);}
+  /* מקשר רק לעמוד שקיים בפועל, לפי הרשימה שהמחולל גזר מהדיסק. אחרת לשער ההשוואות. */
+  function comparePage(a,b){
+    var list=(FACTS&&FACTS.comparePages)||[];
+    if(list.indexOf(a.slug+'-vs-'+b.slug)>=0)return '/compare/'+a.slug+'-vs-'+b.slug+'/';
+    if(list.indexOf(b.slug+'-vs-'+a.slug)>=0)return '/compare/'+b.slug+'-vs-'+a.slug+'/';
+    return '/compare/';
+  }
+  function compareAnswer(a,b){
+    var diffs=[],i,k,va,vb;
+    for(i=0;i<CMP_ORDER.length&&diffs.length<3;i++){
+      k=CMP_ORDER[i][0];va=specStr(a,k);vb=specStr(b,k);
+      if(!va||!vb||va===vb)continue;
+      diffs.push(CMP_ORDER[i][1]+': '+a.name_he+' '+va+', מול '+b.name_he+' '+vb);
+    }
+    var notes=[refNote(a),refNote(b)].filter(function(x){return x;});
+    var pre=notes.length?notes.join('\n')+'\n':'';
+    if(!diffs.length)return {text:pre+'במפרט שיש לי, '+a.name_he+' ו'+b.name_he+' דומים בכל מה שבדקתי. ברוך יסביר במה הם נבדלים בשימוש עצמו.',human:true};
+    return {text:pre+'ההבדלים שהכי מרגישים:\n• '+diffs.join('\n• ')};
+  }
+  function isCompareQ(text){
+    var h=' '+normDev(text)+' ';
+    return h.indexOf('הבדל')>=0||h.indexOf(' מול ')>=0||h.indexOf('לעומת')>=0||h.indexOf(' vs ')>=0;
+  }
+  /* מנוסה רק כשיש גם דגם וגם שדה, או שאלת השוואה עם שני דגמים. דגם לבד ממשיך להתנהגות
+     הקיימת, כדי לא לחטוף "אני רוצה לקנות אייפון 17" מזרימת הקנייה. */
   function deviceAnswer(text){
-    var field=findField(text);if(!field)return false;
     var devs=findDevices(text);
+    if(isCompareQ(text)&&devs.length>=2){
+      var a=devs[0],b=devs[1];
+      fails=0;ctx.topic='השוואה';
+      track('chat_device_compare',{slug_a:a.slug,slug_b:b.slug});
+      var r=compareAnswer(a,b),href=comparePage(a,b);
+      botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
+      return true;
+    }
+    var field=findField(text);if(!field)return false;
     if(!devs.length){
       /* יש שאלה על שדה אבל אין דגם מזוהה. לא מנחשים דגם קרוב. */
       if(!FACTS)return false;
