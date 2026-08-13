@@ -1279,5 +1279,28 @@ document.addEventListener("click",function(e){if(!nav.contains(e.target))shutAll
 nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))shutAll()});
 })();</script>
 <!-- gen-nav:js:end -->
+<script>
+/* pg-contact-tap: which phone or WhatsApp link was tapped.
+   Every page carries 3 to 5 byte-identical tel:/wa.me links, so a GTM Click URL trigger cannot
+   tell the header icon from the bottom bar. The position is read from the DOM at click time
+   rather than stamped on 878 anchors, so moving a link keeps the report honest. Capture phase,
+   because other handlers on this page stop propagation for their own controls. */
+(function(){
+  var SPOTS=['mbar','rail','hicons','hcta','pg-panel','a11y-panel','cookie','ch-btns'];
+  document.addEventListener('click',function(e){
+    try{
+      var t=e.target,a=(t&&t.closest)?t.closest('a[href^="tel:"],a[href^="https://wa.me"]'):null;
+      if(!a)return;
+      var loc='content',i;
+      for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
+      if(loc==='content'&&a.closest('footer'))loc='footer';
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'contact_tap',
+        channel:/^tel:/.test(a.getAttribute('href')||'')?'phone':'whatsapp',
+        location:loc});
+    }catch(_){}
+  },true);
+})();
+</script>
 </body>
 </html>
