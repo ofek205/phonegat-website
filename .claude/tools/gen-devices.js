@@ -252,13 +252,22 @@ function buildSchema(d, url) {
     url: url
   };
   /* ⛔ אין Offer, אין price ואין availability בלי מחיר ומלאי אמיתיים שמוצגים בעמוד.
-   * Product בלי offers חוקי לגמרי, פשוט לא זכאי לתוצאות עשירות של מוצר.
    *
    * מ-6.8.2026 התנאי הזה לא ייתקיים לעולם, וזו החלטה ולא חוסר: אין מחירון באתר, כי המחיר
-   * משתנה כל הזמן. התוצאה, שאומרים אותה בקול ולא מגלים בדיעבד: עמודי המכשיר לא יהיו זכאים
-   * לתוצאות עשירות של מוצר בגוגל. Offer דורש price, וגם AggregateOffer דורש lowPrice.
-   * הבלוק נשאר כאן ולא נמחק, כי אם ההחלטה תשתנה זה מה שצריך לעבוד. */
-  if (C.price && C.stock) {
+   * משתנה כל הזמן. Offer דורש price, וגם AggregateOffer דורש lowPrice.
+   * הבלוק נשאר כאן ולא נמחק, כי אם ההחלטה תשתנה זה מה שצריך לעבוד.
+   *
+   * ⚠ מה שנכתב כאן קודם היה "Product בלי offers חוקי לגמרי, פשוט לא זכאי לתוצאות עשירות".
+   * החצי הראשון נכון: schema.org לא דורש offers. החצי השני לא: גוגל מגדירה את שלושת
+   * offers, review ו-aggregateRating כנדרשים, ולכן היא לא מתעלמת מהבלוק אלא מדווחת עליו
+   * כשגיאה קריטית. ב-13.8.2026 הגיע מייל Search Console על 21 עמודי המכשיר, כלומר כולם.
+   * לכן הישות נפלטת רק כשהיא יכולה להיות תקינה. אין מה לאבד: Product בלי מחיר ובלי דירוג
+   * לא יכול לזכות בתוספת בשום מצב, והמידע עצמו מוצג בעמוד ובטבלת המפרט.
+   *
+   * ולא לפתור את זה ב-aggregateRating. אין ביקורות מוצר לדגמים האלה, ולכן זה יהיה סימון
+   * ביקורות מומצא, הפרת מדיניות שגוררת ענישה ידנית. */
+  var sellable = !!(C.price && C.stock);
+  if (sellable) {
     product.offers = { '@type': 'Offer', priceCurrency: 'ILS', price: String(C.price),
                        availability: 'https://schema.org/InStock', url: url };
   }
@@ -270,7 +279,7 @@ function buildSchema(d, url) {
       { '@type': 'ListItem', position: 3, name: d.name, item: url }
     ]
   };
-  return [product, crumbs];
+  return sellable ? [product, crumbs] : [crumbs];
 }
 
 /* ---------- כתיבת דף ---------- */
