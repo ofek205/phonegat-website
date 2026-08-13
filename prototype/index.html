@@ -3670,6 +3670,29 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     ['water_resistance','עמידות במים'],['ram','זיכרון']
   ];
   function specStr(d,k){var v=d.spec?d.spec[k]:null;if(Array.isArray(v))v=v.join(', ');return (v===null||v===undefined)?'':String(v);}
+  /* ערכי המפרט מפורטים, ותשובת השוואה מלאה יצאה כ-415 תווים, כלומר בועה שממלאת פאנל
+     שכל שטח השיחה בו הוא 362px. הקיצור הוא **תחילית של המקור** ולא ניסוח מחדש: חותכים
+     בפסיק הראשון, ולכן כל מספר שנשאר עדיין מופיע בשדה המקורי והקריטריון נשמר בבנייה.
+     מה שנחתך יושב בעמוד ההשוואה, שאליו יש קישור בכל מקרה. */
+  function clause(v){
+    var s=String(v),cut=s.indexOf(',');
+    if(cut>=8)s=s.slice(0,cut);
+    if(s.length>36){var sp=s.lastIndexOf(' ',36);s=s.slice(0,sp>12?sp:36);}
+    /* חיתוך משאיר פסיק או נקודתיים תלויים באוויר */
+    return s.replace(/[\s,:;.\-]+$/,'');
+  }
+  /* שני ערכים שאין להם יחידה משותפת אינם ברי-השוואה בשורה אחת. אפל מציינת סוללה בשעות
+     וידאו ו-וואן פלוס במיליאמפר, ו-"עד 30 שעות וידאו מול 7400 mAh" מרמז על השוואה שאינה
+     קיימת. עדיף לדלג על השדה מלהציב הצבה מטעה, ויש עוד עשר שורות בסדר להמשיך אליהן. */
+  var UNITS=[/\d\s*mah/i,/אינץ/,/\d\s*mp/i,/\d\s*hz/i,/\d\s*wh/i,/\d\s*גרם/,/\d\s*x/i,/שעות/,/מ״מ/,/ס״מ/,/\d\s*gb/i,/\d\s*tb/i];
+  function unitSet(s){var o=[],i;for(i=0;i<UNITS.length;i++)if(UNITS[i].test(String(s)))o.push(i);return o;}
+  function comparable(va,vb){
+    var ua=unitSet(va),ub=unitSet(vb),i;
+    /* טקסט מול טקסט, כמו שם שבב, בר-השוואה */
+    if(!ua.length&&!ub.length)return true;
+    for(i=0;i<ua.length;i++)if(ub.indexOf(ua[i])>=0)return true;
+    return false;
+  }
   /* מקשר רק לעמוד שקיים בפועל, לפי הרשימה שהמחולל גזר מהדיסק. אחרת לשער ההשוואות. */
   function comparePage(a,b){
     var list=(FACTS&&FACTS.comparePages)||[];
@@ -3682,12 +3705,23 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     for(i=0;i<CMP_ORDER.length&&diffs.length<3;i++){
       k=CMP_ORDER[i][0];va=specStr(a,k);vb=specStr(b,k);
       if(!va||!vb||va===vb)continue;
-      diffs.push(CMP_ORDER[i][1]+': '+a.name_he+' '+va+', מול '+b.name_he+' '+vb);
+      var sa=clause(va),sb=clause(vb);
+      /* אם הקיצור הפך את שני הערכים לזהים, השורה מאבדת את מה שהיא באה להראות, ואז
+         חוזרים לערכים המלאים דווקא בשורה הזאת. */
+      if(sa===sb){sa=va;sb=vb;}
+      /* השומן חייב לרוץ על מה שמוצג ולא על הערך המלא, וזה היה באג אמיתי: הסוללה של
+         גלקסי S26 היא "עד 30 שעות וידאו, 4300 mAh טיפוסית", ולכן היא בת-השוואה ל-mAh של
+         וואן פלוס. אבל החיתוך בפסיק הראשון השאיר "עד 30 שעות וידאו" מול "7400 mAh",
+         כלומר שעות מול מיליאמפר, וזו הצבה מטעה שעברה את הבדיקה על הערך המלא. */
+      if(!comparable(sa,sb))continue;
+      /* שמות הדגמים בכותרת ולא בכל שורה. הצורה הקודמת חזרה על שניהם שלוש פעמים, כלומר
+         שש חזרות, וזה גם בזבוז מקום וגם בדיוק אותה צורה חוזרת שקוראת כמכונה. */
+      diffs.push(CMP_ORDER[i][1]+': '+sa+' מול '+sb);
     }
     var notes=[refNote(a),refNote(b)].filter(function(x){return x;});
     var pre=notes.length?notes.join('\n')+'\n':'';
     if(!diffs.length)return {text:pre+'במפרט שיש לי, '+a.name_he+' ו'+b.name_he+' דומים בכל מה שבדקתי. ברוך יסביר במה הם נבדלים בשימוש עצמו.',human:true};
-    return {text:pre+'ההבדלים שהכי מרגישים:\n• '+diffs.join('\n• ')};
+    return {text:pre+a.name_he+' מול '+b.name_he+', לפי הסדר הזה:\n• '+diffs.join('\n• ')};
   }
   function isCompareQ(text){
     var h=' '+normDev(text)+' ';
