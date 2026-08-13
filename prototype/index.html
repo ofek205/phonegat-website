@@ -1684,6 +1684,22 @@ footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-s
 @keyframes pgblink{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-5px);opacity:1}}
 
 .pg-chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem .85rem;background:#faf9fb;border-top:1px solid var(--line)}
+/* סרגל הנושאים והצעות השלב היו שני משטחי כפתורים שהתחרו על אותו מקום: 109px ועוד 140px,
+   כלומר 42% מגובה הפאנל במובייל, ושטח השיחה הנראה ירד ל-293px מתוך גלילה של 853.
+   כשיש הצעות שלב פעילות הסרגל מתכווץ לכפתור אחד. הכפתור נשאר, ולא מוסתר לגמרי, כדי
+   שתמיד תהיה דרך גלויה לצאת מהזרימה. */
+.pg-chips>.pg-chip-more{display:none}
+/* במצב מכווץ הריפוד האנכי יורד, אחרת הסרגל הוא 61px: כפתור 44 ועוד 8+8 ריפוד וגבול.
+   גובה כולל של 44px אינו אפשרי כשבתוכו פקד שחייב להיות 44px, ולכן היעד הוא 48. */
+#pgPanel.sug-on .pg-chips{padding-block:.1rem}
+#pgPanel.sug-on .pg-chips>.pg-chip:not(.pg-chip-more){display:none}
+#pgPanel.sug-on .pg-chips>.pg-chip-more{display:inline-flex}
+.pg-sug.col{flex-direction:column;align-items:stretch}
+/* select נייטיב, ולא עוד שורת צ'יפים. פקד אחד בגובה 44px במקום שורה נוספת, והוא פטור
+   מיעד המגע של 44px כי הוא פקד של הדפדפן ונגיש מלכתחילה. במובייל הוא פותח את הבורר
+   של המערכת, שהוא הדבר שמשתמשים כבר יודעים להפעיל. */
+.pg-select{width:100%;box-sizing:border-box;min-block-size:44px;font-family:var(--font);font-size:.83rem;font-weight:700;color:var(--teal-d);background:#fff;border:1px solid var(--teal);border-radius:12px;padding:.34rem .6rem}
+.pg-sug-label{font-family:var(--font);font-size:.78rem;font-weight:700;color:var(--teal-d);margin:0 0 .2rem}
 .pg-chip{background:#fff;border:1px solid var(--teal);color:var(--teal-d);border-radius:999px;padding:.34rem .78rem;font-family:var(--font);font-size:.83rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
 .pg-chip:hover{background:var(--teal);color:#fff}
 
@@ -3406,6 +3422,10 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     return a;
   }
   function bubble(text,who,cta,waText){
+    /* הודעה של המשתמש מסיימת את שלב ההצעות, ולכן סרגל הנושאים חוזר לגובה מלא. אם התשובה
+       הבאה של הבוט תישא הצעות, suggestChips יכווץ אותו שוב. נמצא כאן ולא במטפל הצ'יפים
+       כדי שגם הקלדה חופשית תשחרר אותו, ולא רק לחיצה. */
+    if(who==='user'&&panel)panel.classList.remove('sug-on');
     var b=document.createElement('div');b.className='pg-b '+(who==='user'?'pg-user':'pg-bot');
     var d=dirOf(text);b.style.direction=d;b.style.textAlign=(d==='rtl'?'right':'left');
     var s=document.createElement('span');s.textContent=text;b.appendChild(s);
@@ -3428,6 +3448,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       box.appendChild(b);
     })(list[j]);}
     msgs.appendChild(box);down();
+    if(panel)panel.classList.add('sug-on');
   }
   function botReply(text,opts){
     opts=opts||{};
@@ -3497,6 +3518,20 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* שלב הקטגוריה נכנס רק ליצרן עם יותר מכך דגמים. אפל ושיאומי חמישה כל אחד ונכנסים
      כצ'יפים ישר, סמסונג 11 ובלי פיצול הרשימה בלתי קריאה. */
   var BUY_SPLIT=6;
+  /* התווית מקוצרת בצ'יפי דגם: היצרן והסדרה כבר נבחרו בשלב הקודם באותה שיחה, ולכן המילה
+     "גלקסי" רק חוזרת. נמדד בדפדפן: "גלקסי A56" הוא 83px ו-"A56" הוא 48px, כלומר חמישה
+     בשורה במקום שלושה, ושורה שלמה פחות. */
+  var SHORT_PREFIX=['רדמי נוט','גלקסי','אייפון','שיאומי','רדמי'];
+  function shortModel(he){
+    for(var i=0;i<SHORT_PREFIX.length;i++)if(he.indexOf(SHORT_PREFIX[i]+' ')===0)return he.slice(SHORT_PREFIX[i].length+1);
+    return he;
+  }
+  /* אין במאגר שום אות דירוג: launch_year ריק ב-24 מ-24, dates הוא null, ו-stock מלא
+     ב-12 בלבד ולכן מחוץ לקובץ בכוונה. לכן הסדר נגזר ממספר הדגם שבשם, יורד. זה
+     דטרמיניסטי, ולא ישתנה בשקט כשמישהו יסדר מחדש את devices.json.
+     אם תגיע רשימה מפורשת של חמישה מובילים, מחליפים את הפונקציה הזאת ולא יותר. */
+  function modelRank(d){var m=String(d.name).match(/\d+/);return m?parseInt(m[0],10):0;}
+  var BUY_SHOW=5,moreSeq=0;
   /* bot:facts:end */
   function buyParts(){var p=[];if(ctx.rec)p.push('רוצה המלצה על הדגם המתאים');if(ctx.brand)p.push('יצרן: '+ctx.brand);if(ctx.model)p.push('דגם: '+ctx.model);if(ctx.storage)p.push('נפח: '+ctx.storage);if(ctx.imp)p.push('יבוא: '+ctx.imp);return p;}
   function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
@@ -3537,10 +3572,37 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   }
   function buyShowModels(list){
     flow={type:'buy',step:'model'};
+    var sorted=list.slice().sort(function(a,b){return modelRank(b)-modelRank(a);});
+    var over=sorted.length>BUY_SPLIT;
+    var head=over?sorted.slice(0,BUY_SHOW):sorted, rest=over?sorted.slice(BUY_SHOW):[];
     var sug=[],i;
-    for(i=0;i<list.length;i++)(function(d){sug.push([d.name_he,function(){buyModel(d.name_he,d.slug);}]);})(list[i]);
-    sug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
+    for(i=0;i<head.length;i++)(function(d){sug.push([shortModel(d.name_he),function(){buyModel(d.name_he,d.slug);}]);})(head[i]);
+    if(rest.length)sug.push(['עוד דגמים',function(){moreModels(rest);}]);
+    else sug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
     botReply('איזה דגם? אפשר גם להקליד שם מדויק.',{sug:sug});
+  }
+  /* מעל שישה דגמים, השאר נכנסים ל-select נייטיב ולא לשורת צ'יפים נוספת. פקד אחד בגובה
+     44px במקום שורה שלמה, נגיש מלכתחילה למקלדת ולקורא מסך, ובמובייל פותח את הבורר של
+     המערכת. גלילה אופקית נדחתה כי היא מסתירה אפשרויות בלי רמז חזותי. */
+  function moreModels(rest){
+    var box=document.createElement('div');box.className='pg-sug col';
+    var id='pgMoreSel'+(++moreSeq);
+    var lab=document.createElement('label');lab.className='pg-sug-label';lab.setAttribute('for',id);lab.textContent='עוד דגמים';
+    var sel=document.createElement('select');sel.className='pg-select';sel.id=id;
+    function opt(v,t){var o=document.createElement('option');o.value=v;o.textContent=t;sel.appendChild(o);}
+    opt('','בחרו דגם');
+    for(var i=0;i<rest.length;i++)opt(rest[i].slug,rest[i].name_he);
+    opt('__other','לא בטוח / דגם אחר');
+    sel.addEventListener('change',function(){
+      var v=sel.value;if(!v)return;
+      sel.disabled=true;
+      if(v==='__other'){lastUser='לא בטוח / דגם אחר';bubble(lastUser,'user');buyModel('','');return;}
+      var d=factsBySlug(v),nm=d?d.name_he:'';
+      lastUser=nm;bubble(nm,'user');buyModel(nm,v);
+    });
+    box.appendChild(lab);box.appendChild(sel);
+    msgs.appendChild(box);down();
+    setTimeout(function(){try{sel.focus();}catch(e){}},60);
   }
   function buyModel(m,slug){ctx.model=m||ctx.model||'';ctx.slug=slug||'';track('chat_buy_step',{step:'model',value:m||'לא בטוח'});flow={type:'buy',step:'storage'};askStorage();}
   /* הנפחים לפי storage_offered של הדגם שנבחר, כלומר מה שהיצרן מציע בפועל. בלי דגם נשארת
@@ -3622,6 +3684,14 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     b.addEventListener('click',function(){flow=null;lastUser=LABELS[id];bubble(LABELS[id],'user');doTopic(id);focusInput();});
     chipsWrap.appendChild(b);
   })(CHIPS[i]);}})();
+  /* הכפתור שנשאר גלוי כשהסרגל מכווץ. הוא לא מריץ נושא, הוא רק פורש את הסרגל בחזרה,
+     כלומר יציאה מהזרימה בלחיצה אחת בלי לאבד את השיחה. */
+  (function(){
+    var b=document.createElement('button');b.type='button';b.className='pg-chip pg-chip-more';
+    b.textContent='שאלה אחרת';
+    b.addEventListener('click',function(){if(panel)panel.classList.remove('sug-on');focusInput();});
+    chipsWrap.appendChild(b);
+  })();
 
   var wrap=document.getElementById('pgFabWrap'), suppressClick=false;
   function isMobile(){return window.matchMedia('(max-width:820px)').matches;}
