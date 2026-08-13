@@ -1123,6 +1123,24 @@ if (classFails.length) {
     ok(list.filter(function (d) { return d.kind === 'reference'; }).length +
       ' מכשירי ייחוס, אף אחד בלי תנאי מסחר');
   }
+
+  /* הרתמה מחלצת את אזור התשובות מ-index.html ומריצה אותו ב-vm מול כל 24 הדגמים כפול כל
+   * השדות, כלומר 624 צירופים, ובודקת שאין מחיר, שאין מספר מחוץ לשדה המקור, ושדגם ייחוס
+   * נושא גילוי נאות בכל אזכור. היא מורצת מכאן ולא מתועדת כהמלצה, כי כלל שרק מתועד נשחק:
+   * הערות המקף הארוך במדריך נוקו לאפס ב-30 ביולי וחזרו ל-22 למחרת. */
+  (function () {
+    var harness = P('.claude/tools/bot-harness.js');
+    if (!fs.existsSync(harness)) { warn('bot-harness.js חסר — שכבת התשובות של הבוט לא נבדקת'); return; }
+    var r = require('child_process').spawnSync(process.execPath, [harness, ROOT], { encoding: 'utf8' });
+    var out = ((r.stdout || '') + (r.stderr || '')).trim();
+    if (r.status === 0) {
+      var m = out.match(/נבדקו (\d+) צירופים/);
+      ok('שכבת התשובות של הבוט: ' + (m ? m[1] : '?') + ' צירופים של דגם כפול שדה עוברים');
+    } else {
+      bad('שכבת התשובות של הבוט נכשלה: ' + out.split('\n').filter(function (l) { return l.indexOf('✗') >= 0; })
+        .join(' · ').slice(0, 300));
+    }
+  })();
 })();
 
 /* ---------- דוח ---------- */
