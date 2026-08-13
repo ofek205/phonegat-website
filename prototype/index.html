@@ -3518,7 +3518,14 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=window.PG_PROD===true;   /* was a dead literal, so the false branch below could never run. It means "this lead is actually on its way": true only in production, where saveLead corrects itself if the request fails. */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הוולידציה והזרימה עבדו במלואן. כדי שנחזור אליכם באמת, שלחו את הפרטים ב-WhatsApp או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
     }
   }
-  function fallback(){fails++;track('chat_fallback',{q:lastUser});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
+  /* This event used to carry a "q" parameter holding the visitor's raw typed text, on its way to GA4.
+     People type "קוראים לי דוד 0501234567, המסך שבור" into a chat box, so that field could carry
+     a name and a phone number to Google. privacy.html §3 promises only "מידע סטטיסטי (כגון דפים
+     שנצפו וסוג מכשיר)", and question text is not that. What the shop actually needs from this
+     event is "the bot failed, and roughly on what": the shape of the question answers that, and
+     digits_present is the useful one, because it says people are trying to leave details in the
+     chat box instead of using the callback flow. None of these three can identify anybody. */
+  function fallback(){fails++;track('chat_fallback',{q_len:Math.min(lastUser.length,300),q_words:lastUser.split(/\s+/).length,digits_present:/\d/.test(lastUser)?1:0,attempt:fails});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
   function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}var it=matchIntent(text);if(it)respond(it);else fallback();}
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
@@ -3765,6 +3772,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       devEl=document.getElementById('pgCpnDev'),
       screen=document.querySelector('.pg-screen');
   var lastFocus=null,builtKey=null;
+  /* The chat widget's track() is private to that IIFE, so calling it from here threw
+     "track is not a function" and killed the click handler: the offer popup stopped opening
+     entirely. Syntax-valid, so neither preflight nor a parser catches it, and it only showed up
+     when the button was actually pressed in a browser. Hence a local push of its own. */
+  function cpnTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev};if(d)for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(_){}}
   /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
   /* NOTE: keep this object free of prose comments. preflight's allowlist check walks the OFFERS
      body character by character without stripping comments, so an apostrophe in an English word
@@ -3850,6 +3862,10 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(copiedEl){copiedEl.textContent='רק רגע, מכינים את הקוד…';copiedEl.classList.remove('ok');}}
 
   function applyCode(o,code){currentCode=code;
+    /* fallback tells you the counter was bypassed. The 9xxx range is reserved for failures, so a
+       rising share of these means the sequence in Upstash is under-reporting the real demand,
+       and that number is the whole reason the endpoint exists. */
+    cpnTrack('coupon_code_shown',{offer:builtKey||'',fallback:code.indexOf(o.prefix+'9')===0?1:0});
     if(codeEl)codeEl.textContent=code;
     if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}
     if(goBtn){goBtn.removeAttribute('aria-disabled');
@@ -3875,9 +3891,36 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   function pauseFeed(p){if(screen)screen.classList.toggle('paused',p);}
   function onKey(e){if(e.key==='Escape'){e.preventDefault();close();return;}
     if(e.key==='Tab'){var f=[].slice.call(dialog.querySelectorAll(FOCUSABLE)).filter(function(el){return el.offsetParent!==null;});if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
+  /* Which of the six triggers was used. Two signals, not one, because neither is stable alone:
+     the nearest section id survives a restyle but is often just the page wrapper, and the
+     trigger's own class distinguishes all six but a design edit can rename it. Recording both
+     means one can be lost without going blind. */
+  function placementOf(el){
+    try{
+      var sec=el&&el.closest?el.closest('section[id],div[id],aside[id]'):null;
+      return (sec&&sec.id)?sec.id:'none';
+    }catch(_){return 'none';}
+  }
+  function ctaOf(el){
+    try{
+      var c=el&&el.className?String(el.className).trim().split(/\s+/):[];
+      /* Read from the end: the offer-specific class is written last, after the shared .btn and its
+         style modifiers. Skipping everything that starts with "btn-" was too aggressive and threw
+         away btn-idf, which is the one class that identifies that trigger. */
+      for(var i=c.length-1;i>=0;i--)if(c[i]&&c[i]!=='btn')return c[i];
+      return 'none';
+    }catch(_){return 'none';}
+  }
   function open(trigger){lastFocus=trigger||document.activeElement;
     var k=(trigger&&trigger.getAttribute)?(trigger.getAttribute('data-pg-coupon')||'screen'):'screen';
-    if(!OFFERS[k])k='screen';
+    /* Same prototype-chain hole the server had: OFFERS['toString'] is truthy on a plain object, so
+       a trigger naming any built-in property used to reach build() and render a non-existent offer.
+       (Do not write the attribute-and-value pair out in a comment here: the button check scans for
+       it without stripping comments, and an example registers as a real button. It just did.) */
+    if(!Object.prototype.hasOwnProperty.call(OFFERS,k))k='screen';
+    /* The offer is the main conversion on this page and it reported nothing at all until now:
+       not the open, not the code, not the copy, not the send. */
+    cpnTrack('coupon_open',{offer:k,placement:placementOf(trigger),cta:ctaOf(trigger)});
     build(k);ov.classList.add('open');document.documentElement.style.overflow='hidden';pauseFeed(true);(xBtn||dialog).focus();document.addEventListener('keydown',onKey,true);}
   function close(){ov.classList.remove('open');document.documentElement.style.overflow='';pauseFeed(false);document.removeEventListener('keydown',onKey,true);if(lastFocus&&lastFocus.focus){try{lastFocus.focus();}catch(_){}}}
 
@@ -3888,8 +3931,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   ov.addEventListener('click',function(e){if(e.target===ov)close();});
   /* while the number is still coming back, copying or sending the «••••» placeholder
      would be worse than a brief wait — so both actions no-op until the code lands */
-  if(goBtn)goBtn.addEventListener('click',function(e){if(!currentCode){e.preventDefault();}});
-  if(copyBtn)copyBtn.addEventListener('click',function(){if(!currentCode)return;var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
+  /* Sending the code to WhatsApp is the closest thing on this page to an intent to redeem, so it
+     is the event worth optimising for. It only counts when a real code is present, because the
+     guard below turns the click into a no-op otherwise. */
+  if(goBtn)goBtn.addEventListener('click',function(e){if(!currentCode){e.preventDefault();return;}cpnTrack('coupon_whatsapp',{offer:builtKey||'',fallback:currentCode.charAt(3)==='9'?1:0});});
+  if(copyBtn)copyBtn.addEventListener('click',function(){if(!currentCode)return;cpnTrack('coupon_copied',{offer:builtKey||''});var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done);}else{try{var r=document.createRange();r.selectNode(codeEl);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);document.execCommand('copy');sel.removeAllRanges();done();}catch(_){}}});
 })();
 </script>
