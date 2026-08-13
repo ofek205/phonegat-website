@@ -109,7 +109,7 @@ facts.devices.forEach(function (d) {
 /* ---------- השוואה: כל צמד שיש לו עמוד, ועוד צמדים שאין ---------- */
 var compareAnswer = sandbox.compareAnswer, comparePage = sandbox.comparePage,
     isCompareQ = sandbox.isCompareQ, CMP_ORDER = sandbox.CMP_ORDER;
-var cmpFails = [], cmpChecked = 0;
+var cmpFails = [], cmpChecked = 0, cmpLens = [], cmpEmpty = [], cmpBullets = [];
 function bySlug(s) { for (var i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === s) return facts.devices[i]; return null; }
 
 if (compareAnswer && comparePage) {
@@ -134,8 +134,36 @@ if (compareAnswer && comparePage) {
     if (t.indexOf('—') >= 0) cmpFails.push(pr.join(' vs ') + ': מקף ארוך');
     if ((a.kind === 'reference' || b.kind === 'reference') && t.indexOf('לא מוכרים') < 0)
       cmpFails.push(pr.join(' vs ') + ': חסר גילוי נאות למכשיר ייחוס');
-    if ((t.match(/\n•/g) || []).length > 3)
-      cmpFails.push(pr.join(' vs ') + ': יותר משלושה הבדלים');
+    var bullets = (t.match(/\n•/g) || []).length;
+    if (bullets > 3) cmpFails.push(pr.join(' vs ') + ': יותר משלושה הבדלים');
+    /* שומר בר-ההשוואה מדלג על שדות, ולכן צריך לראות שהוא לא מרוקן את התשובה. צמד שיוצא
+       בלי אף הבדל נופל להודעת "דומים", וזו תשובה גרועה כשהם באמת שונים. */
+    if (!bullets) cmpEmpty.push(pr.join(' vs '));
+    cmpBullets.push(bullets);
+
+    /* שני הצדדים של כל שורה חייבים לחלוק יחידה, אחרת השורה מציבה שעות מול מיליאמפר
+     * ומרמזת על השוואה שאינה קיימת. נבדק על **הטקסט המוצג** ובלוגיקה עצמאית, כי הבאג
+     * המקורי היה בדיוק פער בין מה שנבדק (הערך המלא) לבין מה שהוצג (הערך המקוצר). */
+    var U = [/\d\s*mah/i, /אינץ/, /\d\s*mp/i, /\d\s*hz/i, /\d\s*wh/i, /\d\s*גרם/,
+             /\d\s*x/i, /שעות/, /מ״מ/, /ס״מ/, /\d\s*gb/i, /\d\s*tb/i];
+    function uset(s) { var o = [], i; for (i = 0; i < U.length; i++) if (U[i].test(s)) o.push(i); return o; }
+    t.split('\n').forEach(function (line) {
+      if (line.indexOf('• ') !== 0) return;
+      var ix = line.indexOf(' מול ');
+      if (ix < 0) { cmpFails.push(pr.join(' vs ') + ': שורה בלי "מול": ' + line.slice(0, 40)); return; }
+      var lhs = line.slice(2, ix), rhs = line.slice(ix + 5);
+      var c = lhs.indexOf(': '); if (c >= 0) lhs = lhs.slice(c + 2);
+      var ul = uset(lhs), ur = uset(rhs), shared = false, i;
+      for (i = 0; i < ul.length; i++) if (ur.indexOf(ul[i]) >= 0) shared = true;
+      if (ul.length && ur.length && !shared)
+        cmpFails.push(pr.join(' vs ') + ': יחידות שאינן ברות-השוואה בשורה אחת — "' + lhs + '" מול "' + rhs + '"');
+    });
+    /* אורך: שטח השיחה במובייל הוא 362px, ובועה של 415 תווים מילאה אותו כמעט כולו.
+       התקציב נמדד על ההבדלים בלבד ולא על הגילוי הנאות, שהוא חובה ועולה כ-95 תווים:
+       צמד עם מכשיר ייחוס אינו יכול לעמוד באותו תקציב כמו צמד שאיננו מוכרים בו. */
+    var body = t.split('\n').filter(function (l) { return l.indexOf('לא מוכרים') < 0; }).join('\n');
+    if (body.length > 280) cmpFails.push(pr.join(' vs ') + ': ' + body.length + ' תווי הבדלים, מעל 280');
+    cmpLens.push(body.length);
 
     /* הקישור חייב להצביע לעמוד שקיים, או לשער */
     var known = (facts.comparePages || []).indexOf(pr[0] + '-vs-' + pr[1]) >= 0 ||
@@ -208,6 +236,8 @@ function report(list, title) {
 }
 var n = 0;
 n += report(fails, 'תשובות: אין מחיר, אין מספר מחוץ למקור, גילוי נאות בכל אזכור ייחוס, אין מקף ארוך');
+console.log('  הבדלים לצמד: ' + cmpBullets.join(' ') + (cmpEmpty.length ? '  ·  בלי הבדלים: ' + cmpEmpty.join(', ') : '  ·  לכל צמד יש לפחות הבדל אחד'));
+console.log('  אורך תשובת השוואה: חציון ' + cmpLens.sort(function(a,b){return a-b;})[Math.floor(cmpLens.length/2)] + ' תווים, מקסימום ' + Math.max.apply(null,cmpLens));
 n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
