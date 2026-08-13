@@ -3453,23 +3453,106 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   function repDevice(dev){ctx.device=dev;flow={type:'repair',step:'issue'};botReply('מה קרה ל'+dev+'?',{sug:[['מסך שבור',function(){repIssue('מסך שבור');}],['בעיית סוללה',function(){repIssue('בעיית סוללה');}],['נפל למים',function(){repIssue('נזק מים');}],['לא נטען',function(){repIssue('בעיית טעינה');}],['תקלה אחרת',function(){repIssue('תקלה');}]]});}
   function repIssue(iss){ctx.issue=iss;flow=null;ctx.topic='תיקון '+iss+' '+ctx.device;track('chat_repair',{device:ctx.device,issue:iss});var wt='היי, הגעתי דרך האתר. אשמח להצעת מחיר לתיקון: '+iss+' ב'+ctx.device+'.';botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. מעבדה וותיקה מעל 30 שנה, עם אחריות. המחיר תלוי בדגם המדויק, אז נשמח לתת הצעה מהירה ומדויקת.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}],['שאלה אחרת',function(){mainMenu();}]]});}
 
-  var BUY_MODELS={'אייפון':['iPhone Pro / Pro Max','iPhone רגיל','דגם מדור קודם'],'סמסונג':['Galaxy S','Galaxy A','Galaxy Z מתקפל'],'שיאומי':['Redmi Note','Xiaomi סדרה גבוהה']};
+  /* bot:facts:start — נתוני הקטלוג לבוט.
+     קדם לזה BUY_MODELS, רשימה קשיחה שלא הייתה מחוברת לקטלוג. היא הציעה "Galaxy Z מתקפל"
+     ואין מתקפל באף אחד מ-24 הדגמים במאגר, כלומר הבוט הציע קטגוריה שאין לה שום כיסוי.
+     כאן הכל נגזר מ-bot-facts.json, ולכן קטגוריה ריקה לא מוצגת מעצם הבנייה.
+
+     נטען רק כשהפאנל נפתח בפעם הראשונה ולא בטעינת העמוד: הבוט הוא ווידג'ט משני בדף הבית.
+     FACTS נשאר null עד שהטעינה הצליחה, ואם היא נכשלת הבוט **מדלג על שלב הדגם ולא מנחש**.
+     זה אותו כלל של שדה null: לא לנחש, לנתב. */
+  var FACTS=null,factsState='idle';
+  function loadFacts(){
+    if(factsState!=='idle')return;
+    factsState='loading';
+    try{
+      fetch('/bot-facts.json').then(function(r){return r.ok?r.json():null;}).then(function(j){
+        if(j&&j.devices&&j.devices.length){FACTS=j;factsState='ready';}else{factsState='failed';}
+      })['catch'](function(){factsState='failed';});
+    }catch(e){factsState='failed';}
+  }
+  function soldByBrand(en){
+    if(!FACTS)return [];
+    return FACTS.devices.filter(function(d){return d.kind==='sold'&&d.brand===en;});
+  }
+  function factsBySlug(slug){
+    if(!FACTS||!slug)return null;
+    for(var i=0;i<FACTS.devices.length;i++)if(FACTS.devices[i].slug===slug)return FACTS.devices[i];
+    return null;
+  }
+  /* הקטגוריה מנורמלת כאן ולא נלקחת משדה series, כי series בקטלוג אינו עקבי:
+     Galaxy S26 Ultra ו-Galaxy S26+ יושבים תחת "Galaxy S", אבל Galaxy S26 תחת סדרה משלו.
+     תפריט שנגזר ממנו ישירות היה מציג "Galaxy S" ו-"Galaxy S26" כשתי אפשרויות אחיות. */
+  function buyCat(d){
+    if(d.brand==='Samsung')return /^Galaxy A/.test(d.name)?'Galaxy A':'Galaxy S';
+    if(d.brand==='Xiaomi')return /^Redmi/.test(d.name)?'רדמי נוט':'שיאומי';
+    return /Pro/.test(d.name)?'פרו ופרו מקס':'רגיל';
+  }
+  var BUY_BRANDS=[['אייפון','Apple'],['סמסונג','Samsung'],['שיאומי','Xiaomi']];
+  /* שלב הקטגוריה נכנס רק ליצרן עם יותר מכך דגמים. אפל ושיאומי חמישה כל אחד ונכנסים
+     כצ'יפים ישר, סמסונג 11 ובלי פיצול הרשימה בלתי קריאה. */
+  var BUY_SPLIT=6;
+  /* bot:facts:end */
   function buyParts(){var p=[];if(ctx.rec)p.push('רוצה המלצה על הדגם המתאים');if(ctx.brand)p.push('יצרן: '+ctx.brand);if(ctx.model)p.push('דגם: '+ctx.model);if(ctx.storage)p.push('נפח: '+ctx.storage);if(ctx.imp)p.push('יבוא: '+ctx.imp);return p;}
   function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
   function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
 
-  function startBuy(){flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.storage='';ctx.imp='';ctx.rec=false;track('chat_flow',{flow:'buy'});botReply('נשמח לעזור לבחור. איזה מכשיר מעניין אתכם?',{sug:[['אייפון',function(){buyBrand('אייפון');}],['סמסונג',function(){buyBrand('סמסונג');}],['שיאומי',function(){buyBrand('שיאומי');}],['רוצה המלצה',function(){buyBrand('');}],['אבזור',function(){flow=null;runIntent('accessories');}]]});}
-  function buyBrand(b){
-    ctx.brand=b;track('chat_buy_step',{step:'brand',value:b||'המלצה'});
-    if(!b){ctx.rec=true;flow={type:'buy',step:'storage'};askStorage();return;}
-    flow={type:'buy',step:'model'};
-    var list=BUY_MODELS[b]||[],sug=[],i;
-    for(i=0;i<list.length;i++){(function(m){sug.push([m,function(){buyModel(m);}]);})(list[i]);}
-    sug.push(['לא בטוח / דגם אחר',function(){buyModel('');}]);
-    botReply('מעולה. איזה '+b+' בערך? אפשר גם להקליד דגם מדויק.',{sug:sug});
+  function startBuy(){
+    flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;
+    track('chat_flow',{flow:'buy'});
+    var sug=[],i;
+    for(i=0;i<BUY_BRANDS.length;i++)(function(p){sug.push([p[0],function(){buyBrand(p[0],p[1]);}]);})(BUY_BRANDS[i]);
+    sug.push(['רוצה המלצה',function(){buyBrand('','');}]);
+    sug.push(['אבזור',function(){flow=null;runIntent('accessories');}]);
+    botReply('נשמח לעזור לבחור. איזה מכשיר מעניין אתכם?',{sug:sug});
   }
-  function buyModel(m){ctx.model=m||ctx.model||'';track('chat_buy_step',{step:'model',value:m||'לא בטוח'});flow={type:'buy',step:'storage'};askStorage();}
-  function askStorage(){botReply('איזה נפח זיכרון צריך?',{sug:[['128GB',function(){buyStorage('128GB');}],['256GB',function(){buyStorage('256GB');}],['512GB ומעלה',function(){buyStorage('512GB ומעלה');}],['לא בטוח',function(){buyStorage('');}]]});}
+  function buyBrand(he,en){
+    ctx.brand=he;track('chat_buy_step',{step:'brand',value:he||'המלצה'});
+    if(!he){ctx.rec=true;flow={type:'buy',step:'storage'};askStorage();return;}
+    var list=soldByBrand(en);
+    /* הקטלוג לא נטען. מדלגים על שלב הדגם וממשיכים, ולא ממציאים רשימה. */
+    if(!list.length){ctx.model='';flow={type:'buy',step:'storage'};askStorage();return;}
+    if(list.length>BUY_SPLIT){
+      var cats=[],seen={},i,c;
+      for(i=0;i<list.length;i++){c=buyCat(list[i]);if(!seen[c]){seen[c]=1;cats.push(c);}}
+      var csug=[];
+      for(i=0;i<cats.length;i++)(function(x){csug.push([x,function(){buyCatPick(en,x);}]);})(cats[i]);
+      csug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
+      flow={type:'buy',step:'cat'};
+      botReply('מעולה. איזו סדרה מעניינת אתכם?',{sug:csug});
+      return;
+    }
+    buyShowModels(list);
+  }
+  function buyCatPick(en,cat){
+    track('chat_buy_step',{step:'cat',value:cat});
+    var list=soldByBrand(en).filter(function(d){return buyCat(d)===cat;});
+    if(!list.length){buyModel('','');return;}
+    buyShowModels(list);
+  }
+  function buyShowModels(list){
+    flow={type:'buy',step:'model'};
+    var sug=[],i;
+    for(i=0;i<list.length;i++)(function(d){sug.push([d.name_he,function(){buyModel(d.name_he,d.slug);}]);})(list[i]);
+    sug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
+    botReply('איזה דגם? אפשר גם להקליד שם מדויק.',{sug:sug});
+  }
+  function buyModel(m,slug){ctx.model=m||ctx.model||'';ctx.slug=slug||'';track('chat_buy_step',{step:'model',value:m||'לא בטוח'});flow={type:'buy',step:'storage'};askStorage();}
+  /* הנפחים לפי storage_offered של הדגם שנבחר, כלומר מה שהיצרן מציע בפועל. בלי דגם נשארת
+     הרשימה הגנרית. שדה storage_stocked, מה שיש אצלנו בחנות, מלא ב-2 מ-24 ולכן אינו בקובץ
+     כלל: תשובת מלאי מנתון חלקי היא הבטחה בשם המותג בלי בקרת אדם. */
+  function askStorage(){
+    var d=factsBySlug(ctx.slug),opts=null,sug=[],i;
+    if(d&&d.spec){
+      var so=d.spec.storage_offered;
+      if(Array.isArray(so)&&so.length)opts=so;
+      else if(typeof so==='string'&&so)opts=so.split(',');
+    }
+    if(opts){for(i=0;i<opts.length;i++)(function(s){sug.push([String(s).trim(),function(){buyStorage(String(s).trim());}]);})(opts[i]);}
+    else{sug.push(['128GB',function(){buyStorage('128GB');}]);sug.push(['256GB',function(){buyStorage('256GB');}]);sug.push(['512GB ומעלה',function(){buyStorage('512GB ומעלה');}]);}
+    sug.push(['לא בטוח',function(){buyStorage('');}]);
+    botReply(opts?('איזה נפח? אלה הנפחים שיש ל'+(ctx.model||'דגם הזה')+'.'):'איזה נפח זיכרון צריך?',{sug:sug});
+  }
   function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:s||'לא בטוח'});flow={type:'buy',step:'import'};askImport();}
   function askImport(){botReply('ואיזה יבוא מעדיפים?',{sug:[['יבוא רשמי',function(){buyImport('רשמי');}],['יבוא מקביל',function(){buyImport('מקביל');}],['לא בטוח, שתסבירו לי',function(){buyImport('');}]]});}
   function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:v||'לא בטוח'});buyDone();}
@@ -3574,6 +3657,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   function focusInput(){try{if(matchMedia('(pointer:fine)').matches)input.focus();}catch(e){}}
   function openChat(){
     positionPanel();
+    loadFacts();
     panel.removeAttribute('inert');panel.classList.add('open');fab.classList.add('open');wrap.classList.add('chat-open');fab.setAttribute('aria-expanded','true');
     if(!opened){opened=true;track('chat_open',{open:openNow()});var gm=greetWord()+'! אני העוזר הדיגיטלי של פון גת. '+(openNow()?'איך אפשר לעזור?':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.');botReply(gm,{sug:['repair','buy','callback']});}
     setTimeout(function(){focusInput();},300);
