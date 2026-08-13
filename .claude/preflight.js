@@ -1143,6 +1143,39 @@ if (classFails.length) {
   })();
 })();
 
+/* ---------- 30. כל סקריפט inline בעמודים מתקמפל ----------
+ * בדיקה 19 מהדרת את סקריפטי הכלים ב-.claude, וזו האחות שלה לצד הלקוח. אין build ואין
+ * linter בפרויקט, ולכן שגיאת תחביר בסקריפט inline **נשלחת לפרודקשן בשקט**: ה-HTML נטען,
+ * העמוד נראה תקין, והפיצ'ר פשוט מת. אף בדיקה כאן לא הייתה תופסת את זה, וזה נמצא בפועל.
+ *
+ * vm.Script מהדר ולא מריץ, ולכן אין שום סיכון בהרצה מכאן.
+ * JSON-LD מדולג (בדיקה 9 מטפלת בו), וסקריפט עם src אינו קוד של העמוד. */
+(function () {
+  var vm = require('vm');
+  var broken = [], count = 0, filesWith = 0;
+  pageFiles.forEach(function (f) {
+    var s = readPage(f); if (!s) return;
+    var re = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi, m, i = 0, any = false;
+    while ((m = re.exec(s)) !== null) {
+      var attrs = m[1] || '', body = m[2] || '';
+      if (/\bsrc\s*=/.test(attrs)) continue;
+      if (/type\s*=\s*["']?application\/ld\+json/i.test(attrs)) continue;
+      if (!body.trim()) continue;
+      i++; count++; any = true;
+      var line = s.slice(0, m.index).split('\n').length;
+      try { new vm.Script(body, { filename: f + ':script' + i }); }
+      catch (e) { broken.push(f + ' סקריפט ' + i + ' (שורה ~' + line + '): ' + e.message.slice(0, 70)); }
+    }
+    if (any) filesWith++;
+  });
+  if (broken.length) {
+    bad('סקריפט inline עם שגיאת תחביר: ' + broken.join(' · ') +
+      ' — העמוד ייטען, ייראה תקין, והפיצ\'ר יהיה מת');
+  } else if (count) {
+    ok(count + ' סקריפטים inline ב-' + filesWith + ' עמודים מתקמפלים');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
