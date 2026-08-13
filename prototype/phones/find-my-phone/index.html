@@ -737,7 +737,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap box">
     <h2 id="quiz-h">השאלון</h2>
     <p class="lead">שתי השאלות הראשונות נדרשות, השאר לא. אין כאן שליחה לשרת ואין שמירה: הכל מחושב במכשיר שלכם.</p>
-    <form id="qform" novalidate>
+    <!-- method="post" because the page promises "אין כאן שליחה לשרת ואין שמירה". There is no
+         submit listener here, so with no action and the default GET an Enter keypress put every
+         answer into the query string, and from there into the access log and the GA4 page path.
+         The answers are computed in the browser and there is nowhere to send them, so this only
+         has to make sure they never leave in a URL. -->
+    <form id="qform" method="post" novalidate>
       <div class="qs">
         <fieldset class="q" id="fs-os">
           <legend>איזו מערכת הפעלה? <span class="req">(נדרש)</span></legend>
