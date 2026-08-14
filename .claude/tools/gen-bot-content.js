@@ -38,8 +38,18 @@ function walk(d, o) {
   });
   return o;
 }
+/* רכיבים שיושבים בתוך <main> ואינם תוכן: כפתור ה-WhatsApp, שורת הקרדיט והתאריך,
+ * וכיתובי תמונה שהם היום טקסט פלייסהולדר. בלי הסינון הזה הם נשאבים לציטוט, ותשובה על
+ * אחריות נגמרה ב"שאלו אותנו ב-WhatsApp נכתב על ידי ברוך אדלשטיין טכנאי ראשי". */
+function stripChrome(s) {
+  return s.replace(/<div class="hcta"[\s\S]*?<\/div>/gi, ' ')
+          .replace(/<p class="meta"[\s\S]*?<\/p>/gi, ' ')
+          .replace(/<figure[\s\S]*?<\/figure>/gi, ' ')
+          .replace(/<a [^>]*class="[^"]*\bbtn\b[^"]*"[\s\S]*?<\/a>/gi, ' ');
+}
 function strip(s) {
-  return s.replace(/<script[\s\S]*?<\/script>/gi, ' ')
+  return stripChrome(s)
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
           .replace(/<style[\s\S]*?<\/style>/gi, ' ')
           .replace(/<!--[\s\S]*?-->/g, ' ')
           .replace(/<[^>]+>/g, ' ')

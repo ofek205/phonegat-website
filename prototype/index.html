@@ -3786,6 +3786,114 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(!a.human)sug.push(['לדבר עם ברוך',function(){startLead('שאלה על '+d.name_he);}]);
     botReply(a.text,{cta:cta,sug:sug});
   }
+  /* ---- תוכן האתר: 193 מקטעים מ-21 עמודים, מדריכים ועמודי שירות ומדריך התקלות ----
+     מה שאינו כאן הוא בכוונה: עמודי מכשיר והשוואה נגזרים מאותו devices.json שממנו נגזר
+     bot-facts, ואינדוקס שלהם היה יוצר שני נתיבי תשובה מתחרים לאותה שאלה.
+
+     הכלל שמחזיק את זה: **מצטטים, לא מסכמים.** התשובה היא קטע רציף מתוך המקטע, ואחריה
+     קישור לעמוד. סיכום היה הופך את הבוט לכותב בשם המותג בלי בקרת אדם, וזה בדיוק מה
+     שנאסר בכל v1. */
+  var CONTENT=null,contentState='idle';
+  function loadContent(){
+    if(contentState!=='idle')return;
+    contentState='loading';
+    try{
+      fetch('/bot-content.json').then(function(r){return r.ok?r.json():null;}).then(function(j){
+        if(j&&j.sections&&j.sections.length){CONTENT=j;contentState='ready';}else{contentState='failed';}
+      })['catch'](function(){contentState='failed';});
+    }catch(e){contentState='failed';}
+  }
+  /* תחיליות עבריות. **מוסיפים צורה, לא מחליפים אותה**, וזה תיקון לבאג אמיתי: הגרסה
+     הראשונה הסירה כל אות תחילית בעיוורון, ולכן "לוקח" הפך ל"וקח". זה לא רק פספס את
+     המילה, זה גם ייצר התאמת שווא, כי "וקח" תפס את "שלוקחת" בכותרת של מדריך אחסון.
+     בכיוון הטקסט ההתאמה כתת-מחרוזת ממילא מטפלת בתחיליות, כי "שלוקחת" מכיל "לוקח". */
+  function variants(w){
+    var v=[w];
+    if(w.length>3&&'ולבמהשכ'.indexOf(w.charAt(0))>=0)v.push(w.slice(1));
+    return v;
+  }
+  var STOP={'של':1,'את':1,'זה':1,'אני':1,'מה':1,'איך':1,'יש':1,'לא':1,'על':1,'עם':1,'כמה':1,'אם':1,'או':1,'גם':1,'כל':1,'הוא':1,'היא':1,'אבל':1,'רק':1,'כי':1,'לי':1,'לכם':1,'אפשר':1,'צריך':1,'רוצה':1,'איפה':1,'מתי':1,'למה':1};
+  function qTokens(text){
+    var raw=normDev(text).replace(/[^0-9a-z֐-׿]+/g,' ').split(' ');
+    var out=[],i;
+    for(i=0;i<raw.length;i++){
+      var w=raw[i];
+      if(w.length<2||STOP[w])continue;
+      if(out.indexOf(w)<0)out.push(w);
+    }
+    return out;
+  }
+  /* משקל לפי נדירות. בלעדיו "מסך", שמופיע כמעט בכל מקטע, שווה בדיוק כמו "esim" שמופיע
+     בעמוד אחד, ושלושה עמודים שונים יוצאים באותו ניקוד. זה בדיוק מה שקרה במדידה:
+     "כמה זמן לוקח להחליף מסך" נתן 4 לשלושה עמודים, וההכרעה ביניהם הייתה מקרית. */
+  function idf(tok){
+    var df=0,i,v=variants(tok);
+    for(i=0;i<CONTENT.sections.length;i++){
+      var s=CONTENT.sections[i],j;
+      for(j=0;j<v.length;j++)if(s.h.indexOf(v[j])>=0||s.t.indexOf(v[j])>=0){df++;break;}
+    }
+    /* +1 כדי שמילה שאינה בשום מקטע לא תיתן חלוקה באפס, ורצפה כדי שמילה נפוצה מאוד
+       עדיין תתרום משהו */
+    return Math.max(0.25,Math.log(CONTENT.sections.length/(1+df)));
+  }
+  /* ציטוט: קטע רציף מתוך המקטע, שמתחיל במשפט שבו נמצאה המילה החזקה ביותר. תמיד תת-מחרוזת
+     של המקור, ולכן אין בו מספר שלא היה שם. */
+  function excerpt(t,toks){
+    var lo=t.toLowerCase(),at=-1,i;
+    for(i=0;i<toks.length&&at<0;i++)at=lo.indexOf(toks[i]);
+    if(at<0)at=0;
+    /* מתחילים בגבול משפט אמיתי. חיפוש רק אחרי נקודה החזיר ציטוט שנפתח באמצע שאלה,
+       "זמן לוקח להחליף מסך?" במקום "כמה זמן לוקח". שאלה וקריאה הן סופי משפט גם הן. */
+    var start=-1,marks=['. ','? ','! ','־ '],mi;
+    for(mi=0;mi<marks.length;mi++){var p=t.lastIndexOf(marks[mi],at);if(p>start)start=p;}
+    start=start>=0&&at-start<160?start+2:Math.max(0,at-40);
+    /* אם ההתחלה כמעט בראש המקטע, פשוט מתחילים בראש. אחרת נחתכת מילה אחת מתוך שאלה
+       ומתקבל "זמן לוקח להחליף מסך?" במקום "כמה זמן לוקח להחליף מסך?" */
+    if(start<25)start=0;
+    if(start>0){var sp=t.indexOf(' ',start);if(sp>=0&&sp-start<12)start=sp+1;}
+    var s=t.slice(start,start+220);
+    if(start+220<t.length){var cut=s.lastIndexOf(' ');if(cut>60)s=s.slice(0,cut);}
+    return s.replace(/^[\s,.;:•]+/,'').replace(/[\s,;:]+$/,'');
+  }
+  function contentAnswer(text){
+    if(!CONTENT)return false;
+    var toks=qTokens(text);
+    if(toks.length<2)return false;
+    /* ביטוי אחד לכל מילה, מורכב מראש. ההתאמה היא **מילה ולא תת-מחרוזת**: "לוקח" בתוך
+       "שלוקחת" אינו אותה מילה אלא הטיה אחרת, וההתאמה החופשית שלחה את "כמה זמן לוקח
+       להחליף מסך" למדריך אחסון שבכותרתו "הבדיקה שלוקחת חצי דקה". הגבול השמאלי מתיר
+       תחילית עברית אחת, בדיוק כמו בזיהוי שמות הדגמים. */
+    var w=[],re=[],i,j;
+    for(i=0;i<toks.length;i++){
+      w.push(idf(toks[i]));
+      var alts=variants(toks[i]).map(function(x){return x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|');
+      re.push(new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?|[^'+WORDCH+'])('+alts+')([^'+WORDCH+']|$)'));
+    }
+    var best=null,sec,score,hit;
+    for(i=0;i<CONTENT.sections.length;i++){
+      sec=CONTENT.sections[i];
+      var h=' '+sec.h.toLowerCase()+' ',b=' '+sec.t.toLowerCase()+' ';
+      score=0;hit=0;
+      for(j=0;j<toks.length;j++){
+        var inH=re[j].test(h),inB=inH?false:re[j].test(b);
+        if(inH){score+=3*w[j];hit++;}
+        else if(inB){score+=w[j];hit++;}
+      }
+      /* דורש שתי מילים שונות לפחות. מילה אחת מתאימה לחצי האתר, וזה ניחוש. */
+      if(hit>=2&&(!best||score>best.score))best={sec:sec,score:score,hit:hit};
+    }
+    /* הסף כויל מול 12 שאלות אמיתיות ומול ברכות. מתחתיו לא עונים, כי ניתוב לאדם עדיף
+       על תשובה שקרובה ולא נכונה. */
+    if(!best||best.score<3.2)return false;
+    var pg=CONTENT.pages[best.sec.p];
+    fails=0;
+    track('chat_content_hit',{url:pg.u,heading:String(best.sec.h).slice(0,60),score:best.score});
+    botReply(best.sec.h+'\n'+excerpt(best.sec.t,toks),{
+      sug:[['לעמוד המלא',function(){location.href=pg.u;}],
+           ['לדבר עם ברוך',function(){startLead(String(best.sec.h).slice(0,40));}]]
+    });
+    return true;
+  }
   /* bot:answers:end */
   function buyParts(){var p=[];if(ctx.rec)p.push('רוצה המלצה על הדגם המתאים');if(ctx.brand)p.push('יצרן: '+ctx.brand);if(ctx.model)p.push('דגם: '+ctx.model);if(ctx.storage)p.push('נפח: '+ctx.storage);if(ctx.imp)p.push('יבוא: '+ctx.imp);return p;}
   function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
@@ -3933,7 +4041,10 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* שאלה על דגם נבדקת לפני matchIntent, כי "אחריות על גלקסי A56" הייתה נתפסת על ידי
      הכוונה הגנרית warranty ומקבלת תשובה כללית, ולעולם לא מגיעה לנתון של הדגם.
      deviceAnswer מחזיר false כשאין גם דגם וגם שדה, ואז הזרימה הקיימת נמשכת כרגיל. */
-  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it)respond(it);else fallback();}
+  /* הסדר הוא מהמדויק למעורפל: דגם מהקטלוג, ואז 18 הכוונות שנכתבו ביד, ורק אז חיפוש
+     בתוכן. כך תשובה מתוחזקת תמיד מנצחת, והתוכן מדבר רק במקום שבו הבוט היה נופל ל"לא
+     הבנתי". זה גם מה שמונע ממנו להיות רועש. */
+  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
@@ -3996,7 +4107,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   function focusInput(){try{if(matchMedia('(pointer:fine)').matches)input.focus();}catch(e){}}
   function openChat(){
     positionPanel();
-    loadFacts();
+    loadFacts();loadContent();
     panel.removeAttribute('inert');panel.classList.add('open');fab.classList.add('open');wrap.classList.add('chat-open');fab.setAttribute('aria-expanded','true');
     if(!opened){opened=true;track('chat_open',{open:openNow()});var gm=greetWord()+'! אני העוזר הדיגיטלי של פון גת. '+(openNow()?'איך אפשר לעזור?':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.');botReply(gm,{sug:['repair','buy','callback']});}
     setTimeout(function(){focusInput();},300);
