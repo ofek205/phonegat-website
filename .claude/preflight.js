@@ -596,6 +596,14 @@ var classFails = [];
 CONTENT_PAGES.forEach(function (f) {
   var s = readPage(f); if (!s) return;
   var styles = (s.match(/<style[\s\S]*?<\/style>/g) || []).join('\n');
+  /* גם גיליונות חיצוניים מקומיים. הצ'אט עבר ל-chat.css, ובלי זה כל 21 העמודים דיווחו
+   * על עשר מחלקות בלי CSS בזמן שהכלל קיים, וזו אזהרה שתמיד דולקת ולכן נהיית רעש. */
+  (s.match(/<link[^>]+rel="stylesheet"[^>]*>/gi) || []).forEach(function (tag) {
+    var href = (tag.match(/href="(\/[^"]+\.css)"/) || [])[1];
+    if (!href) return;
+    try { styles += '\n' + fs.readFileSync(path.join(pagesDir, href.replace(/^\//, '')), 'utf8'); }
+    catch (e) { /* בדיקה 24 מדווחת על קובץ חסר */ }
+  });
   var scripts = (s.match(/<script[\s\S]*?<\/script>/g) || []).join('\n');
   var body = s.replace(/<style[\s\S]*?<\/style>/g, '').replace(/<script[\s\S]*?<\/script>/g, '');
   var used = {};
@@ -860,7 +868,12 @@ if (classFails.length) {
   function target(u) {
     if (u === '/') return path.join(pagesDir, 'index.html');
     var c = u.replace(/^\//, '').replace(/\/$/, '');
-    return /\.html$/.test(c) ? path.join(pagesDir, c) : path.join(pagesDir, c, 'index.html');
+    if (/\.html$/.test(c)) return path.join(pagesDir, c);
+    /* לא כל קישור שורשי הוא עמוד. גיליון סגנון, סקריפט או JSON הם קובץ אמיתי, וההנחה
+     * שכל יעד הוא תיקייה עם index.html דיווחה על /chat.css כשבור ב-21 עמודים. */
+    var asFile = path.join(pagesDir, c);
+    if (/\.[a-z0-9]{2,5}$/i.test(c) && fs.existsSync(asFile)) return asFile;
+    return path.join(pagesDir, c, 'index.html');
   }
   var dead = {}, checked = 0, seen = 0;
   pageFiles.concat(LEGAL_PAGES).forEach(function (f) {
@@ -1181,6 +1194,45 @@ if (classFails.length) {
   } else if (count) {
     ok(count + ' סקריפטים inline ב-' + filesWith + ' עמודים מתקמפלים');
   }
+})();
+
+/* ---------- 31. chat.js ו-chat.css לא נפרדו מ-index.html ----------
+ * הצ'אט נגזר מ-index.html ל-21 עמודי תוכן דרך שני קבצים חיצוניים. index.html הוא מקור
+ * האמת, ואם מישהו יערוך שם את הבוט בלי להריץ את gen-bot.js, 21 העמודים ימשיכו להריץ
+ * גרסה ישנה **בלי שום סימן**: הצ'אט ייפתח, יענה, ופשוט לא יידע את מה שנוסף.
+ * זה הכשל שהמחולל מזמין, ולכן הוא נסגר כאן ולא בהמלצה. */
+(function () {
+  var idx, js, css;
+  try { idx = read('prototype/index.html'); } catch (e) { return; }
+  var hasSrc = idx.indexOf('/* bot:js:start') >= 0;
+  try { js = read('prototype/chat.js'); css = read('prototype/chat.css'); }
+  catch (e) {
+    if (hasSrc) warn('chat.js או chat.css חסרים — הרץ node .claude/tools/gen-bot.js');
+    return;
+  }
+  if (!hasSrc) { bad('חסר הסימון bot:js:start ב-index.html, ואי אפשר לגזור ממנו'); return; }
+  var a = idx.indexOf('/* bot:js:start'), b = idx.indexOf('/* bot:js:end */');
+  var want = idx.slice(a, b + '/* bot:js:end */'.length);
+  /* משווים אחרי נרמול רווחים, כי סופי שורה משתנים בין הקבצים */
+  function norm(s) { return s.replace(/\r\n/g, '\n').replace(/\s+$/gm, '').trim(); }
+  if (norm(js).indexOf(norm(want)) < 0) {
+    bad('chat.js אינו תואם ל-index.html — 21 עמודי התוכן מריצים גרסה ישנה של הבוט. ' +
+      'הרץ node .claude/tools/gen-bot.js');
+  } else { ok('chat.js תואם למקור ב-index.html'); }
+
+  /* כל עמוד שאמור לשאת את הצ'אט באמת נושא אותו */
+  var missing = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var url = f === 'index.html' ? '/' : '/' + f.replace(/\/index\.html$/, '') + '/';
+    var wanted = /^\/guides\/.+\//.test(url) || url === '/phone-problems/' ||
+                 /^\/[a-z0-9-]+-kiryat-gat\/$/.test(url);
+    if (!wanted) return;
+    var s = readPage(f); if (!s) return;
+    if (s.indexOf('id="pgFab"') < 0 || s.indexOf('/chat.js') < 0) missing.push(f);
+  });
+  if (missing.length) {
+    bad('עמודים שאמורים לשאת את הצ\'אט ואינם נושאים אותו: ' + missing.join(', '));
+  } else { ok('הצ\'אט קיים בכל עמודי התוכן שאמורים לשאת אותו'); }
 })();
 
 /* ---------- דוח ---------- */
