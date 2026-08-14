@@ -3644,9 +3644,16 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   ];
   function findField(text){
     var hay=' '+normDev(text)+' ';
+    /* גם בלי ה"א הידיעה. מילת המפתח היא "גודל מסך", והשאלה הטבעית היא "מה גודל **ה**מסך",
+       ולכן התאמת תת-מחרוזת פשוטה נכשלה ושאלת מפרט שלמה נחטפה לזרימת קנייה. אותה משפחה
+       של תחיליות עבריות שנשכה בפרויקט הזה שוב ושוב. */
+    var bare=hay.replace(/(^| )ה([֐-׿])/g,'$1$2');
     for(var i=0;i<DEV_FIELDS.length;i++){
       var kws=DEV_FIELDS[i][1];
-      for(var j=0;j<kws.length;j++)if(hay.indexOf(normDev(kws[j]))>=0)return DEV_FIELDS[i][0];
+      for(var j=0;j<kws.length;j++){
+        var k=normDev(kws[j]);
+        if(hay.indexOf(k)>=0||bare.indexOf(k)>=0)return DEV_FIELDS[i][0];
+      }
     }
     return null;
   }
@@ -4064,8 +4071,13 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* כוונת פעולה מנצחת תמיד: מי שמבקש לקנות, לתקן או שנחזור אליו מבקש לעשות משהו,
      ומאמר במקום זה הוא תשובה גרועה גם כשההתאמה שלו חזקה. זה נמצא כשהרף הגבוה של
      התוכן חטף את "אני רוצה לקנות מכשיר חדש" למדריך על הדגם החדש מול הקודם. */
+  /* deviceAnswer רץ **ראשון**, לפני כוונות הפעולה. הסדר ההפוך היה רגרסיה חמורה:
+     מילות המפתח של buy כוללות את שמות המותגים ושל repair את שמות השדות, ולכן
+     "מה הסוללה של גלקסי A56" נחטף לזרימת תיקון ו"איזה שבב יש באייפון 17" לזרימת קנייה.
+     נמדד דרך handle() בדפדפן: ארבע מחמש שאלות דגם נחטפו, כלומר כל שכבת העובדות הייתה
+     קוד מת בניסוח אמיתי. deviceAnswer דורש גם דגם וגם שדה, ולכן הוא לא חוטף בקשת קנייה. */
   var ACTION_INTENT={repair:1,buy:1,callback:1};
-  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}var it=matchIntent(text);if(it&&ACTION_INTENT[it.id]){respond(it);return;}if(deviceAnswer(text))return;if(contentAnswer(text,8))return;if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
+  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it&&ACTION_INTENT[it.id]){respond(it);return;}if(contentAnswer(text,8))return;if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
