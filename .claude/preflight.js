@@ -1116,6 +1116,29 @@ if (classFails.length) {
     var src = JSON.parse(read('prototype/devices.json'));
     srcCount = (src.devices || []).filter(function (d) { return d.status !== 'draft'; }).length;
   } catch (e) { /* בדיקה 23 כבר מטפלת ב-devices.json שבור */ }
+  /* ספירה בלבד אינה מספיקה: עריכת תנאי האחריות ב-devices.json בלי הרצת המחולל משאירה
+   * את המספר זהה, והבוט ממשיך להגיש את הנוסח הישן **בלי שום סימן**. לכן טביעת אצבע על
+   * התוכן עצמו, ולא רק על הכמות. */
+  (function () {
+    var src;
+    try { src = JSON.parse(read('prototype/devices.json')); } catch (e) { return; }
+    function fp(d, fromFacts) {
+      var c = fromFacts ? d : (d.commercial || {}), e = fromFacts ? d : (d.editorial || {});
+      var ref = fromFacts ? d.kind === 'reference' : d.status === 'reference';
+      return [d.slug, d.name, d.name_he || d.name, d.brand, ref ? 1 : 0,
+        ref ? '' : (c.warranty_by || ''), ref ? '' : (typeof c.warranty_months === 'number' ? c.warranty_months : ''),
+        ref ? '' : (c.service_terms || ''), ref ? '' : (c.payments || ''), ref ? '' : (c.data_transfer || ''),
+        (e.good_for || []).join('|'), (e.less_for || []).join('|'),
+        JSON.stringify(d.spec || {})].join('');
+    }
+    var a = (src.devices || []).filter(function (d) { return d.status !== 'draft'; }).map(function (d) { return fp(d, false); }).sort().join('');
+    var b = list.map(function (d) { return fp(d, true); }).sort().join('');
+    if (a !== b) {
+      bad('bot-facts.json אינו תואם את התוכן של devices.json — הבוט מגיש נוסח ישן. ' +
+        'הרץ node .claude/tools/gen-devices.js');
+    } else { ok('bot-facts.json תואם את devices.json גם בתוכן ולא רק בכמות'); }
+  })();
+
   if (srcCount !== null && srcCount !== list.length) {
     bad('bot-facts.json מחזיק ' + list.length + ' דגמים ו-devices.json מחזיק ' + srcCount +
       ' — הרץ node .claude/tools/gen-devices.js, אחרת הבוט עובד מול קטלוג ישן בשקט');
