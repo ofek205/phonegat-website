@@ -1258,6 +1258,36 @@ if (classFails.length) {
   } else { ok('הצ\'אט קיים בכל עמודי התוכן שאמורים לשאת אותו'); }
 })();
 
+/* ---------- 32. bot-content.json מיושן מול העמודים ----------
+ * זה קרה בפועל, ולא בתיאוריה: אחרי rebase על origin/main אחד מ-21 העמודים המאונדקסים
+ * השתנה, מספר המקטעים נשאר 193 בדיוק, והבוט המשיך לצטט את הנוסח הישן. ספירה לא תופסת
+ * את זה, ולכן המחולל שומר טביעת אצבע של ה-main של כל עמוד וכאן משווים אותה מחדש.
+ * הצ'אט עצמו לא נשבר במקרה כזה, הוא פשוט מצטט טקסט שלא קיים יותר בעמוד. */
+(function () {
+  var raw;
+  try { raw = read('prototype/bot-content.json'); } catch (e) { return; }
+  var c; try { c = JSON.parse(raw); } catch (e) { bad('bot-content.json שבור'); return; }
+  if (!c.src) { warn('bot-content.json בלי טביעות אצבע — הרץ node .claude/tools/gen-bot-content.js'); return; }
+  var crypto = require('crypto'), stale = [], missing = [];
+  Object.keys(c.src).forEach(function (url) {
+    var rel = url === '/' ? 'index.html' : url.replace(/^\//, '').replace(/\/$/, '') + '/index.html';
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { missing.push(url); return; }
+    var mm = s.match(/<main[\s\S]*?<\/main>/i);
+    if (!mm) { missing.push(url); return; }
+    var h = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
+    if (h !== c.src[url]) stale.push(url);
+  });
+  if (missing.length) bad('bot-content.json מפנה לעמודים שאינם: ' + missing.join(', '));
+  if (stale.length) {
+    bad('bot-content.json מיושן מול ' + stale.length + ' עמודים: ' + stale.slice(0, 4).join(', ') +
+      (stale.length > 4 ? ' ועוד' : '') + ' — הבוט מצטט נוסח שלא קיים יותר. ' +
+      'הרץ node .claude/tools/gen-bot-content.js');
+  } else if (!missing.length) {
+    ok('bot-content.json מסונכרן עם ' + Object.keys(c.src).length + ' העמודים המאונדקסים');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
