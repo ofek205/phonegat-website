@@ -159,13 +159,6 @@ bdo,.ltr{unicode-bidi:isolate;direction:ltr}
 .btn-sm{padding:6px 16px;font-size:.9rem}
 
 /* ===== header: white and light, like the reference: logo, plain nav, one pill CTA ===== */
-/* ===== announcement bar (teal, rotating) ===== */
-.announce{background:var(--teal);color:#fff;font-weight:700;position:relative}
-.announce .inner{display:flex;align-items:center;justify-content:center;gap:.6rem;min-height:46px;text-align:center;padding:.4rem 2.4rem;font-size:clamp(.8rem,2.2vw,1rem)}
-.announce .msg{display:none}.announce .msg.on{display:block}
-.announce button{position:absolute;top:0;bottom:0;background:none;border:none;color:#fff;cursor:pointer;width:40px;opacity:.85;display:grid;place-items:center}
-.announce button svg{width:15px;height:15px}
-.announce .prev{inset-inline-start:0}.announce .next{inset-inline-end:0}
 header.site{background:#fff;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
 .hrow{display:flex;align-items:center;gap:1rem;min-height:66px}
 /* the logo is the way back to the home page — 44px of height to tap, without resizing the mark */
@@ -565,17 +558,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <a class="skip" href="#main">דלג לתוכן הראשי</a>
 <div class="prog" id="prog" aria-hidden="true"></div>
-
-<div class="announce" role="region" aria-label="הודעות">
-  <div class="wrap inner">
-    <button class="prev" id="annPrev" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
-    <span class="msg on">מעבדת הסלולר הוותיקה בקרית גת, מעל 30 שנה, שירות מכל הלב</span>
-    <span class="msg">משווק מורשה סלקום, ושירות לכל החברות</span>
-    <span class="msg">תיקון, מכירת מכשירים ואבזור, הכול במקום אחד</span>
-    <span class="msg">הטבה לאתר: מגן מסך + הדבקה ב-9 ₪, והעברת נתונים ללא עלות</span>
-    <button class="next" id="annNext" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-  </div>
-</div>
 
 <header class="site" role="banner">
   <div class="wrap hrow">
@@ -979,22 +961,6 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
    This page is a search landing page, so for many visitors it is the first (or only) page they
    ever open. Without registering the worker here they would never get the app at all. */
 (function(){
-  // announcement rotator, lifted from index.html (pauses on hover and focus, per WCAG 2.2.2)
-  (function(){
-    var msgs=document.querySelectorAll(".announce .msg"), annBar=document.querySelector(".announce");
-    if(!annBar||!msgs.length) return;
-    var i=0, annTimer=null;
-    var prefersReduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    function show(n){msgs.forEach(function(m,k){m.classList.toggle("on",k===n)})}
-    function annStart(){if(prefersReduce||annTimer)return;annTimer=setInterval(function(){i=(i+1)%msgs.length;show(i)},6000);}
-    function annStop(){if(annTimer){clearInterval(annTimer);annTimer=null;}}
-    annBar.addEventListener("mouseenter",annStop);annBar.addEventListener("mouseleave",annStart);
-    annBar.addEventListener("focusin",annStop);annBar.addEventListener("focusout",annStart);
-    var nx=document.getElementById("annNext"), pv=document.getElementById("annPrev");
-    if(nx) nx.addEventListener("click",function(){i=(i+1)%msgs.length;show(i);annStop();annStart();});
-    if(pv) pv.addEventListener("click",function(){i=(i-1+msgs.length)%msgs.length;show(i);annStop();annStart();});
-    annStart();
-  })();
   if('serviceWorker' in navigator){
     window.addEventListener('load',function(){ navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){}); });
   }
