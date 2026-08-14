@@ -197,6 +197,39 @@ if (compareAnswer && comparePage) {
   cmpFails.push('פונקציות ההשוואה לא נמצאו');
 }
 
+/* ---------- שכבת התוכן: 193 מקטעים מ-21 עמודים ----------
+ * לא בודק "האם זה העמוד שדמיינתי", כי במדידה התברר פעמיים שהציפייה שלי הייתה החלשה
+ * מהתשובה. בודק את מה שבאמת חייב להתקיים: יש תשובה לשאלה אמיתית, היא מצביעה לעמוד קיים,
+ * היא אינה נוקבת במחיר, ושאלה שאינה שאלה לא מקבלת תשובה. */
+var contentFails = [], contentAnswer = sandbox.contentAnswer;
+(function () {
+  var cpath = path.join(ROOT, 'prototype', 'bot-content.json');
+  if (!contentAnswer || !fs.existsSync(cpath)) { contentFails.push('שכבת התוכן לא נמצאה'); return; }
+  var content = JSON.parse(fs.readFileSync(cpath, 'utf8'));
+  sandbox.CONTENT = content;
+  var urls = {}; content.pages.forEach(function (p) { urls[p.u] = 1; });
+
+  ['איך מעבירים eSIM למכשיר חדש', 'הטלפון נפל למים מה עושים',
+   'אחריות על טלפון בישראל מה החוק', 'כמה אחסון צריך בטלפון'].forEach(function (q) {
+    replies.length = 0; tracked.length = 0;
+    if (!contentAnswer(q)) { contentFails.push('"' + q + '" לא קיבלה תשובה'); return; }
+    var ev = tracked.filter(function (t) { return t.event === 'chat_content_hit'; })[0];
+    if (!ev) { contentFails.push('"' + q + '" ענתה בלי לירות chat_content_hit'); return; }
+    if (!urls[ev.data.url]) contentFails.push('"' + q + '" מצביעה לעמוד שאינו באינדקס: ' + ev.data.url);
+    var t = replies[0] ? replies[0].text : '';
+    if (PRICE.test(t)) contentFails.push('"' + q + '" מחיר בתשובה');
+    if (t.indexOf('—') >= 0) contentFails.push('"' + q + '" מקף ארוך');
+    if (t.length > 400) contentFails.push('"' + q + '" ' + t.length + ' תווים, מעל 400');
+  });
+  /* ברכה אינה שאלה, ותשובת תוכן עליה היא רעש */
+  ['שלום', 'תודה רבה', 'בוקר טוב'].forEach(function (q) {
+    replies.length = 0;
+    if (contentAnswer(q)) contentFails.push('"' + q + '" קיבלה תשובת תוכן ולא הייתה צריכה');
+  });
+  /* והשער החשוב: אין מחיר בשום מקטע באינדקס */
+  if (PRICE.test(JSON.stringify(content))) contentFails.push('אזכור מחיר בתוך bot-content.json');
+})();
+
 /* ---------- פרטיות: מה שנשלח ל-GA4 כשלא זוהה דגם ----------
  * privacy.html §3 מבטיח מידע סטטיסטי בלבד. אנשים מקלידים לצ'אט שם ומספר טלפון, ולכן
  * שום אירוע לא יישא טקסט חופשי. הבדיקה כאן היא על ה-payload בפועל ולא על הכוונה. */
@@ -263,6 +296,7 @@ console.log('  אורך תשובת השוואה: חציון ' + cmpLens.sort(fun
 n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
+n += report(contentFails, 'שכבת התוכן: תשובה לשאלה אמיתית, עמוד קיים, בלי מחיר, וברכה לא מקבלת תשובה');
 n += report(privFails, 'פרטיות: הרמז ב-chat_device_unmatched נקי משם ומטלפון ועדיין נושא את הדגם');
 console.log('');
 if (n) { console.log('  ' + n + ' כשלים\n'); process.exit(1); }
