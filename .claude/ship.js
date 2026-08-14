@@ -93,12 +93,17 @@ function preflight() {
 
 function dirtyCheck() {
   var st = out('git status --porcelain') || '';
-  var modified = st.split('\n').filter(function (l) { return l && !/^\?\?/.test(l); });
+  var all = st.split('\n').filter(function (l) { return !!l; });
   /* רק שינוי בתוך prototype/ באמת משנה את מה שנפרס. חוסמים עליו, כי אחרת
      מה שתבדוק ב-staging אינו מה שיש לך על המסך. שינוי מחוץ לתיקייה הזו
-     (הנחיות, סקריפטים) לא נפרס בכלל — ולפעמים הוא בכלל של הסשן השני,
+     (הנחיות, סקריפטים) לא נפרס בכלל, ולפעמים הוא בכלל של הסשן השני,
      ואין סיבה שיחסום העלאה. */
-  var deployed = modified.filter(function (l) { return /\sprototype\//.test(l); });
+  var deployed = all.filter(function (l) { return /\sprototype\//.test(l) || /^\?\?\s+prototype\//.test(l); });
+  /* קובץ לא-עקוב בתוך prototype/ נספר כאן, ופעם לא. זה היה החור המסוכן בשרשרת: המחוללים
+     יוצרים עמוד חדש כקובץ חדש ומעדכנים במקביל קבצים עקובים, git commit -am מקמט רק את
+     השניים, והפריפלייט עובר כי הוא קורא מהדיסק. התוצאה היא עמוד שכל האתר מקשר אליו ושאינו
+     קיים בפרודקשן. מחוץ ל-prototype/ עדיין מתעלמים מקבצים לא-עקובים, כי שם הם רעש. */
+  var modified = all.filter(function (l) { return !/^\?\?/.test(l); });
   if (deployed.length) {
     die('יש שינויים ב-prototype/ שלא נכנסו ל-commit — הם לא ייפרסו, ואז ה-staging לא ישקף מה שאתה רואה מקומית.',
         C.d + deployed.join('\n') + C.x + '\n\nעשה commit ואז נסה שוב.');
