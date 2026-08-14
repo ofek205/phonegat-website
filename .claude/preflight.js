@@ -1174,6 +1174,22 @@ if (classFails.length) {
   (function () {
     var harness = P('.claude/tools/bot-harness.js');
     if (!fs.existsSync(harness)) { warn('bot-harness.js חסר — שכבת התשובות של הבוט לא נבדקת'); return; }
+    /* שתי רתמות ולא אחת. bot-harness מאמת את **בוני התשובות**, ו-bot-flow-harness את
+     * **הניתוב** אליהם. הראשונה הייתה ירוקה לגמרי בזמן שארבע מחמש שאלות דגם נחטפו
+     * לזרימות ולא הגיעו לבונים בכלל, כי היא קוראת להם ישירות ולא דרך handle(). */
+    var flow = P('.claude/tools/bot-flow-harness.js');
+    if (fs.existsSync(flow)) {
+      var rf = require('child_process').spawnSync(process.execPath, [flow, ROOT], { encoding: 'utf8' });
+      var of = ((rf.stdout || '') + (rf.stderr || '')).trim();
+      if (rf.status === 0) {
+        var mf = of.match(/(\d+)\/(\d+) שאלות נחתו/);
+        ok('ניתוב הבוט: ' + (mf ? mf[1] + '/' + mf[2] : '?') + ' שאלות נחתות במקום הנכון');
+      } else {
+        bad('ניתוב הבוט נכשל: ' + of.split('\n').filter(function (l) { return l.indexOf('✗') >= 0; })
+          .join(' · ').slice(0, 300));
+      }
+    } else { warn('bot-flow-harness.js חסר — ניתוב השאלות אינו נבדק'); }
+
     var r = require('child_process').spawnSync(process.execPath, [harness, ROOT], { encoding: 'utf8' });
     var out = ((r.stdout || '') + (r.stderr || '')).trim();
     if (r.status === 0) {
