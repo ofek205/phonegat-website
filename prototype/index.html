@@ -3242,7 +3242,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   <a href="https://waze.com/ul?ll=31.60332,34.775553&navigate=yes"><span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a8 8 0 0 0-8 8c0 5.2 8 12 8 12s8-6.8 8-12a8 8 0 0 0-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg></span>ניווט</a>
 </nav>
 
-<!-- chatbot widget -->
+<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
 <div class="pg-fab-wrap" id="pgFabWrap">
   <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
   <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
@@ -3253,7 +3253,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 </div>
 <section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" inert>
   <div class="pg-head">
-    <span class="ava"><img src="logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
+    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
     <div class="ht"><b>העוזר של פון גת</b><span>בדרך כלל עונים מיד</span></div>
     <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
@@ -3263,8 +3263,9 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
     <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
   </div>
-  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
+  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
 </section>
+<!-- bot:html:end -->
 
 <!-- accessibility widget -->
 <button class="a11y-trigger" id="a11yTrigger" aria-label="פתיחת תפריט נגישות" aria-expanded="false" aria-controls="a11yPanel" aria-keyshortcuts="Alt+A">
@@ -3345,9 +3346,17 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 </script>
 <script>
 /* ===== Hebrew FAQ chatbot (client-side, no backend) ===== */
+/* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
+   התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
   var fab=document.getElementById('pgFab'), panel=document.getElementById('pgPanel');
   if(!fab||!panel) return;
+  /* track מוגדר מחוץ ל-IIFE הזה, בדף הבית בלבד. כשהווידג'ט נגזר ל-chat.js ונטען בעמודי
+     תוכן אחרים, הוא לא קיים שם, ולכן יש כאן נפילה לאחור לאותה מימוש בדיוק. בלעדיה כל
+     קריאה ל-track בעמוד אחר הייתה זורקת, והצ'אט היה מת שם בשקט. */
+  var track=(typeof window.track==='function')?window.track:function(ev,d){
+    try{window.dataLayer=window.dataLayer||[];var o={event:ev};if(d)for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(e){}
+  };
   var msgs=document.getElementById('pgMsgs'), chipsWrap=document.getElementById('pgChips');
   var input=document.getElementById('pgInput'), sendBtn=document.getElementById('pgSend'), closeBtn=document.getElementById('pgClose');
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -3760,9 +3769,12 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     }
     var field=findField(text);if(!field)return false;
     if(!devs.length){
-      /* יש שאלה על שדה אבל אין דגם מזוהה. לא מנחשים דגם קרוב. */
+      /* יש שאלה על שדה אבל אין דגם מזוהה. מכריזים "לא זיהיתי דגם" **רק** כשבאמת היה
+         בטקסט משהו בצורת דגם. אחרת זו שאלת תוכן ולא שאלת דגם, ושכבת התוכן תענה עליה.
+         זה נמצא בעמוד המדריך ל-eSIM: "איך מעבירים eSIM למכשיר חדש" נתפס כאן, כי esim
+         הוא גם שם שדה מפרט, והבוט השיב "לא זיהיתי איזה דגם" במקום לענות מהמדריך. */
       if(!FACTS)return false;
-      if(!/[a-z]/i.test(text)&&!/\d/.test(text))return false;
+      if(!deviceHint(text))return false;
       track('chat_device_unmatched',{hint:deviceHint(text),q_len:Math.min(String(text).length,300)});
       botReply('לא זיהיתי איזה דגם. אפשר לכתוב את השם המלא, למשל "גלקסי A56" או "אייפון 17 פרו", או לבחור מהרשימה.',{sug:[['רשימת המכשירים',function(){startBuy();}],['לדבר עם ברוך',function(){startLead('שאלה על דגם');}]]});
       return true;
@@ -3855,7 +3867,12 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(start+220<t.length){var cut=s.lastIndexOf(' ');if(cut>60)s=s.slice(0,cut);}
     return s.replace(/^[\s,.;:•]+/,'').replace(/[\s,;:]+$/,'');
   }
-  function contentAnswer(text){
+  /* min מאפשר שתי מעברות: אחת לפני הכוונות עם רף גבוה, ואחת אחריהן עם הרף הרגיל.
+     הסיבה נמצאה בעמוד המדריך ל-eSIM: "איך מעבירים eSIM למכשיר חדש" נבלע על ידי הכוונה
+     buy, שמילות המפתח שלה כוללות "מכשיר חדש", והמשתמש נשלח לזרימת קנייה במקום לקבל
+     תשובה מהמדריך שהוא עומד עליו. התאמת תוכן חזקה וספציפית צריכה לנצח כוונה גנרית,
+     אבל התאמה חלשה לא, ולכן שני רפים ולא היפוך סדר. */
+  function contentAnswer(text,min){
     if(!CONTENT)return false;
     var toks=qTokens(text);
     if(toks.length<2)return false;
@@ -3884,7 +3901,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     }
     /* הסף כויל מול 12 שאלות אמיתיות ומול ברכות. מתחתיו לא עונים, כי ניתוב לאדם עדיף
        על תשובה שקרובה ולא נכונה. */
-    if(!best||best.score<3.2)return false;
+    if(!best||best.score<(min||3.2))return false;
     var pg=CONTENT.pages[best.sec.p];
     fails=0;
     track('chat_content_hit',{url:pg.u,heading:String(best.sec.h).slice(0,60),score:best.score});
@@ -4044,7 +4061,11 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* הסדר הוא מהמדויק למעורפל: דגם מהקטלוג, ואז 18 הכוונות שנכתבו ביד, ורק אז חיפוש
      בתוכן. כך תשובה מתוחזקת תמיד מנצחת, והתוכן מדבר רק במקום שבו הבוט היה נופל ל"לא
      הבנתי". זה גם מה שמונע ממנו להיות רועש. */
-  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
+  /* כוונת פעולה מנצחת תמיד: מי שמבקש לקנות, לתקן או שנחזור אליו מבקש לעשות משהו,
+     ומאמר במקום זה הוא תשובה גרועה גם כשההתאמה שלו חזקה. זה נמצא כשהרף הגבוה של
+     התוכן חטף את "אני רוצה לקנות מכשיר חדש" למדריך על הדגם החדש מול הקודם. */
+  var ACTION_INTENT={repair:1,buy:1,callback:1};
+  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}var it=matchIntent(text);if(it&&ACTION_INTENT[it.id]){respond(it);return;}if(deviceAnswer(text))return;if(contentAnswer(text,8))return;if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
@@ -4120,6 +4141,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();handle(input.value);input.value='';}});
   window.addEventListener('resize',function(){if(panel.classList.contains('open'))positionPanel();});
 })();
+/* bot:js:end */
 </script>
 <script>
 /* ===== accessibility preferences widget (IS 5568 / Regulation 35) ===== */
