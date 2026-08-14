@@ -3556,6 +3556,20 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     if(me!==en&&ok(me))t.push(me);
     return t.filter(function(x,j,a){return x&&a.indexOf(x)===j;});
   }
+  /* chat_device_unmatched קיים כדי למדוד ביקוש לדגמים שאיננו מחזיקים, ולכן הוא חייב לדעת
+     **איזה** דגם, ומונה בלבד היה חסר טעם. אבל אנשים מקלידים לצ'אט "קוראים לי דוד
+     0501234567, המסך שבור", ושליחת טקסט גולמי ל-GA4 היא בדיוק מה שתוקן ב-fallback:
+     privacy.html §3 מבטיח מידע סטטיסטי בלבד, ושאלה חופשית אינה זה.
+     לכן נשלחים רק טוקנים בצורת דגם, אות לצד ספרה או שם מותג מוכר. שם פרטי אינו בצורה
+     הזאת, ורצף של חמש ספרות ומעלה מנוקה לפני הכל, כי זה מספר טלפון ולא דגם. */
+  var BRAND_WORDS=['גלקסי','אייפון','סמסונג','שיאומי','רדמי','פיקסל','גוגל','וואן פלוס','נאת׳ינג','אפל'];
+  function deviceHint(text){
+    var t=normDev(text).replace(/\d{5,}/g,' '),out=[],i;
+    var toks=t.match(/[a-z]+\s?\d+[a-z]*|\d+\s?[a-z]+/g)||[];
+    for(i=0;i<toks.length&&out.length<3;i++)if(out.indexOf(toks[i])<0)out.push(toks[i]);
+    for(i=0;i<BRAND_WORDS.length&&out.length<3;i++)if(t.indexOf(BRAND_WORDS[i])>=0&&out.indexOf(BRAND_WORDS[i])<0)out.push(BRAND_WORDS[i]);
+    return out.join(' ').slice(0,40);
+  }
   var WORDCH='0-9a-z\\u0590-\\u05ff';
   /* גבול שמאלי שמתיר תחילית עברית אחת. בעברית "ל", "ב", "ה", "מ", "ו", "ש", "כ" נדבקות
      למילה, ולכן "לאייפון 17 פרו" לא היה מתאים לטוקן "אייפון 17 פרו" בבדיקת גבול רגילה.
@@ -3749,7 +3763,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
       /* יש שאלה על שדה אבל אין דגם מזוהה. לא מנחשים דגם קרוב. */
       if(!FACTS)return false;
       if(!/[a-z]/i.test(text)&&!/\d/.test(text))return false;
-      track('chat_device_unmatched',{query:String(text).slice(0,80)});
+      track('chat_device_unmatched',{hint:deviceHint(text),q_len:Math.min(String(text).length,300)});
       botReply('לא זיהיתי איזה דגם. אפשר לכתוב את השם המלא, למשל "גלקסי A56" או "אייפון 17 פרו", או לבחור מהרשימה.',{sug:[['רשימת המכשירים',function(){startBuy();}],['לדבר עם ברוך',function(){startLead('שאלה על דגם');}]]});
       return true;
     }
