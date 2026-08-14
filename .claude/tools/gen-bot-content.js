@@ -23,7 +23,7 @@
  *    המחיר הזה לגיטימי בעמוד ולא בפי הבוט, כי בשיחה אין את ההקשר ואת התאריך.
  */
 'use strict';
-var fs = require('fs'), path = require('path');
+var fs = require('fs'), path = require('path'), crypto = require('crypto');
 var ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 
@@ -95,7 +95,7 @@ var files = walk(PROTO, []).filter(function (f) {
   return !/^(accessibility|privacy)\.html$/.test(b) && b.charAt(0) !== '_';
 });
 
-var sections = [], skippedPrice = 0, noMain = [], pages = 0, pageList = [], pageIx = {}, skippedPage = 0;
+var sections = [], skippedPrice = 0, noMain = [], pages = 0, pageList = [], pageIx = {}, skippedPage = 0, srcHash = {};
 files.forEach(function (f) {
   var html = fs.readFileSync(f, 'utf8');
   var rel = path.relative(PROTO, f).split(path.sep).join('/');
@@ -105,6 +105,7 @@ files.forEach(function (f) {
   if (!inIndex(url)) { skippedPage++; return; }
   pages++;
   var title = strip((html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || '');
+  srcHash[url] = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
 
   /* פיצול לפי h2/h3, ושמירת הכותרת עצמה יחד עם הטקסט שאחריה */
   var chunks = mm[0].split(/(<h[23][^>]*>[\s\S]*?<\/h[23]>)/i);
@@ -126,6 +127,9 @@ files.forEach(function (f) {
 
 var out = {
   _: 'נגזר אוטומטית מעמודי האתר על ידי gen-bot-content.js. אל תערוך. נקרא על ידי העוזר בצ\'אט.',
+  /* טביעת אצבע של ה-main של כל עמוד מאונדקס, כדי שבדיקה 32 תוכל לתפוס אינדקס מיושן.
+     זה נמצא בפועל: עמוד השתנה ב-main, מספר המקטעים נשאר 193, והתוכן היה ישן בשקט. */
+  src: srcHash,
   pages: pageList,
   sections: sections
 };
