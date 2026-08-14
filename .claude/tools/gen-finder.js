@@ -145,8 +145,10 @@ h = swap(h, /(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(
 h = h.replace(/<meta name="robots"[^>]*>/, '<meta name="robots" content="index,follow">');
 
 h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
-if (!/"@type":"Product"/.test(h)) { console.error('✗ finder: לא נמצא בלוק Product להחלפה'); process.exit(1); }
-h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>/,
+/* עמוד המכשיר ששימש כתבנית כבר אינו נושא Product ברמת העמוד, כי גוגל דורשת offers, review או
+ * aggregateRating ואין מחירון באתר. ההזרקה אינה תלויה בו יותר: אם הוא קיים הוא מוסר, ובכל
+ * מקרה הסכימה נכנסת לפני </head>. */
+var finderSchema =
   ['<script type="application/ld+json">\n' + json({
     '@context': 'https://schema.org', '@type': 'WebPage', name: 'איזה מכשיר מתאים לי',
     description: desc, url: url, publisher: { '@id': PROD + '#business' }
@@ -157,7 +159,10 @@ h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/s
       { '@type': 'ListItem', position: 2, name: 'מכשירים', item: PROD + 'phones/' },
       { '@type': 'ListItem', position: 3, name: 'איזה מכשיר מתאים לי', item: url }
     ]
-  }) + '\n</script>'].join('\n'));
+  }) + '\n</script>'].join('\n');
+h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>\s*/, '');
+if (h.indexOf('</head>') < 0) { console.error('✗ finder: לא נמצא </head> להזרקת הסכימה'); process.exit(1); }
+h = h.replace('</head>', finderSchema + '\n</head>');
 if (h.indexOf('"name":"מכשירים"') < 0) { console.error('✗ finder: פירור הלחם אינו מצביע ל-/phones/'); process.exit(1); }
 
 var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';

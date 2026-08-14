@@ -555,9 +555,15 @@ db._comparisons.pairs.forEach(function (p) {
    * הבלוק החדש מוזרק במקום Product, שיושב לפני ה-BreadcrumbList של המקור, ולכן מחיקה
    * אחרי ההזרקה מוחקת את החדש. שום בדיקה לא תופסת את זה כי מספר הרמות זהה. */
   h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
-  if (!/"@type":"Product"/.test(h)) { console.error('✗ ' + p.slug + ': לא נמצא בלוק Product להחלפה'); process.exit(1); }
-  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>/,
-    schema(p, a, b, url).map(function (o) { return '<script type="application/ld+json">\n' + JSON.stringify(o) + '\n</script>'; }).join('\n'));
+  /* עמודי המכשיר חדלו לשאת Product ברמת העמוד: גוגל דורשת offers, review או aggregateRating,
+   * ואין מחירון באתר, ולכן הישות נפלטת רק כשיש מחיר. המחולל הזה נשען על קיומו של אותו בלוק
+   * כיעד להחלפה, ולכן הוא נפל על כל זוג. ההזרקה אינה תלויה בו יותר: אם הוא קיים הוא מוסר,
+   * ובכל מקרה הסכימה נכנסת לפני </head>. */
+  var cmpSchema = schema(p, a, b, url)
+    .map(function (o) { return '<script type="application/ld+json">\n' + JSON.stringify(o) + '\n</script>'; }).join('\n');
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>\s*/, '');
+  if (h.indexOf('</head>') < 0) { console.error('✗ ' + p.slug + ': לא נמצא </head> להזרקת הסכימה'); process.exit(1); }
+  h = h.replace('</head>', cmpSchema + '\n</head>');
   /* חגורה: אם סדר ההזרקה יישבר שוב, זה ייפול כאן ולא ישקוט */
   if (h.indexOf('"name":"השוואות"') < 0) { console.error('✗ ' + p.slug + ': פירור הלחם אינו מצביע ל-/compare/'); process.exit(1); }
   /* Product ברמת העמוד, כלומר בלוק שנפתח בו. בתוך about של ה-Article יש Product מקונן לכל
@@ -770,15 +776,17 @@ function buildTool() {
 
   /* אין Product ואין Article: זה כלי ולא תוכן. נשאר BreadcrumbList וה-#business. */
   h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"BreadcrumbList"[\s\S]*?<\/script>\s*/, '');
-  if (!/"@type":"Product"/.test(h)) { console.error('✗ tool: לא נמצא בלוק Product להחלפה'); process.exit(1); }
-  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>/,
-    '<script type="application/ld+json">\n' + JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
-        { '@type': 'ListItem', position: 2, name: 'מכשירים', item: PROD + 'phones/' },
-        { '@type': 'ListItem', position: 3, name: 'השוואת מכשירים', item: toolUrl }
-      ]
-    }) + '\n</script>');
+  /* אותה סיבה כמו למעלה: עמוד המכשיר ששימש כתבנית כבר אינו נושא Product ברמת העמוד. */
+  var toolCrumbs = '<script type="application/ld+json">\n' + JSON.stringify({
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
+      { '@type': 'ListItem', position: 2, name: 'מכשירים', item: PROD + 'phones/' },
+      { '@type': 'ListItem', position: 3, name: 'השוואת מכשירים', item: toolUrl }
+    ]
+  }) + '\n</script>';
+  h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>\s*/, '');
+  if (h.indexOf('</head>') < 0) { console.error('✗ tool: לא נמצא </head> להזרקת הסכימה'); process.exit(1); }
+  h = h.replace('</head>', toolCrumbs + '\n</head>');
 
   var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
   if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ tool: לא נמצא עוגן ה-CSS'); process.exit(1); }

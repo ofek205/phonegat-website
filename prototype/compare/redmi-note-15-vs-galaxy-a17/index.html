@@ -18,7 +18,7 @@
      hand-kept hostname rule, and segment on page_type instead of a regex over Page Path.
      No "event" key: this sets Data Layer Variables, it does not fire a trigger. */
   window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'compare'});
+  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'device'});
   /* This page ships robots=index,follow for production, so on a test host that meta has to be
      actively overridden — vercel.json's X-Robots-Tag covers *.vercel.app, this covers the rest. */
   if(!window.PG_PROD){
@@ -100,12 +100,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      template: headings are set in a serif at a normal weight, not in heavy sans. -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500&display=swap"></noscript>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"רדמי נוט 15 או גלקסי A17: שני מכשירי כניסה, שתי גישות","description":"לשניהם אין 5G ולשניהם יש חריץ זיכרון. לרדמי סוללה 6000 mAh ומסך בהיר בהרבה, ל-A17 שש שנות עדכונים. פון גת קרית גת.","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/compare/redmi-note-15-vs-galaxy-a17/"},"about":[{"@type":"Product","name":"Redmi Note 15","brand":{"@type":"Brand","name":"Xiaomi"}},{"@type":"Product","name":"Galaxy A17","brand":{"@type":"Brand","name":"Samsung"}}],"publisher":{"@id":"https://www.phonegat.co.il/#business"}}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"דף הבית","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"השוואות","item":"https://www.phonegat.co.il/compare/"},{"@type":"ListItem","position":3,"name":"רדמי נוט 15 או גלקסי A17: שני מכשירי כניסה, שתי גישות","item":"https://www.phonegat.co.il/compare/redmi-note-15-vs-galaxy-a17/"}]}
-</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"MobilePhoneStore","@id":"https://www.phonegat.co.il/#business","name":"פון גת","url":"https://www.phonegat.co.il/","logo":"https://www.phonegat.co.il/logo-mark.png","telephone":"+972-52-5893366","address":{"@type":"PostalAddress","streetAddress":"רחבת תשרי 2","addressLocality":"קרית גת","addressCountry":"IL"}}
 </script>
@@ -687,6 +681,12 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"רדמי נוט 15 או גלקסי A17: שני מכשירי כניסה, שתי גישות","description":"לשניהם אין 5G ולשניהם יש חריץ זיכרון. לרדמי סוללה 6000 mAh ומסך בהיר בהרבה, ל-A17 שש שנות עדכונים. פון גת קרית גת.","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/compare/redmi-note-15-vs-galaxy-a17/"},"about":[{"@type":"Product","name":"Redmi Note 15","brand":{"@type":"Brand","name":"Xiaomi"}},{"@type":"Product","name":"Galaxy A17","brand":{"@type":"Brand","name":"Samsung"}}],"publisher":{"@id":"https://www.phonegat.co.il/#business"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"דף הבית","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"השוואות","item":"https://www.phonegat.co.il/compare/"},{"@type":"ListItem","position":3,"name":"רדמי נוט 15 או גלקסי A17: שני מכשירי כניסה, שתי גישות","item":"https://www.phonegat.co.il/compare/redmi-note-15-vs-galaxy-a17/"}]}
+</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -726,7 +726,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
-            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/" aria-current="page">יבוא מקביל או רשמי</a></div>
             <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-day-checklist/">מה לבדוק ביום הראשון</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>
@@ -957,7 +957,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="cta" aria-labelledby="cta-h">
   <div class="wrap">
     <h2 id="cta-h">עדיין מתלבטים?</h2>
-    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי <span class="ltr">9:00–18:30</span> ושישי <span class="ltr">9:00–13:00</span>.</p>
+    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>
     <div class="row">
       <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20Redmi%20Note%2015%20%D7%9C-Galaxy%20A17.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
