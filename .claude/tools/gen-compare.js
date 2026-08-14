@@ -335,7 +335,12 @@ var CSS = [
   '   שני מספרים דורשים חיסור, שני קווים באורך שונה נקראים במבט אחד. */',
   '.dbar{display:block;block-size:2px;inline-size:var(--w,0);min-inline-size:2px;max-inline-size:100%;background:var(--teal);margin-block-start:.5rem;opacity:.75}',
   '/* בהיפוך צבעים ובניגודיות גבוהה הקו לוקח את צבע הטקסט, אחרת הוא נעלם */',
-  'html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:1}'
+  /* שמות המחלקות כאן היו a11y-invert ו-a11y-contrast, ותפריט הנגישות לא מוסיף אף אחד מהם:
+     הוא מוסיף a11y-contrast-high, a11y-contrast-invert ו-a11y-contrast-mono. הכלל מעולם לא
+     תאם ל-DOM, ולכן פסי ההשוואה נשארו ב-opacity נמוך ובצבע המקורי בכל שלושת מצבי הניגודיות,
+     ב-21 עמודים. בדיקה 17 מוודאת שכללי ההשפעה קיימים ולא שהסלקטור שלהם תואם למחלקה שנוספת
+     בפועל, ולכן היא אישרה אותו. זו אחת המגבלות שהצהרת הנגישות מונה. */
+  'html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast-mono .dbar{background:currentColor;opacity:1}'
 ].join('\n') + '\n' + hubCss();
 
 /* .chip נשלף ממדריך התקלות, המקום שבו הרכיב נולד. אותו שיקול כמו ב-.hub: עותק שני של כלל

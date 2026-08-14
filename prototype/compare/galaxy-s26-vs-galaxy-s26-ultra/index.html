@@ -18,7 +18,7 @@
      hand-kept hostname rule, and segment on page_type instead of a regex over Page Path.
      No "event" key: this sets Data Layer Variables, it does not fire a trigger. */
   window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'device'});
+  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'guide'});
   /* This page ships robots=index,follow for production, so on a test host that meta has to be
      actively overridden — vercel.json's X-Robots-Tag covers *.vercel.app, this covers the rest. */
   if(!window.PG_PROD){
@@ -418,7 +418,7 @@ main .btn{white-space:normal}
    שני מספרים דורשים חיסור, שני קווים באורך שונה נקראים במבט אחד. */
 .dbar{display:block;block-size:2px;inline-size:var(--w,0);min-inline-size:2px;max-inline-size:100%;background:var(--teal);margin-block-start:.5rem;opacity:.75}
 /* בהיפוך צבעים ובניגודיות גבוהה הקו לוקח את צבע הטקסט, אחרת הוא נעלם */
-html.a11y-invert .dbar,html.a11y-contrast .dbar{background:currentColor;opacity:1}
+html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast-mono .dbar{background:currentColor;opacity:1}
 /* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */
 .hub{list-style:none;counter-reset:hub;margin:1.9rem 0 0;padding:0;display:grid}
 .hub li{counter-increment:hub;border-top:1px solid var(--line)}
