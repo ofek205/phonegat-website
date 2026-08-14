@@ -561,7 +561,7 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
 .a11y-trigger{position:fixed;inset-block-end:calc(22px + var(--cookie-h,0px));inset-inline-start:22px;z-index:121;width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;border:2px solid #fff;cursor:pointer;box-shadow:0 12px 28px -8px rgba(0,0,0,.5);display:grid;place-items:center;transition:background .2s}
 .a11y-trigger:hover{background:var(--teal-d)}
 .a11y-trigger svg{width:26px;height:26px}
-@media(max-width:820px){.a11y-trigger{inset-block-end:calc(70px + var(--cookie-h,0px));width:46px;height:46px}.a11y-trigger svg{width:24px;height:24px}}
+@media(max-width:820px){.a11y-trigger{inset-block-end:calc(70px + var(--cookie-h,0px) + env(safe-area-inset-bottom));width:46px;height:46px}.a11y-trigger svg{width:24px;height:24px}}
 .a11y-panel{position:fixed;inset-block-end:88px;inset-inline-start:22px;z-index:121;width:min(340px,calc(100vw - 28px));max-height:min(72vh,560px);max-height:min(72dvh,560px);overflow-y:auto;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 70px -22px rgba(0,0,0,.55);opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
 .a11y-panel.open{opacity:1;transform:none;pointer-events:auto}
 @media(max-width:820px){.a11y-panel{inset-block-end:0;inset-inline:0;width:100%;max-height:82vh;border-radius:16px 16px 0 0}}
