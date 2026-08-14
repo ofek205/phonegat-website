@@ -197,6 +197,28 @@ if (compareAnswer && comparePage) {
   cmpFails.push('פונקציות ההשוואה לא נמצאו');
 }
 
+/* ---------- פרטיות: מה שנשלח ל-GA4 כשלא זוהה דגם ----------
+ * privacy.html §3 מבטיח מידע סטטיסטי בלבד. אנשים מקלידים לצ'אט שם ומספר טלפון, ולכן
+ * שום אירוע לא יישא טקסט חופשי. הבדיקה כאן היא על ה-payload בפועל ולא על הכוונה. */
+var privFails = [], deviceHint = sandbox.deviceHint;
+if (!deviceHint) { privFails.push('deviceHint לא נמצאה'); }
+else {
+  [['קוראים לי דוד 0501234567, המסך שבור', ['דוד', '0501234567', 'המסך']],
+   ['שלום, אני יעל כהן, טלפון 052-589-3366', ['יעל', 'כהן', '3366']],
+   ['מה עם גלקסי A55 החדש', []]
+  ].forEach(function (c) {
+    var h = deviceHint(c[0]);
+    c[1].forEach(function (bad) {
+      if (h.indexOf(bad.toLowerCase()) >= 0) privFails.push('"' + c[0] + '" → הרמז מכיל "' + bad + '": ' + h);
+    });
+    if (/\d{5,}/.test(h)) privFails.push('"' + c[0] + '" → רצף ספרות ארוך ברמז: ' + h);
+    if (h.length > 40) privFails.push('"' + c[0] + '" → רמז ארוך מ-40: ' + h.length);
+  });
+  /* ועדיין שימושי: דגם שאינו בקטלוג חייב להשאיר עקבות, אחרת האירוע חסר טעם */
+  if (deviceHint('מה עם גלקסי A55 החדש').indexOf('a55') < 0)
+    privFails.push('הרמז איבד את הדגם עצמו, והאירוע לא ימדוד ביקוש');
+}
+
 /* ---------- זיהוי דגם: לא מנחשים ---------- */
 var idFails = [];
 function expectNone(q) { if (findDevices(q).length) idFails.push('"' + q + '" זוהה כדגם ולא היה צריך'); }
@@ -241,6 +263,7 @@ console.log('  אורך תשובת השוואה: חציון ' + cmpLens.sort(fun
 n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
+n += report(privFails, 'פרטיות: הרמז ב-chat_device_unmatched נקי משם ומטלפון ועדיין נושא את הדגם');
 console.log('');
 if (n) { console.log('  ' + n + ' כשלים\n'); process.exit(1); }
 console.log('  הכול תקין\n');
