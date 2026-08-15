@@ -38,7 +38,7 @@ const ROOT = path.join(__dirname, '..', '..', 'prototype');
 const HOME = path.join(ROOT, 'index.html');
 
 /* ---------------------------------------------------------------- the pages
- * The 23 people land on: 18 service and region pages plus 5 hubs, of 71.
+ * The 26 people land on: 21 service and region pages plus 5 hubs, of 74.
  * Deliberately NOT the 20 device pages, 15 comparisons or 8 guides, which are reached after arriving.
  * Adding those would put the carousel on 66 of 71, which is not a selection.
  * accessibility.html and privacy.html cannot take it at all, they carry no header. */
@@ -46,7 +46,8 @@ const SERVICE = ['charging-port-repair-kiryat-gat', 'face-id-repair-kiryat-gat',
   'galaxy-a-battery-replacement-kiryat-gat', 'galaxy-a-screen-replacement-kiryat-gat',
   'iphone-repair-kiryat-gat', 'mobile-phone-repair-kiryat-gat', 'phone-back-glass-repair-kiryat-gat',
   'phone-battery-replacement-kiryat-gat', 'phone-camera-repair-kiryat-gat', 'phone-repair-beer-tuvia',
-  'phone-repair-kiryat-malachi', 'phone-repair-lachish', 'phone-repair-shafir', 'phone-repair-yoav',
+  'phone-repair-har-hevron', 'phone-repair-hof-ashkelon', 'phone-repair-kiryat-malachi',
+  'phone-repair-lachish', 'phone-repair-mate-yehuda', 'phone-repair-shafir', 'phone-repair-yoav',
   'phone-screen-replacement-kiryat-gat', 'phone-speaker-microphone-repair-kiryat-gat',
   'redmi-repair-kiryat-gat', 'xiaomi-repair-kiryat-gat'];
 const HUBS = ['phone-problems', 'phones', 'compare', 'contact', 'phones/compare'];
