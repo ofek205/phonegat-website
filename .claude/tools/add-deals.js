@@ -215,15 +215,15 @@ function emitCss(rules, idxs) {
  *     index.html      h1,h2,h3    {line-height:1.15;font-weight:800}                  sans by inheritance
  *     content pages   h1,h2,h3,h4 {line-height:1.18;font-weight:500;font-family:serif}
  *
- * Stated as ids so it outranks the page's element-level rule, and scoped to the section so nothing
- * else moves. Weight and line-height are set on h2 only: the six h3s already get theirs from the
- * carousel's own rules, and an id-level declaration here would override those instead of matching
- * them. The measured difference after this reset is zero properties across all 771 elements. */
+ * Those font declarations are gone now. On 15.8.2026 the editorial serif was retired and every page
+ * states the same heading rule as index.html, so the reset had become a restatement of the default.
+ * Verified by re-running the computed-style diff against the home page: still zero differences.
+ *
+ * What remains is not redundant. /phones/compare/ deliberately sets main .btn{white-space:normal} so
+ * Hebrew labels can wrap, and that outranks the site's .btn, so the carousel's buttons broke onto two
+ * lines there and nowhere else. If a page ever again styles something this section inherits, the fix
+ * belongs here, scoped by id so it outranks an element-level rule and touches nothing outside. */
 const CONTEXT_RESET = [
-  '/* המקטע יורש את הגופן מהעמוד שסביבו, ובעמוד תוכן הכותרות הן בסריף העריכותי במשקל 500.',
-  '   כאן מוחזרים הגופן, המשקל וגובה השורה של דף הבית, כדי שהקרוסלה תיראה זהה בכל מקום. */',
-  '#deals h2,#deals h3,#deals h4,.pg-cpn h3,.pg-cpn h4{font-family:var(--font)}',
-  '#deals h2{font-weight:800;line-height:1.15}',
   '/* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.',
   '   הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */',
   '#deals .btn{white-space:nowrap}'
