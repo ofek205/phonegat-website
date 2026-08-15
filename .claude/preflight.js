@@ -1259,6 +1259,35 @@ if (classFails.length) {
       'הרץ node .claude/tools/gen-bot.js');
   } else { ok('chat.js תואם למקור ב-index.html'); }
 
+  /* הבדיקה הקודמת השוותה את chat.js בהכלה בלבד, ואת chat.css לא השוותה כלל: אפשר היה
+   * להוסיף קוד ל-chat.js או לשנות את chat.css והפריפלייט נשאר ירוק. החותמת שהמחולל
+   * כותב על הגוף סוגרת את שניהם, כי כל עריכה ידנית משנה את הגוף ולא את החותמת. */
+  var crypto = require('crypto'), tampered = [];
+  [['chat.js', js], ['chat.css', css]].forEach(function (pair) {
+    var body = pair[1].replace(/^[\s\S]*?\/\* sha1:([0-9a-f]+) \*\/\r?\n/, '');
+    var m = pair[1].match(/\/\* sha1:([0-9a-f]+) \*\//);
+    if (!m) { tampered.push(pair[0] + ' (בלי חותמת, הרץ gen-bot.js)'); return; }
+    /* אותה צורה קנונית שב-gen-bot.js, אחרת המרת סופי שורה בצ'קאאוט שוברת את החותמת */
+    var got = crypto.createHash('sha1').update(body.replace(/\r\n/g, '\n').replace(/\s+$/, '')).digest('hex').slice(0, 16);
+    if (got !== m[1]) tampered.push(pair[0] + ' (נערך ידנית)');
+  });
+  if (tampered.length) {
+    bad('קובץ נגזר שאינו תואם לחותמת שלו: ' + tampered.join(', ') +
+      ' — הרץ node .claude/tools/gen-bot.js במקום לערוך אותו');
+  } else { ok('chat.js ו-chat.css תואמים לחותמת שלהם'); }
+
+  /* ומהכיוון השני: כלל pg- שנוסף ל-index.html ולא הגיע ל-chat.css */
+  var idxCss = (idx.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || []).join('\n');
+  var missCss = [];
+  (idxCss.match(/(^|\})\s*(\.pg-[a-z0-9-]+)\s*\{/g) || []).forEach(function (m2) {
+    var sel = (m2.match(/\.pg-[a-z0-9-]+/) || [])[0];
+    if (sel && css.indexOf(sel) < 0 && missCss.indexOf(sel) < 0) missCss.push(sel);
+  });
+  if (missCss.length) {
+    bad('כללי pg- שקיימים ב-index.html ולא ב-chat.css: ' + missCss.slice(0, 6).join(', ') +
+      ' — 21 עמודי התוכן יציגו את הצ\'אט בלי העיצוב הזה');
+  } else { ok('כל כללי ה-pg- מ-index.html קיימים ב-chat.css'); }
+
   /* כל עמוד שאמור לשאת את הצ'אט באמת נושא אותו */
   var missing = [];
   CONTENT_PAGES.forEach(function (f) {

@@ -1,4 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
+/* sha1:3098655c3740c3e8 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -224,10 +225,18 @@
      privacy.html §3 מבטיח מידע סטטיסטי בלבד, ושאלה חופשית אינה זה.
      לכן נשלחים רק טוקנים בצורת דגם, אות לצד ספרה או שם מותג מוכר. שם פרטי אינו בצורה
      הזאת, ורצף של חמש ספרות ומעלה מנוקה לפני הכל, כי זה מספר טלפון ולא דגם. */
-  var BRAND_WORDS=['גלקסי','אייפון','סמסונג','שיאומי','רדמי','פיקסל','גוגל','וואן פלוס','נאת׳ינג','אפל'];
+  var BRAND_WORDS=['גלקסי','אייפון','סמסונג','שיאומי','רדמי','פיקסל','גוגל','וואן פלוס','נאת׳ינג','אפל',
+                   'galaxy','iphone','samsung','xiaomi','redmi','pixel','google','oneplus','nothing','apple'];
+  /* **בלי רווח בתוך הטוקן, וזה העיקר.** הגרסה הקודמת התירה [a-z]+\s?\d+, ולכן שם פרטי
+     שנצמד למספר סמוך עבר: "ariel 052 589 3366 iphone" נתן "ariel 052 3366 iphone",
+     כלומר שם ושברי טלפון ל-GA4, נגד privacy.html §3. ו-\d{5,} ניקה רצף רצוף בלבד, בזמן
+     שמספר טלפון נכתב בקבוצות.
+     עכשיו טוקן הוא צירוף צמוד של אותיות וספרות בלבד: a56, s26, note14, 17e, 15r.
+     קבוצת ספרות בת שלוש ומעלה אינה מספר דגם ואינה עוברת בשום צורה. */
   function deviceHint(text){
-    var t=normDev(text).replace(/\d{5,}/g,' '),out=[],i;
-    var toks=t.match(/[a-z]+\s?\d+[a-z]*|\d+\s?[a-z]+/g)||[];
+    var t=normDev(text),out=[],i;
+    var toks=(t.match(/[a-z]{1,6}\d{1,2}[a-z]{0,2}|\d{1,2}[a-z]{1,3}/g)||[])
+      .filter(function(x){return x.length<=8;});
     for(i=0;i<toks.length&&out.length<3;i++)if(out.indexOf(toks[i])<0)out.push(toks[i]);
     for(i=0;i<BRAND_WORDS.length&&out.length<3;i++)if(t.indexOf(BRAND_WORDS[i])>=0&&out.indexOf(BRAND_WORDS[i])<0)out.push(BRAND_WORDS[i]);
     return out.join(' ').slice(0,40);
@@ -643,7 +652,31 @@
     msgs.appendChild(box);down();
     setTimeout(function(){try{sel.focus();}catch(e){}},60);
   }
-  function buyModel(m,slug){ctx.model=m||ctx.model||'';ctx.slug=slug||'';track('chat_buy_step',{step:'model',value:m||'לא בטוח'});flow={type:'buy',step:'storage'};askStorage();}
+  /* טקסט חופשי בשלב הדגם מזוהה מול הקטלוג. בלי זה כל מחרוזת נרשמה כדגם לרכישה, וה-QA
+     מצא את התוצאה: הקלדת "גוגל פיקסל 10" נרשמה כדגם, קיבלה "יבוא רשמי" שאין לו יבואן
+     רשמי בישראל כלל, ונשלחה לחנות כבקשת הצעת מחיר, בלי גילוי נאות ותחת "יצרן: סמסונג".
+     מכשיר ייחוס אינו נמכר, ולכן הוא נעצר כאן ולא ממשיך בזרימה. */
+  var BRAND_EN={};
+  (function(){for(var i=0;i<BUY_BRANDS.length;i++)BRAND_EN[BUY_BRANDS[i][0]]=BUY_BRANDS[i][1];})();
+  function buyModel(m,slug){
+    if(m&&!slug){
+      var hits=findDevices(m);
+      if(hits.length===1){
+        if(hits[0].kind==='reference'){
+          track('chat_ref_declined',{slug:hits[0].slug});
+          botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
+            sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
+                 ['להמשיך בלי דגם',function(){buyModel('','');}]]});
+          return;
+        }
+        /* דגם נמכר שזוהה: משלימים את השם המלא ואת ה-slug, וכך גם שלב הנפח מדויק */
+        m=hits[0].name_he;slug=hits[0].slug;
+      }
+    }
+    ctx.model=m||ctx.model||'';ctx.slug=slug||'';
+    track('chat_buy_step',{step:'model',value:m||'לא בטוח'});
+    flow={type:'buy',step:'storage'};askStorage();
+  }
   /* הנפחים לפי storage_offered של הדגם שנבחר, כלומר מה שהיצרן מציע בפועל. בלי דגם נשארת
      הרשימה הגנרית. שדה storage_stocked, מה שיש אצלנו בחנות, מלא ב-2 מ-24 ולכן אינו בקובץ
      כלל: תשובת מלאי מנתון חלקי היא הבטחה בשם המותג בלי בקרת אדם. */
@@ -701,7 +734,22 @@
   function handleFlow(text){
     if(/(^|\s)(ביטול|תפריט|חזרה|עזוב|התחל)(\s|$)/.test(text)){mainMenu();return;}
     if(flow.type==='repair'){if(flow.step==='device')repDevice(text.slice(0,30));else repIssue(text.slice(0,40));return;}
-    if(flow.type==='buy'){var bt=text.slice(0,40);if(flow.step==='model')buyModel(bt);else if(flow.step==='storage')buyStorage(bt);else if(flow.step==='import')buyImport(bt);else buyBrand(bt);return;}
+    /* יצרן שהוקלד ביד חייב להיפתר לשם האנגלי, אחרת soldByBrand מקבל undefined, שלב
+       הדגם נדלג בשקט, וכל מה שיוקלד אחריו נרשם כנפח. נתפס בבדיקת זרימה ולא בקריאה. */
+    if(flow.type==='buy'){
+      var bt=text.slice(0,40);
+      /* גם שלב הסדרה. הוא נוסף עם הפיצול לפי יצרן, ובלעדיו הקלדת שם דגם שם חוזרת
+         לשלב היצרן במקום להתקדם, וזו לולאה שהמשתמש לא מבין. */
+      if(flow.step==='model'||flow.step==='cat')buyModel(bt);
+      else if(flow.step==='storage')buyStorage(bt);
+      else if(flow.step==='import')buyImport(bt);
+      else{
+        var he='',n=normDev(bt);
+        for(var bi=0;bi<BUY_BRANDS.length;bi++)if(n.indexOf(normDev(BUY_BRANDS[bi][0]))>=0)he=BUY_BRANDS[bi][0];
+        buyBrand(he||bt,BRAND_EN[he]||'');
+      }
+      return;
+    }
     if(flow.type==='lead'){
       if(flow.step==='name'){ctx.name=text.replace(/[<>]/g,'').slice(0,40);flow.step='phone';botReply('נעים מאוד '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');return;}
       if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=window.PG_PROD===true;   /* was a dead literal, so the false branch below could never run. It means "this lead is actually on its way": true only in production, where saveLead corrects itself if the request fails. */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הוולידציה והזרימה עבדו במלואן. כדי שנחזור אליכם באמת, שלחו את הפרטים ב-WhatsApp או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}

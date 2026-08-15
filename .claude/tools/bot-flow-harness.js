@@ -102,7 +102,8 @@ function ask(q) {
   var ev = sandbox.dataLayer.filter(function (e) { return e && /^chat/.test(String(e.event)); });
   if (!ev.length) return '(שום אירוע)';
   return ev.map(function (e) {
-    return e.event + (e.flow ? ':' + e.flow : '') + (e.field ? ':' + e.field : '') + (e.intent ? ':' + e.intent : '');
+    return e.event + (e.flow ? ':' + e.flow : '') + (e.step ? ':' + e.step : '') +
+           (e.field ? ':' + e.field : '') + (e.intent ? ':' + e.intent : '');
   }).join(' → ');
 }
 function reset() { try { ask('ביטול'); } catch (e) {} }
@@ -134,6 +135,25 @@ var CASES = [
    נחטף לזרימת קנייה כי buy תופס את המילה "גלקסי", ולכן ביקוש לדגם שאיננו מחזיקים לא
    נרשם. שני הסוקרים הצביעו על אותו מקום לתיקון. */
 var OPEN = [['מה עם גלקסי A55', 'chat_device_unmatched']];
+/* רצף רב-שלבי, כי הבאגים כאן לא נראים בשאלה בודדת. שלושתם נמצאו כך:
+   יצרן שהוקלד ביד לא נפתר לשם האנגלי ולכן שלב הדגם נדלג בשקט, הקלדה בשלב הסדרה חזרה
+   לשלב היצרן בלולאה, ומכשיר ייחוס שהוקלד נרשם כדגם לרכישה ונשלח כבקשת הצעת מחיר. */
+var SEQ = [
+  ['אני רוצה לקנות מכשיר', 'chat_flow'],
+  ['סמסונג', 'chat_buy_step:brand'],
+  ['גוגל פיקסל 10', 'chat_ref_declined'],
+  ['גלקסי A56', 'chat_buy_step:model']
+];
+var seqFails = [];
+(function () {
+  reset();
+  SEQ.forEach(function (s) {
+    var got = ask(s[0]);
+    if (got.indexOf(s[1]) < 0) seqFails.push('"' + s[0] + '" → ' + got + '   (צפוי ' + s[1] + ')');
+  });
+  reset();
+})();
+
 var fails = [], rows = [];
 CASES.forEach(function (c) {
   reset();
@@ -149,8 +169,10 @@ rows.forEach(function (r) {
   console.log('   ' + (r.ok ? '✓' : '✗') + ' ' + r.q);
   if (!r.ok) console.log('       קיבל: ' + r.got + '   צפוי: ' + r.want);
 });
+if(seqFails.length){console.log('  ✗ רצף זרימת הקנייה:');seqFails.forEach(function(m){console.log('     '+m);});}else{console.log('  ✓ רצף זרימת הקנייה: יצרן בהקלדה, דגם ייחוס נדחה, דגם נמכר מתקדם');}
+console.log('');
 console.log('  פתוח ומדווח, לא חוסם:');
 OPEN.forEach(function (c) { reset(); console.log('   · "' + c[0] + '" → ' + ask(c[0]) + '   (רצוי ' + c[1] + ', דורש צמצום מילות המפתח של buy)'); });
 console.log('');
-if (fails.length) { console.log('  ' + fails.length + ' כשלי ניתוב\n'); process.exit(1); }
+if (fails.length || seqFails.length) { console.log('  ' + fails.length + ' כשלי ניתוב\n'); process.exit(1); }
 console.log('  הניתוב תקין\n');
