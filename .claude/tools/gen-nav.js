@@ -259,12 +259,27 @@ function CSS(t) {
   '  nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}',
   '  nav.main .npanel{position:static;border:0;background:'+t.panelBg+';padding:.15rem 0 .45rem;gap:0;min-inline-size:0}',
   '  nav.main .npanel::before{content:none}',
-  '  nav.main .nrow{flex-direction:column;gap:0}',
+  /* align-items:flex-start שייך לפריסת העמודות בדסקטופ. בטור, הוא אומר
+     לשורות לא להימתח, ולכן קישורי תת-התפריט יצאו ברוחב 168 מתוך 390: 57%
+     מכל שורה נראו כמו כפתור ולא הגיבו למגע. stretch מחזיר אותם לרוחב מלא. */
+  '  nav.main .nrow{flex-direction:column;gap:0;align-items:stretch}',
   '  nav.main .ncol{min-inline-size:0}',
   '  nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}',
   '  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid '+t.line+'}',
   '  nav.main .nall{border-top:1px solid '+t.rule+';margin:0;padding-block-start:0;flex-direction:column;gap:0}',
   '  nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}',
+  /* התפריט הפתוח גולל בעצמו. הוא ממוקם absolute בתוך הדר sticky, ולכן הוא
+     נעוץ מתחת להדר וגלילת העמוד לא מזיזה אותו. עם "מכשירים" פתוח הוא מגיע
+     ל-1701 פיקסלים מול מסך של 664, כלומר 17 מתוך 26 הקישורים ישבו מתחת
+     לקצה המסך בלי שום דרך להגיע אליהם.
+     display:block ולא flex, וזה לא קוסמטי: מיכל גלילה שהוא גם flex הפסיק
+     למתוח את הפריטים ב-WebKit, הרוחב הפנימי קפץ ל-565 מול 390, וב-RTL זה
+     הזיז את כל התפריט 175 פיקסלים שמאלה אל מחוץ למסך. כבלוק הילדים
+     נשארים ברוחב מלא ואין גלישה אופקית בכלל.
+     overflow-x מוצהר במפורש כי כשציר אחד אינו visible השני מחושב ל-auto.
+     12rem הם ההדר, הסרגל המסתובב והבאנר, והמדידה נעשתה מ-320 עד 768.
+     dvh כי סרגלי הדפדפן בנייד מכרסמים ב-vh, ו-vh נשאר לפניו לספארי ישן. */
+  '  nav.main.open{display:block;max-height:calc(100vh - 12rem);max-height:calc(100dvh - 12rem);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}',
   '}',
   CSS_Z
   ].join('\n');
