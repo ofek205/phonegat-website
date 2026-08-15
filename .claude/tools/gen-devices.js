@@ -531,10 +531,16 @@ if (swGrew) {
 (function buildPublic() {
   var pub = {
     _: 'נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך. מכיל רק את השדות שכלי ההשוואה קורא בזמן ריצה, וכולם מוצגים בעמודי המכשיר בכל מקרה.',
-    /* מכשיר ייחוס אינו נכנס לקובץ הציבורי: הכלי האינטראקטיבי הוא 'השווה בין מה
-       שאנחנו מוכרים', וההשוואה החוצה-מותגית חיה בעמודי ההשוואה הכתובים. */
-    devices: db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference'; }).map(function (d) {
-      return { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
+    /* מכשיר ייחוס כן נכנס לקובץ הציבורי מאז 15.8.2026, בהחלטת בעלים. עד אז הוא הוחרג
+       בנימוק שהכלי הוא "השווה בין מה שאנחנו מוכרים", וההשוואה החוצה-מותגית חיה בעמודי
+       ההשוואה הכתובים. מה ששינה את ההחלטה: לקוח שמתלבט מול פיקסל או OnePlus משווה אותם
+       ממילא, והשאלה היחידה היא אם הוא עושה את זה אצלנו או באתר אחר.
+       own:false נוסע איתו, כי בלעדיו הכלי לא יכול לדעת שהוא חייב גילוי נאות ושאסור לו
+       לקשר לעמוד מכשיר שלא קיים. זה השדה החמישי, והוא לא נתון עסקי אלא סימון תצוגה. */
+    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
+      var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
+      if (d.status === 'reference') o.own = false;
+      return o;
     })
   };
   var out = path.join(PROTO, 'devices-public.json');
@@ -548,7 +554,7 @@ if (swGrew) {
     console.error('✗ devices-public.json מכיל שדות פרטיים: ' + leaked.join(', '));
     process.exit(1);
   }
-  console.log('✓ devices-public.json: ' + pub.devices.length + ' מכשירים, 4 שדות לכל אחד, אפס שדות פרטיים');
+  console.log('✓ devices-public.json: ' + pub.devices.length + ' מכשירים (' + pub.devices.filter(function(d){return d.own===false;}).length + ' ייחוס), אפס שדות פרטיים');
 })();
 
 /* ============================================ bot-facts.json
