@@ -562,6 +562,7 @@ main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,i
 main :is(p,li,span,b,strong,em,td,th,label) a:not([class]):not(:has(b,span,div,img,svg)):hover{color:var(--teal-d,#12617F)}
 </style>
 
+
 <!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <style>
 /* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
@@ -922,7 +923,7 @@ html.a11y-stop-motion .s-idf .idf-swash path{stroke-dashoffset:0}
   filter:drop-shadow(0 calc(var(--scr-w)*.154) calc(var(--scr-w)*.244) rgba(15,45,82,.3))}
 .scr-halo{position:absolute;left:50%;top:52%;width:152%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);z-index:0}
 /* the screen sits ABOVE the frame image (its own thin bezel reads as the phone's edge), as in the hero */
-.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:max(1px,calc(var(--scr-w)*.0128)) max(1.5px,calc(var(--scr-w)*.0256));border-radius:var(--scr-r);z-index:2;background:#0f3f66 url(/phone-wall.png) center/cover no-repeat;
+.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:max(1px,calc(var(--scr-w)*.0128)) max(1.5px,calc(var(--scr-w)*.0256));border-radius:var(--scr-r);z-index:2;background:#0f3f66 url(/phone-wall.webp) center/cover no-repeat;
   /* the display glass darkens slightly where it meets the bezel — without this the screen reads as a flat sticker */
   box-shadow:inset 0 0 calc(var(--scr-w)*.0385) calc(var(--scr-w)*.0128) rgba(0,0,0,.5)}
 /* Dynamic Island — the one detail that makes a small phone mock-up read as an iPhone at a glance.
@@ -1012,7 +1013,7 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   /* shadow on the image, not the wrapper: on the wrapper the 134% halo would cast it too, i.e. a dark
      blob under a glow */
   filter:drop-shadow(0 15px 22px rgba(0,0,0,.52))}
-/* The four numbers that map a layer onto iphone-frame.png's display area, taken verbatim from .scr-*
+/* The four numbers that map a layer onto iphone-frame.webp's display area, taken verbatim from .scr-*
    where they are known to line up. */
 .bn-tr .tr-wall,.bn-tr .tr-ui,.bn-tr .tr-refl,.bn-tr .tr-scan,.bn-tr .tr-land{
   position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;pointer-events:none;
@@ -1026,7 +1027,7 @@ html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after
   /* scrim over the wallpaper: the icons above are glass, and glass needs something darker than a pale
      photo behind it or it disappears */
   background:linear-gradient(180deg,rgba(3,18,38,.26),rgba(3,18,38,.46)),
-             url(/phone-wall.png) center/cover no-repeat #0f3f66;
+             url(/phone-wall.webp) center/cover no-repeat #0f3f66;
   /* .scr-wall's 2px/4px bezel was drawn for a 156px frame; unscaled here it reads as a fat black
      picture frame rather than the thin even edge an iPhone 17 actually has */
   border:solid #000;border-width:1px 2px;
@@ -1657,6 +1658,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 
+
 <!-- pg-deals:section:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <section id="deals" class="deals" aria-labelledby="deals-h">
   <div class="deals-head">
@@ -1828,7 +1830,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="scr-wall" aria-hidden="true"></span>
               <span class="scr-punch" aria-hidden="true"></span>
               <span class="scr-refl" aria-hidden="true"></span>
-              <img class="scr-frame" src="/iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <img class="scr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
               <span class="scr-glass" aria-hidden="true"></span>
             </div>
           </div>
@@ -1847,7 +1849,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
           </div>
           <div class="slide-art">
-            <!-- Both devices are the site's own phone: iphone-frame.png with a wallpaper, a Dynamic
+            <!-- Both devices are the site's own phone: iphone-frame.webp with a wallpaper, a Dynamic
                  Island and a sheen laid over it, exactly as on the screen-protector slide, plus a live
                  iOS home screen inside so they read as switched-on phones rather than blank glass.
                  The two are identical markup; only the last layer differs (the source is being scanned,
@@ -1905,7 +1907,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </span>
                   <span class="tr-punch"></span>
                   <span class="tr-refl"></span>
-                  <img class="tr-frame" src="/iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <img class="tr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
                   <span class="tr-scan"></span>
                 </span>
               </span>
@@ -1928,7 +1930,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   </span>
                   <span class="tr-punch"></span>
                   <span class="tr-refl"></span>
-                  <img class="tr-frame" src="/iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <img class="tr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
                   <span class="tr-land"></span>
                 </span>
               </span>
@@ -1988,7 +1990,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="scr-wall" aria-hidden="true"></span>
               <span class="scr-punch" aria-hidden="true"></span>
               <span class="scr-refl" aria-hidden="true"></span>
-              <img class="scr-frame" src="/iphone-frame.png" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <img class="scr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
               <span class="scr-glass" aria-hidden="true"></span>
             </div>
           </div>
@@ -2381,6 +2383,7 @@ document.addEventListener("click",function(e){if(!nav.contains(e.target))shutAll
 nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))shutAll()});
 })();</script>
 <!-- gen-nav:js:end -->
+
 
 <!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <div class="pg-cpn-ov" id="pgCpnOv">
