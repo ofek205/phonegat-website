@@ -132,7 +132,10 @@ function structure() {
             { href: '/phone-repair-lachish/', label: 'מועצה אזורית לכיש' },
             { href: '/phone-repair-yoav/', label: 'מועצה אזורית יואב' },
             { href: '/phone-repair-shafir/', label: 'מועצה אזורית שפיר' },
-            { href: '/phone-repair-beer-tuvia/', label: 'מועצה אזורית באר טוביה' }
+            { href: '/phone-repair-beer-tuvia/', label: 'מועצה אזורית באר טוביה' },
+            { href: '/phone-repair-hof-ashkelon/', label: 'מועצה אזורית חוף אשקלון' },
+            { href: '/phone-repair-har-hevron/', label: 'מועצה אזורית הר חברון' },
+            { href: '/phone-repair-mate-yehuda/', label: 'מועצה אזורית מטה יהודה' }
           ]
         }
       ],
