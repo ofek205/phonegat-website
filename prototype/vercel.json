@@ -2,6 +2,16 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/guides/first-day-checklist",
+      "destination": "/guides/",
+      "permanent": true
+    },
+    {
+      "source": "/guides/first-day-checklist/",
+      "destination": "/guides/",
+      "permanent": true
+    },
+    {
       "source": "/phone-problems.html",
       "destination": "/phone-problems/",
       "permanent": true
