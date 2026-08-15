@@ -384,6 +384,8 @@ main .btn{white-space:normal}
 /* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.
    כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */
 .ghero .btn-hero{white-space:normal;text-align:center}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -729,7 +731,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="buy" style="--nc:var(--teal)" aria-labelledby="h-buy">
   <div class="wrap row">
     <figure class="fig">
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: iPhone 16 על דלפק המעבדה, המכשיר בשליש האמצעי של הגובה. התמונות יתווספו בהמשך</span></div>
+      <img class="devimg" src="/phones/img/iphone-16-1152.webp" srcset="/phones/img/iphone-16-288.webp 288w, /phones/img/iphone-16-576.webp 576w, /phones/img/iphone-16-1152.webp 1152w" sizes="(max-width:900px) 280px, (max-width:1400px) 41vw, 548px" width="1152" height="1536" alt="iPhone 16, המסך והגב" loading="lazy" decoding="async">
     </figure>
     <div class="txt">
       <h2 id="h-buy">מחיר, מלאי ואחריות</h2>
