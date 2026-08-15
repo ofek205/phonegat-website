@@ -939,6 +939,137 @@
         "security_updates": null,
         "model_numbers": null
       }
+    },
+    {
+      "slug": "oneplus-15r",
+      "name": "OnePlus 15R 5G",
+      "name_he": "וואן פלוס 15R",
+      "brand": "OnePlus",
+      "spec": {
+        "screen_size": "6.83 אינץ׳ (17.35 ס״מ)",
+        "screen_type": null,
+        "resolution": "2800x1272 פיקסלים (FHD+), צפיפות 450ppi, יחס 19.8:9. זכוכית Corning Gorilla Glass 7i, כיסוי DCI-P3 מלא ועומק צבע 10 ביט",
+        "refresh_rate": "אדפטיבי 60, 90, 120, 144 ו-165Hz. מקסימום 165Hz, ו-144 או 165 נתמכים רק ביישומים מסוימים",
+        "brightness": "1800 ניט במצב בהירות גבוהה",
+        "chip": "Snapdragon 8 Gen 5",
+        "cpu": "Qualcomm Oryon בתדר 3.8GHz",
+        "gpu": "Qualcomm Adreno סדרה 8, בתדר 1225MHz",
+        "ram": "12GB מסוג LPDDR5X Ultra",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "אין. היצרן מציין במפורש שכרטיסי זיכרון נשלפים אינם נתמכים",
+        "camera_main": "50MP, חיישן Sony IMX906, צמצם f/1.8, אורך מוקד שקול 24 מ״מ, זווית 84 מעלות, עם ייצוב אופטי",
+        "camera_extra": "8MP רחבה במיוחד, צמצם f/2.2, אורך מוקד שקול 16 מ״מ, זווית 112 מעלות",
+        "zoom": null,
+        "camera_front": null,
+        "video": "4K ב-120, 60 ו-30 פריימים לשנייה. גם ב-1080p עד 120 פריימים",
+        "battery": "7400 mAh קיבולת טיפוסית (27.98Wh). היצרן מצהיר על מינימום 1300 מחזורי טעינה",
+        "charging_wired": "80W SUPERVOOC",
+        "charging_wireless": null,
+        "dimensions": "163.41 x 77.04 x 8.30 מ״מ",
+        "weight": "214 גרם בשחור פחם, 215 גרם בירוק מנטה",
+        "water_resistance": null,
+        "colors_manufacturer": [
+          "שחור פחם",
+          "ירוק מנטה"
+        ],
+        "sim": "מגש לשני כרטיסי nano-SIM, ובנוסף תמיכה ב-eSIM",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, LTE עם 4x4 MIMO, USB-C בגרסת USB 2.0 עם תמיכה באוזניות Type-C",
+        "box_contents": "המכשיר, כבל USB, כלי הוצאת SIM, מדריך מהיר ומדריך בטיחות. מטען אינו כלול",
+        "security_updates": null,
+        "model_numbers": "CPH2769"
+      },
+      "own": false
+    },
+    {
+      "slug": "nothing-phone-3a-pro",
+      "name": "Nothing Phone (3a) Pro",
+      "name_he": "נאת׳ינג פון 3a פרו",
+      "brand": "Nothing",
+      "spec": {
+        "screen_size": "6.77 אינץ׳",
+        "screen_type": "AMOLED, מיליארד צבעים, תמיכה ב-HDR10+",
+        "resolution": "2392x1080 פיקסלים, יחס 19.93:9, צפיפות 387ppi",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "800 ניט טיפוסי, 1300 ניט במצב בהירות גבוהה, 3000 ניט שיא",
+        "chip": "Qualcomm Snapdragon 7s Gen 3, תהליך 4 ננומטר",
+        "cpu": "8 ליבות: אחת ב-2.5GHz, שלוש ב-2.4GHz וארבע ב-1.8GHz",
+        "gpu": "Adreno 710 בתדר 940MHz",
+        "ram": "8GB או 12GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP",
+        "camera_extra": null,
+        "zoom": null,
+        "camera_front": null,
+        "video": null,
+        "battery": "5000 mAh",
+        "charging_wired": "50W חוטי. היצרן מצהיר על 50 אחוז ב-19 דקות ומלא ב-56 דקות",
+        "charging_wireless": null,
+        "dimensions": null,
+        "weight": null,
+        "water_resistance": "IP64: אטום לאבק ועמיד בהתזות מים. זו אינה עמידות לשיקוע",
+        "colors_manufacturer": [],
+        "sim": null,
+        "esim": null,
+        "connectivity": null,
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "own": false
+    },
+    {
+      "slug": "pixel-10",
+      "name": "Google Pixel 10",
+      "name_he": "גוגל פיקסל 10",
+      "brand": "Google",
+      "spec": {
+        "screen_size": "6.3 אינץ׳",
+        "screen_type": "OLED, צפיפות 422ppi, זכוכית Corning Gorilla Glass Victus 2",
+        "resolution": "2424x1080 פיקסלים",
+        "refresh_rate": "אדפטיבי 60 עד 120Hz",
+        "brightness": "עד 2000 ניט ב-HDR, ו-3000 ניט שיא",
+        "chip": "Google Tensor G5",
+        "cpu": null,
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP רחבה בצמצם f/1.70",
+        "camera_extra": "13MP רחבה במיוחד בצמצם f/2.2, ו-10.8MP טלפוטו בצמצם f/3.1",
+        "zoom": "זום אופטי 5x דרך עדשת הטלפוטו, ו-Super Res Zoom עד 20x",
+        "camera_front": "10.5MP בצמצם f/2.2, עם פוקוס אוטומטי",
+        "video": "4K ב-24, 30 ו-60 פריימים לשנייה, כולל HDR ב-10 ביט. הילוך אט עד 240 פריימים",
+        "battery": "4970 mAh טיפוסית. גוגל מצהירה על יותר מ-24 שעות שימוש רגיל",
+        "charging_wired": "30W. גוגל מצהירה על עד 55 אחוז בכ-30 דקות",
+        "charging_wireless": "עד 15W בתקן Qi2",
+        "dimensions": null,
+        "weight": "כ-204 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": [
+          "אינדיגו",
+          "פרוסט",
+          "למון גראס",
+          "אובסידיאן"
+        ],
+        "sim": "בגרסה האמריקאית: שני eSIM בלבד, בלי חריץ לכרטיס פיזי",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 6",
+        "box_contents": null,
+        "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
+        "model_numbers": null
+      },
+      "own": false
     }
   ]
 }

@@ -635,6 +635,7 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+  <link rel="stylesheet" href="/chat.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -655,7 +656,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="nrow">
             <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
-            <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/" aria-current="page">Redmi Note 14</a></div>
+            <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
           </div>
           <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/compare/">להשוות שני מכשירים</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>
@@ -674,7 +675,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
-            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/" aria-current="page">יבוא מקביל או רשמי</a></div>
             <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>
@@ -1210,5 +1211,30 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
+<div class="pg-fab-wrap" id="pgFabWrap">
+  <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
+  <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
+    <span class="badge-dot" aria-hidden="true"></span>
+    <svg class="ic-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+<section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" inert>
+  <div class="pg-head">
+    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
+    <div class="ht"><b>העוזר של פון גת</b><span>בדרך כלל עונים מיד</span></div>
+    <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
+  <div class="pg-chips" id="pgChips" aria-label="נושאים מהירים"></div>
+  <div class="pg-input">
+    <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
+    <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
+  </div>
+  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
+</section>
+<!-- bot:html:end -->
+<script src="/chat.js" defer></script>
 </body>
 </html>

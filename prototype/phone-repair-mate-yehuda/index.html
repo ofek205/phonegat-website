@@ -600,6 +600,7 @@ html.a11y-stop-motion header.site{transition:none}
 </script>
 
 
+
 <!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <style>
 /* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
@@ -834,10 +835,6 @@ html.a11y-stop-motion .hstage .henter{transition:none}
 }
 html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:none}
 .intro .kicker{margin-top:1.6rem;font-weight:800;font-size:clamp(1.15rem,2.6vw,1.5rem)}
-.tile.open{align-items:stretch;padding:0;min-height:280px}
-/* the photo goes too, so the detail owns the whole tile as it did before the split */
-.tile.open .tinfo,.tile.open .shop,.tile.open .tphoto{display:none}
-.tile.open .tdetail{position:relative;flex:1;opacity:1;visibility:visible;transform:none}
 /* ===== deals carousel ===== */
 .deals{background:#fff;padding:clamp(48px,7vw,88px) 0;overflow:hidden}
 .deals-head{text-align:center;max-width:660px;margin:0 auto clamp(26px,3vw,42px);padding-inline:16px}
@@ -1431,16 +1428,12 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 @media(max-width:820px){
 .cookie .btn-sm{padding:.4rem .62rem;white-space:nowrap}
 }
-.pg-fab.open .ic-chat{display:none}
-.pg-fab.open .ic-close{display:block}
 .pg-fab .badge-dot{position:absolute;inset-block-start:3px;inset-inline-end:3px;width:13px;height:13px;border-radius:50%;background:#25D366;border:2px solid var(--teal)}
-.pg-panel.open{opacity:1;transform:none;pointer-events:auto}
 /* ===== accessibility preference classes (toggled on <html>) ===== */
 html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decoration:underline !important;text-underline-offset:3px}
 @media(max-width:820px){
 /* drop duplicate nav bar / top chrome */
   .btn-sm{padding-block:13px}
-.tile.open{aspect-ratio:auto;min-height:330px}
 /* room for the detail overlay */
   /* Carousel arrows move down beside the dots instead of floating over the slide. Overlaying them
      cost 46px of padding on BOTH sides — a quarter of a 375px screen — so headings wrapped early and
@@ -1524,10 +1517,6 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
   100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
 }
 @keyframes simFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--mx,6px),calc(var(--my,12px)*-1))}}
-/* המקטע יורש את הגופן מהעמוד שסביבו, ובעמוד תוכן הכותרות הן בסריף העריכותי במשקל 500.
-   כאן מוחזרים הגופן, המשקל וגובה השורה של דף הבית, כדי שהקרוסלה תיראה זהה בכל מקום. */
-#deals h2,#deals h3,#deals h4,.pg-cpn h3,.pg-cpn h4{font-family:var(--font)}
-#deals h2{font-weight:800;line-height:1.15}
 /* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.
    הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */
 #deals .btn{white-space:nowrap}
@@ -2066,6 +2055,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 <!-- pg-deals:section:end -->
+
 <section class="cta" aria-labelledby="h-cta">
   <div class="wrap">
     <h2 id="h-cta">כתבו לנו מאיפה אתם, ומה קרה למכשיר</h2>
@@ -2419,6 +2409,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+
 
 
 <!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
