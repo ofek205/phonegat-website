@@ -236,8 +236,15 @@ var contentFails = [], contentAnswer = sandbox.contentAnswer;
 var privFails = [], deviceHint = sandbox.deviceHint;
 if (!deviceHint) { privFails.push('deviceHint לא נמצאה'); }
 else {
+  /* המקרים הלטיניים והמרווחים נוספו אחרי שדוח ה-QA הראה שהבדיקה הראשונה בדקה שמות
+     בעברית ומספר עם מקפים בלבד, ולכן עברה בזמן ש-"ariel 052 589 3366 iphone" הדליף
+     שם ושברי טלפון. מדגם צר הוא בדיוק איך שקביעה נראית ירוקה ולא מגינה. */
   [['קוראים לי דוד 0501234567, המסך שבור', ['דוד', '0501234567', 'המסך']],
    ['שלום, אני יעל כהן, טלפון 052-589-3366', ['יעל', 'כהן', '3366']],
+   ['my name is david 050 1234 567 thanks', ['david', '050', '1234', '567', 'thanks']],
+   ['ariel 052 589 3366 iphone', ['ariel', '052', '589', '3366']],
+   ['call me at 054 123 4567 about a screen', ['at', '054', '123', '4567', 'about']],
+   ['gali cohen 0526667788', ['gali', 'cohen', '0526667788']],
    ['מה עם גלקסי A55 החדש', []]
   ].forEach(function (c) {
     var h = deviceHint(c[0]);

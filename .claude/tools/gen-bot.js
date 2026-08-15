@@ -31,7 +31,31 @@ function between(s, a, b, what) {
 var htmlBlock = between(src, '<!-- bot:html:start', '<!-- bot:html:end -->', 'המרקאפ');
 var jsBlock = between(src, '/* bot:js:start', '/* bot:js:end */', 'הסקריפט');
 
-/* ---- CSS: כל כלל שהסלקטור שלו נוגע ברכיבי הצ'אט, כולל בתוך media ---- */
+/* ---- CSS ----
+ * הגרסה הראשונה גזרה לפי pg- בלבד, וזה השאיר כשל חי: המרקאפ של הצ'אט משתמש גם ב-wa-ico
+ * (הלוגו של WhatsApp), ו-.wa-ico{border-radius:22%;flex:none;object-fit:contain} נזרק.
+ * התוצאה ב-21 עמודי התוכן הייתה לוגו מרובע עם פינות חדות בתוך שורת flex בלי flex:none.
+ * לכן נאספות גם המחלקות שבאמת מופיעות במרקאפ, ולא רק אלה ששמן מתחיל ב-pg. */
+var markupClasses = (function () {
+  var set = {};
+  function add(list) { (list || []).forEach(function (c) { if (c && !/^pg-/.test(c)) set[c] = 1; }); }
+  (htmlBlock.match(/class="([^"]+)"/g) || []).forEach(function (m) { add(m.slice(7, -1).split(/\s+/)); });
+  /* **וגם מחלקות שנוצרות ב-JS.** wa-ico לא מופיע במרקאפ הסטטי בכלל, הוא נכתב בתוך
+     מחרוזת בקוד, ולכן איסוף מה-HTML בלבד החמיץ אותו והלוגו יצא מרובע ב-21 עמודים.
+     זו בדיוק משפחת "מחלקה שנוצרת ב-JS" שבדיקה 16 בפריפלייט קיימת בגללה. */
+  (jsBlock.match(/class="([^"]+)"|className\s*=\s*['"]([^'"]+)['"]/g) || []).forEach(function (m) {
+    add(m.replace(/^[^=]*=\s*['"]?/, '').replace(/['"]$/, '').split(/\s+/));
+  });
+  return Object.keys(set);
+})();
+function touchesChat(sel) {
+  if (/(^|[\s,>+~])[.#]pg-|#pg[A-Z]/.test(sel)) return true;
+  for (var i = 0; i < markupClasses.length; i++) {
+    var c = markupClasses[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp('\\.' + c + '(?![\\w-])').test(sel)) return true;
+  }
+  return false;
+}
 function chatCss(s) {
   var styles = s.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || [];
   var out = [];
@@ -42,7 +66,7 @@ function chatCss(s) {
       var head = m.slice(0, m.indexOf('{') + 1);
       var keep = [];
       inner.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
-        if (/(^|[\s,>+~])[.#]pg-|#pg[A-Z]/.test(sel)) keep.push(sel.trim() + '{' + body + '}');
+        if (touchesChat(sel)) keep.push(sel.trim() + '{' + body + '}');
         return r;
       });
       if (keep.length) out.push(head + keep.join('') + '}');
@@ -50,7 +74,7 @@ function chatCss(s) {
     });
     var flat = css.replace(/@media[^{]+\{(?:[^{}]|\{[^{}]*\})*\}/g, ' ');
     flat.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
-      if (/(^|[\s,>+~])[.#]pg-|#pg[A-Z]/.test(sel)) out.push(sel.trim() + '{' + body + '}');
+      if (touchesChat(sel)) out.push(sel.trim() + '{' + body + '}');
       return r;
     });
   });
@@ -60,9 +84,18 @@ var cssBlock = chatCss(src);
 if (cssBlock.length < 2000) { console.error('✗ ה-CSS שנגזר קצר מדי (' + cssBlock.length + '), הסלקטורים השתנו?'); process.exit(1); }
 
 /* ---- כתיבת הקבצים החיצוניים ---- */
-var HEAD = '/* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */\n';
-fs.writeFileSync(path.join(PROTO, 'chat.css'), HEAD + cssBlock + '\n');
-fs.writeFileSync(path.join(PROTO, 'chat.js'), HEAD + jsBlock + '\n');
+/* חותמת על הגוף עצמו, כדי שבדיקה 31 תוכל לתפוס עריכה ידנית של הקבצים הנגזרים.
+   בלעדיה אפשר היה לשנות את chat.css או להוסיף קוד ל-chat.js והפריפלייט נשאר ירוק. */
+var crypto = require('crypto');
+/* צורה קנונית זהה בשני הצדדים: בלי הבדלי סופי שורה ובלי רווח בסוף. בלעדיה החותמת
+   נשברת לבד ברגע ש-git ממיר סופי שורה בצ'קאאוט, ואז השער צועק על קובץ תקין. */
+function canon(s) { return String(s).replace(/\r\n/g, '\n').replace(/\s+$/, ''); }
+function stamp(body) {
+  return '/* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */\n' +
+         '/* sha1:' + crypto.createHash('sha1').update(canon(body)).digest('hex').slice(0, 16) + ' */\n';
+}
+fs.writeFileSync(path.join(PROTO, 'chat.css'), stamp(cssBlock) + cssBlock + '\n');
+fs.writeFileSync(path.join(PROTO, 'chat.js'), stamp(jsBlock) + jsBlock + '\n');
 
 /* ---- העמודים שמקבלים את הצ'אט: אותם 21 שבאינדקס התוכן ---- */
 function inIndex(url) {
