@@ -203,26 +203,23 @@ function emitCss(rules, idxs) {
 
 /* ---------------------------------------------------------------- inherited context
  * A dependency closure can carry rules. It cannot carry what the section INHERITS from the page
- * around it, and this section inherits its typeface: nothing inside it declares one, so on the home
- * page it takes the sans from body. Every content page carries
- *     h1,h2,h3,h4{...font-family:var(--serif);font-weight:500}
- * which the home page does not have at all, so the ported carousel came out in the editorial serif at
- * weight 500. That serif is right for prose in main and wrong for a promotional module, and the
- * headline is the first thing anyone reads.
+ * around it, and this section declares no typeface of its own: it takes whatever the page gives it.
  *
- * It comes down to two global heading rules that differ between the two kinds of page:
- *     index.html      h1,h2,h3    {line-height:1.15;font-weight:800}                  sans by inheritance
- *     content pages   h1,h2,h3,h4 {line-height:1.18;font-weight:500;font-family:serif}
+ * That used to matter a great deal. Content pages carried
+ *     h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.18}
+ * which index.html did not have at all, so the ported carousel arrived in the editorial serif at
+ * weight 500 and this block existed to undo it. On 15.8.2026 the serif was retired and every page
+ * now states the same heading rule as the home page, so those font declarations became redundant and
+ * were removed. Verified by re-running the computed-style diff against index.html: still zero
+ * differences across all elements of the section and the popup.
  *
- * Stated as ids so it outranks the page's element-level rule, and scoped to the section so nothing
- * else moves. Weight and line-height are set on h2 only: the six h3s already get theirs from the
- * carousel's own rules, and an id-level declaration here would override those instead of matching
- * them. The measured difference after this reset is zero properties across all 771 elements. */
+ * What remains is not redundant. /phones/compare/ deliberately sets main .btn{white-space:normal} so
+ * Hebrew button labels can wrap to two lines, and that rule outranks the site's .btn, so the
+ * carousel's buttons broke onto two lines there and nowhere else.
+ *
+ * The lesson to keep: if a page ever again styles something this section inherits, the fix belongs
+ * here, scoped by id so it outranks an element-level rule and touches nothing outside the section. */
 const CONTEXT_RESET = [
-  '/* המקטע יורש את הגופן מהעמוד שסביבו, ובעמוד תוכן הכותרות הן בסריף העריכותי במשקל 500.',
-  '   כאן מוחזרים הגופן, המשקל וגובה השורה של דף הבית, כדי שהקרוסלה תיראה זהה בכל מקום. */',
-  '#deals h2,#deals h3,#deals h4,.pg-cpn h3,.pg-cpn h4{font-family:var(--font)}',
-  '#deals h2{font-weight:800;line-height:1.15}',
   '/* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.',
   '   הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */',
   '#deals .btn{white-space:nowrap}'
