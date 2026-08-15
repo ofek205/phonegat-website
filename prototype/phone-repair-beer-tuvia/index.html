@@ -95,11 +95,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:image" content="https://www.phonegat.co.il/og-home.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Assistant carries the body (same file the rest of the site already cached), Frank Ruhl Libre
-     carries the headlines. The serif/sans pairing is what keeps this page from reading as a
-     template: headings are set in a serif at a normal weight, not in heavy sans. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500&display=swap"></noscript>
+<!-- Assistant carries the whole page, headings included (the file the rest of the site already
+     cached). The editorial serif was retired on 15.8.2026: one typeface across the site, headings
+     at weight 800, hero capped at 3.5rem because that weight at the old 5.3rem dominated the page. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"></noscript>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"TechArticle","@id":"https://www.phonegat.co.il/phone-repair-beer-tuvia/#article","headline":"תיקון סלולר ומכירת מכשירי סלולר לתושבי מועצה אזורית באר טוביה","description":"תיקון ומכירת סלולר לתושבי מ.א. באר טוביה: מושב כפר ורבורג, מושב ביצרון, מושב תימורים ועוד. מעבדה, מכשירים חדשים ואבחון ללא עלות.","inLanguage":"he-IL","datePublished":"2026-08-09","dateModified":"2026-08-09","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/phone-repair-beer-tuvia/"},"author":{"@type":"Person","name":"ברוך אדלשטיין","jobTitle":"טכנאי ראשי","worksFor":{"@id":"https://www.phonegat.co.il/#business"}},"publisher":{"@id":"https://www.phonegat.co.il/#business"},"image":"https://www.phonegat.co.il/og-home.jpg"}
 </script>
@@ -135,7 +135,7 @@ c.toggle('a11y-stop-motion',!!p.motion);}catch(e){}})();
   --ink:#2b2b2e; --ink-strong:#141210; --ink-soft:#6b6670; --line:#e2e0e4;
   --on-dark:#fff; --on-dark-soft:#c4c0c8;
   --font:"Assistant","Heebo","Segoe UI",system-ui,sans-serif;
-  --serif:"Frank Ruhl Libre","David Libre",Georgia,serif;
+
   /* system monospace: costs nothing to load and carries the technical register:
      every numeral and Latin marker on the page is set in it */
   --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
@@ -144,8 +144,8 @@ c.toggle('a11y-stop-motion',!!p.motion);}catch(e){}})();
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:150px}
 body{margin:0;font-family:var(--font);font-size:18px;line-height:1.65;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-/* headlines are serif at a normal weight; nothing on this page is a heavy sans headline */
-h1,h2,h3,h4{margin:0;line-height:1.18;color:var(--ink-strong);font-family:var(--serif);font-weight:500}
+/* כותרות בגופן של דף הבית. הסריף העריכותי ירד ב-15.8.2026, לזהות אחת בכל האתר */
+h1,h2,h3,h4{margin:0;line-height:1.15;color:var(--ink-strong);font-family:var(--font);font-weight:800}
 p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(12px,3vw,28px)}
 :focus-visible{outline:3px solid var(--teal);outline-offset:2px}
@@ -198,7 +198,7 @@ nav.main a[aria-current="page"]{color:#000;font-weight:700}
    and the size of the headline itself are doing the work here ===== */
 .ghero{background:#fff}
 .ghero .inner{max-width:min(1100px,92vw);margin-inline:auto;text-align:center;padding-block:clamp(64px,11vw,150px) clamp(40px,6vw,80px)}
-.ghero h1{color:#0b0b0b;font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,7vw,5.3rem);line-height:1.14;letter-spacing:-.01em}
+.ghero h1{color:#0b0b0b;font-family:var(--font);font-weight:800;font-size:clamp(2.15rem,5vw,3.5rem);line-height:1.1;letter-spacing:0}
 .ghero .sub{color:var(--ink-soft);font-weight:300;font-size:clamp(1.12rem,1.7vw,1.4rem);line-height:1.7;margin:1.6rem auto 0;max-width:54ch}
 .ghero .hcta{margin-top:2.2rem}
 /* byline and trust marks: one quiet line of plain text, hairline separated */
@@ -367,7 +367,7 @@ main{counter-reset:prob}
 
 /* ===== closing CTA (same dark band as the contact section) ===== */
 .cta{background:var(--dark);color:#fff;padding:clamp(38px,5.5vw,68px) 0;text-align:center}
-.cta h2{color:#fff;font-weight:400;font-size:clamp(1.6rem,3.4vw,2.4rem);max-width:24ch;margin-inline:auto}
+.cta h2{color:#fff;font-weight:800;font-size:clamp(1.6rem,3.4vw,2.4rem);max-width:24ch;margin-inline:auto}
 .cta p{color:var(--on-dark-soft);font-weight:300;margin:1rem auto 0;max-width:54ch;line-height:1.75}
 .cta .row{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:1.5rem}
 .cta .btn{font-size:1.05rem;padding:13px 24px}
