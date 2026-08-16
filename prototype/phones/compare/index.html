@@ -51,7 +51,7 @@
     document.addEventListener('DOMContentLoaded',function(){
       var b=document.createElement('div');
       b.className='pg-testbar';
-      b.innerHTML='<span aria-hidden="true">⚠</span> סביבת בדיקות — זה לא האתר החי'+
+      b.innerHTML='<span aria-hidden="true">⚠</span> סביבת בדיקות, זה לא האתר החי'+
         ' <span class="pg-tb-env">('+window.PG_ENV+')</span>'+
         ' <a href="https://www.phonegat.co.il/">לאתר החי ↗</a>';
       document.body.appendChild(b);
@@ -660,6 +660,12 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dchip.sc0 .rf,.dchip.sc1 .rf{color:#fff}
 .dchip.sc2 .rf{color:#3c2e12}
 .dmenu .dmlist .cnt.rf{font-family:var(--font);font-size:.9rem}
+.dfocus button{border-color:var(--edge)}
+.cmp-grid .fxi{border-color:var(--edge)}
+.dadd{border-color:var(--edge)}
+.dshare{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-block-start:1.6rem}
+.dshare .ok{color:var(--teal-d);font-size:.96rem;font-weight:600}
+.dnoown{color:var(--ink-soft)}
 .dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
 .dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
 .dchip.sc2{background:var(--orange);border-color:#c07a2e;color:#241a08;font-weight:700}
@@ -1945,8 +1951,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="dclr" id="dclear" hidden>נקו את הבחירה</button>
       </div>
       <ul class="dslots two" id="dslots">
-        <li class="dslot empty"><button type="button" class="dopen" data-slot="0" aria-haspopup="true" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">מכשיר א׳</span><span class="nm">בחרו דגם</span></span></button></li>
-        <li class="dslot empty"><button type="button" class="dopen" data-slot="1" aria-haspopup="true" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">מכשיר ב׳</span><span class="nm">בחרו דגם</span></span></button></li>
+        <li class="dslot empty"><button type="button" class="dopen" data-slot="0" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">מכשיר א׳</span><span class="nm">בחרו דגם</span></span></button></li>
+        <li class="dslot empty"><button type="button" class="dopen" data-slot="1" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">מכשיר ב׳</span><span class="nm">בחרו דגם</span></span></button></li>
         <li><button type="button" class="dadd" data-add="1">הוסיפו מכשיר שלישי</button></li>
       </ul>
       <div class="dmenu" id="dmenu" hidden></div>
@@ -2021,7 +2027,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="dstate" id="dstatebar" hidden>
       <p id="dstate" role="status"></p>
     </div>
-    <div class="minfo" id="minfo" role="status" hidden></div>
+    <div class="minfo" id="minfo" hidden></div>
     <div id="dout">
       <p class="dempty">כאן תופיע טבלת ההבדלים. אם JavaScript כבוי, <a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>
     </div>
@@ -2513,7 +2519,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      it travels with the page and needs no repositioning on scroll. */
   var panel=document.getElementById("minfo"), infoFor=null;
   var canHover=false; try{canHover=window.matchMedia("(hover:hover) and (pointer:fine)").matches;}catch(e){}
-  function hideInfo(){ if(!panel) return; panel.hidden=true; infoFor=null; }
+  function hideInfo(){ if(!panel) return; panel.hidden=true;
+    if(infoFor&&infoFor.setAttribute) infoFor.setAttribute("aria-expanded","false");
+    infoFor=null; }
   function showInfo(btn,on){
     if(!panel) return;
     if(!on){ hideInfo(); return; }
@@ -2530,6 +2538,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     panel.style.left=left+"px";
     var arrow=Math.min(Math.max(10,r.left+r.width/2-left-5),w-20);
     panel.style.setProperty("--ax",arrow+"px");
+    if(infoFor&&infoFor!==btn&&infoFor.setAttribute) infoFor.setAttribute("aria-expanded","false");
+    btn.setAttribute("aria-expanded","true");
     infoFor=btn;
   }
   /* Hover is scoped to the marker itself, not the whole label: hovering the label would open a
@@ -2539,7 +2549,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     out.addEventListener("pointerover",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i) showInfo(i.closest(".fx"),true);});
     out.addEventListener("pointerout",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i&&i.closest(".fx")===infoFor) hideInfo();});
   }
-  out.addEventListener("focusin",function(e){var b=e.target.closest&&e.target.closest(".fx"); if(b) showInfo(b,true);});
+  /* מיקוד אינו פותח את ההסבר. הוא פתח, ואז ה-click שבא אחריו מצא מצב פתוח וסגר,
+     ולכן ההקשה הראשונה על סימן המידע לא עשתה כלום בכל דפדפן שממקד כפתור בלחיצה.
+     קורא מסך מקבל את הטקסט מ-aria-describedby ברגע המיקוד, בלי הפאנל, ו-Enter או
+     רווח יורים click ופותחים אותו כרגיל. */
   out.addEventListener("focusout",function(e){var b=e.target.closest&&e.target.closest(".fx"); if(b&&b===infoFor) hideInfo();});
   document.addEventListener("keydown",function(e){ if(e.key==="Escape") hideInfo(); });
   document.addEventListener("click",function(e){ if(infoFor&&!(e.target.closest&&(e.target.closest(".fx")||e.target.closest("#minfo")))) hideInfo(); });
@@ -2568,7 +2581,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     box.hidden=false; box.className="dslots"+(slots<3?" two":""); var html="";
     for(var i=0;i<slots;i++){
       var sl=sel[i], d=sl?dev(sl):null;
-      var open='<button type="button" class="dopen" data-slot="'+i+'" aria-haspopup="true" aria-expanded="false" aria-controls="dmenu">';
+      var open='<button type="button" class="dopen" data-slot="'+i+'" aria-expanded="false" aria-controls="dmenu">';
       html+=d
         ? '<li class="dslot sc'+i+'">'+open+'<span class="dtxt"><span class="lbl">מכשיר '+SLOT[i]+'</span>'+
           '<span class="nm">'+ltr(d.name)+'</span></span><span class="swap">החלפה</span></button>'+
@@ -2612,7 +2625,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       p.k.forEach(function(k){set[k]=1;});
       if(sel.length===2) same=p.s;
     }}
-    if(missingPair){out.innerHTML='<p class="dempty">לא הצלחנו לחשב את ההשוואה הזאת. <a href="/compare/">ההשוואות המוכנות</a> זמינות תמיד.</p>';return;}
+    if(missingPair){ if(bar) bar.hidden=true;
+      out.innerHTML='<p class="dempty">לא הצלחנו לחשב את ההשוואה הזאת. <a href="/compare/">ההשוואות המוכנות</a> זמינות תמיד.</p>';return;}
     var diff=ORDER.filter(function(r){return set[r[1]];});
     var cats=catsOf(diff);
     /* a focus left over from the previous pair may not exist in this one */
@@ -2636,14 +2650,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
        שדגם שאיננו מוכרים מסומן ולא מוסתר. אותו כלל שעמודי ההשוואה הכתובים כבר מקיימים. */
     var refs=ds.filter(function(d){return d&&d.own===false;});
     var disc=refs.length?'<p class="dnote">'+
-      (refs.length===1?'את ':'את ')+refs.map(function(d){return esc(d.name_he||d.name);}).join(' ואת ')+
-      (refs.length===1?' איננו מוכרים':' איננו מוכרים')+', והוא כאן כדי שאפשר יהיה להשוות אליו. את המפרט לקחנו מאתר היצרן.</p>':'';
+      'את '+refs.map(function(d){return esc(d.name_he||d.name);}).join(' ואת ')+
+      ' איננו מוכרים, '+(refs.length===1?'והוא כאן כדי שאפשר יהיה להשוות אליו':'והם כאן כדי שאפשר יהיה להשוות אליהם')+'. את המפרט לקחנו מאתר היצרן.</p>':'';
     shown.forEach(function(r){
       if(r[0]!==cat){ if(bodyOpen) body+="</tbody>"; cat=r[0];
-        body+='<tbody><tr class="grp"><th colspan="'+span+'" scope="colgroup">'+esc(cat)+"</th></tr>"; bodyOpen=true; }
+        body+='<tbody><tr class="grp"><th colspan="'+span+'" scope="rowgroup">'+esc(cat)+"</th></tr>"; bodyOpen=true; }
       var mid="m-"+r[2];
       body+='<tr class="vrow"><th scope="row">'+(MEANS[r[2]]
-        ? '<button type="button" class="fx" aria-describedby="'+mid+'d" data-mean="'+esc(r[2])+'">'+esc(r[1])+'<span class="fxi" aria-hidden="true">i</span></button>'+
+        ? '<button type="button" class="fx" aria-expanded="false" aria-describedby="'+mid+'d" data-mean="'+esc(r[2])+'">'+esc(r[1])+'<span class="fxi" aria-hidden="true">i</span></button>'+
           '<span class="a11y-sr" id="'+mid+'d">'+esc(MEANS[r[2]])+'</span>'
         : esc(r[1]))+"</th>";
       ds.forEach(function(d){
@@ -2691,7 +2705,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         /* own===false הוא מכשיר ייחוס: אין לו עמוד מכשיר, ולכן קישור אליו הוא 404.
            הוא מסומן .noown, אותו סימון שעמודי ההשוואה הכתובים כבר משתמשים בו. */
         return d.own===false
-          ? '<span class="noown">'+esc(d.name_he||d.name)+' — איננו מוכרים אותו</span>'
+          ? '<span class="dnoown">'+esc(d.name_he||d.name)+', איננו מוכרים אותו</span>'
           : '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";
       }).join(" · ")+"</p>";
   }
@@ -2805,7 +2819,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      כ-undefined ומחזיר "לא הצלחנו לחשב", כלומר תקלה שנראית כמו באג. מי שבוחר לתא ג׳ כשיש
      דגם אחד מקבל אותו בתא ב׳, וזה מה שהוא התכוון אליו. */
   function setSlot(i, slug){
-    var at=sel.indexOf(slug); if(at>=0) sel.splice(at,1);
+    var at=sel.indexOf(slug);
+    /* הדגם כבר יושב בתא אחר: מחליפים מקומות. splice ואז השמה היו מוחקים את מי
+       שיושב בתא היעד, כלומר המשתמש ביקש להחליף דגם אחד ואיבד שניים. */
+    if(at>=0 && at!==i){ if(i<sel.length){ sel[at]=sel[i]; sel[i]=slug; } else { sel.splice(at,1); sel.push(slug); } return; }
+    if(at===i) return;
     if(i<sel.length) sel[i]=slug; else sel.push(slug);
     if(sel.length>slots) sel.length=slots;
   }
@@ -2828,7 +2846,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var p=e.target.closest("[data-pick]");
     if(p){ var i=menuFor, was=sel.length, sl=p.getAttribute("data-pick");
       setSlot(i, sl);
-      push("cmp_pick",{device:sl,action:"add",selected:sel.length,via:"menu"});
+      push("cmp_pick",{device:sl,action:was>=sel.length?"swap":"add",selected:sel.length,via:"menu"});
       menuFor=null; menuOpen={}; menu.hidden=true; menu.innerHTML="";
       syncChips(); render();
       /* render בונה מחדש את התאים, ולכן מיקוד שנקבע לפניו הולך לאיבוד. כשההשוואה נפתחה
@@ -2852,18 +2870,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      render() replaces, so both are delegated rather than bound per element */
   var slotBox=document.getElementById("dslots");
   if(slotBox) slotBox.addEventListener("click",function(e){
-    if(e.target.closest&&e.target.closest("[data-add]")){slots=MAX;renderSlots();return;}
+    if(e.target.closest&&e.target.closest("[data-add]")){slots=MAX;renderSlots();
+      push("cmp_add_slot",{});
+      /* הכפתור שנלחץ נמחק ברינדור, ולכן הפוקוס עובר לתא החדש שנוצר בזכותו */
+      var na=document.querySelector('.dopen[data-slot="'+(MAX-1)+'"]'); if(na) na.focus();
+      return;}
     var o=e.target.closest?e.target.closest(".dopen"):null;
     if(o){ var i=parseInt(o.getAttribute("data-slot"),10);
       if(menuFor===i) closeMenu(true); else openMenu(i); return; }
     var b=e.target.closest?e.target.closest(".drop"):null; if(!b) return;
     var at=sel.indexOf(b.getAttribute("data-drop"));
-    if(at>=0){sel.splice(at,1);syncChips();render();}
+    if(at>=0){sel.splice(at,1);syncChips();render();
+      /* ה-× שנלחץ נמחק ברינדור. הפוקוס עובר לתא שממנו הוסר הדגם. */
+      var bk=document.querySelector('.dopen[data-slot="'+Math.min(at,slots-1)+'"]'); if(bk) bk.focus();}
   });
   out.addEventListener("click",function(e){
     if(!e.target.closest) return;
     var fx=e.target.closest(".fx");
-    if(fx){ var opening=fx!==infoFor; if(opening) push("cmp_explain",{field:fx.getAttribute("data-mean")||""}); showInfo(fx,opening); return; }
+    if(fx){ /* המצב נקרא מהכפתור ולא ממשתנה משותף. focusin רץ לפני click בדפדפן
+           שממקד כפתור בלחיצה, ואז ההשוואה למשתנה הפכה את הלחיצה הראשונה לסגירה. */
+      var opening=fx.getAttribute("aria-expanded")!=="true";
+      if(opening) push("cmp_explain",{field:fx.getAttribute("data-mean")||""});
+      showInfo(fx,opening); return; }
     var mb=e.target.closest("[data-means]");
     if(mb){means=!means;render();return;}
     var f=e.target.closest(".dfocus button");
@@ -2891,7 +2919,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* סינון מהיר. 24 דגמים עוד נסרקים בעין, אבל הרשימה גדלה, ומי שיודע מה הוא מחפש לא צריך
      לסרוק. הקבוצה כולה נעלמת כשאין בה התאמה, אחרת נשארות כותרות מותג מרחפות בלי תוכן. */
   var q=document.getElementById("dq"), noneEl=document.getElementById("dnone"),
-      qh=document.getElementById("dqh"), qUsed=false;
+      qh=document.getElementById("dqh"), qUsed=false, qhT=0;
   function applyFilter(){
     if(!q) return;
     var s=q.value.trim().toLowerCase(), shown=0;
@@ -2906,7 +2934,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     if(noneEl) noneEl.hidden=shown>0;
     /* מודיע לקורא מסך כמה נשארו. בלי זה הקלדה בשדה משנה את הרשימה בלי שום חיווי. */
-    if(qh) qh.textContent=!s?"":(shown?shown+" דגמים מוצגים":"אין דגם מתאים");
+    /* ההכרזה מושהית, הסינון עצמו לא. בלי זה הקלדת "galaxy" מייצרת שש הכרזות
+       בתור של קורא המסך, וכולן חוץ מהאחרונה חסרות ערך. */
+    if(qh){ clearTimeout(qhT); var msg=!s?"":(shown?shown+" דגמים מוצגים":"אין דגם מתאים");
+      qhT=setTimeout(function(){qh.textContent=msg;},500); }
   }
   /* בלי הטקסט עצמו ובלי הקשה-הקשה: השאלה היחידה שנמדדת כאן היא אם משתמשים בסינון בכלל */
   if(q) q.addEventListener("input",function(){ if(!qUsed&&q.value.trim()){qUsed=true;push("cmp_filter",{});} applyFilter(); });

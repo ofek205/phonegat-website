@@ -477,7 +477,17 @@ pageFiles.forEach(function (f) {
   /* טקסט חופשי + הערכים של התכונות שהקורא או גוגל רואים */
   var attrs = (visible.match(/(?:alt|title|content|aria-label|placeholder)="[^"]*"/gi) || []).join('\n');
   var text = visible.replace(/<[^>]+>/g, ' ');
-  var n = countAll(text, /—/g) + countAll(attrs, /—/g) + countAll(ld, /—/g);
+  /* וגם קופי שחי בתוך <script>. הכלי ב-/phones/compare/ בונה את כל הטקסט שלו ב-JS:
+     29 משפטי ההסבר, הודעות המצב, הודעות השגיאה ותוויות הכפתורים. כולם עברו כאן בלי
+     להיבדק, כי השורות שמעל מסירות את כל ה-script לפני הספירה, וכך מקף ארוך בגילוי
+     הנאות של מכשיר ייחוס שרד 32 בדיקות. זה לא פספוס נקודתי אלא חור מבני בשער.
+     נספרות מחרוזות ליטרל בלבד, והערות קוד בתוך ה-script יורדות קודם, מאותה סיבה
+     שהערות HTML יורדות: שם המקף מותר. */
+  var js = (s.match(/<script(?![^>]*application\/ld\+json)[^>]*>[\s\S]*?<\/script>/gi) || []).join('\n')
+             .replace(/\/\*[\s\S]*?\*\//g, ' ')
+             .replace(/^[ \t]*\/\/.*$/gm, ' ');
+  var strings = (js.match(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g) || []).join('\n');
+  var n = countAll(text, /—/g) + countAll(attrs, /—/g) + countAll(ld, /—/g) + countAll(strings, /—/g);
   if (n) dashFails.push(f + ' (' + n + ')');
 });
 if (dashFails.length) {
