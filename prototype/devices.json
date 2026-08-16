@@ -4882,10 +4882,16 @@
           "src": "https://one-plus.co.il/shop/oneplus/oneplus-15r-5g/oneplus-15r-5g-12gb256gb-charcoal-black/",
           "at": "2026-08-10",
           "note": "CPH2769."
+        },
+        "screen_size": {
+          "src": "https://one-plus.co.il/shop/oneplus/oneplus-15r-5g/oneplus-15r-5g-12gb256gb-charcoal-black/",
+          "kind": "אתר היבואן הרשמי בישראל, סל נאו. היחידה הומרה מסנטימטרים למילימטרים",
+          "at": "2026-08-16",
+          "note": "היצרן נוקב ב-17.35 ס״מ. אותו ערך בדיוק, ביחידה שבה 11 הדגמים האחרים נוקבים, כדי ששדה אחד לא ייקרא בשתי יחידות. המרה ולא שינוי נתון."
         }
       },
       "spec": {
-        "screen_size": "6.83 אינץ׳ (17.35 ס״מ)",
+        "screen_size": "6.83 אינץ׳ (173.5 מ״מ)",
         "screen_type": "AMOLED, מיליארד צבעים, Dolby Vision ו-HDR10+",
         "resolution": "2800x1272 פיקסלים (FHD+), צפיפות 450ppi, יחס 19.8:9. זכוכית Corning Gorilla Glass 7i, כיסוי DCI-P3 מלא ועומק צבע 10 ביט",
         "refresh_rate": "אדפטיבי 60, 90, 120, 144 ו-165Hz. מקסימום 165Hz, ו-144 או 165 נתמכים רק ביישומים מסוימים",
