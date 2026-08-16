@@ -1779,24 +1779,24 @@
           "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה מציינת את שם השבב בעמוד המפרט, רק את מספר הליבות ומהירויות השעון. לא להשלים Snapdragon או Exynos ממקור אחר בלי לציין את המקור."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק טעינה לא מופיע בעמוד. נשאר ריק."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית לא מופיעה בעמוד המפרט."
+          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט של סמסונג ואינה מוזכרת בשורת הטעינה במאגר. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת אריזה לא מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "storage_offered": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a56-5g-awesome-pink-128gb-sm-a566blivmec/",
@@ -1823,14 +1823,14 @@
           "note": "אומת מול טבלת המפרט של סמסונג ישראל, שדה \"תקופת עדכון האבטחה (תקף עד)\": 31 במרץ 2032. שני הדגמים מצהירים \"שש שנים\" ותאריכי הסיום שלהם במרווח שנה. זו האמירה של היצרן עצמו, ולא אי-עקביות אצלנו. אין לתקן אחד מהם כדי שיתאים לשני."
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "היצרן אינו מציין \"אין הרחבה\" בעמוד המפרט. היעדר הנתון אינו הוכחה להיעדר החריץ, ולכן null ולא 0."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_extra": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a56-5g-awesome-lightgray-256gb-sm-a566bzawmec/",
@@ -1840,7 +1840,7 @@
         "colors_manufacturer": {
           "src": null,
           "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "note": "המאגר מונה ורוד, זית, גרפיט ואפור בהיר. צבעים אינם מושלמים ממאגר לפי היררכיית המקורות, כי לא כל הצבעים מגיעים לכל שוק. לאמת מול סמסונג ישראל."
         },
         "camera_main": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a56-5g-awesome-lightgray-256gb-sm-a566bzawmec/",
@@ -1854,21 +1854,21 @@
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": "1200 ניט במצב בהירות גבוהה",
-        "chip": null,
+        "chip": "Exynos 1580",
         "cpu": "8 ליבות, 2.9GHz, 2.6GHz ו-1.9GHz",
-        "gpu": null,
+        "gpu": "Xclipse 540",
         "ram": "8GB",
         "storage_offered": [
           "128GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "12MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
         "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
         "camera_front": "12MP בצמצם F2.2",
         "video": "4K (3840x2160) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-HD",
         "battery": "עד 29 שעות וידאו, 5000 mAh טיפוסית (קיבולת מדורגת 4905)",
-        "charging_wired": null,
+        "charging_wired": "45W, עד 65 אחוז ב-30 דקות",
         "charging_wireless": null,
         "dimensions": "162.2 x 77.5 x 7.4 מ״מ",
         "weight": "198 גרם",
@@ -2018,24 +2018,24 @@
           "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה מציינת את שם השבב בעמוד המפרט, רק את מספר הליבות ומהירויות השעון. לא להשלים Snapdragon או Exynos ממקור אחר בלי לציין את המקור."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק טעינה לא מופיע בעמוד. נשאר ריק."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית לא מופיעה בעמוד המפרט."
+          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט של סמסונג ואינה מוזכרת בשורת הטעינה במאגר. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת אריזה לא מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "storage_offered": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a36-5g-awesome-black-128gb-sm-a366bzkmmec/",
@@ -2062,14 +2062,14 @@
           "note": "אומת מול טבלת המפרט של סמסונג ישראל, שדה \"תקופת עדכון האבטחה (תקף עד)\": 31 במרץ 2031. שני הדגמים מצהירים \"שש שנים\" ותאריכי הסיום שלהם במרווח שנה. זו האמירה של היצרן עצמו, ולא אי-עקביות אצלנו. אין לתקן אחד מהם כדי שיתאים לשני."
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "היצרן אינו מציין \"אין הרחבה\" בעמוד המפרט. היעדר הנתון אינו הוכחה להיעדר החריץ, ולכן null ולא 0."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13497&idPhone2=13603",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_extra": {
           "src": "https://www.gsmarena.com/samsung_galaxy_a36-review-2814.php",
@@ -2088,21 +2088,21 @@
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": "1200 ניט במצב בהירות גבוהה",
-        "chip": null,
+        "chip": "Snapdragon 6 Gen 3",
         "cpu": "8 ליבות, 2.4GHz ו-1.8GHz",
-        "gpu": null,
+        "gpu": "Adreno 710",
         "ram": "6GB",
         "storage_offered": [
           "128GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "8MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
         "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
         "camera_front": "12MP בצמצם F2.2",
         "video": "4K (3840x2160) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-HD",
         "battery": "עד 29 שעות וידאו, 5000 mAh טיפוסית",
-        "charging_wired": null,
+        "charging_wired": "45W, עד 66 אחוז ב-30 דקות",
         "charging_wireless": null,
         "dimensions": "162.9 x 78.2 x 7.4 מ״מ",
         "weight": "195 גרם",
@@ -2658,19 +2658,19 @@
           "note": "שנת ההשקה אינה מופיעה בעמוד המוצר. לא ממציאים שנה."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה נוקבת בשם השבב של A57, לא בטבלה ולא בכותרת. אצל A37 היא כן נוקבת, ולכן זו החלטה לכל דגם בנפרד ולא מדיניות של המותג."
+          "src": "https://www.gsmarena.com/samsung_galaxy_a57_5g-14379.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא מופיע בטבלת המפרט של סמסונג ישראל, ולא בגוף העמוד. לא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "בהירות המסך אינה מופיעה בטבלת המפרט ולא בגוף העמוד. אצל A36 היא כן מופיעה בגוף העמוד, ולכן זה חוסר אמיתי ולא דפוס אחיד."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a57-5g-awesome-navy-128gb-sm-a576bdbmmec/",
@@ -2680,17 +2680,17 @@
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית אינה מופיעה בטבלת המפרט ולא בגוף העמוד. היעדר הנתון אינו הצהרה שאין תמיכה, ולכן null."
+          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט של סמסונג ואינה מוזכרת בשורת הטעינה במאגר. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "אין שורת \"תמיכה באחסון חיצוני\" בטבלה, ושורת חריץ ה-SIM מונה שלוש תצורות שאין באף אחת מהן MicroSD. בעמוד A17 השורה הזאת כן קיימת, כלומר סמסונג מציינת אותה כשהיא רלוונטית. זו ראיה חזקה שאין חריץ, אבל היצרן אינו אומר זאת במפורש ולכן null ולא 0."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת האריזה אינה מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "camera_main": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a57-5g-awesome-navy-128gb-sm-a576bdbmmec/",
@@ -2726,6 +2726,9 @@
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a57-5g-awesome-navy-128gb-sm-a576bdbmmec/",
           "at": "2026-08-09",
           "note": "ארבעת הצבעים בעמוד הרכישה של סמסונג ישראל."
+        },
+        "cpu": {
+          "verify": "חשד להעתקה מ-A56. המאגר: 1x2.9 + 4x2.6 + 3x1.95. אצלנו: 2.9, 2.6, 1.9."
         }
       },
       "spec": {
@@ -2733,16 +2736,16 @@
         "screen_type": "Super AMOLED Plus, עומק צבע 16M",
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
-        "brightness": null,
-        "chip": null,
+        "brightness": "1900 ניט שיא, 1200 ניט בשימוש רגיל",
+        "chip": "Exynos 1680",
         "cpu": "8 ליבות, 2.9GHz, 2.6GHz ו-1.9GHz",
-        "gpu": null,
+        "gpu": "Xclipse 550",
         "ram": "8GB",
         "storage_offered": [
           "128GB",
           "256GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "12MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
         "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
@@ -2908,14 +2911,14 @@
           "note": "שם השבב, Exynos 1480, מופיע בכותרת העמוד עצמה: \"גלקסי A37 5G אפור, עם מעבד Exynos 1480 וביצועים חזקים\". זה שובר את ההנחה שסמסונג ישראל לעולם אינה נוקבת בשם השבב. ב-A57 ובדור הקודם היא עדיין לא נוקבת."
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא מופיע בטבלת המפרט של סמסונג ישראל, ולא בגוף העמוד. לא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "בהירות המסך אינה מופיעה בטבלת המפרט ולא בגוף העמוד."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a37-5g-awesome-graygreen-128gb-sm-a376bdgmmec/",
@@ -2925,17 +2928,17 @@
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית אינה מופיעה בטבלת המפרט ולא בגוף העמוד. היעדר הנתון אינו הצהרה שאין תמיכה, ולכן null."
+          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט של סמסונג ואינה מוזכרת בשורת הטעינה במאגר. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "אין שורת \"תמיכה באחסון חיצוני\" בטבלה, ושורת חריץ ה-SIM מונה שלוש תצורות בלי MicroSD. ראו את ההערה המקבילה ב-A57."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת האריזה אינה מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "camera_main": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a37-5g-awesome-graygreen-128gb-sm-a376bdgmmec/",
@@ -2978,15 +2981,15 @@
         "screen_type": "Super AMOLED, עומק צבע 16M",
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
-        "brightness": null,
+        "brightness": "1900 ניט שיא, 1200 ניט בשימוש רגיל",
         "chip": "Exynos 1480",
         "cpu": "8 ליבות, 2.75GHz ו-2GHz",
-        "gpu": null,
+        "gpu": "Xclipse 530",
         "ram": "6GB",
         "storage_offered": [
           "128GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "8MP רחבה במיוחד בצמצם F2.2, ו-5MP מאקרו בצמצם F2.4",
         "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
@@ -3148,19 +3151,19 @@
           "note": "שנת ההשקה אינה מופיעה בעמוד המוצר. לא ממציאים שנה."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה נוקבת בשם השבב של A17, לא בטבלה ולא בכותרת. מצוינים רק שמונה ליבות ומהירויות השעון."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא מופיע בטבלת המפרט של סמסונג ישראל, ולא בגוף העמוד. לא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "בהירות המסך אינה מופיעה בטבלת המפרט ולא בגוף העמוד."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "refresh_rate": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a17-light-blue-256gb-sm-a175flbomec/",
@@ -3168,19 +3171,19 @@
           "note": "קצב הרענון אינו מופיע בטבלת המפרט כלל, בשונה מ-A57 ומ-A37 שבהם יש שורה כזאת. הנתון 90Hz נלקח מגוף העמוד: \"מסך Super AMOLED רחב בגודל 6.7 אינץ׳, עם תנועה חלקה וזורמת של 90Hz\"."
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק הטעינה אינו מופיע בעמוד, וגם לא הבטחת אחוזים בזמן כמו ב-A57 וב-A37. אין מה לצטט."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14041&idPhone2=14378&idPhone3=14379",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית אינה מופיעה בטבלת המפרט ולא בגוף העמוד. היעדר הנתון אינו הצהרה שאין תמיכה, ולכן null."
+          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט של סמסונג ואינה מוזכרת בשורת הטעינה במאגר. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת האריזה אינה מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "camera_main": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-a/galaxy-a17-light-blue-256gb-sm-a175flbomec/",
@@ -3228,10 +3231,10 @@
         "screen_type": "Super AMOLED, עומק צבע 16M",
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 90Hz",
-        "brightness": null,
-        "chip": null,
+        "brightness": "800 ניט",
+        "chip": "Exynos 1330",
         "cpu": "8 ליבות, 2.2GHz ו-2GHz",
-        "gpu": null,
+        "gpu": "Mali-G68 MP2",
         "ram": "8GB",
         "storage_offered": [
           "128GB",
@@ -3244,7 +3247,7 @@
         "camera_front": "13MP בצמצם F2.0",
         "video": "FHD (1920x1080) ב-30 פריימים לשנייה. אין הקלטת 4K. הילוך אט ב-120 פריימים ב-HD",
         "battery": "עד 18 שעות וידאו, 5000 mAh טיפוסית",
-        "charging_wired": null,
+        "charging_wired": "25W",
         "charging_wireless": null,
         "dimensions": "164.4 x 77.9 x 7.5 מ״מ",
         "weight": "190 גרם",
