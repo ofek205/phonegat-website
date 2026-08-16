@@ -111,7 +111,7 @@ const PLACE_AT = {
   'phone-speaker-microphone-repair-kiryat-gat': 'dust',
   'redmi-repair-kiryat-gat': 'water',
   'xiaomi-repair-kiryat-gat': 'charge',
-  'phone-problems': 'signal',
+  'phone-problems': 'no-power',
   'phones': 'devices',
   'compare': 'how',
   'phones/compare': 'how',
