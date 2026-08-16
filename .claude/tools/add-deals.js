@@ -520,6 +520,16 @@ function main() {
       keep.length + ' rules (' + (cl.picked.length - keep.length) + ' already there)');
   }
 
+  /* A manifest of what this run covered, so preflight check 33 can tell "never had a carousel"
+   * apart from "had one and lost it". That distinction is not academic: on 16.8.2026 a gen-devices
+   * run rewrote all 21 device pages from their template and the carousel, 373 lines of it, vanished
+   * from every one of them while the whole preflight stayed green. The generators that own those
+   * pages write them whole, so this will happen again whenever they run out of order. */
+  if (!only && !remove) {
+    fs.writeFileSync(path.join(__dirname, '..', 'deals-pages.json'),
+      JSON.stringify({ _: 'נכתב על ידי add-deals.js. הרשימה שבדיקה 33 אוכפת.', pages: list }, null, 2) + '\n');
+  }
+
   console.log('');
   if (remove) console.log('carousel removed from ' + removed + ' pages');
   else console.log('carousel on ' + done + ' pages, all seven pieces, lifted from index.html');

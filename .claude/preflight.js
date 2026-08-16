@@ -1321,18 +1321,23 @@ if (classFails.length) {
       ' — עמודי התוכן מקבלים עיצוב ישן. הרץ node .claude/tools/gen-bot.js');
   } else { ok('גוף כללי ה-pg- זהה בין index.html ל-chat.css'); }
 
-  /* כל עמוד שאמור לשאת את הצ'אט באמת נושא אותו */
+  /* כל עמוד שאמור לשאת את הצ'אט באמת נושא אותו.
+   *
+   * **זה השער שתופס סדר הרצה שגוי של המחוללים.** gen-devices ו-gen-compare כותבים את
+   * עמוד המכשיר וההשוואה במלואם מתבנית, ולכן הרצה שלהם אחרי gen-bot מוחקת את הצ'אט
+   * מ-31 עמודים בלי שום שגיאה. הרשימה כאן באה מ-bot-pages.js, אותו קובץ שהמחולל מזריק
+   * לפיו, ולכן מחיקה כזאת מפילה את הפריפלייט במקום להגיע לאוויר בשקט. */
+  var carriesChat = require('./tools/bot-pages.js');
   var missing = [];
   CONTENT_PAGES.forEach(function (f) {
     var url = f === 'index.html' ? '/' : '/' + f.replace(/\/index\.html$/, '') + '/';
-    var wanted = /^\/guides\/.+\//.test(url) || url === '/phone-problems/' ||
-                 /^\/[a-z0-9-]+-kiryat-gat\/$/.test(url);
-    if (!wanted) return;
+    if (!carriesChat(url)) return;
     var s = readPage(f); if (!s) return;
     if (s.indexOf('id="pgFab"') < 0 || s.indexOf('/chat.js') < 0) missing.push(f);
   });
   if (missing.length) {
-    bad('עמודים שאמורים לשאת את הצ\'אט ואינם נושאים אותו: ' + missing.join(', '));
+    bad('עמודים שאמורים לשאת את הצ\'אט ואינם נושאים אותו: ' + missing.join(', ') +
+        '. אם זה קרה אחרי gen-devices או gen-compare, הם דרסו את העמודים: הרץ gen-bot.js אחרון');
   } else { ok('הצ\'אט קיים בכל עמודי התוכן שאמורים לשאת אותו'); }
 })();
 
@@ -1415,6 +1420,112 @@ if (classFails.length) {
   } else {
     ok(pageFiles.length + ' עמודים: aria-current מצביע על העמוד עצמו, או שאינו קיים');
   }
+})();
+
+/* ---------- 34. קרוסלת המבצעים לא נעלמה מעמוד שהיא הייתה בו ----------
+ * **זה קרה, ובשקט מוחלט.** ב-16.8.2026 הרצת gen-devices כתבה מחדש את 21 עמודי המכשיר
+ * מהתבנית שלהם, ו-373 השורות של הקרוסלה נעלמו מכולם. אף בדיקה לא הרגישה, כי הקרוסלה אינה
+ * חלק מהמסגרת שנבדקת בעמוד, ומה שנשאר בעמוד היה תקין לגמרי בפני עצמו. גילינו זאת רק כי
+ * מישהו הסתכל בגודל ה-diff.
+ *
+ * ספירה של עמודים עם קרוסלה לא הייתה תופסת: 19 עמודי ההשוואה נושאים את ה-CSS שלה ולא את
+ * המקטע, וזה תקין. לכן ההשוואה היא מול הרשימה ש-add-deals עצמו כתב בהרצה האחרונה, כלומר
+ * מול מה שבאמת הושם, ולא מול כלל שמנחשים אותו כאן מחדש. */
+(function () {
+  var man;
+  try { man = JSON.parse(read('.claude/deals-pages.json')); }
+  catch (e) { warn('אין .claude/deals-pages.json — הרץ node .claude/tools/add-deals.js'); return; }
+  var lost = (man.pages || []).filter(function (rel) {
+    var s; try { s = read('prototype/' + rel + '/index.html'); } catch (e) { return false; }
+    return s.indexOf('pg-deals:section:start') < 0;
+  });
+  if (lost.length) {
+    bad('קרוסלת המבצעים נעלמה מ-' + lost.length + ' עמודים שהיא הייתה בהם: ' + lost.slice(0, 6).join(', ') +
+        (lost.length > 6 ? ' ועוד' : '') +
+        '. gen-devices ו-gen-compare כותבים עמוד שלם מתבנית: הרץ add-deals.js אחריהם, ואז gen-nav ו-gen-bot');
+  } else { ok('קרוסלת המבצעים קיימת בכל ' + (man.pages || []).length + ' העמודים שהיא הושמה בהם'); }
+})();
+
+/* ---------- 35. chat.css שומר על סדר המקור של index.html ----------
+ * **זה קרה, וזה עלה ל-75 עמודים.** gen-bot.js אסף קודם את כל שאילתות המדיה ואחר כך את
+ * כללי הבסיס, ולכן ב-chat.css כל ה-@media ישבו בראש הקובץ והבסיס אחריהם. אותה ספציפיות,
+ * הבסיס מאוחר יותר, ולכן שאילתות המדיה מתו: הפאנל הופיע ככרטיס דסקטופ במקום גיליון תחתון
+ * במובייל, וכל כללי prefers-reduced-motion הפסיקו לפעול, כלומר אנימציות רצו למי שביקש
+ * במפורש להפחית תנועה. בדף הבית הכול עבד, כי שם ה-CSS מוטמע במקור.
+ *
+ * בדיקה 31 השוותה נוכחות ותוכן של כללים והייתה ירוקה לגמרי, כי הגופים אכן זהים.
+ * **CSS הוא רגיש לסדר, ולכן השוואת תוכן בלי השוואת סדר אינה מספיקה.** */
+(function () {
+  var css, src;
+  try { css = read('prototype/chat.css'); src = read('prototype/index.html'); }
+  catch (e) { return; }
+
+  /* רשימת חתימות מסודרת: כל כלל מקבל את שאילתת המדיה שמעליו, את הסלקטור ואת הגוף */
+  function ordered(text, isSheet) {
+    var blocks = isSheet ? [text] : (text.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || [])
+      .map(function (b) { return b.replace(/^<style[^>]*>/i, '').replace(/<\/style>$/i, ''); });
+    var list = [];
+    function flat(txt, head) {
+      txt.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
+        var s = sel.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+        if (s) list.push(head + '|' + s + '|' + body.replace(/\s+/g, ' ').trim());
+        return r;
+      });
+    }
+    blocks.forEach(function (b) {
+      var re = /@media[^{]+\{((?:[^{}]|\{[^{}]*\})*)\}/g, m, last = 0;
+      while ((m = re.exec(b))) {
+        flat(b.slice(last, m.index), '');
+        flat(m[1], m[0].slice(0, m[0].indexOf('{')).replace(/\s+/g, ''));
+        last = m.index + m[0].length;
+      }
+      flat(b.slice(last), '');
+    });
+    return list;
+  }
+
+  var wanted = ordered(css, true), have = ordered(src, false);
+  var pos = {}, i;
+  for (i = 0; i < have.length; i++) if (pos[have[i]] === undefined) pos[have[i]] = i;
+
+  var prev = -1, breaks = [];
+  for (i = 0; i < wanted.length; i++) {
+    var p = pos[wanted[i]];
+    if (p === undefined) continue;      /* בדיקה 31 כבר אוכפת התאמת תוכן */
+    if (p < prev) breaks.push(wanted[i].split('|').slice(0, 2).join(' ').slice(0, 60));
+    else prev = p;
+  }
+  if (breaks.length) {
+    bad('chat.css לא שומר על סדר המקור של index.html ב-' + breaks.length + ' כללים: ' +
+        breaks.slice(0, 4).join(' · ') + (breaks.length > 4 ? ' ועוד' : '') +
+        '. CSS רגיש לסדר, ולכן כלל שהוזז אחורה מת בשקט בכל עמודי התוכן. הרץ gen-bot.js');
+  } else { ok('chat.css שומר על סדר המקור של index.html (' + wanted.length + ' כללים)'); }
+})();
+
+/* ---------- 36. הבוט לא נוקב במחיר בשום מחרוזת ----------
+ * הכלל הזה נאכף על שכבת הדגמים (הרתמה, 720 צירופים) ועל שכבת התוכן (gen-bot-content
+ * משמיט 37 מקטעים בגלל אזכור מחיר), **ומעולם לא על 18 הכוונות שנכתבו ביד.** שם בדיוק
+ * ישב מחיר: כוונת "מבצע" אמרה "מגן זכוכית מסך כולל הדבקה ב-9 ₪". המחיר לגיטימי בעמוד,
+ * ולא בפי הבוט, כי בשיחה אין את ההקשר ואת התאריך. זו בדיוק ההנמקה שכתובה כבר
+ * ב-gen-bot-content.js, ורק שכבה אחת לא כוסתה.
+ * מעוגן בספרה: "שקל" לבדו הוא גם ש+קל. ראו את אותה הנמקה בשתי הרתמות. */
+(function () {
+  var src;
+  try { src = read('prototype/index.html'); } catch (e) { return; }
+  var a = src.indexOf('/* bot:js:start'), b = src.indexOf('/* bot:js:end */');
+  if (a < 0 || b < 0) { warn('סימני bot:js לא נמצאו, לא נבדק מחיר בבוט'); return; }
+  var code = src.slice(a, b);
+  var PRICE = /₪|\bNIS\b|\d[\d,.]*\s*(?:שקל|שקלים|ש"ח)/;
+  var re = /'((?:[^'\\\n]|\\.)*)'|"((?:[^"\\\n]|\\.)*)"/g, m, hits = [], n = 0;
+  while ((m = re.exec(code))) {
+    var s = m[1] !== undefined ? m[1] : m[2];
+    n++;
+    if (PRICE.test(s)) hits.push(s.slice(0, 70));
+  }
+  if (hits.length) {
+    bad('הבוט נוקב במחיר ב-' + hits.length + ' מחרוזות: ' + hits.join(' · ') +
+        '. מחיר לגיטימי בעמוד ולא בשיחה, כי אין בה הקשר ואין תאריך');
+  } else { ok('אין מחיר באף אחת מ-' + n + ' מחרוזות הבוט'); }
 })();
 
 /* ---------- דוח ---------- */
