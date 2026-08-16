@@ -15,7 +15,7 @@
         "chip": "שבב A19",
         "cpu": "6 ליבות",
         "gpu": "5 ליבות",
-        "ram": null,
+        "ram": "8GB",
         "storage_offered": [
           "256GB",
           "512GB"
@@ -42,8 +42,8 @@
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
         "model_numbers": null,
-        "storage_expandable": null,
-        "connectivity": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G sub-6GHz עם 4x4 MIMO, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       }
     },
@@ -151,11 +151,11 @@
         "screen_type": "Super Retina XDR OLED",
         "resolution": "2622x1206 פיקסלים, 460 ppi",
         "refresh_rate": "ProMotion, עד 120Hz",
-        "brightness": null,
+        "brightness": "3000 ניט שיא בחוץ",
         "chip": "שבב A19 Pro",
         "cpu": "6 ליבות, 2 לביצועים ו-4 ליעילות",
         "gpu": "6 ליבות עם מאיצים נוירונליים",
-        "ram": null,
+        "ram": "12GB",
         "storage_offered": [
           "256GB",
           "512GB",
@@ -181,8 +181,8 @@
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C, ותיעוד",
         "model_numbers": null,
-        "storage_expandable": null,
-        "connectivity": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       }
     },
@@ -196,11 +196,11 @@
         "screen_type": "Super Retina XDR OLED",
         "resolution": "2868x1320 פיקסלים, 460 ppi",
         "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
-        "brightness": null,
+        "brightness": "3000 ניט שיא בחוץ",
         "chip": "שבב A19 Pro",
         "cpu": "6 ליבות, 2 לביצועים ו-4 ליעילות",
         "gpu": "6 ליבות עם מאיצים נוירונליים",
-        "ram": null,
+        "ram": "12GB",
         "storage_offered": [
           "256GB",
           "512GB",
@@ -227,8 +227,8 @@
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
         "model_numbers": null,
-        "storage_expandable": null,
-        "connectivity": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       }
     },
@@ -242,11 +242,11 @@
         "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island",
         "resolution": "2556x1179 פיקסלים, 460 ppi",
         "refresh_rate": null,
-        "brightness": null,
+        "brightness": "2000 ניט שיא בחוץ",
         "chip": "שבב A18",
         "cpu": "6 ליבות, 2 לביצועים ו-4 ליעילות",
         "gpu": "5 ליבות",
-        "ram": null,
+        "ram": "8GB",
         "storage_offered": [
           "128GB"
         ],
@@ -271,9 +271,9 @@
           "אולטרהמרין"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null,
-        "storage_expandable": null,
-        "connectivity": null,
+        "model_numbers": "A3287, A3290",
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "Wi-Fi 7, Bluetooth 5.3",
         "security_updates": null
       }
     },
@@ -287,11 +287,11 @@
         "screen_type": "Super Retina XDR OLED",
         "resolution": "2532x1170 פיקסלים, 460 ppi",
         "refresh_rate": null,
-        "brightness": null,
+        "brightness": "1200 ניט שיא ב-HDR",
         "chip": "שבב A19",
         "cpu": "6 ליבות, 2 לביצועים ו-4 ליעילות",
         "gpu": "4 ליבות",
-        "ram": null,
+        "ram": "8GB",
         "storage_offered": [
           "256GB",
           "512GB"
@@ -315,9 +315,9 @@
           "ורוד עדין"
         ],
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
-        "model_numbers": null,
-        "storage_expandable": null,
-        "connectivity": null,
+        "model_numbers": "A3634",
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "Wi-Fi 6, Bluetooth 5.3",
         "security_updates": null
       }
     },
