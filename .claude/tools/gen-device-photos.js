@@ -66,6 +66,23 @@ var MAP = {
   'redmi note 15 pro': 'redmi-note-15-pro'
 };
 
+/* חיתוך מקדים, בשברים של המקור, למי שצריך אותו. הוא רץ לפני זיהוי תיבת התוכן, ולכן משם
+ * והלאה התמונה עוברת בדיוק את אותו נרמול כמו כל השאר.
+ *
+ * שתי תמונות ה-iPhone 17 Pro הן שלישייה לרוחב. בפריים 3:4 שלישייה כזאת ממלאת 95% מהרוחב
+ * אבל רק 47% מהגובה, בעוד ששאר 18 התמונות ממלאות 82% עד 95% מהגובה. מדדתי את כולן, וזה
+ * היה הפער היחיד שנראה בעין: אותו דגם נראה בעמוד שלו חצי מהגודל של השכן. החיתוך לוקח את
+ * המכשיר האמצעי בלבד, ואז הוא נוחת באותם 88% כמו כולם.
+ *
+ * המחיר: שני הצבעים האחרים יורדים מהתמונה. זה נבחר ביודעין, כי עמוד מכשיר מוכר מכשיר אחד.
+ *
+ * כשיש חיתוך כזה הריפוד נצבע שטוח ולא נמשח: קצה החיתוך הוא המכשיר עצמו ולא רקע, ומשיחה
+ * הייתה מותחת את דופן המכשיר לרוחב כל הריפוד. */
+var CROP = {
+  'iphone 17 pro max': { x: 0.4137, y: 0.1179, w: 0.2162, h: 0.8821 },
+  'iphone 17 pro':     { x: 0.4006, y: 0.1639, w: 0.2210, h: 0.8361 }
+};
+
 if (!SRC || !fs.existsSync(SRC)) {
   console.error('✗ צריך נתיב לתיקיית תמונות המקור.\n  node .claude/tools/gen-device-photos.js "<תיקייה>"');
   process.exit(1);
@@ -117,6 +134,27 @@ function analyze(file, w, h) {
   };
 }
 
+/* צבע הריפוד כשיש חיתוך מקדים: החציון של השורה העליונה והתחתונה של החיתוך בלבד.
+ *
+ * לא של התמונה המלאה, וזה ההבדל בין תמונה שנראית שלמה לתמונה שנראית מודבקת. הרקע של
+ * הרנדרים כהה יותר בפינות מאשר סביב המכשיר, וריפוד בצבע הפינה צייר מלבן בהיר גלוי בתוך
+ * מסגרת כהה יותר. ההפרש היה ebeae7 מול f2f1ef, שבע דרגות, וזה נראה מטרים משם.
+ *
+ * ולא כל ארבע הדפנות: שתי העמודות הן ברובן המכשיר עצמו, והחציון היה יוצא כתום. */
+function padColor(file, pre, w, h) {
+  var raw = run(['-v', 'error', '-i', file, '-vf', pre + 'scale=' + w + ':' + h,
+    '-frames:v', '1', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'], { encoding: 'buffer' });
+  var a = [[], [], []], x, c;
+  for (x = 0; x < w; x++) for (c = 0; c < 3; c++) {
+    a[c].push(raw[(1 * w + x) * 3 + c]);
+    a[c].push(raw[((h - 2) * w + x) * 3 + c]);
+  }
+  return '0x' + a.map(function (v) {
+    v.sort(function (p, q) { return p - q; });
+    return ('0' + v[v.length >> 1].toString(16)).slice(-2);
+  }).join('');
+}
+
 var files = fs.readdirSync(SRC).filter(function (f) { return /\.png$/i.test(f); });
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
@@ -126,9 +164,24 @@ files.forEach(function (f) {
   if (!slug) { skipped.push(f); return; }
 
   var file = path.join(SRC, f);
-  var size = pngSize(file);
-  if (!size) { console.error('✗ ' + f + ' אינו PNG תקין'); process.exit(1); }
-  var a = analyze(file, size.w, size.h);
+  var full = pngSize(file);
+  if (!full) { console.error('✗ ' + f + ' אינו PNG תקין'); process.exit(1); }
+
+  /* צבע הרקע נדגם תמיד מהתמונה המלאה, גם כשיש חיתוך מקדים. בתוך החיתוך אין רקע כלל,
+   * ודגימה משם הייתה מחזירה את צבע המכשיר ומרפדת את הפריים בכתום. */
+  var a = analyze(file, full.w, full.h);
+  var cut = CROP[path.basename(f, path.extname(f)).toLowerCase()];
+  var pre = '', size = full;
+  if (cut) {
+    var q = {
+      x: Math.round(cut.x * full.w), y: Math.round(cut.y * full.h),
+      w: Math.round(cut.w * full.w), h: Math.round(cut.h * full.h)
+    };
+    pre = 'crop=' + q.w + ':' + q.h + ':' + q.x + ':' + q.y + ',';
+    size = { w: q.w, h: q.h };
+    a.box = { x: 0, y: 0, w: 1, h: 1 };   /* החיתוך הוא המכשיר, ואין בו מה לזהות */
+    a.bg = padColor(file, pre, Math.min(q.w, 320), Math.min(q.h, 960));
+  }
 
   /* תיבת התוכן בפיקסלים של המקור, ואז ריבוע־על ביחס 3:4 שמכיל אותה עם שוליים.
    * התיבה מורחבת ולא נחתכת, ולכן גם אם הזיהוי טעה בכמה פיקסלים שום תוכן לא נחתך. */
@@ -158,15 +211,17 @@ files.forEach(function (f) {
    * הרנדרים יושבים על מדרג עדין. שם פס בצבע קבוע נראה כתפר אנכי בקצה התמונה, והמשיחה
    * ממשיכה את המדרג עצמו. pad נשאר לפניו כי fillborders אינו יכול להגדיל את הפריים. */
   var bord = [];
-  if (px > 0) bord.push('left=' + px);
-  if (W - cw - px > 0) bord.push('right=' + (W - cw - px));
-  if (py > 0) bord.push('top=' + py);
-  if (H - ch - py > 0) bord.push('bottom=' + (H - ch - py));
+  if (!cut) {
+    if (px > 0) bord.push('left=' + px);
+    if (W - cw - px > 0) bord.push('right=' + (W - cw - px));
+    if (py > 0) bord.push('top=' + py);
+    if (H - ch - py > 0) bord.push('bottom=' + (H - ch - py));
+  }
 
   WIDTHS.forEach(function (w) {
     var out = path.join(OUT, slug + '-' + w + '.webp');
     run(['-v', 'error', '-y', '-i', file,
-      '-vf', 'crop=' + cw + ':' + ch + ':' + cx + ':' + cy +
+      '-vf', pre + 'crop=' + cw + ':' + ch + ':' + cx + ':' + cy +
              ',pad=' + W + ':' + H + ':' + px + ':' + py + ':' + a.bg +
              (bord.length ? ',fillborders=' + bord.join(':') + ':mode=smear' : '') +
              ',scale=' + w + ':' + Math.round(w / RATIO) + ':flags=lanczos',
