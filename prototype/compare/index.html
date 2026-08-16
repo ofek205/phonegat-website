@@ -613,10 +613,7 @@ nav.main .npanel a:hover{color:var(--teal)}
 nav.main .npanel a[aria-current="page"]{color:var(--teal)}
 nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
-nav.main a.ntool{background:var(--teal);color:#fff;border-radius:4px;padding:.35rem .8rem;line-height:1.35;font-weight:700}
-nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:#0f5570;color:#fff}
-@media(max-width:980px){nav.main a.ntool{display:inline-block;width:auto;margin-inline-start:clamp(12px,3vw,28px);margin-block:.35rem;padding:.5rem 1rem}
-  nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:#0f5570;color:#fff}}
+nav.main a.ntool{font-weight:800}
 @media(max-width:980px){
   nav.main .ndrop{display:block}
   nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid var(--line);min-height:48px}
@@ -1634,6 +1631,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a class="logo" href="/" aria-label="פון גת, דף הבית"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
     <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
     <nav class="main" id="nav" aria-label="ניווט ראשי">
+      <a href="/phones/compare/" class="ntool">כלי השוואה בין הדגמים</a>
       <div class="ndrop">
         <button type="button" class="ntrig" id="nd-devices-t" aria-expanded="false" aria-controls="nd-devices">מכשירים</button>
         <div class="npanel" id="nd-devices" role="group" aria-labelledby="nd-devices-t">
@@ -1673,7 +1671,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
       </div>
-      <a href="/phones/compare/" class="ntool">מה ההבדל בין דגמים</a>
       <a href="/#deals">מבצעים</a>
       <div class="ndrop">
         <button type="button" class="ntrig" id="nd-about-t" aria-expanded="false" aria-controls="nd-about">פון גת</button>
