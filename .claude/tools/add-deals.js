@@ -265,8 +265,12 @@ const fence = (name, body, eol) =>
   body + eol +
   '<!-- pg-deals:' + name + ':end -->';
 
+/* שתי שורות ולא אחת. insertBefore כותב block + eol + eol + anchor, ולכן הסרה שבולעת שורה
+ * אחת בלבד משאירה שורה ריקה אחת בכל הרצה. זה נראה כמו רעש קוסמטי והוא לא: הקבצים גדלו
+ * בשורה לכל גדר בכל הרצה, וב-26 עמודים זה diff שמסתיר את השינוי האמיתי שבתוכו. ההסרה
+ * חייבת להחזיר בדיוק את הטקסט שהיה לפני ההזרקה, אחרת "בר-הרצה חוזרת" אינו נכון. */
 function stripFence(text, name) {
-  const re = new RegExp('[ \\t]*<!-- pg-deals:' + name + ':start[\\s\\S]*?pg-deals:' + name + ':end -->[ \\t]*(\\r?\\n)?', 'g');
+  const re = new RegExp('[ \\t]*<!-- pg-deals:' + name + ':start[\\s\\S]*?pg-deals:' + name + ':end -->[ \\t]*(?:\\r?\\n){0,2}', 'g');
   return text.replace(re, '');
 }
 
