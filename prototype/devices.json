@@ -4992,79 +4992,79 @@
           "note": "⚠ מקור שאינו היצרן. אתר Nothing אינו חושף גיליון מפרט מלא, ולכן הנתון מ-GSMArena. Adreno 710 בתדר 940MHz."
         },
         "zoom": {
-          "src": null,
-          "at": null,
-          "note": "נתוני זום לא נאספו בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_front": {
-          "src": null,
-          "at": null,
-          "note": "מפרט המצלמה הקדמית לא נאסף בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_extra": {
-          "src": null,
-          "at": null,
-          "note": "פירוט העדשות הנוספות לא נאסף בסבב הזה. ידוע שיש מערך מצלמות פרו, בלי פירוט מאומת."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "video": {
-          "src": null,
-          "at": null,
-          "note": "רזולוציות הקלטת וידאו לא נאספו בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
           "src": null,
           "at": null,
-          "note": "טעינה אלחוטית לא אומתה בסבב הזה."
+          "note": "המאגר אינו מונה טעינה אלחוטית, ואתר היצרן אינו מזכיר אותה. היעדר אזכור אינו הצהרה שאין תמיכה, ולכן null ולא \"אין\". נבדק 16.8.2026."
         },
         "dimensions": {
-          "src": null,
-          "at": null,
-          "note": "מידות לא נאספו בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "weight": {
-          "src": null,
-          "at": null,
-          "note": "משקל לא נאסף בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "colors_manufacturer": {
-          "src": null,
-          "at": null,
-          "note": "רשימת הצבעים לא אומתה מול היצרן."
+          "src": "https://intl.nothing.tech/products/phone-3a-pro",
+          "kind": "אתר היצרן, גלובלי",
+          "at": "2026-08-16"
         },
         "sim": {
-          "src": null,
-          "at": null,
-          "note": "תצורת ה-SIM לא אומתה בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "esim": {
-          "src": null,
-          "at": null,
-          "note": "תמיכה ב-eSIM לא אומתה בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "connectivity": {
-          "src": null,
-          "at": null,
-          "note": "פירוט הקישוריות לא נאסף בסבב הזה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת האריזה אינה מפורסמת."
+          "note": "תכולת האריזה אינה מופיעה בעמוד המוצר של היצרן. תכולה אינה מושלמת ממאגר מפרטים לפי היררכיית המקורות, כי היא משתנה בין שווקים ותלויה ביבואן."
         },
         "security_updates": {
           "src": null,
           "at": null,
-          "note": "מדיניות העדכונים לא אומתה מול היצרן בסבב הזה."
+          "note": "היצרן אינו נוקב בתקופת עדכונים בעמוד המוצר. בסיקור העיתונאי של ההכרזה מדובר על שלוש שנות גרסאות אנדרואיד ושש שנות עדכוני אבטחה, אבל עדכוני אבטחה אינם מושלמים ממקור שאינו היצרן לפי היררכיית המקורות. לאמת מול הצהרת היצרן לפני שנכתב מספר."
         },
         "model_numbers": {
           "src": null,
           "at": null,
-          "note": "מספר הדגם לא נאסף בסבב הזה."
+          "note": "המאגר נוקב ב-A059P. מספרי דגם אינם מושלמים ממאגר לפי היררכיית המקורות, כי הם משתנים לפי גרסת יבוא, והמכשיר הזה מגיע לארץ ביבוא מקביל בלבד."
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "לא נבדק בסבב הזה. היעדר נתון אינו הצהרה."
+          "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "brightness": {
           "src": "https://www.gsmarena.com/nothing_phone_(3a)_pro-13649.php",
@@ -5096,22 +5096,25 @@
           "128GB",
           "256GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP",
-        "camera_extra": null,
-        "zoom": null,
-        "camera_front": null,
-        "video": null,
+        "camera_extra": "טלפוטו פריסקופ 50MP בצמצם ƒ/2.6, ורחבה במיוחד 8MP בצמצם ƒ/2.2 בזווית 120 מעלות",
+        "zoom": "זום אופטי 3x בעדשת הפריסקופ",
+        "camera_front": "50MP בצמצם ƒ/2.2",
+        "video": "4K ב-30 פריימים לשנייה, ו-1080p ב-30, 60 או 120 פריימים",
         "battery": "5000 mAh",
         "charging_wired": "50W חוטי. היצרן מצהיר על 50 אחוז ב-19 דקות ומלא ב-56 דקות",
         "charging_wireless": null,
-        "dimensions": null,
-        "weight": null,
+        "dimensions": "163.5 x 77.5 x 8.4 מ״מ",
+        "weight": "211 גרם",
         "water_resistance": "IP64: אטום לאבק ועמיד בהתזות מים. זו אינה עמידות לשיקוע",
-        "colors_manufacturer": [],
-        "sim": null,
-        "esim": null,
-        "connectivity": null,
+        "colors_manufacturer": [
+          "אפור",
+          "שחור"
+        ],
+        "sim": "שני כרטיסי nano-SIM, או nano-SIM ו-eSIM. עד שניים פעילים בו זמנית",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4, NFC, USB-C בגרסת 2.0",
         "box_contents": null,
         "security_updates": null,
         "model_numbers": null
