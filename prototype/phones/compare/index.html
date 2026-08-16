@@ -596,6 +596,9 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dapp .dsep{border-block-start:1px solid var(--line);margin-block:1.3rem}
 .dapp .dslots{margin-block-start:1rem}
 .dstate[hidden]{display:none}
+.dstate{inset-block-start:var(--pg-stick-1,66px)}
+.cmp-grid thead th{inset-block-start:var(--pg-stick-2,146px)}
+@media(max-width:900px){.cmp-grid thead th{position:static}}
 @media(max-width:720px){.dapp .dslots.two{grid-template-columns:1fr}}
 .dapp .dslot.empty{border-color:var(--edge);background:#fafcfd}
 .dapp .dslot{padding:0}
@@ -2583,6 +2586,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          שמתחתיו, שלוש פעמים זו מעל זו. אופק ראה את זה ב-16.8.2026. */
       if(bar) bar.hidden=!sel.length;
       if(sel.length) state.innerHTML="נבחר "+esc(names[0])+". בחרו עוד אחד.";
+      /* אחרי שהטקסט נכתב ולא לפניו: גובה הפס נקבע על ידי הטקסט שבתוכו, ומדידה מוקדמת
+         נתנה 30 במקום 56. סינכרוני ולא ב-rAF, כי בלשונית ברקע rAF אינו נורה כלל. */
+      stick();
       clear.hidden=!sel.length;
       out.innerHTML='<p class="dempty">כאן תופיע טבלת ההבדלים.</p>';
       return;
@@ -2605,6 +2611,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var shown=focus?diff.filter(function(r){return r[0]===focus;}):diff;
     state.innerHTML="<b>"+names.map(esc).join(" מול ")+"</b> · "+diff.length+" שדות שונים"+
       (same!==null?" · "+same+" זהים":"");
+    /* אותה סיבה: שמות שנשברים לשתי שורות מגביהים את הפס, וראש הטבלה נדבק מתחתיו */
+    stick();
 
     var fh='<div class="dfocus"><span class="fl">מה חשוב לכם:</span>'+
       '<button type="button" data-cat="" aria-pressed="'+(focus?"false":"true")+'">הכל ('+diff.length+')</button>';
@@ -2680,11 +2688,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
 
+  /* ================= שלוש שכבות דביקות, ומדידה אחת שמחזיקה את כולן
+   *
+   * ההדר של האתר, פס המצב, וראש הטבלה נערמים זה מתחת לזה. עד 16.8.2026 כל אחד מהם קיבל
+   * מספר קבוע ב-CSS: 66 לפס ו-146 לראש הטבלה, ו-0 ו-80 מתחת ל-980. המספרים האלה לא
+   * הסתדרו עם המציאות באף רוחב. ב-1280 ההדר מסתיים ב-119 ולכן פס המצב שנדבק ב-66 נעלם
+   * מתחתיו, וראש הטבלה שנדבק ב-146 השאיר רצועה של 27 פיקסלים שדרכה נראו שורות הטבלה
+   * גולשות. ב-390 פס המצב נדבק ב-0, כלומר מוסתר לגמרי מאחורי ההדר.
+   *
+   * ומעבר לזה, המספרים לא היו יכולים להיות נכונים: ה-top של ההדר עצמו אינו קבוע. הוא 42,
+   * 46 או 52 לפי הרוחב ולפי הבאנר שמעליו, והבאנר הצהוב קיים בסביבת הבדיקות ולא בפרודקשן.
+   * כלומר גם אם היינו מכוונים את המספרים למסך אחד, הם היו שגויים באתר החי.
+   *
+   * לכן המדידה נעשית בזמן ריצה ונכתבת לשני משתני CSS. position:sticky חייב מספר, אבל
+   * המספר יכול לבוא ממדידה. */
+  function stick(){
+    try{
+      var root=document.documentElement, h=document.querySelector("header.site"), base=0;
+      if(h){ var cs=getComputedStyle(h);
+        /* הדר שאינו דביק אינו תופס מקום בראש המסך, ואז הבסיס הוא אפס ולא הגובה שלו */
+        if(cs.position==="sticky"||cs.position==="fixed") base=(parseFloat(cs.top)||0)+h.offsetHeight; }
+      var b=document.getElementById("dstatebar");
+      var bh=(b&&!b.hidden)?b.offsetHeight:0;
+      root.style.setProperty("--pg-stick-1", Math.round(base)+"px");
+      root.style.setProperty("--pg-stick-2", Math.round(base+bh)+"px");
+    }catch(e){}
+  }
+  var stickQueued=false;
+  function stickSoon(){ if(stickQueued) return; stickQueued=true;
+    (window.requestAnimationFrame||setTimeout)(function(){ stickQueued=false; stick(); }); }
+  window.addEventListener("resize", stickSoon);
+  /* גם בגלילה: ה-top של ההדר נקבע לפי הבאנר שמעליו, והבאנר יכול להשתנות תוך כדי */
+  window.addEventListener("scroll", stickSoon, {passive:true});
+  stick();
+
   /* אחרי הבחירה השנייה הטבלה יושבת מתחת לרשימה של 24 דגמים, כלומר מחוץ למסך, והמשתמש
      היה צריך לגלול כדי לגלות שקרה משהו. behavior לא נמסר כאן בכוונה: ה-CSS כבר קובע
      scroll-behavior:smooth ומכבה אותו תחת prefers-reduced-motion, ולכן ההעדפה נשמרת. */
   function toResults(){try{var t=document.getElementById("dout"); if(!t) return;
-    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-150});}catch(e){}}
+    /* אותה מדידה ששתי השכבות הדביקות משתמשות בה, ועוד רווח נשימה */
+    var off=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--pg-stick-2"))||146;
+    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-off-24});}catch(e){}}
 
   wrap.addEventListener("click",function(e){
     var b=e.target.closest?e.target.closest(".dchip"):null;
