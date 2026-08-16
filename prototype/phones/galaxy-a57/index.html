@@ -386,6 +386,8 @@ main .btn{white-space:normal}
 /* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.
    כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */
 .ghero .btn-hero{white-space:normal;text-align:center}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -638,7 +640,932 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+
+
+
   <link rel="stylesheet" href="/chat.css">
+<!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
+<style>
+/* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
+   button renders in the UA default (Arial) while the ones that are <a> render in Assistant. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-family:inherit;font-weight:700;font-size:1rem;line-height:1.65;border-radius:4px;padding:9px 20px;border:none;cursor:pointer;transition:background .25s,transform .2s;white-space:nowrap}
+/* "ללא עלות" is the hook, so it is the second line of the headline rather than a separate badge:
+   one heading the eye reads straight down, instead of two competing blocks. */
+.idf h2 .free{display:block;color:#D4BE7A;font-size:1.28em;line-height:1.15;margin-top:.12em}
+.idf .btn-idf{position:relative;overflow:hidden;background:#D4BE7A;color:#20260f;font-weight:800;min-height:44px;padding:13px 26px;font-size:1rem;gap:.5rem;box-shadow:0 12px 28px -14px rgba(0,0,0,.8)}
+.idf .btn-idf:hover{background:#E3D5A8}
+.idf .btn-idf svg{width:15px;height:15px;flex:none}
+/* ~210px, not ~124px. This is the size the whole direction rests on: at 124px the figure was 62px
+   of actual drawing, where a face is 45px and a uniform button is 4px, and no amount of detail
+   survives that. At this size the illustration reads as an illustration. */
+/* ~188px. The earlier drawn pass rendered 62px wide, where a face is 45px and a button 4px, and
+   no amount of detail survives that. At this size the drawing can carry a beret and a belt. */
+.idf .troop{width:clamp(112px,12vw,146px);height:auto;overflow:visible;filter:drop-shadow(0 12px 20px rgba(0,0,0,.45))}
+.troop{stroke-linejoin:round;stroke-linecap:round}
+/* PASS 1: every body part drawn dark and fat, so the parts merge into a single silhouette and
+   the contour lands around their union instead of between them. PASS 2 paints colour on top. */
+/* RIM, and it is load-bearing. Measured against the card background #2C3719 the dark contour
+   scores 1.31, the beret 1.33, the belt 1.17, the boots 1.03 and the male hair 1.07 — the whole
+   outline of the figure is invisible against the panel it stands on, which left only the skin
+   reading and made the figures look like floating heads and hands. A light stroke drawn wider
+   than the dark one puts a bright edge around the silhouette. Do not remove it without giving the
+   figures a lighter ground to stand on. */
+.troop .rim-pass .ink{fill:#D8CDA4;stroke:#D8CDA4;stroke-width:9}
+.troop .rim-pass .ink-s{stroke:#D8CDA4;stroke-width:21}
+.troop .rim-pass .ink-f{stroke:#D8CDA4;stroke-width:18}
+.troop .ink-pass .ink{fill:#241E14;stroke:#241E14;stroke-width:5}
+.troop .ink-pass .ink-s{stroke:#241E14;stroke-width:22;fill:none}
+.troop .ink{fill:#241E14}
+.troop .ink-s{stroke:#241E14;stroke-width:17;fill:none}
+.troop .ink-f{stroke:#241E14;stroke-width:14;fill:none}
+.troop .uni{fill:#8B9A63}
+.troop .unid{fill:#414A27}
+.troop .sk{fill:#F5CFA6}
+.troop .uni-s{stroke:#8B9A63;stroke-width:12;fill:none}
+.troop .sk-f{stroke:#F5CFA6;stroke-width:9;fill:none}
+.troop .fing{stroke:#DFAF85;stroke-width:1.3;fill:none}
+.troop .blush{fill:#EE9E86;opacity:.4}
+.troop .limb{stroke-linecap:round}
+/* internal detail carries no outline of its own: an outline here would put the parts back */
+.troop .pocket{fill:#6A7845}
+.troop .btn{fill:#D4BE7A}
+.troop .belt{fill:#4E5828}
+.troop .trous{fill:#778551}
+.troop .boot{fill:#43492A}
+.troop .buckle{fill:#D4BE7A}
+.troop .epa{fill:#5A6740}
+.troop .stitch{stroke:#4E5732;stroke-width:1.5;fill:none}
+.troop .cuff{stroke:#3A4222;stroke-width:2;fill:none}
+.troop .beret{fill:#72844A}
+.troop .beretd{fill:#556434}
+.troop .badge{fill:#D4BE7A}
+.troop .ew{fill:#fff}
+.troop .pupil{fill:#241E14}
+.troop .spark{fill:#fff}
+.troop .sksh{fill:#E8BC8E}
+.troop .brow{stroke-width:2.2;fill:none}
+.troop .mouth{stroke:#A9603F;stroke-width:2;fill:none}
+.t-m .hair{fill:#6B4A2C}
+.t-m .brow{stroke:#4A3320}
+.t-f .hair{fill:#3A322B}
+.t-f .brow{stroke:#1E1A17}
+/* rotate about 0 0: the pivot is placed there by translate(), because a px transform-origin
+   resolves against the rendered box and drifts with viewport width. Zero has no scale. */
+.up-arm,.fore-arm{transform-box:view-box;transform-origin:0 0}
+/* resting state IS the salute, so reduced motion shows two figures saluting, not two arms down */
+.up-arm{transform:rotate(138deg)}
+.fore-arm{transform:rotate(69deg)}
+/* a small overlap so the two read as one group standing together, not two cut-outs in a row */
+.idf .t-f{margin-inline-start:clamp(-20px,-1.6vw,-10px)}
+.idf .idf-phone .scr-stage{--scr-w:clamp(74px,8vw,96px)}
+.idf .idf-phone .scr-halo{background:radial-gradient(circle,rgba(212,190,122,.42),rgba(212,190,122,.14) 55%,transparent 72%)}
+@media(max-width:720px){
+.s-idf .slide-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-top:.5rem;min-height:0}
+.s-idf .slide-troops .troop{width:clamp(62px,18vw,84px)}
+.s-idf .scr-stage{--scr-w:clamp(46px,13vw,60px)}
+}
+@media(max-width:820px){
+.idf .btn-idf{flex:1 1 auto;justify-content:center}
+.idf .idf-phone .scr-stage{--scr-w:clamp(48px,13vw,62px)}
+/* Not smaller than desktop. The whole reason these are illustrations rather than drawn shapes
+     is that the drawing needs room to read, and 24vw put them at 90px on a 390px screen, below
+     the size that was already rejected. 33vw with the phone alongside fills the line. */
+  .idf .troop{width:clamp(84px,24vw,108px)}
+}
+@media (prefers-reduced-motion:no-preference){
+/* One entrance, then still. They are already saluting in the drawing, so a looping bob would
+     only add motion the picture does not need, and a loop is exactly what read as "just a
+     floating image" before. The card animates what it honestly can: the glass landing on the
+     phone, and the light crossing the button. */
+  /* The salute. Timing is LINEAR on purpose: var(--ease) applies its accelerate-decelerate to
+     EVERY segment, so a six-keyframe sweep stops and restarts six times on the way up, which is
+     exactly what read as "not continuous". The shaping lives in the keyframe spacing instead.
+     The two figures are offset, because a synchronised pair reads as one looping graphic. */
+  .idf .troop{animation:idfEnter .7s var(--ease) both}
+.idf .t-f{animation-delay:.18s}
+.up-arm{animation:saluteUp 6.5s linear infinite}
+.fore-arm{animation:saluteFore 6.5s linear infinite}
+.t-f .up-arm,.t-f .fore-arm{animation-delay:.9s}
+/* one slow pass of light across the button, long gap between passes so it invites rather than nags */
+  .idf .btn-idf::after{content:"";position:absolute;top:0;bottom:0;width:38%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:translateX(-160%);animation:idfShine 5.5s var(--ease) 1.8s infinite}
+}
+.hero .hcta .btn{font-size:1.05rem;padding:13px 24px}
+.hero .btn-wa{background:#25D366;color:#0a2e18;box-shadow:0 10px 30px -10px rgba(37,211,102,.6)}
+.hero .btn-wa:hover{background:#20c15c}
+.hero .btn-call{background:transparent;color:#fff;border:1.5px solid var(--teal)}
+.hero .btn-call:hover{background:var(--teal);border-color:var(--teal);color:#fff}
+.hero .btn-call .num{direction:ltr;unicode-bidi:isolate;font-weight:800}
+.hero .hcta .btn:hover{transform:translateY(-1px)}
+/* animated product showcase — layered objects floating in space (used in the promo banner) */
+.hstage{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.07);background:radial-gradient(120% 95% at 56% 48%,rgba(31,127,208,.16),transparent 56%),radial-gradient(circle at 58% 46%,#141824,#0a0b0e);perspective:1400px}
+.hstage .hglow{position:absolute;left:52%;top:32%;width:56%;height:58%;transform:translateX(-50%);background:radial-gradient(50% 50% at 50% 50%,rgba(43,127,255,.5),rgba(43,127,255,.12) 46%,transparent 70%);filter:blur(26px);animation:hglow 7s ease-in-out infinite;pointer-events:none;z-index:0}
+.hstage .hlayer{position:absolute;z-index:1;will-change:transform;transition:transform .5s var(--ease)}
+.hstage .henter{display:block;opacity:1;transform:none;transition:opacity .9s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.hstage.pre .henter{opacity:0;transform:translateY(var(--fy,26px)) scale(.94)}
+.hstage.pre.play .henter{opacity:1;transform:none}
+.hstage .hfloat{display:block;animation:hbob var(--fd,7s) ease-in-out infinite;animation-delay:var(--fdl,0s)}
+.hstage .hdrift{display:block;animation:hsway var(--sd,9s) ease-in-out infinite;animation-delay:var(--sdl,0s)}
+.hstage .hlayer img{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 28px rgba(0,0,0,.5))}
+@media(max-width:820px){
+.hero .hcta .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+.hstage .hglow,.hstage .hfloat,.hstage .hdrift{animation:none}
+.hstage .henter{transition:none}
+}
+html.a11y-stop-motion .hstage .hglow,html.a11y-stop-motion .hstage .hfloat,html.a11y-stop-motion .hstage .hdrift{animation:none}
+html.a11y-stop-motion .hstage .henter{transition:none}
+.pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
+.press .pcta .wa-ico{width:28px;height:28px}
+.pg-ad-excl .st{color:#8a5a00}
+.pg-ad-price b .cur{font-size:1.15rem;font-weight:800;letter-spacing:0}
+/* coupon popup (the offer — reused everywhere via [data-pg-coupon]) */
+.pg-cpn-ov{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(24,8,36,.64);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.pg-cpn-ov.open{display:flex;animation:pgCpnFade .2s ease}
+.pg-cpn{position:relative;direction:rtl;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;background:#fff;border-radius:20px;box-shadow:0 40px 90px -20px rgba(0,0,0,.6);animation:pgCpnPop .28s cubic-bezier(.2,.8,.25,1)}
+.pg-cpn-hd{position:relative;padding:13px 18px 23px;text-align:center;color:#fff;background:radial-gradient(96% 62% at 50% -6%,rgba(160,98,216,.5),transparent 55%),linear-gradient(160deg,#3d1157 0%,#5a1a80 55%,#7c25a8 100%);border-radius:20px 20px 50% 50%/20px 20px 30px 30px}
+/* A 28px disc with a 44px tap area. The padding is the target and background-clip keeps the disc at
+   its drawn size, the same trick the carousel dots use, because a 44px disc on this small header would
+   read as a heavy button. It was the one control you must hit to dismiss the popup and the smallest
+   thing in it, while every sibling control was raised to 44 in the mobile pass. Hit testing follows
+   border-radius, so the target is a 44px circle rather than a square; the corners outside it fall on
+   the overlay, which closes the popup too, so every point in the 44 square dismisses. The focus ring
+   is inset so it hugs the disc instead of ringing the invisible target. */
+.pg-cpn-x{position:absolute;top:2px;left:2px;width:28px;height:28px;box-sizing:content-box;padding:8px;border:0;border-radius:50%;background:rgba(255,255,255,.16);background-clip:content-box;color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
+.pg-cpn-x:hover{background:rgba(255,255,255,.3);background-clip:content-box}
+.pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:-6px}
+.pg-cpn-logo{height:27px;width:auto;margin:0 auto 9px;display:block;border-radius:7px;box-shadow:0 4px 12px rgba(0,0,0,.24)}
+.pg-cpn-excl{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:800;color:#3a2405;background:linear-gradient(180deg,#ffe08c,#e0a52f);border-radius:999px;padding:5px 15px;box-shadow:0 3px 12px rgba(224,165,47,.5),inset 0 1px 0 rgba(255,255,255,.55)}
+.pg-cpn-excl .st{color:#8a5a00}
+.pg-cpn-dev{width:auto;height:72px;display:block;margin:9px auto 5px;filter:drop-shadow(0 7px 14px rgba(0,0,0,.42))}
+/* photo-style offer image (a real product shot with its own background, not a cut-out) */
+.pg-cpn-dev.is-photo{height:84px;border-radius:11px;border:1px solid rgba(255,255,255,.3);box-shadow:0 9px 20px -7px rgba(0,0,0,.55)}
+.pg-cpn-hd h3{margin:0;font-size:1.08rem;font-weight:800;line-height:1.14;color:#fff}
+.pg-cpn-hd .desc{margin:3px 0 0;font-size:.72rem;color:rgba(244,236,251,.9)}
+.pg-cpn-price{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:linear-gradient(180deg,rgba(58,18,88,.5),rgba(38,11,62,.5));border:1.5px solid rgba(255,224,140,.85);color:#fff;font-weight:800;font-size:.86rem;border-radius:999px;padding:6px 19px;box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(255,205,100,.28),inset 0 1px 0 rgba(255,255,255,.14)}
+.pg-cpn-price b{display:inline-flex;align-items:baseline;color:#ffe08c;font-weight:800;font-size:1.28rem;letter-spacing:-.5px}
+.pg-cpn-price b .cur{font-size:.68em;font-weight:800;margin-inline-start:1px}
+.pg-cpn-bd{padding:4px 18px 15px;text-align:center}
+.pg-cpn-codeLab{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.65rem;font-weight:800;color:#6a3fa0;margin:0 0 6px}
+.pg-cpn-codeLab::before,.pg-cpn-codeLab::after{content:"";width:18px;border-top:2px dashed #c9aee8}
+.pg-cpn-code{display:flex;align-items:center;gap:10px;width:100%;border:2px dashed #b78ad6;background:#faf5ff;border-radius:12px;padding:9px 13px;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+.pg-cpn-code:hover{background:#f3e9fb}
+.pg-cpn-code:focus-visible{outline:3px solid #b78ad6;outline-offset:2px}
+.pg-cpn-code.done{border-color:#8fd6a6;background:#eafaef}
+.pg-cpn-code .tk{flex:none;width:25px;height:25px;color:#8a4fc9}
+.pg-cpn-code b{flex:1;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1.24rem;font-weight:800;letter-spacing:1.5px;color:#3a1056;direction:ltr}
+.pg-cpn-copied{margin:5px 0 0;font-size:.58rem;font-weight:700;color:#9a7bc0;min-height:.9em}
+.pg-cpn-copied.ok{color:#1c7a3c}
+.pg-cpn-qr-cap{font-size:.65rem;color:#666;margin:11px 0 0}
+.pg-cpn-qr{margin:6px auto 0;width:120px;height:120px;background:#fff;border:1px solid #eee;border-radius:11px;padding:7px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.pg-cpn-qr canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.pg-cpn-note{display:flex;align-items:center;justify-content:center;gap:5px;margin:11px 0 0;font-size:.69rem;font-weight:800;color:#c0392b}
+.pg-cpn-note svg{width:14px;height:14px;flex:none;fill:#c0392b}
+/* min-height, not more padding: it measured 43.2px and the gradient should not grow to buy 0.8px */
+.pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;min-height:44px;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
+.pg-cpn-go:hover{filter:brightness(1.05)}
+.pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
+.pg-cpn-go img{width:20px;height:20px}
+.pg-cpn-fine{margin:9px 0 0;font-size:.58rem;line-height:1.5;color:#9b9b9b}
+/* blue coupon theme — matches the screen-protector promo banner */
+.pg-cpn-ov.t-blue{background:rgba(6,24,48,.66)}
+.t-blue .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(120,190,255,.42),transparent 55%),linear-gradient(160deg,#1d579f 0%,#134279 58%,#0c2f5c 100%)}
+.t-blue .pg-cpn-hd .desc{color:rgba(214,232,250,.92)}
+.t-blue .pg-cpn-price{background:linear-gradient(180deg,rgba(8,34,66,.5),rgba(6,24,48,.5));border-color:rgba(255,255,255,.72);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(120,190,255,.3),inset 0 1px 0 rgba(255,255,255,.16)}
+.t-blue .pg-cpn-price b{color:#fff}
+.t-blue .pg-cpn-codeLab{color:#12558f}
+.t-blue .pg-cpn-codeLab::before,.t-blue .pg-cpn-codeLab::after{border-color:#a9cdea}
+.t-blue .pg-cpn-code{border-color:#78b0dd;background:#f2f8fd}
+.t-blue .pg-cpn-code:hover{background:#e7f2fb}
+.t-blue .pg-cpn-code:focus-visible{outline-color:#78b0dd}
+.t-blue .pg-cpn-code .tk{color:#1a6bb0}
+.t-blue .pg-cpn-code b{color:#0c2f5c}
+.t-blue .pg-cpn-copied{color:#5a86ab}
+/* navy/cyan coupon theme — matches the keyboard promo banner instead of the purple default */
+.pg-cpn-ov.t-navy{background:rgba(4,16,28,.66)}
+.t-navy .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(41,182,232,.45),transparent 55%),linear-gradient(160deg,#0f2d48 0%,#0a1f34 58%,#071626 100%)}
+.t-navy .pg-cpn-hd .desc{color:rgba(212,236,250,.9)}
+.t-navy .pg-cpn-price{background:linear-gradient(180deg,rgba(10,34,54,.55),rgba(6,22,38,.55));border-color:rgba(255,178,41,.9);box-shadow:0 4px 14px rgba(0,0,0,.3),0 0 16px rgba(255,178,41,.26),inset 0 1px 0 rgba(255,255,255,.14)}
+.t-navy .pg-cpn-price b{color:#ffb229}
+.t-navy .pg-cpn-codeLab{color:#0d6f9e}
+.t-navy .pg-cpn-codeLab::before,.t-navy .pg-cpn-codeLab::after{border-color:#a5d7ef}
+.t-navy .pg-cpn-code{border-color:#7cc4e6;background:#f2fafd}
+.t-navy .pg-cpn-code:hover{background:#e6f5fc}
+.t-navy .pg-cpn-code:focus-visible{outline-color:#7cc4e6}
+.t-navy .pg-cpn-code .tk{color:#1a86bd}
+.t-navy .pg-cpn-code b{color:#0b2f4a}
+.t-navy .pg-cpn-copied{color:#5b8ba8}
+/* olive coupon theme — the IDF band's palette, so the popup does not arrive in a different colour
+   than the button that opened it. Flatter than its two siblings on purpose: same reason as the band. */
+.pg-cpn-ov.t-olive{background:rgba(18,23,10,.66)}
+.t-olive .pg-cpn-hd{background:linear-gradient(160deg,#3E4A2A 0%,#2F3821 58%,#232a18 100%)}
+.t-olive .pg-cpn-hd .desc{color:#D6C79A}
+/* no numeral here, so the badge holds words: it needs to read as a statement, not as a price tag */
+.t-olive .pg-cpn-price{background:rgba(201,188,138,.14);border-color:#C9BC8A;box-shadow:0 4px 14px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.12)}
+.t-olive .pg-cpn-price b{color:#C9BC8A}
+.t-olive .pg-cpn-codeLab{color:#4B5320}
+.t-olive .pg-cpn-codeLab::before,.t-olive .pg-cpn-codeLab::after{border-color:#b9bf94}
+.t-olive .pg-cpn-code{border-color:#8a8f6a;background:#f6f6ee}
+.t-olive .pg-cpn-code:hover{background:#eeeee0}
+.t-olive .pg-cpn-code:focus-visible{outline-color:#8a8f6a}
+.t-olive .pg-cpn-code .tk{color:#5c6338}
+.t-olive .pg-cpn-code b{color:#2F3821}
+.t-olive .pg-cpn-copied{color:#6d7255}
+@media(prefers-reduced-motion:reduce){
+.pg-cpn-ov.open,.pg-cpn{animation:none}
+}
+html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:none}
+.intro .kicker{margin-top:1.6rem;font-weight:800;font-size:clamp(1.15rem,2.6vw,1.5rem)}
+/* ===== deals carousel ===== */
+.deals{background:#fff;padding:clamp(48px,7vw,88px) 0;overflow:hidden}
+.deals-head{text-align:center;max-width:660px;margin:0 auto clamp(26px,3vw,42px);padding-inline:16px}
+.deals-head .kicker{color:var(--teal);font-weight:800;font-size:.9rem;margin:0}
+.deals-head h2{color:var(--ink-strong);font-size:clamp(1.7rem,3.6vw,2.5rem);margin:.4rem 0 0}
+.deals-head h2::after{content:"";display:block;height:4px;width:66px;border-radius:2px;margin:.7rem auto 0;background:linear-gradient(90deg,var(--teal) 0 25%,var(--purple) 25% 50%,var(--green) 50% 75%,var(--orange) 75% 100%)}
+.deals-head .lead{color:var(--ink-soft);margin:.8rem 0 0;font-size:1.05rem}
+.carousel{position:relative;max-width:1080px;margin-inline:auto;padding-inline:clamp(46px,6vw,66px)}
+.car-vp{overflow:hidden;border-radius:20px;box-shadow:0 26px 54px -26px rgba(0,0,0,.4)}
+/* No transform here on purpose: the JS writes translateX directly. It used to be
+   transform:translateX(calc(var(--i,0)*100%)) driven by a custom property, which worked, but the
+   seamless wrap needs to move the track and then re-seat it on the identical real slide within the
+   same frame and with the transition suppressed. That is a sequencing job, and doing it by hand in JS
+   is far clearer than trying to express it through a variable the CSS also transitions. */
+.car-track{display:flex;transition:transform .55s var(--ease);will-change:transform}
+.slide{flex:0 0 100%;box-sizing:border-box;min-height:clamp(290px,30vw,360px);display:grid;grid-template-columns:1fr .85fr;align-items:center;gap:1rem;padding:clamp(28px,4vw,54px);color:#fff;position:relative;overflow:hidden}
+.slide::before{content:"";position:absolute;inset-block-start:-38%;inset-inline-start:-10%;width:58%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);pointer-events:none;z-index:0}
+.slide::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.14) 1.1px,transparent 1.3px);background-size:20px 20px;-webkit-mask-image:linear-gradient(to right,#000,transparent 60%);mask-image:linear-gradient(to right,#000,transparent 60%);opacity:.6}
+.slide:nth-child(even)::before{inset-block-start:auto;inset-block-end:-42%;inset-inline-start:auto;inset-inline-end:-10%}
+.slide-in{position:relative;z-index:2}
+.slide .badge{display:inline-flex;align-items:baseline;gap:.12em;font-weight:800;font-size:clamp(1.7rem,3.8vw,2.7rem);line-height:1;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:14px;padding:.26em .5em;margin-bottom:1rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.slide .badge small{font-size:.42em;font-weight:800;opacity:.9}
+.slide h3{color:#fff;font-size:clamp(1.5rem,3.1vw,2.25rem);font-weight:800;margin:0 0 .5rem;line-height:1.12}
+/* the global h1,h2,h3 ink color would render near-black on these dark slides (.s-scr overrides it below for its light card) */
+.slide p{font-size:clamp(1rem,1.5vw,1.14rem);line-height:1.5;opacity:.96;max-width:34ch;margin:0 0 1.35rem}
+.slide .btn-wa{background:#fff;color:#0a2e18;box-shadow:0 8px 22px -10px rgba(0,0,0,.5)}
+.slide .btn-wa:hover{background:#eafff2;transform:translateY(-1px)}
+.slide-art{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;min-height:130px}
+.slide-art:has(>svg)::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(172px,90%);aspect-ratio:1;border-radius:32px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.3);box-shadow:0 22px 44px -20px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.3);z-index:0}
+.slide-art>svg{position:relative;z-index:1;width:min(92px,44%);height:auto;opacity:1;filter:drop-shadow(0 8px 14px rgba(0,0,0,.32));animation:dealFloat 6s var(--ease) infinite}
+.slide-art .hstage{width:100%;max-width:330px;background:transparent;border:none;transition:transform 1s cubic-bezier(.2,.7,.3,1)}
+.slide-art .hstage .hglow{opacity:.55;transition:filter .9s ease}
+@media(hover:hover){
+.slide-art .hstage:hover{transform:scale(1.06) translateY(-6px)}
+.slide-art .hstage:hover .hglow{filter:blur(32px) brightness(1.3)}
+}
+@media(prefers-reduced-motion:reduce){
+.slide-art .hstage{transition:none}
+}
+/* ===== carousel surface =====
+   The slides used to run through five unrelated colour families — teal, navy, near-white, neon
+   violet, navy — which read as five different brands. They now share the charcoal the site already
+   uses for the header, hero and footer (#241c17 -> #0d0b0a, warm rather than blue-grey), and each
+   slide is separated only by a low-opacity glow in its own brand accent. Neutral ground also lets
+   the four logo colours and the product photography carry the colour instead of competing with it. */
+.s-teal{background:radial-gradient(120% 95% at 80% 10%,rgba(24,120,168,.34),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+/* IDF slide: the same olive as the band above, so the two readings of this offer look like one
+   offer. The khaki badge and button replace the white/teal the other slides use. */
+.s-idf{background:linear-gradient(150deg,#3E4A2A 0%,#2F3821 55%,#232a18 100%)}
+/* same as .s-scr: the generic slide glow and dot field fight a flat olive, so they are dropped */
+.s-idf::before,.s-idf::after{display:none}
+/* The kicker carries the message, so it stays live text at a readable weight rather than lettering
+   baked into artwork: baked type cannot grow with the 150% control in the accessibility menu, and
+   this line is the whole point of the band. The hand-drawn feel comes from the swash under it,
+   which is decoration and can be drawn. */
+.s-idf .idf-kicker{position:relative;display:inline-block;color:#C9BC8A;font-weight:800;
+  font-size:clamp(1rem,1.9vw,1.28rem);letter-spacing:.01em;line-height:1.35;margin:0 0 .7rem;padding-bottom:.55rem}
+.s-idf .idf-swash{position:absolute;inset-inline:0;bottom:0;width:100%;height:9px;overflow:visible}
+.s-idf .idf-swash path{fill:none;stroke:#C9BC8A;stroke-width:2.4;stroke-linecap:round;opacity:.85}
+.s-idf h3{color:#fff;font-size:clamp(1.4rem,3vw,2.15rem);margin:0 0 .5rem}
+.s-idf .idf-terms{color:#E3D5A8;opacity:1;font-size:clamp(.98rem,1.45vw,1.08rem);margin:0 0 1.1rem;max-width:36ch}
+/* the offer leads; the product shot supports it. At the default stage width the phone filled
+   69.4% of the slide height against the copy 59.9%, so the eye landed on the handset first. */
+.s-idf{grid-template-columns:1.15fr 1fr}
+.s-idf .scr-stage{--scr-w:clamp(64px,7vw,88px)}
+/* three objects share this column now, so they are sized against each other rather than each
+   against the slide. The figures keep the card's proportions; only the scale changes. */
+.s-idf .slide-art{gap:clamp(4px,1vw,14px)}
+.slide-troops{display:flex;align-items:flex-end;flex:0 0 auto}
+.slide-troops .troop{width:clamp(78px,8.5vw,108px);height:auto;overflow:visible;
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.slide-troops .t-f{margin-inline-start:clamp(-14px,-1.1vw,-6px)}
+.s-idf h3 .free{display:block;color:#D4BE7A;font-size:1.22em;line-height:1.15;margin-top:.1em}
+.s-idf .idf-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.6rem}
+.s-idf .idf-cta{background:#C9BC8A;color:#20260f;font-weight:800;min-height:44px;padding:12px 26px;
+  box-shadow:0 10px 26px -12px rgba(0,0,0,.6)}
+.s-idf .idf-cta:hover{background:#D6C79A;transform:translateY(-1px)}
+/* the code's shape, not a code: see the note in the markup */
+.s-idf .idf-fine{color:#a8a077;font-size:.8rem;margin:0;opacity:1}
+/* khaki halo instead of the screen-protector slide's blue, so the reused stage matches this palette */
+.s-idf .scr-halo{background:radial-gradient(circle,rgba(201,188,138,.5),rgba(201,188,138,.18) 55%,transparent 72%)}
+@media (prefers-reduced-motion:no-preference){
+.s-idf .idf-kicker,.s-idf h3,.s-idf .idf-terms,.s-idf .idf-row,.s-idf .idf-fine{animation:heroIn .6s var(--ease) both}
+.s-idf h3{animation-delay:.08s}
+.s-idf .idf-terms{animation-delay:.16s}
+.s-idf .idf-row{animation-delay:.24s}
+.s-idf .idf-fine{animation-delay:.32s}
+/* the swash draws itself once, after the line it underlines has arrived */
+  .s-idf .idf-swash path{stroke-dasharray:280;stroke-dashoffset:280;animation:idfDraw 1s var(--ease) .45s both}
+}
+html.a11y-stop-motion .s-idf .idf-swash path{stroke-dashoffset:0}
+/* banner slide: a ready-made promo image on desktop, readable text + product shot on mobile */
+.s-banner{padding:0;min-height:0;display:grid;grid-template-columns:1fr;justify-items:stretch;align-items:center}
+.bn-kb{background:linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+/* matches the keyboard banner's dark edge */
+/* charcoal behind the artwork too: the white frame made this the one slide that broke the run */
+/* This slide's own accent, in the cyan its scene carries. It used to be added only on phones, because
+   on desktop the slide was a photo that brought its own light with it; the scene is CSS at every width now. */
+.bn-tr{background:radial-gradient(118% 88% at 79% 8%,rgba(64,178,214,.30),transparent 56%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+/* ===== screen-protector slide: light card like the ad, glass animating onto the phone ===== */
+/* deep blue, in the same family as the other promo slides (.bn-kb / .bn-tr) — the pale version made
+   this slide the odd one out in the carousel, and washed out the phone and the glass sitting on it */
+.s-scr{background:radial-gradient(80% 66% at 30% 46%,rgba(56,150,205,.30),transparent 60%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%);color:#eaf2fb}
+.s-scr::before,.s-scr::after{display:none}
+/* identical to .slide .badge on every other slide — same surface, same type scale. The copy was
+   shortened to a two-word tag so it fits that size without wrapping, like the others. */
+.s-scr .scr-excl{display:inline-flex;align-items:baseline;gap:.12em;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);color:#fff;font-weight:800;font-size:clamp(1.7rem,3.8vw,2.7rem);line-height:1;border-radius:14px;padding:.26em .5em;margin-bottom:1rem;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.s-scr h3{color:#fff;font-size:clamp(1.5rem,3.2vw,2.35rem);line-height:1.12;margin:0}
+.s-scr .scr-price{display:flex;align-items:baseline;gap:.3rem;margin:.45rem 0 0;color:#6fc0ff;font-weight:800;font-size:clamp(1.05rem,2vw,1.3rem)}
+.s-scr .scr-price b{font-size:clamp(2.5rem,6vw,4.1rem);line-height:.95;letter-spacing:-2px}
+.s-scr .scr-price .cur{font-size:clamp(1.15rem,2.4vw,1.65rem);font-weight:800}
+/* same type scale as .slide p / .slide .fine on every other slide, so the carousel reads as one set */
+.s-scr .scr-sub{color:#c3d6ec;font-size:clamp(1rem,1.5vw,1.14rem);line-height:1.5;margin:.35rem 0 0;max-width:34ch}
+.s-scr .scr-fine{color:#8ba3bf;font-size:.82rem;margin:.25rem 0 0}
+.s-scr .scr-cta{background:#fff;color:#1f6fd0;box-shadow:0 10px 26px -12px rgba(15,45,82,.5);margin-top:1rem}
+.s-scr .scr-cta:hover{background:#f1f7ff}
+/* the frame image stays in flow so the stage box equals it exactly — the % offsets below depend on that */
+/* --scr-w is the single source of truth for this phone's size: the screen corners, the bezel and the
+   glass rim are all derived from it, so they keep the same proportions at every width instead of a
+   36px radius that reads as a soft blob once the frame drops below ~130px (narrow window / phones). */
+.scr-stage{--scr-w:clamp(104px,11.5vw,156px);--scr-r:calc(var(--scr-w)*.231);
+  position:relative;display:inline-block;line-height:0;transform:rotate(-7deg);
+  /* the cast shadow scales too, or a 96px phone sits on the same 38px blur a 156px one does and reads as floating */
+  filter:drop-shadow(0 calc(var(--scr-w)*.154) calc(var(--scr-w)*.244) rgba(15,45,82,.3))}
+.scr-halo{position:absolute;left:50%;top:52%;width:152%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);z-index:0}
+/* the screen sits ABOVE the frame image (its own thin bezel reads as the phone's edge), as in the hero */
+.scr-wall{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;border:solid #000;border-width:max(1px,calc(var(--scr-w)*.0128)) max(1.5px,calc(var(--scr-w)*.0256));border-radius:var(--scr-r);z-index:2;background:#0f3f66 url(/phone-wall.webp) center/cover no-repeat;
+  /* the display glass darkens slightly where it meets the bezel — without this the screen reads as a flat sticker */
+  box-shadow:inset 0 0 calc(var(--scr-w)*.0385) calc(var(--scr-w)*.0128) rgba(0,0,0,.5)}
+/* Dynamic Island — the one detail that makes a small phone mock-up read as an iPhone at a glance.
+   Sized off the stage (not the screen) so it tracks the frame at every breakpoint. */
+.scr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:29%;height:4.2%;min-height:7px;
+  border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.5);z-index:3;pointer-events:none}
+/* diagonal sheen across the display, matching the hero phone */
+.scr-refl{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;border-radius:var(--scr-r);z-index:4;pointer-events:none;
+  background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
+.scr-frame{position:relative;display:block;width:var(--scr-w);height:auto;z-index:1;pointer-events:none}
+/* the glass is drawn in CSS, not an image: a bright rim and a diagonal sheen read as a real pane
+   without the grey wash a translucent PNG lays over the screen */
+.scr-glass{position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;box-sizing:border-box;z-index:5;pointer-events:none;
+  border:max(1px,calc(var(--scr-w)*.0096)) solid rgba(255,255,255,.88);border-radius:var(--scr-r);
+  background:linear-gradient(148deg,rgba(255,255,255,.36) 0%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.1) 68%,rgba(255,255,255,.28) 100%);
+  box-shadow:0 calc(var(--scr-w)*.064) calc(var(--scr-w)*.115) rgba(15,45,82,.3),inset 0 max(1px,calc(var(--scr-w)*.0064)) 0 rgba(255,255,255,.65);
+  animation:scrApply 5.6s var(--ease) infinite}
+/* the trapped air layer — hazy while the pane is still off the screen, wiped away top-to-bottom
+   as the adhesive takes hold */
+.scr-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  /* A tint alone is invisible over a light wallpaper — which is exactly what happened with the blue
+     one. Trapped air doesn't just lighten the screen, it veils it: slightly blurred, washed out and
+     desaturated. Filtering the backdrop reads correctly over any wallpaper, light or dark. */
+  backdrop-filter:blur(1.3px) saturate(.72) brightness(1.14);
+  -webkit-backdrop-filter:blur(1.3px) saturate(.72) brightness(1.14);
+  background:linear-gradient(160deg,rgba(236,244,252,.5),rgba(206,224,242,.36) 46%,rgba(236,244,252,.46));
+  /* linear, and sharing the 46%->70% window with the front below, so the bright contact line and
+     the edge of the clearing air stay locked together — easing them apart makes the pane read as
+     already clear below the line, which never happens on a real application */
+  animation:scrWet 5.6s linear infinite}
+/* the bright contact front, riding just ahead of the adhesion as it runs down the pane */
+.scr-glass::after{content:"";position:absolute;left:0;right:0;height:15%;border-radius:inherit;pointer-events:none;
+  /* the squeeze line itself: a bright crest with a thin dark trailing edge, which is what gives it
+     definition over a pale wallpaper instead of dissolving into it */
+  background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.95) 48%,rgba(120,150,180,.3) 62%,rgba(255,255,255,0) 100%);
+  filter:blur(1.2px);opacity:0;top:-12%;
+  animation:scrFront 5.6s linear infinite}
+@media(prefers-reduced-motion:reduce){
+.scr-glass{animation:none;transform:none;opacity:.9}
+.scr-glass::before,.scr-glass::after{animation:none;opacity:0}
+}
+html.a11y-stop-motion .scr-glass{animation:none;transform:none;opacity:.9}
+html.a11y-stop-motion .scr-glass::before,html.a11y-stop-motion .scr-glass::after{animation:none;opacity:0}
+.s-banner::before,.s-banner::after{display:none}
+.s-banner .slide-banner{position:relative;display:block;width:100%;border:0;padding:0;margin:0;background:none;cursor:pointer;font:inherit;line-height:0;overflow:hidden}
+/* ===== data-transfer slide: two live iPhones, content flying from one into the other =====
+   Rebuilt from the site's own parts. The previous version cropped windows out of promo_transfers.jpg,
+   whose pale studio backdrop, three PRINTED app icons and baked marketing type fought the charcoal at
+   every attempt: crops arrived as bright hard-edged rectangles, and the printed icons could not move,
+   so their covers had to stay put while the rest travelled. Two kinds of motion in one picture is what
+   read as broken. Both devices are now the same CSS phone the screen-protector slide uses, so nothing
+   here is baked and everything can move.
+
+   RTL: .slide-art is grid column 2, which under dir=rtl sits on the LEFT, and a Hebrew reader reaches
+   it moving leftwards. Source phone on the right, destination on the left, cargo travelling right to
+   left WITH the reading direction. Every offset below is physical (left/right) on purpose; a single
+   inset-inline-* here would silently mirror the story. */
+
+/* Sized as a share of the art column, never of the viewport: that column peaks at ~390px at a 1080px
+   viewport and then SHRINKS back to ~379px, so a vw-based width would keep growing after the column
+   stopped and push the pair out of the grid cell. width:100%+max-width cannot overflow by construction.
+   The height budget is free real estate: the carousel track is as tall as its tallest slide (the
+   keyboard banner, 457px), so this slide's row can grow to 457-108px of padding = 349px without making
+   any slide taller. 364x338 spends most of it and finally puts these phones on the same visual footing
+   as the 156px one on the screen-protector slide.
+   35% and not more, because the tilt below is a 2D rotate: a 127px phone 270px tall swings 18px past
+   each side of its own layout box, which is 36px taken out of the lane the icons fly down. At 38% the
+   lane closed to 48px and the cargo had nowhere to go. */
+.bn-tr .tr-scene{position:relative;width:100%;max-width:364px;aspect-ratio:1/.84;margin-inline:auto;--tilt:8deg}
+@media(min-width:721px){
+.bn-tr{grid-template-columns:1fr 1.12fr}
+.bn-tr .tr-scene{max-width:446px}
+}
+/* placement only - tilt and float live on .tr-dev, so no keyframe ever restates this transform */
+.bn-tr .tr-ph{position:absolute;top:50%;width:35%;transform:translateY(-50%)}
+@media(min-width:721px){
+.bn-tr .tr-ph{width:31.5%}
+}
+.bn-tr .tr-src{right:0;z-index:2}
+.bn-tr .tr-dst{left:0;z-index:3}
+/* the frame image stays IN FLOW, so this box IS the image box and every % below is valid.
+   container-type turns that width into the unit the whole on-screen UI is written in (1em = 10% of the
+   phone), which is the only number that changes between desktop and mobile. It also sidesteps the real
+   trap in here: a percentage row-gap inside a grid of indefinite height is not dependable. */
+.bn-tr .tr-dev{position:relative;display:block;line-height:0;container-type:inline-size}
+.bn-tr .tr-frame{position:relative;display:block;width:100%;height:auto;z-index:1;pointer-events:none;
+  /* shadow on the image, not the wrapper: on the wrapper the 134% halo would cast it too, i.e. a dark
+     blob under a glow */
+  filter:drop-shadow(0 15px 22px rgba(0,0,0,.52))}
+/* The four numbers that map a layer onto iphone-frame.webp's display area, taken verbatim from .scr-*
+   where they are known to line up. */
+.bn-tr .tr-wall,.bn-tr .tr-ui,.bn-tr .tr-refl,.bn-tr .tr-scan,.bn-tr .tr-land{
+  position:absolute;top:.64%;left:2.56%;width:94.72%;height:98.5%;pointer-events:none;
+  /* .scr-* hard-codes border-radius:36px, correct only at its own 156px frame. These phones are ~138px
+     (~100px on mobile), where 36px rounds the screen into a lozenge and stops matching the frame's own
+     scaled corners. On the reference screen box (147.76x325.18) 36px is 24.36% of width and 11.07% of
+     height, and 24.36/11.07 equals that box's 2.2 aspect - so this pair draws the same corner as a
+     CIRCLE at any size. */
+  border-radius:24.36%/11.07%}
+.bn-tr .tr-wall{box-sizing:border-box;z-index:2;
+  /* scrim over the wallpaper: the icons above are glass, and glass needs something darker than a pale
+     photo behind it or it disappears */
+  background:linear-gradient(180deg,rgba(3,18,38,.26),rgba(3,18,38,.46)),
+             url(/phone-wall.webp) center/cover no-repeat #0f3f66;
+  /* .scr-wall's 2px/4px bezel was drawn for a 156px frame; unscaled here it reads as a fat black
+     picture frame rather than the thin even edge an iPhone 17 actually has */
+  border:solid #000;border-width:1px 2px;
+  box-shadow:inset 0 0 4px 1.5px rgba(0,0,0,.5)}
+/* Dynamic Island, with the lens dot the hero phone also draws - at this size that one 2px highlight is
+   what stops it reading as a plain black pill. */
+.bn-tr .tr-punch{position:absolute;top:3.1%;left:50%;transform:translateX(-50%);width:28%;height:4%;
+  min-height:5px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.5);
+  z-index:4;pointer-events:none}
+.bn-tr .tr-punch::after{content:"";position:absolute;top:50%;right:12%;transform:translateY(-50%);
+  width:26%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 32%,#22364a,#000 72%)}
+.bn-tr .tr-refl{z-index:5;background:linear-gradient(122deg,rgba(255,255,255,.12),transparent 27%)}
+/* ---- the screen itself: an iOS home screen, so the phones are switched ON ---- */
+/* Everything below is in em, and this one font-size is the only place a pixel budget is set: 1em is
+   10% of the phone's width, so the layout is identical at 138px and at 100px. */
+.bn-tr .tr-ui{z-index:3;overflow:hidden;font-size:10cqw;
+  display:flex;flex-direction:column;align-items:center}
+/* the glyph sprite. Collapsed to nothing rather than display:none, which stops <use> resolving. */
+.bn-tr .tr-sprite{position:absolute;width:0;height:0;overflow:hidden}
+/* status bar: at a 130px screen a clock would be 4px of unreadable text, so it is two abstract marks
+   flanking the island - the shape of a status bar, which is all that registers at this size */
+/* 2.5% not the island's own 3.1%: .tr-punch measures against the frame box and this measures against
+   the screen box, which starts .64% lower, so equal numbers would sit the marks 1.6px below the island */
+.bn-tr .tr-stat{position:absolute;top:2.5%;height:4%;left:0;width:100%;box-sizing:border-box;padding:0 13%;
+  display:flex;align-items:center;justify-content:space-between}
+.bn-tr .tr-stat i{display:block;height:.26em;border-radius:999px;background:rgba(255,255,255,.9)}
+.bn-tr .tr-stat i:first-child{width:1.05em}
+.bn-tr .tr-stat i:last-child{width:1.4em}
+/* 4x5 apps, the real iPhone home-screen grid. The grid inherits dir=rtl, which is correct: on a Hebrew
+   iPhone the apps really do fill from the right. Five rows, not six: at a 265px screen a sixth row
+   collides with the dock once the name labels are counted in. */
+.bn-tr .tr-grid{display:grid;grid-template-columns:repeat(4,1fr);align-items:start;
+  gap:.8em .46em;width:83%;margin-top:2.9em}
+/* Named apps, each its own colour and its own white shape. Translucent glass tiles were tried here
+   first and read as empty placeholders rather than as a phone in use, which is the whole point of
+   switching these screens on. At 21px the colour and the silhouette are what register - the same two
+   things that let anyone name an app on a real home screen from across a table - so every icon is one
+   gradient (--g) plus one glyph (--k, white unless the tile itself is light). */
+/* The two defaults sit on the CONTAINER, not on the tile. Custom properties inherit, and a value set
+   directly on an element always beats an inherited one - whereas on the tile they would need
+   .bn-tr .tr-grid i (0,2,1), which quietly outranks every .bn-tr .a-name rule (0,2,0) and paints all
+   twenty apps the same grey. */
+.bn-tr .tr-grid,.bn-tr .tr-dock{--g:linear-gradient(180deg,#7d8894,#5b6572);--k:#fff}
+.bn-tr .tr-grid i,.bn-tr .tr-dock i{
+  position:relative;aspect-ratio:1;border-radius:23%;background:var(--g);
+  box-shadow:inset 0 .5px 0 rgba(255,255,255,.3),0 .5px 1.5px rgba(0,0,0,.38)}
+.bn-tr .tr-grid i svg,.bn-tr .tr-dock i svg{position:absolute;top:19%;left:19%;width:62%;height:62%;
+  fill:var(--k);color:var(--k)}
+/* The app names. Real text would be four unreadable pixels, so each is one soft bar - which is exactly
+   what a row of labels looks like from any distance. The widths cycle so they do not read as a stencil. */
+.bn-tr .tr-grid i::after{content:"";position:absolute;top:calc(100% + .17em);left:50%;
+  transform:translateX(-50%);width:var(--lb,72%);height:.15em;min-height:1.5px;border-radius:999px;
+  background:rgba(255,255,255,.6)}
+.bn-tr .tr-grid i:nth-child(3n){--lb:86%}
+.bn-tr .tr-grid i:nth-child(4n){--lb:62%}
+.bn-tr .tr-grid i:nth-child(5n){--lb:78%}
+/* One line per app. Colours follow iOS closely enough to be named at a glance; the light-tiled ones
+   (Photos, Calendar, Health, Files, Contacts) carry a coloured glyph instead of a white one. */
+.bn-tr .a-mail{--g:linear-gradient(180deg,#4bb2ff,#0a72e8)}
+.bn-tr .a-camera{--g:linear-gradient(180deg,#6b7078,#33383f)}
+.bn-tr .a-photos{--g:linear-gradient(180deg,#fff,#eef1f5);--k:#f5455f}
+.bn-tr .a-maps{--g:linear-gradient(180deg,#8fdf9a,#35a8d8)}
+.bn-tr .a-clock{--g:linear-gradient(180deg,#2a2c31,#101114)}
+.bn-tr .a-weather{--g:linear-gradient(180deg,#48b0f7,#1667d4)}
+.bn-tr .a-cal{--g:linear-gradient(180deg,#fff,#eceff3);--k:#ff3b30}
+.bn-tr .a-notes{--g:linear-gradient(180deg,#ffe89a,#ffcf3f);--k:#8a6a12}
+.bn-tr .a-remind{--g:linear-gradient(180deg,#fff,#eceff3);--k:#3ea6ff}
+.bn-tr .a-store{--g:linear-gradient(180deg,#4fb3ff,#0d64e0)}
+.bn-tr .a-wallet{--g:linear-gradient(180deg,#33363c,#0f1013)}
+.bn-tr .a-health{--g:linear-gradient(180deg,#fff,#eceff3);--k:#fb3b5c}
+.bn-tr .a-wa{--g:linear-gradient(180deg,#61e07a,#12a64a)}
+.bn-tr .a-pod{--g:linear-gradient(180deg,#c46bf0,#8b2ed8)}
+.bn-tr .a-files{--g:linear-gradient(180deg,#fff,#eceff3);--k:#3d9ae8}
+.bn-tr .a-contact{--g:linear-gradient(180deg,#fff,#eceff3);--k:#8a9099}
+.bn-tr .a-calc{--g:linear-gradient(180deg,#ffb23f,#f07c1a)}
+.bn-tr .a-set{--g:linear-gradient(180deg,#a8aeb6,#71777f)}
+.bn-tr .a-voice{--g:linear-gradient(180deg,#2a2c31,#101114);--k:#ff4b45}
+.bn-tr .a-books{--g:linear-gradient(180deg,#ffb64f,#f2872a)}
+.bn-tr .a-phone{--g:linear-gradient(180deg,#5ce06a,#12b23c)}
+.bn-tr .a-msg{--g:linear-gradient(180deg,#6ff07f,#24c33e)}
+.bn-tr .a-safari{--g:linear-gradient(180deg,#fdfefe,#e6edf4);--k:#1a8fe3}
+.bn-tr .a-music{--g:linear-gradient(180deg,#fc6b7f,#e02a55)}
+/* auto pushes the dots, dock and home bar to the foot of the screen whatever the grid does above */
+.bn-tr .tr-dots{display:flex;gap:.3em;margin-top:auto;margin-bottom:.6em}
+.bn-tr .tr-dots i{width:.2em;height:.2em;border-radius:50%;background:rgba(255,255,255,.45)}
+.bn-tr .tr-dots i:first-child{background:rgba(255,255,255,.95)}
+.bn-tr .tr-dock{display:flex;gap:.44em;width:83%;box-sizing:border-box;padding:.4em;border-radius:1.15em;
+  background:rgba(255,255,255,.16);box-shadow:inset 0 .5px 0 rgba(255,255,255,.34);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bn-tr .tr-dock i{flex:1}
+/* the home indicator: two pixels that no other phone has */
+.bn-tr .tr-home{width:31%;height:.16em;min-height:2px;border-radius:999px;
+  background:rgba(255,255,255,.85);margin:0 0 .45em}
+/* The destination is filling up. Each slot arrives dim and pops to full, staggered across the master
+   5.4s cycle, so at any instant most apps are already there and three or four are still landing. iOS
+   shows restoring apps exactly like this, so the loop point reads as more apps arriving rather than as
+   a reset. The source phone is deliberately left alone: it is the library, it should look settled. */
+/* -.135s = 2.7/20, one slot per app, so the wave crosses the grid exactly once per cycle and keeps
+   step with the icons arriving. Now that the apps are coloured, an arriving one greys out rather than
+   nearly vanishing - which is also what iOS does to an app that is still restoring. */
+/* The stagger is deliberately SHORTER than the cycle (24 icons * .0625s = 1.5s of 2.7s). At the old
+   .135s the spread exceeded the cycle, so every phase was occupied at once and the grid only shimmered.
+   Clustering the phase leaves a visible block of not-yet-arrived apps, so the screen reads as filling
+   up rather than twinkling. The 2.7s cycle itself is untouched - it is the same mechanism as the flying
+   icons and the beam harmonics, and decoupling it would let the bloom fire while nothing lands. */
+.bn-tr .tr-dst .tr-grid i{animation:trSlot 2.7s linear infinite;animation-delay:calc(var(--i,0)*-.0625s)}
+/* Both devices are deliberately identical - same size, same brightness, same halo. Direction is told
+   by motion alone (one is being read, one is receiving), never by making a phone look worse.
+   Mirrored 2D tilt, tops leaning towards each other. A rotateY turn was tried instead and is wrong
+   here: it foreshortens the very home screens this scene now exists to show. */
+.bn-tr .tr-src .tr-dev{transform:rotate(calc(var(--tilt,8deg)*-1));animation:trBobA 7.1s ease-in-out infinite}
+.bn-tr .tr-dst .tr-dev{transform:rotate(var(--tilt,8deg));animation:trBobB 6.2s ease-in-out infinite}
+/* halo in % of the frame box so it scales; breathing on the master half-beat (2.7s = 5.4/2) */
+.bn-tr .tr-halo{position:absolute;left:50%;top:52%;width:134%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(101,168,235,.55),rgba(146,203,240,.2) 55%,transparent 72%);
+  animation:trHalo 2.7s ease-in-out infinite alternate}
+.bn-tr .tr-dst .tr-halo{animation-delay:-1.35s}
+/* The source phone is being READ: a light bar runs down its screen. background-position rather than a
+   transform because the band must be clipped by the screen's own rounded box, and that box is this
+   element. With background-size 100% 24%, -34% parks it fully above the glass and 132% fully below. */
+.bn-tr .tr-scan{z-index:6;
+  background:linear-gradient(180deg,transparent 0,rgba(198,238,255,.5) 46%,rgba(120,190,235,.1) 60%,transparent 100%);
+  background-size:100% 24%;background-repeat:no-repeat;
+  animation:trScan 1.35s linear infinite}
+/* The destination is RECEIVING. .675s = the master cycle quartered, i.e. a bloom every third arrival
+   rather than one per arrival: at the new pace arrivals land every .225s, and a glow keeping up with
+   that would be four flashes a second - past what WCAG 2.3.1 allows anyone to sit in front of.
+   Opacity only - a scale would push the bloom past the bezel. */
+.bn-tr .tr-land{z-index:6;opacity:0;
+  background:radial-gradient(72% 42% at 50% 62%,rgba(140,215,255,.55),rgba(110,190,240,.16) 52%,transparent 78%);
+  /* .9s = 2.7/3, so the bloom fires once every third landing now that nine packets land every .3s.
+     At the old .675s it fired every 2.25 landings, i.e. off the beat it was tuned to. */
+  animation:trLand .9s linear infinite}
+/* The bridge: a breathing pool plus two pulses running the lane, so the only thing spanning the two
+   devices is never static. The radial mask fades it INTO both phones instead of stopping on an edge -
+   a hard edge is exactly what every crop of the old photo kept producing. */
+.bn-tr .tr-beam{position:absolute;top:50%;left:19%;width:62%;height:50%;transform:translateY(-50%);
+  z-index:1;pointer-events:none;overflow:hidden;
+  background:radial-gradient(56% 46% at 50% 50%,rgba(120,205,250,.26),rgba(90,175,225,.1) 58%,transparent 76%);
+  -webkit-mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
+  mask-image:radial-gradient(58% 54% at 50% 50%,#000 30%,rgba(0,0,0,.55) 66%,transparent 88%);
+  animation:trBeam 2.7s ease-in-out infinite alternate}
+/* .9s = 2.7/3: three sweeps per master cycle, phase-locked to the icon stagger for ever rather than
+   drifting against it. % travel, so the speed tracks the scene at every width. */
+.bn-tr .tr-beam::before,.bn-tr .tr-beam::after{content:"";position:absolute;top:0;bottom:0;width:30%;
+  background:linear-gradient(90deg,rgba(150,220,255,0),rgba(170,230,255,.34) 50%,rgba(150,220,255,0));
+  filter:blur(5px);animation:trSweep .9s linear infinite}
+.bn-tr .tr-beam::after{width:18%;opacity:.6;animation-delay:-.45s}
+/* The wires. Five tracks of dashes flowing right to left, which is the one thing in the scene that
+   says "a link is carrying this" rather than "objects are being handed over". Each track is one
+   repeating gradient scrolled by background-position, so five lines cost five elements and no
+   per-frame layout. Deliberately at the beam's z-index, BEHIND both phones: the mask fades the ends
+   before they reach the glass, so the dashes appear to run out of one device and into the other
+   instead of being drawn on top of the home screens. Durations are close but unequal, so the tracks
+   never lock into one marching band. */
+.bn-tr .tr-wire{position:absolute;top:50%;left:15%;width:70%;height:44%;transform:translateY(-50%);
+  z-index:1;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%)}
+.bn-tr .tr-wire i{position:absolute;left:0;top:var(--y);width:100%;height:1.5px;opacity:var(--o,.85);
+  background:repeating-linear-gradient(90deg,transparent 0 13px,rgba(168,230,255,.9) 13px 29px,transparent 29px 46px);
+  background-size:46px 100%;
+  animation:trWire var(--wd) linear infinite}
+/* Opacity ramp runs OUTWARD, not inward. It used to peak at the centre line (1) and fade at the edges,
+   which is exactly where the white packets now fly: a bright line behind a white tile bleeds into its
+   edges and softens them. Now the outer tracks are the rails you read, and the inner ones are quiet
+   movement underneath the cargo. The durations stay non-harmonic on purpose. */
+.bn-tr .tr-wire i:nth-child(1){--y:9%; --wd:.66s;--o:.8}
+.bn-tr .tr-wire i:nth-child(2){--y:29%;--wd:.52s;--o:.5}
+.bn-tr .tr-wire i:nth-child(3){--y:50%;--wd:.44s;--o:.42}
+.bn-tr .tr-wire i:nth-child(4){--y:71%;--wd:.58s;--o:.55}
+.bn-tr .tr-wire i:nth-child(5){--y:91%;--wd:.72s;--o:.75}
+/* Every icon is the same object on the same lane; only size, height, start time and parked position
+   differ. contain:layout keeps six per-frame left changes from dirtying the rest of the slide (not
+   contain:paint - the 16px outer glow would be shaved). */
+.bn-tr .tr-flow{position:absolute;inset:0;z-index:7;pointer-events:none;contain:layout}
+.bn-tr .tr-flow i{position:absolute;top:var(--t);left:var(--rest);width:calc(var(--sz)*1.28);aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:27%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,#fff 0%,#f6fcff 42%,#dff0fc 100%);
+  box-shadow:0 10px 20px -6px rgba(30,105,160,.3),0 2px 5px -1px rgba(30,105,160,.2),
+    0 0 16px rgba(125,205,245,.32),inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(188,224,245,.55);
+  animation:trFly 2.7s linear infinite}
+.bn-tr .tr-flow i svg{width:53%;height:53%;fill:#1b87ce;color:#1b87ce}
+/* --t height in the lane, --sz size, --rise how far it arcs off the line, --rest where it parks when
+   motion is off.
+   The lane is 34%-66%, which is the band .tr-beam (25-75%) and .tr-wire (28-72%) already draw. Before
+   this the packets ran 14%-84%, so a third of them crossed unlit space above and below the glow - the
+   scene drew a channel and then sent the cargo around it. 14% also lifted off the Dynamic Island and
+   84% off the dock, missing the app grid (21.5-72%) the whole scene exists to show.
+   Nine, not twelve: one leaves every .3s (2.7/9 exactly) and about six are in the air. At twelve the
+   34-point band forced neighbours 12+ points apart, which can only zigzag top-third to bottom-third -
+   and a zigzag is the "machine indexing a list" the note below warns about.
+   Heights stay deliberately out of order, and --t is uncorrelated with animation-delay: the range is
+   narrow now, the ORDER is not. 64->52->34 at the tail is two drops in a row on purpose, so the
+   sequence never reads as weaving. --rise is negative on three of the nine, so those dip under the line
+   instead of arcing over it - with one shared arc, nine paths in a narrow band become a stiff bundle.
+   Delays are NEGATIVE so the lane is already full on the first frame. */
+.bn-tr .tr-flow i:nth-child(1){--t:34%;--rise:10px; --sz:8.2%;--rest:80%;animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){--t:57%;--rise:-9px; --sz:7%;  --rest:72%;animation-delay:-.3s}
+.bn-tr .tr-flow i:nth-child(3){--t:43%;--rise:13px; --sz:8.4%;--rest:65%;animation-delay:-.6s}
+.bn-tr .tr-flow i:nth-child(4){--t:66%;--rise:5px;  --sz:6.8%;--rest:57%;animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(5){--t:48%;--rise:-12px;--sz:7.6%;--rest:50%;animation-delay:-1.2s}
+.bn-tr .tr-flow i:nth-child(6){--t:61%;--rise:8px;  --sz:8%;  --rest:43%;animation-delay:-1.5s}
+.bn-tr .tr-flow i:nth-child(7){--t:38%;--rise:-10px;--sz:7.2%;--rest:35%;animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(8){--t:64%;--rise:6px;  --sz:8.3%;--rest:28%;animation-delay:-2.1s}
+.bn-tr .tr-flow i:nth-child(9){--t:52%;--rise:14px; --sz:6.9%;--rest:20%;animation-delay:-2.4s}
+@media(prefers-reduced-motion:reduce){
+.bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i,.tr-wire i){animation:none}
+.bn-tr .tr-beam::before,.bn-tr .tr-beam::after{animation:none;opacity:0}
+.bn-tr .tr-scan{animation:none;opacity:0}
+.bn-tr .tr-land{animation:none;opacity:.34}
+.bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transform:none}
+}
+html.a11y-stop-motion .bn-tr :is(.tr-dev,.tr-halo,.tr-beam,.tr-flow i,.tr-wire i){animation:none}
+html.a11y-stop-motion .bn-tr .tr-beam::before,html.a11y-stop-motion .bn-tr .tr-beam::after{animation:none;opacity:0}
+html.a11y-stop-motion .bn-tr .tr-scan{animation:none;opacity:0}
+html.a11y-stop-motion .bn-tr .tr-land{animation:none;opacity:.34}
+html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transform:none}
+/* The carousel keeps all five slides in the DOM and only translates the track, so off-screen copies
+   would animate for ever. Same convention as .slide[aria-hidden="true"] .pg-sim-face. */
+.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i,.tr-grid i,.tr-wire i),
+.slide[aria-hidden="true"] .tr-beam::before,
+.slide[aria-hidden="true"] .tr-beam::after{animation-play-state:paused}
+@media(max-width:720px){
+/* .slide-art is hidden globally on phones, so this slide has to opt back in */
+  .bn-tr .slide-art{display:flex;min-height:0;margin-top:.6rem}
+/* Cap the scene, ease the tilt the way .scr-stage does, thin the bezel again. Everything on the home
+     screen is in cqw and needs no mobile value at all. Six icons in the lane rather than twelve: the
+     gap here is 58px, and twelve at once would be a solid bar of tiles rather than a stream. */
+  /* --arc scales the per-packet lift. The arcs are in px, so on a 227px-tall scene an unscaled 14px
+     rise carries ~60% more visual weight than it does on the 368px desktop scene. */
+  .bn-tr .tr-scene{max-width:274px;--tilt:7deg;--arc:.68}
+.bn-tr .tr-wall{border-width:1px 1.5px;box-shadow:inset 0 0 3px 1px rgba(0,0,0,.5)}
+/* the art column leaves only 6px either side here, and a 134% halo reaches 16px past its phone -
+     enough to cross the slide edge. 120% keeps the glow inside and reads tighter at this size anyway. */
+  .bn-tr .tr-halo{width:120%}
+/* three wires, not five: at 44% of a 249px scene the five tracks sit 18px apart, which closes up */
+  .bn-tr .tr-wire i:nth-child(n+4){display:none}
+.bn-tr .tr-wire i:nth-child(1){--y:16%}
+.bn-tr .tr-wire i:nth-child(2){--y:50%}
+.bn-tr .tr-wire i:nth-child(3){--y:84%}
+.bn-tr .tr-flow i:nth-child(n+7){display:none}
+.bn-tr .tr-flow i:nth-child(1){animation-delay:0s}
+.bn-tr .tr-flow i:nth-child(2){animation-delay:-.45s}
+.bn-tr .tr-flow i:nth-child(3){animation-delay:-.9s}
+.bn-tr .tr-flow i:nth-child(4){animation-delay:-1.35s}
+.bn-tr .tr-flow i:nth-child(5){animation-delay:-1.8s}
+.bn-tr .tr-flow i:nth-child(6){animation-delay:-2.25s}
+}
+@media(min-width:721px){
+.s-banner .sb-art{display:block;width:100%;aspect-ratio:1855/803;
+    background:url(/keyboard-promo-web2.webp) center/cover no-repeat;
+    transition:transform .45s var(--ease)}
+.s-banner .slide-banner:hover .sb-art{transform:scale(1.015)}
+}
+.s-banner .slide-banner:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+.s-banner .slide-in,.s-banner .slide-art{display:none}
+@media(prefers-reduced-motion:reduce){
+.s-banner .sb-art{transition:none}
+}
+@media(max-width:720px){
+/* on phones the baked-in banner text would be unreadable, so show real text on a matching gradient */
+  /* the same padding as every other slide, so the banner slide is not inset differently */
+  .s-banner{padding:clamp(28px,4vw,54px)}
+/* The keyboard banner's own navy and cyan glow, taken from the artwork, so the phone version reads
+     as the same promotion and not as a second one. (The transfer slide's accent moved out of this
+     block: its scene is CSS at every width now, not a photo on desktop.) */
+  .bn-kb{background:radial-gradient(120% 85% at 28% 42%,rgba(37,140,208,.5),transparent 62%),linear-gradient(150deg,#0c3f68 0%,#08294a 55%,#04182c 100%)}
+.bn-kb .kb-badge{display:inline-block;background:var(--teal);color:#fff;font-weight:800;font-size:.9rem;border-radius:6px;padding:.22em .85em;margin-bottom:.55rem}
+.bn-kb h3{margin-bottom:.15rem}
+.bn-kb .kb-price{display:flex;align-items:baseline;justify-content:center;gap:.25rem;color:var(--orange);font-weight:800;max-width:none;margin:.1rem 0 .35rem}
+.bn-kb .kb-price b{font-size:3.1rem;line-height:.95;letter-spacing:-2px}
+.bn-kb .kb-price .cur{font-size:1.4rem;font-weight:800}
+.bn-kb .kb-sub{color:#fff;font-size:1rem;margin:0 auto .15rem;max-width:30ch}
+.bn-kb .kb-tag{color:#6fc0ff;font-size:1rem;margin:0 auto .7rem;max-width:30ch}
+.bn-kb .kb-chips{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.35rem;padding:0;margin:0 0 .85rem}
+.bn-kb .kb-chips li{border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:.22em .75em;font-size:.8rem;color:#e8f2fb}
+/* white on navy, exactly like the screen-protector slide's CTA — one button shape across the site */
+  .bn-kb .kb-cta{background:#fff;color:#0b3b63;box-shadow:0 10px 26px -12px rgba(4,24,44,.6)}
+.bn-kb .kb-cta:hover{background:#eaf3fd}
+.bn-kb .kb-fine{color:#8ba3bf;font-size:.78rem;margin:.6rem auto 0;max-width:38ch}
+/* The devices offer was the only slide left with no artwork on phones — text alone inside a box sized
+     by its visual neighbours, so ~220px of it was empty. Same opt-in the other slides use. */
+  .s-teal .slide-art{display:flex;min-height:168px;margin-top:.6rem}
+.s-teal .hstage{width:100%;max-width:300px;margin-inline:auto}
+/* screen-protector slide keeps its light card on phones; the glass animation stays, just smaller */
+  .s-scr .slide-art{display:flex;min-height:0;margin-top:.5rem}
+.s-scr .scr-fine{display:none}
+/* drive the size through --scr-w so the corners, bezel and glass rim scale with it */
+  .scr-stage{transform:rotate(-6deg);--scr-w:min(96px,26vw)}
+.s-banner .slide-banner{display:none}
+.s-banner .slide-in{display:block}
+.s-banner .slide-art{display:flex;min-height:0;margin-top:.55rem}
+/* the product shot was width-capped so tight it rendered 107px tall and left the slide half empty;
+     every slide here shares one height, so an undersized image just becomes dead space */
+  /* the cutout carries its own blue backdrop; a rounded rectangle of it on the slide reads as a
+     pasted card, so the edges are faded out and it sits on the slide's glow like it does in the artwork */
+  .s-banner .kb-art{display:block;width:100%;max-width:290px;aspect-ratio:985/480;
+    background:url(/keyboard-product.webp) center/contain no-repeat;
+    -webkit-mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%);
+    mask-image:radial-gradient(farthest-side at 50% 52%,#000 62%,transparent 100%)}
+}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--ink-strong);font-size:1.6rem;line-height:0;cursor:pointer;box-shadow:0 8px 22px -10px rgba(0,0,0,.4);display:grid;place-items:center;transition:transform .15s var(--ease),background .15s,color .15s}
+.car-btn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+.car-btn svg{width:20px;height:20px;display:block}
+.car-prev{inset-inline-start:0}
+.car-next{inset-inline-end:0}
+.car-dots{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:1.15rem}
+.car-pause{width:24px;height:24px;padding:0;border:none;background:none;cursor:pointer;color:var(--ink-soft);display:inline-grid;place-items:center;border-radius:50%;transition:color .15s;margin-inline-end:4px}
+.car-pause:hover{color:var(--teal)}
+.car-pause svg{width:15px;height:15px;fill:currentColor;display:block}
+.car-pause .ic-play{display:none}
+.car-pause.is-paused .ic-pause{display:none}
+.car-pause.is-paused .ic-play{display:block}
+.car-dots button{width:9px;height:9px;padding:0;border-radius:50%;background:#cfcbd4;border:none;cursor:pointer;transition:width .2s,background .2s}
+.car-dots button[aria-current="true"]{width:26px;border-radius:5px;background:var(--teal)}
+@media(max-width:720px){
+.carousel{padding-inline:14px}
+.car-btn{width:44px;height:44px;font-size:1.3rem}
+.slide{grid-template-columns:1fr;text-align:center;gap:.3rem}
+.slide .badge{margin-inline:auto}
+.slide p{margin-inline:auto}
+.slide-art{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+.car-track{transition:none}
+.slide-art>svg{animation:none}
+}
+/* ===== carriers slide — floating SIM cards ===== */
+/* the neon violet here was the loudest thing in the carousel and had nothing to do with the brand
+   purple (#7D3169); it becomes a glow in that actual brand colour instead */
+.s-carriers{background:radial-gradient(118% 92% at 80% 6%,rgba(176,72,146,.34),transparent 54%),linear-gradient(150deg,#241c17 0%,#16110e 55%,#0d0b0a 100%)}
+.pg-sim-stage{position:relative;width:100%;height:100%;min-height:270px}
+.pg-sim-stage::before{content:"";position:absolute;left:50%;bottom:7%;transform:translateX(-50%);width:70%;height:16%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(28,6,52,.42),transparent 70%);filter:blur(9px);z-index:0}
+.pg-sim{position:absolute;left:var(--x);top:var(--y);width:calc(114px*var(--s,1));aspect-ratio:1.12;transform:translate(-50%,-50%) translate(var(--bx,0px),var(--by,0px)) rotate(calc(var(--r,0deg) + var(--br,0deg))) scale(var(--bs,1));z-index:var(--z,1);transition:transform 1.15s cubic-bezier(.22,.68,.3,1)}
+@media(hover:hover){
+.pg-sim-stage:hover .pg-sim{--bx:calc(var(--ex,0px)*var(--bm,1));--by:calc(var(--ey,0px)*var(--bm,1));--br:calc(var(--er,0deg)*var(--bm,1));--bs:1.03;transition:transform .95s cubic-bezier(.16,.84,.34,1);transition-delay:var(--bd,0s)}
+}
+.pg-sim-face{position:absolute;inset:0;border-radius:15%;overflow:hidden;background:var(--sbg,#fff);box-shadow:0 16px 28px -12px rgba(30,8,55,.6),0 4px 9px rgba(30,8,55,.34),inset 0 0 0 1px rgba(255,255,255,.24);animation:simFloat var(--fd,7s) var(--fdl,0s) ease-in-out infinite;will-change:transform}
+.pg-sim-face::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.3),transparent 44%);pointer-events:none}
+.pg-sim-logo{position:absolute;top:6%;inset-inline-start:6%;width:88%;height:58%;object-fit:contain;display:block}
+.pg-sim-chip{position:absolute;bottom:13%;inset-inline-start:50%;transform:translateX(-50%);width:24%;aspect-ratio:1.32;border-radius:16%/20%;background:linear-gradient(135deg,#fbeea8,#e1bf5a 44%,#b98a34);box-shadow:inset 0 0 0 1px rgba(120,82,20,.45),0 1px 2px rgba(0,0,0,.22)}
+.pg-sim-chip::after{content:"";position:absolute;inset:24% 28%;background:linear-gradient(rgba(120,82,20,.55) 0 0) center/100% 1px no-repeat,linear-gradient(rgba(120,82,20,.55) 0 0) center/1px 100% no-repeat}
+.slide[aria-hidden="true"] .pg-sim-face{animation-play-state:paused}
+@media(max-width:720px){
+.s-carriers .slide-art{display:flex;min-height:180px;margin-top:.6rem}
+.pg-sim-stage{min-height:172px;max-width:320px;margin-inline:auto}
+.pg-sim{width:calc(73px*var(--s,1))}
+.pg-sim-stage:hover .pg-sim{--bm:.62}
+}
+@media(prefers-reduced-motion:reduce){
+.pg-sim-face{animation:none}
+.pg-sim{transition:none}
+}
+.press .kicker{color:var(--teal);font-weight:800;font-size:.82rem}
+.press .body .lead::first-letter{font-size:3.1rem;font-weight:800;float:inline-start;line-height:.82;margin-inline-end:.1em;color:var(--teal)}
+@media(max-width:820px){
+.cookie .btn-sm{padding:.4rem .62rem;white-space:nowrap}
+}
+.pg-fab .badge-dot{position:absolute;inset-block-start:3px;inset-inline-end:3px;width:13px;height:13px;border-radius:50%;background:#25D366;border:2px solid var(--teal)}
+/* ===== accessibility preference classes (toggled on <html>) ===== */
+html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decoration:underline !important;text-underline-offset:3px}
+@media(max-width:820px){
+/* drop duplicate nav bar / top chrome */
+  .btn-sm{padding-block:13px}
+/* room for the detail overlay */
+  /* Carousel arrows move down beside the dots instead of floating over the slide. Overlaying them
+     cost 46px of padding on BOTH sides — a quarter of a 375px screen — so headings wrapped early and
+     every slide read cramped. Down here they stay 44px tappable and the slide gets the full width. */
+  .car-btn{width:44px;height:44px;top:auto;bottom:0;transform:none}
+.car-dots{padding-inline:52px}
+/* clear the arrows now sharing this row */
+  .slide{padding-inline:20px}
+/* was 46px, needed only to dodge the arrows */
+  /* The slides deliberately stay EQUAL height here. Letting the viewport follow each slide removed the
+     empty space but resized the carousel on every swipe, which shifted the page under the reader's
+     thumb — worse than the padding it saved. The disparity is dealt with by trimming the tall scenes
+     below instead, so the shared height is modest to begin with. */
+  .car-dots button{box-sizing:content-box;background-clip:content-box;padding:15px 8px}
+/* press CTA was 32px */
+  .car-pause{width:44px;height:44px}
+/* the dots got a tap area, this did not */
+  .car-dots button{padding:18px 8px}
+/* .cookie .btn-sm outranks the generic .btn-sm padding-block from the first pass, so it needs
+     saying again here or the two consent buttons stay at 38px */
+  .cookie .btn-sm{min-height:44px}
+}
+@keyframes idfEnter{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes saluteUp{0%,8%{transform:rotate(0)}14%{transform:rotate(20deg)}22%{transform:rotate(70deg)}30%{transform:rotate(113deg)}36%,74%{transform:rotate(138deg)}82%{transform:rotate(70deg)}90%,100%{transform:rotate(0)}}
+@keyframes saluteFore{0%,8%{transform:rotate(0)}14%{transform:rotate(102deg)}22%{transform:rotate(122deg)}30%{transform:rotate(92deg)}36%,74%{transform:rotate(69deg)}82%{transform:rotate(116deg)}90%,100%{transform:rotate(0)}}
+@keyframes idfShine{0%{transform:translateX(-160%)}22%,100%{transform:translateX(330%)}}
+@keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes hglow{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:.85;transform:translateX(-50%) scale(1.06)}}
+@keyframes hbob{0%,100%{transform:translateY(0)}50%{transform:translateY(calc(var(--my,12px) * -1))}}
+@keyframes hsway{0%,100%{transform:translateX(0)}50%{transform:translateX(var(--mx,6px))}}
+@keyframes pgCpnFade{from{opacity:0}to{opacity:1}}
+@keyframes pgCpnPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes dealFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes idfDraw{to{stroke-dashoffset:0}}
+@keyframes scrApply{
+  0%,8%   {transform:translate(13%,-11%) rotate(2.4deg) scale(1.07);opacity:.45;
+           box-shadow:0 calc(var(--scr-w)*.128) calc(var(--scr-w)*.192) rgba(15,45,82,.28),inset 0 max(1px,calc(var(--scr-w)*.0064)) 0 rgba(255,255,255,.65)}
+  30%     {transform:translate(5%,-4.5%) rotate(1deg) scale(1.03);opacity:.72}
+  44%     {transform:translate(0,0) rotate(0deg) scale(1.006);opacity:.9}          /* touch-down */
+  50%     {transform:translate(0,0) rotate(0deg) scale(.997);opacity:.93}          /* pressed flat */
+  70%,88% {transform:translate(0,0) rotate(0deg) scale(1);opacity:.97;
+           box-shadow:0 calc(var(--scr-w)*.032) calc(var(--scr-w)*.064) rgba(15,45,82,.34),inset 0 max(1px,calc(var(--scr-w)*.0064)) 0 rgba(255,255,255,.7)}
+  100%    {transform:translate(13%,-11%) rotate(2.4deg) scale(1.07);opacity:.45;
+           box-shadow:0 calc(var(--scr-w)*.128) calc(var(--scr-w)*.192) rgba(15,45,82,.28),inset 0 max(1px,calc(var(--scr-w)*.0064)) 0 rgba(255,255,255,.65)}
+}
+@keyframes scrWet{
+  0%,46%  {clip-path:inset(0 0 0 0);opacity:.85}
+  70%     {clip-path:inset(100% 0 0 0);opacity:.1}
+  88%     {clip-path:inset(100% 0 0 0);opacity:0}
+  100%    {clip-path:inset(0 0 0 0);opacity:.85}
+}
+@keyframes scrFront{
+  0%,46%  {top:-12%;opacity:0}
+  50%     {top:8%;opacity:.85}
+  70%     {top:96%;opacity:.5}
+  74%,100%{top:96%;opacity:0}
+}
+@keyframes trSlot{
+  0%,30% {opacity:.34;filter:grayscale(1) brightness(.55);transform:scale(.8)}
+  37%    {opacity:1;  filter:none;                        transform:scale(1.1)}
+  43%,93%{opacity:1;  filter:none;                        transform:scale(1)}
+  100%   {opacity:.34;filter:grayscale(1) brightness(.55);transform:scale(.8)}
+}
+@keyframes trBobA{0%,100%{transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(0)}
+                  50%    {transform:rotate(calc(var(--tilt,8deg)*-1)) translateY(-5px)}}
+@keyframes trBobB{0%,100%{transform:rotate(var(--tilt,8deg)) translateY(0)}
+                  50%    {transform:rotate(var(--tilt,8deg)) translateY(-7px)}}
+@keyframes trHalo{from{opacity:.72;transform:translate(-50%,-50%) scale(.94)}
+                  to  {opacity:1;  transform:translate(-50%,-50%) scale(1.06)}}
+@keyframes trScan{from{background-position:0 -34%}to{background-position:0 132%}}
+@keyframes trLand{0%{opacity:0}20%{opacity:.55}100%{opacity:0}}
+@keyframes trBeam{from{opacity:.72}to{opacity:1}}
+@keyframes trSweep{from{left:100%}to{left:-32%}}
+@keyframes trWire{from{background-position:0 0}to{background-position:-46px 0}}
+@keyframes trFly{
+  0%  {left:84%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(-14deg)}
+  8%  {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * .25 * var(--arc,1))) scale(1)    rotate(-7deg)}
+  40% {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * var(--arc,1)))       scale(1.03) rotate(0deg)}
+  64% {         opacity:1;transform:translate(-50%,calc(-50% - var(--rise,12px) * .75 * var(--arc,1))) scale(1)    rotate(4deg)}
+  72% {left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
+  100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
+}
+@keyframes simFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--mx,6px),calc(var(--my,12px)*-1))}}
+/* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.
+   הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */
+#deals .btn{white-space:nowrap}
+</style>
+<!-- pg-deals:css:end -->
+
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -733,7 +1660,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="prob" id="buy" style="--nc:var(--teal)" aria-labelledby="h-buy">
   <div class="wrap row">
     <figure class="fig">
-      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: Galaxy A57 5G על דלפק המעבדה, המכשיר בשליש האמצעי של הגובה. התמונות יתווספו בהמשך</span></div>
+      <img class="devimg" src="/phones/img/galaxy-a57-1152.webp" srcset="/phones/img/galaxy-a57-288.webp 288w, /phones/img/galaxy-a57-576.webp 576w, /phones/img/galaxy-a57-1152.webp 1152w" sizes="(max-width:900px) 280px, (max-width:1400px) 41vw, 548px" width="1152" height="1536" alt="Galaxy A57 5G, המסך והגב" loading="lazy" decoding="async">
     </figure>
     <div class="txt">
       <h2 id="h-buy">מחיר, מלאי ואחריות</h2>
@@ -762,6 +1689,371 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </section>
+
+<!-- pg-deals:section:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
+<section id="deals" class="deals" aria-labelledby="deals-h">
+  <div class="deals-head">
+    <p class="kicker">בלעדי ללקוחות האתר</p>
+    <h2 id="deals-h">המבצעים וההטבות שלנו</h2>
+    <p class="lead">כל ההטבות במקום אחד, בליווי אישי של ברוך וסיגל</p>
+  </div>
+  <div class="carousel" role="region" aria-roledescription="קרוסלה" aria-label="מבצעים והטבות">
+    <div class="car-vp">
+      <div class="car-track">
+
+        <!-- The IDF offer leads the carousel and also has its own band under the hero. Both
+             triggers carry data-pg-coupon="idf", so the title, the wording and the terms live in
+             one OFFERS record and cannot drift apart between the two placements.
+             The artwork is a drawn shield, not any official emblem or insignia. -->
+        <article class="slide s-idf" aria-roledescription="שקופית" aria-label="מבצע 1 מתוך 5">
+          <div class="slide-in">
+            <p class="idf-kicker">פון גת מצדיעה לחיילי צה״ל<svg class="idf-swash" viewBox="0 0 260 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 9C58 3 132 2 196 5c22 1 44 3 60 5"/></svg></p>
+            <h3>מגן מסך זכוכית והדבקה<span class="free">ללא עלות</span></h3>
+            <p class="idf-terms">לחיילים במדים · סדיר, קבע ומילואים</p>
+            <div class="idf-row">
+              <button type="button" class="btn idf-cta" data-pg-coupon="idf" aria-label="קבלו קוד הטבה לחיילי צה״ל: מגן מסך זכוכית והדבקה, ללא עלות">קבלו קוד הטבה</button>
+              <!-- The real code is drawn per visitor from the counter, so the strip can only ever show
+                   the shape of one. Printing a specific number here would tell every visitor the same
+                   code and quietly break the one metric the counter exists to give. -->
+                </div>
+            <p class="idf-fine">קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.</p>
+          </div>
+          <div class="slide-art">
+            <span class="slide-troops" aria-hidden="true">
+              <svg class="troop t-m" viewBox="0 0 120 168" fill="none">
+          <g class="rim-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <g class="ink-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="uni" d="M39 100 L39 58 Q39 50 49 47 Q54 44 60 44 Q66 44 71 47 Q81 50 81 58 L81 100 Z"/>
+          <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="uni-s limb" d="M76 52 82 82"/>
+          <path class="sk-f limb" d="M82 82 84 104"/>
+          <circle class="sk" cx="60" cy="30" r="14"/>
+          <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+          <path class="hair" d="M50 28a13 12 0 0 1 25-1q1 3-3 2-5-3-10-2-5 1-8 4-2 3-3 3-2 0-1-6Z"/>
+          <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+          <circle class="badge" cx="52" cy="19" r="2"/>
+          <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+          <path class="stitch" d="M60 59v37"/>
+          <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+          <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+          <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+          <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+          <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+          <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+          <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+          <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+          <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+          <g transform="translate(47 56)">
+            <g class="up-arm">
+              <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <g transform="translate(-4 18.6)">
+                <g class="fore-arm">
+                  <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <g transform="rotate(-10 -3 17.7)">
+                    <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                    <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+            </svg>
+              <svg class="troop t-f" viewBox="0 0 120 168" fill="none">
+          <path class="ink" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+          <path class="hair" d="M44 34a17 16 0 0 1 33 0c0 13-2 22-4 28-1 4-6 3-5-2 2-9 2-16 0-20H50c-1 4-1 11 1 20 1 5-4 6-5 2-2-6-4-15-4-28Z"/>
+          <g class="rim-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <g class="ink-pass">
+          <path class="ink" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="ink" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="ink" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="ink" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="ink-s limb" d="M76 52 82 82"/>
+          <path class="ink-f limb" d="M82 82 84 104"/>
+          <circle class="ink" cx="60" cy="30" r="14"/>
+          <path class="ink" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          </g>
+          <path class="sk" d="M55 34 h10 v16 h-10 Z"/>
+          <path class="uni" d="M42 100 L42 59 Q42 51 50 48 Q55 45 60 45 Q65 45 70 48 Q78 51 78 59 L78 100 Z"/>
+          <path class="trous" d="M43 101 L43 150 Q43 155 48 155 L54 155 Q58 155 58 150 L58 101 Z"/>
+          <path class="trous" d="M62 101 L62 150 Q62 155 67 155 L73 155 Q77 155 77 150 L77 101 Z"/>
+          <path class="uni-s limb" d="M76 52 82 82"/>
+          <path class="sk-f limb" d="M82 82 84 104"/>
+          <circle class="sk" cx="60" cy="30" r="14"/>
+          <path class="beret" d="M47 26q-1-12 13-12 12 0 12 9 0 4-4 4-8 2-17 0-4-1-4-1Z"/>
+          <path class="sksh" d="M55 34h10v5q-5 3-10 0Z"/>
+          <path class="hair" d="M49 29a14 13 0 0 1 26-1q1 4-3 2-5-4-11-3-6 1-9 5-2 3-3 3-2 0-1-6Z"/>
+          <path class="beretd" d="M47 25q13 5 25-1l0 3q-11 5-25 1Z"/>
+          <circle class="badge" cx="52" cy="19" r="2"/>
+          <path class="unid" d="M55 47 60 59l5-12-3-1-2 5-2-5Z"/>
+          <path class="stitch" d="M60 59v37"/>
+          <circle class="btn" cx="60" cy="68" r="1.7"/><circle class="btn" cx="60" cy="82" r="1.7"/>
+          <rect class="pocket" x="46" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="pocket" x="64" y="63" width="10" height="8" rx="1.6"/>
+          <rect class="belt" x="41" y="95" width="38" height="8" rx="2"/>
+          <rect class="buckle" x="56" y="95" width="8" height="8" rx="1.5"/>
+          <path class="boot" d="M43 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <path class="boot" d="M62 146h15v5q0 4-4 4h-7q-4 0-4-4Z"/>
+          <ellipse class="ew" cx="55" cy="31" rx="2.6" ry="3"/><ellipse class="ew" cx="65" cy="31" rx="2.6" ry="3"/>
+          <circle class="pupil" cx="55.4" cy="31.3" r="1.6"/><circle class="pupil" cx="65.4" cy="31.3" r="1.6"/>
+          <circle class="spark" cx="54.5" cy="30.3" r=".75"/><circle class="spark" cx="64.5" cy="30.3" r=".75"/>
+          <path class="brow" d="M52 26q3-2 6-1"/><path class="brow" d="M62 25q3-1 6 1"/>
+          <path class="mouth" d="M56.5 36q3.5 3 7 0"/>
+          <ellipse class="blush" cx="50" cy="34" rx="2.4" ry="1.5"/><ellipse class="blush" cx="70" cy="34" rx="2.4" ry="1.5"/>
+          <g transform="translate(47 56)">
+            <g class="up-arm">
+              <line class="limb ink-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <line class="limb uni-s" x1="0" y1="0" x2="-4" y2="18.6"/>
+              <g transform="translate(-4 18.6)">
+                <g class="fore-arm">
+                  <line class="limb ink-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <line class="limb sk-f" x1="0" y1="0" x2="-3" y2="17.7"/>
+                  <g transform="rotate(-10 -3 17.7)">
+                    <rect class="ink" x="-6.2" y="15" width="7.6" height="12" rx="3.6"/>
+                    <rect class="sk" x="-5.6" y="15.6" width="6.4" height="10.8" rx="3"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+            </svg>
+            </span>
+            <!-- the same live product shot the screen-protector slide uses: the glass drifts up and
+                 settles onto the phone. Reused rather than rebuilt, so there is one glass animation
+                 on this page and it is already covered by the reduced-motion guards. -->
+            <div class="scr-stage" role="img" aria-label="מגן זכוכית נצמד אל מסך האייפון">
+              <span class="scr-halo" aria-hidden="true"></span>
+              <span class="scr-wall" aria-hidden="true"></span>
+              <span class="scr-punch" aria-hidden="true"></span>
+              <span class="scr-refl" aria-hidden="true"></span>
+              <img class="scr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <span class="scr-glass" aria-hidden="true"></span>
+            </div>
+          </div>
+        </article>
+
+        <!-- A normal slide, not a baked banner. The artwork it used to crop (promo_transfers.jpg) carries
+             a pale studio backdrop, three app icons printed between the phones and marketing type; no
+             crop of it survived on the charcoal without bright edges, and the printed icons could not
+             move. Both devices are built from the site's own phone parts now, so this slide is made of
+             the same material as its neighbours and every part of it can animate. -->
+        <article class="slide bn-tr" aria-roledescription="שקופית" aria-label="מבצע 2 מתוך 5">
+          <div class="slide-in">
+            <span class="badge">ללא עלות</span>
+            <h3>העברת נתונים</h3>
+            <p>קונים מכשיר חדש? מעבירים לכם אנשי קשר, תמונות ותוכן נוסף, ללא עלות, בהתאם למצב המכשיר הישן. גם ממכשיר שבור, כשהוא מאפשר זאת.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לתאם העברת נתונים למכשיר חדש"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">תאמו העברת נתונים ב-WhatsApp</a>
+          </div>
+          <div class="slide-art">
+            <!-- Both devices are the site's own phone: iphone-frame.webp with a wallpaper, a Dynamic
+                 Island and a sheen laid over it, exactly as on the screen-protector slide, plus a live
+                 iOS home screen inside so they read as switched-on phones rather than blank glass.
+                 The two are identical markup; only the last layer differs (the source is being scanned,
+                 the destination is receiving). Every app carries --i, its place in the arrival order,
+                 which is all .tr-dst needs to fill up in a wave. The <svg>s sit three levels down on
+                 purpose, so .slide-art:has(>svg)::before (the glass tile meant for the plain icon
+                 slides) and .slide-art>svg (dealFloat) cannot match this scene. -->
+            <div class="tr-scene" role="img" aria-label="התוכן מהמכשיר הישן עובר אל המכשיר החדש: אנשי קשר, תמונות, הודעות, מוזיקה, מסמכים וסרטונים">
+              <!-- One sprite, 24 glyphs, referenced 48 times by <use>. Defined inside .tr-scene and not
+                   in .slide-art, because a direct <svg> child of .slide-art picks up the glass tile from
+                   .slide-art:has(>svg)::before and the dealFloat animation meant for the icon slides. -->
+              <svg class="tr-sprite" aria-hidden="true" focusable="false"><defs>
+                <symbol id="ai-mail" viewBox="0 0 24 24"><path d="M2 6.8 12 13.5 22 6.8V18a1.7 1.7 0 0 1-1.7 1.7H3.7A1.7 1.7 0 0 1 2 18V6.8Zm.9-2.5h18.2L12 10.9 2.9 4.3Z"/></symbol>
+                <symbol id="ai-camera" viewBox="0 0 24 24"><path d="M9 3.4h6l1.1 2H20a1.9 1.9 0 0 1 1.9 1.9v10.9a1.9 1.9 0 0 1-1.9 1.9H4a1.9 1.9 0 0 1-1.9-1.9V7.3A1.9 1.9 0 0 1 4 5.4h3.9L9 3.4Zm3 4.5a4.9 4.9 0 1 0 0 9.8 4.9 4.9 0 0 0 0-9.8Zm0 2.1a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6Z"/></symbol>
+                <symbol id="ai-photos" viewBox="0 0 24 24"><g fill-opacity=".8"><ellipse cx="12" cy="7.2" rx="3" ry="5.2"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(120 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(180 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(240 12 12)"/><ellipse cx="12" cy="7.2" rx="3" ry="5.2" transform="rotate(300 12 12)"/></g></symbol>
+                <symbol id="ai-maps" viewBox="0 0 24 24"><path d="M2.6 5.8 8.6 3.2v15.4l-6 2.6V5.8Zm6.9-2.6 5 2.1v15.4l-5-2.1V3.2Zm5.9 2.1 5.9-2.5v15.4l-5.9 2.5V5.3Z"/></symbol>
+                <symbol id="ai-clock" viewBox="0 0 24 24"><path d="M12 2.3a9.7 9.7 0 1 0 0 19.4 9.7 9.7 0 0 0 0-19.4Zm0 1.9a7.8 7.8 0 1 1 0 15.6 7.8 7.8 0 0 1 0-15.6Zm-1 2.4v6.2l4.7 2.8.9-1.6-3.7-2.2V6.6H11Z"/></symbol>
+                <symbol id="ai-weather" viewBox="0 0 24 24"><g><circle cx="8.8" cy="8" r="4.3"/><path d="M8.1 20.8a4.2 4.2 0 0 1-.5-8.4 6 6 0 0 1 11.4 1.5 3.6 3.6 0 0 1-.7 6.9H8.1Z"/></g></symbol>
+                <symbol id="ai-cal" viewBox="0 0 24 24"><g><rect x="2.4" y="3.2" width="19.2" height="4.8" rx="1.6"/><rect x="7" y="10.8" width="10" height="9" rx="1.3" fill="#2f3136"/></g></symbol>
+                <symbol id="ai-notes" viewBox="0 0 24 24"><g><rect x="4" y="4.6" width="16" height="2.5" rx="1.25"/><rect x="4" y="10" width="16" height="2.3" rx="1.15"/><rect x="4" y="15.2" width="10.4" height="2.3" rx="1.15"/></g></symbol>
+                <symbol id="ai-remind" viewBox="0 0 24 24"><g><circle cx="5.4" cy="6.2" r="2.3"/><rect x="9.8" y="5" width="10.4" height="2.5" rx="1.25"/><circle cx="5.4" cy="12" r="2.3"/><rect x="9.8" y="10.8" width="10.4" height="2.5" rx="1.25"/><circle cx="5.4" cy="17.8" r="2.3"/><rect x="9.8" y="16.6" width="7.4" height="2.5" rx="1.25"/></g></symbol>
+                <symbol id="ai-store" viewBox="0 0 24 24"><path d="M10.6 3.4h2.8l6.1 17.2h-3l-1.3-3.9H8.8l-1.3 3.9h-3L10.6 3.4Zm1.4 4.3-1.9 6.2h3.8L12 7.7Z"/></symbol>
+                <symbol id="ai-wallet" viewBox="0 0 24 24"><g><rect x="3" y="4.4" width="18" height="4.2" rx="1.6" opacity=".5"/><rect x="3" y="9.3" width="18" height="4.2" rx="1.6" opacity=".75"/><rect x="3" y="14.2" width="18" height="5.4" rx="1.8"/></g></symbol>
+                <symbol id="ai-health" viewBox="0 0 24 24"><path d="M12 21.2 3.7 12.9a5.1 5.1 0 0 1 7.2-7.2l1.1 1.1 1.1-1.1a5.1 5.1 0 0 1 7.2 7.2L12 21.2Z"/></symbol>
+                <symbol id="ai-wa" viewBox="0 0 24 24"><path d="M12 2.4a9.5 9.5 0 0 0-8.1 14.5l-1.4 4.7 4.8-1.4A9.5 9.5 0 1 0 12 2.4Zm5.2 13.3c-.2.6-1.2 1.2-1.7 1.2-.5.1-1.1.1-1.7-.1a13.2 13.2 0 0 1-6-5.3c-.4-.7-.7-1.5-.7-2.3 0-.9.5-1.4.7-1.7.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2 0 .4-.1.5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.5.2.1.4.1.6-.1l.7-.9c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.4.4 0 .2 0 .6-.2 1Z"/></symbol>
+                <symbol id="ai-pod" viewBox="0 0 24 24"><g><rect x="9.5" y="2.4" width="5" height="10.8" rx="2.5"/><path d="M6.2 11.5a5.8 5.8 0 0 0 11.6 0h2a7.8 7.8 0 0 1-6.8 7.7v2.5h-2v-2.5a7.8 7.8 0 0 1-6.8-7.7h2Z"/></g></symbol>
+                <symbol id="ai-files" viewBox="0 0 24 24"><path d="M2.6 6.6a2.1 2.1 0 0 1 2.1-2.1h4.4l2.1 2.5h8.1a2.1 2.1 0 0 1 2.1 2.1v8.4a2.1 2.1 0 0 1-2.1 2.1H4.7a2.1 2.1 0 0 1-2.1-2.1V6.6Z"/></symbol>
+                <symbol id="ai-contact" viewBox="0 0 24 24"><path d="M12 11.8a4.4 4.4 0 1 0 0-8.8 4.4 4.4 0 0 0 0 8.8Zm0 1.8c-4.4 0-7.9 2.3-7.9 5V21h15.8v-2.4c0-2.7-3.5-5-7.9-5Z"/></symbol>
+                <symbol id="ai-calc" viewBox="0 0 24 24"><g><rect x="4.2" y="2.8" width="15.6" height="4.6" rx="1.5"/><circle cx="7" cy="11.6" r="1.8"/><circle cx="12" cy="11.6" r="1.8"/><circle cx="17" cy="11.6" r="1.8"/><circle cx="7" cy="16.8" r="1.8"/><circle cx="12" cy="16.8" r="1.8"/><rect x="15.2" y="15" width="3.6" height="6.2" rx="1.8"/></g></symbol>
+                <symbol id="ai-set" viewBox="0 0 24 24"><g fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.4" stroke-width="4" stroke-dasharray="2.6 3.9"/><circle cx="12" cy="12" r="4.4" stroke-width="2.2"/></g></symbol>
+                <symbol id="ai-voice" viewBox="0 0 24 24"><g><rect x="2.4" y="9" width="2.6" height="6" rx="1.3"/><rect x="7" y="5.4" width="2.6" height="13.2" rx="1.3"/><rect x="11.6" y="2.6" width="2.6" height="18.8" rx="1.3"/><rect x="16.2" y="6.6" width="2.6" height="10.8" rx="1.3"/><rect x="20.8" y="9.6" width="2.6" height="4.8" rx="1.3"/></g></symbol>
+                <symbol id="ai-books" viewBox="0 0 24 24"><path d="M12 5.7C10.2 4.3 7.5 3.4 4.5 3.4c-.9 0-1.7.8-1.7 1.7v12.4c0 .9.8 1.7 1.7 1.7 3 0 5.7.9 7.5 2.3 1.8-1.4 4.5-2.3 7.5-2.3.9 0 1.7-.8 1.7-1.7V5.1c0-.9-.8-1.7-1.7-1.7-3 0-5.7.9-7.5 2.3Z"/></symbol>
+                <symbol id="ai-phone" viewBox="0 0 24 24"><path d="m18.3 15.6-2.7-1.2c-.4-.2-1 0-1.2.4l-1.1 1.4c-2.2-1.1-4-2.9-5.1-5.1l1.4-1.1c.4-.3.6-.8.4-1.2L8.8 6.1c-.2-.5-.7-.7-1.2-.6l-2.5.6c-.5.1-.8.5-.8 1C4.3 15 9.3 20 16.2 20.2c.5 0 .9-.3 1-.8l.6-2.5c.1-.5-.1-1-.5-1.3Z"/></symbol>
+                <symbol id="ai-msg" viewBox="0 0 24 24"><path d="M12 3.4c5 0 9 3.2 9 7.2s-4 7.2-9 7.2c-1 0-1.9-.1-2.8-.4l-4.8 2 1.5-3.7C4.1 14.4 3 12.8 3 10.6c0-4 4-7.2 9-7.2Z"/></symbol>
+                <symbol id="ai-safari" viewBox="0 0 24 24"><g><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m17 7-7.1 2.9L7 17l7.1-2.9L17 7Z"/></g></symbol>
+                <symbol id="ai-music" viewBox="0 0 24 24"><g><circle cx="7.4" cy="18.4" r="3.2"/><circle cx="17.6" cy="16.4" r="3.2"/><path d="M8.6 5.4 20.8 2.9v3.4L8.6 8.8V5.4Z"/><rect x="8.6" y="5.4" width="2" height="13"/><rect x="18.8" y="2.9" width="2" height="13.5"/></g></symbol>
+              </defs></svg>
+              <span class="tr-beam" aria-hidden="true"></span>
+              <span class="tr-ph tr-src" aria-hidden="true">
+                <span class="tr-dev">
+                  <span class="tr-halo"></span>
+                  <span class="tr-wall"></span>
+                  <span class="tr-ui">
+                    <span class="tr-stat"><i></i><i></i></span>
+                    <span class="tr-grid">
+                      <i class="a-mail"    style="--i:0"><svg viewBox="0 0 24 24"><use href="#ai-mail"/></svg></i><i class="a-camera" style="--i:1"><svg viewBox="0 0 24 24"><use href="#ai-camera"/></svg></i><i class="a-photos"  style="--i:2"><svg viewBox="0 0 24 24"><use href="#ai-photos"/></svg></i><i class="a-maps"    style="--i:3"><svg viewBox="0 0 24 24"><use href="#ai-maps"/></svg></i>
+                      <i class="a-clock"   style="--i:4"><svg viewBox="0 0 24 24"><use href="#ai-clock"/></svg></i><i class="a-weather" style="--i:5"><svg viewBox="0 0 24 24"><use href="#ai-weather"/></svg></i><i class="a-cal"     style="--i:6"><svg viewBox="0 0 24 24"><use href="#ai-cal"/></svg></i><i class="a-notes"   style="--i:7"><svg viewBox="0 0 24 24"><use href="#ai-notes"/></svg></i>
+                      <i class="a-remind"  style="--i:8"><svg viewBox="0 0 24 24"><use href="#ai-remind"/></svg></i><i class="a-store"  style="--i:9"><svg viewBox="0 0 24 24"><use href="#ai-store"/></svg></i><i class="a-wallet"  style="--i:10"><svg viewBox="0 0 24 24"><use href="#ai-wallet"/></svg></i><i class="a-health" style="--i:11"><svg viewBox="0 0 24 24"><use href="#ai-health"/></svg></i>
+                      <i class="a-wa"      style="--i:12"><svg viewBox="0 0 24 24"><use href="#ai-wa"/></svg></i><i class="a-pod"     style="--i:13"><svg viewBox="0 0 24 24"><use href="#ai-pod"/></svg></i><i class="a-files"   style="--i:14"><svg viewBox="0 0 24 24"><use href="#ai-files"/></svg></i><i class="a-contact" style="--i:15"><svg viewBox="0 0 24 24"><use href="#ai-contact"/></svg></i>
+                      <i class="a-calc"    style="--i:16"><svg viewBox="0 0 24 24"><use href="#ai-calc"/></svg></i><i class="a-set"    style="--i:17"><svg viewBox="0 0 24 24"><use href="#ai-set"/></svg></i><i class="a-voice"   style="--i:18"><svg viewBox="0 0 24 24"><use href="#ai-voice"/></svg></i><i class="a-books"  style="--i:19"><svg viewBox="0 0 24 24"><use href="#ai-books"/></svg></i>
+                    </span>
+                    <span class="tr-dots"><i></i><i></i><i></i></span>
+                    <span class="tr-dock"><i class="a-phone"><svg viewBox="0 0 24 24"><use href="#ai-phone"/></svg></i><i class="a-msg"><svg viewBox="0 0 24 24"><use href="#ai-msg"/></svg></i><i class="a-safari"><svg viewBox="0 0 24 24"><use href="#ai-safari"/></svg></i><i class="a-music"><svg viewBox="0 0 24 24"><use href="#ai-music"/></svg></i></span>
+                    <span class="tr-home"></span>
+                  </span>
+                  <span class="tr-punch"></span>
+                  <span class="tr-refl"></span>
+                  <img class="tr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <span class="tr-scan"></span>
+                </span>
+              </span>
+              <span class="tr-ph tr-dst" aria-hidden="true">
+                <span class="tr-dev">
+                  <span class="tr-halo"></span>
+                  <span class="tr-wall"></span>
+                  <span class="tr-ui">
+                    <span class="tr-stat"><i></i><i></i></span>
+                    <span class="tr-grid">
+                      <i class="a-mail"    style="--i:0"><svg viewBox="0 0 24 24"><use href="#ai-mail"/></svg></i><i class="a-camera" style="--i:1"><svg viewBox="0 0 24 24"><use href="#ai-camera"/></svg></i><i class="a-photos"  style="--i:2"><svg viewBox="0 0 24 24"><use href="#ai-photos"/></svg></i><i class="a-maps"    style="--i:3"><svg viewBox="0 0 24 24"><use href="#ai-maps"/></svg></i>
+                      <i class="a-clock"   style="--i:4"><svg viewBox="0 0 24 24"><use href="#ai-clock"/></svg></i><i class="a-weather" style="--i:5"><svg viewBox="0 0 24 24"><use href="#ai-weather"/></svg></i><i class="a-cal"     style="--i:6"><svg viewBox="0 0 24 24"><use href="#ai-cal"/></svg></i><i class="a-notes"   style="--i:7"><svg viewBox="0 0 24 24"><use href="#ai-notes"/></svg></i>
+                      <i class="a-remind"  style="--i:8"><svg viewBox="0 0 24 24"><use href="#ai-remind"/></svg></i><i class="a-store"  style="--i:9"><svg viewBox="0 0 24 24"><use href="#ai-store"/></svg></i><i class="a-wallet"  style="--i:10"><svg viewBox="0 0 24 24"><use href="#ai-wallet"/></svg></i><i class="a-health" style="--i:11"><svg viewBox="0 0 24 24"><use href="#ai-health"/></svg></i>
+                      <i class="a-wa"      style="--i:12"><svg viewBox="0 0 24 24"><use href="#ai-wa"/></svg></i><i class="a-pod"     style="--i:13"><svg viewBox="0 0 24 24"><use href="#ai-pod"/></svg></i><i class="a-files"   style="--i:14"><svg viewBox="0 0 24 24"><use href="#ai-files"/></svg></i><i class="a-contact" style="--i:15"><svg viewBox="0 0 24 24"><use href="#ai-contact"/></svg></i>
+                      <i class="a-calc"    style="--i:16"><svg viewBox="0 0 24 24"><use href="#ai-calc"/></svg></i><i class="a-set"    style="--i:17"><svg viewBox="0 0 24 24"><use href="#ai-set"/></svg></i><i class="a-voice"   style="--i:18"><svg viewBox="0 0 24 24"><use href="#ai-voice"/></svg></i><i class="a-books"  style="--i:19"><svg viewBox="0 0 24 24"><use href="#ai-books"/></svg></i>
+                    </span>
+                    <span class="tr-dots"><i></i><i></i><i></i></span>
+                    <span class="tr-dock"><i class="a-phone"><svg viewBox="0 0 24 24"><use href="#ai-phone"/></svg></i><i class="a-msg"><svg viewBox="0 0 24 24"><use href="#ai-msg"/></svg></i><i class="a-safari"><svg viewBox="0 0 24 24"><use href="#ai-safari"/></svg></i><i class="a-music"><svg viewBox="0 0 24 24"><use href="#ai-music"/></svg></i></span>
+                    <span class="tr-home"></span>
+                  </span>
+                  <span class="tr-punch"></span>
+                  <span class="tr-refl"></span>
+                  <img class="tr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
+                  <span class="tr-land"></span>
+                </span>
+              </span>
+              <!-- five tracks of flowing dashes, behind both phones; see .tr-wire -->
+              <span class="tr-wire" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+              <!-- Nine packets in flight. The first six keep their own glyphs, drawn for this lane; the
+                   three added to raise the rate borrow from the home-screen sprite above rather than
+                   adding more path data for shapes that already exist in the file. Mobile shows the
+                   first six (see the nth-child(n+7) rule), which is why those six read as a complete
+                   sequence on their own. -->
+              <span class="tr-flow" aria-hidden="true">
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5c0-3-4-5.5-9-5.5Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm2.5 11h13l-4-5.5-3 4-2-2.5-4 4ZM8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c5 0 9 3.2 9 7.2 0 4-4 7.2-9 7.2-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 13 2 10.2 2 6.2 6 3 12 3Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3v10.6a3.5 3.5 0 1 0 2 3.15V7h4V3h-6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6V2Zm7 1.5V7h3.5L13 3.5ZM8.5 12h7v1.6h-7V12Zm0 3.4h7V17h-7v-1.6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm14 3.6 4-2.4v9.6l-4-2.4V9.6Z"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-mail"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-notes"/></svg></i>
+                <i><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ai-health"/></svg></i>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide s-teal" aria-roledescription="שקופית" aria-label="מבצע 3 מתוך 5">
+          <div class="slide-in">
+            <span class="badge">בתשלומים</span>
+            <h3>מכשירים חדשים, ועוזרים לכם לבחור</h3>
+            <p>כל הדגמים החדשים, יבוא רשמי ומקביל, בפריסת תשלומים נוחה, כולל העברת נתונים מהמכשיר הישן.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על מכשיר חדש בתשלומים"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+          </div>
+          <div class="slide-art">
+            <div class="hstage" id="hstage">
+              <div class="hglow" aria-hidden="true"></div>
+              <div class="hlayer" data-depth="12" style="left:27.56%;top:9.39%;width:60.5%"><span class="henter" style="--d:.12s;--fy:24px"><span class="hfloat" style="--fd:7.5s;--fdl:0s;--my:8px"><span class="hdrift" style="--sd:10s;--sdl:.6s;--mx:4px"><picture><source srcset="/layers/phones.webp" type="image/webp"><img src="/layers/phones.png" width="876" height="770" alt="מכשירים חדשים למכירה בפון גת: אייפון, סמסונג ואבזור" loading="lazy" decoding="async"></picture></span></span></span></div>
+              <div class="hlayer" data-depth="26" style="left:8.22%;top:24.86%;width:18.51%" aria-hidden="true"><span class="henter" style="--d:.34s;--fy:14px"><span class="hfloat" style="--fd:5.5s;--fdl:.8s;--my:15px"><span class="hdrift" style="--sd:7.5s;--sdl:0s;--mx:7px"><picture><source srcset="/layers/airpods.webp" type="image/webp"><img src="/layers/airpods.png" width="268" height="304" alt="" loading="lazy" decoding="async"></picture></span></span></span></div>
+              <div class="hlayer" data-depth="30" style="left:7.32%;top:54.97%;width:22.31%" aria-hidden="true"><span class="henter" style="--d:.46s;--fy:26px"><span class="hfloat" style="--fd:6.3s;--fdl:.4s;--my:13px"><span class="hdrift" style="--sd:8.6s;--sdl:1s;--mx:6px"><picture><source srcset="/layers/charger.webp" type="image/webp"><img src="/layers/charger.png" width="323" height="385" alt="" loading="lazy" decoding="async"></picture></span></span></span></div>
+              <div class="hlayer" data-depth="20" style="left:27.28%;top:80.76%;width:46.27%" aria-hidden="true"><span class="henter" style="--d:.58s;--fy:22px"><span class="hfloat" style="--fd:8.2s;--fdl:1.2s;--my:11px"><span class="hdrift" style="--sd:6.4s;--sdl:.3s;--mx:5px"><picture><source srcset="/layers/cable.webp" type="image/webp"><img src="/layers/cable.png" width="670" height="167" alt="" loading="lazy" decoding="async"></picture></span></span></span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide s-scr" aria-roledescription="שקופית" aria-label="מבצע 4 מתוך 5">
+          <div class="slide-in">
+            <span class="scr-excl">רק באתר</span>
+            <h3>מגן מסך כולל הדבקה</h3>
+            <p class="scr-price">רק <b>9</b><span class="cur">₪</span></p>
+            <p class="scr-sub">מגן זכוכית איכותי והתקנה מקצועית במקום.</p>
+            <p class="scr-fine">למעט מכשירים מעוגלים ובכפוף למלאי.</p>
+            <button type="button" class="btn scr-cta" data-pg-coupon aria-label="קבלו קוד הטבה: מגן מסך כולל הדבקה ב-9 שקלים, למעט מכשירים מעוגלים ובכפוף למלאי">קבלו קוד הטבה</button>
+          </div>
+          <div class="slide-art">
+            <!-- live product shot: the glass drifts up and settles onto the phone, like applying it -->
+            <div class="scr-stage" role="img" aria-label="מגן זכוכית נצמד אל מסך האייפון">
+              <span class="scr-halo" aria-hidden="true"></span>
+              <span class="scr-wall" aria-hidden="true"></span>
+              <span class="scr-punch" aria-hidden="true"></span>
+              <span class="scr-refl" aria-hidden="true"></span>
+              <img class="scr-frame" src="/iphone-frame.webp" alt="" width="663" height="1403" loading="lazy" decoding="async">
+              <span class="scr-glass" aria-hidden="true"></span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide s-carriers" aria-roledescription="שקופית" aria-label="מבצע 5 מתוך 5">
+          <div class="slide-in">
+            <span class="badge">כל החברות</span>
+            <h3>ניוד ופתיחת קו, בלי להמתין למוקד</h3>
+            <p>פתיחת קו, ניוד מספר, החלפת סים או מעבר מסלול, בכל חברה בישראל. משווק מורשה סלקום, ומטפלים בכל התהליך מולכם בחנות, פנים אל פנים.</p>
+            <a class="btn btn-wa" href="https://wa.me/97286812050?text=היי, אשמח לפרטים על ניוד קו או פתיחת מסלול"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
+          </div>
+          <div class="slide-art">
+            <div class="pg-sim-stage" aria-hidden="true">
+              <span class="pg-sim" style="--x:69%;--y:30%;--z:5;--s:1;--fd:6.6s;--fdl:.2s;--mx:6px;--my:11px;--r:5deg;--sbg:#fff;--ex:46px;--ey:-38px;--er:9deg;--bd:.02s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/pelephone.png" alt="פלאפון" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:31%;--y:32%;--z:4;--s:.9;--fd:7.3s;--fdl:.6s;--mx:-7px;--my:10px;--r:-9deg;--sbg:#fff;--ex:-46px;--ey:-36px;--er:-10deg;--bd:0s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/cellcom.png" alt="סלקום" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:50%;--y:52%;--z:6;--s:.94;--fd:6.9s;--fdl:0s;--mx:5px;--my:12px;--r:-2deg;--sbg:#2dd5c4;--ex:0px;--ey:-26px;--er:-5deg;--bd:.05s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/partner.png" alt="פרטנר" width="173" height="115" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:22%;--y:63%;--z:3;--s:.8;--fd:8s;--fdl:.9s;--mx:-8px;--my:9px;--r:-11deg;--sbg:#ff40b3;--ex:-54px;--ey:22px;--er:-11deg;--bd:.03s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/ramilevy.png" alt="רמי לוי תקשורת" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:49%;--y:77%;--z:7;--s:.88;--fd:7.6s;--fdl:.4s;--mx:6px;--my:13px;--r:3deg;--sbg:#000;--ex:-6px;--ey:34px;--er:6deg;--bd:.06s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/hot.png" alt="HOT mobile" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+              <span class="pg-sim" style="--x:75%;--y:64%;--z:3;--s:.8;--fd:8.4s;--fdl:1.1s;--mx:7px;--my:10px;--r:9deg;--sbg:#fff;--ex:52px;--ey:26px;--er:13deg;--bd:.04s"><span class="pg-sim-face"><img class="pg-sim-logo" src="/logos/golan.png" alt="גולן טלקום" width="300" height="300" loading="lazy" decoding="async"><span class="pg-sim-chip"></span></span></span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+    <button class="car-btn car-prev" type="button" aria-label="המבצע הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    <button class="car-btn car-next" type="button" aria-label="המבצע הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="car-dots" aria-label="בחירת מבצע"></div>
+  </div>
+</section>
+<!-- pg-deals:section:end -->
 
 <section class="block" id="fit" aria-labelledby="h-fit">
   <div class="wrap box">
@@ -1225,6 +2517,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+
+
+
 <!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
 <div class="pg-fab-wrap" id="pgFabWrap">
   <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
@@ -1250,5 +2545,413 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
 </section>
 <!-- bot:html:end -->
 <script src="/chat.js" defer></script>
+<!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
+<div class="pg-cpn-ov" id="pgCpnOv">
+  <div class="pg-cpn" role="dialog" aria-modal="true" aria-labelledby="pgCpnTitle">
+    <div class="pg-cpn-hd">
+      <button class="pg-cpn-x" id="pgCpnX" type="button" aria-label="סגירה"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <picture><source srcset="/logo-mark.webp" type="image/webp"><img class="pg-cpn-logo" src="/logo-mark.png" alt="פון גת" width="295" height="112"></picture>
+      <span class="pg-cpn-excl"><span class="st">★</span> בלעדי למשתמשי האתר</span>
+      <!-- No real src here on purpose. build() sets src, width and height from the offer before the
+           overlay is ever shown, so whatever sits here is never displayed to anyone. It used to point
+           at the screen-protector cutout, which meant every visitor downloaded that file for a popup
+           that would immediately overwrite it. The 1x1 transparent GIF keeps the element valid and
+           costs no request. -->
+      <img class="pg-cpn-dev" id="pgCpnDev" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" decoding="async">
+      <h3 id="pgCpnTitle">מגן מסך + הדבקה מקצועית</h3>
+      <p class="desc" id="pgCpnDesc">מגן זכוכית איכותי + הדבקה מקצועית במקום</p>
+      <span class="pg-cpn-price" id="pgCpnPrice">רק ב־ <b>9<span class="cur">₪</span></b></span>
+    </div>
+    <div class="pg-cpn-bd">
+      <p class="pg-cpn-codeLab">קוד הקופון שלך</p>
+      <button class="pg-cpn-code" id="pgCpnCopy" type="button" aria-label="העתקת קוד הקופון">
+        <b id="pgCpnCode">SP-••••</b>
+        <svg class="tk" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h13A2.5 2.5 0 0 1 21 8.5 1.5 1.5 0 0 0 21 11.5 2.5 2.5 0 0 1 18.5 14h-13A2.5 2.5 0 0 1 3 11.5 1.5 1.5 0 0 0 3 8.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M9 9l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="9.4" cy="9.4" r="1" fill="currentColor"/><circle cx="14.6" cy="14.6" r="1" fill="currentColor"/></svg>
+      </button>
+      <p class="pg-cpn-copied" id="pgCpnCopied">הקישו על הקוד להעתקה</p>
+      <p class="pg-cpn-qr-cap">סרקו את הקוד לפתיחת WhatsApp עם הקופון</p>
+      <div class="pg-cpn-qr" id="pgCpnQrBox" aria-hidden="true"><canvas id="pgCpnQr"></canvas></div>
+      <p class="pg-cpn-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 1.6 21h20.8L12 3.2Zm0 5.3c.6 0 1 .4 1 1v4.5a1 1 0 0 1-2 0V9.5c0-.6.4-1 1-1Zm0 8.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg> לשימוש חד פעמי בלבד</p>
+      <a class="pg-cpn-go" id="pgCpnGo" href="#" target="_blank" rel="noopener"><img src="/whatsapp-logo.png" alt="" width="22" height="22" decoding="async">מימוש עכשיו ב-WhatsApp</a>
+      <!-- Says the actual conditions instead of "subject to the promotion's terms": there is no
+           terms page to link to, and conditioning an advertised offer on unpublished terms is the
+           kind of thing consumer-protection law exists for. -->
+      <p class="pg-cpn-fine" id="pgCpnFine">הציגו את הקוד בחנות או סרקו · לשימוש חד פעמי · למעט מכשירים מעוגלים.</p>
+    </div>
+  </div>
+</div>
+<script>
+/* PGQR — compact QR Code generator (byte mode), condensed from Project Nayuki's
+   MIT-licensed QR Code generator. Self-contained, no network requests. */
+(function(root){
+  "use strict";
+  var ECC={LOW:{ordinal:0,formatBits:1},MEDIUM:{ordinal:1,formatBits:0},QUARTILE:{ordinal:2,formatBits:3},HIGH:{ordinal:3,formatBits:2}};
+  var ECC_CODEWORDS_PER_BLOCK=[
+    [-1,7,10,15,20,26,18,20,24,30,18,20,24,26,30,22,24,28,30,28,28,28,28,30,30,26,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+    [-1,10,16,26,18,24,16,18,22,22,26,30,22,22,24,24,28,28,26,26,26,26,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28],
+    [-1,13,22,18,26,18,24,18,22,20,24,28,26,24,20,30,24,28,28,26,30,28,30,30,30,30,28,30,30,30,30,30,30,30,30,30,30,30,30,30,30],
+    [-1,17,28,22,16,22,28,26,26,24,28,24,28,22,24,24,30,28,28,26,28,30,24,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30]];
+  var NUM_EC_BLOCKS=[
+    [-1,1,1,1,1,1,2,2,2,2,4,4,4,4,4,6,6,6,6,7,8,8,9,9,10,12,12,12,13,14,15,16,17,18,19,19,20,21,22,24,25],
+    [-1,1,1,1,2,2,4,4,4,5,5,5,8,9,9,10,10,11,13,14,16,17,17,18,20,21,23,25,26,28,29,31,33,35,37,38,40,43,45,47,49],
+    [-1,1,1,2,2,4,4,6,6,8,8,8,10,12,16,12,17,16,18,21,20,23,23,25,27,29,34,34,35,38,40,43,45,48,51,53,56,59,62,65,68],
+    [-1,1,1,2,4,4,4,5,6,8,8,11,11,16,16,18,16,19,21,25,25,25,34,30,32,35,37,40,42,45,48,51,54,57,60,63,66,70,74,77,81]];
+  function getBit(x,i){return ((x>>>i)&1)!=0;}
+  function rsMul(x,y){var z=0;for(var i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x;}return z&0xFF;}
+  function rsDivisor(degree){var result=[],i;for(i=0;i<degree-1;i++)result.push(0);result.push(1);var root=1;for(i=0;i<degree;i++){for(var j=0;j<result.length;j++){result[j]=rsMul(result[j],root);if(j+1<result.length)result[j]^=result[j+1];}root=rsMul(root,0x02);}return result;}
+  function rsRemainder(data,divisor){var result=divisor.map(function(){return 0;});for(var d=0;d<data.length;d++){var factor=data[d]^result.shift();result.push(0);for(var i=0;i<divisor.length;i++)result[i]^=rsMul(divisor[i],factor);}return result;}
+  function getNumRawDataModules(ver){var result=(16*ver+128)*ver+64;if(ver>=2){var numAlign=Math.floor(ver/7)+2;result-=(25*numAlign-10)*numAlign-55;if(ver>=7)result-=36;}return result;}
+  function getNumDataCodewords(ver,ecl){return Math.floor(getNumRawDataModules(ver)/8)-ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver]*NUM_EC_BLOCKS[ecl.ordinal][ver];}
+  function QrCode(version,ecl,dataCodewords,mask){
+    this.version=version;this.ecl=ecl;this.size=version*4+17;this.modules=[];this.isFn=[];
+    for(var i=0;i<this.size;i++){var r=[],f=[];for(var j=0;j<this.size;j++){r.push(false);f.push(false);}this.modules.push(r);this.isFn.push(f);}
+    this.drawFunctionPatterns();this.drawCodewords(this.addEccAndInterleave(dataCodewords));
+    if(mask==-1){var minP=Infinity,best=0;for(var m=0;m<8;m++){this.applyMask(m);this.drawFormatBits(m);var p=this.getPenaltyScore();if(p<minP){minP=p;best=m;}this.applyMask(m);}mask=best;}
+    this.mask=mask;this.applyMask(mask);this.drawFormatBits(mask);this.isFn=null;
+  }
+  var P=QrCode.prototype;
+  P.setFn=function(x,y,d){this.modules[y][x]=d;this.isFn[y][x]=true;};
+  P.drawFunctionPatterns=function(){var size=this.size,i;for(i=0;i<size;i++){this.setFn(6,i,i%2==0);this.setFn(i,6,i%2==0);}this.drawFinder(3,3);this.drawFinder(size-4,3);this.drawFinder(3,size-4);var pos=this.getAlignPositions(),n=pos.length;for(i=0;i<n;i++)for(var j=0;j<n;j++){if(!(i==0&&j==0||i==0&&j==n-1||i==n-1&&j==0))this.drawAlign(pos[i],pos[j]);}this.drawFormatBits(0);this.drawVersion();};
+  P.drawFinder=function(x,y){for(var dy=-4;dy<=4;dy++)for(var dx=-4;dx<=4;dx++){var dist=Math.max(Math.abs(dx),Math.abs(dy)),xx=x+dx,yy=y+dy;if(0<=xx&&xx<this.size&&0<=yy&&yy<this.size)this.setFn(xx,yy,dist!=2&&dist!=4);}};
+  P.drawAlign=function(x,y){for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++)this.setFn(x+dx,y+dy,Math.max(Math.abs(dx),Math.abs(dy))!=1);};
+  P.drawFormatBits=function(mask){var data=(this.ecl.formatBits<<3)|mask,rem=data,i;for(i=0;i<10;i++)rem=(rem<<1)^((rem>>>9)*0x537);var bits=((data<<10)|rem)^0x5412,size=this.size;for(i=0;i<=5;i++)this.setFn(8,i,getBit(bits,i));this.setFn(8,7,getBit(bits,6));this.setFn(8,8,getBit(bits,7));this.setFn(7,8,getBit(bits,8));for(i=9;i<15;i++)this.setFn(14-i,8,getBit(bits,i));for(i=0;i<8;i++)this.setFn(size-1-i,8,getBit(bits,i));for(i=8;i<15;i++)this.setFn(8,size-15+i,getBit(bits,i));this.setFn(8,size-8,true);};
+  P.drawVersion=function(){if(this.version<7)return;var rem=this.version,i;for(i=0;i<12;i++)rem=(rem<<1)^((rem>>>11)*0x1F25);var bits=(this.version<<12)|rem,size=this.size;for(i=0;i<18;i++){var bit=getBit(bits,i),a=size-11+i%3,b=Math.floor(i/3);this.setFn(a,b,bit);this.setFn(b,a,bit);}};
+  P.addEccAndInterleave=function(data){var ver=this.version,ecl=this.ecl,numBlocks=NUM_EC_BLOCKS[ecl.ordinal][ver],blockEccLen=ECC_CODEWORDS_PER_BLOCK[ecl.ordinal][ver],rawCodewords=Math.floor(getNumRawDataModules(ver)/8),numShort=numBlocks-rawCodewords%numBlocks,shortLen=Math.floor(rawCodewords/numBlocks),blocks=[],rsDiv=rsDivisor(blockEccLen);for(var i=0,k=0;i<numBlocks;i++){var dat=data.slice(k,k+shortLen-blockEccLen+(i<numShort?0:1));k+=dat.length;var ecc=rsRemainder(dat,rsDiv);if(i<numShort)dat.push(0);blocks.push(dat.concat(ecc));}var result=[];for(var col=0;col<blocks[0].length;col++)for(var b=0;b<blocks.length;b++){if(col!=shortLen-blockEccLen||b>=numShort)result.push(blocks[b][col]);}return result;};
+  P.drawCodewords=function(data){var size=this.size,i=0;for(var right=size-1;right>=1;right-=2){if(right==6)right=5;for(var vert=0;vert<size;vert++)for(var j=0;j<2;j++){var x=right-j,upward=((right+1)&2)==0,y=upward?size-1-vert:vert;if(!this.isFn[y][x]&&i<data.length*8){this.modules[y][x]=getBit(data[i>>>3],7-(i&7));i++;}}}};
+  P.applyMask=function(mask){var size=this.size;for(var y=0;y<size;y++)for(var x=0;x<size;x++){var invert;switch(mask){case 0:invert=(x+y)%2==0;break;case 1:invert=y%2==0;break;case 2:invert=x%3==0;break;case 3:invert=(x+y)%3==0;break;case 4:invert=(Math.floor(x/3)+Math.floor(y/2))%2==0;break;case 5:invert=x*y%2+x*y%3==0;break;case 6:invert=(x*y%2+x*y%3)%2==0;break;case 7:invert=((x+y)%2+x*y%3)%2==0;break;}if(!this.isFn[y][x]&&invert)this.modules[y][x]=!this.modules[y][x];}};
+  P.getPenaltyScore=function(){var size=this.size,m=this.modules,result=0,x,y;
+    for(y=0;y<size;y++){var run=0,color=false;for(x=0;x<size;x++){if(m[y][x]==color){run++;if(run==5)result+=3;else if(run>5)result++;}else{color=m[y][x];run=1;}}}
+    for(x=0;x<size;x++){var run2=0,color2=false;for(y=0;y<size;y++){if(m[y][x]==color2){run2++;if(run2==5)result+=3;else if(run2>5)result++;}else{color2=m[y][x];run2=1;}}}
+    for(y=0;y<size-1;y++)for(x=0;x<size-1;x++){var c=m[y][x];if(c==m[y][x+1]&&c==m[y+1][x]&&c==m[y+1][x+1])result+=3;}
+    var dark=0;for(y=0;y<size;y++)for(x=0;x<size;x++)if(m[y][x])dark++;var total=size*size;var kk=Math.ceil(Math.abs(dark*20-total*10)/total)-1;result+=kk*10;return result;};
+  P.getAlignPositions=function(){if(this.version==1)return [];var numAlign=Math.floor(this.version/7)+2,step=(this.version==32)?26:Math.ceil((this.version*4+4)/(numAlign*2-2))*2,result=[6];for(var pos=this.size-7;result.length<numAlign;pos-=step)result.splice(1,0,pos);return result;};
+  function toUtf8(str){if(typeof TextEncoder!=="undefined")return Array.prototype.slice.call(new TextEncoder().encode(str));var out=[],i,c;for(i=0;i<str.length;i++){c=str.charCodeAt(i);if(c<0x80)out.push(c);else if(c<0x800)out.push(0xC0|(c>>6),0x80|(c&0x3F));else out.push(0xE0|(c>>12),0x80|((c>>6)&0x3F),0x80|(c&0x3F));}return out;}
+  function encodeText(text,ecl){ecl=ecl||ECC.MEDIUM;var bytes=toUtf8(text),numBytes=bytes.length,version=-1,v,ccBits,used,cap;for(v=1;v<=40;v++){ccBits=(v<10)?8:16;used=4+ccBits+8*numBytes;cap=getNumDataCodewords(v,ecl)*8;if(used<=cap){version=v;break;}}if(version==-1)throw new Error("Data too long");var bb=[];function appendBits(val,len){for(var i=len-1;i>=0;i--)bb.push((val>>>i)&1);}appendBits(4,4);appendBits(numBytes,(version<10)?8:16);for(var i=0;i<bytes.length;i++)appendBits(bytes[i],8);var capB=getNumDataCodewords(version,ecl)*8;appendBits(0,Math.min(4,capB-bb.length));appendBits(0,(8-bb.length%8)%8);for(var pad=0xEC;bb.length<capB;pad^=0xEC^0x11)appendBits(pad,8);var dataCw=[];for(var b=0;b<bb.length;b+=8){var byte=0;for(var q=0;q<8;q++)byte=(byte<<1)|bb[b+q];dataCw.push(byte);}return new QrCode(version,ecl,dataCw,-1);}
+  var PGQR={ECC:ECC,encode:encodeText,toCanvas:function(canvas,text,opts){opts=opts||{};var qr=encodeText(text,opts.ecl||ECC.MEDIUM),border=(opts.border==null)?4:opts.border,scale=opts.scale||4,size=qr.size,dim=(size+border*2)*scale,ctx=canvas.getContext('2d');canvas.width=dim;canvas.height=dim;ctx.fillStyle=opts.light||"#fff";ctx.fillRect(0,0,dim,dim);ctx.fillStyle=opts.dark||"#000";for(var y=0;y<size;y++)for(var x=0;x<size;x++)if(qr.modules[y][x])ctx.fillRect((x+border)*scale,(y+border)*scale,scale,scale);return {version:qr.version,size:qr.size};}};
+  root.PGQR=PGQR;
+})(window);
+</script>
+<script>
+/* Coupon popup for the in-feed ad: per-visitor code + a real QR (WhatsApp deep-link). */
+(function(){
+  var WA='https://wa.me/97286812050';
+  var ov=document.getElementById('pgCpnOv');if(!ov)return;
+  var dialog=ov.querySelector('.pg-cpn'),
+      codeEl=document.getElementById('pgCpnCode'),
+      copyBtn=document.getElementById('pgCpnCopy'),
+      goBtn=document.getElementById('pgCpnGo'),
+      qrCanvas=document.getElementById('pgCpnQr'),
+      qrBox=document.getElementById('pgCpnQrBox'),
+      xBtn=document.getElementById('pgCpnX'),
+      track=document.getElementById('pgTrack'),
+      copiedEl=document.getElementById('pgCpnCopied'),
+      titleEl=document.getElementById('pgCpnTitle'),
+      descEl=document.getElementById('pgCpnDesc'),
+      priceEl=document.getElementById('pgCpnPrice'),
+      fineEl=document.getElementById('pgCpnFine'),
+      devEl=document.getElementById('pgCpnDev'),
+      screen=document.querySelector('.pg-screen');
+  var lastFocus=null,builtKey=null;
+  /* The chat widget's track() is private to that IIFE, so calling it from here threw
+     "track is not a function" and killed the click handler: the offer popup stopped opening
+     entirely. Syntax-valid, so neither preflight nor a parser catches it, and it only showed up
+     when the button was actually pressed in a browser. Hence a local push of its own. */
+  function cpnTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev};if(d)for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(_){}}
+  /* each [data-pg-coupon] trigger names its offer; an empty value = the screen-protector offer */
+  /* NOTE: keep this object free of prose comments. preflight's allowlist check walks the OFFERS
+     body character by character without stripping comments, so an apostrophe in an English word
+     opens a string and swallows the offer keys after it, and an identifier followed by a colon
+     inside a sentence registers as an offer that does not exist. Both failure modes were hit here.
+     Explanations for individual offers belong above this block, not inside it.
+
+     idf has no number to show, so it carries priceHtml, which overrides the numeric price template
+     in build(). Rendering its zero through that template would print a "0₪" price tag, which is
+     accurate and completely wrong in tone. It reuses the screen-protector photo: same product. */
+  var OFFERS={
+    screen:{title:'מגן מסך כולל הדבקה',desc:'מגן זכוכית איכותי והתקנה מקצועית במקום',price:'9',
+      img:'/screen-product.webp',imgW:615,imgH:730,photo:true,theme:'t-blue',qr:'#12447a',key:'pg_screen9_coupon',prefix:'SP-',
+      wa:'היי! אני רוצה לממש את מבצע מגן מסך כולל הדבקה ב-9₪. קוד הקופון שלי: ',
+      fine:'הציגו את הקוד בחנות או סרקו · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'},
+    kb:{title:'מקלדת + עכבר',desc:'סט מקלדת ועכבר, חיבור USB, ללימודים לבית ולמשרד',price:'49',
+      img:'/keyboard-product.webp',imgW:985,imgH:480,photo:true,theme:'t-navy',qr:'#0b2236',key:'pg_kb49_coupon',prefix:'KM-',
+      wa:'היי! אני רוצה לממש את מבצע מקלדת + עכבר ב-49₪ (בקנייה מעל 100 ₪). קוד הקופון שלי: ',
+      fine:'הציגו את הקוד בחנות או סרקו · בקנייה מעל 100 ₪ · בכפוף למלאי · ט.ל.ח.'},
+    idf:{title:'מגן מסך כולל הדבקה',desc:'הטבה לחיילי צה״ל, במדים',price:'0',priceHtml:'<b>ללא עלות</b>',
+      img:'/screen-product.webp',imgW:615,imgH:730,photo:true,theme:'t-olive',qr:'#2F3821',key:'pg_idf_coupon',prefix:'TZ-',
+      wa:'היי! אני רוצה לממש את הטבת חיילי צה״ל, מגן מסך כולל הדבקה. קוד הקופון שלי: ',
+      fine:'בהצגת הקוד ובמדים · קופון אחד לאדם · למעט מכשירים מעוגלים · בכפוף למלאי · ט.ל.ח.'}
+  };
+  var FOCUSABLE='a[href],button:not([disabled]),input,[tabindex]:not([tabindex="-1"])';
+
+  /* Coupon numbers come from /api/coupon, so they ascend across all visitors and the last
+     number issued tells the shop how many coupons were handed out. A number is drawn once
+     per browser per offer and then kept, so a returning customer sees the same code.
+     If the counter can't be reached the code falls back to the reserved 9xxx range — that
+     leading 9 tells the shop at a glance it wasn't issued by the counter. */
+  var SEQ_TIMEOUT=2500,seqPending={},currentCode=null;
+
+  function pad4(n){var s=String(n);return s.length>=4?s:('0000'+s).slice(-4);}
+  function fallbackCode(o){var d='';for(var i=0;i<3;i++)d+=Math.floor(Math.random()*10);return o.prefix+'9'+d;}
+
+  /* one request per offer even on a double-click, so no number gets consumed and thrown away */
+  function fetchSeq(k){
+    /* A test coupon must never consume a real number — the counter's value IS the answer to
+       "how many coupons were issued". Resolving null sends the caller to the reserved 9xxx
+       fallback, which is precisely what a code not issued by the counter should look like. */
+    if(!window.PG_PROD)return Promise.resolve(null);
+    if(seqPending[k])return seqPending[k];
+    var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
+    seqPending[k]=fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({offer:k}),cache:'no-store',signal:ctl?ctl.signal:undefined})
+      .then(function(r){
+        /* an offer missing from the server allowlist would otherwise fail silently into the
+           9xxx range — the site keeps working but that offer never gets counted. Say so loudly. */
+        if(r.status===400&&window.console)console.warn('[pg] מבצע "'+k+'" חסר ברשימת ההיתר ב-api/coupon.js, הקודים שלו לא ייספרו');
+        return r.ok?r.json():null;})
+      .then(function(j){return (j&&typeof j.n==='number')?j.n:null;})
+      .catch(function(){return null;})
+      .then(function(n){clearTimeout(timer);delete seqPending[k];return n;});
+    return seqPending[k];
+  }
+
+  /* A code kept from before this offer's prefix changed (PG9-/PG49- before the SP-/KM- move) was never
+     issued by the counter, so it can never be reconciled with pg:cpn:seq:<offer> — it simply is not
+     counted. Anything that does not carry the current prefix is therefore dropped, and the visitor is
+     minted a real sequential code on the spot. A code the customer already screenshotted stays valid in
+     the shop; this only decides what the site shows from here on. */
+  function storedCode(o){try{
+    var c=localStorage.getItem(o.key);
+    if(c&&c.indexOf(o.prefix)!==0){try{localStorage.removeItem(o.key);}catch(_){}return null;}
+    return c||null;
+  }catch(_){return null;}}
+
+  /* draws a fresh number — only ever called when this browser has no code for the offer yet */
+  function mintCode(k,o){
+    return fetchSeq(k).then(function(n){
+      var code=(n===null)?fallbackCode(o):(o.prefix+pad4(n));
+      try{localStorage.setItem(o.key,code);}catch(_){}
+      return code;
+    });
+  }
+
+  /* the popup must never wait on the network: it opens with a placeholder and fills in */
+  function setPending(o){currentCode=null;
+    if(codeEl)codeEl.textContent=o.prefix+'••••';
+    if(goBtn)goBtn.setAttribute('aria-disabled','true');
+    if(copiedEl){copiedEl.textContent='רק רגע, מכינים את הקוד…';copiedEl.classList.remove('ok');}}
+
+  function applyCode(o,code){currentCode=code;
+    /* fallback tells you the counter was bypassed. The 9xxx range is reserved for failures, so a
+       rising share of these means the sequence in Upstash is under-reporting the real demand,
+       and that number is the whole reason the endpoint exists. */
+    cpnTrack('coupon_code_shown',{offer:builtKey||'',fallback:code.indexOf(o.prefix+'9')===0?1:0});
+    if(codeEl)codeEl.textContent=code;
+    if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}
+    if(goBtn){goBtn.removeAttribute('aria-disabled');
+      goBtn.href=WA+'?text='+encodeURIComponent(o.wa+code+' (לשימוש חד פעמי).');}
+    if(qrBox)qrBox.style.display='';
+    try{if(window.PGQR){PGQR.toCanvas(qrCanvas,WA+'?text='+encodeURIComponent(code),{scale:5,border:2,dark:(o.qr||'#241033'),light:'#ffffff'});}else{qrBox.style.display='none';}}catch(e){if(qrBox)qrBox.style.display='none';}}
+
+  function build(k){if(builtKey===k)return;builtKey=k;var o=OFFERS[k]||OFFERS.screen;
+    /* Every theme must be listed here. A theme left out is not removed when the next offer opens,
+       so it sticks to the overlay and repaints an unrelated coupon in the wrong palette. */
+    ov.classList.remove('t-navy','t-blue','t-olive');if(o.theme)ov.classList.add(o.theme);
+    if(titleEl)titleEl.textContent=o.title;
+    if(descEl)descEl.textContent=o.desc;
+    if(priceEl)priceEl.innerHTML=o.priceHtml||('רק ב־ <b>'+o.price+'<span class="cur">₪</span></b>');
+    if(fineEl)fineEl.textContent=o.fine;
+    if(devEl){devEl.src=o.img;devEl.setAttribute('width',o.imgW);devEl.setAttribute('height',o.imgH);devEl.classList.toggle('is-photo',!!o.photo);}
+    /* a code this browser already holds shows instantly — no placeholder flash, no number drawn */
+    var have=storedCode(o);
+    if(have){applyCode(o,have);return;}
+    setPending(o);
+    mintCode(k,o).then(function(code){if(builtKey===k)applyCode(o,code);});}
+
+  function pauseFeed(p){if(screen)screen.classList.toggle('paused',p);}
+  function onKey(e){if(e.key==='Escape'){e.preventDefault();close();return;}
+    if(e.key==='Tab'){var f=[].slice.call(dialog.querySelectorAll(FOCUSABLE)).filter(function(el){return el.offsetParent!==null;});if(!f.length)return;var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}
+  /* Which of the six triggers was used. Two signals, not one, because neither is stable alone:
+     the nearest section id survives a restyle but is often just the page wrapper, and the
+     trigger's own class distinguishes all six but a design edit can rename it. Recording both
+     means one can be lost without going blind. */
+  function placementOf(el){
+    try{
+      var sec=el&&el.closest?el.closest('section[id],div[id],aside[id]'):null;
+      return (sec&&sec.id)?sec.id:'none';
+    }catch(_){return 'none';}
+  }
+  function ctaOf(el){
+    try{
+      var c=el&&el.className?String(el.className).trim().split(/\s+/):[];
+      /* Read from the end: the offer-specific class is written last, after the shared .btn and its
+         style modifiers. Skipping everything that starts with "btn-" was too aggressive and threw
+         away btn-idf, which is the one class that identifies that trigger. */
+      for(var i=c.length-1;i>=0;i--)if(c[i]&&c[i]!=='btn')return c[i];
+      return 'none';
+    }catch(_){return 'none';}
+  }
+  function open(trigger){lastFocus=trigger||document.activeElement;
+    var k=(trigger&&trigger.getAttribute)?(trigger.getAttribute('data-pg-coupon')||'screen'):'screen';
+    /* Same prototype-chain hole the server had: OFFERS['toString'] is truthy on a plain object, so
+       a trigger naming any built-in property used to reach build() and render a non-existent offer.
+       (Do not write the attribute-and-value pair out in a comment here: the button check scans for
+       it without stripping comments, and an example registers as a real button. It just did.) */
+    if(!Object.prototype.hasOwnProperty.call(OFFERS,k))k='screen';
+    /* The offer is the main conversion on this page and it reported nothing at all until now:
+       not the open, not the code, not the copy, not the send. */
+    cpnTrack('coupon_open',{offer:k,placement:placementOf(trigger),cta:ctaOf(trigger)});
+    build(k);ov.classList.add('open');document.documentElement.style.overflow='hidden';pauseFeed(true);(xBtn||dialog).focus();document.addEventListener('keydown',onKey,true);}
+  function close(){ov.classList.remove('open');document.documentElement.style.overflow='';pauseFeed(false);document.removeEventListener('keydown',onKey,true);if(lastFocus&&lastFocus.focus){try{lastFocus.focus();}catch(_){}}}
+
+  /* open the offer popup from ANY [data-pg-coupon] trigger, anywhere on the page.
+     capture phase so it also pre-empts the phone's tap-to-pause when clicked in-feed. */
+  document.addEventListener('click',function(e){var btn=e.target.closest?e.target.closest('[data-pg-coupon]'):null;if(btn){e.preventDefault();e.stopPropagation();open(btn);}},true);
+  if(xBtn)xBtn.addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov)close();});
+  /* while the number is still coming back, copying or sending the «••••» placeholder
+     would be worse than a brief wait — so both actions no-op until the code lands */
+  /* Sending the code to WhatsApp is the closest thing on this page to an intent to redeem, so it
+     is the event worth optimising for. It only counts when a real code is present, because the
+     guard below turns the click into a no-op otherwise. */
+  if(goBtn)goBtn.addEventListener('click',function(e){if(!currentCode){e.preventDefault();return;}cpnTrack('coupon_whatsapp',{offer:builtKey||'',fallback:currentCode.charAt(3)==='9'?1:0});});
+  if(copyBtn)copyBtn.addEventListener('click',function(){if(!currentCode)return;cpnTrack('coupon_copied',{offer:builtKey||''});var txt=codeEl.textContent;function done(){copyBtn.classList.add('done');if(copiedEl){copiedEl.textContent='✓ הקוד הועתק';copiedEl.classList.add('ok');}setTimeout(function(){copyBtn.classList.remove('done');if(copiedEl){copiedEl.textContent='הקישו על הקוד להעתקה';copiedEl.classList.remove('ok');}},1900);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,done);}else{try{var r=document.createRange();r.selectNode(codeEl);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);document.execCommand('copy');sel.removeAllRanges();done();}catch(_){}}});
+})();
+</script>
+<script>
+(function(){
+  var root=document.getElementById('deals');if(!root)return;
+  var track=root.querySelector('.car-track');
+  var vp=root.querySelector('.car-vp');
+  var dotsWrap=root.querySelector('.car-dots');
+  var real=[].slice.call(track.querySelectorAll('.slide'));
+  var n=real.length;if(!n)return;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* A copy of the last slide before the first, and a copy of the first after the last. That is what
+     makes the run continuous: "next" from the last offer and "prev" from the first both move ONE step
+     in the direction you were already going, instead of winding the whole strip back to the start.
+     Once the copy is on screen the track jumps to its real twin with the transition switched off, and
+     because the two show the same slide there is nothing to see.
+     The copies are scenery only. inert keeps them out of the tab order and out of the pointer path,
+     and the id/data-pg-coupon strip stops a copy from answering to getElementById('hstage') or from
+     opening the coupon popup - that popup listens on the document for any [data-pg-coupon]. */
+  function copyOf(node){
+    var c=node.cloneNode(true);
+    c.setAttribute('aria-hidden','true');
+    c.setAttribute('inert','');
+    c.removeAttribute('aria-label');
+    [].slice.call(c.querySelectorAll('[id]')).forEach(function(el){el.removeAttribute('id');});
+    [].slice.call(c.querySelectorAll('[data-pg-coupon]')).forEach(function(el){el.removeAttribute('data-pg-coupon');});
+    return c;
+  }
+  track.insertBefore(copyOf(real[n-1]),real[0]);
+  track.appendChild(copyOf(real[0]));
+
+  /* pos is the position in the track: 0 is the trailing copy, 1..n the real slides, n+1 the leading
+     copy. i stays the logical offer number, which is what the dots and the ARIA state talk about. */
+  var i=0,pos=1,timer=null,paused=false,hover=false,focused=false;
+  /* מ-16.8.2026 הקרוסלה יושבת גם באמצע עמודי מכשיר ומדריכים, ולא רק בסופם. גלגל שמסתובב
+     הרחק מתחת לקצה המסך מזיז את ההצעה מתחת לקורא לפני שהגיע אליה, ובנייד גם מבזבז סוללה.
+     מתחילים מושהים כשיש IntersectionObserver שיתקן, ובדפדפן בלי אחד נשארת ההתנהגות הישנה. */
+  var offscreen=!!window.IntersectionObserver;
+
+  /* The transform is written from here rather than from a custom property in the CSS, so that the wrap
+     can move and then re-seat without animating. See the note on .car-track. */
+  function place(p,animate){
+    if(animate&&!reduce){
+      track.style.transform='translateX('+(p*100)+'%)';
+      return;
+    }
+    track.style.transition='none';
+    track.style.transform='translateX('+(p*100)+'%)';
+    void track.offsetWidth;              /* commit the jump before the transition comes back */
+    track.style.transition='';
+  }
+  /* Never linger on a copy. Called after the wrap animation ends, and again before any new move, so
+     that a fast series of clicks can never walk past the ends of the track. */
+  function normalise(){
+    if(pos===n+1){pos=1;place(pos,false);}
+    else if(pos===0){pos=n;place(pos,false);}
+  }
+  function render(){
+    dots.forEach(function(d,k){if(k===i)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});
+    real.forEach(function(s,k){
+      var act=k===i;
+      s.setAttribute('aria-hidden',act?'false':'true');
+      if(act)s.removeAttribute('inert');else s.setAttribute('inert','');
+    });
+  }
+  function step(dir,user){
+    normalise();
+    pos+=dir;
+    i=((pos-1)%n+n)%n;
+    place(pos,true);
+    render();
+    if(user)restart();
+  }
+  function jump(k,user){                 /* the dots address an offer directly, so this one is absolute */
+    normalise();
+    i=((k%n)+n)%n;
+    pos=i+1;
+    place(pos,true);
+    render();
+    if(user)restart();
+  }
+  track.addEventListener('transitionend',function(e){
+    if(e.target!==track||e.propertyName!=='transform')return;
+    normalise();
+  });
+
+  var dots=real.map(function(s,k){
+    var b=document.createElement('button');b.type='button';
+    b.setAttribute('aria-label','מעבר למבצע '+(k+1));
+    b.addEventListener('click',function(){jump(k,true);});
+    dotsWrap.appendChild(b);return b;
+  });
+
+  function start(){if(reduce||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function restart(){stop();start();}
+
+  root.querySelector('.car-next').addEventListener('click',function(){step(1,true);});
+  root.querySelector('.car-prev').addEventListener('click',function(){step(-1,true);});
+  /* hover and focus are held as flags rather than acted on directly. They used to call stop and start
+     straight, so a focusout - which fires on every click inside the carousel - restarted the timer
+     while the pointer was still resting on the slide, and the offer moved out from under the reader. */
+  root.addEventListener('mouseenter',function(){hover=true;stop();});
+  root.addEventListener('mouseleave',function(){hover=false;start();});
+  root.addEventListener('focusin',function(){focused=true;stop();});
+  root.addEventListener('focusout',function(){focused=false;start();});
+  var x0=null;
+  vp.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;stop();},{passive:true});
+  vp.addEventListener('touchend',function(e){
+    if(x0===null)return;
+    var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>40){if(dx<0)step(1,true);else step(-1,true);}else start();
+    x0=null;
+  },{passive:true});
+  root.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){step(1,true);}else if(e.key==='ArrowRight'){step(-1,true);}});
+  document.addEventListener('visibilitychange',function(){if(document.hidden)stop();else start();});
+
+  var pauseBtn=document.createElement('button');pauseBtn.type='button';pauseBtn.className='car-pause';pauseBtn.setAttribute('aria-label','השהיית מעבר אוטומטי');pauseBtn.setAttribute('aria-pressed','false');
+  pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
+  pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
+  if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      offscreen=!es[0].isIntersecting;
+      if(offscreen)stop();else start();
+    },{threshold:.25}).observe(root);
+  }
+
+  place(pos,false);                      /* park on the first real slide, past the leading copy */
+  render();start();
+})();
+</script>
+<!-- pg-deals:js:end -->
+
 </body>
 </html>

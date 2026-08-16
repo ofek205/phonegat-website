@@ -433,6 +433,9 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
 .hub .noown{display:block;color:var(--ink-soft)}
 .hub .noown b{color:var(--ink-strong)}
+.hub.pics a{grid-template-columns:2.7rem 4.6rem 1fr}
+.hub.pics img{grid-row:1/span 2;width:4.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;border:1px solid var(--line);background:#fff;align-self:center}
+@media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}
 .picker{position:sticky;top:66px;z-index:80;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 @media(max-width:980px){
 .picker{top:0}
@@ -478,6 +481,14 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 .dslot{border:1px solid var(--line);border-radius:6px;min-height:66px;display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem}
 .dslot .lbl{font-family:var(--mono);font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft);display:block}
 .dslot .nm{font-weight:700;color:var(--ink-strong);font-size:1.02rem;line-height:1.35;display:block}
+.dslot .dpic{width:2.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border:1px solid var(--line);background:#fff;border-radius:0}
+/* מתחת ל-640 התא עצמו רק 178 פיקסל, ושתי התמונות יושבות זו לצד זו. מדדתי בספארי
+   במובייל: התמונה גוזלת 42 מתוך 95 הפיקסלים של עמודת השם, "Galaxy S26 Ultra" נשבר
+   משתי שורות לשלוש, והתא גדל מ-88 ל-133 פיקסל. תמונונת של 34 פיקסל אינה שווה את
+   המחיר הזה, וזה בדיוק השיקול שבגללו הרשימה ב-/phones/ נשארה בלי תמונות. */
+@media(max-width:640px){
+.dslot .dpic{display:none}
+}
 .dslot.empty{border-style:dashed}
 .dslot.empty .nm{font-weight:500;color:var(--ink-soft)}
 .dslot .drop{margin-inline-start:auto;background:none;border:0;cursor:pointer;color:var(--ink-soft);font-size:1.25rem;line-height:1;padding:.8rem;border-radius:6px;min-inline-size:44px}
@@ -664,7 +675,7 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .cmp-grid .fxi{border-color:var(--edge)}
 .dadd{border-color:var(--edge)}
 .dshare{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-block-start:1.6rem}
-.dshare .ok{color:var(--teal-d);font-size:.96rem;font-weight:600}
+.dshare .dok{color:var(--teal-d);font-size:.96rem;font-weight:600}
 .dnoown{color:var(--ink-soft)}
 .dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
 .dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
@@ -674,6 +685,8 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dhow details{margin-bottom:.6rem}
 .dhow summary{font-size:1.05rem}
 .dhow details p+p{padding-block-start:0}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -926,6 +939,9 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+
+
+
   <link rel="stylesheet" href="/chat.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"דף הבית","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"מכשירים","item":"https://www.phonegat.co.il/phones/"},{"@type":"ListItem","position":3,"name":"השוואת מכשירים","item":"https://www.phonegat.co.il/phones/compare/"}]}
@@ -2031,22 +2047,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section class="block" id="how" aria-labelledby="how-h">
-  <div class="wrap box dhow">
-    <h2 id="how-h" class="a11y-sr">איך הכלי עובד</h2>
-    <details>
-      <summary>איך הכלי מחשב את ההבדלים</summary>
-      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>
-      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>
-    </details>
-    <details>
-      <summary>למה אין כאן מחיר, ואין הכרזה מי טוב יותר</summary>
-      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו ולא מטבלה. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים ולא מכריז על מנצח. על ההחלטה נעבור איתכם.</p>
-    </details>
-    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>
-  </div>
-</section>
-
 <!-- pg-deals:section:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <section id="deals" class="deals" aria-labelledby="deals-h">
   <div class="deals-head">
@@ -2442,6 +2442,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 <!-- pg-deals:section:end -->
 
+<section class="block" id="how" aria-labelledby="how-h">
+  <div class="wrap box dhow">
+    <h2 id="how-h" class="a11y-sr">איך הכלי עובד</h2>
+    <details>
+      <summary>איך הכלי מחשב את ההבדלים</summary>
+      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>
+      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>
+    </details>
+    <details>
+      <summary>למה אין כאן מחיר, ואין הכרזה מי טוב יותר</summary>
+      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו ולא מטבלה. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים ולא מכריז על מנצח. על ההחלטה נעבור איתכם.</p>
+    </details>
+    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>
+  </div>
+</section>
+
 <section class="cta" aria-labelledby="cta-h">
   <div class="wrap">
     <h2 id="cta-h">רוצים לראות אותם ביד?</h2>
@@ -2692,7 +2708,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '<a class="btn btn-wa" href="https://wa.me/97286812050?text='+encodeURIComponent(msg)+'">'+
       '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו לנו את ההשוואה</a>'+
       '<button type="button" class="btn btn-teal" id="dcopy">העתקת קישור להשוואה</button>'+
-      '<span class="ok" id="dcopied" role="status"></span></div>';
+      '<span class="dok" id="dcopied" role="status"></span></div>';
 
     /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא
        מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML. */
@@ -3294,6 +3310,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+
+
+
 <!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
 <div class="pg-fab-wrap" id="pgFabWrap">
   <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
@@ -3626,6 +3645,10 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   /* pos is the position in the track: 0 is the trailing copy, 1..n the real slides, n+1 the leading
      copy. i stays the logical offer number, which is what the dots and the ARIA state talk about. */
   var i=0,pos=1,timer=null,paused=false,hover=false,focused=false;
+  /* מ-16.8.2026 הקרוסלה יושבת גם באמצע עמודי מכשיר ומדריכים, ולא רק בסופם. גלגל שמסתובב
+     הרחק מתחת לקצה המסך מזיז את ההצעה מתחת לקורא לפני שהגיע אליה, ובנייד גם מבזבז סוללה.
+     מתחילים מושהים כשיש IntersectionObserver שיתקן, ובדפדפן בלי אחד נשארת ההתנהגות הישנה. */
+  var offscreen=!!window.IntersectionObserver;
 
   /* The transform is written from here rather than from a custom property in the CSS, so that the wrap
      can move and then re-seat without animating. See the note on .car-track. */
@@ -3681,7 +3704,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     dotsWrap.appendChild(b);return b;
   });
 
-  function start(){if(reduce||paused||hover||focused||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
+  function start(){if(reduce||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
 
@@ -3709,6 +3732,13 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
   pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
   if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      offscreen=!es[0].isIntersecting;
+      if(offscreen)stop();else start();
+    },{threshold:.25}).observe(root);
+  }
 
   place(pos,false);                      /* park on the first real slide, past the leading copy */
   render();start();

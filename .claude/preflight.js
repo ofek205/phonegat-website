@@ -1295,8 +1295,31 @@ if (classFails.length) {
   });
   if (missCss.length) {
     bad('כללי pg- שקיימים ב-index.html ולא ב-chat.css: ' + missCss.slice(0, 6).join(', ') +
-      ' — 21 עמודי התוכן יציגו את הצ\'אט בלי העיצוב הזה');
+      ' — עמודי התוכן יציגו את הצ\'אט בלי העיצוב הזה');
   } else { ok('כל כללי ה-pg- מ-index.html קיימים ב-chat.css'); }
+
+  /* **נוכחות אינה זהות.** הבדיקה מעל מוודאת שהסלקטור קיים, ולא שהגוף שלו זהה. זה נמצא
+   * בפועל: סשן אחר הוסיף env(safe-area-inset-bottom) למיקום ה-FAB ב-index.html ולא הריץ
+   * את המחולל, ולכן תיקון המובייל חי בדף הבית ולא ב-20 עמודי התוכן, וכל השערים היו
+   * ירוקים. אותה טעות של נוכחות מול תוכן שכבר תוקנה בבדיקה 29 ובבדיקה 32. */
+  function rules(src) {
+    var out = {}, rx = /([^{}]+)\{([^{}]*)\}/g, m2;
+    var css2 = (src.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || []).join('\n') || src;
+    css2.replace(/@media[^{]+\{(?:[^{}]|\{[^{}]*\})*\}/g, ' ').replace(rx, function (r, sel, body) {
+      sel = sel.trim();
+      if (/(^|[\s,>+~])\.pg-/.test(sel)) out[sel] = body.replace(/\s+/g, '');
+      return r;
+    });
+    return out;
+  }
+  var inIdx = rules(idx), inCss = rules(css), drift = [];
+  Object.keys(inIdx).forEach(function (sel) {
+    if (inCss[sel] !== undefined && inCss[sel] !== inIdx[sel]) drift.push(sel);
+  });
+  if (drift.length) {
+    bad('כללי pg- שהגוף שלהם שונה בין index.html ל-chat.css: ' + drift.slice(0, 5).join(', ') +
+      ' — עמודי התוכן מקבלים עיצוב ישן. הרץ node .claude/tools/gen-bot.js');
+  } else { ok('גוף כללי ה-pg- זהה בין index.html ל-chat.css'); }
 
   /* כל עמוד שאמור לשאת את הצ'אט באמת נושא אותו */
   var missing = [];
@@ -1333,6 +1356,22 @@ if (classFails.length) {
     var h = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
     if (h !== c.src[url]) stale.push(url);
   });
+  /* **וגם הכיוון ההפוך.** ההשוואה למעלה רצה על העמודים שנמצאים באינדקס, ולכן עמוד שנפל
+   * ממנו לגמרי אינו ב-src והיא לא מסתכלת עליו בכלל. זה קרה בפועל: /guides/first-day-checklist/
+   * נעדר מהאינדקס החי בזמן שהעמוד קיים, מחזיר 200 ומייצר שלושה מקטעים תקינים. הבוט פשוט
+   * לא יודע שהמדריך הזה קיים, ואין לזה שום סימן. */
+  var shouldIndex = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var url = f === 'index.html' ? '/' : '/' + f.replace(/\/index\.html$/, '') + '/';
+    if (/^\/guides\/.+\//.test(url) || url === '/phone-problems/' || /^\/[a-z0-9-]+-kiryat-gat\/$/.test(url)) {
+      if (!c.src[url]) shouldIndex.push(url);
+    }
+  });
+  if (shouldIndex.length) {
+    bad('עמודים שאמורים להיות באינדקס התוכן ואינם: ' + shouldIndex.join(', ') +
+      ' — הבוט לא יודע שהם קיימים. הרץ node .claude/tools/gen-bot-content.js');
+  } else { ok('כל עמודי התוכן שאמורים להיות באינדקס נמצאים בו'); }
+
   if (missing.length) bad('bot-content.json מפנה לעמודים שאינם: ' + missing.join(', '));
   if (stale.length) {
     bad('bot-content.json מיושן מול ' + stale.length + ' עמודים: ' + stale.slice(0, 4).join(', ') +

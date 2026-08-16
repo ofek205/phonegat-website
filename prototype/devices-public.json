@@ -45,7 +45,8 @@
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "5G sub-6GHz עם 4x4 MIMO, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-s26-ultra",
@@ -93,7 +94,8 @@
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "storage_expandable": "אין חריץ לכרטיס זיכרון"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "redmi-note-14-pro",
@@ -139,7 +141,8 @@
         "connectivity": "4G LTE, Wi-Fi 802.11ac, Bluetooth 5.3, NFC, שקע אוזניות 3.5 מ״מ, שידור אינפרא אדום",
         "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "iphone-17-pro",
@@ -184,7 +187,8 @@
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "iphone-17-pro-max",
@@ -230,7 +234,8 @@
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "iphone-16",
@@ -275,7 +280,8 @@
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "Wi-Fi 7, Bluetooth 5.3",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "iphone-17e",
@@ -319,7 +325,8 @@
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "Wi-Fi 6, Bluetooth 5.3",
         "security_updates": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-s26",
@@ -366,7 +373,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a56",
@@ -405,7 +413,8 @@
         "box_contents": null,
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2032",
         "model_numbers": "SM-A566B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a36",
@@ -449,7 +458,8 @@
         "box_contents": null,
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2031",
         "model_numbers": "SM-A366B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "xiaomi-15",
@@ -494,7 +504,8 @@
         "box_contents": "מכשיר, מטען, כבל USB-C, כלי הוצאת SIM, כיסוי מגן, ומדריך אחריות",
         "security_updates": null,
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "redmi-note-14",
@@ -540,7 +551,8 @@
         "box_contents": null,
         "security_updates": null,
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a57",
@@ -585,7 +597,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A576B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a37",
@@ -629,7 +642,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A376B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a17",
@@ -672,7 +686,8 @@
         "box_contents": null,
         "security_updates": "שישה דורות שדרוג של מערכת ההפעלה ושש שנים של עדכוני אבטחה מתאריך ההשקה העולמי. סמסונג אינה נוקבת בתאריך סיום מדויק בעמוד הזה, בשונה מ-A57 ומ-A37",
         "model_numbers": "SM-A175F, הדגם שסמסונג ישראל מוכרת. קיימת גם גרסת SM-A176B באותו שם מסחרי, והיא 5G"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-s26-plus",
@@ -719,7 +734,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "redmi-note-15",
@@ -763,7 +779,8 @@
         "box_contents": "מתאם טעינה 33W כלול בערכה",
         "security_updates": null,
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-s25-fe",
@@ -808,7 +825,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 30 בספטמבר 2032, ועד שבעה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-S731B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a27",
@@ -849,7 +867,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A276B"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "galaxy-a07",
@@ -893,7 +912,8 @@
         "box_contents": null,
         "security_updates": "עדכוני אבטחה עד 31 באוגוסט 2031, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A075F"
-      }
+      },
+      "img": 1
     },
     {
       "slug": "redmi-note-15-pro",
@@ -938,7 +958,8 @@
         "box_contents": "טלפון, מתאם טעינה מהיר 45W, כבל USB-C, סיכה למגש ה-SIM, מגן סיליקון, מגן מסך מודבק, ומדריך הפעלה עם כתב אחריות",
         "security_updates": null,
         "model_numbers": null
-      }
+      },
+      "img": 1
     },
     {
       "slug": "oneplus-15r",

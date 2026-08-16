@@ -62,6 +62,35 @@ function hubCss() {
   return '/* .hub — נשלף מ-guides/index.html בזמן החילול. עותק אחד, ואין מה לסחוף. */\n' + block;
 }
 
+/* תמונת המכשיר, או הפלייסהולדר כשאין עדיין תמונה. שני מצבים ולא אחד, כי מכשיר נכנס
+ * למאגר לפני שיש לו צילום, ועמוד עם ריבוע ריק עדיף על עמוד עם קישור לתמונה שאיננה.
+ *
+ * המידות נכתבות במפורש כדי שהדפדפן ישריין את המקום לפני שהקובץ ירד. בלעדיהן הטבלה
+ * שמתחת קופצת כשהתמונה נוחתת, וזה בדיוק ה-CLS שגוגל מודד.
+ *
+ * sizes נמדד ולא נוסח בקירוב, כי טעות בו לא נראית בעין אלא רק בתמונה מטושטשת או בבייטים
+ * מיותרים. העמודה היא .85fr מתוך 2fr, בתוך wrap של --maxw:1400 עם padding 28 וgap 54,
+ * כלומר 548 פיקסל כשה-wrap רווי. מתחת ל-900 הפריסה נשברת לעמודה אחת והתמונה מוגבלת ל-280.
+ * 41vw באמצע הוא הערכת יתר קטנה ומכוונת לכל רוחב בטווח: עדיף להוריד מעט יותר מדי מאשר
+ * למתוח קובץ קטן. ההערכה הראשונה כאן אמרה 445, והתמונה נמתחה מ-480 ל-548 בשולחני. */
+function heroImg(d) {
+  var m = d.media || {};
+  if (!m.hero) {
+    return '      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>' + esc(PH.images) + '</span></div>\n';
+  }
+  if (!fs.existsSync(path.join(PROTO, m.hero.replace(/^\//, '')))) {
+    console.error('✗ ' + d.slug + ': media.hero מצביע על ' + m.hero + ', והקובץ אינו קיים.');
+    process.exit(1);
+  }
+  /* .devimg ולא .fig img סתם: הכלל המשותף למובייל יושב בהמשך הגיליון ומנצח באותה ספציפיות.
+   * הכיתה מרימה את הספציפיות ומנתקת את התמונה הזאת מהתלות בסדר ההזרקה. */
+  return '      <img class="devimg" src="' + esc(m.hero) + '"' +
+    (m.srcset ? ' srcset="' + esc(m.srcset) + '"' +
+      ' sizes="(max-width:900px) 280px, (max-width:1400px) 41vw, 548px"' : '') +
+    ' width="' + (m.width || 960) + '" height="' + (m.height || 1280) + '"' +
+    ' alt="' + esc(m.alt || d.name) + '" loading="lazy" decoding="async">\n';
+}
+
 function buildMain(d, openTag) {
   var S = d.spec, C = d.commercial, E = d.editorial || {};
   var srcDefault = (d.spec_source && d.spec_source.default) || {};
@@ -121,11 +150,11 @@ function buildMain(d, openTag) {
   '  </div>\n' +
   '</section>\n\n' +
 
-  /* --- עובדות מסחריות + פלייסהולדר לתמונה --- */
+  /* --- עובדות מסחריות + תמונת המכשיר --- */
   '<section class="prob" id="buy" style="--nc:var(--teal)" aria-labelledby="h-buy">\n' +
   '  <div class="wrap row">\n' +
   '    <figure class="fig">\n' +
-  '      <div class="ph"><svg viewBox="0 0 200 200" aria-hidden="true"><g transform="translate(100 100)"><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#1878A8"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#e0913f" transform="rotate(90)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#63a244" transform="rotate(180)"/><path d="M0 0 L0 -94 C36 -90 64 -60 68 -18 Z" fill="#7D3169" transform="rotate(270)"/></g></svg><span>תמונה: ' + esc(d.name) + ' על דלפק המעבדה, המכשיר בשליש האמצעי של הגובה. ' + esc(PH.images) + '</span></div>\n' +
+  heroImg(d) +
   '    </figure>\n' +
   '    <div class="txt">\n' +
   '      <h2 id="h-buy">מחיר, מלאי ואחריות</h2>\n' +
@@ -405,7 +434,16 @@ db.devices.forEach(function (d) {
     '.cmp-wrap{max-width:100%}\n' +
     '/* תווית ארוכה בכפתור ההירו גלשה ב-375px תחת הגדלת טקסט: 420px תווית מול 375px מסך.\n' +
     '   כפתור שנשבר לשתי שורות עדיף על דף שגולש הצידה, ולכן מותר לו. */\n' +
-    '.ghero .btn-hero{white-space:normal;text-align:center}');
+    '.ghero .btn-hero{white-space:normal;text-align:center}\n' +
+    /* תמונות המכשירים נוצרות ב-3:4 מדויק על ידי gen-device-photos.js, ולכן הכלל המשותף
+       .fig img (3:4, cover) מתאים להן בשולחני בלי לחתוך פיקסל. מסגרת שיער כמו שיש
+       לפלייסהולדר, כי רקע התמונה כמעט לבן והיא הייתה מרחפת בלי גבול על רקע הדף. */
+    '.fig img.devimg{border:1px solid var(--line);background:#fff}\n' +
+    /* במובייל הכלל המשותף חותך את התמונה ל-4:3. במדריך תיקון זה נכון, כי שם התמונה ממחישה
+       שלב וכל גובה מיותר דוחף את ההוראות מתחת לקיפול. בעמוד מכשיר התמונה היא המוצר עצמו,
+       וחיתוך ל-4:3 מוריד ממנה את בליטת המצלמה למעלה ואת תחתית המכשיר. לכן היא נשארת 3:4
+       ומוגבלת ברוחב במקום להיחתך: 280px נותנים 373px גובה במקום ה-468 שהכלל המשותף חשש מהם. */
+    '@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}');
 
   var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
@@ -554,6 +592,11 @@ if (swGrew) {
     devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
       var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
       if (d.status === 'reference') o.own = false;
+      /* img הוא דגל ולא נתיב, והוא השדה השישי. הכלי בונה את הכתובת מה-slug בעצמו, ולכן
+         נתיב כאן היה עותק שני של אותה נוסחה שנפרד ממנה בשקט ברגע שמידה משתנה.
+         הדגל כן נחוץ: בלעדיו הכלי מניח שלכל דגם יש תמונה, ודגם חדש שנכנס למאגר לפני
+         שצולם היה מציג סמל תמונה שבורה. media עצמו לא נכנס לכאן, והחגורה למטה אוכפת. */
+      if (d.media && d.media.hero) o.img = 1;
       return o;
     })
   };

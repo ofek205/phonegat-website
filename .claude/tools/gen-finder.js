@@ -83,6 +83,10 @@ var TRAITS = live.map(function (d) {
 
   return {
     slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand,
+    /* דגל ולא נתיב, כמו ב-devices-public.json: הכתובת נבנית מה-slug בצד הלקוח, ושתי
+       נוסחאות לאותה כתובת נפרדות זו מזו בשקט ברגע שמידה משתנה. דגם שנכנס למאגר לפני
+       שצולם פשוט לא יקבל תמונה, במקום סמל תמונה שבורה בתוצאת השאלון. */
+    img: (d.media && d.media.hero) ? 1 : 0,
     ios: /^iOS/.test(d.os || '') ? 1 : 0,
     inch: inch, grams: grams,
     optX: optX, zoomTxt: S.zoom || null, uw: uw, sd: sd,
@@ -220,6 +224,16 @@ var CSS = [
   '/* התוצאה. אותו .hub של מרכז המכשירים, ולכן דגם מומלץ נראה כמו דגם ברשימה ולא כמו כרטיס. */',
   '.res{margin-block-start:1.9rem}',
   '.res .hub b{font-size:clamp(1.18rem,2.1vw,1.45rem)}',
+  '/* .hub.pics — עמודת תמונה שלישית, אותה הרחבה שקיימת בעמודי ההשוואה הכתובים.',
+  '   ב-/phones/ ובמדריכים .hub נשאר טקסט בלבד בהחלטת אופק (16.8.2026), כי ברשימה ארוכה',
+  '   תמונונת קטנה מדי מכדי לעזור. כאן מדובר בשלוש המלצות שהמשתמש בדיוק ביקש, וזה בדיוק',
+  '   הרגע שבו הוא רוצה לראות איך המכשיר נראה. 4.6rem הם כ-74 פיקסל, ולכן 288 מכסה 3x. */',
+  '.res .hub.pics a{grid-template-columns:2.7rem 4.6rem 1fr}',
+  '.res .hub.pics img{grid-row:1/span 2;width:4.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;border:1px solid var(--line);background:#fff;align-self:center}',
+  '@media(max-width:560px){',
+  '.res .hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}',
+  '.res .hub.pics img{width:3.4rem}',
+  '}',
   '.why-list{list-style:none;margin:.45rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.2rem .9rem;color:var(--ink-soft);font-size:1rem}',
   '.why-list li{position:relative;padding-inline-start:.85rem}',
   '.why-list li::before{content:"";position:absolute;inset-block-start:.72em;inset-inline-start:0;inline-size:.45rem;border-block-start:1px solid var(--teal)}',
@@ -438,8 +452,9 @@ QUESTIONS.map(function (q) {
 '    var link="https://wa.me/97286812050?text="+encodeURIComponent(txt);\n' +
 '\n' +
 '    res.innerHTML=\'<h3>שלושה דגמים שכדאי לבדוק</h3>\'+\n' +
-'      \'<ul class="hub">\'+top.map(function(r){\n' +
-'        return \'<li><a href="/phones/\'+r.t.slug+\'/"><b>\'+ltr(r.t.name)+"</b>"+\n' +
+'      \'<ul class="hub pics">\'+top.map(function(r){\n' +
+'        var im=r.t.img?\'<img src="/phones/img/\'+r.t.slug+\'-288.webp" width="288" height="384" alt="" loading="lazy" decoding="async">\':"";\n' +
+'        return \'<li><a href="/phones/\'+r.t.slug+\'/">\'+im+\'<b>\'+ltr(r.t.name)+"</b>"+\n' +
 '          \'<span>\'+esc(r.t.brand)+"</span></a>"+\n' +
 '          (r.s.why.length?\'<ul class="why-list">\'+r.s.why.map(function(w){return "<li>"+esc(w)+"</li>";}).join("")+"</ul>":"")+\n' +
 '          "</li>";\n' +

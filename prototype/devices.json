@@ -231,9 +231,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/iphone-17-1152.webp",
         "gallery": [],
-        "alt": "iPhone 17 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "iPhone 17, הגב של המכשיר",
+        "srcset": "/phones/img/iphone-17-288.webp 288w, /phones/img/iphone-17-576.webp 576w, /phones/img/iphone-17-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -455,9 +458,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-s26-ultra-1152.webp",
         "gallery": [],
-        "alt": "Galaxy S26 Ultra על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy S26 Ultra, המסך והגב",
+        "srcset": "/phones/img/galaxy-s26-ultra-288.webp 288w, /phones/img/galaxy-s26-ultra-576.webp 576w, /phones/img/galaxy-s26-ultra-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -663,9 +669,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/redmi-note-14-pro-1152.webp",
         "gallery": [],
-        "alt": "Redmi Note 14 Pro על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Redmi Note 14 Pro, המסך והגב",
+        "srcset": "/phones/img/redmi-note-14-pro-288.webp 288w, /phones/img/redmi-note-14-pro-576.webp 576w, /phones/img/redmi-note-14-pro-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -873,9 +882,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/iphone-17-pro-1152.webp",
         "gallery": [],
-        "alt": "iPhone 17 Pro על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "iPhone 17 Pro, שלושה צבעים, הגב של המכשירים",
+        "srcset": "/phones/img/iphone-17-pro-288.webp 288w, /phones/img/iphone-17-pro-576.webp 576w, /phones/img/iphone-17-pro-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -1084,9 +1096,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/iphone-17-pro-max-1152.webp",
         "gallery": [],
-        "alt": "iPhone 17 Pro Max על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "iPhone 17 Pro Max, שלושה צבעים, הגב של המכשירים",
+        "srcset": "/phones/img/iphone-17-pro-max-288.webp 288w, /phones/img/iphone-17-pro-max-576.webp 576w, /phones/img/iphone-17-pro-max-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -1302,9 +1317,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/iphone-16-1152.webp",
         "gallery": [],
-        "alt": "iPhone 16 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "iPhone 16, המסך והגב",
+        "srcset": "/phones/img/iphone-16-288.webp 288w, /phones/img/iphone-16-576.webp 576w, /phones/img/iphone-16-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -1519,9 +1537,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/iphone-17e-1152.webp",
         "gallery": [],
-        "alt": "iPhone 17e על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "iPhone 17e, המסך והגב",
+        "srcset": "/phones/img/iphone-17e-288.webp 288w, /phones/img/iphone-17e-576.webp 576w, /phones/img/iphone-17e-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -1751,9 +1772,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-s26-1152.webp",
         "gallery": [],
-        "alt": "Galaxy S26 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy S26, המסך והגב",
+        "srcset": "/phones/img/galaxy-s26-288.webp 288w, /phones/img/galaxy-s26-576.webp 576w, /phones/img/galaxy-s26-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -1990,9 +2014,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a56-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A56 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A56 5G, המסך והגב",
+        "srcset": "/phones/img/galaxy-a56-288.webp 288w, /phones/img/galaxy-a56-576.webp 576w, /phones/img/galaxy-a56-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -2229,9 +2256,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a36-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A36 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A36 5G, המסך והגב",
+        "srcset": "/phones/img/galaxy-a36-288.webp 288w, /phones/img/galaxy-a36-576.webp 576w, /phones/img/galaxy-a36-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -2421,9 +2451,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/xiaomi-15-1152.webp",
         "gallery": [],
-        "alt": "Xiaomi 15 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Xiaomi 15, המסך והגב",
+        "srcset": "/phones/img/xiaomi-15-288.webp 288w, /phones/img/xiaomi-15-576.webp 576w, /phones/img/xiaomi-15-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -2632,9 +2665,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/redmi-note-14-1152.webp",
         "gallery": [],
-        "alt": "Redmi Note 14 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Redmi Note 14, המסך והגב",
+        "srcset": "/phones/img/redmi-note-14-288.webp 288w, /phones/img/redmi-note-14-576.webp 576w, /phones/img/redmi-note-14-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,
@@ -2884,9 +2920,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a57-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A57 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A57 5G, המסך והגב",
+        "srcset": "/phones/img/galaxy-a57-288.webp 288w, /phones/img/galaxy-a57-576.webp 576w, /phones/img/galaxy-a57-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -3129,9 +3168,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a37-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A37 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A37 5G, המסך והגב",
+        "srcset": "/phones/img/galaxy-a37-288.webp 288w, /phones/img/galaxy-a37-576.webp 576w, /phones/img/galaxy-a37-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -3386,9 +3428,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a17-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A17 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A17, המסך והגב",
+        "srcset": "/phones/img/galaxy-a17-288.webp 288w, /phones/img/galaxy-a17-576.webp 576w, /phones/img/galaxy-a17-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -3623,9 +3668,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-s26-plus-1152.webp",
         "gallery": [],
-        "alt": "Galaxy S26+ על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy S26+, המסך והגב",
+        "srcset": "/phones/img/galaxy-s26-plus-288.webp 288w, /phones/img/galaxy-s26-plus-576.webp 576w, /phones/img/galaxy-s26-plus-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -3828,9 +3876,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/redmi-note-15-1152.webp",
         "gallery": [],
-        "alt": "Redmi Note 15 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Redmi Note 15, המסך והגב",
+        "srcset": "/phones/img/redmi-note-15-288.webp 288w, /phones/img/redmi-note-15-576.webp 576w, /phones/img/redmi-note-15-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -4074,9 +4125,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-s25-fe-1152.webp",
         "gallery": [],
-        "alt": "Galaxy S25 FE על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy S25 FE, המסך והגב",
+        "srcset": "/phones/img/galaxy-s25-fe-288.webp 288w, /phones/img/galaxy-s25-fe-576.webp 576w, /phones/img/galaxy-s25-fe-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -4312,9 +4366,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a27-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A27 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A27 5G, המסך והגב",
+        "srcset": "/phones/img/galaxy-a27-288.webp 288w, /phones/img/galaxy-a27-576.webp 576w, /phones/img/galaxy-a27-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -4565,9 +4622,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/galaxy-a07-1152.webp",
         "gallery": [],
-        "alt": "Galaxy A07 על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Galaxy A07, המסך והגב",
+        "srcset": "/phones/img/galaxy-a07-288.webp 288w, /phones/img/galaxy-a07-576.webp 576w, /phones/img/galaxy-a07-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {
@@ -4802,9 +4862,12 @@
         "data_transfer": "ללא עלות לכל מי שקונה אצלנו מכשיר. גם ממכשיר שבור: אם המסך לא עובד נרכיב מסך זמני, ואם שקע הטעינה מת נחליף אותו זמנית, רק כדי להוציא את הנתונים"
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/redmi-note-15-pro-1152.webp",
         "gallery": [],
-        "alt": "Redmi Note 15 Pro 5G על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Redmi Note 15 Pro 5G, המסך והגב",
+        "srcset": "/phones/img/redmi-note-15-pro-288.webp 288w, /phones/img/redmi-note-15-pro-576.webp 576w, /phones/img/redmi-note-15-pro-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       }
     },
     {

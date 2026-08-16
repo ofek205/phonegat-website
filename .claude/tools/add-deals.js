@@ -38,10 +38,13 @@ const ROOT = path.join(__dirname, '..', '..', 'prototype');
 const HOME = path.join(ROOT, 'index.html');
 
 /* ---------------------------------------------------------------- the pages
- * The 26 people land on: 21 service and region pages plus 5 hubs, of 74.
- * Deliberately NOT the 20 device pages, 15 comparisons or 8 guides, which are reached after arriving.
- * Adding those would put the carousel on 66 of 71, which is not a selection.
- * accessibility.html and privacy.html cannot take it at all, they carry no header. */
+ * 21 service and region pages, 5 hubs, 21 device pages and 6 guides, of 78.
+ * The 20 written comparisons and the two legal pages stay out: the legal pages carry no header at
+ * all, and a comparison is read by someone already deep in a decision between two named models.
+ *
+ * Until 16.8.2026 the device pages and the guides were out too, on the reasoning that they are
+ * reached after arriving rather than landed on. The measurement said otherwise: those are the 27
+ * pages where the reader is closest to buying, and they carried no offer at all. */
 const SERVICE = ['charging-port-repair-kiryat-gat', 'face-id-repair-kiryat-gat',
   'galaxy-a-battery-replacement-kiryat-gat', 'galaxy-a-screen-replacement-kiryat-gat',
   'iphone-repair-kiryat-gat', 'mobile-phone-repair-kiryat-gat', 'phone-back-glass-repair-kiryat-gat',
@@ -51,7 +54,108 @@ const SERVICE = ['charging-port-repair-kiryat-gat', 'face-id-repair-kiryat-gat',
   'phone-screen-replacement-kiryat-gat', 'phone-speaker-microphone-repair-kiryat-gat',
   'redmi-repair-kiryat-gat', 'xiaomi-repair-kiryat-gat'];
 const HUBS = ['phone-problems', 'phones', 'compare', 'contact', 'phones/compare'];
-const PAGES = SERVICE.concat(HUBS);
+
+/* ---------------------------------------------------------------- where it goes, and how high
+ * Until 16.8.2026 every copy was inserted just before the closing call to action, which reads well
+ * on paper and measured badly: on /phones/ the reader met the carousel after 9.2 screens of a
+ * 12.8 screen page, and on the screen replacement page after 7.7 of 11.4. It was not "at the end"
+ * as a concept, it was at the end as a position, and most readers never arrived.
+ *
+ * So placement is per page now, named by the section it sits above, and the anchor is an explicit
+ * id rather than a counted offset. A renamed section stops the run instead of quietly moving the
+ * carousel somewhere nobody chose.
+ *
+ * The device pages are uniform and share one anchor: above #fit, the section right after
+ * "מחיר, מלאי ואחריות". The reason is not that it is high up, it is that the section above it
+ * raises exactly the question the carousel answers. The reader has just seen a price, and the next
+ * thought is whether it can be paid in instalments and what happens to the content on the old
+ * phone. Measured at screen 3.5 of 14.8. */
+const DEVICE_AT = 'fit';
+const DEVICE = ['galaxy-a07', 'galaxy-a17', 'galaxy-a27', 'galaxy-a36', 'galaxy-a37', 'galaxy-a56',
+  'galaxy-a57', 'galaxy-s25-fe', 'galaxy-s26', 'galaxy-s26-plus', 'galaxy-s26-ultra', 'iphone-16',
+  'iphone-17', 'iphone-17-pro', 'iphone-17-pro-max', 'iphone-17e', 'redmi-note-14',
+  'redmi-note-14-pro', 'redmi-note-15', 'redmi-note-15-pro', 'xiaomi-15'].map(s => 'phones/' + s);
+
+/* One entry per page, because outside the device pages no two section orders are alike. The rule
+ * behind every choice is the same: above the third block of substance, so the reader has been given
+ * something before he is offered anything, and never inside a list the page is built around. On a
+ * guide that also means never straight after "העיקר, בשלוש שורות" — above the summary the reader
+ * has been given nothing yet, and an offer there reads as bait and costs the page its credibility.
+ *
+ * Three are deliberate exceptions:
+ *   official-vs-parallel-import  #approval and not #parallel, so the carousel does not land between
+ *                                "יבוא רשמי" and "יבוא מקביל" and split the pair the page rests on.
+ *   phone-problems               #mistakes, the first section after the eight symptoms. Anywhere
+ *                                inside that list cuts the menu the reader came to scan.
+ *   contact                      no entry at all. The page is a form, and an offer between the form
+ *                                and the phone numbers gets in the way of the one thing it is for. */
+const PLACE_AT = {
+  'charging-port-repair-kiryat-gat': 'safety',
+  'face-id-repair-kiryat-gat': 'after',
+  'galaxy-a-battery-replacement-kiryat-gat': 'notbattery',
+  'galaxy-a-screen-replacement-kiryat-gat': 'water',
+  'iphone-repair-kiryat-gat': 'flow',
+  'mobile-phone-repair-kiryat-gat': 'brands',
+  'phone-back-glass-repair-kiryat-gat': 'how',
+  'phone-battery-replacement-kiryat-gat': 'health',
+  'phone-camera-repair-kiryat-gat': 'water',
+  'phone-repair-beer-tuvia': 'lab',
+  'phone-repair-har-hevron': 'what',
+  'phone-repair-hof-ashkelon': 'what',
+  'phone-repair-kiryat-malachi': 'what',
+  'phone-repair-lachish': 'what',
+  'phone-repair-mate-yehuda': 'what',
+  'phone-repair-shafir': 'urgent',
+  'phone-repair-yoav': 'what',
+  'phone-screen-replacement-kiryat-gat': 'apple',
+  'phone-speaker-microphone-repair-kiryat-gat': 'dust',
+  'redmi-repair-kiryat-gat': 'water',
+  'xiaomi-repair-kiryat-gat': 'charge',
+  'phone-problems': 'no-power',
+  'phones': 'devices',
+  'compare': 'how',
+  'phones/compare': 'how',
+  'guides/esim-israel': 'how',
+  'guides/first-phone-for-kid': 'repair',
+  'guides/how-much-storage': 'real',
+  'guides/new-or-previous-generation': 'stock',
+  'guides/official-vs-parallel-import': 'approval',
+  'guides/phone-warranty-israel': 'not'
+};
+const GUIDE = Object.keys(PLACE_AT).filter(k => k.startsWith('guides/'));
+
+/* the 6th slide is the keyboard and mouse bundle. On a page about which phone to buy it is the one
+ * offer with nothing to do with the question, and a reader who meets it learns that the site does
+ * not know which page he is on. The other five all touch buying or owning a phone. */
+const DROP_SLIDE = 'bn-kb';
+
+const PAGES = SERVICE.concat(HUBS, DEVICE, GUIDE);
+
+/* Returns the tag the section is inserted above, or null for "last thing inside main".
+ * Throws rather than falls back: a page that lost its anchor must be looked at, not guessed at. */
+function anchorFor(rel, text) {
+  const id = DEVICE.includes(rel) ? DEVICE_AT : PLACE_AT[rel];
+  if (id) {
+    const m = text.match(new RegExp('<section[^>]*\\sid="' + id + '"[^>]*>'));
+    if (!m) throw new Error(rel + ': no <section id="' + id + '"> to place the carousel above');
+    return m[0];
+  }
+  return text.includes('<section class="cta"') ? '<section class="cta"' : '</main>';
+}
+
+/* Remove one slide by class and renumber what is left, because every slide carries
+ * aria-label="מבצע N מתוך 6" and a screen reader would otherwise announce a count that is wrong. */
+function dropSlide(deals, cls) {
+  const start = deals.search(new RegExp('<article class="slide[^"]*\\b' + cls + '\\b'));
+  if (start < 0) throw new Error('slide .' + cls + ' not found, so nothing was dropped');
+  const end = balanced(deals, start, /<article\b|<\/article>/g, '</article>');
+  let out = deals.slice(0, start) + deals.slice(start + end.length);
+  const total = (out.match(/<article class="slide/g) || []).length;
+  let n = 0;
+  out = out.replace(/aria-label="מבצע \d+ מתוך \d+"/g, () => 'aria-label="מבצע ' + (++n) + ' מתוך ' + total + '"');
+  if (n !== total) throw new Error('renumbered ' + n + ' labels for ' + total + ' slides');
+  return out.replace(/\n\s*\n\s*\n/g, '\n\n');
+}
 
 /* ---------------------------------------------------------------- lifting from index.html */
 function balanced(src, from, openRe, closeTag) {
@@ -326,7 +430,8 @@ function main() {
   /* --- rewrite paths --- */
   const css = emitCss(homeRules, cl.picked.concat(cl.kfIdx));
   const R = {
-    deals: rootRelative(deals), css: rootRelative(css), popup: rootRelative(popup),
+    deals: rootRelative(deals), deals5: rootRelative(dropSlide(deals, DROP_SLIDE)),
+    css: rootRelative(css), popup: rootRelative(popup),
     cpnJs: rootRelative(cpnJs), carJs: rootRelative(carJs), qrJs: rootRelative(qrJs)
   };
   const rewrites = Object.values(R).reduce((n, r) => n + r.n, 0);
@@ -347,8 +452,9 @@ function main() {
   console.log('');
 
   let done = 0, removed = 0;
+  const trimmed = DEVICE.concat(GUIDE);
   const list = only ? PAGES.filter(p => p === only) : PAGES;
-  if (only && !list.length) throw new Error('--only=' + only + ' is not one of the 23 target pages');
+  if (only && !list.length) throw new Error('--only=' + only + ' is not one of the ' + PAGES.length + ' target pages');
   for (const rel of list) {
     const file = path.join(ROOT, rel.replace(/\//g, path.sep), 'index.html');
     const before = fs.readFileSync(file, 'utf8');
@@ -371,33 +477,46 @@ function main() {
      * .btn, .cookie and .a11y-reset are shared chrome that every page already styles. Re-emitting an
      * identical rule is dead weight; re-emitting a DIFFERENT one would restyle every button on the
      * page, and nothing about the carousel would look wrong while it happened. */
+    /* every body seen for a key, not just the last one. A selector legitimately appears twice when
+     * one generator overrides another: gen-nav cannot edit the site's own CSS, so it re-states
+     * nav.main.open below it. Keeping only the last body made the guard compare index.html's first
+     * copy against the page's second copy and call two identical files a disagreement. */
     const theirs = new Map();
-    parseCss(t).forEach(r => { if (!r.atrule) theirs.set(ruleKey(r), norm(r.body)); });
+    parseCss(t).forEach(r => {
+      if (r.atrule) return;
+      const k = ruleKey(r);
+      if (!theirs.has(k)) theirs.set(k, new Set());
+      theirs.get(k).add(norm(r.body));
+    });
     const keep = [], conflicts = [];
     cl.picked.forEach(i => {
       const r = homeRules[i], k = ruleKey(r);
       if (!theirs.has(k)) { keep.push(i); return; }
-      if (theirs.get(k) !== norm(r.body)) conflicts.push(k);
+      if (!theirs.get(k).has(norm(r.body))) conflicts.push(k);
     });
     if (conflicts.length) throw new Error(rel + ': page disagrees with index.html on ' +
       conflicts.length + ' rule(s), first is ' + conflicts[0] + '. Reconcile before porting.');
     const pageCss = rootRelative(emitCss(homeRules, keep.concat(cl.kfIdx))).text + '\n' + CONTEXT_RESET;
 
     const cssBlock = fence('css', '<style>' + eol + pageCss + eol + '</style>', eol);
-    const secBlock = fence('section', R.deals.text.split(/\r?\n/).join(eol), eol);
+    /* the CSS closure stays the full one on every page: it is computed from the six slide markup,
+     * and a page carrying a rule it does not use costs nothing, while recomputing a second closure
+     * would mean two things to keep in step. */
+    const mine = trimmed.includes(rel) ? R.deals5.text : R.deals.text;
+    const secBlock = fence('section', mine.split(/\r?\n/).join(eol), eol);
     const jsBlock = fence('js', [R.popup.text, R.qrJs.text, R.cpnJs.text, R.carJs.text]
       .join(eol).split(/\r?\n/).join(eol), eol);
 
     t = insertBefore(t, '</head>', cssBlock, 'css', rel, eol);
-    /* just before the closing call to action: the reader has the information by then, and the offer
-     * is the reason to act now. contact/ has no cta section, so it goes last inside main. */
-    const secAnchor = t.includes('<section class="cta"') ? '<section class="cta"' : '</main>';
+    const secAnchor = anchorFor(rel, t);
     t = insertBefore(t, secAnchor, secBlock, 'section', rel, eol);
     t = insertBefore(t, '</body>', jsBlock, 'js', rel, eol);
 
     write(file, t, before, rel);
     done++;
-    console.log('  ' + rel + (had ? ': refreshed' : ': added') + '   +' + kb(t) .trim()+ ' page total, ' +
+    const where = secAnchor === '</main>' ? 'סוף main' : (secAnchor.match(/id="([^"]+)"/) || [, 'cta'])[1];
+    console.log('  ' + rel.padEnd(44) + (had ? 'refreshed' : 'added    ') + '  מעל ' + String(where).padEnd(11) +
+      (trimmed.includes(rel) ? '5' : '6') + ' שקופיות  ' + kb(t) + '  ' +
       keep.length + ' rules (' + (cl.picked.length - keep.length) + ' already there)');
   }
 

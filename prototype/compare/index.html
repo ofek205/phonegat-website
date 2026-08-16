@@ -433,6 +433,11 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
 .hub .noown{display:block;color:var(--ink-soft)}
 .hub .noown b{color:var(--ink-strong)}
+.hub.pics a{grid-template-columns:2.7rem 4.6rem 1fr}
+.hub.pics img{grid-row:1/span 2;width:4.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;border:1px solid var(--line);background:#fff;align-self:center}
+@media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -685,6 +690,9 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+
+
+
   <link rel="stylesheet" href="/chat.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"CollectionPage","name":"השוואות מכשירים","description":"השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים. רק מה שונה, בלי הכרזת מנצח, ובלי מפרט מומצא. פון גת קרית גת.","url":"https://www.phonegat.co.il/compare/","publisher":{"@id":"https://www.phonegat.co.il/#business"}}
@@ -1738,18 +1746,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<section class="block" id="how" aria-labelledby="h-how">
-  <div class="wrap box">
-    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>
-    <div class="prose">
-      <p>כל הנתונים בטבלאות מגיעים מאתר היצרן, וליד כל טבלה כתוב מאיזה עמוד ומאיזה תאריך. שדה שהיצרן לא מפרסם מסומן כלא מפורסם, ולא מנוחש ולא נשלף מאתר אחר.</p>
-      <p>הטבלה מציגה רק שדות שבהם שני הדגמים שונים. אם עשרים שדות זהים בשניהם, אין טעם להציג אותם, וההצגה שלהם רק מסתירה את מה שכן שונה. מספר השדות הזהים מופיע בכל עמוד.</p>
-      <p>בכל השוואה יש מקטע "למי עדיף כל אחד", ואין בשום עמוד קביעה מי המכשיר הטוב יותר. גם אין מחירים בטבלאות. את המחיר תקבלו מאיתנו, והוא משתנה.</p>
-    </div>
-    <p class="aside"><a href="/phones/">כל המכשירים עם המפרט המלא</a>, ו<a href="/guides/official-vs-parallel-import/">המדריך על יבוא רשמי מול מקביל</a>.</p>
-  </div>
-</section>
-
 <!-- pg-deals:section:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <section id="deals" class="deals" aria-labelledby="deals-h">
   <div class="deals-head">
@@ -2145,6 +2141,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 <!-- pg-deals:section:end -->
 
+<section class="block" id="how" aria-labelledby="h-how">
+  <div class="wrap box">
+    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>
+    <div class="prose">
+      <p>כל הנתונים בטבלאות מגיעים מאתר היצרן, וליד כל טבלה כתוב מאיזה עמוד ומאיזה תאריך. שדה שהיצרן לא מפרסם מסומן כלא מפורסם, ולא מנוחש ולא נשלף מאתר אחר.</p>
+      <p>הטבלה מציגה רק שדות שבהם שני הדגמים שונים. אם עשרים שדות זהים בשניהם, אין טעם להציג אותם, וההצגה שלהם רק מסתירה את מה שכן שונה. מספר השדות הזהים מופיע בכל עמוד.</p>
+      <p>בכל השוואה יש מקטע "למי עדיף כל אחד", ואין בשום עמוד קביעה מי המכשיר הטוב יותר. גם אין מחירים בטבלאות. את המחיר תקבלו מאיתנו, והוא משתנה.</p>
+    </div>
+    <p class="aside"><a href="/phones/">כל המכשירים עם המפרט המלא</a>, ו<a href="/guides/official-vs-parallel-import/">המדריך על יבוא רשמי מול מקביל</a>.</p>
+  </div>
+</section>
+
 <section class="cta" aria-labelledby="cta-h">
   <div class="wrap">
     <h2 id="cta-h">מתלבטים בין שני דגמים?</h2>
@@ -2497,6 +2505,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+
+
+
 <!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
 <div class="pg-fab-wrap" id="pgFabWrap">
   <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
@@ -2829,6 +2840,10 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   /* pos is the position in the track: 0 is the trailing copy, 1..n the real slides, n+1 the leading
      copy. i stays the logical offer number, which is what the dots and the ARIA state talk about. */
   var i=0,pos=1,timer=null,paused=false,hover=false,focused=false;
+  /* מ-16.8.2026 הקרוסלה יושבת גם באמצע עמודי מכשיר ומדריכים, ולא רק בסופם. גלגל שמסתובב
+     הרחק מתחת לקצה המסך מזיז את ההצעה מתחת לקורא לפני שהגיע אליה, ובנייד גם מבזבז סוללה.
+     מתחילים מושהים כשיש IntersectionObserver שיתקן, ובדפדפן בלי אחד נשארת ההתנהגות הישנה. */
+  var offscreen=!!window.IntersectionObserver;
 
   /* The transform is written from here rather than from a custom property in the CSS, so that the wrap
      can move and then re-seat without animating. See the note on .car-track. */
@@ -2884,7 +2899,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     dotsWrap.appendChild(b);return b;
   });
 
-  function start(){if(reduce||paused||hover||focused||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
+  function start(){if(reduce||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
 
@@ -2912,6 +2927,13 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
   pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
   if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      offscreen=!es[0].isIntersecting;
+      if(offscreen)stop();else start();
+    },{threshold:.25}).observe(root);
+  }
 
   place(pos,false);                      /* park on the first real slide, past the leading copy */
   render();start();
