@@ -578,6 +578,11 @@ if (swGrew) {
     devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
       var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
       if (d.status === 'reference') o.own = false;
+      /* img הוא דגל ולא נתיב, והוא השדה השישי. הכלי בונה את הכתובת מה-slug בעצמו, ולכן
+         נתיב כאן היה עותק שני של אותה נוסחה שנפרד ממנה בשקט ברגע שמידה משתנה.
+         הדגל כן נחוץ: בלעדיו הכלי מניח שלכל דגם יש תמונה, ודגם חדש שנכנס למאגר לפני
+         שצולם היה מציג סמל תמונה שבורה. media עצמו לא נכנס לכאן, והחגורה למטה אוכפת. */
+      if (d.media && d.media.hero) o.img = 1;
       return o;
     })
   };

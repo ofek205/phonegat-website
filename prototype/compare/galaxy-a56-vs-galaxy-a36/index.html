@@ -431,6 +431,11 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
 .hub .noown{display:block;color:var(--ink-soft)}
 .hub .noown b{color:var(--ink-strong)}
+.hub.pics a{grid-template-columns:2.7rem 4.6rem 1fr}
+.hub.pics img{grid-row:1/span 2;width:4.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;border:1px solid var(--line);background:#fff;align-self:center}
+@media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -728,7 +733,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
-            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/" aria-current="page">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
             <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>
@@ -783,9 +788,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap box">
     <h2 id="h-dev">שני המכשירים</h2>
     <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>
-      <ul class="hub">
-        <li><a href="/phones/galaxy-a56/"><b><bdo dir="ltr">Galaxy A56 5G</bdo></b><span>Samsung · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>
-        <li><a href="/phones/galaxy-a36/"><b><bdo dir="ltr">Galaxy A36 5G</bdo></b><span>Samsung · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>
+      <ul class="hub pics">
+        <li><a href="/phones/galaxy-a56/"><img src="/phones/img/galaxy-a56-288.webp" width="288" height="384" alt="Galaxy A56 5G, המסך והגב" loading="lazy" decoding="async"><b><bdo dir="ltr">Galaxy A56 5G</bdo></b><span>Samsung · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>
+        <li><a href="/phones/galaxy-a36/"><img src="/phones/img/galaxy-a36-288.webp" width="288" height="384" alt="Galaxy A36 5G, המסך והגב" loading="lazy" decoding="async"><b><bdo dir="ltr">Galaxy A36 5G</bdo></b><span>Samsung · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>
       </ul>
   </div>
 </section>

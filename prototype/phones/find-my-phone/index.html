@@ -18,7 +18,7 @@
      hand-kept hostname rule, and segment on page_type instead of a regex over Page Path.
      No "event" key: this sets Data Layer Variables, it does not fire a trigger. */
   window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'device'});
+  window.dataLayer.push({pg_env:window.PG_ENV,page_type:'guide'});
   /* This page ships robots=index,follow for production, so on a test host that meta has to be
      actively overridden — vercel.json's X-Robots-Tag covers *.vercel.app, this covers the rest. */
   if(!window.PG_PROD){
@@ -388,7 +388,7 @@ fieldset{min-inline-size:0}
    נועדו לו. הדפדפן וקורא המסך מקבלים את הקישור בין השאלה לתשובות בלי ARIA בכלל. */
 .qs{margin-top:2rem;display:grid;gap:0}
 .q{border-block-start:1px solid var(--line);padding-block:1.7rem;margin:0;border-inline:0;border-block-end:0}
-.q legend{padding:0;font-family:var(--font);font-weight:400;font-size:clamp(1.18rem,2.1vw,1.42rem);color:var(--ink-strong);line-height:1.35}
+.q legend{padding:0;font-family:var(--serif);font-weight:400;font-size:clamp(1.18rem,2.1vw,1.42rem);color:var(--ink-strong);line-height:1.35}
 .q .why{margin:.5rem 0 0;color:var(--ink-soft);font-size:1rem;line-height:1.7;max-width:60ch}
 .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.1rem 1.6rem;margin-top:1.1rem}
 /* הרדיו עצמו מוסתר חזותית אך נשאר במיקוד ובעץ הנגישות. התווית היא יעד המגע, ולכן היא
@@ -408,7 +408,7 @@ fieldset{min-inline-size:0}
    כשהוא הופך למעניין. בלי רקע צבוע: קו שערה למעלה ולמטה ורווח, כמו כל דבר אחר כאן. */
 @media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}
 .q legend .req{font-family:var(--font);font-size:.98rem;font-weight:400;color:var(--ink-soft);margin-inline-start:.4rem}
-.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--font);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}
+.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}
 @media(max-width:980px){.qcount,.dstate{inset-block-start:0}}
 .dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}
 .q[data-bad="1"] legend{color:#b03a2b}
@@ -423,6 +423,16 @@ fieldset{min-inline-size:0}
 /* התוצאה. אותו .hub של מרכז המכשירים, ולכן דגם מומלץ נראה כמו דגם ברשימה ולא כמו כרטיס. */
 .res{margin-block-start:1.9rem}
 .res .hub b{font-size:clamp(1.18rem,2.1vw,1.45rem)}
+/* .hub.pics — עמודת תמונה שלישית, אותה הרחבה שקיימת בעמודי ההשוואה הכתובים.
+   ב-/phones/ ובמדריכים .hub נשאר טקסט בלבד בהחלטת אופק (16.8.2026), כי ברשימה ארוכה
+   תמונונת קטנה מדי מכדי לעזור. כאן מדובר בשלוש המלצות שהמשתמש בדיוק ביקש, וזה בדיוק
+   הרגע שבו הוא רוצה לראות איך המכשיר נראה. 4.6rem הם כ-74 פיקסל, ולכן 288 מכסה 3x. */
+.res .hub.pics a{grid-template-columns:2.7rem 4.6rem 1fr}
+.res .hub.pics img{grid-row:1/span 2;width:4.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;border:1px solid var(--line);background:#fff;align-self:center}
+@media(max-width:560px){
+.res .hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}
+.res .hub.pics img{width:3.4rem}
+}
 .why-list{list-style:none;margin:.45rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.2rem .9rem;color:var(--ink-soft);font-size:1rem}
 .why-list li{position:relative;padding-inline-start:.85rem}
 .why-list li::before{content:"";position:absolute;inset-block-start:.72em;inset-inline-start:0;inline-size:.45rem;border-block-start:1px solid var(--teal)}
@@ -436,6 +446,8 @@ fieldset{min-inline-size:0}
 .hub span{color:var(--ink-soft);font-weight:300;line-height:1.75;max-width:64ch}
 .hub a:hover b,.hub a:focus-visible b{color:var(--teal-d)}
 @media(max-width:640px){.hub a{grid-template-columns:2.2rem 1fr;padding-block:1.2rem}}
+.fig img.devimg{border:1px solid var(--line);background:#fff}
+@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
 /* ===== closing blocks ===== */
 .block{padding:clamp(38px,5.5vw,68px) 0;border-top:1px solid var(--line)}
@@ -687,6 +699,7 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+  <link rel="stylesheet" href="/chat.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"איזה מכשיר מתאים לי","description":"שבע שאלות, ובסוף שלושה דגמים שכדאי לבדוק, מתוך המכשירים שיש לנו. ההתאמה לפי המפרט של היצרן, ובלי להכריז על דגם אחד שמתאים לכולם.","url":"https://www.phonegat.co.il/phones/find-my-phone/","publisher":{"@id":"https://www.phonegat.co.il/#business"}}
 </script>
@@ -901,7 +914,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    של הגזירה בצד המחולל, שנופלת בקול אם ערך לא נפרש. כך העמוד לא יכול להמציא סיבה. */
 (function(){
   "use strict";
-  var T=[{"slug":"iphone-17","name":"iPhone 17","name_he":"אייפון 17","brand":"Apple","ios":1,"inch":6.3,"grams":177,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-s26-ultra","name":"Galaxy S26 Ultra","name_he":"גלקסי S26 אולטרה","brand":"Samsung","ios":0,"inch":6.9,"grams":214,"optX":5,"zoomTxt":"זום אופטי 3x ו-5x, איכות אופטית 2x ו-10x, דיגיטלי עד 100x","uw":null,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":5000,"updYear":2033,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"redmi-note-14-pro","name":"Redmi Note 14 Pro","name_he":"רדמי נוט 14 פרו","brand":"Xiaomi","ios":0,"inch":6.67,"grams":180,"optX":null,"zoomTxt":null,"uw":1,"sd":1,"minGB":128,"maxGB":512,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500 mAh"},{"slug":"iphone-17-pro","name":"iPhone 17 Pro","name_he":"אייפון 17 פרו","brand":"Apple","ios":1,"inch":6.3,"grams":204,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"iphone-17-pro-max","name":"iPhone 17 Pro Max","name_he":"אייפון 17 פרו מקס","brand":"Apple","ios":1,"inch":6.9,"grams":231,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":2048,"hrs":37,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 37 שעות וידאו"},{"slug":"iphone-16","name":"iPhone 16","name_he":"אייפון 16","brand":"Apple","ios":1,"inch":6.1,"grams":170,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":22,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 22 שעות וידאו"},{"slug":"iphone-17e","name":"iPhone 17e","name_he":"אייפון 17e","brand":"Apple","ios":1,"inch":6.1,"grams":170,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x","uw":0,"sd":null,"minGB":256,"maxGB":512,"hrs":26,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 26 שעות וידאו"},{"slug":"galaxy-s26","name":"Galaxy S26","name_he":"גלקסי S26","brand":"Samsung","ios":0,"inch":6.3,"grams":167,"optX":3,"zoomTxt":"זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":4300,"updYear":2033,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-a56","name":"Galaxy A56 5G","name_he":"גלקסי A56","brand":"Samsung","ios":0,"inch":6.7,"grams":198,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a36","name":"Galaxy A36 5G","name_he":"גלקסי A36","brand":"Samsung","ios":0,"inch":6.7,"grams":195,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2031,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"xiaomi-15","name":"Xiaomi 15","name_he":"שיאומי 15","brand":"Xiaomi","ios":0,"inch":6.36,"grams":191,"optX":"yes","zoomTxt":"טלפוטו אופטי 60 מ״מ, וזום דיגיטלי עד 60x","uw":1,"sd":0,"minGB":256,"maxGB":512,"hrs":null,"mah":5240,"updYear":null,"batt":1,"battTxt":"5240 mAh"},{"slug":"redmi-note-14","name":"Redmi Note 14","name_he":"רדמי נוט 14","brand":"Xiaomi","ios":0,"inch":6.67,"grams":196.5,"optX":0,"zoomTxt":"אין עדשת טלפוטו. זום דיגיטלי בלבד","uw":null,"sd":1,"minGB":128,"maxGB":256,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500 mAh"},{"slug":"galaxy-a57","name":"Galaxy A57 5G","name_he":"גלקסי A57","brand":"Samsung","ios":0,"inch":6.7,"grams":179,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":256,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a37","name":"Galaxy A37 5G","name_he":"גלקסי A37","brand":"Samsung","ios":0,"inch":6.7,"grams":196,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a17","name":"Galaxy A17","name_he":"גלקסי A17","brand":"Samsung","ios":0,"inch":6.7,"grams":190,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":1,"minGB":128,"maxGB":256,"hrs":18,"mah":5000,"updYear":null,"batt":1,"battTxt":"עד 18 שעות וידאו"},{"slug":"galaxy-s26-plus","name":"Galaxy S26+","name_he":"גלקסי S26+","brand":"Samsung","ios":0,"inch":6.7,"grams":190,"optX":3,"zoomTxt":"זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":31,"mah":4900,"updYear":2033,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"redmi-note-15","name":"Redmi Note 15","name_he":"רדמי נוט 15","brand":"Xiaomi","ios":0,"inch":6.77,"grams":183.7,"optX":0,"zoomTxt":"זום 3x בתוך החיישן וזום דיגיטלי עד 20x. אין עדשת טלפוטו","uw":0,"sd":1,"minGB":256,"maxGB":256,"hrs":24,"mah":6000,"updYear":null,"batt":1,"battTxt":"עד 24 שעות וידאו"},{"slug":"galaxy-s25-fe","name":"Galaxy S25 FE","name_he":"גלקסי S25 FE","brand":"Samsung","ios":0,"inch":6.7,"grams":190,"optX":3,"zoomTxt":"זום אופטי 3x, ובאיכות אופטית 2x. זום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":128,"maxGB":512,"hrs":28,"mah":4900,"updYear":2032,"batt":0,"battTxt":"עד 28 שעות וידאו"},{"slug":"galaxy-a27","name":"Galaxy A27 5G","name_he":"גלקסי A27","brand":"Samsung","ios":0,"inch":6.7,"grams":200,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":1,"minGB":128,"maxGB":128,"hrs":23,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 23 שעות וידאו"},{"slug":"galaxy-a07","name":"Galaxy A07","name_he":"גלקסי A07","brand":"Samsung","ios":0,"inch":6.7,"grams":184,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":null,"sd":1,"minGB":64,"maxGB":128,"hrs":null,"mah":5000,"updYear":2031,"batt":1,"battTxt":"5000 mAh"},{"slug":"redmi-note-15-pro","name":"Redmi Note 15 Pro 5G","name_he":"רדמי נוט 15 פרו","brand":"Xiaomi","ios":0,"inch":6.83,"grams":210,"optX":2,"zoomTxt":"זום אופטי 2x, זום בתוך החיישן 4x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":27,"mah":6580,"updYear":null,"batt":1,"battTxt":"עד 27 שעות וידאו"}];
+  var T=[{"slug":"iphone-17","name":"iPhone 17","name_he":"אייפון 17","brand":"Apple","img":1,"ios":1,"inch":6.3,"grams":177,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-s26-ultra","name":"Galaxy S26 Ultra","name_he":"גלקסי S26 אולטרה","brand":"Samsung","img":1,"ios":0,"inch":6.9,"grams":214,"optX":5,"zoomTxt":"זום אופטי 3x ו-5x, איכות אופטית 2x ו-10x, דיגיטלי עד 100x","uw":null,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":5000,"updYear":2033,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"redmi-note-14-pro","name":"Redmi Note 14 Pro","name_he":"רדמי נוט 14 פרו","brand":"Xiaomi","img":1,"ios":0,"inch":6.67,"grams":180,"optX":null,"zoomTxt":null,"uw":1,"sd":1,"minGB":128,"maxGB":512,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500 mAh"},{"slug":"iphone-17-pro","name":"iPhone 17 Pro","name_he":"אייפון 17 פרו","brand":"Apple","img":1,"ios":1,"inch":6.3,"grams":204,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":1024,"hrs":31,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"iphone-17-pro-max","name":"iPhone 17 Pro Max","name_he":"אייפון 17 פרו מקס","brand":"Apple","img":1,"ios":1,"inch":6.9,"grams":231,"optX":4,"zoomTxt":"זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x","uw":1,"sd":null,"minGB":256,"maxGB":2048,"hrs":37,"mah":null,"updYear":null,"batt":1,"battTxt":"עד 37 שעות וידאו"},{"slug":"iphone-16","name":"iPhone 16","name_he":"אייפון 16","brand":"Apple","img":1,"ios":1,"inch":6.1,"grams":170,"optX":2,"zoomTxt":"זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":22,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 22 שעות וידאו"},{"slug":"iphone-17e","name":"iPhone 17e","name_he":"אייפון 17e","brand":"Apple","img":1,"ios":1,"inch":6.1,"grams":170,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x","uw":0,"sd":null,"minGB":256,"maxGB":512,"hrs":26,"mah":null,"updYear":null,"batt":-1,"battTxt":"עד 26 שעות וידאו"},{"slug":"galaxy-s26","name":"Galaxy S26","name_he":"גלקסי S26","brand":"Samsung","img":1,"ios":0,"inch":6.3,"grams":167,"optX":3,"zoomTxt":"זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":30,"mah":4300,"updYear":2033,"batt":1,"battTxt":"עד 30 שעות וידאו"},{"slug":"galaxy-a56","name":"Galaxy A56 5G","name_he":"גלקסי A56","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":198,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a36","name":"Galaxy A36 5G","name_he":"גלקסי A36","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":195,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2031,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"xiaomi-15","name":"Xiaomi 15","name_he":"שיאומי 15","brand":"Xiaomi","img":1,"ios":0,"inch":6.36,"grams":191,"optX":"yes","zoomTxt":"טלפוטו אופטי 60 מ״מ, וזום דיגיטלי עד 60x","uw":1,"sd":0,"minGB":256,"maxGB":512,"hrs":null,"mah":5240,"updYear":null,"batt":1,"battTxt":"5240 mAh"},{"slug":"redmi-note-14","name":"Redmi Note 14","name_he":"רדמי נוט 14","brand":"Xiaomi","img":1,"ios":0,"inch":6.67,"grams":196.5,"optX":0,"zoomTxt":"אין עדשת טלפוטו. זום דיגיטלי בלבד","uw":null,"sd":1,"minGB":128,"maxGB":256,"hrs":null,"mah":5500,"updYear":null,"batt":1,"battTxt":"5500 mAh"},{"slug":"galaxy-a57","name":"Galaxy A57 5G","name_he":"גלקסי A57","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":179,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":256,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a37","name":"Galaxy A37 5G","name_he":"גלקסי A37","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":196,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":null,"minGB":128,"maxGB":128,"hrs":29,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 29 שעות וידאו"},{"slug":"galaxy-a17","name":"Galaxy A17","name_he":"גלקסי A17","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":190,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":1,"minGB":128,"maxGB":256,"hrs":18,"mah":5000,"updYear":null,"batt":1,"battTxt":"עד 18 שעות וידאו"},{"slug":"galaxy-s26-plus","name":"Galaxy S26+","name_he":"גלקסי S26+","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":190,"optX":3,"zoomTxt":"זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":31,"mah":4900,"updYear":2033,"batt":1,"battTxt":"עד 31 שעות וידאו"},{"slug":"redmi-note-15","name":"Redmi Note 15","name_he":"רדמי נוט 15","brand":"Xiaomi","img":1,"ios":0,"inch":6.77,"grams":183.7,"optX":0,"zoomTxt":"זום 3x בתוך החיישן וזום דיגיטלי עד 20x. אין עדשת טלפוטו","uw":0,"sd":1,"minGB":256,"maxGB":256,"hrs":24,"mah":6000,"updYear":null,"batt":1,"battTxt":"עד 24 שעות וידאו"},{"slug":"galaxy-s25-fe","name":"Galaxy S25 FE","name_he":"גלקסי S25 FE","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":190,"optX":3,"zoomTxt":"זום אופטי 3x, ובאיכות אופטית 2x. זום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":128,"maxGB":512,"hrs":28,"mah":4900,"updYear":2032,"batt":0,"battTxt":"עד 28 שעות וידאו"},{"slug":"galaxy-a27","name":"Galaxy A27 5G","name_he":"גלקסי A27","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":200,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":1,"sd":1,"minGB":128,"maxGB":128,"hrs":23,"mah":5000,"updYear":2032,"batt":1,"battTxt":"עד 23 שעות וידאו"},{"slug":"galaxy-a07","name":"Galaxy A07","name_he":"גלקסי A07","brand":"Samsung","img":1,"ios":0,"inch":6.7,"grams":184,"optX":0,"zoomTxt":"זום דיגיטלי עד 10x. אין עדשת טלפוטו","uw":null,"sd":1,"minGB":64,"maxGB":128,"hrs":null,"mah":5000,"updYear":2031,"batt":1,"battTxt":"5000 mAh"},{"slug":"redmi-note-15-pro","name":"Redmi Note 15 Pro 5G","name_he":"רדמי נוט 15 פרו","brand":"Xiaomi","img":1,"ios":0,"inch":6.83,"grams":210,"optX":2,"zoomTxt":"זום אופטי 2x, זום בתוך החיישן 4x, וזום דיגיטלי עד 30x","uw":null,"sd":null,"minGB":256,"maxGB":512,"hrs":27,"mah":6580,"updYear":null,"batt":1,"battTxt":"עד 27 שעות וידאו"}];
   var form=document.getElementById("qform"), res=document.getElementById("qres"), err=document.getElementById("qerr");
   var counter=document.getElementById("qcount");
   if(!form||!res||!counter) return;
@@ -998,8 +1011,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var link="https://wa.me/97286812050?text="+encodeURIComponent(txt);
 
     res.innerHTML='<h3>שלושה דגמים שכדאי לבדוק</h3>'+
-      '<ul class="hub">'+top.map(function(r){
-        return '<li><a href="/phones/'+r.t.slug+'/"><b>'+ltr(r.t.name)+"</b>"+
+      '<ul class="hub pics">'+top.map(function(r){
+        var im=r.t.img?'<img src="/phones/img/'+r.t.slug+'-288.webp" width="288" height="384" alt="" loading="lazy" decoding="async">':"";
+        return '<li><a href="/phones/'+r.t.slug+'/">'+im+'<b>'+ltr(r.t.name)+"</b>"+
           '<span>'+esc(r.t.brand)+"</span></a>"+
           (r.s.why.length?'<ul class="why-list">'+r.s.why.map(function(w){return "<li>"+esc(w)+"</li>";}).join("")+"</ul>":"")+
           "</li>";
@@ -1365,5 +1379,30 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
+<div class="pg-fab-wrap" id="pgFabWrap">
+  <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
+  <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
+    <span class="badge-dot" aria-hidden="true"></span>
+    <svg class="ic-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+<section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" inert>
+  <div class="pg-head">
+    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
+    <div class="ht"><b>העוזר של פון גת</b><span>בדרך כלל עונים מיד</span></div>
+    <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
+  <div class="pg-chips" id="pgChips" aria-label="נושאים מהירים"></div>
+  <div class="pg-input">
+    <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
+    <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
+  </div>
+  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
+</section>
+<!-- bot:html:end -->
+<script src="/chat.js" defer></script>
 </body>
 </html>
