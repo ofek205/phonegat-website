@@ -419,12 +419,9 @@ var APP_CSS = [
   '.apph .asub{margin:.7rem 0 0;max-inline-size:56ch;color:var(--ink-soft);font-weight:300;font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7}',
   '.apph .ahelp{margin:.9rem 0 0;color:var(--ink-soft);font-size:1rem}',
   '.apph .ahelp a{color:var(--teal-d);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding-block:.55rem}',
-  /* שלוש אמירות ולא צעדים, ולכן אין מספור. העיגולים הטורקיז שהיו כאן הם מה שהפך את הבלוק
-     לחוברת הפעלה. במקומם תווית מודגשת ואחריה ההסבר, הדפוס שכבר קבוע ב-design-direction. */
-  '.dfacts{list-style:none;margin:1.7rem 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem 2rem;max-inline-size:70rem}',
-  '.dfacts li{color:var(--ink-soft);font-size:1rem;line-height:1.65;padding-block-start:.7rem;border-block-start:2px solid var(--line)}',
-  '.dfacts b{color:var(--ink-strong);font-weight:700}',
-  '@media(max-width:820px){.dfacts{grid-template-columns:1fr;gap:.85rem}}',
+  /* בלוק שלוש האמירות (.dfacts) נמחק ב-16.8.2026 לבקשת אופק. הוא עבר גלגול שלם, משלושה
+     צעדים ממוספרים לשלוש אמירות אחרי מעבר קופירייטר, ובסוף נפסל כולו. מה שנשאר מעל הכלי
+     הוא כותרת, משפט אחד על מה יש ברשימה ושורת עזרה, והכלי עצמו מתחיל מיד אחריהם. */
   /* הקו העליון של .block היה קו שני מיד אחרי הקו של כותרת הכלי */
   '#pick{border-top:0;padding-block-start:clamp(16px,2.2vw,24px)}',
   /* הקונסולה: כרטיס אחד שמחזיק את המצב ואת הבחירה, ומופרד מהתוצאה שמתחתיו */
@@ -630,17 +627,6 @@ function toolMain(openTag, index, order, pairCount) {
   '<section class="apph" aria-labelledby="h1">\n  <div class="wrap">\n' +
   '    <h1 id="h1">השוואת מכשירים</h1>\n' +
   '    <p class="asub">המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.</p>\n' +
-  /* לא צעדים. שלוש שורות ההוראה שהיו כאן חזרו על מה שהממשק כותב על עצמו שלושה סנטימטרים
-     מתחתיהן: שני כרטיסים שכתוב עליהם "בחרו דגם", וכפתור "הוסיפו מכשיר שלישי". טקסט שחוזר
-     על תווית של כפתור אינו מוסיף מידע, הוא רק מאותת שמישהו מילא משבצת של "צעד 1".
-     מה שכן צריך מעל כלי הוא מה הוא עושה ומה הוא מסרב לעשות, ולכן ul ולא ol: אין כאן רצף.
-     "אין הכרזת מנצח" עולה לכאן מהאקורדיון הסגור, כי זו התשובה להתנגדות הראשונה שיש
-     ללקוח מול כלי השוואה של חנות. אותו משפט כבר פותח את /compare/. */
-  '    <ul class="dfacts">\n' +
-  '      <li><b>רק מה שונה.</b> שדה ששני הדגמים זהים בו לא מופיע בטבלה בכלל.</li>\n' +
-  '      <li><b>ליד כל שדה יש הסבר בלחיצה.</b> אפל מודדת סוללה בשעות וידאו ואנדרואיד ב-mAh, ולכן אי אפשר להשוות בין המספרים ישירות.</li>\n' +
-  '      <li><b>ההחלטה נשארת אצלכם.</b> הכלי מראה את ההבדלים ולא אומר מי עדיף, כי חנות שמכריזה מנצח מוכרת את המנצח.</li>\n' +
-  '    </ul>\n' +
   '    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="' + waPick + '">כתבו לנו ב-WhatsApp</a>.</p>\n' +
   '  </div>\n</section>\n\n' +
 
