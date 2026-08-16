@@ -3001,6 +3001,10 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   /* pos is the position in the track: 0 is the trailing copy, 1..n the real slides, n+1 the leading
      copy. i stays the logical offer number, which is what the dots and the ARIA state talk about. */
   var i=0,pos=1,timer=null,paused=false,hover=false,focused=false;
+  /* מ-16.8.2026 הקרוסלה יושבת גם באמצע עמודי מכשיר ומדריכים, ולא רק בסופם. גלגל שמסתובב
+     הרחק מתחת לקצה המסך מזיז את ההצעה מתחת לקורא לפני שהגיע אליה, ובנייד גם מבזבז סוללה.
+     מתחילים מושהים כשיש IntersectionObserver שיתקן, ובדפדפן בלי אחד נשארת ההתנהגות הישנה. */
+  var offscreen=!!window.IntersectionObserver;
 
   /* The transform is written from here rather than from a custom property in the CSS, so that the wrap
      can move and then re-seat without animating. See the note on .car-track. */
@@ -3056,7 +3060,7 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
     dotsWrap.appendChild(b);return b;
   });
 
-  function start(){if(reduce||paused||hover||focused||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
+  function start(){if(reduce||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
 
@@ -3084,6 +3088,13 @@ nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
   pauseBtn.innerHTML='<svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="3.6" height="14" rx="1"/><rect x="13.9" y="5" width="3.6" height="14" rx="1"/></svg><svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12z"/></svg>';
   pauseBtn.addEventListener('click',function(){paused=!paused;pauseBtn.setAttribute('aria-pressed',paused?'true':'false');pauseBtn.setAttribute('aria-label',paused?'הפעלת מעבר אוטומטי':'השהיית מעבר אוטומטי');pauseBtn.classList.toggle('is-paused',paused);if(paused){stop();}else{start();}});
   if(!reduce&&dotsWrap)dotsWrap.insertBefore(pauseBtn,dotsWrap.firstChild);
+
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(es){
+      offscreen=!es[0].isIntersecting;
+      if(offscreen)stop();else start();
+    },{threshold:.25}).observe(root);
+  }
 
   place(pos,false);                      /* park on the first real slide, past the leading copy */
   render();start();
