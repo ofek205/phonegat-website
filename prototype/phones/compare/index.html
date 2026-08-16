@@ -611,11 +611,10 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dmenu[hidden]{display:none}
 .dmenu .dmhead{display:flex;align-items:center;gap:.5rem;padding:.2rem .5rem;border-block-end:1px solid var(--line);background:#f6f8fa}
 .dmenu .dmtitle{font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.06em;color:var(--ink-strong);padding-inline:.4rem}
-.dmenu .dmback,.dmenu .dmx{font:inherit;font-size:.96rem;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-height:44px;padding-inline:.7rem;border-radius:6px}
-.dmenu .dmx{margin-inline-start:auto;font-size:1.4rem;line-height:1;min-inline-size:44px}
-.dmenu .dmback:hover,.dmenu .dmx:hover{color:var(--teal-d);background:#eaf1f5}
-.dmenu .dmlist{list-style:none;margin:0;padding:0;max-block-size:min(48vh,360px);overflow-y:auto}
-.dmenu .dmlist li+li{border-block-start:1px solid var(--line)}
+.dmenu .dmx{font:inherit;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-height:44px;border-radius:6px;margin-inline-start:auto;font-size:1.4rem;line-height:1;min-inline-size:44px}
+.dmenu .dmx:hover{color:var(--teal-d);background:#eaf1f5}
+.dmenu .dmlist{list-style:none;margin:0;padding:0;max-block-size:min(52vh,400px);overflow-y:auto}
+.dmenu .dmlist>li+li{border-block-start:1px solid var(--line)}
 .dmenu .dmlist button{inline-size:100%;display:flex;align-items:center;gap:.7rem;font:inherit;color:var(--ink);background:none;border:0;cursor:pointer;text-align:start;padding:.8rem .9rem;min-height:48px}
 .dmenu .dmlist button:hover{background:#f2f8fb;color:var(--teal-d)}
 .dmenu .dmlist .bn{font-weight:600}
@@ -632,6 +631,15 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .cmp-grid thead .blogo-oneplus{height:13px}
 .cmp-grid thead .blogo-nothing{height:9px}
 .dmenu .dmlist button[aria-current="true"] .bn{color:var(--teal-d)}
+.dmenu .dmbrand[aria-expanded="true"]{background:#f2f8fb}
+.dmenu .dmtog{flex:none;display:inline-grid;place-items:center;inline-size:1.35rem;block-size:1.35rem;color:var(--teal);font-size:1.3rem;line-height:1}
+.dmenu .dmtog::before{content:"+"}
+.dmenu [aria-expanded="true"] .dmtog::before{content:"–"}
+.dmenu .dmsub{list-style:none;margin:0;padding:0;background:#fafcfd}
+.dmenu .dmsub>li{border-inline-start:2px solid var(--edge);margin-inline-start:1.7rem}
+.dmenu .dmsub>li+li{border-block-start:1px solid var(--line)}
+.dmenu .dmsub>li:hover{border-inline-start-color:var(--teal)}
+.dmenu .dmsub button{padding-inline-start:1.1rem;min-height:46px}
 .dapp .dclr{margin-inline-start:auto;font-family:inherit;font-size:.96rem;font-weight:600;color:var(--ink-soft);background:none;border:1px solid var(--edge);border-radius:999px;padding:.55rem 1.05rem;min-height:44px;cursor:pointer;transition:color .18s,border-color .18s}
 .dapp .dclr:hover{color:var(--teal-d);border-color:var(--teal-d)}
 .dapp .dfind{position:relative;margin-inline-start:auto}
@@ -2449,7 +2457,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var BRANDS=[{"brand":"Apple","logo":["apple",15,18]},{"brand":"Samsung","logo":["samsung",34,12]},{"brand":"Xiaomi","logo":["xiaomi",16,16]},{"brand":"Google","logo":["google",16,16]},{"brand":"Nothing","logo":["nothing",62,11]},{"brand":"OnePlus","logo":["oneplus",16,16]}];
   /* MAX is the ceiling; slots is what is actually on screen. Three at once muddled the
      comparison, so two is the default and the third is asked for. */
-  var MAX=3, slots=2, sel=[], DB=null, focus=null, means=false, menuFor=null, menuBrand=null;
+  var MAX=3, slots=2, sel=[], DB=null, focus=null, means=false, menuFor=null, menuOpen={};
   /* One sentence per field, keyed by the spec key. Written once and reused across all 136 pairs.
      It says what the difference MEANS, never who wins: the page declares no winner, and several of
      these exist precisely to stop a bigger number reading as a better one. */
@@ -2699,43 +2707,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    * הוא אינו מחליף את הרשימה למטה. לרשימה יש יתרון שלבורר אין, לראות הכול בבת אחת. */
   var menu=document.getElementById("dmenu");
   function menuHtml(){
-    var head, body="";
-    if(menuBrand===null){
-      head="בחרו יצרן";
-      BRANDS.forEach(function(b){
-        var n=DB.devices.filter(function(d){return d.brand===b.brand;}).length;
-        if(!n) return;
-        var L=b.logo;
-        body+='<li><button type="button" data-brand="'+esc(b.brand)+'">'+
-          (L?'<img class="blogo blogo-'+L[0]+'" src="/logos/'+L[0]+'.png" alt="" width="'+L[1]+'" height="'+L[2]+'" loading="lazy" decoding="async">':'<span class="nologo" aria-hidden="true"></span>')+
-          '<span class="bn">'+esc(b.brand)+'</span><span class="cnt">'+(n===1?"דגם אחד":n+" דגמים")+'</span></button></li>';
-      });
-    } else {
-      head=menuBrand;
-      DB.devices.filter(function(d){return d.brand===menuBrand;}).forEach(function(d){
-        var on=sel.indexOf(d.slug)>=0;
-        body+='<li><button type="button" data-pick="'+esc(d.slug)+'"'+(on?' aria-current="true"':'')+'>'+
-          '<span class="bn">'+ltr(d.name)+'</span>'+
-          (on?'<span class="cnt">כבר בהשוואה</span>':'')+'</button></li>';
-      });
-    }
-    return '<div class="dmhead">'+
-      (menuBrand===null?'':'<button type="button" class="dmback">חזרה ליצרנים</button>')+
-      '<p class="dmtitle">'+esc(head)+'</p>'+
+    var body="";
+    BRANDS.forEach(function(b){
+      var items=DB.devices.filter(function(d){return d.brand===b.brand;});
+      if(!items.length) return;
+      var open=!!menuOpen[b.brand], id="dmg-"+b.brand.replace(/[^A-Za-z0-9]/g,""), L=b.logo;
+      body+='<li class="dmnode">'+
+        '<button type="button" class="dmbrand" data-brand="'+esc(b.brand)+'" aria-expanded="'+(open?"true":"false")+'" aria-controls="'+id+'">'+
+        '<span class="dmtog" aria-hidden="true"></span>'+
+        (L?'<img class="blogo blogo-'+L[0]+'" src="/logos/'+L[0]+'.png" alt="" width="'+L[1]+'" height="'+L[2]+'" loading="lazy" decoding="async">':'<span class="nologo" aria-hidden="true"></span>')+
+        '<span class="bn">'+esc(b.brand)+'</span><span class="cnt">'+(items.length===1?"דגם אחד":items.length+" דגמים")+'</span></button>'+
+        '<ul class="dmsub" id="'+id+'"'+(open?'':' hidden')+'>'+
+        items.map(function(d){
+          var on=sel.indexOf(d.slug)>=0;
+          return '<li><button type="button" data-pick="'+esc(d.slug)+'"'+(on?' aria-current="true"':'')+'>'+
+            '<span class="bn">'+ltr(d.name)+'</span>'+(on?'<span class="cnt">כבר בהשוואה</span>':'')+'</button></li>';
+        }).join("")+'</ul></li>';
+    });
+    return '<div class="dmhead"><p class="dmtitle">בחרו יצרן ודגם</p>'+
       '<button type="button" class="dmx" aria-label="סגירת הבורר">&times;</button></div>'+
       '<ul class="dmlist">'+body+'</ul>';
   }
   function openMenu(i){
     if(!menu||!DB) return;
-    menuFor=i; menuBrand=null;
+    menuFor=i; menuOpen={};
+    /* הענף של הדגם שכבר יושב בתא נפתח מעצמו, כמו עץ תיקיות שחושף את הפריט הנוכחי */
+    var cur=sel[i]?dev(sel[i]):null; if(cur) menuOpen[cur.brand]=true;
     menu.innerHTML=menuHtml(); menu.hidden=false;
     renderSlots();
     push("cmp_menu_open",{slot:i});
-    var first=menu.querySelector(".dmlist button"); if(first) first.focus();
+    var f=menu.querySelector('.dmbrand[aria-expanded="true"]')||menu.querySelector(".dmbrand");
+    if(f) f.focus();
   }
   function closeMenu(back){
     if(!menu||menuFor===null) return;
-    var i=menuFor; menuFor=null; menuBrand=null;
+    var i=menuFor; menuFor=null; menuOpen={};
     menu.hidden=true; menu.innerHTML="";
     renderSlots();
     if(back){ var b=document.querySelector('.dopen[data-slot="'+i+'"]'); if(b) b.focus(); }
@@ -2752,19 +2758,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(!e.target.closest) return;
     /* סימון לפני כל טיפול. הבורר מחליף את ה-innerHTML של עצמו, ולכן עד שהאירוע מגיע
        ל-document הכפתור שנלחץ כבר מנותק מהעץ ו-closest("#dmenu") מחזיר null. בלי הסימון
-       הזה בחירת יצרן הייתה סוגרת את הבורר במקום לפתוח את הדגמים שלו. */
+       הזה בחירה הייתה נחשבת ללחיצה מבחוץ וסוגרת את הבורר. */
     e.pgInMenu=1;
     if(e.target.closest(".dmx")){ closeMenu(true); return; }
-    if(e.target.closest(".dmback")){ menuBrand=null; menu.innerHTML=menuHtml();
-      var f=menu.querySelector(".dmlist button"); if(f) f.focus(); return; }
     var b=e.target.closest("[data-brand]");
-    if(b){ menuBrand=b.getAttribute("data-brand"); menu.innerHTML=menuHtml();
-      var f2=menu.querySelector(".dmlist button"); if(f2) f2.focus(); return; }
+    /* פתיחה וסגירה במקום, בלי לבנות את הבורר מחדש: כך הפוקוס נשאר על שורת היצרן שנלחצה,
+       מיקום הגלילה נשמר, ואפשר להחזיק כמה ענפים פתוחים יחד כמו בעץ תיקיות. */
+    if(b){ var name=b.getAttribute("data-brand"), was=b.getAttribute("aria-expanded")==="true";
+      menuOpen[name]=!was;
+      b.setAttribute("aria-expanded", was?"false":"true");
+      var sub=document.getElementById(b.getAttribute("aria-controls"));
+      if(sub) sub.hidden=was;
+      return; }
     var p=e.target.closest("[data-pick]");
     if(p){ var i=menuFor, was=sel.length, sl=p.getAttribute("data-pick");
       setSlot(i, sl);
       push("cmp_pick",{device:sl,action:"add",selected:sel.length,via:"menu"});
-      menuFor=null; menuBrand=null; menu.hidden=true; menu.innerHTML="";
+      menuFor=null; menuOpen={}; menu.hidden=true; menu.innerHTML="";
       syncChips(); render();
       /* render בונה מחדש את התאים, ולכן מיקוד שנקבע לפניו הולך לאיבוד. כשההשוואה נפתחה
          הפוקוס עובר אליה, כי היא התוצאה של הפעולה, ואחרת הוא חוזר לתא שממנו יצאנו. */
