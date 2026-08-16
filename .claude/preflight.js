@@ -1323,6 +1323,22 @@ if (classFails.length) {
     var h = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
     if (h !== c.src[url]) stale.push(url);
   });
+  /* **וגם הכיוון ההפוך.** ההשוואה למעלה רצה על העמודים שנמצאים באינדקס, ולכן עמוד שנפל
+   * ממנו לגמרי אינו ב-src והיא לא מסתכלת עליו בכלל. זה קרה בפועל: /guides/first-day-checklist/
+   * נעדר מהאינדקס החי בזמן שהעמוד קיים, מחזיר 200 ומייצר שלושה מקטעים תקינים. הבוט פשוט
+   * לא יודע שהמדריך הזה קיים, ואין לזה שום סימן. */
+  var shouldIndex = [];
+  CONTENT_PAGES.forEach(function (f) {
+    var url = f === 'index.html' ? '/' : '/' + f.replace(/\/index\.html$/, '') + '/';
+    if (/^\/guides\/.+\//.test(url) || url === '/phone-problems/' || /^\/[a-z0-9-]+-kiryat-gat\/$/.test(url)) {
+      if (!c.src[url]) shouldIndex.push(url);
+    }
+  });
+  if (shouldIndex.length) {
+    bad('עמודים שאמורים להיות באינדקס התוכן ואינם: ' + shouldIndex.join(', ') +
+      ' — הבוט לא יודע שהם קיימים. הרץ node .claude/tools/gen-bot-content.js');
+  } else { ok('כל עמודי התוכן שאמורים להיות באינדקס נמצאים בו'); }
+
   if (missing.length) bad('bot-content.json מפנה לעמודים שאינם: ' + missing.join(', '));
   if (stale.length) {
     bad('bot-content.json מיושן מול ' + stale.length + ' עמודים: ' + stale.slice(0, 4).join(', ') +
