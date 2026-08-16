@@ -142,6 +142,12 @@ function structure() {
       ],
       all: []
     },
+    /* הכלי יושב גם בתוך "מכשירים", אבל שם הוא פריט שלישי ברשימה משנית מתחת לרשת של 21 שמות
+       דגמים, כלומר שני צעדים ואחרי גלילה. אופק חיפש אותו ולא מצא, וזו הראיה הטובה ביותר
+       שהמיקום הוא הבעיה ולא התווית. כאן הוא לחצן ישיר לצד הקטגוריות, בהדר ובהמבורגר גם יחד.
+       "כלי" ולא "השוואת מכשירים": שתי מילים שנכנסות בשורה, ובעיקר מבדילות אותו מ"מדריכי
+       השוואה" שהוא 19 מאמרים לקריאה ולא כלי להפעלה. */
+    { type: 'link', href: '/phones/compare/', label: 'כלי השוואה', cls: 'ntool' },
     { type: 'link', href: '/#deals', label: 'מבצעים' },
     {
       type: 'drop', id: 'nd-about', label: 'פון גת',
@@ -173,7 +179,8 @@ function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
 function buildNav(selfHref) {
   function a(it) {
     var cur = it.href === selfHref ? ' aria-current="page"' : '';
-    return '<a href="' + it.href + '"' + cur + '>' + esc(it.label) + '</a>';
+    var cls = it.cls ? ' class="' + it.cls + '"' : '';
+    return '<a href="' + it.href + '"' + cls + cur + '>' + esc(it.label) + '</a>';
   }
   var parts = structure().map(function (n) {
     if (n.type === 'link') return '      ' + a(n);
@@ -250,6 +257,18 @@ function CSS(t) {
   'nav.main .nall{border-top:1px solid '+t.rule+';padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}',
   /* התפריט של המכשירים רחב, ולכן הוא נפתח לכיוון פנים המסך ולא החוצה */
   'nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}',
+
+  /* כלי ההשוואה: מסגרת ולא מילוי. שני שיקולים קבעו את זה.
+     ניגודיות: --teal על ההדר הכהה הוא 4.02:1, כלומר נכשל בסף 4.5:1 לטקסט. לכן הטקסט נשאר
+     הלבן-אפור הקיים (16.36:1) והטורקיז נושא רק את המסגרת, שעליה חל סף 3:1 של גבול רכיב.
+     היררכיה: בהדר כבר יש כפתור WhatsApp ירוק מלא, והוא מה שמייצר פניות. כפתור מלא שני היה
+     מתחרה בו על אותה תשומת לב. מסגרת אומרת "זה כלי שפותחים" בלי להתחרות. */
+  'nav.main a.ntool{border:1px solid var(--teal);border-radius:4px;padding:.3rem .7rem;line-height:1.35}',
+  'nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:var(--teal);color:#fff;border-color:var(--teal)}',
+  /* במגירה של המובייל כל פריט הוא שורה ברוחב מלא בגובה 48px, ומסגרת סביב שורה כזאת נראית
+     כמו תיבת קלט. שם ההדגשה היא הטורקיז בקצה הפנימי, באותה שפה של סימון פריט. */
+  '@media(max-width:980px){nav.main a.ntool{border:0;border-radius:0;border-inline-start:3px solid var(--teal);padding-inline-start:calc(clamp(12px,3vw,28px) - 3px)}',
+  '  nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:transparent;color:var(--teal)}}',
   '@media(max-width:980px){',
   '  nav.main .ndrop{display:block}',
   '  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid '+t.line+';min-height:48px}',

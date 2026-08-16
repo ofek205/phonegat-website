@@ -412,6 +412,10 @@ nav.main .npanel a:hover{color:var(--teal)}
 nav.main .npanel a[aria-current="page"]{color:var(--teal)}
 nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
+nav.main a.ntool{border:1px solid var(--teal);border-radius:4px;padding:.3rem .7rem;line-height:1.35}
+nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:var(--teal);color:#fff;border-color:var(--teal)}
+@media(max-width:980px){nav.main a.ntool{border:0;border-radius:0;border-inline-start:3px solid var(--teal);padding-inline-start:calc(clamp(12px,3vw,28px) - 3px)}
+  nav.main a.ntool:hover,nav.main a.ntool:focus-visible{background:transparent;color:var(--teal)}}
 @media(max-width:980px){
   nav.main .ndrop{display:block}
   nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid var(--line);min-height:48px}
@@ -485,6 +489,9 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
+
+
+
 
 
 
@@ -1463,6 +1470,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </div>
       </div>
+      <a href="/phones/compare/" class="ntool">כלי השוואה</a>
       <a href="/#deals">מבצעים</a>
       <div class="ndrop">
         <button type="button" class="ntrig" id="nd-about-t" aria-expanded="false" aria-controls="nd-about">פון גת</button>
@@ -1557,6 +1565,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="sources">מחפשים תשובה מהירה? רוב השאלות הנפוצות כבר <a href="/#faq">עונות על עצמן כאן</a>, ואם המכשיר עושה משהו מוזר יש <a href="/phone-problems/">מדריך תקלות מפורט</a>.</p>
   </div>
 </section>
+
+
+
 
 
 
@@ -2279,6 +2290,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+
+
+
 
 
 

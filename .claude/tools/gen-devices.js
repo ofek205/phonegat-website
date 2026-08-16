@@ -218,7 +218,14 @@ function buildMain(d, openTag) {
              '</b><span>' + esc(p.lede ? p.lede.split('.')[0] + '.' : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
     }).join('\n') + '\n' +
     '    </ul>\n' +
-    '    <p class="aside">רוצים להשוות מול דגם שאינו ברשימה? <a href="/phones/compare/">הכלי בונה כל השוואה</a>, ו<a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>\n' +
+    /* הכלי עם הדגם כבר בפנים. ?d= נתמך בכלי, והוא נפתח עם התא הראשון מלא ואומר "בחרו עוד
+       אחד לפחות". זה חוסך לקורא לבחור מחדש את המכשיר שהוא כבר קורא עליו, וזה גם רגע
+       ההתלבטות עצמו: מי שהגיע עד לכאן כבר יודע מה מעניין אותו ומתלבט מול מה.
+       כפתור ולא הערת שוליים, כי כהערה זה היה כאן כל הזמן ואיש לא הגיע לכלי דרכו. */
+    '    <p class="vscta"><a class="btn btn-teal" href="/phones/compare/?d=' + esc(d.slug) + '">' +
+    'להשוות את ' + ltr(d.name) + ' לדגם אחר</a></p>\n' +
+    '    <p class="aside">הכלי מחזיק ' + db.devices.filter(function (x) { return x.status !== 'draft'; }).length +
+    ' דגמים, ואפשר להשוות שלושה יחד. <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>\n' +
     '  </div>\n</section>\n\n';
   }
 
@@ -377,6 +384,13 @@ db.devices.forEach(function (d) {
     /* מקטע "מול מה שווה להשוות" משתמש ב-.hub, והכלל שלו נולד ב-guides/index.html.
        בדיקה 21 תפסה את זה בהרצה הראשונה: 11 עמודי מכשיר עם הרכיב ובלי ה-CSS שלו. */
     hubCss() + '\n' +
+    /* הכפתור לכלי ההשוואה, מתחת לרשימת ההשוואות המוכנות. הטקסט נושא את שם הדגם ולכן הוא
+       ארוך, ובמסך צר הוא חייב לשבור לשתי שורות במקום לגלוש: white-space:normal, כמו
+       ב-.btn-hero שכבר קיים כאן מאותה סיבה בדיוק. */
+    '.vscta{margin:1.6rem 0 0}\n' +
+    /* ה-padding נושא את הגובה ולא min-height, כמו ב-.dstate .btn-sm: גובה מוצהר נאכל על ידי
+       המסגרת ותיבת השורה ויוצא נמוך מהמוצהר. נמדד 40px עם ברירת המחדל, וזה מתחת ל-44. */
+    '.vscta .btn{white-space:normal;text-align:center;line-height:1.4;padding-block:.7rem}\n' +
     '.btn-hero{white-space:normal;text-align:center}\n' +
     '.cmp-spec .grp th{border-top:2px solid var(--ink-strong);padding-block:1.6rem .55rem;font-family:var(--font);font-weight:700;font-size:1.02rem;letter-spacing:.07em;color:var(--ink-strong);text-align:start;width:auto}\n' +
     '.cmp-spec tbody:first-of-type .grp th{border-top:0;padding-block-start:1rem}\n' +
