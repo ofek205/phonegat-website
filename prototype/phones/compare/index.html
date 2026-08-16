@@ -655,6 +655,11 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dpick li[hidden],.dgrp[hidden]{display:none}
 .dchip{font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--edge);border-radius:999px;padding:.6rem 1.05rem;min-height:44px;display:inline-flex;align-items:center;cursor:pointer;transition:border-color .18s,background .18s,color .18s}
 .dchip:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.dchip.dref{border-style:dashed}
+.dchip .rf{font-size:.82rem;font-weight:500;color:var(--ink-soft);margin-inline-start:.45rem;white-space:nowrap}
+.dchip.sc0 .rf,.dchip.sc1 .rf{color:#fff}
+.dchip.sc2 .rf{color:#3c2e12}
+.dmenu .dmlist .cnt.rf{font-family:var(--font);font-size:.9rem}
 .dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
 .dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
 .dchip.sc2{background:var(--orange);border-color:#c07a2e;color:#241a08;font-weight:700}
@@ -1995,19 +2000,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="dgrp">
           <p class="dbrand"><img class="blogo blogo-google" src="/logos/google.png" alt="" width="16" height="16" loading="lazy" decoding="async">Google</p>
           <ul class="dpick">
-            <li><button type="button" class="dchip" data-slug="pixel-10" data-q="Google Pixel 10 גוגל פיקסל 10 Google גוגל" aria-pressed="false"><bdo dir="ltr">Google Pixel 10</bdo></button></li>
+            <li><button type="button" class="dchip dref" data-slug="pixel-10" data-q="Google Pixel 10 גוגל פיקסל 10 Google גוגל" aria-pressed="false"><bdo dir="ltr">Google Pixel 10</bdo><span class="rf">לא אצלנו</span></button></li>
           </ul>
         </div>
         <div class="dgrp">
           <p class="dbrand"><img class="blogo blogo-nothing" src="/logos/nothing.png" alt="" width="62" height="11" loading="lazy" decoding="async">Nothing</p>
           <ul class="dpick">
-            <li><button type="button" class="dchip" data-slug="nothing-phone-3a-pro" data-q="Nothing Phone (3a) Pro נאת׳ינג פון 3a פרו Nothing " aria-pressed="false"><bdo dir="ltr">Nothing Phone (3a) Pro</bdo></button></li>
+            <li><button type="button" class="dchip dref" data-slug="nothing-phone-3a-pro" data-q="Nothing Phone (3a) Pro נאת׳ינג פון 3a פרו Nothing " aria-pressed="false"><bdo dir="ltr">Nothing Phone (3a) Pro</bdo><span class="rf">לא אצלנו</span></button></li>
           </ul>
         </div>
         <div class="dgrp">
           <p class="dbrand"><img class="blogo blogo-oneplus" src="/logos/oneplus.png" alt="" width="16" height="16" loading="lazy" decoding="async">OnePlus</p>
           <ul class="dpick">
-            <li><button type="button" class="dchip" data-slug="oneplus-15r" data-q="OnePlus 15R 5G וואן פלוס 15R OnePlus " aria-pressed="false"><bdo dir="ltr">OnePlus 15R 5G</bdo></button></li>
+            <li><button type="button" class="dchip dref" data-slug="oneplus-15r" data-q="OnePlus 15R 5G וואן פלוס 15R OnePlus " aria-pressed="false"><bdo dir="ltr">OnePlus 15R 5G</bdo><span class="rf">לא אצלנו</span></button></li>
           </ul>
         </div>
       </div>
@@ -2548,7 +2553,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      every chip press would otherwise become a back-button step. */
   function syncURL(){try{history.replaceState(null,"",sel.length?"?d="+sel.join(","):location.pathname);}catch(e){}}
   function fromURL(){try{var m=/[?&]d=([^&]+)/.exec(location.search);if(!m)return [];
-    return decodeURIComponent(m[1]).split(",").filter(function(s){return !!dev(s);}).slice(0,MAX);}catch(e){return [];}}
+    /* גם ניפוי כפילויות. הקישור נערך ביד, ו-?d=iphone-17,iphone-17 מילא את שני התאים
+       באותו דגם. אין זוג כזה במדד, ולכן הכלי הציג "לא הצלחנו לחשב את ההשוואה הזאת",
+       כלומר האשים את עצמו בתקלה במקום להתמודד עם קלט. נמצא בבדיקת QA ב-16.8.2026. */
+    return decodeURIComponent(m[1]).split(",").filter(function(s){return !!dev(s);})
+      .filter(function(s,i,a){return a.indexOf(s)===i;}).slice(0,MAX);}catch(e){return [];}}
 
   /* התא הוא כפתור. עד 16.8.2026 הוא היה li בלבד, כלומר טקסט אפור שנראה כמו שדה ריק ולא
      היה אפשר להקיש עליו כלל: כלי הבדיקה של הדפדפן הראה "Keyboard-focusable ✗". עכשיו לחיצה
@@ -2763,9 +2772,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         '<span class="bn">'+esc(b.brand)+'</span><span class="cnt">'+(items.length===1?"דגם אחד":items.length+" דגמים")+'</span></button>'+
         '<ul class="dmsub" id="'+id+'"'+(open?'':' hidden')+'>'+
         items.map(function(d){
-          var on=sel.indexOf(d.slug)>=0;
+          var on=sel.indexOf(d.slug)>=0, ref=d.own===false;
+          /* אותו סימון כמו ברשימת הצ׳יפים. "כבר בהשוואה" גובר, כי הוא המצב הרגעי. */
           return '<li><button type="button" data-pick="'+esc(d.slug)+'"'+(on?' aria-current="true"':'')+'>'+
-            '<span class="bn">'+ltr(d.name)+'</span>'+(on?'<span class="cnt">כבר בהשוואה</span>':'')+'</button></li>';
+            '<span class="bn">'+ltr(d.name)+'</span>'+
+            (on?'<span class="cnt">כבר בהשוואה</span>':(ref?'<span class="cnt rf">לא אצלנו</span>':''))+'</button></li>';
         }).join("")+'</ul></li>';
     });
     return '<div class="dmhead"><p class="dmtitle">בחרו יצרן ודגם</p>'+
