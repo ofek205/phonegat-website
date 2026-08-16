@@ -1333,6 +1333,41 @@ if (classFails.length) {
   }
 })();
 
+
+/* ---------- 33. aria-current מצביע על העמוד שבו הוא נמצא ----------
+ * המחוללים בונים עמוד חדש בכך שהם מעתיקים עמוד קיים ומחליפים את ה-main. הניווט נוסע
+ * איתו כמו שהוא, ובתוכו aria-current="page" שכבר מסומן על העמוד ששימש כתבנית. התוצאה:
+ * 42 עמודי השוואה הכריזו ש-/guides/official-vs-parallel-import/ הוא העמוד הנוכחי,
+ * ו-11 עמודים הכריזו את זה על /phones/galaxy-a07/.
+ *
+ * זו תקלת נגישות ולא רק חוסר דיוק: קורא מסך מכריז "העמוד הנוכחי" על קישור שמוביל
+ * למקום אחר, כלומר משקר למי שסומך עליו כדי לדעת איפה הוא נמצא.
+ *
+ * gen-nav.js מתקן את זה כשהוא רץ, אבל רק אם הוא רץ אחרי שאר המחוללים. סדר הרצה אינו
+ * דבר שאפשר לזכור, ולכן הבדיקה כאן ולא בהערה. */
+(function () {
+  var wrong = [];
+  pageFiles.forEach(function (rel) {
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { return; }
+    var self = '/' + rel.replace(/index\.html$/, '').replace(/\.html$/, '/');
+    if (self === '/') self = '/';
+    var re = /<a[^>]*aria-current="page"[^>]*>/g, m;
+    while ((m = re.exec(s)) !== null) {
+      var href = (m[0].match(/href="([^"]*)"/) || [])[1];
+      if (!href) continue;
+      if (href !== self) wrong.push(rel + ' → ' + href);
+    }
+  });
+  if (wrong.length) {
+    bad(wrong.length + ' עמודים מסמנים aria-current על קישור שאינו הם עצמם (' +
+      wrong.slice(0, 3).join(', ') + (wrong.length > 3 ? ' ועוד' : '') +
+      ') — קורא מסך יכריז "העמוד הנוכחי" על מקום אחר. הרץ node .claude/tools/gen-nav.js אחרי שאר המחוללים');
+  } else {
+    ok(pageFiles.length + ' עמודים: aria-current מצביע על העמוד עצמו, או שאינו קיים');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
