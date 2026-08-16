@@ -665,9 +665,12 @@
         ]
       },
       "media": {
-        "hero": null,
+        "hero": "/phones/img/redmi-note-14-pro-1152.webp",
         "gallery": [],
-        "alt": "Redmi Note 14 Pro על דלפק המעבדה בפון גת, מסך קדימה"
+        "alt": "Redmi Note 14 Pro, המסך והגב",
+        "srcset": "/phones/img/redmi-note-14-pro-288.webp 288w, /phones/img/redmi-note-14-pro-576.webp 576w, /phones/img/redmi-note-14-pro-1152.webp 1152w",
+        "width": 1152,
+        "height": 1536
       },
       "dates": {
         "published": null,

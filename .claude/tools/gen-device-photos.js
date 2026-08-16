@@ -42,7 +42,10 @@ var PROBE_W = 192;                /* רוחב עותק הזיהוי */
 
 /* שם הקובץ שאופק נתן -> ה-slug ב-devices.json. מיפוי מפורש ולא נרמול אוטומטי:
  * "Samsung Galaxy A07" ו-"galaxy-a07" לא נגזרים זה מזה בלי לנחש, וניחוש שגוי כאן
- * שם תמונה של דגם אחד בעמוד של דגם אחר. */
+ * שם תמונה של דגם אחד בעמוד של דגם אחר.
+ *
+ * מעבר לזה, קובץ ששמו הוא בדיוק slug קיים מתקבל כמו שהוא. זה לא ניחוש אלא התאמה
+ * מדויקת מול המאגר, ולכן תמונה חדשה שנשמרת בשם הדגם פשוט עובדת בלי לגעת בקובץ הזה. */
 var MAP = {
   'iphone 16': 'iphone-16',
   'iphone 17': 'iphone-17',
@@ -155,12 +158,19 @@ function padColor(file, pre, w, h) {
   }).join('');
 }
 
+var dbFile = path.join(PROTO, 'devices.json');
+var rawDb = fs.readFileSync(dbFile, 'utf8');
+var db = JSON.parse(rawDb);
+var known = {};
+db.devices.forEach(function (d) { known[d.slug] = 1; });
+
 var files = fs.readdirSync(SRC).filter(function (f) { return /\.png$/i.test(f); });
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
 var done = [], skipped = [];
 files.forEach(function (f) {
-  var slug = MAP[path.basename(f, path.extname(f)).toLowerCase()];
+  var key = path.basename(f, path.extname(f)).toLowerCase();
+  var slug = MAP[key] || (known[key] ? key : null);
   if (!slug) { skipped.push(f); return; }
 
   var file = path.join(SRC, f);
@@ -245,9 +255,6 @@ var SHOT = {
   'iphone-17-pro-max': 'שלושה צבעים, הגב של המכשירים'
 };
 
-var dbFile = path.join(PROTO, 'devices.json');
-var rawDb = fs.readFileSync(dbFile, 'utf8');
-var db = JSON.parse(rawDb);
 var bySlug = {};
 done.forEach(function (d) { bySlug[d.slug] = d; });
 
