@@ -1659,6 +1659,16 @@ footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-s
 .pg-head .ht{flex:1;min-width:0}
 .pg-head .ht b{display:block;font-size:1rem;font-weight:800;line-height:1.25}
 .pg-head .ht span{font-size:.76rem;opacity:.92;display:inline-flex;align-items:center;gap:.35rem}
+/* חיווי זמינות במקום "בדרך כלל עונים מיד", שהיא הבטחה שאיש לא עומד מאחוריה בשתיים בלילה.
+   הנקודה נגזרת מ-openNow, כלומר משעון ישראל, ולכן היא אומרת את האמת בכל שעה.
+   ירוק כשהחנות פתוחה ואפשר לדבר עם ברוך או סיגל, אפור כשלא. הצבע לבדו לא נושא את המידע:
+   הטקסט לצידו אומר את אותו דבר במילים, וזו דרישת WCAG 1.4.1. */
+.pg-dot{width:8px;height:8px;border-radius:50%;background:#9aa0a6;flex:none}
+.pg-status.on .pg-dot{background:#34c759;box-shadow:0 0 0 3px rgba(52,199,89,.28)}
+@media(prefers-reduced-motion:no-preference){
+  .pg-status.on .pg-dot{animation:pgpulse 2.4s ease-in-out infinite}
+}
+@keyframes pgpulse{0%,100%{box-shadow:0 0 0 3px rgba(52,199,89,.28)}50%{box-shadow:0 0 0 5px rgba(52,199,89,.12)}}
 .pg-head .ht span::before{content:"";width:7px;height:7px;border-radius:50%;background:#8dffbb;display:inline-block}
 .pg-head .x{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;display:grid;place-items:center;flex:none}
 .pg-head .x:hover{background:rgba(255,255,255,.3)}
@@ -1695,13 +1705,13 @@ footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-s
 #pgPanel.sug-on .pg-chips>.pg-chip:not(.pg-chip-more){display:none}
 #pgPanel.sug-on .pg-chips>.pg-chip-more{display:inline-flex}
 .pg-sug.col{flex-direction:column;align-items:stretch}
-/* select נייטיב, ולא עוד שורת צ'יפים. פקד אחד בגובה 44px במקום שורה נוספת, והוא פטור
-   מיעד המגע של 44px כי הוא פקד של הדפדפן ונגיש מלכתחילה. במובייל הוא פותח את הבורר
-   של המערכת, שהוא הדבר שמשתמשים כבר יודעים להפעיל. */
-.pg-select{width:100%;box-sizing:border-box;min-block-size:44px;font-family:var(--font);font-size:.83rem;font-weight:700;color:var(--teal-d);background:#fff;border:1px solid var(--teal);border-radius:12px;padding:.34rem .6rem}
-.pg-sug-label{font-family:var(--font);font-size:.78rem;font-weight:700;color:var(--teal-d);margin:0 0 .2rem}
+/* .pg-select ו-.pg-sug-label נמחקו יחד עם רשימת "עוד דגמים". ה-select השביר את הפוקוס
+   בבחירה, קפץ את הפריסה, והסתיר אפשרויות מקורא מסך שכבר קורא את השיחה. ראו buyShowModels. */
 .pg-chip{background:#fff;border:1px solid var(--teal);color:var(--teal-d);border-radius:999px;padding:.34rem .78rem;font-family:var(--font);font-size:.83rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
 .pg-chip:hover{background:var(--teal);color:#fff}
+/* הצעה של תור קודם: נשארת קריאה בתמלול, אבל נראית ומתנהגת כלא פעילה */
+.pg-chip:disabled{opacity:.45;border-color:var(--line);color:#6b6b76;cursor:default}
+.pg-chip:disabled:hover{background:#fff;color:#6b6b76}
 
 .pg-input{display:flex;gap:.5rem;padding:.55rem .65rem;border-top:1px solid var(--line);background:#fff;flex:none}
 .pg-input input{flex:1;padding:.6rem .85rem;border:1px solid var(--line);border-radius:999px;font-family:inherit;font-size:.94rem;direction:rtl;text-align:start;color:var(--ink);background:#fff}
@@ -3268,7 +3278,7 @@ nav.main a.ntool{font-weight:800}
 <section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" inert>
   <div class="pg-head">
     <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
-    <div class="ht"><b>העוזר של פון גת</b><span>בדרך כלל עונים מיד</span></div>
+    <div class="ht"><b>העוזר של פון גת</b><span class="pg-status" id="pgStatus"><i class="pg-dot" aria-hidden="true"></i><span id="pgStatusTxt">זמין</span></span></div>
     <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
@@ -3378,12 +3388,33 @@ nav.main a.ntool{font-weight:800}
   var opened=false, lastUser='', fails=0;
   var ctx={name:'',topic:'',device:'',issue:''}, flow=null;
 
-  var waSvg='<img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">';
+  /* נתיב שורשי ולא יחסי. כשהצ'אט ישב רק בדף הבית זה עבד, וברגע שהוא עבר לעמודי עומק
+     הדפדפן ביקש /compare/<זוג>/whatsapp-logo.png וקיבל 404, כלומר הכפתור בלי לוגו. */
+  var waSvg='<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="22" height="22" decoding="async">';
   var telSvg='<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg>';
   var navSvg='<svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8c0 5.2 8 12 8 12s8-6.8 8-12a8 8 0 0 0-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>';
 
-  function greetWord(){var h=(new Date()).getHours();if(h>=5&&h<12)return 'בוקר טוב';if(h>=12&&h<16)return 'צהריים טובים';if(h>=16&&h<22)return 'ערב טוב';return 'שלום';}
-  function openNow(){var d=new Date(),day=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(day>=0&&day<=4)return h>=9&&h<18.5;if(day===5)return h>=9&&h<13;return false;}
+  /* **שעון החנות ולא שעון המבקר.** עד כאן זה היה new Date() מקומי, כלומר מי שגולש מחו"ל
+     או שהשעון במכשיר שלו סטה קיבל "אנחנו פתוחים עכשיו, אפשר לחייג ישירות" בשתיים בלילה,
+     וגם כפתור חיוג במקום כפתור "נחזור אליכם". החנות נמצאת בקרית גת, ולכן השאלה "פתוח
+     עכשיו" נמדדת בשעון ישראל תמיד. נופל בחזרה לשעון המקומי רק אם Intl לא זמין. */
+  function ilNow(){
+    try{
+      var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jerusalem',weekday:'short',
+        hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+      var o={};parts.forEach(function(p){o[p.type]=p.value;});
+      var DAYS={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+      if(o.weekday in DAYS&&o.hour!==undefined){
+        /* חצות מוחזר לפעמים כ-24 ולא כ-0, ואז שעה 24.5 נראית כמו אחרי הסגירה בכל מקרה,
+           אבל ביום שישי היא הייתה מזיזה את היום. אפס במפורש. */
+        var h=parseInt(o.hour,10)%24;
+        return {day:DAYS[o.weekday],h:h+parseInt(o.minute,10)/60};
+      }
+    }catch(e){}
+    var d=new Date();return {day:d.getDay(),h:d.getHours()+d.getMinutes()/60};
+  }
+  function greetWord(){var h=ilNow().h;if(h>=5&&h<12)return 'בוקר טוב';if(h>=12&&h<16)return 'צהריים טובים';if(h>=16&&h<22)return 'ערב טוב';return 'שלום';}
+  function openNow(){var n=ilNow(),day=n.day,h=n.h;if(day>=0&&day<=4)return h>=9&&h<18.5;if(day===5)return h>=9&&h<13;return false;}
   function hoursLine(){return openNow()?'אנחנו פתוחים עכשיו, אפשר לחייג ישירות:':'אנחנו סגורים כרגע. השאירו פרטים ונחזור אליכם, או שלחו WhatsApp:';}
   function contactCta(){return openNow()?['wa','tel']:['wa','callback'];}
   function track(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev};if(d)for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(e){}}
@@ -3397,7 +3428,7 @@ nav.main a.ntool{font-weight:800}
     {id:'celcom',c:1,k:['סלקום','קו','קווים','סים','ניוד','מסלול','חבילה','חבילת','דקות','גלישה'],a:'פון גת הוא הסניף הראשון והיחיד של סלקום בקרית גת: פתיחת וניוד קו, החלפת סים ומסלולים, וגם שירות לכל חברות הסלולר.',cta:['tel','wa'],sug:['callback']},
     {id:'warranty',c:1,k:['אחריות','אחראי','ערבות','אחראים'],a:'כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים ועומדים מאחורי העבודה שלנו. על תיקוני נזקי נוזלים אין אחריות. לפרטים המדויקים לפי המכשיר, דברו איתנו.',cta:['wa'],sug:['repair']},
     {id:'data',c:1,k:['נתונים','גיבוי','אנשי קשר','תמונות','להעביר','העברת נתונים'],a:'אנחנו דואגים לשמור ולהעביר את הנתונים שלכם, אנשי קשר ותמונות, גם ממכשיר שבור וגם בקנייה של מכשיר חדש.',cta:['wa'],sug:['buy','repair']},
-    {id:'offer',c:1,k:['מבצע','מבצעים','הטבה','מגן','זכוכית','מגן מסך'],a:'הטבה לקוראי האתר: מגן זכוכית מסך כולל הדבקה ב-9 ₪ (למעט מכשירים מעוגלים).\nובנוסף, רוכשי מכשיר חדש מקבלים העברת נתונים ללא עלות, גם אם הטלפון הישן שבור.',cta:['wa'],sug:['buy','accessories']},
+    {id:'offer',c:1,k:['מבצע','מבצעים','הטבה','מגן','זכוכית','מגן מסך'],a:'הטבה לקוראי האתר: מגן מסך מזכוכית, כולל הדבקה. לא כולל מסכים מעוגלים.\nוגם: מי שקונה אצלנו מכשיר חדש מקבל העברת נתונים ללא עלות, גם אם הישן שבור.',cta:['wa'],sug:['buy','accessories']},
     {id:'gaming',c:1,k:['פלייסטיישן','סוני','גיימינג','קונסולה','מחשב','מחשבים','לפטופ','בקר'],a:'בפלייסטיישן אנחנו מוכרים קונסולות סוני ומציעים אבזור גיימינג (תיקוני קונסולות איננו מבצעים). במחשבים אנחנו מסייעים בגיבוי והעברת נתונים (לא תיקוני חומרה).',cta:['wa','tel'],sug:['callback']},
     {id:'accessories',c:1,k:['אבזור','אביזר','כיסוי','כיסויים','מטען','כבל','אוזניות','ציוד לרכב','מטען לרכב','מעמד'],a:'יש לנו מבחר אבזור: כיסויים, מגני מסך, מטענים, כבלים, אוזניות וציוד לרכב. ספרו לנו לאיזה דגם ונכין לכם.',cta:['wa'],sug:['offer','buy']},
     {id:'payments',c:1,k:['תשלומים','אשראי','ביט','פריסה','פריסת','קרדיט'],a:'אפשר לרכוש מכשיר חדש בתשלומים. נשמח לפרט את האפשרויות המדויקות לפי הדגם, דברו איתנו.',cta:['wa','tel'],sug:['buy','callback']},
@@ -3414,15 +3445,24 @@ nav.main a.ntool{font-weight:800}
   function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
   function stripNikud(s){return s.replace(/[֑-ׇ]/g,'');}
   function has(t,kw){return new RegExp('(^|[^א-ת])[בהלמוכש]{0,3}'+esc(kw)+(kw.length<=2?'(?=$|[^א-ת])':'')).test(t);}
+  /* **כמה מילים התאימו, ורק אחר כך כמה הן ארוכות.**
+     הדירוג הקודם היה לפי אורך מילת מפתח בודדת, ולכן משפט שבו כוונה אחת מתאימה פעמיים
+     הפסיד לכוונה שהתאימה פעם אחת במילה ארוכה יותר. נמדד בדפדפן:
+       "תיקון סוללה באייפון"  →  זרימת **קנייה**
+     כי "אייפון" היא שש אותיות ו"תיקון" חמש, בזמן ש-repair התאים גם ל"תיקון" וגם
+     ל"סוללה". זו בקשת תיקון חד משמעית שנשלחה למכור ללקוח מכשיר חדש. */
   function matchIntent(text){
-    var t=stripNikud(String(text)), best=null, bestLen=0, tiers=[1,0], ti, i, j;
+    var t=stripNikud(String(text)), best=null, bestScore=0, tiers=[1,0], ti, i, j;
     for(ti=0;ti<tiers.length;ti++){
       for(i=0;i<INTENTS.length;i++){
         if(INTENTS[i].c!==tiers[ti]) continue;
+        var hits=0,longest=0;
         for(j=0;j<INTENTS[i].k.length;j++){
           var kw=INTENTS[i].k[j];
-          if(kw.length>bestLen && has(t,kw)){best=INTENTS[i];bestLen=kw.length;}
+          if(has(t,kw)){hits++;if(kw.length>longest)longest=kw.length;}
         }
+        /* ספירה גוברת על אורך, והאורך מכריע בין שוות */
+        if(hits){var sc=hits*100+longest;if(sc>bestScore){best=INTENTS[i];bestScore=sc;}}
       }
       if(best) return best;
     }
@@ -3456,11 +3496,24 @@ nav.main a.ntool{font-weight:800}
     var t=document.createElement('span');t.className='t';t.textContent=nowT();b.appendChild(t);
     msgs.appendChild(b);down();
   }
+  var lastSugBox=null;
   function suggestChips(items){
     var barLabels=CHIPS.map(function(id){return LABELS[id]||id;});
     var list=[];
     for(var i=0;i<items.length;i++){var itm=items[i],lbl=(typeof itm==='string')?(LABELS[itm]||itm):itm[0];if(barLabels.indexOf(lbl)<0)list.push(itm);}
     if(!list.length)return;
+    /* **הצעות של תורות קודמים מושבתות ברגע שיש חדשות.**
+     * נמדד בשיחה אחת: 32 צ'יפים פעילים מ-12 תורות, ו-46 פקדים ברי פוקוס בתוך הפאנל.
+     * זה נפל עליי בבדיקה של הקישורים לעמודים: לחצתי על מה שנראה כמו הקישור הנוכחי
+     * והגעתי לעמוד מלפני שלושה תורות, כי הצ'יפ הישן עדיין חי ויושב קודם ב-DOM. לקוח
+     * עושה בדיוק את זה, וגם קורא מסך ומקלדת עוברים דרך כל 46 הפקדים.
+     * disabled ולא הסרה, כדי שהתמלול של השיחה יישאר קריא. */
+    if(lastSugBox&&lastSugBox.children){
+      for(var oi=0;oi<lastSugBox.children.length;oi++){
+        lastSugBox.children[oi].disabled=true;
+        lastSugBox.children[oi].setAttribute('tabindex','-1');
+      }
+    }
     var box=document.createElement('div');box.className='pg-sug';
     for(var j=0;j<list.length;j++){(function(it){
       var label,fn;
@@ -3470,8 +3523,22 @@ nav.main a.ntool{font-weight:800}
       b.addEventListener('click',function(){lastUser=label;bubble(label,'user');fn();focusInput();});
       box.appendChild(b);
     })(list[j]);}
-    msgs.appendChild(box);down();
+    msgs.appendChild(box);lastSugBox=box;down();
     if(panel)panel.classList.add('sug-on');
+  }
+  /* אותן נקודות הקלדה, אבל בשליטה חיצונית, בשביל ההמתנה לקבצי הנתונים ב-handle.
+     בלעדיהן המסך נשאר ריק לגמרי בזמן ההמתנה, וזה נראה כאילו השליחה לא נקלטה. */
+  var waitTp=null;
+  function waitDots(on){
+    if(on){
+      if(waitTp||reduce)return;
+      waitTp=document.createElement('div');waitTp.className='pg-typing';
+      waitTp.setAttribute('aria-hidden','true');waitTp.innerHTML='<i></i><i></i><i></i>';
+      msgs.appendChild(waitTp);down();
+    }else if(waitTp){
+      if(waitTp.parentNode)waitTp.parentNode.removeChild(waitTp);
+      waitTp=null;
+    }
   }
   function botReply(text,opts){
     opts=opts||{};
@@ -3483,9 +3550,12 @@ nav.main a.ntool{font-weight:800}
   }
 
   function respond(it){
-    if(it.id==='repair'){startRepair();return;}
-    if(it.id==='buy'){startBuy();return;}
-    if(it.id==='callback'){startLead('כללי');return;}
+    /* **הזרימה נפתחת, ולצידה קישור לעמוד שמסביר.** "תיקון סוללה באייפון" פותח את זרימת
+       התיקון, וזו התשובה הנכונה, אבל יש לנו עמוד בדיוק על זה והלקוח צריך דרך להגיע אליו.
+       הסף גבוה מזה שבנפילה, כי כאן כבר יש תשובה והקישור הוא תוספת ולא הצלה. */
+    if(it.id==='repair'){var rp=pageFor(lastUser,9);startRepair(rp?pageChip(rp):null);return;}
+    if(it.id==='buy'){var bp=pageFor(lastUser,9);startBuy(bp?pageChip(bp):null);return;}
+    if(it.id==='callback'){startLead(ctx.topic);return;}
     fails=0;ctx.topic=it.id;
     var text=(it.id==='greeting'?greetWord():'')+it.a;
     if(it.id==='hours')text=it.a+(openNow()?'\nאנחנו פתוחים עכשיו.':'\nכרגע אנחנו סגורים.');
@@ -3495,12 +3565,23 @@ nav.main a.ntool{font-weight:800}
     track('chat_intent',{intent:it.id});
   }
   function runIntent(id){var it=byId(id);if(it)respond(it);}
-  function doTopic(id){if(id==='repair')startRepair();else if(id==='buy')startBuy();else if(id==='callback')startLead('כללי');else runIntent(id);}
+  function doTopic(id){if(id==='repair')startRepair();else if(id==='buy')startBuy();else if(id==='callback')startLead(ctx.topic);else runIntent(id);}
   function mainMenu(){flow=null;botReply('במה עוד אפשר לעזור?',{sug:['repair','buy','celcom','hours','callback']});}
 
-  function startRepair(){flow={type:'repair',step:'device'};ctx.topic='repair';track('chat_flow',{flow:'repair'});botReply('בשמחה נעזור לתקן. איזה מכשיר צריך טיפול?',{sug:[['אייפון',function(){repDevice('אייפון');}],['סמסונג',function(){repDevice('סמסונג');}],['שיאומי',function(){repDevice('שיאומי');}],['מכשיר אחר',function(){repDevice('המכשיר');}]]});}
-  function repDevice(dev){ctx.device=dev;flow={type:'repair',step:'issue'};botReply('מה קרה ל'+dev+'?',{sug:[['מסך שבור',function(){repIssue('מסך שבור');}],['בעיית סוללה',function(){repIssue('בעיית סוללה');}],['נפל למים',function(){repIssue('נזק מים');}],['לא נטען',function(){repIssue('בעיית טעינה');}],['תקלה אחרת',function(){repIssue('תקלה');}]]});}
-  function repIssue(iss){ctx.issue=iss;flow=null;ctx.topic='תיקון '+iss+' '+ctx.device;track('chat_repair',{device:ctx.device,issue:iss});var wt='היי, הגעתי דרך האתר. אשמח להצעת מחיר לתיקון: '+iss+' ב'+ctx.device+'.';botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. מעבדה וותיקה מעל 30 שנה, עם אחריות. המחיר תלוי בדגם המדויק, אז נשמח לתת הצעה מהירה ומדויקת.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}],['שאלה אחרת',function(){mainMenu();}]]});}
+  function startRepair(extra){flow={type:'repair',step:'device'};ctx.topic='repair';track('chat_flow',{flow:'repair'});
+    var sug=[['אייפון',function(){repDevice('אייפון');}],['סמסונג',function(){repDevice('סמסונג');}],['שיאומי',function(){repDevice('שיאומי');}],['מכשיר אחר',function(){repDevice('המכשיר');}]];
+    if(extra)sug.push(extra);
+    botReply('בואו נראה מה קרה. איזה מכשיר צריך טיפול?',{sug:sug});}
+  /* ה"א הידיעה יורדת אחרי הל'. הצ'יפ "מכשיר אחר" שולח "המכשיר", ולכן הבוט שאל
+     "מה קרה להמכשיר?", ואותו דבר קרה בכל טקסט חופשי שנפתח ב-ה, כמו "הטלפון שלי". */
+  function repDevice(dev){ctx.device=dev;flow={type:'repair',step:'issue'};botReply('מה קרה ל'+String(dev).replace(/^ה/,'')+'?',{sug:[['מסך שבור',function(){repIssue('מסך שבור');}],['בעיית סוללה',function(){repIssue('בעיית סוללה');}],['נפל למים',function(){repIssue('נזק מים');}],['לא נטען',function(){repIssue('בעיית טעינה');}],['תקלה אחרת',function(){repIssue('תקלה');}]]});}
+  function repIssue(iss){ctx.issue=iss;flow=null;ctx.topic='תיקון '+iss+' '+ctx.device;track('chat_repair',{device:safeVal(ctx.device,REP_DEVICES),issue:safeVal(iss,REP_ISSUES)});var wt='היי, הגעתי דרך האתר. אשמח להצעת מחיר לתיקון: '+iss+' ב'+ctx.device+'.';/* **הבטחת האחריות תלויה בסוג התקלה.** הנוסח הקודם אמר "עם אחריות" גם למי שלחץ
+   "נפל למים", בזמן שהמדיניות היא שעל נזקי נוזלים אין אחריות ואומרים את זה מראש.
+   וגם "וותיקה" בוו כפולה, שהוא תיקון רשום בפרויקט. */
+var warr=(iss==='נזק מים')
+  ?'מעבדה ותיקה, מעל 30 שנה. על תיקון נזקי נוזלים אין אחריות בשום מעבדה, ואנחנו אומרים את זה מראש.'
+  :'מעבדה ותיקה, מעל 30 שנה, ועל התיקון יש אחריות בכתב.';
+botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המחיר תלוי בדגם, אז בואו נדבר ונגיד לכם בדיוק כמה.\n'+hoursLine(),{cta:contactCta(),waText:wt,sug:[['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}],['שאלה אחרת',function(){mainMenu();}]]});}
 
   /* bot:facts:start — נתוני הקטלוג לבוט.
      קדם לזה BUY_MODELS, רשימה קשיחה שלא הייתה מחוברת לקטלוג. היא הציעה "Galaxy Z מתקפל"
@@ -3549,19 +3630,72 @@ nav.main a.ntool{font-weight:800}
     for(var i=0;i<SHORT_PREFIX.length;i++)if(he.indexOf(SHORT_PREFIX[i]+' ')===0)return he.slice(SHORT_PREFIX[i].length+1);
     return he;
   }
+  /* **קיצור שיוצר שתי תוויות זהות אינו קיצור.** "שיאומי 15" ו"רדמי נוט 15" התקצרו שניהם
+     ל-"15", ובענף שיאומי הופיעו שני צ'יפים בשם "15" בלי aria-label. קורא מסך הקריא
+     "15, לחצן" פעמיים, והבועה שנרשמה אחר כך הייתה "15", ולכן גם התמלול לא גילה מה נבחר.
+     הלקוח גילה רק שלושה שלבים אחר כך, בסיכום. לכן הקיצור חל רק כשהוא נשאר חד ערכי,
+     ומחושב מול הרשימה שבאמת מוצגת ולא מול הקטלוג כולו. */
+  function shortLabels(list){
+    var out=list.map(function(d){return shortModel(d.name_he);}),seen={},dup={};
+    out.forEach(function(s){if(seen[s])dup[s]=1;else seen[s]=1;});
+    return out.map(function(s,i){return dup[s]?list[i].name_he:s;});
+  }
   /* אין במאגר שום אות דירוג: launch_year ריק ב-24 מ-24, dates הוא null, ו-stock מלא
      ב-12 בלבד ולכן מחוץ לקובץ בכוונה. לכן הסדר נגזר ממספר הדגם שבשם, יורד. זה
      דטרמיניסטי, ולא ישתנה בשקט כשמישהו יסדר מחדש את devices.json.
      אם תגיע רשימה מפורשת של חמישה מובילים, מחליפים את הפונקציה הזאת ולא יותר. */
   function modelRank(d){var m=String(d.name).match(/\d+/);return m?parseInt(m[0],10):0;}
-  var BUY_SHOW=5,moreSeq=0;
+  /* **טקסט חופשי לא נשלח לאנליטיקס, בשום מסלול.**
+   *
+   * chat_buy_step, chat_buy ו-chat_repair שלחו את מה שהמשתמש הקליד מילה במילה, חתוך
+   * ל-30 או 40 תווים בלבד. ה-QA מדד את זה בפועל:
+   *   {"event":"chat_repair","device":"קוראים לי דוד לוי 0501234567",
+   *    "issue":"המסך שבור, תחזרו אליי לדוד 050-1234567"}
+   *   {"event":"chat_buy_step","step":"storage","value":"0525893366"}
+   * privacy.html מבטיח "מידע סטטיסטי בלבד", ו-deviceHint כבר עושה בדיוק את הניקוי הזה
+   * ב-chat_fallback וב-chat_device_unmatched. שלושת המסלולים האלה עקפו אותו.
+   *
+   * הפתרון הוא רשימה סגורה ולא רגקס ניקוי: נשלח רק ערך שבאמת הגיע מהאפשרויות שהוצגו,
+   * או שם דגם שנפתר מול הקטלוג. כל השאר נספר כ"טקסט חופשי". המדד שמעניין הוא באיזה שלב
+   * אנשים בוחרים מה, וזה נשמר במלואו. */
+  function safeVal(v,allowed){
+    v=String(v==null?'':v);
+    if(!v)return '';
+    for(var i=0;i<allowed.length;i++)if(String(allowed[i])===v)return v;
+    return 'טקסט חופשי';
+  }
+  var STORAGE_SEEN=[];
+  var REP_DEVICES=['אייפון','סמסונג','שיאומי','המכשיר'];
+  /* הערכים שנשלחים ל-repIssue, ולא התוויות שעל הצ'יפים: הצ'יפ "נפל למים" שולח "נזק מים" */
+  var REP_ISSUES=['מסך שבור','בעיית סוללה','נזק מים','בעיית טעינה','תקלה'];
+  var IMPORT_VALS=['רשמי','מקביל','לא בטוח'];
+  function catalogName(v){
+    if(!FACTS||!v)return '';
+    for(var i=0;i<FACTS.devices.length;i++)if(FACTS.devices[i].name_he===v)return v;
+    return 'טקסט חופשי';
+  }
   /* bot:facts:end */
 
   /* bot:answers:start — תשובות על דגם מתוך bot-facts.json.
      כל הערכים מצוטטים מילה במילה מהשדה. אין ניסוח מחדש ואין ברירת מחדל סבירה-לשמע, כי
      "אחריות סטנדרטית 12 חודשים" שנכתב כדי למנוע מבוי סתום הופך להבטחה של המותג בלי בקרת
      אדם. שדה null מנתב לאדם, נקודה. */
-  function normDev(s){return String(s).toLowerCase().replace(/[־–_-]/g,' ').replace(/\s+/g,' ').trim();}
+  /* **הצוואר של שלוש שכבות.** זיהוי הדגמים, findField ו-qTokens כולם עוברים כאן, ולכן
+     נרמול שנוסף כאן מגיע לשלושתן בבת אחת. stripNikud היה מופעל רק על הכוונות, כלומר
+     "אייפון" עם ניקוד זוהה ככוונת קנייה אבל לא כדגם.
+     שני הנרמולים סימטריים: הם רצים גם על שאילתת המשתמש וגם על שמות הקטלוג, כי devTokens
+     קורא לאותה פונקציה. לכן "איפון" ו"אייפון" נפגשים בלי רשימת מילים נרדפות.
+       ניקוד    אַיְיפוֹן
+       יי → י   כתיב מלא וחסר: איפון / אייפון
+       וו → ו   ואן פלוס / וואן פלוס
+     נרמול גרש נבנה כאן ונמחק: אין אף מילת מפתח בשדות שמכילה גרש, והשם היחיד בקטלוג
+     שמכיל אותו נמצא ממילא דרך טוקן הדגם. לא נמצא מקרה שנשען עליו, ולכן הוא לא נשאר. */
+  function normDev(s){
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g,'')
+      .replace(/יי/g,'י').replace(/וו/g,'ו')
+      .replace(/[־–_-]/g,' ').replace(/\s+/g,' ').trim();
+  }
   /* טוקן דגם נכלל רק אם יש בו ספרה **וגם** אות, עברית או לטינית: a56, s26 ultra, 17e,
      "פיקסל 10", "17 פרו". מספר עירום כמו "17" נדחה, כי הוא מתאים לחצי הקטלוג וניחוש הוא
      בדיוק מה שאסור. דרישת אות לטינית בלבד הייתה מפילה "פיקסל 10", שהיא הצורה שבה אנשים
@@ -3637,8 +3771,14 @@ nav.main a.ntool{font-weight:800}
   }
   /* סדר מהספציפי לכללי: "טעינה אלחוטית" לפני "טעינה", "מצלמה קדמית" לפני "מצלמה" */
   var DEV_FIELDS=[
+    ['__less',['למי לא מתאים','למי פחות']],
     ['__good',['למי מתאים','מתאים לי','שווה לי','כדאי לי','למי זה','למי הוא מתאים']],
-    ['__less',['למי לא מתאים','למי פחות','חסרונות','מה החסרונות']],
+    /* הפרוזה של עמוד המכשיר. "חסרונות" עבר מ-__less ל-__cons, כי הם שני דברים שונים:
+       למי הדגם פחות מתאים, מול מה חלש בו. */
+    ['__cons',['חסרונות','מה החסרונות','מה פחות טוב','מה החולשות']],
+    ['__pros',['יתרונות','מה היתרונות','מה טוב ב','מה חזק ב']],
+    ['__what',['מה מיוחד','למה דווקא','מה חשוב לדעת','מה הייחוד','ספר לי על','מה זה נותן']],
+    ['__daily',['ביומיום','בשימוש יומי','איך זה בשימוש']],
     ['warranty',['אחריות','אחראי']],
     ['payments',['תשלומים','תשלום','קרדיט','אשראי']],
     ['data_transfer',['העברת נתונים','להעביר נתונים','העברת מידע','גיבוי','אנשי קשר']],
@@ -3690,12 +3830,29 @@ nav.main a.ntool{font-weight:800}
     return d.kind==='reference'?null:{label:'לעמוד של '+d.name_he,href:'/phones/'+d.slug+'/'};
   }
   var COMMERCIAL={warranty:1,payments:1,data_transfer:1,service_terms:1};
+  /* הטקסט המצוטט לפעמים כבר נושא את הגילוי בעצמו: הפרוזה של what_matters במכשירי ייחוס
+     נפתחת ב"מכשיר שאנחנו לא מוכרים", וההוספה מלמעלה יצרה אמירה כפולה באותה תשובה.
+     ההבטחה נשמרת בשני המקרים, כי כאן מוותרים על הכפילות ולא על הגילוי. */
+  function alreadyDiscloses(t){ return /לא מוכרים/.test(t||''); }
   function fieldAnswer(d,field){
     var note=refNote(d),pre=note?note+'\n':'';
-    if(field==='__good'||field==='__less'){
-      var arr=field==='__good'?d.good_for:d.less_for;
+    /* כל השדות שהם רשימת משפטים שנכתבו ביד. מצוטטים כמו שהם, עד שלושה, ובלי ניסוח מחדש. */
+    var LISTS={__good:['good_for','למי מתאים '],__less:['less_for','למי פחות מתאים '],
+               __pros:['pros','היתרונות של '],__cons:['cons','מה פחות חזק ב'],
+               __daily:['daily_benefits','בשימוש יומיומי, ']};
+    if(LISTS[field]){
+      var arr=d[LISTS[field][0]];
       if(!arr||!arr.length)return {text:pre+'על '+d.name_he+' אין לי את החלק הזה כתוב. ברוך וסיגל יסבירו בדיוק, בטלפון או בחנות.',human:true};
-      return {text:pre+(field==='__good'?'למי מתאים ':'למי פחות מתאים ')+d.name_he+':\n• '+arr.slice(0,3).join('\n• ')};
+      var body=LISTS[field][1]+d.name_he+':\n• '+arr.slice(0,3).join('\n• ');
+      return {text:(alreadyDiscloses(body)?'':pre)+body};
+    }
+    if(field==='__what'){
+      if(!d.what_matters)return {text:pre+'על '+d.name_he+' אין לי סיכום כתוב. ברוך יסביר בדיוק מה מייחד אותו.',human:true};
+      /* הטקסט הזה ארוך, ולכן נחתך בגבול משפט כמו בהשוואה, והקישור לעמוד נשאר */
+      var w=String(d.what_matters);
+      if(w.length>320){var cut=w.lastIndexOf('. ',320);w=w.slice(0,cut>120?cut+1:320);}
+      /* אם החיתוך הפיל את הגילוי שהיה בסוף, ה-pre חוזר. לכן הבדיקה על הטקסט אחרי החיתוך. */
+      return {text:(alreadyDiscloses(w)?'':pre)+w};
     }
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
@@ -3782,7 +3939,74 @@ nav.main a.ntool{font-weight:800}
   }
   function isCompareQ(text){
     var h=' '+normDev(text)+' ';
-    return h.indexOf('הבדל')>=0||h.indexOf(' מול ')>=0||h.indexOf('לעומת')>=0||h.indexOf(' vs ')>=0;
+    /* "השוואה" ו"להשוות" נוספו אחרי ש"השוואה בין גלקסי S26 לפיקסל" לא זוהה כשאלת
+       השוואה, נפל להתאמת שם עמוד, והוצע לו עמוד השוואה שפיקסל לא מופיע בו כלל. */
+    return h.indexOf('הבדל')>=0||h.indexOf(' מול ')>=0||h.indexOf('לעומת')>=0||h.indexOf(' vs ')>=0||h.indexOf('השווא')>=0||h.indexOf('להשוות')>=0;
+  }
+  /* ---- מכשיר משתמע: העמוד שעליו עומדים, והדגם שכבר דיברו עליו ----
+   *
+   * **נמדד בדפדפן על /phones/galaxy-a56/, ושתי השאלות הכי טבעיות שם נפלו:**
+   *   "כמה הסוללה?"                        פתח זרימת תיקון
+   *   "ומה המסך?" מיד אחרי תשובה על A56    פתח זרימת תיקון
+   * הסיבה אחת: כשאין שם דגם בטקסט deviceAnswer מוותר, ואז "סוללה" ו"מסך" נתפסות
+   * כמילות מפתח של תיקון. ctx.slug כבר נשמר בקוד ומעולם לא נקרא, ו-location.pathname
+   * לא הופיע בצ'אט אף פעם. זה נהיה קריטי ב-16.8.2026, כשהבוט עבר ל-21 עמודי מכשיר: שם
+   * הכפתור הוא הדבר הראשון שנוגעים בו, ושואלים על המכשיר שבעמוד בלי לנקוב בשמו.
+   *
+   * שני שומרים, כי המהלך הזה מסוכן בדיוק במידה שהוא שימושי:
+   *   1. **תלונה נשארת תיקון.** "המסך שלי שבור" בעמוד A56 חייב לפתוח זרימת תיקון ולא
+   *      להחזיר את גודל המסך של A56.
+   *   2. **מדריך מנצח מפרט.** "כמה אחסון צריך" בעמוד A56 שייך למדריך האחסון, ולא
+   *      לשדה storage של הדגם. לכן נבדק קודם אם יש תשובת תוכן חזקה.
+   * "מים" לא נכנס לרשימת התלונות: הוא יושב בתוך "תשלומים". */
+  var PROBLEM=/שבור|שבורה|סדוק|נסדק|לא עובד|לא נדלק|לא נטען|לא מגיב|לא מזהה|נגמרת|מתרוקנת|נפל|נשפך|רטוב|תקוע|נתקע|כבה|מקרטע|איטי|מתחמם|נדפק|התקלקל/;
+  function pageSlug(){
+    var m=String((window.location&&location.pathname)||'').match(/^\/phones\/([a-z0-9-]+)\/$/);
+    return m?m[1]:null;
+  }
+  /* הדגם שהוזכר בשיחה גובר על העמוד: מי ששאל על אייפון 17 בעמוד A56 ואז שאל "ומה המסך",
+     מתכוון לאייפון. */
+  function impliedDevice(text){
+    if(PROBLEM.test(text))return null;
+    var s=ctx.slug||pageSlug();
+    if(!s)return null;
+    /* הסף כויל על עשר שאלות אמיתיות, וניקוד לבדו באמת מפריד ביניהן בערך הזה:
+         שאלת המשך על הדגם   "ומה הסוללה?" 7.1   "ומה המצלמה?" 9.0
+         שאלת מדריך          "איך מעבירים eSIM" 8.1 (בעמוד מדריך אין דגם משתמע בכלל)
+                             "כמה זמן לוקח להחליף מסך" 10.1   "מה זה יבוא מקביל" 12.2
+                             "מה האחריות על טלפון בישראל" 17.6
+       מתחת ל-10 שאלת ההמשך מנצחת, ומעליו המדריך. */
+    var best=contentBest(text);
+    if(best&&best.score>=10)return null;
+    return factsBySlug(s);
+  }
+  /* ---- דגם שאיננו מחזיקים, בהקשר של קנייה ----
+   * "מה עם גלקסי A55" נכנס לזרימת הקנייה, כי המילה "גלקסי" לבדה היא מילת מפתח שלה. הלקוח
+   * קיבל את תפריט היצרנים ומעולם לא נאמר לו שהדגם הזה לא אצלנו, **וביקוש לדגם שאיננו
+   * מחזיקים לא נרשם באף מקום.** זה בדיוק המידע ששווה למדוד: אם עשרות אנשים מבקשים A55,
+   * זו החלטת רכש.
+   *
+   * הדרישה לספרה היא מה שמפריד בין "מה עם גלקסי A55" לבין "אני רוצה לקנות אייפון": שם
+   * מותג לבדו הוא בקשת קנייה תקינה ונשאר בזרימה. וזה חל רק כשהכוונה היא קנייה, כי
+   * **מכשיר שאיננו מוכרים אנחנו כן מתקנים**, ולכן "תיקון מסך לגלקסי A55" נשאר תיקון. */
+  function unknownModel(text){
+    if(!FACTS)return false;
+    if(findDevices(text).length)return false;
+    /* מותג ואחריו מספר, שזו הצורה העברית: "אייפון 12", "גלקסי A55". deviceHint לבדו לא
+       מספיק כאן, כי דפוס הטוקן שלו לטיני ו"אייפון 12" לא מייצר בו ספרה בכלל.
+       הדרישה לסמיכות היא מה שמונע תפיסת שווא: "לקנות אייפון בתשלומים ל-12 חודשים" הוא
+       מותג ומספר באותה שאלה, ואינו אזכור של דגם. */
+    var t=normDev(text);
+    var esc=BRAND_WORDS.map(function(b){return normDev(b).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');});
+    if(new RegExp('(?:'+esc.join('|')+')\\s+[a-z]?\\d{1,3}(?![0-9])').test(t))return true;
+    /* קוד דגם לטיני לבדו, בלי שם מותג: "מה עם A55" */
+    var hint=deviceHint(text);
+    return !!hint&&/\d/.test(hint);
+  }
+  function unknownModelReply(text){
+    track('chat_device_unmatched',{hint:deviceHint(text),q_len:Math.min(String(text).length,300),ctx:'buy'});
+    botReply('את הדגם הזה אני לא מוצא ברשימה שלנו. אפשר לראות מה יש אצלנו, או לשאול את ברוך אם אפשר להשיג אותו במיוחד.',
+      {sug:[['רשימת המכשירים',function(){startBuy();}],['לשאול את ברוך',function(){startLead('בקשה לדגם');}]]});
   }
   /* מנוסה רק כשיש גם דגם וגם שדה, או שאלת השוואה עם שני דגמים. דגם לבד ממשיך להתנהגות
      הקיימת, כדי לא לחטוף "אני רוצה לקנות אייפון 17" מזרימת הקנייה. */
@@ -3803,6 +4027,9 @@ nav.main a.ntool{font-weight:800}
          זה נמצא בעמוד המדריך ל-eSIM: "איך מעבירים eSIM למכשיר חדש" נתפס כאן, כי esim
          הוא גם שם שדה מפרט, והבוט השיב "לא זיהיתי איזה דגם" במקום לענות מהמדריך. */
       if(!FACTS)return false;
+      /* לפני הוויתור: אולי הדגם ברור מההקשר. ראו impliedDevice ושני השומרים שלו. */
+      var imp=impliedDevice(text);
+      if(imp){track('chat_device_implied',{slug:imp.slug,from:ctx.slug?'שיחה':'עמוד'});oneDevice(imp,field);return true;}
       if(!deviceHint(text))return false;
       track('chat_device_unmatched',{hint:deviceHint(text),q_len:Math.min(String(text).length,300)});
       botReply('לא זיהיתי איזה דגם. אפשר לכתוב את השם המלא, למשל "גלקסי A56" או "אייפון 17 פרו", או לבחור מהרשימה.',{sug:[['רשימת המכשירים',function(){startBuy();}],['לדבר עם ברוך',function(){startLead('שאלה על דגם');}]]});
@@ -3901,10 +4128,13 @@ nav.main a.ntool{font-weight:800}
      buy, שמילות המפתח שלה כוללות "מכשיר חדש", והמשתמש נשלח לזרימת קנייה במקום לקבל
      תשובה מהמדריך שהוא עומד עליו. התאמת תוכן חזקה וספציפית צריכה לנצח כוונה גנרית,
      אבל התאמה חלשה לא, ולכן שני רפים ולא היפוך סדר. */
-  function contentAnswer(text,min){
-    if(!CONTENT)return false;
+  /* הדירוג הופרד מהמענה, כי deviceAnswer צריך לשאול "יש כאן תשובת תוכן חזקה?" בלי לענות.
+     בלי ההפרדה, מכשיר משתמע היה בולע שאלת מדריך: "כמה אחסון צריך" בעמוד גלקסי A56 הייתה
+     נענית ב"128GB" במקום במדריך שנכתב בדיוק בשביל השאלה הזאת. */
+  function contentBest(text){
+    if(!CONTENT)return null;
     var toks=qTokens(text);
-    if(toks.length<2)return false;
+    if(toks.length<2)return null;
     /* ביטוי אחד לכל מילה, מורכב מראש. ההתאמה היא **מילה ולא תת-מחרוזת**: "לוקח" בתוך
        "שלוקחת" אינו אותה מילה אלא הטיה אחרת, וההתאמה החופשית שלחה את "כמה זמן לוקח
        להחליף מסך" למדריך אחסון שבכותרתו "הבדיקה שלוקחת חצי דקה". הגבול השמאלי מתיר
@@ -3926,11 +4156,75 @@ nav.main a.ntool{font-weight:800}
         else if(inB){score+=w[j];hit++;}
       }
       /* דורש שתי מילים שונות לפחות. מילה אחת מתאימה לחצי האתר, וזה ניחוש. */
-      if(hit>=2&&(!best||score>best.score))best={sec:sec,score:score,hit:hit};
+      if(hit>=2&&(!best||score>best.score))best={sec:sec,score:score,hit:hit,toks:toks};
     }
+    return best;
+  }
+  /* ---- "יש לנו עמוד בדיוק על זה" ----
+   * שתי דרכים למצוא עמוד, והחזקה מנצחת:
+   *   1. המקטע הכי מתאים באינדקס, כלומר 20 עמודי המדריכים והשירות.
+   *   2. **שם העמוד**, מתוך ספריית כל 76 העמודים. זה מה שמגיע לעמוד מכשיר, לעמוד השוואה
+   *      ולעמוד יישוב, שאינם באינדקס בכוונה ולכן דרך 1 לעולם לא תמצא אותם.
+   * ההתאמה בשם משוקללת פי שלושה, כי מילה בשם העמוד היא אות חזקה בהרבה ממילה בגוף. */
+  function dirBest(text){
+    if(!CONTENT||!CONTENT.dir)return null;
+    var toks=qTokens(text);
+    if(toks.length<2)return null;
+    var re=toks.map(function(w){
+      var alts=variants(w).map(function(x){return x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|');
+      return new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?|[^'+WORDCH+'])('+alts+')([^'+WORDCH+']|$)');
+    });
+    var best=null,i,j;
+    for(i=0;i<CONTENT.dir.length;i++){
+      var p=CONTENT.dir[i],hay=' '+String(p.t+' '+(p.h||'')).toLowerCase()+' ',sc=0,hit=0;
+      for(j=0;j<toks.length;j++)if(re[j].test(hay)){sc+=3*idf(toks[j]);hit++;}
+      /* מילה אחת מספיקה **אם היא נדירה**, ולכן הסינון הוא בניקוד ולא בספירה. בשכבת התוכן
+         נדרשות שתי מילים כי מקטע הוא פסקה שלמה ומילה אחת מתאימה לחצי האתר, אבל שם עמוד
+         הוא שלוש עד שש מילים: "לכיש" בשם עמוד היא כמעט ודאות, ודרישת שתיים פסלה אותה. */
+      if(hit>=1&&(!best||sc>best.score))best={u:p.u,t:p.t,score:sc};
+    }
+    return best;
+  }
+  /* עמוד שעונה על השאלה, גם כשהבוט עונה בעצמו. הסף נמוך בכוונה: זו הצעה ולא תשובה,
+     והמחיר של הצעה לא מדויקת הוא קישור שלא לחצו עליו. */
+  function pageFor(text,min){
+    /* **דגם מהקטלוג ששמו נאמר גובר על כל התאמת טקסט.** "יש לכם עמוד על גלקסי A57"
+       הציע את עמוד החלפת הסוללה לגלקסי A, כי המילה "גלקסי" התאימה שם והמספר לא נבדק.
+       כשהלקוח נקב בשם דגם, העמוד שהוא מחפש הוא עמוד הדגם. מכשיר ייחוס יוצא מן הכלל:
+       אין לו עמוד באתר בכלל, ראו devLink. */
+    var devs=FACTS?findDevices(text):[];
+    if(devs.length===1&&devs[0].kind!=='reference')
+      return {u:'/phones/'+devs[0].slug+'/',t:devs[0].name_he,score:99};
+    var a=contentBest(text),b=dirBest(text);
+    var fromSec=a?{u:CONTENT.pages[a.sec.p].u,t:CONTENT.pages[a.sec.p].t,score:a.score}:null;
+    var pick=(b&&(!fromSec||b.score>fromSec.score))?b:fromSec;
+    if(!pick||pick.score<(min===undefined?6:min))return null;
+    /* הזנב של תבנית ה-SEO אינו שם שאומרים ללקוח */
+    pick.t=String(pick.t).split('|')[0].trim();
+    return pick;
+  }
+  /* **חיתוך באמצע ולא בסוף.** בשמות העמודים כאן המילה שמזהה יושבת בסוף:
+       "תיקון ומכירת סלולר למועצה אזורית לכיש"
+     חיתוך ב-34 החזיר "תיקון ומכירת סלולר למועצה אזורית …", כלומר תווית שאינה מבדילה בין
+     שבעת עמודי היישוב. חציון אורך הכותרות הוא 44 ו-59 מתוך 76 חורגות מ-34, ולכן זה היה
+     ברוב התוויות. שמירת שני הקצוות עובדת גם בכיוון ההפוך, בשמות שהמזהה שלהם בהתחלה
+     כמו "גלקסי A56 (Galaxy A56 5G): מפרט מלא". */
+  function midCut(s,max){
+    s=String(s);
+    if(s.length<=max)return s;
+    var head=Math.ceil((max-1)*0.62),tail=max-1-head;
+    return s.slice(0,head).replace(/\s+$/,'')+'…'+s.slice(s.length-tail).replace(/^\s+/,'');
+  }
+  function pageChip(p){
+    return ['לעמוד: '+midCut(p.t,44),function(){
+      track('chat_page_link',{url:p.u});location.href=p.u;}];
+  }
+  function contentAnswer(text,min){
+    var best=contentBest(text);
     /* הסף כויל מול 12 שאלות אמיתיות ומול ברכות. מתחתיו לא עונים, כי ניתוב לאדם עדיף
        על תשובה שקרובה ולא נכונה. */
     if(!best||best.score<(min||3.2))return false;
+    var toks=best.toks;
     var pg=CONTENT.pages[best.sec.p];
     fails=0;
     track('chat_content_hit',{url:pg.u,heading:String(best.sec.h).slice(0,60),score:best.score});
@@ -3945,17 +4239,21 @@ nav.main a.ntool{font-weight:800}
   function buyWa(){var p=buyParts();return 'היי, הגעתי דרך האתר של פון גת. מעוניין/ת לקנות מכשיר חדש.'+(p.length?('\n'+p.join('\n')):'')+'\nאשמח להצעת מחיר.';}
   function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
 
-  function startBuy(){
+  function startBuy(extra){
     flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;
     track('chat_flow',{flow:'buy'});
     var sug=[],i;
+    /* "לא בטוחים? שנמליץ" ראשון ובניסוח של פתרון, כי הוא **קיצור הדרך** של הזרימה:
+       הוא מדלג על יצרן, סדרה ודגם וקופץ ישר לשלב הנפח. הוא היה אחרון בשורה ונקרא
+       כאופציה שולית, בזמן שהוא בדיוק מה שמי שמרגיש עומס מחפש. */
+    sug.push(['לא בטוחים? שנמליץ',function(){buyBrand('','');}]);
     for(i=0;i<BUY_BRANDS.length;i++)(function(p){sug.push([p[0],function(){buyBrand(p[0],p[1]);}]);})(BUY_BRANDS[i]);
-    sug.push(['רוצה המלצה',function(){buyBrand('','');}]);
-    sug.push(['אבזור',function(){flow=null;runIntent('accessories');}]);
-    botReply('נשמח לעזור לבחור. איזה מכשיר מעניין אתכם?',{sug:sug});
+    sug.push(['כיסויים ואבזור',function(){flow=null;runIntent('accessories');}]);
+    if(extra)sug.push(extra);
+    botReply('בואו נמצא את המכשיר הנכון. איזה מותג מעניין אתכם?',{sug:sug});
   }
   function buyBrand(he,en){
-    ctx.brand=he;track('chat_buy_step',{step:'brand',value:he||'המלצה'});
+    ctx.brand=he;track('chat_buy_step',{step:'brand',value:safeVal(he||'המלצה',['אייפון','סמסונג','שיאומי','המלצה'])});
     if(!he){ctx.rec=true;flow={type:'buy',step:'storage'};askStorage();return;}
     var list=soldByBrand(en);
     /* הקטלוג לא נטען. מדלגים על שלב הדגם וממשיכים, ולא ממציאים רשימה. */
@@ -3978,39 +4276,27 @@ nav.main a.ntool{font-weight:800}
     if(!list.length){buyModel('','');return;}
     buyShowModels(list);
   }
+  /* **כל הדגמים של הענף כצ'יפים, בלי select ובלי "עוד דגמים".**
+   *
+   * הייתה כאן חלוקה: חמישה צ'יפים ואז select נייטיב לשאר. הרעיון היה לחסוך שורה, וה-QA
+   * מדד שהוא עולה יותר ממה שהוא חוסך:
+   *   · בחירה מה-select השביתה אותו בזמן שהפוקוס עליו, והפוקוס נפל ל-BODY. משתמש מקלדת
+   *     נפלט מהדיאלוג באמצע הזרימה. זה היה ה-select היחיד בווידג'ט, וגם היחיד עם באג פוקוס.
+   *   · הוא נוסף ישירות ל-msgs ולא דרך suggestChips, ולכן הפריסה קפצה ושטח השיחה ירד
+   *     מ-362px ל-299px בדיוק ברגע שהוא נרנדר.
+   *   · קורא מסך: הצ'יפים יושבים בתוך role="log" ולכן נקראים כחלק מהשיחה. select נקרא
+   *     "תיבה מכווצת" ומסתיר את האפשרויות עד שנכנסים אליו. לחמישה עד שבעה פריטים זו נסיגה.
+   *   · הוא הציג "גלקסי A17" בעברית בזמן שהצ'יפים הציגו "A57" בלטינית, אותה רשימה בשתי
+   *     מוסכמות.
+   * הענף הגדול ביותר הוא Galaxy A עם שבעה דגמים, כלומר שלוש שורות ובערך 144px מתוך 362px
+   * שטח שיחה. זה נכנס, וכל האפשרויות גלויות במסך אחד. */
   function buyShowModels(list){
     flow={type:'buy',step:'model'};
     var sorted=list.slice().sort(function(a,b){return modelRank(b)-modelRank(a);});
-    var over=sorted.length>BUY_SPLIT;
-    var head=over?sorted.slice(0,BUY_SHOW):sorted, rest=over?sorted.slice(BUY_SHOW):[];
-    var sug=[],i;
-    for(i=0;i<head.length;i++)(function(d){sug.push([shortModel(d.name_he),function(){buyModel(d.name_he,d.slug);}]);})(head[i]);
-    if(rest.length)sug.push(['עוד דגמים',function(){moreModels(rest);}]);
-    else sug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
+    var labels=shortLabels(sorted),sug=[],i;
+    for(i=0;i<sorted.length;i++)(function(d,lb){sug.push([lb,function(){buyModel(d.name_he,d.slug);}]);})(sorted[i],labels[i]);
+    sug.push(['לא בטוח / דגם אחר',function(){buyModel('','');}]);
     botReply('איזה דגם? אפשר גם להקליד שם מדויק.',{sug:sug});
-  }
-  /* מעל שישה דגמים, השאר נכנסים ל-select נייטיב ולא לשורת צ'יפים נוספת. פקד אחד בגובה
-     44px במקום שורה שלמה, נגיש מלכתחילה למקלדת ולקורא מסך, ובמובייל פותח את הבורר של
-     המערכת. גלילה אופקית נדחתה כי היא מסתירה אפשרויות בלי רמז חזותי. */
-  function moreModels(rest){
-    var box=document.createElement('div');box.className='pg-sug col';
-    var id='pgMoreSel'+(++moreSeq);
-    var lab=document.createElement('label');lab.className='pg-sug-label';lab.setAttribute('for',id);lab.textContent='עוד דגמים';
-    var sel=document.createElement('select');sel.className='pg-select';sel.id=id;
-    function opt(v,t){var o=document.createElement('option');o.value=v;o.textContent=t;sel.appendChild(o);}
-    opt('','בחרו דגם');
-    for(var i=0;i<rest.length;i++)opt(rest[i].slug,rest[i].name_he);
-    opt('__other','לא בטוח / דגם אחר');
-    sel.addEventListener('change',function(){
-      var v=sel.value;if(!v)return;
-      sel.disabled=true;
-      if(v==='__other'){lastUser='לא בטוח / דגם אחר';bubble(lastUser,'user');buyModel('','');return;}
-      var d=factsBySlug(v),nm=d?d.name_he:'';
-      lastUser=nm;bubble(nm,'user');buyModel(nm,v);
-    });
-    box.appendChild(lab);box.appendChild(sel);
-    msgs.appendChild(box);down();
-    setTimeout(function(){try{sel.focus();}catch(e){}},60);
   }
   /* טקסט חופשי בשלב הדגם מזוהה מול הקטלוג. בלי זה כל מחרוזת נרשמה כדגם לרכישה, וה-QA
      מצא את התוצאה: הקלדת "גוגל פיקסל 10" נרשמה כדגם, קיבלה "יבוא רשמי" שאין לו יבואן
@@ -4034,7 +4320,7 @@ nav.main a.ntool{font-weight:800}
       }
     }
     ctx.model=m||ctx.model||'';ctx.slug=slug||'';
-    track('chat_buy_step',{step:'model',value:m||'לא בטוח'});
+    track('chat_buy_step',{step:'model',value:m?catalogName(m):'לא בטוח'});
     flow={type:'buy',step:'storage'};askStorage();
   }
   /* הנפחים לפי storage_offered של הדגם שנבחר, כלומר מה שהיצרן מציע בפועל. בלי דגם נשארת
@@ -4047,22 +4333,50 @@ nav.main a.ntool{font-weight:800}
       if(Array.isArray(so)&&so.length)opts=so;
       else if(typeof so==='string'&&so)opts=so.split(',');
     }
-    if(opts){for(i=0;i<opts.length;i++)(function(s){sug.push([String(s).trim(),function(){buyStorage(String(s).trim());}]);})(opts[i]);}
-    else{sug.push(['128GB',function(){buyStorage('128GB');}]);sug.push(['256GB',function(){buyStorage('256GB');}]);sug.push(['512GB ומעלה',function(){buyStorage('512GB ומעלה');}]);}
+    /* הרשימה שהוצגה בפועל נשמרת, כי אליה משווים את הערך לפני ששולחים אותו לאנליטיקס.
+       היא דינמית לפי הדגם, ולכן אי אפשר לכתוב אותה כקבוע. */
+    STORAGE_SEEN=['לא בטוח'];
+    if(opts){for(i=0;i<opts.length;i++)(function(s){STORAGE_SEEN.push(s);sug.push([s,function(){buyStorage(s);}]);})(String(opts[i]).trim());}
+    else{['128GB','256GB','512GB ומעלה'].forEach(function(s){STORAGE_SEEN.push(s);sug.push([s,function(){buyStorage(s);}]);});}
     sug.push(['לא בטוח',function(){buyStorage('');}]);
-    botReply(opts?('איזה נפח? אלה הנפחים שיש ל'+(ctx.model||'דגם הזה')+'.'):'איזה נפח זיכרון צריך?',{sug:sug});
+    /* "זיכרון" הוא RAM. השאלה כאן על אחסון, וזה שני דברים שונים שלקוח באמת מבלבל ביניהם. */
+    botReply(opts?('איזה נפח? אלה הנפחים שיש ל'+(ctx.model||'דגם הזה')+'.'):'איזה נפח אחסון צריך?',{sug:sug});
   }
-  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:s||'לא בטוח'});flow={type:'buy',step:'import'};askImport();}
+  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:safeVal(s||'לא בטוח',STORAGE_SEEN)});flow={type:'buy',step:'import'};askImport();}
   function askImport(){botReply('ואיזה יבוא מעדיפים?',{sug:[['יבוא רשמי',function(){buyImport('רשמי');}],['יבוא מקביל',function(){buyImport('מקביל');}],['לא בטוח, שתסבירו לי',function(){buyImport('');}]]});}
-  function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:v||'לא בטוח'});buyDone();}
+  function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:safeVal(v||'לא בטוח',IMPORT_VALS)});buyDone();}
   function buyDone(){
     flow=null;ctx.topic=buyTopic();
     var p=buyParts(),sum=p.length?('רשמתי לפניי:\n• '+p.join('\n• ')+'\n'):'';
-    track('chat_buy',{device:ctx.brand||'המלצה',model:ctx.model||'',storage:ctx.storage||'',imp:ctx.imp||''});
+    track('chat_buy',{device:safeVal(ctx.brand||'המלצה',['אייפון','סמסונג','שיאומי','המלצה']),model:ctx.model?catalogName(ctx.model):'',storage:safeVal(ctx.storage||'',STORAGE_SEEN),imp:safeVal(ctx.imp||'',IMPORT_VALS)});
     botReply(sum+'הכול בתשלומים, כולל העברת נתונים מהמכשיר הישן ואבזור. נשמח לתת לכם הצעת מחיר מדויקת.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}],['בקשת שיחה חוזרת',function(){startLead(ctx.topic);}]]});
   }
 
-  function startLead(topic){ctx.topic=topic||ctx.topic||'כללי';track('chat_lead_start',{topic:ctx.topic});if(ctx.name){flow={type:'lead',step:'phone'};botReply('מעולה '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');}else{flow={type:'lead',step:'name'};botReply('בשמחה נחזור אליכם. איך קוראים לכם?');}}
+  /* **הנושא שברוך רואה בתיבה חייב להיות בעברית ולהגיד משהו.**
+     ctx.topic מחזיק לפעמים מזהה פנימי, 'buy' או 'repair', כי הוא נקבע בתחילת הזרימה
+     לפני שיש מה לומר. הוא הגיע כך למייל ולשורת הנושא. LABELS כבר מחזיק את התרגום. */
+  function topicLabel(t){t=String(t||'');return LABELS[t]||t||'כללי';}
+  function startLead(topic){ctx.topic=topicLabel(topic||ctx.topic);track('chat_lead_start',{topic:ctx.topic});if(ctx.name){flow={type:'lead',step:'phone'};botReply('מעולה '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');}else{flow={type:'lead',step:'name'};botReply('בשמחה נחזור אליכם. איך קוראים לכם?');}}
+  /* **מה שהשיחה כבר יודעת, ולא רק שם וטלפון.**
+   * המייל נשא שלושה שדות בלבד, ולכן ברוך קיבל "נושא: buy" בלי לדעת איזה מכשיר, איזה נפח
+   * ומאיזה עמוד הלקוח הגיע, למרות שהבוט אסף את הכול בדרך. שמות השדות זהים לטופס
+   * ב-/contact/ ("שם מלא", "טלפון", "נושא", "הודעה"), כדי ששתי הפניות ייראו אותו דבר
+   * בתיבה ואפשר יהיה לסנן אותן יחד.
+   * **בלי טקסט חופשי גולמי.** אותו כלל כמו באנליטיקס: נשלחים רק ערכים מרשימה סגורה או
+   * שמות מהקטלוג. מה שהלקוח כתב בעצמו מגיע ממילא בשיחה שהוא ינהל בטלפון. */
+  function leadBody(){
+    var L=[];
+    if(ctx.issue)L.push('תקלה: '+safeVal(ctx.issue,REP_ISSUES));
+    if(ctx.device)L.push('מכשיר: '+safeVal(ctx.device,REP_DEVICES));
+    if(ctx.brand)L.push('יצרן: '+safeVal(ctx.brand,['אייפון','סמסונג','שיאומי','המלצה']));
+    if(ctx.model)L.push('דגם: '+catalogName(ctx.model));
+    if(ctx.storage)L.push('נפח: '+safeVal(ctx.storage,STORAGE_SEEN));
+    if(ctx.imp)L.push('יבוא: '+safeVal(ctx.imp,IMPORT_VALS));
+    if(ctx.rec)L.push('ביקש המלצה על דגם');
+    try{L.push('הגיע מהעמוד: '+location.pathname);}catch(e){}
+    L.push('נשלח מהעוזר בצ׳אט');
+    return L.join('\n');
+  }
   function saveLead(name,phone,topic){
     /* The reply that promises "רשמנו את הפרטים" is printed by the caller before this
        request finishes, so a failure here has to speak up. It used to disappear twice over:
@@ -4085,7 +4399,7 @@ nav.main a.ntool{font-weight:800}
     var key='99c6d9a8-827b-42d7-99f1-22e06a8643fe';
     if(!key||key.indexOf('YOUR_')===0){failed();return;}
     try{
-      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'ליד חדש מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם':name,'טלפון':phone,'נושא':topic})})
+      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'פנייה מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם מלא':name,'טלפון':phone,'נושא':topic,'הודעה':leadBody()})})
         .then(function(r){return r.ok?r.json():null;})
         .then(function(j){if(!j||j.success!==true)failed();})
         .catch(failed);
@@ -4093,6 +4407,17 @@ nav.main a.ntool{font-weight:800}
   }
   function handleFlow(text){
     if(/(^|\s)(ביטול|תפריט|חזרה|עזוב|התחל)(\s|$)/.test(text)){mainMenu();return;}
+    /* **בקשה לדבר עם אדם מחלצת מהזרימה.** עד כאן היציאה היחידה הייתה חמש מילות קסם
+       שאף לקוח לא יודע שהן קיימות, וכל השאר נבלע כתשובה לשלב הנוכחי. נמדד:
+         "אני רוצה שברוך יתקשר אליי"  →  נרשם כשם היצרן, והזרימה המשיכה לשלב הנפח.
+       זה גם הגיע להודעת ה-WhatsApp שברוך מקבל, בשורה "יצרן:". הבקשה הזאת היא בדיוק
+       המטרה של הבוט, ולכן היא הדבר האחרון שמותר לו לבלוע.
+       ההתאמה דורשת פועל ולא רק שם: "ברוך" לבדו הוא גם תשובה לגיטימית לשם בזרימת הליד. */
+    if(flow.type!=='lead'&&/(לדבר|לשוחח|שיחה|תתקשרו|יתקשר|תחזרו|לחזור|נציג|בן אדם|בנאדם|אנושי)/.test(text)){
+      track('chat_flow_exit',{from:flow.type,step:flow.step||''});
+      startLead(ctx.topic||'בקשה לשיחה');
+      return;
+    }
     if(flow.type==='repair'){if(flow.step==='device')repDevice(text.slice(0,30));else repIssue(text.slice(0,40));return;}
     /* יצרן שהוקלד ביד חייב להיפתר לשם האנגלי, אחרת soldByBrand מקבל undefined, שלב
        הדגם נדלג בשקט, וכל מה שיוקלד אחריו נרשם כנפח. נתפס בבדיקת זרימה ולא בקריאה. */
@@ -4112,7 +4437,9 @@ nav.main a.ntool{font-weight:800}
     }
     if(flow.type==='lead'){
       if(flow.step==='name'){ctx.name=text.replace(/[<>]/g,'').slice(0,40);flow.step='phone';botReply('נעים מאוד '+ctx.name+'. מה מספר הטלפון שנחזור אליו?');return;}
-      if(flow.step==='phone'){if(!validPhone(text)){botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 0525893366:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=window.PG_PROD===true;   /* was a dead literal, so the false branch below could never run. It means "this lead is actually on its way": true only in production, where saveLead corrects itself if the request fails. */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הוולידציה והזרימה עבדו במלואן. כדי שנחזור אליכם באמת, שלחו את הפרטים ב-WhatsApp או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
+      if(flow.step==='phone'){if(!validPhone(text)){/* הדוגמה הייתה **מספר החנות עצמו**, בלי מקף, כלומר הבוט הזמין את הלקוח להקליד
+   את המספר שלנו במקום שלו. מספר דוגמה ניטרלי, בפורמט התצוגה של האתר. */
+botReply('לא הצלחתי לזהות מספר תקין. אפשר להקליד מספר טלפון ישראלי, למשל 050-1234567:');return;}var ph=digits(text);saveLead(ctx.name,ph,ctx.topic);track('chat_lead_submit',{topic:ctx.topic});flow=null;var keyOk=window.PG_PROD===true;   /* was a dead literal, so the false branch below could never run. It means "this lead is actually on its way": true only in production, where saveLead corrects itself if the request fails. */var waLead='שיחה חוזרת מהאתר\nשם: '+ctx.name+'\nטלפון: '+ph+'\nנושא: '+ctx.topic;var leadMsg=keyOk?('תודה '+ctx.name+'! רשמנו את הפרטים ('+ph+') ונחזור אליכם בהקדם. כדי לזרז, אפשר לשלוח את הפנייה גם ב-WhatsApp:'):('תודה '+ctx.name+'! זו סביבת בדיקות, ולכן הפנייה לא נשלחה לאף תיבה. הוולידציה והזרימה עבדו במלואן. כדי שנחזור אליכם באמת, שלחו את הפרטים ב-WhatsApp או חייגו ישירות:');botReply(leadMsg,{cta:['wa','tel'],waText:waLead,sug:[['חזרה לתפריט',function(){mainMenu();}]]});return;}
     }
   }
   /* This event used to carry a "q" parameter holding the visitor's raw typed text, on its way to GA4.
@@ -4122,7 +4449,23 @@ nav.main a.ntool{font-weight:800}
      event is "the bot failed, and roughly on what": the shape of the question answers that, and
      digits_present is the useful one, because it says people are trying to leave details in the
      chat box instead of using the callback flow. None of these three can identify anybody. */
-  function fallback(){fails++;track('chat_fallback',{q_len:Math.min(lastUser.length,300),q_words:lastUser.split(/\s+/).length,digits_present:/\d/.test(lastUser)?1:0,attempt:fails});var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לבחור נושא, או לדבר ישירות איתנו:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
+  /* **hint גם כאן, ולא רק ב-chat_device_unmatched.** עד כאן נשלחו אורך, מספר מילים והאם
+     היו ספרות, וזה מדד כמה פעמים נכשלנו בלי לרמוז אף פעם במה. deviceHint כבר עבר ניקוי
+     PII, נבדק ברתמה מול שמות עבריים ולטיניים ומול מספרי טלפון, וחסום ל-40 תווים ולשלושה
+     טוקנים, ולכן הוא בטוח לשליחה. בלעדיו אין דרך ללמוד שאנשים שואלים שוב ושוב על משהו
+     שאין לנו, וזה בדיוק מה שהבוט אמור לגלות לנו. */
+  function fallback(){fails++;track('chat_fallback',{q_len:Math.min(lastUser.length,300),q_words:lastUser.split(/\s+/).length,digits_present:/\d/.test(lastUser)?1:0,attempt:fails,hint:deviceHint(lastUser)||''});/* **לפני שאומרים "לא הבנתי", בודקים אם יש עמוד באתר שעונה.**
+   הסף כאן נמוך מזה של תשובת התוכן, כי זו הצעה ולא ציטוט: "יש לנו עמוד בדיוק על זה"
+   שווה הרבה יותר מ"לא בטוח שהבנתי", וגם אם ההתאמה חלקית הקורא מחליט בעצמו.
+   ה-CTA נשאר, ולכן WhatsApp וטלפון זמינים באותה בועה. */
+var pg=pageFor(lastUser,5);
+if(pg){
+  track('chat_page_suggest',{url:pg.u});
+  botReply('אין לי על זה תשובה מדויקת, אבל יש לנו עמוד באתר שמסביר את זה:',
+    {cta:contactCta(),sug:[pageChip(pg),['לדבר עם ברוך',function(){startLead('שאלה מהצ׳אט');}]]});
+  return;
+}
+var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לנסות שוב במילים אחרות, או לבחור נושא:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
   /* שאלה על דגם נבדקת לפני matchIntent, כי "אחריות על גלקסי A56" הייתה נתפסת על ידי
      הכוונה הגנרית warranty ומקבלת תשובה כללית, ולעולם לא מגיעה לנתון של הדגם.
      deviceAnswer מחזיר false כשאין גם דגם וגם שדה, ואז הזרימה הקיימת נמשכת כרגיל. */
@@ -4138,7 +4481,40 @@ nav.main a.ntool{font-weight:800}
      נמדד דרך handle() בדפדפן: ארבע מחמש שאלות דגם נחטפו, כלומר כל שכבת העובדות הייתה
      קוד מת בניסוח אמיתי. deviceAnswer דורש גם דגם וגם שדה, ולכן הוא לא חוטף בקשת קנייה. */
   var ACTION_INTENT={repair:1,buy:1,callback:1};
-  function handle(text){text=(text||'').trim();if(!text)return;lastUser=text;bubble(text,'user');if(flow){handleFlow(text);return;}if(deviceAnswer(text))return;var it=matchIntent(text);if(it&&ACTION_INTENT[it.id]){respond(it);return;}if(contentAnswer(text,8))return;if(it){respond(it);return;}if(contentAnswer(text))return;fallback();}
+  /* **מירוץ הטעינה.** bot-facts ו-bot-content נמשכים ב-openChat ולא בטעינת העמוד, כדי
+     שמי שלא פותח את הצ'אט לא ישלם עליהם. המחיר הוא חלון של כמה מאות מילישניות שבו הבוט
+     פתוח אבל לא יודע כלום, ושאלה שנשלחת בתוכו נופלת ל"לא בטוח שהבנתי" למרות שיש תשובה.
+     בדף הבית זה כמעט לא קרה כי המשתמש גולל לפני שפתח, אבל הבוט יושב עכשיו גם ב-43 עמודי
+     מכשיר והשוואה, שם הכפתור הוא הדבר הראשון שנוגעים בו. **נמדד בדפדפן על עמוד השוואה:**
+     פתיחה, הקלדה ושליחה ברצף החזירו נפילה, ואותה שאלה בדיוק ענתה נכון שנייה אחר כך.
+     לכן ההמתנה, ולא טעינה מוקדמת: השאלה מוחזקת עד שהנתונים מגיעים או נכשלים. */
+  var MAX_WAIT=4000;
+  function dataPending(){return factsState==='loading'||contentState==='loading';}
+  function handle(text,waited){
+    text=(text||'').trim();if(!text)return;
+    if(!waited){lastUser=text;bubble(text,'user');}
+    if(flow){handleFlow(text);return;}
+    /* רק שאלה חופשית ממתינה. זרימה פעילה עונה מיד, כי היא לא נשענת על הקבצים. */
+    if(dataPending()&&(waited||0)<MAX_WAIT){
+      waitDots(true);
+      setTimeout(function(){handle(text,(waited||0)+150);},150);
+      return;
+    }
+    waitDots(false);
+    if(deviceAnswer(text))return;
+    var it=matchIntent(text);
+    /* לפני זרימת הקנייה בלבד. ראו unknownModel: תיקון של דגם שאיננו מוכרים נשאר תיקון. */
+    if(it&&it.id==='buy'&&unknownModel(text)){unknownModelReply(text);return;}
+    if(it&&ACTION_INTENT[it.id]){respond(it);return;}
+    if(contentAnswer(text,8))return;
+    if(it){respond(it);return;}
+    /* אזכור דגם בלי שם מותג ובלי פועל קנייה, כמו "יש לכם משהו כמו A99 פרו מקס". כאן ורק
+       כאן, אחרי שאף כוונה ושום תשובת תוכן חזקה לא ענו, כי לומר "אין לנו את הדגם" עדיף
+       על מקטע מדריך שהתאים בקושי. */
+    if(!it&&unknownModel(text)){unknownModelReply(text);return;}
+    if(contentAnswer(text))return;
+    fallback();
+  }
 
   var CHIPS=['repair','buy','celcom','hours','callback'];
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
@@ -4199,8 +4575,17 @@ nav.main a.ntool{font-weight:800}
   if(lbl)lbl.addEventListener('click',function(){if(!panel.classList.contains('open'))openChat();});
 
   function focusInput(){try{if(matchMedia('(pointer:fine)').matches)input.focus();}catch(e){}}
+  /* מתעדכן בכל פתיחה ולא פעם אחת בטעינה, כי לשונית שנשארת פתוחה חוצה את 18:30. */
+  function paintStatus(){
+    var box=document.getElementById('pgStatus'),txt=document.getElementById('pgStatusTxt');
+    if(!box||!txt)return;
+    var open=openNow();
+    box.classList[open?'add':'remove']('on');
+    txt.textContent=open?'זמין עכשיו':'מחוץ לשעות הפעילות';
+  }
   function openChat(){
     positionPanel();
+    paintStatus();
     loadFacts();loadContent();
     panel.removeAttribute('inert');panel.classList.add('open');fab.classList.add('open');wrap.classList.add('chat-open');fab.setAttribute('aria-expanded','true');
     if(!opened){opened=true;track('chat_open',{open:openNow()});var gm=greetWord()+'! אני העוזר הדיגיטלי של פון גת. '+(openNow()?'איך אפשר לעזור?':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.');botReply(gm,{sug:['repair','buy','callback']});}

@@ -656,6 +656,16 @@ if (swGrew) {
            שמקיים את קריטריון הקבלה "אין מספר שאינו מופיע כטקסט בשדה המקורי". */
         good_for: Array.isArray(e.good_for) ? e.good_for : [],
         less_for: Array.isArray(e.less_for) ? e.less_for : [],
+        /* הפרוזה של עמוד המכשיר. בלעדיה הבוט ידע את המפרט ולא את מה שכתוב על הדגם,
+           ו"מה מיוחד באייפון 17 פרו" נפל לזרימת קנייה במקום לענות. מגיע מכאן ולא
+           מגירוד העמוד, ולכן אין כפילות ואין שני נתיבי תשובה לאותה שאלה. */
+        what_matters: e.what_matters || null,
+        pros: Array.isArray(e.pros) ? e.pros : [],
+        cons: Array.isArray(e.cons) ? e.cons : [],
+        /* במאגר זה מערך של זוגות [כותרת, טקסט]. מחברים בנקודתיים כדי שהבוט יצטט
+           מחרוזת אחת, וזה חיבור ולא ניסוח מחדש. */
+        daily_benefits: (Array.isArray(e.daily_benefits) ? e.daily_benefits : [])
+          .map(function (p) { return Array.isArray(p) ? p.join(': ') : String(p); }),
         spec: d.spec || {}
       };
     }),
