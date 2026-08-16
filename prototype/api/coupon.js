@@ -1,6 +1,11 @@
 /* PHONE GAT — sequential coupon numbers.
  *
  * POST /api/coupon  {"offer":"screen"}  ->  {"n":42,"seq":true}
+ * GET  /api/coupon  -H "x-pg-stats: <PG_STATS_TOKEN>"
+ *                   ->  {"issued":{"screen":42,"kb":7,"idf":13},"total":62,"at":"…"}
+ *   Reading the counters had no path at all: POST is the only way to reach them and POST is what
+ *   consumes a number, so "how many were issued" could only be answered from the Upstash console.
+ *   The GET is read-only and gated on PG_STATS_TOKEN; with that variable unset it does not exist.
  *
  * Hands out an ascending number per offer so the shop can see how many coupons
  * were issued. Redis INCR is atomic, so two visitors at the same moment get 42
@@ -36,6 +41,24 @@ function env() {
   var token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!url || !token) return null;
   return { url: url.replace(/\/+$/, ''), token: token };
+}
+
+/* Same database, read-only credential. The stats path below has no reason to hold a token that can
+ * write, and the counter is the one number in this project that cannot be reconstructed if it is
+ * damaged. Falls back to the writing token only when no read-only one is configured. */
+function readEnv() {
+  var cfg = env();
+  if (!cfg) return null;
+  var ro = process.env.UPSTASH_REDIS_REST_READ_ONLY_TOKEN || process.env.KV_REST_API_READ_ONLY_TOKEN;
+  return ro ? { url: cfg.url, token: ro } : cfg;
+}
+
+/* Compare without leaking length or position through timing. */
+function sameSecret(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
+  var diff = 0;
+  for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 /* Upstash REST: /<cmd>/<arg>/<arg> ... -> {"result":<value>} */
@@ -86,6 +109,37 @@ module.exports = async function handler(req, res) {
   /* A cached counter response would hand the same number to different people. */
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
+
+  /* GET reads the counters and never touches them.
+   *
+   * The POST-only rule exists because a cached response would hand the same number to two people.
+   * That danger belongs to issuing, not to reading: the worst a cached GET can do is report a stale
+   * total, and no-store is set above anyway. Nothing here can INCR: the command is GET and the
+   * credential is the read-only token.
+   *
+   * Invisible without PG_STATS_TOKEN. With the variable unset, and on a wrong or missing header,
+   * the answer is the same 405 as any other non-POST, so the path cannot be found by probing. */
+  if (req.method === 'GET') {
+    var want = process.env.PG_STATS_TOKEN;
+    if (want && sameSecret(String(req.headers['x-pg-stats'] || ''), want)) {
+      var rcfg = readEnv();
+      if (!rcfg) return res.status(503).json({ error: 'counter_unconfigured' });
+      try {
+        var names = Object.keys(OFFERS);
+        var vals = await Promise.all(names.map(function (o) {
+          return redis(rcfg, ['GET', 'pg:cpn:seq:' + o]);
+        }));
+        var counts = {}, total = 0;
+        names.forEach(function (o, i) {
+          counts[o] = vals[i] === null || vals[i] === undefined ? 0 : Number(vals[i]);
+          total += counts[o];
+        });
+        return res.status(200).json({ issued: counts, total: total, at: new Date().toISOString() });
+      } catch (e) {
+        return res.status(503).json({ error: 'counter_unavailable' });
+      }
+    }
+  }
 
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
