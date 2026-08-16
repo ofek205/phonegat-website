@@ -262,49 +262,49 @@
           "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
         },
         "water_resistance": {
-          "src": null,
-          "at": null,
-          "note": "דירוג IP לא מופיע בעמוד המפרט הישראלי. לא להשלים ממקור אחר בלי לציין."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק טעינה לא מופיע בעמוד. נשאר ריק."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת אריזה לא מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג, לא בעמוד הישראלי ולא בעמוד האירופי. נבדק 16.8.2026. תכולה אינה מושלמת ממאגר מפרטים, כי היא משתנה בין שווקים."
         },
         "model_numbers": {
           "src": null,
           "at": null,
-          "note": "מספר דגם לפי גרסת יבוא. מהחנות או ריק."
+          "note": "מספר הדגם אינו מופיע בטבלת המפרט. מספרי דגם אינם מושלמים ממאגר, כי הם משתנים לפי גרסת יבוא."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה מציינת את שם השבב בעמוד המפרט, רק את מספר הליבות ומהירויות השעון. לא להשלים Snapdragon או Exynos ממקור אחר בלי לציין את המקור."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "היצרן אינו מציין \"אין הרחבה\" בעמוד המפרט. היעדר הנתון אינו הוכחה להיעדר החריץ, ולכן null ולא 0."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         }
       },
       "spec": {
@@ -312,10 +312,10 @@
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, תמיכה בעט S",
         "resolution": "3120x1440 פיקסלים (Quad HD+)",
         "refresh_rate": "עד 120Hz",
-        "brightness": null,
-        "chip": null,
+        "brightness": "2600 ניט שיא",
+        "chip": "Snapdragon 8 Elite Gen 5",
         "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
-        "gpu": null,
+        "gpu": "Adreno 840",
         "ram": "12GB",
         "storage_offered": [
           "256GB",
@@ -328,13 +328,13 @@
         "camera_front": "12MP בצמצם F2.2",
         "video": "8K ב-30 פריימים לשנייה. הילוך אט 240 ב-FHD ו-120 ב-4K",
         "battery": "5000 mAh טיפוסית (מדורג 4855 mAh), עד 31 שעות וידאו",
-        "charging_wired": null,
-        "charging_wireless": null,
+        "charging_wired": "60W, עד 75 אחוז ב-30 דקות",
+        "charging_wireless": "25W בתקן Qi2.2",
         "dimensions": "163.6 x 78.1 x 7.9 מ״מ",
         "weight": "214 גרם",
         "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
         "esim": "תמיכה בשני eSIM",
-        "water_resistance": null,
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
         "colors_manufacturer": [
           "סגול",
           "כחול",
@@ -347,7 +347,7 @@
         "model_numbers": null,
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
-        "storage_expandable": null
+        "storage_expandable": "אין חריץ לכרטיס זיכרון"
       },
       "commercial": {
         "price": null,
@@ -1547,54 +1547,59 @@
           "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה מציינת את שם השבב בעמוד המפרט, רק את מספר הליבות ומהירויות השעון. לא להשלים Snapdragon או Exynos ממקור אחר בלי לציין את המקור."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "בהירות בניטים לא מופיעה בעמוד המפרט."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "water_resistance": {
-          "src": null,
-          "at": null,
-          "note": "דירוג IP לא מופיע בעמוד המפרט הישראלי. לא להשלים ממקור אחר בלי לציין."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק טעינה לא מופיע בעמוד. נשאר ריק."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
-          "src": null,
-          "at": null,
-          "note": "טעינה אלחוטית לא מופיעה בעמוד המפרט."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת אריזה לא מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג, לא בעמוד הישראלי ולא בעמוד האירופי. נבדק 16.8.2026. תכולה אינה מושלמת ממאגר מפרטים, כי היא משתנה בין שווקים."
         },
         "model_numbers": {
           "src": null,
           "at": null,
-          "note": "מספר דגם לפי גרסת יבוא. מהחנות או ריק."
+          "note": "מספר הדגם אינו מופיע בטבלת המפרט. מספרי דגם אינם מושלמים ממאגר, כי הם משתנים לפי גרסת יבוא."
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא נלקח בסבב אימות המפרטים. לאמת מול עמוד המפרט של היצרן לפני שהעמוד עולה לאוויר, ולא להשלים ממקור אחר בלי לציין אותו."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
+          "at": "2026-08-16"
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "היצרן אינו מציין \"אין הרחבה\" בעמוד המפרט. היעדר הנתון אינו הוכחה להיעדר החריץ, ולכן null ולא 0."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_extra": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג מפרסמת את שלוש העדשות כמחרוזת אחת בשדה המצלמה הראשית, בלי לתייג איזו מהן רחבה ואיזו מאקרו. לכן אין ערך נפרד כאן, והנתון קיים ולא חסר. אין לפצל אותו בלי מקור שמתייג את העדשות."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
+        },
+        "camera_main": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         }
       },
       "spec": {
@@ -1602,27 +1607,27 @@
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
         "resolution": "2340x1080 פיקסלים (FHD+)",
         "refresh_rate": "עד 120Hz",
-        "brightness": null,
-        "chip": null,
+        "brightness": "2600 ניט שיא",
+        "chip": "Exynos 2600",
         "cpu": "10 ליבות, 3.8GHz, 3.26GHz ו-2.76GHz",
-        "gpu": null,
+        "gpu": "Xclipse 960",
         "ram": "12GB",
         "storage_offered": [
           "256GB",
           "512GB"
         ],
-        "storage_expandable": null,
-        "camera_main": "שלוש עדשות אחוריות: 50MP, 10MP ו-12MP בצמצמים F1.8, F2.4 ו-F2.2, עם ייצוב אופטי",
-        "camera_extra": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP ראשית בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "טלפוטו 10MP בצמצם F2.4 עם זום אופטי 3x, ורחבה במיוחד 12MP בצמצם F2.2 בזווית 120 מעלות",
         "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
         "camera_front": "12MP בצמצם F2.2",
         "video": "8K (7680x4320) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-FHD וב-120 ב-4K",
         "battery": "עד 30 שעות וידאו, 4300 mAh טיפוסית (קיבולת מדורגת 4175)",
-        "charging_wired": null,
-        "charging_wireless": null,
+        "charging_wired": "25W",
+        "charging_wireless": "15W",
         "dimensions": "149.6 x 71.7 x 7.2 מ״מ",
         "weight": "167 גרם",
-        "water_resistance": null,
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
         "colors_manufacturer": [
           "סגול",
           "כחול",
@@ -3400,54 +3405,54 @@
           "note": "לא מופיע בעמוד המפרט."
         },
         "chip": {
-          "src": null,
-          "at": null,
-          "note": "סמסונג ישראל אינה נוקבת בשם השבב, רק במספר הליבות ובמהירויות השעון. זהה למצב ב-S26."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
+          "at": "2026-08-16"
         },
         "gpu": {
-          "src": null,
-          "at": null,
-          "note": "לא מופיע בעמוד המפרט."
+          "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
+          "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
+          "at": "2026-08-16"
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "בהירות בניטים אינה מופיעה בעמוד המפרט. זהה למצב ב-S26."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wired": {
-          "src": null,
-          "at": null,
-          "note": "הספק הטעינה אינו מופיע בעמוד המפרט הישראלי."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "charging_wireless": {
-          "src": null,
-          "at": null,
-          "note": "טעינה אלחוטית אינה מופיעה בעמוד המפרט."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "storage_expandable": {
-          "src": null,
-          "at": null,
-          "note": "אין שורת אחסון חיצוני, ושורת חריץ ה-SIM מונה שלוש תצורות בלי MicroSD."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "box_contents": {
           "src": null,
           "at": null,
-          "note": "תכולת האריזה אינה מופיעה בעמוד."
+          "note": "תכולת האריזה אינה מופיעה בטבלת המפרט של סמסונג, לא בעמוד הישראלי ולא בעמוד האירופי. נבדק 16.8.2026. תכולה אינה מושלמת ממאגר מפרטים, כי היא משתנה בין שווקים."
         },
         "water_resistance": {
-          "src": null,
-          "at": null,
-          "note": "דירוג IP אינו מופיע בעמוד המפרט הישראלי. לא להשלים ממקור אחר בלי לציין אותו. זהה למצב ב-S26."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "model_numbers": {
           "src": null,
           "at": null,
-          "note": "מספר הדגם אינו מופיע בעמוד המפרט המשותף."
+          "note": "מספר הדגם אינו מופיע בטבלת המפרט. מספרי דגם אינם מושלמים ממאגר, כי הם משתנים לפי גרסת יבוא."
         },
         "camera_extra": {
-          "src": "https://www.samsung.com/il/smartphones/galaxy-s26/specs/",
-          "at": "2026-08-09",
-          "note": "סמסונג אינה מתייגת איזו עדשה היא איזו, לא בטבלה ולא בגוף העמוד, ולכן נכתבות הרזולוציות והצמצמים בלבד בלי לקבוע מי הרחבה במיוחד ומי הטלפוטו. זו אותה מגבלה שכבר תועדה ב-S26."
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=14457&idPhone2=14456",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-16"
         },
         "camera_main": {
           "src": "https://www.samsung.com/il/smartphones/galaxy-s26/specs/",
@@ -3470,27 +3475,27 @@
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
         "resolution": "3120x1440 פיקסלים (Quad HD+)",
         "refresh_rate": "עד 120Hz",
-        "brightness": null,
-        "chip": null,
+        "brightness": "2600 ניט שיא",
+        "chip": "Exynos 2600",
         "cpu": "10 ליבות, 3.8GHz, 3.26GHz ו-2.76GHz",
-        "gpu": null,
+        "gpu": "Xclipse 960",
         "ram": "12GB",
         "storage_offered": [
           "256GB",
           "512GB"
         ],
-        "storage_expandable": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "camera_main": "50MP בצמצם F1.8, עם ייצוב אופטי",
-        "camera_extra": "10MP בצמצם F2.4 ו-12MP בצמצם F2.2. היצרן אינו מציין איזו עדשה היא איזו",
+        "camera_extra": "טלפוטו 10MP בצמצם F2.4 עם זום אופטי 3x, ורחבה במיוחד 12MP בצמצם F2.2 בזווית 120 מעלות",
         "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
         "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
         "video": "8K (7680x4320) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-FHD וב-120 ב-UHD",
         "battery": "עד 31 שעות וידאו, 4900 mAh טיפוסית",
-        "charging_wired": null,
-        "charging_wireless": null,
+        "charging_wired": "45W",
+        "charging_wireless": "20W",
         "dimensions": "158.4 x 75.8 x 7.3 מ״מ",
         "weight": "190 גרם",
-        "water_resistance": null,
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
         "colors_manufacturer": [
           "סגול",
           "כחול",
