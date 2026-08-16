@@ -256,7 +256,14 @@ function CSS(t) {
      על padding יצא 43 במדידה. flex עם מרכוז נותן את היעד בוודאות. */
   'nav.main .npanel a{display:flex;align-items:center;color:'+t.fg+';font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}',
   'nav.main .npanel a:hover{color:var(--teal)}',
-  'nav.main .npanel a[aria-current="page"]{color:var(--teal)}',
+  /* סימון העמוד הנוכחי. עד 16.8.2026 הוא נעשה בצבע בלבד, והצהרת הנגישות מנתה זאת
+     כמגבלה ידועה יחד עם הניגודיות. שתי בעיות היו כאן:
+     תקן 1.4.1 אוסר על צבע כאמצעי ההבחנה היחיד, ולכן נוסף קו תחתון, שהוא צורה ולא גוון
+     ולכן הוא עובד גם על רקע בהיר וגם על כהה, ורקע הפאנל נגזר לכל עמוד בנפרד.
+     ובנוסף המשקל היה 500 מול 600 של האחים, כלומר הפריט הנוכחי היה *דק* מהשאר, וזה הפוך
+     מהאינטואיציה. 800 עכשיו. */
+  'nav.main .npanel a[aria-current="page"]{color:var(--teal);font-weight:800;text-decoration:underline;text-underline-offset:3px}',
+  'nav.main >a[aria-current="page"]{font-weight:800;text-decoration:underline;text-underline-offset:4px}',
   'nav.main .nall{border-top:1px solid '+t.rule+';padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}',
   /* התפריט של המכשירים רחב, ולכן הוא נפתח לכיוון פנים המסך ולא החוצה */
   'nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}',

@@ -565,7 +565,8 @@ nav.main .ncol{min-inline-size:8.6rem}
 nav.main .nhead{color:var(--ink-soft);font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}
 nav.main .npanel a{display:flex;align-items:center;color:var(--ink);font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}
 nav.main .npanel a:hover{color:var(--teal)}
-nav.main .npanel a[aria-current="page"]{color:var(--teal)}
+nav.main .npanel a[aria-current="page"]{color:var(--teal);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+nav.main >a[aria-current="page"]{font-weight:800;text-decoration:underline;text-underline-offset:4px}
 nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
 nav.main a.ntool{font-weight:800}
@@ -1419,15 +1420,16 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 .car-btn svg{width:20px;height:20px;display:block}
 .car-prev{inset-inline-start:0}
 .car-next{inset-inline-end:0}
-.car-dots{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:1.15rem}
-.car-pause{width:24px;height:24px;padding:0;border:none;background:none;cursor:pointer;color:var(--ink-soft);display:inline-grid;place-items:center;border-radius:50%;transition:color .15s;margin-inline-end:4px}
+.car-dots{display:flex;gap:0;justify-content:center;align-items:center;margin-top:.5rem}
+.car-pause{width:44px;height:44px;padding:0;border:none;background:none;cursor:pointer;color:var(--ink-soft);display:inline-grid;place-items:center;border-radius:50%;transition:color .15s;margin-inline-end:4px}
 .car-pause:hover{color:var(--teal)}
 .car-pause svg{width:15px;height:15px;fill:currentColor;display:block}
 .car-pause .ic-play{display:none}
 .car-pause.is-paused .ic-pause{display:none}
 .car-pause.is-paused .ic-play{display:block}
-.car-dots button{width:9px;height:9px;padding:0;border-radius:50%;background:#cfcbd4;border:none;cursor:pointer;transition:width .2s,background .2s}
-.car-dots button[aria-current="true"]{width:26px;border-radius:5px;background:var(--teal)}
+.car-dots button{width:44px;height:44px;padding:0;border:none;background:none;cursor:pointer;display:grid;place-items:center}
+.car-dots button::before{content:"";width:9px;height:9px;border-radius:50%;background:#cfcbd4;transition:width .2s,background .2s}
+.car-dots button[aria-current="true"]::before{width:26px;border-radius:5px;background:var(--teal)}
 @media(max-width:720px){
 .carousel{padding-inline:14px}
 .car-btn{width:44px;height:44px;font-size:1.3rem}
@@ -1440,6 +1442,10 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 .car-track{transition:none}
 .slide-art>svg{animation:none}
 }
+/* ההתאמה "עצירת אנימציות" בתפריט הנגישות. עד 16.8.2026 היא לא נגעה בקרוסלה בכלל,
+   לא במעבר ולא בהחלפה האוטומטית, והצהרת הנגישות אף מנתה זאת כמגבלה ידועה. */
+html.a11y-stop-motion .car-track{transition:none}
+html.a11y-stop-motion .slide-art>svg{animation:none}
 /* ===== carriers slide — floating SIM cards ===== */
 /* the neon violet here was the loudest thing in the carousel and had nothing to do with the brand
    purple (#7D3169); it becomes a glow in that actual brand colour instead */
@@ -1485,16 +1491,13 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
 .car-dots{padding-inline:52px}
 /* clear the arrows now sharing this row */
   .slide{padding-inline:20px}
-/* was 46px, needed only to dodge the arrows */
-  /* The slides deliberately stay EQUAL height here. Letting the viewport follow each slide removed the
-     empty space but resized the carousel on every swipe, which shifted the page under the reader's
-     thumb — worse than the padding it saved. The disparity is dealt with by trimming the tall scenes
-     below instead, so the shared height is modest to begin with. */
-  .car-dots button{box-sizing:content-box;background-clip:content-box;padding:15px 8px}
 /* press CTA was 32px */
-  .car-pause{width:44px;height:44px}
-/* the dots got a tap area, this did not */
-  .car-dots button{padding:18px 8px}
+  /* .car-pause כבר 44 על 44 בכלל הבסיסי. */
+  /* ראו למעלה: הריפוד ירד, הכלל הבסיסי נותן 44 על 44. */
+  /* The two phone numbers were the smallest targets on the page at 23px, while being the primary
+     action for someone holding a broken phone. Note rem resolves against <html> at 16px, not the
+     18px body, so anything under ~1.15rem would render smaller than the text around it. */
+  footer .fl a{display:inline-flex;align-items:center;min-height:44px}
 /* .cookie .btn-sm outranks the generic .btn-sm padding-block from the first pass, so it needs
      saying again here or the two consent buttons stay at 38px */
   .cookie .btn-sm{min-height:44px}
@@ -2910,9 +2913,13 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     dotsWrap.appendChild(b);return b;
   });
 
-  function start(){if(reduce||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
+  function reduced(){return reduce||document.documentElement.classList.contains("a11y-stop-motion");}
+  function start(){if(reduced()||paused||hover||focused||offscreen||document.hidden)return;stop();timer=setInterval(function(){step(1);},7000);}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function restart(){stop();start();}
+  /* המתג בתפריט הנגישות מחליף מחלקה על html, ולכן הקרוסלה מקשיבה לה ולא ממתינה לרענון */
+  try{new MutationObserver(function(){reduced()?stop():start();})
+    .observe(document.documentElement,{attributes:true,attributeFilter:["class"]});}catch(e){}
 
   root.querySelector('.car-next').addEventListener('click',function(){step(1,true);});
   root.querySelector('.car-prev').addEventListener('click',function(){step(-1,true);});
