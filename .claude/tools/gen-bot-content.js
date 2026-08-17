@@ -27,9 +27,12 @@ var fs = require('fs'), path = require('path'), crypto = require('crypto');
 var ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.join(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 
-var HE = '\\u0590-\\u05FF';
-/* גבול עברי ולא \b, שהוא ASCII: "שקל" נמצא בתוך "משקל" ובתוך "שוקל" */
-var PRICE = new RegExp('₪|(?<![' + HE + '])(שקל|שקלים|ש"ח)(?![' + HE + '])');
+/* מחיר נכתב עם מספר, וזה מה שמבדיל אותו.
+   "שקל" לבדו הוא גם ש+קל: בפרוזה של גלקסי S26+ כתוב "וזה מה שקל לפספס", והשומר הקודם
+   תפס את זה כמחיר והפיל שדה שלם. גבול עברי לא עוזר כאן, כי זו אותה מילה בדיוק.
+   ₪ ו-NIS חד-משמעיים ולכן אינם דורשים ספרה.
+   ליטרל ולא new RegExp עם מחרוזת, כדי שלא תהיה בריחה כפולה של הבקסלאשים. */
+var PRICE = /₪|\bNIS\b|\d[\d,.]*\s*(?:שקל|שקלים|ש"ח)/;
 
 function walk(d, o) {
   fs.readdirSync(d, { withFileTypes: true }).forEach(function (e) {
@@ -96,15 +99,29 @@ var files = walk(PROTO, []).filter(function (f) {
 });
 
 var sections = [], skippedPrice = 0, noMain = [], pages = 0, pageList = [], pageIx = {}, skippedPage = 0, srcHash = {};
+/* **ספריית כל העמודים, ולא רק המאונדקסים.**
+ * האינדקס מחזיק 20 עמודים בכוונה, כי אינדוקס גורף כפל את מה שהבוט כבר יודע. אבל כשאין
+ * תשובה, ההצעה "יש לנו עמוד בדיוק על זה" שווה הרבה יותר מ"לא הבנתי", וגם עמוד שאינו
+ * באינדקס יכול להיות העמוד הנכון: עמוד מכשיר, עמוד השוואה, עמוד יישוב.
+ * לכן שם וכתובת לכל 78 העמודים, בערך 6KB, בלי גוף הטקסט. */
+var dir = [];
 files.forEach(function (f) {
   var html = fs.readFileSync(f, 'utf8');
   var rel = path.relative(PROTO, f).split(path.sep).join('/');
   var mm = html.match(/<main[\s\S]*?<\/main>/i);
   if (!mm) { noMain.push(rel); return; }
   var url = urlOf(rel);
+  var title = strip((html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || '');
+
+  /* הספרייה נבנית לכל עמוד, מאונדקס או לא. הכותרת נחתכת בקו האנכי הראשון, כי הזנב
+     ("| פון גת", "| מסך, סוללה וטעינה") הוא תבנית SEO ולא שם שאומרים ללקוח.
+     ה-h1 נשמר בנפרד כשהוא שונה, כי לפעמים הוא הניסוח שאדם באמת יחפש. */
+  var h1 = strip((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '');
+  var shortT = title.split('|')[0].trim() || title;
+  if (shortT) dir.push(h1 && h1 !== shortT ? { u: url, t: shortT, h: h1 } : { u: url, t: shortT });
+
   if (!inIndex(url)) { skippedPage++; return; }
   pages++;
-  var title = strip((html.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || '');
   srcHash[url] = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
 
   /* פיצול לפי h2/h3, ושמירת הכותרת עצמה יחד עם הטקסט שאחריה */
@@ -131,6 +148,8 @@ var out = {
      זה נמצא בפועל: עמוד השתנה ב-main, מספר המקטעים נשאר 193, והתוכן היה ישן בשקט. */
   src: srcHash,
   pages: pageList,
+  /* ספריית כל העמודים, בשביל ההצעה "יש לנו עמוד בדיוק על זה" כשאין תשובה */
+  dir: dir,
   sections: sections
 };
 var file = path.join(PROTO, 'bot-content.json');

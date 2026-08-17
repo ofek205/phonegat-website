@@ -600,13 +600,7 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
-
-
-
-
-
-
-<!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
+  <!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <style>
 /* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
    button renders in the UA default (Arial) while the ones that are <a> render in Assistant. */
@@ -1403,8 +1397,7 @@ html.a11y-stop-motion .bn-tr .tr-dst .tr-grid i{animation:none;opacity:1;transfo
 .car-track{transition:none}
 .slide-art>svg{animation:none}
 }
-/* ההתאמה "עצירת אנימציות" בתפריט הנגישות. עד 16.8.2026 היא לא נגעה בקרוסלה בכלל,
-   לא במעבר ולא בהחלפה האוטומטית, והצהרת הנגישות אף מנתה זאת כמגבלה ידועה. */
+/* ההתאמה "עצירת אנימציות" בתפריט הנגישות. עד 16.8.2026 היא לא נגעה בקרוסלה כלל, לא במעבר ולא בהחלפה האוטומטית. */
 html.a11y-stop-motion .car-track{transition:none}
 html.a11y-stop-motion .slide-art>svg{animation:none}
 /* ===== carriers slide — floating SIM cards ===== */
@@ -1529,7 +1522,7 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
 #deals .btn{white-space:nowrap}
 </style>
 <!-- pg-deals:css:end -->
-
+  <link rel="stylesheet" href="/chat.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1640,6 +1633,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>הרשימה אינה כוללת את המוסדות שבתחומי המועצה, כמו בתי ספר ובתי חולים. אנחנו רואים גם תושבים מ<a href="/phone-repair-lachish/">לכיש</a> ומ<a href="/phone-repair-shafir/">שפיר</a>, שהן השכנות הקרובות לפינה הזאת.</p>
   </div>
 </section>
+
+
 
 
 
@@ -2420,12 +2415,6 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
-
-
-
-
-
-
 <!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <div class="pg-cpn-ov" id="pgCpnOv">
   <div class="pg-cpn" role="dialog" aria-modal="true" aria-labelledby="pgCpnTitle">
@@ -2838,5 +2827,30 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
 </script>
 <!-- pg-deals:js:end -->
 
+<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
+<div class="pg-fab-wrap" id="pgFabWrap">
+  <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
+  <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
+    <span class="badge-dot" aria-hidden="true"></span>
+    <svg class="ic-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+<section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" inert>
+  <div class="pg-head">
+    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
+    <div class="ht"><b>העוזר של פון גת</b><span class="pg-status" id="pgStatus"><i class="pg-dot" aria-hidden="true"></i><span id="pgStatusTxt">זמין</span></span></div>
+    <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
+  <div class="pg-chips" id="pgChips" aria-label="נושאים מהירים"></div>
+  <div class="pg-input">
+    <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
+    <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
+  </div>
+  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
+</section>
+<!-- bot:html:end -->
+<script src="/chat.js" defer></script>
 </body>
 </html>

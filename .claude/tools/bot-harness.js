@@ -60,14 +60,23 @@ if (!fieldAnswer || !findDevices || !findField) {
 }
 
 /* ---------- כלים ---------- */
-/* גבול עברי ולא \b: ב-JS ה-\b הוא ASCII, ולכן "שקל" נתפס בתוך "משקל" ובתוך "שוקל".
-   זו הייתה תפיסת שווא בחמישה דגמים בהרצה הראשונה. */
+/* מחיר נכתב עם מספר, וזה מה שמבדיל אותו משאר השימושים במילה.
+   הגרסה הראשונה חיפשה "שקל" כתת-מחרוזת ותפסה אותו בתוך "משקל" בחמישה דגמים.
+   הגרסה השנייה הוסיפה גבול עברי, וזה לא הספיק: "וזה מה שקל לפספס" בפרוזה של
+   גלקסי S26+ הוא ש+קל, אותה מילה בדיוק, ולכן הוא נתפס והפיל שדה שלם.
+   ₪ ו-NIS חד-משמעיים ולכן אינם דורשים ספרה. */
 var HE = '\\u0590-\\u05FF';
-var PRICE = new RegExp('₪|\\bNIS\\b|(?<![' + HE + '])(שקל|שקלים|ש"ח)(?![' + HE + '])');
+var PRICE = /₪|\bNIS\b|\d[\d,.]*\s*(?:שקל|שקלים|ש"ח)/;
 function nums(s) { return (String(s).match(/\d+/g) || []); }
 function srcText(d, field) {
   if (field === '__good') return (d.good_for || []).join(' ');
   if (field === '__less') return (d.less_for || []).join(' ');
+  /* הפרוזה של עמוד המכשיר. בלי זה כל מספר בתוכה נראה כאילו הומצא, והבדיקה
+     דיווחה על 720 הצירופים כשלים בזמן שהציטוט מילה במילה. */
+  if (field === '__pros') return (d.pros || []).join(' ');
+  if (field === '__cons') return (d.cons || []).join(' ');
+  if (field === '__daily') return (d.daily_benefits || []).join(' ');
+  if (field === '__what') return String(d.what_matters || '');
   if (field === 'warranty') return [d.warranty_by, d.warranty_months, d.service_terms].join(' ');
   if (d[field] !== undefined && d[field] !== null) return String(d[field]);
   var sv = d.spec ? d.spec[field] : null;

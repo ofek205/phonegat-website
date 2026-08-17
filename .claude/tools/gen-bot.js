@@ -1,11 +1,16 @@
 #!/usr/bin/env node
-/* PHONE GAT — מפיץ את הצ'אט ל-21 עמודי התוכן.
+/* PHONE GAT — מפיץ את הצ'אט ל-64 עמודי התוכן.
  *
  *   node .claude/tools/gen-bot.js
  *
  * הבוט ישב בדף הבית בלבד, אחד מתוך 76 עמודים. מי שנחת מגוגל על המדריך ל-eSIM הוא בדיוק
  * מי שיש לו שאלה על eSIM, ולא הייתה לו דרך לשאול אותה. המחולל הזה מוסיף אותו לעמודים
- * שכבר נמצאים באינדקס התוכן: 13 עמודי השירות, 8 המדריכים ומדריך התקלות.
+ * שכבר נמצאים באינדקס התוכן: 13 עמודי השירות, 8 המדריכים ומדריך התקלות, וכן ל-43 עמודי
+ * המכשיר וההשוואה, שאינם באינדקס אך הם דווקא המקום שבו שואלים על דגם. את השאלות שלהם
+ * הבוט עונה מ-bot-facts, ואת רשימת העמודים קובע bot-pages.js.
+ *
+ * **הוא חייב לרוץ אחרון.** gen-devices ו-gen-compare כותבים את עמודי המכשיר וההשוואה
+ * במלואם מתבנית, ולכן הרצה שלהם אחריו מוחקת את הצ'אט משם בלי שגיאה. בדיקה 31 תופסת את זה.
  *
  * **למה קובץ חיצוני ולא הטמעה, כמו שאר המסגרת המשותפת.** ה-IIFE של הצ'אט הוא 780 שורות
  * וכ-52KB. הטמעה ב-21 עמודים הייתה מוסיפה כ-1.1MB לריפו ומבטיחה דריפט בין העותקים. הבוט
@@ -56,27 +61,43 @@ function touchesChat(sel) {
   }
   return false;
 }
+/* **סדר המקור נשמר, וזה לא קוסמטי.**
+ * הגרסה הראשונה עשתה שני מעברים על כל בלוק style: קודם אספה את כל שאילתות המדיה, ואחר
+ * כך את כל כללי הרמה העליונה, ושניהם נדחפו לאותו מערך. התוצאה ב-chat.css הייתה שכל
+ * ה-@media יושבים בשורות 3 עד 17 וכל כללי הבסיס משורה 19 והלאה. אותה ספציפיות, הבסיס
+ * מאוחר יותר, ולכן **הבסיס מנצח ושאילתת המדיה מתה**.
+ *
+ * מה זה שבר בפועל ב-75 עמודי התוכן, נמדד בדפדפן ב-375px:
+ *   הפאנל   דף הבית 0/0/0/375px גיליון תחתון,  עמוד תוכן 92/22/6/347px כרטיס דסקטופ
+ *   prefers-reduced-motion  כל הכללים מתו: אנימציית הקופון ב-73 עמודים וכרטיסי הסים ב-53
+ * הכלל האחרון הוא סטייה מ-WCAG 2.3.3, ומי שביקש להפחית תנועה קיבל אותה בכל זאת.
+ *
+ * בדיקה 31 לא תפסה כי היא משווה את **גוף** הכללים בין index.html ל-chat.css, והגופים
+ * זהים בדיוק. בדיקה 34 משווה מעכשיו גם את הסדר.
+ *
+ * לכן מעבר אחד בסדר המסמך: לכל בלוק @media פולטים קודם את כללי הרמה העליונה שקדמו לו. */
 function chatCss(s) {
   var styles = s.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || [];
   var out = [];
-  styles.forEach(function (blk) {
-    var css = blk.replace(/^<style[^>]*>/i, '').replace(/<\/style>$/i, '');
-    /* כללים ברמה העליונה */
-    css.replace(/@media[^{]+\{((?:[^{}]|\{[^{}]*\})*)\}/g, function (m, inner, off) {
-      var head = m.slice(0, m.indexOf('{') + 1);
-      var keep = [];
-      inner.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
-        if (touchesChat(sel)) keep.push(sel.trim() + '{' + body + '}');
-        return r;
-      });
-      if (keep.length) out.push(head + keep.join('') + '}');
-      return m;
-    });
-    var flat = css.replace(/@media[^{]+\{(?:[^{}]|\{[^{}]*\})*\}/g, ' ');
-    flat.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
-      if (touchesChat(sel)) out.push(sel.trim() + '{' + body + '}');
+  function flatRules(txt) {
+    var got = [];
+    txt.replace(/([^{}]+)\{([^{}]*)\}/g, function (r, sel, body) {
+      if (touchesChat(sel)) got.push(sel.trim() + '{' + body + '}');
       return r;
     });
+    return got;
+  }
+  styles.forEach(function (blk) {
+    var css = blk.replace(/^<style[^>]*>/i, '').replace(/<\/style>$/i, '');
+    var re = /@media[^{]+\{((?:[^{}]|\{[^{}]*\})*)\}/g, m, last = 0;
+    while ((m = re.exec(css))) {
+      out.push.apply(out, flatRules(css.slice(last, m.index)));
+      var head = m[0].slice(0, m[0].indexOf('{') + 1);
+      var keep = flatRules(m[1]);
+      if (keep.length) out.push(head + keep.join('') + '}');
+      last = m.index + m[0].length;
+    }
+    out.push.apply(out, flatRules(css.slice(last)));
   });
   return out.join('\n');
 }
@@ -97,13 +118,10 @@ function stamp(body) {
 fs.writeFileSync(path.join(PROTO, 'chat.css'), stamp(cssBlock) + cssBlock + '\n');
 fs.writeFileSync(path.join(PROTO, 'chat.js'), stamp(jsBlock) + jsBlock + '\n');
 
-/* ---- העמודים שמקבלים את הצ'אט: אותם 21 שבאינדקס התוכן ---- */
-function inIndex(url) {
-  if (/^\/guides\/.+\//.test(url)) return true;
-  if (url === '/phone-problems/') return true;
-  if (/^\/[a-z0-9-]+-kiryat-gat\/$/.test(url)) return true;
-  return false;
-}
+/* ---- העמודים שמקבלים את הצ'אט ---- */
+/* הכלל יושב ב-bot-pages.js, כי בדיקה 31 בפריפלייט אוכפת אותו והוא היה כתוב שם שוב.
+   הרחבה בצד אחד הייתה משאירה את השער שומר על הרשימה הישנה. */
+var inIndex = require('./bot-pages.js');
 function urlOf(rel) {
   if (rel === 'index.html') return '/';
   if (/\/index\.html$/.test(rel)) return '/' + rel.replace(/\/index\.html$/, '') + '/';

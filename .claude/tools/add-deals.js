@@ -507,7 +507,13 @@ function main() {
     const jsBlock = fence('js', [R.popup.text, R.qrJs.text, R.cpnJs.text, R.carJs.text]
       .join(eol).split(/\r?\n/).join(eol), eol);
 
-    t = insertBefore(t, '</head>', cssBlock, 'css', rel, eol);
+    /* לפני קישור ה-CSS של הצ׳אט אם הוא קיים, ולא לפני </head>. gen-bot.js מסיר ומזריק
+     * את הקישור שלו מחדש בכל הרצה, תמיד צמוד ל-</head>, וגם אנחנו הזרקנו לשם. התוצאה:
+     * כל הרצה של אחד מהשניים הפכה את הסדר ביניהם ב-19 עמודי השוואה, וזה לא קוסמטי כי
+     * הסדר קובע מי דורך על מי בקסקדה. עוגן שונה לכל אחד, ואז שני הסדרים מתלכדים:
+     * הצ׳אט תמיד אחרון, ואנחנו תמיד לפניו, ולא משנה מי רץ ראשון. */
+    var CHAT_LINK = '<link rel="stylesheet" href="/chat.css">';
+    t = insertBefore(t, t.indexOf(CHAT_LINK) >= 0 ? CHAT_LINK : '</head>', cssBlock, 'css', rel, eol);
     const secAnchor = anchorFor(rel, t);
     t = insertBefore(t, secAnchor, secBlock, 'section', rel, eol);
     t = insertBefore(t, '</body>', jsBlock, 'js', rel, eol);
@@ -518,6 +524,16 @@ function main() {
     console.log('  ' + rel.padEnd(44) + (had ? 'refreshed' : 'added    ') + '  מעל ' + String(where).padEnd(11) +
       (trimmed.includes(rel) ? '5' : '6') + ' שקופיות  ' + kb(t) + '  ' +
       keep.length + ' rules (' + (cl.picked.length - keep.length) + ' already there)');
+  }
+
+  /* A manifest of what this run covered, so preflight check 33 can tell "never had a carousel"
+   * apart from "had one and lost it". That distinction is not academic: on 16.8.2026 a gen-devices
+   * run rewrote all 21 device pages from their template and the carousel, 373 lines of it, vanished
+   * from every one of them while the whole preflight stayed green. The generators that own those
+   * pages write them whole, so this will happen again whenever they run out of order. */
+  if (!only && !remove) {
+    fs.writeFileSync(path.join(__dirname, '..', 'deals-pages.json'),
+      JSON.stringify({ _: 'נכתב על ידי add-deals.js. הרשימה שבדיקה 33 אוכפת.', pages: list }, null, 2) + '\n');
   }
 
   console.log('');
