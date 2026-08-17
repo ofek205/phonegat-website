@@ -80,11 +80,17 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בעמוד המפרט בתקופת עדכונים או בתאריך סיום, בשונה מסמסונג שנוקבת בתאריך מדויק. נבדק ב-16.8.2026 ולא נמצאה אמירה, ולכן null ולא מספר."
+        },
+        "screen_type": {
+          "src": "https://www.apple.com/il/iphone-17/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "שם התצוגה בעמוד הוא \"Super Retina XDR display\", ותחתיו \"all-screen OLED display\". השם הראשון הושמט בתמלול, ולכן הכלי הציג הבדל בסוג מסך בין iPhone 17 ל-17 Pro כשאין הבדל."
         }
       },
       "spec": {
         "screen_size": "6.3 אינץ׳",
-        "screen_type": "OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
         "resolution": "2622x1206 פיקסלים, 460 ppi",
         "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
         "brightness": "3000 ניט שיא בחוץ",
@@ -309,6 +315,12 @@
           "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
           "kind": "מאגר מפרטים, לא היצרן",
           "at": "2026-08-16"
+        },
+        "camera_front": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s26/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "לשונית Galaxy S26 Ultra (256GB) באותו עמוד אומרת \"מצלמה קדמית - פוקוס אוטומטי: כן\"."
         }
       },
       "spec": {
@@ -326,10 +338,10 @@
           "512GB",
           "1TB"
         ],
-        "camera_main": "200MP ראשית בצמצם F1.4",
+        "camera_main": "200MP רחבה בצמצם F1.4",
         "camera_extra": "50MP בצמצם F2.9, 50MP בצמצם F1.9, ו-10MP בצמצם F2.4. ייצוב אופטי",
         "zoom": "זום אופטי 3x ו-5x, איכות אופטית 2x ו-10x, דיגיטלי עד 100x",
-        "camera_front": "12MP בצמצם F2.2",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
         "video": "8K ב-30 פריימים לשנייה. הילוך אט 240 ב-FHD ו-120 ב-4K",
         "battery": "5000 mAh טיפוסית (מדורג 4855 mAh), עד 31 שעות וידאו",
         "charging_wired": "60W, עד 75 אחוז ב-30 דקות",
@@ -738,13 +750,31 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בעמוד המפרט בתקופת עדכונים או בתאריך סיום, בשונה מסמסונג שנוקבת בתאריך מדויק. נבדק ב-16.8.2026 ולא נמצאה אמירה, ולכן null ולא מספר."
+        },
+        "screen_type": {
+          "src": "https://www.apple.com/il/iphone-17-pro/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "העמוד מונה במפורש, תחת \"שני הדגמים\", גם Dynamic Island וגם Always-On display, ובשורת הגודל \"all-screen OLED display\". שלושת אלה נעדרו מהתמלול."
+        },
+        "refresh_rate": {
+          "src": "https://www.apple.com/il/iphone-17-pro/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "הניסוח בעמוד: \"ProMotion technology with adaptive refresh rates up to 120Hz\". Pro ו-Pro Max חולקים את העמוד, וה-Pro Max תומלל נכון ואילו ה-Pro לא, ולכן הכלי הציג הבדל בקצב רענון בין שני דגמים שהמפרט שלהם זהה."
+        },
+        "box_contents": {
+          "src": "https://www.apple.com/il/iphone-17-pro/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "העמוד נוקב במפורש \"USB-C Charge Cable (1 m)\". אורך הכבל נשמט בתמלול של ה-Pro בלבד, מתוך חמשת דגמי האייפון."
         }
       },
       "spec": {
         "screen_size": "6.3 אינץ׳",
-        "screen_type": "Super Retina XDR OLED",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
         "resolution": "2622x1206 פיקסלים, 460 ppi",
-        "refresh_rate": "ProMotion, עד 120Hz",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
         "brightness": "3000 ניט שיא בחוץ",
         "chip": "שבב A19 Pro",
         "cpu": "6 ליבות, 2 לביצועים ו-4 ליעילות",
@@ -773,7 +803,7 @@
           "כתום קוסמי",
           "כחול עמוק"
         ],
-        "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C, ותיעוד",
+        "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
         "model_numbers": null,
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
@@ -951,11 +981,23 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בעמוד המפרט בתקופת עדכונים או בתאריך סיום, בשונה מסמסונג שנוקבת בתאריך מדויק. נבדק ב-16.8.2026 ולא נמצאה אמירה, ולכן null ולא מספר."
+        },
+        "screen_type": {
+          "src": "https://www.apple.com/il/iphone-17-pro/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אותו עמוד מפרט של iPhone 17 Pro, ותחת \"שני הדגמים\" מונים Dynamic Island ו-Always-On display."
+        },
+        "camera_front": {
+          "src": "https://www.apple.com/il/iphone-17-pro/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "מקטע המצלמה הקדמית בעמוד משותף לשני הדגמים ואינו מפורט לכל אחד בנפרד: \"18MP Center Stage camera, ƒ/1.9 aperture, Autofocus with Focus Pixels\". הצמצם נשמט בתמלול של ה-Pro Max, ולכן הכלי הציג הבדל במצלמה הקדמית בין שני דגמים שהעמוד מתאר במשפט אחד."
         }
       },
       "spec": {
         "screen_size": "6.9 אינץ׳",
-        "screen_type": "Super Retina XDR OLED",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
         "resolution": "2868x1320 פיקסלים, 460 ppi",
         "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
         "brightness": "3000 ניט שיא בחוץ",
@@ -972,7 +1014,7 @@
         "camera_main": "מערכת 48MP Pro Fusion: ראשית 48MP ב-24 מ״מ בצמצם ƒ/1.78",
         "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות, וטלפוטו 48MP ב-100 מ״מ (4x) בצמצם ƒ/2.8",
         "zoom": "זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x",
-        "camera_front": "18MP Center Stage",
+        "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
         "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
         "battery": "עד 37 שעות הפעלת וידאו",
         "charging_wired": "עד 50 אחוז ב-20 דקות עם מתאם 40W ומעלה",
@@ -1393,11 +1435,17 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בעמוד המפרט בתקופת עדכונים או בתאריך סיום, בשונה מסמסונג שנוקבת בתאריך מדויק. נבדק ב-16.8.2026 ולא נמצאה אמירה, ולכן null ולא מספר."
+        },
+        "screen_type": {
+          "src": "https://www.apple.com/il/iphone-17e/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "מקטע התצוגה בעמוד הזה אינו מונה Dynamic Island ואינו מונה Always-On display, בשונה מ-17 ומ-17 Pro שנבדקו באותו יום. נוסף רק \"כל המסך\", שכן מופיע. היעדר איננו רושמים כשלילה, כי אפל אינה אומרת \"אין\"."
         }
       },
       "spec": {
         "screen_size": "6.1 אינץ׳",
-        "screen_type": "Super Retina XDR OLED",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
         "resolution": "2532x1170 פיקסלים, 460 ppi",
         "refresh_rate": null,
         "brightness": "1200 ניט שיא ב-HDR",
@@ -1624,6 +1672,12 @@
           "src": "https://www.gsmarena.com/samsung_galaxy_s26_5g-14456.php",
           "kind": "מאגר מפרטים, לא היצרן",
           "at": "2026-08-16"
+        },
+        "camera_front": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s26/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "לשונית Galaxy S26 (256GB) אומרת \"מצלמה קדמית - פוקוס אוטומטי: כן\". ה-S26+ תומלל עם פוקוס אוטומטי וה-S26 בלעדיו, מאותו עמוד, ולכן הכלי הציג הבדל במצלמה הקדמית בין שני דגמים שהעמוד מתאר זהה."
         }
       },
       "spec": {
@@ -1641,10 +1695,10 @@
           "512GB"
         ],
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
-        "camera_main": "50MP ראשית בצמצם F1.8, עם ייצוב אופטי",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "טלפוטו 10MP בצמצם F2.4 עם זום אופטי 3x, ורחבה במיוחד 12MP בצמצם F2.2 בזווית 120 מעלות",
         "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
-        "camera_front": "12MP בצמצם F2.2",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
         "video": "8K (7680x4320) ב-30 פריימים לשנייה. הילוך אט ב-240 פריימים ב-FHD וב-120 ב-4K",
         "battery": "עד 30 שעות וידאו, 4300 mAh טיפוסית (קיבולת מדורגת 4175)",
         "charging_wired": "25W",
@@ -3538,7 +3592,7 @@
           "512GB"
         ],
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
-        "camera_main": "50MP בצמצם F1.8, עם ייצוב אופטי",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "טלפוטו 10MP בצמצם F2.4 עם זום אופטי 3x, ורחבה במיוחד 12MP בצמצם F2.2 בזווית 120 מעלות",
         "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
         "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
@@ -3992,7 +4046,7 @@
           "512GB"
         ],
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
-        "camera_main": "50MP בצמצם F1.8, עם ייצוב אופטי",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
         "camera_extra": "12MP בצמצם F2.2, ו-8MP בצמצם F2.4",
         "zoom": "זום אופטי 3x, ובאיכות אופטית 2x. זום דיגיטלי עד 30x",
         "camera_front": "12MP בצמצם F2.2",
@@ -4486,7 +4540,7 @@
           "128GB"
         ],
         "storage_expandable": "כרטיס MicroSD עד 2TB, בחריץ ייעודי משלו. אפשר שני כרטיסי SIM וגם כרטיס זיכרון יחד",
-        "camera_main": "50MP בצמצם F1.8. אין ייצוב אופטי",
+        "camera_main": "50MP רחבה בצמצם F1.8. אין ייצוב אופטי",
         "camera_extra": "2MP בצמצם F2.4. שתי מצלמות אחוריות בסך הכול",
         "zoom": "זום דיגיטלי עד 10x. אין עדשת טלפוטו",
         "camera_front": "8MP בצמצם F2.0",
@@ -6145,5 +6199,9 @@
         "bottom_line": "במפרט לבדו פיקסל 10 נותן דברים שאייפון 17 לא, ובראשם הזום האופטי. אבל מכשיר בלי יבוא רשמי הוא החלטה אחרת מהחלטה על מפרט: האחריות היא של מי שמכר, לא של היצרן, ואם משהו מתקלקל אין מעבדה רשמית בארץ. אם בכל זאת שוקלים אותו, שווה לשאול את המוכר שלוש שאלות: מי נותן אחריות ולכמה זמן, האם יש חריץ SIM פיזי, ומה קורה אם צריך תיקון. נשמח לעזור לכם לשאול אותן גם אם תקנו במקום אחר."
       }
     ]
+  },
+  "_same_page_ok": {
+    "_": "שדות שבהם שני דגמים מאותו עמוד מפרט נבדלים בהכלה, וההבדל אמיתי. כל רשומה כאן היא החלטה שצריך להצדיק, כי היא משתיקה את השער שתופס תמלול שנפרד.",
+    "iphone-17-pro|iphone-17-pro-max|storage_offered": "אפל מציעה 2TB בדגם ה-Pro Max בלבד, ולכן רשימת הנפחים שלו מכילה את זו של ה-Pro ועוד אחד. אומת ב-17.8.2026 בעמוד המפרט."
   }
 }

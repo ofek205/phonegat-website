@@ -1613,6 +1613,91 @@ if (classFails.length) {
   else ok('המייל מהצ\'אט מובדל מהטופס בנושא ובשורה הראשונה של הגוף');
 })();
 
+/* ---------- אותו עמוד מפרט, שני תמלולים ----------
+ *
+ * שני דגמים שהמפרט שלהם נלקח מאותו עמוד, ושדה שבו ערך אחד מוכל בשני. זו החתימה של תמלול
+ * שנפרד ולא של הבדל: עמוד אחד יכול לומר 6.3 מול 6.9 באלכסון, אבל הוא לא יכול לומר
+ * "ProMotion, עד 120Hz" על דגם אחד ו"ProMotion, קצב רענון משתנה עד 120Hz" על השני.
+ *
+ * ארבעה מקרים כאלה נמצאו ב-17.8.2026, וכולם הופיעו בכלי ההשוואה כהבדל: קצב רענון ותכולת
+ * אריזה בין iPhone 17 Pro ל-Pro Max, הפוקוס האוטומטי במצלמה הקדמית בין Galaxy S26 ל-S26+,
+ * וצמצם המצלמה הקדמית בין שני האייפונים. כלומר האתר אמר ללקוח שיש הבדל כשאין.
+ *
+ * הכלה אמיתית מותרת דרך _same_page_ok, מפורשות ועם נימוק. אפל מציעה 2TB ב-Pro Max בלבד. */
+(function () {
+  var dbPath = P('prototype/devices.json'), dev;
+  try { dev = JSON.parse(fs.readFileSync(dbPath, 'utf8')); } catch (e) { warn('devices.json אינו נקרא, בדיקת התמלול דולגה'); return; }
+  var allow = dev._same_page_ok || {};
+  var list = (dev.devices || []).filter(function (d) { return d.slug; });
+  var flat = function (v) { return Array.isArray(v) ? v.join(', ') : v; };
+  var clean = function (v) { return String(v).replace(/\s+/g, ' ').trim(); };
+  function srcOf(d, key) {
+    var ss = d.spec_source || {}, e = ss[key];
+    if (e && e.src) return e.src;
+    /* src:null נרשם במפורש כ"אין מקור", ואז אין עמוד משותף להשוות מולו */
+    if (e && Object.prototype.hasOwnProperty.call(e, 'src')) return null;
+    return (ss.default && ss.default.src) || null;
+  }
+  /* שתי חתימות של תמלול שנפרד, ולא של הבדל:
+   *
+   * הכלה: צד אחד הוא בדיוק תת-מחרוזת של השני, כלומר משהו נשמט. כך נמצא צמצם המצלמה
+   * הקדמית שנשמט אצל ה-Pro Max.
+   *
+   * אותם מספרים, וכל מילה של צד אחד קיימת גם בשני: כך נמצא "ProMotion, עד 120Hz" מול "ProMotion, קצב
+   * רענון משתנה עד 120Hz". שימו לב שהכלה לבדה מפספסת את זה, כי המילים החסרות נמצאות
+   * באמצע המשפט ולא בקצה, וזו הסיבה שהתנאי השני קיים בכלל: הגרסה הראשונה של השער בדקה
+   * הכלה בלבד ולא תפסה את המקרה שהוליד אותה.
+   *
+   * המדד אינו אחוז דמיון אלא הכלה מלאה של מילים, כי אחוז דמיון של 0.6 דחה את מקרה
+   * ה-ProMotion עצמו (0.5 בלבד), ואחוז נמוך יותר היה מתחיל לתפוס ניסוחים שונים באמת.
+   *
+   * דרישת זהות המספרים היא מה שמונע רעש: 6.3 מול 6.9 אינץ׳ הם הבדל אמיתי שעמוד אחד יכול
+   * לומר על שני דגמים, ושם המספרים שונים ולכן השדה אינו נבדק. */
+  function looksLikeSameFact(a, b) {
+    if (a.indexOf(b) >= 0 || b.indexOf(a) >= 0) return true;
+    var na = (a.match(/[\d.]+/g) || []), nb = (b.match(/[\d.]+/g) || []);
+    if (na.length !== nb.length) return false;
+    for (var i = 0; i < na.length; i++) { if (parseFloat(na[i]) !== parseFloat(nb[i])) return false; }
+    var split = function (s) { return s.replace(/[.,:()׳״'"\u2013-]/g, ' ').split(/\s+/).filter(Boolean); };
+    var ta = {}, tb = {}, all = {};
+    split(a).forEach(function (t) { ta[t] = 1; all[t] = 1; });
+    split(b).forEach(function (t) { tb[t] = 1; all[t] = 1; });
+    /* תת-קבוצה, ולא אחוז דמיון. מדד דמיון של 0.6 דחה בדיוק את המקרה שהשער נבנה בשבילו,
+       כי שלוש המילים שנוספו באמצע המשפט מורידות אותו ל-0.5. */
+    var subset = function (x, y) { return Object.keys(x).every(function (t) { return !!y[t]; }); };
+    return subset(ta, tb) || subset(tb, ta);
+  }
+  var keys = {};
+  list.forEach(function (d) { Object.keys(d.spec || {}).forEach(function (k) { keys[k] = 1; }); });
+  var hits = [], usedAllow = {};
+  for (var i = 0; i < list.length; i++) {
+    for (var j = i + 1; j < list.length; j++) {
+      (function (A, B) {
+        Object.keys(keys).forEach(function (k) {
+          var va = flat(A.spec[k]), vb = flat(B.spec[k]);
+          if (va === null || va === undefined || vb === null || vb === undefined || va === vb) return;
+          var sa = srcOf(A, k), sb = srcOf(B, k);
+          if (!sa || !sb || sa !== sb) return;
+          var ca = clean(va), cb = clean(vb);
+          if (!looksLikeSameFact(ca, cb)) return;
+          var id = A.slug + '|' + B.slug + '|' + k;
+          if (allow[id]) { usedAllow[id] = 1; return; }
+          hits.push(k + ' ב-' + A.slug + ' מול ' + B.slug);
+        });
+      })(list[i], list[j]);
+    }
+  }
+  /* שער על השער: רשומת היתר שאינה נתפסת יותר היא רשומה שמשתיקה משהו אחר, או שכבר תוקן */
+  var stale = Object.keys(allow).filter(function (k) { return k !== '_' && !usedAllow[k]; });
+  if (hits.length) {
+    bad(hits.length + ' שדות תומללו בשני ניסוחים מאותו עמוד מפרט, וכלי ההשוואה מציג אותם כהבדל: ' + hits.slice(0, 4).join(' · '));
+  } else if (stale.length) {
+    warn('רשומות ב-_same_page_ok שאינן נתפסות יותר, ולכן משתיקות משהו אחר או שכבר תוקנו: ' + stale.join(', '));
+  } else {
+    ok('אין שדה שתומלל בשני ניסוחים מאותו עמוד מפרט (' + list.length + ' דגמים)');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
