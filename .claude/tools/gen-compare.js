@@ -483,7 +483,7 @@ var APP_CSS = [
   '.dmenu .dmlist .nologo{inline-size:34px;flex:none}',
   '.dmenu .dmlist .blogo{flex:none;inline-size:auto}',
   '.dmenu .dmlist .blogo-apple{block-size:18px}',
-  '.dmenu .dmlist .blogo-samsung{block-size:16px}',
+  '.dmenu .dmlist .blogo-samsung{block-size:11px}',
   '.dmenu .dmlist .blogo-xiaomi{block-size:18px}',
   '.dmenu .dmlist .blogo-google{block-size:18px}',
   '.dmenu .dmlist .blogo-oneplus{block-size:18px}',
@@ -493,7 +493,7 @@ var APP_CSS = [
      17.8.2026 בתוך המחרוזת הארוכה שהועברה מהעמוד שנבנה ביד, ושלושה כאן, כלומר אותו דבר
      בשני מקומות. הגבהים תואמים למאפיינים ב-BRAND_LOGO_CELL, כדי שלא ייווצר קיפוץ פריסה. */
   '.cmp-grid thead .blogo-apple{height:17px}',
-  '.cmp-grid thead .blogo-samsung{height:15px}',
+  '.cmp-grid thead .blogo-samsung{height:11px}',
   '.cmp-grid thead .blogo-xiaomi{height:17px}',
   '.cmp-grid thead .blogo-google{height:17px}',
   '.cmp-grid thead .blogo-oneplus{height:17px}',
@@ -610,8 +610,14 @@ var APP_CSS = [
 /* המותגים בסדר קבוע, וכל מותג עם הלוגו שלו במידות שנמדדו. הלוגואים נמחקו ב-eb07517 כשהכלי
    כבר לא היה קיים ולכן איש לא הפנה אליהם, ושוחזרו מגיט יחד איתו. */
 var BRAND_LOGO = {
-  /* הוגדלו ב-17.8.2026. הטקסט שלצידם הוא 15.7 פיקסל, ולוגו של 12 נראה כמו רעש. */
-  Apple: ['apple', 17, 20], Samsung: ['samsung', 51, 18], Xiaomi: ['xiaomi', 19, 20],
+  /* הוגדלו ב-17.8.2026. הטקסט שלצידם הוא 15.7 פיקסל, ולוגו של 12 נראה כמו רעש.
+
+     סמסונג נמוך מהשאר וגם רחב מהם, כי הקובץ שלו הוא סמל מילה בלי מסגרת. עד 17.8.2026 הוא
+     היה האליפסה הכחולה מ-1993 עם האותיות חתוכות ממנה בלבן, והאותיות שם היו 28 אחוז מגובה
+     הקובץ, כלומר 5.1 פיקסל בגובה 18. אי אפשר היה לקרוא אותן, וגם לא הייתה מידה שתתקן את זה:
+     אותיות בגובה 9 היו דורשות אליפסה של 32 פיקסל, פי שניים מגובה השורה. הרוחב נבחר לפי
+     Nothing, סמל מילה רחב שכבר יושב כאן, כדי שטור סמסונג לא יתרחב יותר מטור Nothing. */
+  Apple: ['apple', 17, 20], Samsung: ['samsung', 82, 12], Xiaomi: ['xiaomi', 19, 20],
   /* שלושת אלה נוספו ב-16.8.2026, אחרי שאופק סיפק את הקבצים. כל אחד דרש טיפול: הקובץ של
      גוגל היה JPEG בשם png, כלומר רקע לבן אטום, והכיל את המילה Pixel לצד הסמל; של OnePlus
      הכיל בלוק אדום עם המילה חתוכה; ושל Nothing היה לבן על שחור. כולם נחתכו לסמל עצמו,
@@ -624,7 +630,7 @@ var BRAND_LOGO = {
 var BRAND_LOGO_CELL = {
   /* הוגדלו ב-17.8.2026, ובאותה מידה שה-CSS של ראש הטבלה קובע, כדי שלא ייווצר קיפוץ פריסה
      בין הרגע שהמידות נקראות מהמאפיין לרגע שהכלל חל. */
-  Apple: ['apple', 14, 17], Samsung: ['samsung', 43, 15], Xiaomi: ['xiaomi', 16, 17],
+  Apple: ['apple', 14, 17], Samsung: ['samsung', 75, 11], Xiaomi: ['xiaomi', 16, 17],
   Google: ['google', 17, 17], Nothing: ['nothing', 73, 13], OnePlus: ['oneplus', 17, 17]
 };
 
