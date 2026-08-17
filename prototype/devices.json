@@ -5470,6 +5470,3073 @@
         "gallery": [],
         "alt": "Google Pixel 10"
       }
+    },
+    {
+      "slug": "galaxy-s24",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S24",
+      "name_he": "גלקסי S24",
+      "series": "Galaxy S24",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-10 ליבות ובמהירויות 3.2, 2.9, 2.6 ו-1.95GHz, שהן Exynos 2400. GSMArena מונה שני שבבים לפי אזור, Snapdragon 8 Gen 3 לארה״ב, לקנדה ולסין ו-Exynos 2400 לשאר העולם, ולכן לקיחת השבב הראשון שם הייתה נותנת Snapdragon לישראל. היצרן הישראלי מכריע."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24-12773.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24-12773.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24-12773.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24-12773.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24-12773.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_offered": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט הישראלי מציג מק״ט אחד לכל דגם ואינו מונה את טווח הנפחים, ולכן אין ממה לגזור רשימה. GSMArena מונה טווח גלובלי, והכלל במאגר הזה אוסר מאגר מפרטים לנפחי אחסון כי הם משתנים בין שווקים. רשימה שנלקחת משם הייתה מייצרת הבדל מדומה בין דגמים שבפועל מוצעים באותם נפחים."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.2 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "1080x2340 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Exynos 2400",
+        "cpu": "10 ליבות",
+        "gpu": null,
+        "ram": "8GB",
+        "storage_offered": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם F2.2",
+        "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה. הילוך אט 240 פריימים ב-FHD ו-120 ב-UHD",
+        "battery": "עד 29 שעות וידאו, 4000mAh",
+        "charging_wired": "25W",
+        "charging_wireless": "15W",
+        "dimensions": "147.0x70.6x7.6 מ״מ",
+        "weight": "167 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3, NFC, USB-C בגרסת 3.2 Gen 1",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "galaxy-s24-plus",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S24+",
+      "name_he": "גלקסי S24+",
+      "series": "Galaxy S24",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-10 ליבות ובמהירויות 3.2, 2.9, 2.6 ו-1.95GHz, שהן Exynos 2400. GSMArena מונה שני שבבים לפי אזור, Snapdragon 8 Gen 3 לארה״ב, לקנדה ולסין ו-Exynos 2400 לשאר העולם, ולכן לקיחת השבב הראשון שם הייתה נותנת Snapdragon לישראל. היצרן הישראלי מכריע."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24+-12772.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24+-12772.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24+-12772.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24+-12772.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24+-12772.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_offered": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט הישראלי מציג מק״ט אחד לכל דגם ואינו מונה את טווח הנפחים, ולכן אין ממה לגזור רשימה. GSMArena מונה טווח גלובלי, והכלל במאגר הזה אוסר מאגר מפרטים לנפחי אחסון כי הם משתנים בין שווקים. רשימה שנלקחת משם הייתה מייצרת הבדל מדומה בין דגמים שבפועל מוצעים באותם נפחים."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "1440x3120 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Exynos 2400",
+        "cpu": "10 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם F2.2",
+        "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה. הילוך אט 240 פריימים ב-FHD ו-120 ב-UHD",
+        "battery": "עד 31 שעות וידאו, 4900mAh",
+        "charging_wired": "45W",
+        "charging_wireless": "15W",
+        "dimensions": "158.5x75.9x7.7 מ״מ",
+        "weight": "196 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3, NFC, USB-C בגרסת 3.2 Gen 1, UWB",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "galaxy-s24-ultra",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S24 Ultra",
+      "name_he": "גלקסי S24 אולטרה",
+      "series": "Galaxy S24",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s24/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-8 ליבות ובמהירויות 3.39, 3.1, 2.9 ו-2.2GHz, שהן Snapdragon 8 Gen 3, ובכך הוא מאשר את מה ש-GSMArena מונה ל-Ultra בלי פיצול אזורי."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24_ultra-12771.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24_ultra-12771.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24_ultra-12771.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24_ultra-12771.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s24_ultra-12771.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17"
+        },
+        "storage_offered": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט הישראלי מציג מק״ט אחד לכל דגם ואינו מונה את טווח הנפחים, ולכן אין ממה לגזור רשימה. GSMArena מונה טווח גלובלי, והכלל במאגר הזה אוסר מאגר מפרטים לנפחי אחסון כי הם משתנים בין שווקים. רשימה שנלקחת משם הייתה מייצרת הבדל מדומה בין דגמים שבפועל מוצעים באותם נפחים."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.8 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, תמיכה בעט S",
+        "resolution": "1440x3120 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Snapdragon 8 Gen 3",
+        "cpu": "8 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "200MP רחבה בצמצם F1.7, עם ייצוב אופטי",
+        "camera_extra": "50MP טלפוטו בצמצם F3.4, 12MP רחבה במיוחד בצמצם F2.2, ו-10MP טלפוטו בצמצם F2.4",
+        "zoom": "זום אופטי 3x ו-5x, זום באיכות אופטית 2x ו-10x, וזום דיגיטלי עד 100x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה. הילוך אט 240 פריימים ב-FHD ו-120 ב-UHD",
+        "battery": "עד 30 שעות וידאו, 5000mAh",
+        "charging_wired": "45W",
+        "charging_wireless": "15W",
+        "dimensions": "162.3x79.0x8.6 מ״מ",
+        "weight": "232 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3, NFC, USB-C בגרסת 3.2 Gen 1, UWB",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "galaxy-s25",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S25",
+      "name_he": "גלקסי S25",
+      "series": "Galaxy S25",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-8 ליבות ובמהירויות 4.47 ו-3.5GHz, שהן Snapdragon 8 Elite. אין בעמוד פיצול אזורי לסדרה הזאת, בשונה מסדרת S24 שבה S24 ו-S24+ הם Exynos בישראל."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "battery": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי של סדרת S25 אינו כולל את שורת אורך קטע הווידאו, בשונה מעמוד ה-S24 שכן כולל אותה. לכן הסוללה נרשמת ב-mAh בלבד, וללא שעות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.2 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "1080x2340 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Snapdragon 8 Elite",
+        "cpu": "8 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם F2.2, ו-10MP טלפוטו בצמצם F2.4",
+        "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה",
+        "battery": "4000mAh",
+        "charging_wired": "25W",
+        "charging_wireless": "15W",
+        "dimensions": "146.9x70.5x7.2 מ״מ",
+        "weight": "162 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC, USB-C בגרסת 3.2 Gen 1",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "galaxy-s25-plus",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S25+",
+      "name_he": "גלקסי S25+",
+      "series": "Galaxy S25",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-8 ליבות ובמהירויות 4.47 ו-3.5GHz, שהן Snapdragon 8 Elite. אין בעמוד פיצול אזורי לסדרה הזאת, בשונה מסדרת S24 שבה S24 ו-S24+ הם Exynos בישראל."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "battery": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי של סדרת S25 אינו כולל את שורת אורך קטע הווידאו, בשונה מעמוד ה-S24 שכן כולל אותה. לכן הסוללה נרשמת ב-mAh בלבד, וללא שעות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M",
+        "resolution": "1440x3120 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Snapdragon 8 Elite",
+        "cpu": "8 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם F2.2, ו-10MP טלפוטו בצמצם F2.4",
+        "zoom": "זום אופטי 3x, זום באיכות אופטית 2x, וזום דיגיטלי עד 30x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה",
+        "battery": "4900mAh",
+        "charging_wired": "45W",
+        "charging_wireless": "15W",
+        "dimensions": "158.4x75.8x7.3 מ״מ",
+        "weight": "190 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC, USB-C בגרסת 3.2 Gen 1, UWB",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "galaxy-s25-ultra",
+      "status": "reference",
+      "brand": "Samsung",
+      "name": "Galaxy S25 Ultra",
+      "name_he": "גלקסי S25 אולטרה",
+      "series": "Galaxy S25",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25-ultra/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
+        },
+        "chip": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25-ultra/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי נוקב ב-8 ליבות ובמהירויות 4.47 ו-3.5GHz, שהן Snapdragon 8 Elite. אין בעמוד פיצול אזורי לסדרה הזאת, בשונה מסדרת S24 שבה S24 ו-S24+ הם Exynos בישראל."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "brightness": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "water_resistance": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wired": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "charging_wireless": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "storage_expandable": {
+          "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+        },
+        "battery": {
+          "src": "https://www.samsung.com/il/smartphones/galaxy-s25-ultra/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "עמוד המפרט הישראלי של סדרת S25 אינו כולל את שורת אורך קטע הווידאו, בשונה מעמוד ה-S24 שכן כולל אותה. לכן הסוללה נרשמת ב-mAh בלבד, וללא שעות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        },
+        "colors_manufacturer": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של סמסונג ישראל אינו כולל את השדה הזה בשום דגם. נבדק בדפדפן ב-17.8.2026."
+        }
+      },
+      "spec": {
+        "screen_size": "6.9 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, תמיכה בעט S",
+        "resolution": "1440x3120 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "2600 ניט שיא",
+        "chip": "Snapdragon 8 Elite",
+        "cpu": "8 ליבות",
+        "gpu": null,
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "200MP רחבה בצמצם F1.7, עם ייצוב אופטי",
+        "camera_extra": "50MP טלפוטו בצמצם F3.4, 50MP רחבה במיוחד בצמצם F1.9, ו-10MP טלפוטו בצמצם F2.4",
+        "zoom": "זום אופטי 3x ו-5x, זום באיכות אופטית 2x ו-10x, וזום דיגיטלי עד 100x",
+        "camera_front": "12MP בצמצם F2.2, עם פוקוס אוטומטי",
+        "video": "עד 8K ב-30 פריימים לשנייה",
+        "battery": "5000mAh",
+        "charging_wired": "45W",
+        "charging_wireless": "15W",
+        "dimensions": "162.8x77.6x8.2 מ״מ",
+        "weight": "218 גרם",
+        "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": null,
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC, USB-C בגרסת 3.2 Gen 1, UWB",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-14",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 14",
+      "name_he": "אייפון 14",
+      "series": "iPhone 14",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111850",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111850",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111850",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2532x1170 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP ראשית 26 מ״מ בצמצם ƒ/1.5, עם ייצוב אופטי בהסטת חיישן",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K ב-Dolby Vision עד 60 פריימים לשנייה",
+        "battery": "עד 20 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "146.7x71.5x7.80 מ״מ",
+        "weight": "172 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "חצות",
+          "סגול",
+          "אור כוכבים",
+          "(PRODUCT)RED",
+          "כחול",
+          "צהוב"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-14-plus",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 14 Plus",
+      "name_he": "אייפון 14 פלוס",
+      "series": "iPhone 14",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111854",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111854",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111854",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2778x1284 פיקסלים, 458 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP ראשית 26 מ״מ בצמצם ƒ/1.5, עם ייצוב אופטי בהסטת חיישן",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K ב-Dolby Vision עד 60 פריימים לשנייה",
+        "battery": "עד 26 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "160.8x78.1x7.80 מ״מ",
+        "weight": "203 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "חצות",
+          "סגול",
+          "אור כוכבים",
+          "(PRODUCT)RED",
+          "כחול",
+          "צהוב"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-14-pro",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 14 Pro",
+      "name_he": "אייפון 14 פרו",
+      "series": "iPhone 14",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111849",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111849",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111849",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "לצד המקדמים אפל כותבת גם טווח אופטי 6x, וזה טווח ולא עדשה, ולכן לא נלקח."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2556x1179 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A16 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 24 מ״מ בצמצם ƒ/1.78, עם ייצוב אופטי בהסטת חיישן מדור שני",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.2, ו-12MP טלפוטו 3x ב-77 מ״מ בצמצם ƒ/2.8 עם ייצוב אופטי",
+        "zoom": "זום אופטי 3x פנימה ו-2x החוצה, זום דיגיטלי עד 15x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K עד 60 פריימים לשנייה, ProRes עד 4K ב-30",
+        "battery": "עד 23 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "147.5x71.5x7.85 מ״מ",
+        "weight": "206 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור חלל",
+          "כסוף",
+          "זהב",
+          "סגול עמוק"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-14-pro-max",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 14 Pro Max",
+      "name_he": "אייפון 14 פרו מקס",
+      "series": "iPhone 14",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111846",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111846",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "charging_wired": {
+          "src": "https://support.apple.com/he-il/111846",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד הזה ב-35 דקות ולא ב-30 כמו בשאר הדגמים, וזה הפרט שלה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2796x1290 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A16 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 24 מ״מ בצמצם ƒ/1.78, עם ייצוב אופטי בהסטת חיישן מדור שני",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.2, ו-12MP טלפוטו 3x ב-77 מ״מ בצמצם ƒ/2.8 עם ייצוב אופטי",
+        "zoom": "זום אופטי 3x פנימה ו-2x החוצה, זום דיגיטלי עד 15x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K עד 60 פריימים לשנייה, ProRes עד 4K ב-30",
+        "battery": "עד 29 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-35 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "160.7x77.6x7.85 מ״מ",
+        "weight": "240 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור חלל",
+          "כסוף",
+          "זהב",
+          "סגול עמוק"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-15",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 15",
+      "name_he": "אייפון 15",
+      "series": "iPhone 15",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111831",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111831",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111831",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "הטלפוטו 2x מבוסס חיישן ולא עדשה נפרדת, וטווח אופטי 4x שכתוב באותה שורה אינו עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island",
+        "resolution": "2556x1179 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A16 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 26 מ״מ בצמצם ƒ/1.6, עם ייצוב אופטי בהסטת חיישן",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.4, ו-12MP טלפוטו 2x ב-52 מ״מ בצמצם ƒ/1.6",
+        "zoom": "זום אופטי 2x פנימה ו-2x החוצה, זום דיגיטלי עד 10x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K ב-Dolby Vision עד 60 פריימים לשנייה",
+        "battery": "עד 20 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi2 עד 15W, Qi עד 7.5W",
+        "dimensions": "147.6x71.6x7.80 מ״מ",
+        "weight": "171 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "כחול",
+          "ירוק",
+          "צהוב",
+          "ורוד"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, USB-C בתקן USB 2",
+        "box_contents": "מכשיר עם iOS, כבל טעינה USB-C באורך מטר, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-15-plus",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 15 Plus",
+      "name_he": "אייפון 15 פלוס",
+      "series": "iPhone 15",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111830",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111830",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island",
+        "resolution": "2796x1290 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A16 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 26 מ״מ בצמצם ƒ/1.6, עם ייצוב אופטי בהסטת חיישן",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.4, ו-12MP טלפוטו 2x ב-52 מ״מ בצמצם ƒ/1.6",
+        "zoom": "זום אופטי 2x פנימה ו-2x החוצה, זום דיגיטלי עד 10x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K ב-Dolby Vision עד 60 פריימים לשנייה",
+        "battery": "עד 26 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi2 עד 15W, Qi עד 7.5W",
+        "dimensions": "160.9x77.8x7.80 מ״מ",
+        "weight": "201 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "כחול",
+          "ירוק",
+          "צהוב",
+          "ורוד"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3, NFC, Ultra Wideband, USB-C בתקן USB 2",
+        "box_contents": "מכשיר עם iOS, כבל טעינה USB-C באורך מטר, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-15-pro",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 15 Pro",
+      "name_he": "אייפון 15 פרו",
+      "series": "iPhone 15",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111829",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111829",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111829",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "טווח אופטי 6x מופיע באותה שורה ואינו עדשה. המקדם שאפל נוקבת בו הוא 3x פנימה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2556x1179 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A17 Pro",
+        "cpu": "6 ליבות",
+        "gpu": "6 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 24 מ״מ בצמצם ƒ/1.78, עם ייצוב אופטי בהסטת חיישן מדור שני",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.2, ו-12MP טלפוטו 3x ב-77 מ״מ בצמצם ƒ/2.8 עם ייצוב אופטי",
+        "zoom": "זום אופטי 3x פנימה ו-2x החוצה, זום דיגיטלי עד 15x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K עד 60 פריימים לשנייה, ProRes והקלטת Log",
+        "battery": "עד 23 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi2 עד 15W, Qi עד 7.5W",
+        "dimensions": "146.6x70.6x8.25 מ״מ",
+        "weight": "187 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "טיטניום שחור",
+          "טיטניום לבן",
+          "טיטניום כחול",
+          "טיטניום טבעי"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3, NFC, Ultra Wideband, USB-C בתקן USB 3 עד 10Gb/s",
+        "box_contents": "מכשיר עם iOS, כבל טעינה USB-C באורך מטר, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-15-pro-max",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 15 Pro Max",
+      "name_he": "אייפון 15 פרו מקס",
+      "series": "iPhone 15",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111828",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111828",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "סתירה בעמוד של אפל עצמה: מקטע ה-SIM אומר שהדגם אינו תואם כרטיס SIM פיזי, ובאותו עמוד תחת כפתורים ומחברים מופיע מגש SIM בדגמים שנקנו מחוץ לארה״ב. יחידות ישראליות נקנות מחוץ לארה״ב, ולכן לא נרשם \"eSIM בלבד\" כעובדה שטוחה. אפל אינה מיישבת את הסתירה."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111828",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "טווח אופטי 10x מופיע באותה שורה ואינו עדשה. המקדם שאפל נוקבת בו הוא 5x פנימה."
+        },
+        "storage_offered": {
+          "src": "https://support.apple.com/he-il/111828",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אין תצורת 128GB בדגם הזה, המינימום הוא 256GB."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2796x1290 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1600 ניט שיא ב-HDR, 2000 ניט שיא בחוץ",
+        "chip": "שבב A17 Pro",
+        "cpu": "6 ליבות",
+        "gpu": "6 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "48MP ראשית 24 מ״מ בצמצם ƒ/1.78, עם ייצוב אופטי בהסטת חיישן מדור שני",
+        "camera_extra": "12MP רחבה במיוחד 13 מ״מ בצמצם ƒ/2.2, ו-12MP טלפוטו 5x ב-120 מ״מ בצמצם ƒ/2.8 עם ייצוב אופטי תלת ממדי",
+        "zoom": "זום אופטי 5x פנימה ו-2x החוצה, זום דיגיטלי עד 25x",
+        "camera_front": "12MP בצמצם ƒ/1.9",
+        "video": "4K עד 60 פריימים לשנייה, ProRes והקלטת Log",
+        "battery": "עד 29 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi2 עד 15W, Qi עד 7.5W",
+        "dimensions": "159.9x76.7x8.25 מ״מ",
+        "weight": "221 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "טיטניום שחור",
+          "טיטניום לבן",
+          "טיטניום כחול",
+          "טיטניום טבעי"
+        ],
+        "sim": "eSIM, ובדגמים שנקנו מחוץ לארה״ב גם מגש nano-SIM",
+        "esim": "שני eSIM פעילים",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3, NFC, Ultra Wideband, USB-C בתקן USB 3 עד 10Gb/s",
+        "box_contents": "מכשיר עם iOS, כבל טעינה USB-C באורך מטר, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-se-3",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone SE (3rd generation)",
+      "name_he": "אייפון SE דור 3",
+      "series": "iPhone SE",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111866",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט. לא ממציאים שנה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט. מספר שנלקח ממאגר אינו של היצרן, ולכן ריק."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט, בשונה מסמסונג."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "sim": {
+          "src": "https://support.apple.com/he-il/111866",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111866",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל אינה נוקבת בשום מקדם זום אופטי בעמוד הזה, ולכן נרשם במפורש שאין."
+        },
+        "camera_extra": {
+          "src": "https://support.apple.com/he-il/111866",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "מצלמה אחורית אחת בלבד. אין בעמוד עדשה רחבה במיוחד ואין טלפוטו."
+        },
+        "charging_wireless": {
+          "src": "https://support.apple.com/he-il/111866",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל כותבת טעינה אלחוטית עם מטעני Qi ואינה נוקבת בהספק. אין MagSafe בעמוד הזה."
+        }
+      },
+      "spec": {
+        "screen_size": "4.7 אינץ׳",
+        "screen_type": "Retina HD, מסך LCD עם טכנולוגיית IPS. זה אינו מסך OLED",
+        "resolution": "1334x750 פיקסלים, 326 ppi",
+        "refresh_rate": null,
+        "brightness": "625 ניט טיפוסי",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "4 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "64GB",
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP ראשית בצמצם ƒ/1.8, עם ייצוב אופטי",
+        "camera_extra": null,
+        "zoom": "אין זום אופטי. זום דיגיטלי עד 5x",
+        "camera_front": "7MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה",
+        "battery": "עד 15 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "טעינה אלחוטית בתקן Qi",
+        "dimensions": "138.4x67.3x7.3 מ״מ",
+        "weight": "144 גרם",
+        "water_resistance": "IP67, עד מטר אחד ל-30 דקות",
+        "colors_manufacturer": [
+          "(PRODUCT)RED",
+          "אור כוכבים",
+          "חצות"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-12",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 12",
+      "name_he": "אייפון 12",
+      "series": "iPhone 12",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111876",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111876",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2532x1170 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "625 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A14 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "4 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "64GB",
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.6, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, Dolby Vision עד 4K ב-30",
+        "battery": "עד 17 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "146.7x71.5x7.4 מ״מ",
+        "weight": "164 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "לבן",
+          "(PRODUCT)RED",
+          "ירוק",
+          "כחול",
+          "סגול"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "eSIM נתמך, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-12-mini",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 12 mini",
+      "name_he": "אייפון 12 מיני",
+      "series": "iPhone 12",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111877",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111877",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "5.4 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2340x1080 פיקסלים, 476 ppi",
+        "refresh_rate": null,
+        "brightness": "625 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A14 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "4 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "64GB",
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.6, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, Dolby Vision עד 4K ב-30",
+        "battery": "עד 15 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "131.5x64.2x7.4 מ״מ",
+        "weight": "135 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "לבן",
+          "(PRODUCT)RED",
+          "ירוק",
+          "כחול",
+          "סגול"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "eSIM נתמך, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-12-pro",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 12 Pro",
+      "name_he": "אייפון 12 פרו",
+      "series": "iPhone 12",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111875",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "cpu": {
+          "src": null,
+          "at": null,
+          "note": "מקטע השבב בעמוד הזה מונה את השבב ואת ה-Neural Engine בלבד, בלי מספר ליבות. בעמודי ה-12 הלא-פרו כן מופיע. לא הושלם מדגם אחר."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "מקטע השבב בעמוד הזה מונה את השבב ואת ה-Neural Engine בלבד, בלי מספר ליבות. בעמודי ה-12 הלא-פרו כן מופיע. לא הושלם מדגם אחר."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2532x1170 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A14 Bionic",
+        "cpu": null,
+        "gpu": null,
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.6, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, ו-12MP טלפוטו בצמצם ƒ/2.0",
+        "zoom": "זום אופטי 2x פנימה ו-2x החוצה, זום דיגיטלי עד 10x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, Dolby Vision עד 60",
+        "battery": "עד 17 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "146.7x71.5x7.4 מ״מ",
+        "weight": "189 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "כסוף",
+          "גרפיט",
+          "זהב",
+          "כחול פסיפיק"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "eSIM נתמך, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-12-pro-max",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 12 Pro Max",
+      "name_he": "אייפון 12 פרו מקס",
+      "series": "iPhone 12",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111874",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "cpu": {
+          "src": null,
+          "at": null,
+          "note": "מקטע השבב בעמוד הזה מונה את השבב ואת ה-Neural Engine בלבד, בלי מספר ליבות. לא הושלם מדגם אחר."
+        },
+        "gpu": {
+          "src": null,
+          "at": null,
+          "note": "מקטע השבב בעמוד הזה מונה את השבב ואת ה-Neural Engine בלבד, בלי מספר ליבות. לא הושלם מדגם אחר."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2778x1284 פיקסלים, 458 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A14 Bionic",
+        "cpu": null,
+        "gpu": null,
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.6, עם ייצוב אופטי בהזזת חיישן",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, ו-12MP טלפוטו בצמצם ƒ/2.2",
+        "zoom": "זום אופטי 2.5x פנימה ו-2x החוצה, זום דיגיטלי עד 12x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, Dolby Vision עד 60",
+        "battery": "עד 20 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "160.8x78.1x7.4 מ״מ",
+        "weight": "228 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "כסוף",
+          "גרפיט",
+          "זהב",
+          "כחול פסיפיק"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "eSIM נתמך, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-13",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 13",
+      "name_he": "אייפון 13",
+      "series": "iPhone 13",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111872",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111872",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        },
+        "charging_wireless": {
+          "src": "https://support.apple.com/he-il/111872",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "זה העמוד היחיד בדור 12 ו-13 שמונה גם Qi2. אפל עדכנה אותו ולא את האחרים, ולכן זה נרשם לדגם הזה בלבד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2532x1170 פיקסלים, 460 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "4 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP ראשית בצמצם ƒ/1.6, עם ייצוב אופטי בהזזת חיישן",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, ומצב קולנועי ב-1080p",
+        "battery": "עד 19 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi2 עד 15W, Qi עד 7.5W",
+        "dimensions": "146.7x71.5x7.65 מ״מ",
+        "weight": "174 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "(PRODUCT)RED",
+          "אור כוכבים",
+          "חצות",
+          "כחול",
+          "ורוד",
+          "ירוק"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "תמיכה בשני eSIM, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-13-mini",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 13 mini",
+      "name_he": "אייפון 13 מיני",
+      "series": "iPhone 13",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111873",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        },
+        "refresh_rate": {
+          "src": null,
+          "at": null,
+          "note": "אין ProMotion בדגם הזה, ואפל אינה נוקבת בקצב רענון בשום מקום בעמוד."
+        },
+        "zoom": {
+          "src": "https://support.apple.com/he-il/111873",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17",
+          "note": "אפל נוקבת בעמוד רק בזום אופטי החוצה 2x, שהוא הטווח שהעדשה הרחבה במיוחד נותנת, ואין בדגם הזה עדשת טלפוטו. לכן הניסוח פותח בשלילה: בלעדיה הגזירה האוטומטית הייתה מחזירה מקדם אופטי 2 כאילו יש עדשה."
+        }
+      },
+      "spec": {
+        "screen_size": "5.4 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך",
+        "resolution": "2340x1080 פיקסלים, 476 ppi",
+        "refresh_rate": null,
+        "brightness": "800 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "4 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP ראשית בצמצם ƒ/1.6, עם ייצוב אופטי בהזזת חיישן",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/2.4, שדה ראייה 120 מעלות",
+        "zoom": "אין זום אופטי פנימה ואין עדשת טלפוטו. זום אופטי החוצה 2x, וזום דיגיטלי עד 5x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, ומצב קולנועי ב-1080p",
+        "battery": "עד 17 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% ב-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "131.5x64.2x7.65 מ״מ",
+        "weight": "141 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "(PRODUCT)RED",
+          "אור כוכבים",
+          "חצות",
+          "כחול",
+          "ורוד",
+          "ירוק"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "תמיכה בשני eSIM, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-13-pro",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 13 Pro",
+      "name_he": "אייפון 13 פרו",
+      "series": "iPhone 13",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111871",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם ProMotion",
+        "resolution": "2532x1170 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.5, עם ייצוב אופטי בהזזת חיישן",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/1.8, ו-12MP טלפוטו בצמצם ƒ/2.8",
+        "zoom": "זום אופטי 3x פנימה ו-2x החוצה, זום דיגיטלי עד 15x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, ProRes עד 4K ב-30, ומצב קולנועי",
+        "battery": "עד 22 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "146.7x71.5x7.65 מ״מ",
+        "weight": "204 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "גרפיט",
+          "זהב",
+          "כסוף",
+          "כחול סיירה",
+          "ירוק אלפיני"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "תמיכה בשני eSIM, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "iphone-13-pro-max",
+      "status": "reference",
+      "brand": "Apple",
+      "name": "iPhone 13 Pro Max",
+      "name_he": "אייפון 13 פרו מקס",
+      "series": "iPhone 13",
+      "os": "iOS",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://support.apple.com/he-il/111870",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בשנת השקה בעמוד המפרט."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת זיכרון עבודה באף עמוד מפרט."
+        },
+        "storage_expandable": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת שדה הרחבת אחסון. זיהוי חיובי בלבד, ולכן ריק ולא \"אין\"."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים או בתאריך סיום בעמוד המפרט."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת מספרי דגם בעמוד המפרט הטכני."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם ProMotion",
+        "resolution": "2778x1284 פיקסלים, 458 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "1000 ניט טיפוסי, 1200 ניט שיא ב-HDR",
+        "chip": "שבב A15 Bionic",
+        "cpu": "6 ליבות",
+        "gpu": "5 ליבות",
+        "ram": null,
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "12MP רחבה בצמצם ƒ/1.5, עם ייצוב אופטי בהזזת חיישן",
+        "camera_extra": "12MP רחבה במיוחד בצמצם ƒ/1.8, ו-12MP טלפוטו בצמצם ƒ/2.8",
+        "zoom": "זום אופטי 3x פנימה ו-2x החוצה, זום דיגיטלי עד 15x",
+        "camera_front": "12MP בצמצם ƒ/2.2",
+        "video": "4K עד 60 פריימים לשנייה, ProRes עד 4K ב-30, ומצב קולנועי",
+        "battery": "עד 28 שעות וידאו",
+        "charging_wired": "טעינה מהירה, עד 50% בכ-30 דקות עם מתאם 20W ומעלה",
+        "charging_wireless": "MagSafe עד 15W, Qi עד 7.5W",
+        "dimensions": "160.8x78.1x7.65 מ״מ",
+        "weight": "240 גרם",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "גרפיט",
+          "זהב",
+          "כסוף",
+          "כחול סיירה",
+          "ירוק אלפיני"
+        ],
+        "sim": "SIM כפול: nano-SIM ו-eSIM",
+        "esim": "תמיכה בשני eSIM, לא בכל האזורים",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.0, NFC, Ultra Wideband, מחבר Lightning",
+        "box_contents": "מכשיר, כבל USB-C ל-Lightning, ותיעוד. ללא מתאם חשמל וללא EarPods",
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "xiaomi-14",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 14",
+      "name_he": "שיאומי 14",
+      "series": "Xiaomi 14",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/xiaomi-14/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.36 אינץ׳",
+        "screen_type": "AMOLED עם LTPO, 68 מיליארד צבעים, Dolby Vision ו-HDR10+, סקאלת צבע DCI-P3",
+        "resolution": "2670x1200 פיקסלים, 460 ppi",
+        "refresh_rate": "משתנה בטווח 1Hz עד 120Hz",
+        "brightness": "1000 ניט בשימוש רגיל, 3000 ניט שיא",
+        "chip": "Snapdragon 8 Gen 3",
+        "cpu": "8 ליבות",
+        "gpu": "Adreno",
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "אין הרחבת אחסון",
+        "camera_main": "50MP בצמצם f/1.6, חיישן Light Fusion 900 בגודל 1/1.31 אינץ׳, עדשת Leica שווה ערך ל-23 מ״מ, עם ייצוב אופטי",
+        "camera_extra": "50MP רחבה במיוחד בצמצם f/2.2, ו-32MP טלפוטו צף בצמצם f/2.0 עם ייצוב אופטי",
+        "zoom": "טלפוטו אופטי במוקד שווה ערך 75 מ״מ, וזום דיגיטלי עד 60x",
+        "camera_front": "32MP בצמצם f/2.0",
+        "video": "עד 8K ב-24 פריימים לשנייה, ו-4K עד 60",
+        "battery": "4610mAh",
+        "charging_wired": "90W",
+        "charging_wireless": "50W אלחוטית, ובנוסף טעינה אלחוטית הפוכה",
+        "dimensions": "152.8x71.5x8.2 מ״מ",
+        "weight": "193 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": [
+          "שחור",
+          "לבן",
+          "ירוק ג׳ייד"
+        ],
+        "sim": "SIM כפול: שני nano-SIM, או nano-SIM עם eSIM",
+        "esim": null,
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4, NFC, USB-C בגרסת 3.2 Gen 1",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "xiaomi-13",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 13",
+      "name_he": "שיאומי 13",
+      "series": "Xiaomi 13",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/xiaomi-13/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "cpu": {
+          "src": null,
+          "at": null,
+          "note": "העמוד מונה את שם השבב, את תהליך הייצור ואת ה-GPU בלבד, בלי מספר ליבות או תדר."
+        }
+      },
+      "spec": {
+        "screen_size": "6.36 אינץ׳",
+        "screen_type": "AMOLED שטוח, Dolby Vision ו-HDR10+, סקאלת צבע DCI-P3",
+        "resolution": "2400x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "1200 ניט בשימוש רגיל, 1900 ניט שיא",
+        "chip": "Snapdragon 8 Gen 2",
+        "cpu": null,
+        "gpu": "Adreno",
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB"
+        ],
+        "storage_expandable": "אין הרחבת אחסון",
+        "camera_main": "50MP בצמצם f/1.8, עדשת Leica שווה ערך ל-23 מ״מ, עם ייצוב אופטי",
+        "camera_extra": "12MP רחבה במיוחד בצמצם f/2.2, ו-10MP טלפוטו בצמצם f/2.0 עם ייצוב אופטי",
+        "zoom": "טלפוטו אופטי במוקד שווה ערך 75 מ״מ, וזום דיגיטלי עד 30x",
+        "camera_front": "32MP בצמצם f/2.0",
+        "video": "עד 8K ב-24 פריימים לשנייה, ו-4K עד 60",
+        "battery": "4500mAh",
+        "charging_wired": "67W",
+        "charging_wireless": "50W אלחוטית, ובנוסף 10W אלחוטית הפוכה",
+        "dimensions": "152.8x71.5x7.98 מ״מ",
+        "weight": "189 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": [
+          "לבן",
+          "שחור",
+          "ירוק פלורה"
+        ],
+        "sim": "SIM כפול: שני nano-SIM, או nano-SIM עם eSIM",
+        "esim": null,
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3, NFC, USB-C",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "redmi-note-13-pro-4g",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 13 Pro 4G",
+      "name_he": "רדמי נוט 13 פרו 4G",
+      "series": "Redmi Note 13",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/redmi-note-13-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "chip": {
+          "src": "https://www.mi.com/global/product/redmi-note-13-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17",
+          "note": "זו גרסת ה-4G, ולה עמוד מפרט נפרד מגרסת ה-5G שנבדלת ממנה מאוד: שבב Snapdragon 7s Gen 2 במקום Helio G99, רזולוציה 2712x1220, בהירות שיא 1800 ניט, וידאו 4K, וסוללה 5100mAh. בישראל נמכרת בעיקר גרסת ה-5G, ולכן השם כאן נוקב במפורש 4G כדי שלא יתחלפו."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, עומק צבע 10 ביט, יחס ניגודיות 5,000,000:1, זכוכית Gorilla Glass 5",
+        "resolution": "2400x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "500 ניט בשימוש רגיל, 1000 ניט ב-HBM, 1300 ניט שיא",
+        "chip": "MediaTek Helio G99-Ultra",
+        "cpu": "8 ליבות, עד 2.2GHz",
+        "gpu": "Mali-G57 MC2",
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "כן, microSD עד 1TB, במגש משולב במקום ה-SIM השני",
+        "camera_main": "200MP בצמצם f/1.65, עם ייצוב אופטי",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מקרו בצמצם f/2.4",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "16MP בצמצם f/2.4",
+        "video": "1080p ב-30 או 60 פריימים לשנייה. אין הקלטת 4K",
+        "battery": "5000mAh",
+        "charging_wired": "67W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "161.1x74.95x7.98 מ״מ",
+        "weight": "188 גרם",
+        "water_resistance": "IP54",
+        "colors_manufacturer": [
+          "שחור חצות",
+          "ירוק יער",
+          "סגול לבנדר"
+        ],
+        "sim": "SIM אחד, ומגש משולב ל-SIM שני או ל-microSD",
+        "esim": null,
+        "connectivity": "4G, Wi-Fi 5, Bluetooth 5.2, NFC, USB-C, שקע אוזניות 3.5 מ״מ",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "redmi-note-13-4g",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 13 4G",
+      "name_he": "רדמי נוט 13 4G",
+      "series": "Redmi Note 13",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/redmi-note-13/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "chip": {
+          "src": "https://www.mi.com/global/product/redmi-note-13/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17",
+          "note": "זו גרסת ה-4G, ולגרסת ה-5G יש עמוד מפרט נפרד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, יחס ניגודיות 5,000,000:1, סקאלת צבע DCI-P3 מלאה, זכוכית Gorilla Glass 3",
+        "resolution": "2400x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "1800 ניט שיא",
+        "chip": "Snapdragon 685",
+        "cpu": "8 ליבות, עד 2.8GHz",
+        "gpu": "Adreno 610",
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": "כן, microSD עד 1TB, במגש משולב במקום ה-SIM השני",
+        "camera_main": "108MP בצמצם f/1.75",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מקרו",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "16MP בצמצם f/2.4",
+        "video": "1080p ב-30 פריימים לשנייה. אין הקלטת 4K",
+        "battery": "5000mAh",
+        "charging_wired": "33W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "162.24x75.55x7.97 מ״מ",
+        "weight": "188.5 גרם",
+        "water_resistance": "IP54",
+        "colors_manufacturer": [
+          "שחור חצות",
+          "ירוק מנטה",
+          "כחול קרח",
+          "שקיעה אוקיינית"
+        ],
+        "sim": "SIM אחד, ומגש משולב ל-SIM שני או ל-microSD",
+        "esim": null,
+        "connectivity": "4G, Wi-Fi 5, Bluetooth 5.1, NFC, USB-C, שקע אוזניות 3.5 מ״מ",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "redmi-note-12-pro-4g",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 12 Pro 4G",
+      "name_he": "רדמי נוט 12 פרו 4G",
+      "series": "Redmi Note 12",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/redmi-note-12-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "water_resistance": {
+          "src": null,
+          "at": null,
+          "note": "אין בעמוד הזה מקטע עמידות למים ואבק כלל, ואין בו שום דירוג IP. לא הושלם ממאגר."
+        },
+        "chip": {
+          "src": "https://www.mi.com/global/product/redmi-note-12-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17",
+          "note": "זו גרסת ה-4G עם Snapdragon 732G, ולגרסת ה-5G יש עמוד נפרד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, יחס ניגודיות 4,500,000:1, סקאלת צבע DCI-P3, תמיכה ב-Dolby Vision",
+        "resolution": "2400x1080 פיקסלים, 395 ppi",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "700 ניט ב-HBM, 1100 ניט שיא",
+        "chip": "Snapdragon 732G",
+        "cpu": "8 ליבות, עד 2.2GHz",
+        "gpu": "Adreno 618",
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB",
+          "256GB"
+        ],
+        "storage_expandable": "כן, microSD עד 1TB, במגש משולב במקום ה-SIM השני",
+        "camera_main": "108MP בצמצם f/1.9, חיישן בגודל 1/1.52 אינץ׳",
+        "camera_extra": "8MP רחבה במיוחד, 2MP מקרו בצמצם f/2.4, ו-2MP עומק בצמצם f/2.4",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "16MP בצמצם f/2.4",
+        "video": "4K ב-30 פריימים לשנייה, ו-1080p ב-30 או 60",
+        "battery": "5000mAh",
+        "charging_wired": "67W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "164.2x76.1x8.12 מ״מ",
+        "weight": "201.8 גרם",
+        "water_resistance": null,
+        "colors_manufacturer": [
+          "כחול כוכב",
+          "אפור גרפיט",
+          "לבן פולארי",
+          "כחול קרחון"
+        ],
+        "sim": "SIM אחד, ומגש משולב ל-SIM שני או ל-microSD",
+        "esim": null,
+        "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0, NFC, USB-C, שקע אוזניות 3.5 מ״מ",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "redmi-note-12-4g",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 12 4G",
+      "name_he": "רדמי נוט 12 4G",
+      "series": "Redmi Note 12",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/redmi-note-12/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "connectivity": {
+          "src": "https://www.mi.com/global/product/redmi-note-12/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17",
+          "note": "אין בעמוד הזה מקטע NFC כלל, בשונה משאר עמודי רדמי נוט, ולכן NFC אינו נרשם."
+        },
+        "chip": {
+          "src": "https://www.mi.com/global/product/redmi-note-12/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17",
+          "note": "זו גרסת ה-4G, ולגרסת ה-5G יש עמוד נפרד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, יחס ניגודיות 4,500,000:1, סקאלת צבע DCI-P3",
+        "resolution": "2400x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "450 ניט בשימוש רגיל, 700 ניט ב-HBM, 1200 ניט שיא",
+        "chip": "Snapdragon 685",
+        "cpu": "8 ליבות, עד 2.8GHz",
+        "gpu": "Adreno 610",
+        "ram": "8GB",
+        "storage_offered": [
+          "128GB"
+        ],
+        "storage_expandable": "כן, microSD עד 1TB, בנוסף לשני ה-SIM ולא במקומם",
+        "camera_main": "50MP בצמצם f/1.8",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מקרו בצמצם f/2.4",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "13MP בצמצם f/2.45",
+        "video": "1080p ב-30 פריימים לשנייה. אין הקלטת 4K",
+        "battery": "5000mAh",
+        "charging_wired": "33W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "165.66x75.96x7.85 מ״מ",
+        "weight": "183.5 גרם",
+        "water_resistance": "IP53",
+        "colors_manufacturer": [
+          "זהב זריחה",
+          "אפור אוניקס",
+          "כחול קרח",
+          "ירוק מנטה"
+        ],
+        "sim": "SIM כפול, ובנוסף חריץ microSD",
+        "esim": null,
+        "connectivity": "4G, Wi-Fi 5, Bluetooth 5.0, USB-C, שקע אוזניות 3.5 מ״מ",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "poco-x6-pro",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "POCO X6 Pro",
+      "name_he": "פוקו X6 פרו",
+      "series": "POCO X6",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/poco-x6-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "CrystalRes 1.5K AMOLED, יחס ניגודיות 5,000,000:1, HDR10+, זכוכית Gorilla Glass 5",
+        "resolution": "2712x1220 פיקסלים, 446 ppi",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "1200 ניט ב-HBM, 1800 ניט שיא",
+        "chip": "MediaTek Dimensity 8300-Ultra",
+        "cpu": "8 ליבות, עד 3.35GHz",
+        "gpu": "Mali-G615",
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "אין הרחבת אחסון",
+        "camera_main": "64MP בצמצם f/1.7",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מקרו בצמצם f/2.4",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "16MP בצמצם f/2.4",
+        "video": "4K ב-24 או 30 פריימים לשנייה, ו-1080p ב-30 או 60",
+        "battery": "5000mAh",
+        "charging_wired": "67W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "160.45x74.34x8.25 מ״מ בגוף פלסטיק, ו-8.35 מ״מ בגוף עור צמחי",
+        "weight": "186 גרם בגוף פלסטיק, 190 גרם בגוף עור צמחי",
+        "water_resistance": "IP54",
+        "colors_manufacturer": [
+          "שחור",
+          "צהוב",
+          "אפור"
+        ],
+        "sim": "SIM כפול בהמתנה כפולה",
+        "esim": null,
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4, NFC, USB-C",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
+    },
+    {
+      "slug": "poco-f6",
+      "status": "reference",
+      "brand": "Xiaomi",
+      "name": "POCO F6",
+      "name_he": "פוקו F6",
+      "series": "POCO F6",
+      "os": "Android",
+      "launch_year": null,
+      "spec_source": {
+        "default": {
+          "src": "https://www.mi.com/global/product/poco-f6/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-08-17"
+        },
+        "launch_year": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו נוקב בשנת השקה."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "עמוד המפרט של שיאומי אינו כולל את השדה הזה."
+        },
+        "water_resistance": {
+          "src": null,
+          "at": null,
+          "note": "אין בעמוד הזה מקטע עמידות למים ואבק כלל, ואין בו שום דירוג IP. לא הושלם ממאגר."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "CrystalRes 1.5K AMOLED, 68 מיליארד צבעים, Dolby Vision ו-HDR10+, זכוכית Gorilla Glass Victus",
+        "resolution": "2712x1220 פיקסלים, 446 ppi",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "500 ניט בשימוש רגיל, 1000 עד 1200 ניט ב-HBM, 2400 ניט שיא",
+        "chip": "Snapdragon 8s Gen 3",
+        "cpu": "8 ליבות, עד 3.0GHz",
+        "gpu": "Adreno",
+        "ram": "12GB",
+        "storage_offered": [
+          "256GB",
+          "512GB"
+        ],
+        "storage_expandable": "אין הרחבת אחסון",
+        "camera_main": "50MP בצמצם f/1.59, חיישן Sony IMX882",
+        "camera_extra": "8MP רחבה במיוחד, חיישן IMX355",
+        "zoom": "אין זום אופטי ואין עדשת טלפוטו",
+        "camera_front": "20MP בצמצם f/2.2",
+        "video": "4K ב-30 או 60 פריימים לשנייה, ו-1080p ב-30 או 60",
+        "battery": "5000mAh",
+        "charging_wired": "90W, והמטען באריזה",
+        "charging_wireless": "אין טעינה אלחוטית",
+        "dimensions": "160.5x74.4x7.8 מ״מ",
+        "weight": "179 גרם",
+        "water_resistance": null,
+        "colors_manufacturer": [
+          "שחור",
+          "ירוק",
+          "צבע טיטניום"
+        ],
+        "sim": "SIM כפול בהמתנה כפולה",
+        "esim": null,
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4, NFC, USB-C",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": null
     }
   ],
   "_candidates": {
@@ -6202,6 +9269,12 @@
   },
   "_same_page_ok": {
     "_": "שדות שבהם שני דגמים מאותו עמוד מפרט נבדלים בהכלה, וההבדל אמיתי. כל רשומה כאן היא החלטה שצריך להצדיק, כי היא משתיקה את השער שתופס תמלול שנפרד.",
-    "iphone-17-pro|iphone-17-pro-max|storage_offered": "אפל מציעה 2TB בדגם ה-Pro Max בלבד, ולכן רשימת הנפחים שלו מכילה את זו של ה-Pro ועוד אחד. אומת ב-17.8.2026 בעמוד המפרט."
+    "iphone-17-pro|iphone-17-pro-max|storage_offered": "אפל מציעה 2TB בדגם ה-Pro Max בלבד, ולכן רשימת הנפחים שלו מכילה את זו של ה-Pro ועוד אחד. אומת ב-17.8.2026 בעמוד המפרט.",
+    "galaxy-s24|galaxy-s24-plus|connectivity": "עמוד המפרט הישראלי מונה UWB ב-S24+ וב-Ultra ואינו מונה אותו ב-S24 הבסיסי. הבדל אמיתי בין הדגמים ולא תמלול.",
+    "galaxy-s24|galaxy-s24-ultra|screen_type": "תמיכת עט S מופיעה בעמוד כשורה נפרדת עם \"כן\" ב-Ultra בלבד. הבדל אמיתי.",
+    "galaxy-s24-plus|galaxy-s24-ultra|screen_type": "אותו דבר: עט S ב-Ultra בלבד.",
+    "galaxy-s24|galaxy-s24-ultra|camera_extra": "ל-Ultra ארבע עדשות אחוריות ולבסיסי שלוש, וזה מפורש בעמוד ברזולוציות ובצמצמים. הרשימה הארוכה מכילה את הקצרה כי שתיהן נוקבות באותה עדשה רחבה במיוחד, 12MP בצמצם F2.2.",
+    "galaxy-s24-plus|galaxy-s24-ultra|camera_extra": "אותו דבר: ארבע עדשות מול שלוש.",
+    "galaxy-s25|galaxy-s25-plus|connectivity": "עמוד המפרט הישראלי מונה UWB ב-S25+ ואינו מונה אותו ב-S25 הבסיסי. הבדל אמיתי."
   }
 }
