@@ -1,0 +1,358 @@
+{
+  "_": "מכשירי ייחוס, מקבץ שלישי. המקור לכולם GSMArena, מאגר מפרטים ולא היצרן. כל עמוד נפתח ואומת לפי שם הדגם שבכותרת לפני החילוץ.",
+  "devices": [
+    {
+      "slug": "galaxy-z-flip7",
+      "brand": "Samsung",
+      "name": "Samsung Galaxy Z Flip7",
+      "name_he": "גלקסי Z Flip7",
+      "series": "Galaxy Z",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_z_flip7-13712.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת מתקפלים. הדגם במאגר כדי שאפשר יהיה להשוות אליו."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.9 אינץ׳ פנימי, ומסך חיצוני 4.1 אינץ׳",
+        "screen_type": "Dynamic LTPO AMOLED 2X מתקפל, צפיפות 397ppi, זכוכית Gorilla Glass Victus 2",
+        "resolution": "2520x1080 פיקסלים במסך הפנימי",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "עד 2600 ניט שיא",
+        "chip": "Samsung Exynos 2500",
+        "cpu": "10 ליבות: אחת ב-3.3GHz, שתיים ב-2.74GHz, חמש ב-2.36GHz ושתיים ב-1.8GHz",
+        "gpu": "Xclipse 950",
+        "ram": "12GB",
+        "storage_offered": ["256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.8",
+        "camera_extra": "12MP רחבה במיוחד בצמצם f/2.2",
+        "zoom": "אין עדשת זום אופטי",
+        "camera_front": "10MP בצמצם f/2.2",
+        "video": "4K ב-30 ו-60 פריימים לשנייה, והילוך אט עד 240 פריימים ב-1080p",
+        "battery": "4300 mAh",
+        "charging_wired": "25W",
+        "charging_wireless": "עד 15W",
+        "dimensions": "פתוח 166.7 x 75.2 x 6.5 מ״מ, סגור 85.5 x 75.2 x 13.7 מ״מ",
+        "weight": "188 גרם",
+        "water_resistance": "IP48. זו דרגה נמוכה מ-IP68 בעמידות לאבק, וזה מקובל במתקפלים",
+        "colors_manufacturer": ["כחול צל", "שחור עמוק", "אדום קורל", "מנטה"],
+        "sim": "ננו-סים ושני eSIM, עד שניים פעילים",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4",
+        "box_contents": null,
+        "security_updates": "שבע שנות עדכוני מערכת הפעלה",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "גלקסי Z Flip7 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא מתקפל מסוג אחר מ-Fold: הוא מתקפל לחצי כדי להיות קטן בכיס, ולא כדי לפתוח מסך גדול. מה שכדאי לדעת לפני שמשווים אליו: אין בו עדשת זום אופטי בכלל, הסוללה 4300 mAh, ועמידות האבק היא IP48.",
+        "pros": ["מסך חיצוני 4.1 אינץ׳", "188 גרם", "7 שנות עדכונים", "נכנס לכיס קטן"],
+        "cons": ["איננו מוכרים אותו", "אין זום אופטי", "סוללה 4300 mAh", "IP48 ולא IP68"]
+      }
+    },
+    {
+      "slug": "iphone-16e",
+      "brand": "Apple",
+      "name": "Apple iPhone 16e",
+      "name_he": "אייפון 16e",
+      "series": "iPhone",
+      "os": "iOS",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/apple_iphone_16e-13395.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא הדור הקודם של אייפון 17e שאנחנו כן מוכרים, ולכן ההשוואה אליו היא דור מול דור."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים מחויבת. העמוד מדווח על גרסת iOS בלבד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.1 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, צפיפות 460ppi",
+        "resolution": "2532x1170 פיקסלים",
+        "refresh_rate": "60Hz",
+        "brightness": "עד 1200 ניט שיא",
+        "chip": "Apple A18",
+        "cpu": "6 ליבות: שתיים ב-4.04GHz וארבע ב-2.2GHz",
+        "gpu": "GPU של אפל, 4 ליבות",
+        "ram": "8GB",
+        "storage_offered": ["128GB", "256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "48MP בצמצם f/1.6, עם ייצוב אופטי",
+        "camera_extra": "אין מצלמה אחורית נוספת",
+        "zoom": "אין עדשת זום אופטי",
+        "camera_front": "12MP בצמצם f/1.9, עם חיישן עומק",
+        "video": "4K עד 60 פריימים לשנייה, והילוך אט עד 240 פריימים ב-1080p",
+        "battery": "4005 mAh",
+        "charging_wired": "אפל מצהירה על 50 אחוז בכ-30 דקות",
+        "charging_wireless": "עד 7.5W",
+        "dimensions": "146.7 x 71.5 x 7.8 מ״מ",
+        "weight": "167 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["שחור", "לבן"],
+        "sim": "ננו-סים ו-eSIM, לפי אזור",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": ["A3409", "A3212", "A3408", "A3410"]
+      },
+      "editorial": {
+        "what_matters": "אייפון 16e הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדור שלפני אייפון 17e, והוא האייפון הזול של אותו דור. שלושה דברים שכדאי לדעת עליו: מסך 60Hz ולא 120, מצלמה אחורית אחת בלבד, וטעינה אלחוטית של 7.5W בלבד.",
+        "pros": ["שבב A18", "167 גרם, קל", "IP68", "מחיר כניסה לאייפון"],
+        "cons": ["איננו מוכרים אותו", "מסך 60Hz", "מצלמה אחת מאחור", "אין זום אופטי"]
+      }
+    },
+    {
+      "slug": "galaxy-a26",
+      "brand": "Samsung",
+      "name": "Samsung Galaxy A26 5G",
+      "name_he": "גלקסי A26",
+      "series": "Galaxy A",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_a26-13679.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא יושב בין A17 ל-A27 שאנחנו כן מוכרים, ולכן ההשוואה אליו שימושית למי שמתלבט בתוך סדרת A."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "charging_wireless": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו מדווח על טעינה אלחוטית. היעדר דיווח אינו הצהרה שאין, ולכן השדה ריק ולא נכתב בו שאין."
+        }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "Super AMOLED, צפיפות 385ppi, זכוכית Corning Gorilla Glass Victus+",
+        "resolution": "2340x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "עד 777 ניט שיא",
+        "chip": "Samsung Exynos 1380",
+        "cpu": "8 ליבות: ארבע ב-2.4GHz וארבע ב-2.0GHz",
+        "gpu": "Mali-G68 MP5",
+        "ram": "4GB, 6GB או 8GB",
+        "storage_offered": ["128GB", "256GB"],
+        "storage_expandable": "יש חריץ לכרטיס microSDXC",
+        "camera_main": "50MP רחבה בצמצם f/1.8",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2, ו-2MP מאקרו",
+        "zoom": "אין עדשת זום אופטי",
+        "camera_front": "13MP בצמצם f/2.2",
+        "video": "4K ב-30 פריימים לשנייה",
+        "battery": "5000 mAh",
+        "charging_wired": "25W",
+        "charging_wireless": null,
+        "dimensions": "164 x 77.5 x 7.7 מ״מ",
+        "weight": "200 גרם",
+        "water_resistance": "IP67",
+        "colors_manufacturer": ["שחור", "לבן", "מנטה", "ורוד אפרסק"],
+        "sim": "ננו-סים ו-eSIM, או שני ננו-סים",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 5, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": "עד שישה עדכוני מערכת הפעלה",
+        "model_numbers": ["SM-A266E", "SM-A266B", "SM-A266U", "SM-A266W"]
+      },
+      "editorial": {
+        "what_matters": "גלקסי A26 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא יושב בתוך סדרת A, בין הדגמים שאנחנו כן מוכרים, ויש בו דבר אחד שנעלם מרוב המכשירים החדשים: חריץ לכרטיס זיכרון. מה שפחות חזק בו: בהירות שיא 777 ניט, שהיא נמוכה, ו-Wi-Fi 5 בלבד.",
+        "pros": ["חריץ לכרטיס זיכרון", "סוללה 5000 mAh", "6 עדכוני מערכת", "מסך 120Hz"],
+        "cons": ["איננו מוכרים אותו", "בהירות 777 ניט", "Wi-Fi 5 בלבד", "IP67 ולא IP68"]
+      }
+    },
+    {
+      "slug": "xiaomi-15t-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 15T Pro",
+      "name_he": "שיאומי 15T פרו",
+      "series": "Xiaomi",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/xiaomi_15t_pro_5g-14178.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא סדרת T של שיאומי, שאיננו מחזיקים, ויש בו זום אופטי 5x שאין באף דגם שיאומי שאנחנו מוכרים."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.83 אינץ׳",
+        "screen_type": "AMOLED, צפיפות 447ppi, זכוכית Corning Gorilla Glass 7i",
+        "resolution": "2772x1280 פיקסלים",
+        "refresh_rate": "עד 144Hz",
+        "brightness": "עד 3200 ניט שיא",
+        "chip": "MediaTek Dimensity 9400+",
+        "cpu": "8 ליבות: אחת ב-3.63GHz, שלוש ב-3.3GHz וארבע ב-2.4GHz",
+        "gpu": "Immortalis-G925",
+        "ram": "12GB",
+        "storage_offered": ["256GB", "512GB", "1TB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.6",
+        "camera_extra": "12MP רחבה במיוחד בצמצם f/2.2, ו-50MP טלפוטו פריסקופ בצמצם f/3.0",
+        "zoom": "זום אופטי 5x דרך עדשת הפריסקופ",
+        "camera_front": "32MP בצמצם f/2.2",
+        "video": "8K ב-30 פריימים לשנייה, ו-4K ב-30, 60 ו-120 פריימים",
+        "battery": "5500 mAh",
+        "charging_wired": "90W. היצרן מצהיר על טעינה מלאה בכ-36 דקות",
+        "charging_wireless": "עד 50W",
+        "dimensions": "162.7 x 77.9 x 8 מ״מ",
+        "weight": "210 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["שחור", "אפור", "מוקה זהוב"],
+        "sim": "שני ננו-סים ושני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0",
+        "box_contents": null,
+        "security_updates": "עדכון עד אנדרואיד 17 לפי העמוד",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "שיאומי 15T פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא מסדרת T, שאיננו מחזיקים בכלל, ומה שמבדיל אותו מדגמי שיאומי שאנחנו כן מוכרים הוא זום אופטי 5x, מסך 144Hz, וטעינה אלחוטית של 50W.",
+        "pros": ["זום אופטי 5x", "מסך 144Hz", "טעינה 90W וגם 50W אלחוטית", "בהירות 3200 ניט"],
+        "cons": ["איננו מוכרים אותו", "210 גרם", "אין חריץ לכרטיס זיכרון"]
+      }
+    },
+    {
+      "slug": "poco-x7-pro",
+      "brand": "Xiaomi",
+      "name": "Xiaomi Poco X7 Pro",
+      "name_he": "פוקו X7 פרו",
+      "series": "Poco",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/xiaomi_poco_x7_pro-13582.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת Poco. זה מותג המשנה של שיאומי, והוא במאגר כדי שאפשר יהיה להשוות אליו במתחם המחיר הבינוני."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." },
+        "charging_wireless": {
+          "src": null,
+          "at": null,
+          "note": "העמוד אינו מדווח על טעינה אלחוטית. היעדר דיווח אינו הצהרה שאין."
+        },
+        "esim": {
+          "src": null,
+          "at": null,
+          "note": "העמוד מדווח על שני ננו-סים ואינו מזכיר eSIM. היעדר אזכור אינו הצהרה שאין תמיכה."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "תקופת העדכונים אינה מצוינת בעמוד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "AMOLED, צפיפות 446ppi, זכוכית Corning Gorilla Glass 7i",
+        "resolution": "2712x1220 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "1400 ניט במצב בהירות גבוהה, ו-3200 ניט שיא",
+        "chip": "MediaTek Dimensity 8400 Ultra",
+        "cpu": "8 ליבות: אחת ב-3.25GHz, שלוש ב-3.0GHz וארבע ב-2.1GHz",
+        "gpu": "Mali-G720 MC7",
+        "ram": "8GB או 12GB",
+        "storage_offered": ["256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.5, עם ייצוב אופטי",
+        "camera_extra": "8MP רחבה במיוחד בצמצם f/2.2",
+        "zoom": "אין עדשת זום אופטי",
+        "camera_front": "20MP בצמצם f/2.2",
+        "video": "4K ב-24, 30 ו-60 פריימים לשנייה, והילוך אט עד 960 פריימים",
+        "battery": "6000 mAh בגרסה הגלובלית",
+        "charging_wired": "90W",
+        "charging_wireless": null,
+        "dimensions": "160.8 x 75.2 x 8.3 מ״מ",
+        "weight": "195 עד 198 גרם, לפי הגרסה",
+        "water_resistance": "IP68 ו-IP69",
+        "colors_manufacturer": ["שחור", "לבן", "ירוק", "אדום"],
+        "sim": "שני ננו-סים",
+        "esim": null,
+        "connectivity": "5G, Wi-Fi 6, Bluetooth 5.4",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "פוקו X7 פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. פוקו הוא מותג המשנה של שיאומי, והדגם הזה מציע סוללה של 6000 mAh וטעינה של 90W במתחם המחיר הבינוני. מה שאין בו: עדשת זום אופטי, ומצלמה רחבה במיוחד של 8MP בלבד.",
+        "pros": ["סוללה 6000 mAh", "טעינה 90W", "IP69", "בהירות שיא 3200 ניט"],
+        "cons": ["איננו מוכרים אותו", "אין זום אופטי", "רחבה במיוחד 8MP", "אין חריץ לכרטיס זיכרון"]
+      }
+    },
+    {
+      "slug": "motorola-edge-60-pro",
+      "brand": "Motorola",
+      "name": "Motorola Edge 60 Pro",
+      "name_he": "מוטורולה Edge 60 פרו",
+      "series": "Motorola Edge",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/motorola_edge_60_pro-13815.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת Motorola. המותג נכנס למאגר כדי שאפשר יהיה להשוות אליו, כי הוא נפוץ בישראל."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.7 אינץ׳",
+        "screen_type": "P-OLED, צפיפות 444ppi, זכוכית Corning Gorilla Glass 7i",
+        "resolution": "2712x1220 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "עד 4500 ניט שיא",
+        "chip": "MediaTek Dimensity 8350 Extreme",
+        "cpu": "8 ליבות: אחת ב-3.35GHz, שלוש ב-3.2GHz וארבע ב-2.2GHz",
+        "gpu": "Mali-G615 MC6",
+        "ram": "8GB, 12GB או 16GB",
+        "storage_offered": ["256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.8",
+        "camera_extra": "50MP רחבה במיוחד בצמצם f/2.0, ו-10MP טלפוטו בצמצם f/2.0",
+        "zoom": "זום אופטי 3x דרך עדשת הטלפוטו",
+        "camera_front": "50MP בצמצם f/2.0",
+        "video": "4K ב-30 פריימים לשנייה",
+        "battery": "6000 mAh",
+        "charging_wired": "90W",
+        "charging_wireless": "עד 15W",
+        "dimensions": "160.7 x 73.1 x 8.2 מ״מ",
+        "weight": "186 גרם",
+        "water_resistance": "IP68 ו-IP69K",
+        "colors_manufacturer": ["צל", "כחול מסחרר", "ענבים נוצצים"],
+        "sim": "שני ננו-סים, עם אפשרות ל-eSIM",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth",
+        "box_contents": null,
+        "security_updates": "עד שלושה עדכוני מערכת הפעלה",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "מוטורולה Edge 60 פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא המוטורולה הראשון במאגר. מה שבולט בו: סוללה של 6000 mAh במשקל 186 גרם, בהירות שיא 4500 ניט, ועמידות IP69K. מה שפחות: עד שלושה עדכוני מערכת הפעלה בלבד, וזה הרבה פחות מסמסונג וגוגל.",
+        "pros": ["סוללה 6000 mAh ב-186 גרם", "בהירות שיא 4500 ניט", "IP69K", "טעינה 90W"],
+        "cons": ["איננו מוכרים אותו", "עד 3 עדכוני מערכת בלבד", "וידאו 4K ב-30 פריימים בלבד"]
+      }
+    }
+  ]
+}

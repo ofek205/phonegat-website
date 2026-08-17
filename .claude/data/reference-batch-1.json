@@ -1,0 +1,257 @@
+{
+  "_": "מכשירי ייחוס: דגמים שפון גת אינה מוכרת, במאגר כדי שאפשר יהיה להשוות אליהם. נקרא על ידי .claude/tools/add-reference-devices.js. המקור לכל הרשומות האלה הוא GSMArena, מאגר מפרטים ולא היצרן, ולכן זו דרגת מקור נחותה מזו של הדגמים שאנחנו מוכרים. כל עמוד נפתח ואומת לפי שם הדגם שבכותרת לפני החילוץ.",
+  "devices": [
+    {
+      "slug": "pixel-10-pro",
+      "brand": "Google",
+      "name": "Google Pixel 10 Pro",
+      "name_he": "גוגל פיקסל 10 פרו",
+      "series": "Google Pixel",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/google_pixel_10_pro_5g-13987.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת Pixel, ולגוגל אין יבואן רשמי בישראל כלל. הדגם קיים במאגר אך ורק כדי להשוות אליו."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "תכולת האריזה אינה מופיעה בעמוד. מאגר מפרטים אינו מדווח על כך, ואין עמוד יבואן ישראלי לבדוק מולו."
+        }
+      },
+      "spec": {
+        "screen_size": "6.3 אינץ׳",
+        "screen_type": "LTPO OLED, צפיפות 495ppi, זכוכית Corning Gorilla Glass Victus 2",
+        "resolution": "2856x1280 פיקסלים",
+        "refresh_rate": "עד 120Hz, בפאנל LTPO",
+        "brightness": "עד 3300 ניט שיא",
+        "chip": "Google Tensor G5",
+        "cpu": "8 ליבות: אחת ב-3.78GHz, חמש ב-3.05GHz ושתיים ב-2.25GHz",
+        "gpu": "PowerVR DXT-48-1536",
+        "ram": "16GB",
+        "storage_offered": [
+          "128GB",
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.7",
+        "camera_extra": "48MP רחבה במיוחד בצמצם f/1.7, ו-48MP טלפוטו פריסקופ בצמצם f/2.8",
+        "zoom": "זום אופטי 5x דרך עדשת הטלפוטו",
+        "camera_front": "42MP בצמצם f/2.2",
+        "video": "4K ב-24, 30 ו-60 פריימים לשנייה. הילוך אט עד 240 פריימים ב-1080p",
+        "battery": "4870 mAh",
+        "charging_wired": "30W",
+        "charging_wireless": "עד 15W בתקן Qi2",
+        "dimensions": "152.8 x 72 x 8.5 מ״מ",
+        "weight": "207 גרם",
+        "water_resistance": "IP68, עמידות לטבילה עד 1.5 מטר למשך חצי שעה",
+        "colors_manufacturer": [
+          "מונסטון",
+          "ג׳ייד",
+          "פורצלן",
+          "אובסידיאן"
+        ],
+        "sim": "ננו-סים ו-eSIM, או שני eSIM",
+        "esim": "תמיכה ב-eSIM, עד שניים פעילים",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0",
+        "box_contents": null,
+        "security_updates": "שבע שנות עדכוני מערכת הפעלה",
+        "model_numbers": [
+          "GEHN3",
+          "G4QUR",
+          "GN4F5"
+        ]
+      },
+      "editorial": {
+        "what_matters": "גוגל פיקסל 10 פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. שני דברים בו בולטים מול מה שכן יש אצלנו: זום אופטי 5x דרך עדשת פריסקופ, ושבע שנות עדכוני מערכת הפעלה. שני דברים חשובים לדעת לפני שקונים אותו בישראל: לגוגל אין כאן יבואן רשמי בכלל, והמכשיר מגיע ביבוא מקביל בלבד.",
+        "pros": [
+          "זום אופטי 5x",
+          "7 שנות עדכונים",
+          "בהירות שיא 3300 ניט",
+          "IP68"
+        ],
+        "cons": [
+          "אין יבואן רשמי בישראל",
+          "אין חריץ לכרטיס זיכרון",
+          "טעינה 30W בלבד"
+        ]
+      }
+    },
+    {
+      "slug": "iphone-16-pro-max",
+      "brand": "Apple",
+      "name": "Apple iPhone 16 Pro Max",
+      "name_he": "אייפון 16 פרו מקס",
+      "series": "iPhone",
+      "os": "iOS",
+      "launch_year": 2024,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/apple_iphone_16_pro_max-13123.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא הדור הקודם של אייפון 17 פרו מקס, ונמצא במאגר כדי שאפשר יהיה להשוות דור מול דור."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "תכולת האריזה אינה מופיעה בעמוד."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "מספרי הדגם אינם מופיעים בעמוד."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים מחויבת, בשונה מסמסונג וגוגל שמצהירות על מספר שנים. העמוד מדווח על גרסת iOS בלבד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.9 אינץ׳",
+        "screen_type": "LTPO Super Retina XDR OLED, צפיפות 460ppi, זכוכית Ceramic Shield",
+        "resolution": "2868x1320 פיקסלים",
+        "refresh_rate": "עד 120Hz, בפאנל LTPO",
+        "brightness": "עד 2000 ניט במצב בהירות גבוהה",
+        "chip": "Apple A18 Pro",
+        "cpu": "6 ליבות: שתיים ב-4.05GHz וארבע ב-2.42GHz",
+        "gpu": "GPU של אפל, 6 ליבות",
+        "ram": "8GB",
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "48MP רחבה בצמצם f/1.8",
+        "camera_extra": "48MP רחבה במיוחד בצמצם f/2.2, ו-12MP טלפוטו פריסקופ בצמצם f/2.8",
+        "zoom": "זום אופטי 5x דרך עדשת הפריסקופ",
+        "camera_front": "12MP בצמצם f/1.9",
+        "video": "4K עד 120 פריימים לשנייה, כולל Dolby Vision",
+        "battery": "4685 mAh",
+        "charging_wired": "אפל מצהירה על 50 אחוז בכ-30 דקות",
+        "charging_wireless": "עד 25W ב-MagSafe",
+        "dimensions": "163 x 77.6 x 8.3 מ״מ",
+        "weight": "227 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": [
+          "טיטניום שחור",
+          "טיטניום לבן",
+          "טיטניום טבעי",
+          "טיטניום מדברי"
+        ],
+        "sim": "ננו-סים ו-eSIM, לפי אזור",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "אייפון 16 פרו מקס הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדור שלפני אייפון 17 פרו מקס, ולכן ההשוואה אליו עונה על השאלה מה השתנה בין הדורות. מה שבולט בו: זום אופטי 5x, מסך 6.9 אינץ׳, וצילום 4K ב-120 פריימים לשנייה.",
+        "pros": [
+          "זום אופטי 5x",
+          "וידאו 4K ב-120 פריימים",
+          "שבב A18 Pro",
+          "IP68"
+        ],
+        "cons": [
+          "איננו מוכרים אותו",
+          "227 גרם, כבד",
+          "8GB זיכרון בלבד"
+        ]
+      }
+    },
+    {
+      "slug": "oneplus-15",
+      "brand": "OnePlus",
+      "name": "OnePlus 15 5G",
+      "name_he": "וואן פלוס 15",
+      "series": "OnePlus",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/oneplus_15_5g-14206.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת OnePlus. ל-OnePlus יש יבואן רשמי בישראל, סל נאו, אבל לא אצלנו. הדגם במאגר כדי להשוות אליו."
+        },
+        "box_contents": {
+          "src": null,
+          "at": null,
+          "note": "תכולת האריזה אינה מופיעה בעמוד."
+        },
+        "model_numbers": {
+          "src": null,
+          "at": null,
+          "note": "מספרי הדגם אינם מופיעים בעמוד."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "תקופת עדכוני האבטחה אינה מצוינת בעמוד, בשונה מסמסונג שנוקבת במספר שנים."
+        }
+      },
+      "spec": {
+        "screen_size": "6.78 אינץ׳",
+        "screen_type": "LTPO AMOLED, צפיפות 450ppi, זכוכית Corning Gorilla Glass Victus 2",
+        "resolution": "2772x1272 פיקסלים",
+        "refresh_rate": "עד 165Hz, בפאנל LTPO",
+        "brightness": "עד 1800 ניט שיא",
+        "chip": "Qualcomm Snapdragon 8 Elite Gen 5",
+        "cpu": "8 ליבות",
+        "gpu": "Adreno 840",
+        "ram": "12GB או 16GB",
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.8",
+        "camera_extra": "50MP רחבה במיוחד בצמצם f/2.0, ו-50MP טלפוטו פריסקופ בצמצם f/2.8",
+        "zoom": "זום אופטי 3.5x דרך עדשת הפריסקופ",
+        "camera_front": "32MP בצמצם f/2.4",
+        "video": "8K עד 30 פריימים לשנייה",
+        "battery": "7300 mAh",
+        "charging_wired": "120W. היצרן מצהיר על 50 אחוז בכ-15 דקות",
+        "charging_wireless": "עד 50W",
+        "dimensions": "161.4 x 76.7 x 8.1 מ״מ",
+        "weight": "211 עד 215 גרם, לפי הגרסה",
+        "water_resistance": "IP68 ו-IP69K",
+        "colors_manufacturer": [
+          "שחור אינסופי",
+          "אולטרה ויולט",
+          "סנד סטורם"
+        ],
+        "sim": "שני סימים, עם תמיכה ב-eSIM",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "וואן פלוס 15 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. שלושה מספרים בו גבוהים ממה שיש ברוב מה שאנחנו כן מוכרים: סוללה של 7300 mAh, טעינה של 120W, ומסך שמגיע ל-165Hz. הוא גם עמיד ב-IP69K, שזו דרגה מעל IP68.",
+        "pros": [
+          "סוללה 7300 mAh",
+          "טעינה 120W",
+          "מסך 165Hz",
+          "IP69K"
+        ],
+        "cons": [
+          "איננו מוכרים אותו",
+          "בהירות שיא 1800 ניט, נמוכה מהמתחרים",
+          "אין חריץ לכרטיס זיכרון"
+        ]
+      }
+    }
+  ]
+}
