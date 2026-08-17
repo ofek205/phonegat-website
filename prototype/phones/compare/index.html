@@ -673,6 +673,17 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dshare{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-block-start:1.6rem}
 .dshare .dok{color:var(--teal-d);font-size:.96rem;font-weight:600}
 .dnoown{color:var(--ink-soft)}
+@media(max-width:900px){
+  .cmp-wrap{overflow-x:visible}
+  .cmp-grid{table-layout:fixed;width:100%}
+  .cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:0}
+  .cmp-grid thead th:first-child{width:24%}
+  .cmp-grid tbody th[scope="row"]{min-width:0;max-inline-size:none;position:static}
+  .cmp-grid thead th{white-space:normal;position:sticky;inset-block-start:var(--pg-stick-2,146px)}
+  .cmp-grid th,.cmp-grid td{overflow-wrap:anywhere;padding:.7rem .4rem}
+  .cmp-grid .vch{white-space:normal}
+  .cmp-grid .nv{font-size:1.1rem}
+}
 .dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
 .dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
 .dchip.sc2{background:var(--orange);border-color:#c07a2e;color:#241a08;font-weight:700}

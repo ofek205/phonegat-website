@@ -546,6 +546,29 @@ var APP_CSS = [
     /* .dnoown ולא .noown: השם המשותף מעוצב רק בתוך .hub, ש-אינו קיים בעמוד הזה,
      ולכן הוא לא עשה כלום. שם משלו, כמו ש-.dchip נפרד מ-.chip מאותה סיבה. */
   '.dnoown{color:var(--ink-soft)}',
+  /* ================= הטבלה נכנסת למסך בטלפון, בלי גלילה אופקית
+     עד 16.8.2026 היה כאן overflow-x:auto יחד עם min-width של 6.5rem לכל עמודת ערך,
+     ולכן בטלפון הטבלה נגררה הצידה ואופק ראה רק חלק ממנה בכל רגע. השוואה שצריך לגלול
+     אותה כדי לראות את הצד השני היא לא השוואה.
+     table-layout:fixed מחלק את הרוחב לפי העמודות שיש, ולכן שניים ושלושה מכשירים נכנסים
+     שניהם. עמודת שם השדה מקבלת 27 אחוז וזה מותיר 24 לכל דגם בשלושה, ו-36 בשניים.
+     הערכים נשברים בתוך התא במקום לדחוף אותו, ולכן השורות מתארכות והרוחב נשמר.
+     ומכיוון שמיכל הגלילה נעלם, ראש הטבלה יכול לחזור להיות דביק גם בטלפון: sticky נשבר
+     בתוך אב עם overflow, וזו הייתה הסיבה היחידה שהוא הושבת שם. */
+  '@media(max-width:900px){',
+  '  .cmp-wrap{overflow-x:visible}',
+  '  .cmp-grid{table-layout:fixed;width:100%}',
+  '  .cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:0}',
+  /* הרוחב נקבע על תא הכותרת ולא על תא השורה: ב-table-layout:fixed העמודות נגזרות מהשורה
+     הראשונה, שהיא ה-thead, ולכן width על th שבתוך tbody פשוט לא נקרא. 24 אחוז לשם השדה
+     כי הוא מחזיק תוויות קצרות, וכל מה שנחסך שם עובר לעמודות הערכים שבהן הטקסט ארוך. */
+  '  .cmp-grid thead th:first-child{width:24%}',
+  '  .cmp-grid tbody th[scope="row"]{min-width:0;max-inline-size:none;position:static}',
+  '  .cmp-grid thead th{white-space:normal;position:sticky;inset-block-start:var(--pg-stick-2,146px)}',
+  '  .cmp-grid th,.cmp-grid td{overflow-wrap:anywhere;padding:.7rem .4rem}',
+  '  .cmp-grid .vch{white-space:normal}',
+  '  .cmp-grid .nv{font-size:1.1rem}',
+  '}',
   /* אותם שלושה צבעים שהתא נושא ושהעמודה בטבלה נושאת. הצבע הוא מה שקושר בין הבחירה לתוצאה. */
   '.dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}',
   '.dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}',
@@ -998,6 +1021,13 @@ function buildTool() {
    * וזה תקין. ב-.dapp .dhead הכלל מגדיר את .dhead, וזה מה שהשער בודק. ב-.dslots.two,
    * ה-two מסייג את .dslots ולכן העוגן הוא .dslots, ורק הוא נבדק: מרכיב נתלה על השם
    * הראשון שבו, וסייג שבא אחריו אינו הגדרה חדשה אלא וריאנט של אותו רכיב. */
+  /* רשימת היתר מפורשת, ולא היוריסטיקה. אלה רכיבים שהעמוד הזה עצמו מרנדר, והם מוגדרים
+   * בגיליון המשותף כי גם עמודי ההשוואה הכתובים משתמשים בהם. דריכה עליהם כאן היא עקיפה
+   * מכוונת בהקשר אחד, לא הגדרה שנייה של אותו רכיב, וזה ההבדל שהשער אינו יכול לראות לבד.
+   * כל שם שנוסף לכאן הוא החלטה שצריך להצדיק, וזו בדיוק הסיבה שזו רשימה ולא כלל חכם. */
+  var SHARED_OVERRIDE = {
+    '.cmp-wrap': 'מיכל הטבלה. הגלילה האופקית מבוטלת בטלפון כדי שהטבלה תיכנס למסך'
+  };
   var mine = {}, clash = [];
   APP_CSS.split('\n').forEach(function (line) {
     var re = /(?:^|[{}])\s*([^{}@\n]+)\{/g, m;
@@ -1011,7 +1041,18 @@ function buildTool() {
     }
   });
   Object.keys(mine).forEach(function (c) {
+    if (SHARED_OVERRIDE[c]) return;
     if (new RegExp('\\' + c + '(?![a-z0-9-])').test(CSS) || new RegExp('\\' + c + '(?![a-z0-9-])').test(src)) clash.push(c);
+  });
+  /* שער על השער: שם ברשימת ההיתר שאינו מוגדר בגיליון המשותף אינו עקיפה אלא שם חדש
+   * שהתחפש לאחת, ואז ההיתר מסתיר בדיוק את מה שהשער בא לתפוס. */
+  Object.keys(SHARED_OVERRIDE).forEach(function (c) {
+    var re = new RegExp('\\' + c + '(?![a-z0-9-])');
+    if (!re.test(CSS) && !re.test(src)) {
+      console.error('✗ tool: ' + c + ' נמצא ברשימת ההיתר אך אינו מוגדר בגיליון המשותף. ' +
+        'עקיפה של שם שאינו קיים היא שם חדש, ויש להסיר אותו מהרשימה.');
+      process.exit(1);
+    }
   });
   if (clash.length) {
     console.error('✗ tool: השמות ' + clash.join(', ') + ' כבר מוגדרים בגיליון המשותף או בעמוד המקור. ' +
