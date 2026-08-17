@@ -1778,6 +1778,51 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- שלילה במפרט לא הופכת לתכונה ----------
+ *
+ * traits.js גוזר תכונות ממחרוזות מפרט בעברית, וזה החלק השביר של האזור הזה. ב-17.8.2026
+ * התגלה ש-opticalZoom החזיר 'yes', כלומר "יש זום אופטי", לשני דגמים שהמפרט שלהם אומר
+ * "אין זום אופטי": הצירוף שהבדיקה החיובית מחפשת מוכל בתוך השלילה. בשאלון הם קיבלו בזכות
+ * זה ארבע נקודות על "לצלם מרחוק", והנימוק שהוצג ללקוח היה המשפט השולל עצמו.
+ *
+ * מה שהסתיר את זה: עשרה דגמים נוספים בלי טלפוטו כתובים "אין עדשת טלפוטו", והם כן חזרו 0.
+ * כלומר אותה פונקציה נתנה עשר תשובות נכונות ושתיים שגויות, ואי אפשר היה לראות את זה
+ * מהתוצאה בלי לקרוא את המחרוזת שלצידה.
+ *
+ * הבדיקה כאן היא הכלל ולא המקרה, והיא חלה על שלושת השדות התלת-מצביים, שבהם null אינו 0
+ * ולכן אין ברירת מחדל להישען עליה. */
+(function () {
+  var T, dev;
+  try { T = require(path.join(__dirname, 'tools', 'lib', 'traits.js')); }
+  catch (e) { warn('traits.js אינו נטען, בדיקת השלילה דולגה'); return; }
+  try { dev = JSON.parse(fs.readFileSync(P('prototype/devices.json'), 'utf8')); }
+  catch (e) { warn('devices.json אינו נקרא, בדיקת השלילה דולגה'); return; }
+  var CASES = [
+    { field: 'zoom', label: 'זום אופטי', neg: /אין\s*(?:זום|טלפוטו)\s*אופטי/, get: T.opticalZoom },
+    { field: 'storage_expandable', label: 'חריץ זיכרון', neg: /^\s*אין/, get: T.sdCard },
+    { field: 'camera_extra', label: 'עדשה רחבה במיוחד', neg: /אין עדשה רחבה/, get: T.ultraWide }
+  ];
+  var negBad = [], negChecked = 0;
+  (dev.devices || []).filter(function (d) { return d.slug; }).forEach(function (d) {
+    CASES.forEach(function (c) {
+      var raw = d.spec ? d.spec[c.field] : null;
+      if (raw === null || raw === undefined) return;
+      var txt = Array.isArray(raw) ? raw.join(', ') : String(raw);
+      if (!c.neg.test(txt)) return;
+      negChecked++;
+      var v = c.get(d.spec);
+      /* השלילה מפורשת, ולכן הערך הנגזר חייב להיות 0. לא null, ובוודאי לא ערך חיובי. */
+      if (v !== 0) negBad.push(d.slug + '.' + c.field + ' אומר שאין ' + c.label + ', והגזירה מחזירה ' + JSON.stringify(v));
+    });
+  });
+  if (negBad.length) {
+    bad('שלילה במפרט נגזרה לתכונה קיימת: ' + negBad.join(' · ') +
+        ' — השאלון מנקד לפי הגזירה, ולכן זו המלצה שגויה ללקוח');
+  } else if (negChecked) {
+    ok(negChecked + ' שדות ששוללים תכונה נגזרים לאפס, ולא לערך חיובי');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
