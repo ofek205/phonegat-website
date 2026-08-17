@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:df38ec6a78e909d7 */
+/* sha1:e4587d22d6e7cd95 */
 .wa-ico{border-radius:22%;flex:none;object-fit:contain}
 .pg-showcase{display:flex;flex-direction:column;align-items:center;gap:.9rem}
 .pg-phones{position:relative;display:flex;align-items:center;justify-content:center;perspective:2400px}
@@ -22,11 +22,9 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-punch{position:absolute;top:2.5%;left:50%;transform:translateX(-50%);width:32%;height:4%;min-height:20px;border-radius:999px;background:#000;box-shadow:0 0 2px 1px rgba(0,0,0,.45);z-index:11}
 .pg-punch::after{content:"";position:absolute;top:50%;right:11%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#1c2b3b,#000 70%)}
 .pg-refl{position:absolute;inset:0;background:linear-gradient(122deg,rgba(255,255,255,.1),transparent 26%);pointer-events:none;z-index:10}
-/* neutral phone status bar (constant OS chrome) */
 .pg-etop{position:absolute;top:0;left:0;width:100%;height:6%;background:#fff;direction:ltr;display:flex;align-items:center;justify-content:space-between;padding:0 7%;z-index:6}
 .pg-st-time{font-size:.6rem;font-weight:700;color:#111}
 .pg-st-svg{display:block}
-/* FIXED app bar under the status bar — switches Google<->easy so you always know which "page" you're on */
 .pg-appbar{position:absolute;top:6%;left:0;width:100%;height:7.5%;background:#fff;border-bottom:1px solid #ececec;z-index:6;overflow:hidden;display:flex;align-items:center}
 .pg-ab-g,.pg-ab-e{flex:1;min-width:0;height:100%;display:flex;align-items:center;gap:8px;padding:0 13px}
 .pg-ab-e{justify-content:space-between}
@@ -46,11 +44,6 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 @media(hover:hover){.pg-screen:hover .pg-thumb{animation-play-state:paused}}
 .pg-screen.paused .pg-track,.pg-screen.paused .pg-thumb{animation-play-state:paused}
 .pg-screen{cursor:pointer}
-/* icon-only refresh button living inside the phone's top header (both Google & easy modes) */
-/* The visible chip stays 26px so it reads as a control inside a phone header, but a 26px tap target is
-   under the 44px this site holds every other control to. The button itself is therefore 44x36 and
-   transparent — 36 is the whole height of the bar, which clips anything taller — and the chip is drawn
-   by ::before. Same idea as the carousel dots, which pad a small dot out to a 44px target. */
 .pg-refresh{flex:none;margin-inline-end:2px;position:relative;width:44px;height:36px;border:0;background:none;color:#5f6368;display:grid;place-items:center;padding:0;cursor:pointer}
 .pg-refresh::before{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:#f1f3f4;transition:background .15s,transform .1s}
 .pg-refresh:hover::before{background:#e4e7ea}
@@ -89,7 +82,6 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-rc-dt{color:var(--pg-sub);font-size:.6rem}
 .pg-rc-tx{color:var(--pg-ink);font-size:.76rem;line-height:1.52;margin-top:6px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .pg-rc-more{color:var(--pg-teal);font-size:.7rem;margin-top:2px}
-/* ---- Google reviews "app" section (Google Maps look) ---- */
 .pg-gbar{background:#fff;display:flex;align-items:center;gap:8px;padding:10px 13px 8px}
 .pg-gback{color:#5f6368;font-size:1.2rem;line-height:1;flex:none}
 .pg-gtitle{flex:1;min-width:0;font-size:.8rem;font-weight:600;color:#202124;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -123,11 +115,6 @@ html.a11y-stop-motion .pg-showcase{animation:none}
 .pg-grc-tx{color:#3c4043;font-size:.76rem;line-height:1.55;margin-top:7px;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 @media(prefers-reduced-motion:reduce){.pg-track,.pg-thumb{animation:none}}
 html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
-/* Screen-reader-only content: available to assistive tech, invisible on screen.
-   Used to give blind visitors the review text that the decorative phone mock-up
-   hides from them (the animated feed is aria-hidden — see .pg-phone). */
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-/* in-feed sponsored ad card (injected after the 3rd review, then every 8th — in both Google & easy feeds) */
 .pg-ad{position:relative;overflow:hidden;padding:13px 15px 15px;border-bottom:1px solid var(--pg-line);color:#f4ecfb;background:radial-gradient(58% 52% at 24% 4%,rgba(210,150,240,.48),transparent 60%),linear-gradient(157deg,#3a1056 0%,#5a1c82 48%,#7d27a9 100%)}
 .pg-ad-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 .pg-ad-brand{display:flex;align-items:center;gap:5px;font-weight:800;font-size:.72rem;color:#fff}
@@ -151,18 +138,10 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-ad-cta:hover{transform:translateY(-1px);box-shadow:0 7px 18px rgba(0,0,0,.34)}
 .pg-ad-cta:active{transform:translateY(0)}
 .pg-ad-cta:focus-visible{outline:3px solid #cf90ec;outline-offset:2px}
-/* coupon popup (the offer — reused everywhere via [data-pg-coupon]) */
 .pg-cpn-ov{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(24,8,36,.64);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 .pg-cpn-ov.open{display:flex;animation:pgCpnFade .2s ease}
 .pg-cpn{position:relative;direction:rtl;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;background:#fff;border-radius:20px;box-shadow:0 40px 90px -20px rgba(0,0,0,.6);animation:pgCpnPop .28s cubic-bezier(.2,.8,.25,1)}
 .pg-cpn-hd{position:relative;padding:13px 18px 23px;text-align:center;color:#fff;background:radial-gradient(96% 62% at 50% -6%,rgba(160,98,216,.5),transparent 55%),linear-gradient(160deg,#3d1157 0%,#5a1a80 55%,#7c25a8 100%);border-radius:20px 20px 50% 50%/20px 20px 30px 30px}
-/* A 28px disc with a 44px tap area. The padding is the target and background-clip keeps the disc at
-   its drawn size, the same trick the carousel dots use, because a 44px disc on this small header would
-   read as a heavy button. It was the one control you must hit to dismiss the popup and the smallest
-   thing in it, while every sibling control was raised to 44 in the mobile pass. Hit testing follows
-   border-radius, so the target is a 44px circle rather than a square; the corners outside it fall on
-   the overlay, which closes the popup too, so every point in the 44 square dismisses. The focus ring
-   is inset so it hugs the disc instead of ringing the invisible target. */
 .pg-cpn-x{position:absolute;top:2px;left:2px;width:28px;height:28px;box-sizing:content-box;padding:8px;border:0;border-radius:50%;background:rgba(255,255,255,.16);background-clip:content-box;color:#fff;cursor:pointer;display:grid;place-items:center;z-index:3}
 .pg-cpn-x:hover{background:rgba(255,255,255,.3);background-clip:content-box}
 .pg-cpn-x:focus-visible{outline:2px solid #fff;outline-offset:-6px}
@@ -170,7 +149,6 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-excl{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:800;color:#3a2405;background:linear-gradient(180deg,#ffe08c,#e0a52f);border-radius:999px;padding:5px 15px;box-shadow:0 3px 12px rgba(224,165,47,.5),inset 0 1px 0 rgba(255,255,255,.55)}
 .pg-cpn-excl .st{color:#8a5a00}
 .pg-cpn-dev{width:auto;height:72px;display:block;margin:9px auto 5px;filter:drop-shadow(0 7px 14px rgba(0,0,0,.42))}
-/* photo-style offer image (a real product shot with its own background, not a cut-out) */
 .pg-cpn-dev.is-photo{height:84px;border-radius:11px;border:1px solid rgba(255,255,255,.3);box-shadow:0 9px 20px -7px rgba(0,0,0,.55)}
 .pg-cpn-hd h3{margin:0;font-size:1.08rem;font-weight:800;line-height:1.14;color:#fff}
 .pg-cpn-hd .desc{margin:3px 0 0;font-size:.72rem;color:rgba(244,236,251,.9)}
@@ -193,13 +171,11 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .pg-cpn-qr canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
 .pg-cpn-note{display:flex;align-items:center;justify-content:center;gap:5px;margin:11px 0 0;font-size:.69rem;font-weight:800;color:#c0392b}
 .pg-cpn-note svg{width:14px;height:14px;flex:none;fill:#c0392b}
-/* min-height, not more padding: it measured 43.2px and the gradient should not grow to buy 0.8px */
 .pg-cpn-go{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;width:100%;min-height:44px;background:linear-gradient(180deg,#2bd96e,#20bd5a);color:#fff;font-weight:800;font-size:.88rem;border-radius:12px;padding:10px;text-decoration:none;box-shadow:0 9px 20px -6px rgba(37,211,102,.55)}
 .pg-cpn-go:hover{filter:brightness(1.05)}
 .pg-cpn-go:focus-visible{outline:3px solid #128C7E;outline-offset:2px}
 .pg-cpn-go img{width:20px;height:20px}
 .pg-cpn-fine{margin:9px 0 0;font-size:.58rem;line-height:1.5;color:#9b9b9b}
-/* blue coupon theme — matches the screen-protector promo banner */
 .pg-cpn-ov.t-blue{background:rgba(6,24,48,.66)}
 .t-blue .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(120,190,255,.42),transparent 55%),linear-gradient(160deg,#1d579f 0%,#134279 58%,#0c2f5c 100%)}
 .t-blue .pg-cpn-hd .desc{color:rgba(214,232,250,.92)}
@@ -213,7 +189,6 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .t-blue .pg-cpn-code .tk{color:#1a6bb0}
 .t-blue .pg-cpn-code b{color:#0c2f5c}
 .t-blue .pg-cpn-copied{color:#5a86ab}
-/* navy/cyan coupon theme — matches the keyboard promo banner instead of the purple default */
 .pg-cpn-ov.t-navy{background:rgba(4,16,28,.66)}
 .t-navy .pg-cpn-hd{background:radial-gradient(96% 62% at 50% -6%,rgba(41,182,232,.45),transparent 55%),linear-gradient(160deg,#0f2d48 0%,#0a1f34 58%,#071626 100%)}
 .t-navy .pg-cpn-hd .desc{color:rgba(212,236,250,.9)}
@@ -227,12 +202,9 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .t-navy .pg-cpn-code .tk{color:#1a86bd}
 .t-navy .pg-cpn-code b{color:#0b2f4a}
 .t-navy .pg-cpn-copied{color:#5b8ba8}
-/* olive coupon theme — the IDF band's palette, so the popup does not arrive in a different colour
-   than the button that opened it. Flatter than its two siblings on purpose: same reason as the band. */
 .pg-cpn-ov.t-olive{background:rgba(18,23,10,.66)}
 .t-olive .pg-cpn-hd{background:linear-gradient(160deg,#3E4A2A 0%,#2F3821 58%,#232a18 100%)}
 .t-olive .pg-cpn-hd .desc{color:#D6C79A}
-/* no numeral here, so the badge holds words: it needs to read as a statement, not as a price tag */
 .t-olive .pg-cpn-price{background:rgba(201,188,138,.14);border-color:#C9BC8A;box-shadow:0 4px 14px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.12)}
 .t-olive .pg-cpn-price b{color:#C9BC8A}
 .t-olive .pg-cpn-codeLab{color:#4B5320}
@@ -245,11 +217,6 @@ html.a11y-stop-motion .pg-track,html.a11y-stop-motion .pg-thumb{animation:none}
 .t-olive .pg-cpn-copied{color:#6d7255}
 @media(prefers-reduced-motion:reduce){.pg-cpn-ov.open,.pg-cpn{animation:none}}
 html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:none}
-/* The carousel keeps all five slides in the DOM and only translates the track, so off-screen copies
-   would animate for ever. Same convention as .slide[aria-hidden="true"] .pg-sim-face. */
-.slide[aria-hidden="true"] :is(.tr-dev,.tr-halo,.tr-beam,.tr-scan,.tr-land,.tr-flow i,.tr-grid i,.tr-wire i),
-.slide[aria-hidden="true"] .tr-beam::before,
-.slide[aria-hidden="true"] .tr-beam::after{animation-play-state:paused}
 .pg-sim-stage{position:relative;width:100%;height:100%;min-height:270px}
 .pg-sim-stage::before{content:"";position:absolute;left:50%;bottom:7%;transform:translateX(-50%);width:70%;height:16%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(28,6,52,.42),transparent 70%);filter:blur(9px);z-index:0}
 .pg-sim{position:absolute;left:var(--x);top:var(--y);width:calc(114px*var(--s,1));aspect-ratio:1.12;transform:translate(-50%,-50%) translate(var(--bx,0px),var(--by,0px)) rotate(calc(var(--r,0deg) + var(--br,0deg))) scale(var(--bs,1));z-index:var(--z,1);transition:transform 1.15s cubic-bezier(.22,.68,.3,1)}
@@ -264,8 +231,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 @media(prefers-reduced-motion:reduce){.pg-sim-face{animation:none}.pg-sim{transition:none}}
 .rail .wa{background:#25D366}
 .rail .tel,.rail .ig,.rail .fb{background:var(--teal)}
-/* ===== chatbot widget ===== */
-.pg-fab-wrap{position:fixed;inset-block-end:calc(22px + var(--cookie-h,0px));inset-inline-end:22px;z-index:120;display:flex;flex-direction:column;align-items:center;gap:.3rem;touch-action:none}
+.pg-fab-wrap{position:fixed;inset-block-end:calc(22px + var(--cookie-h,0px));inset-inline-end:22px;z-index:121;display:flex;flex-direction:column;align-items:center;gap:.3rem;touch-action:none}
 .pg-fab-label{background:#fff;color:var(--teal-d);border:1px solid var(--line);box-shadow:0 3px 10px -4px rgba(0,0,0,.22);border-radius:999px;padding:.14rem .55rem;font-family:var(--font);font-weight:700;font-size:.7rem;line-height:1.35;white-space:nowrap;transition:opacity .2s;user-select:none;cursor:pointer;order:2}
 .pg-fab-wrap.chat-open .pg-fab-label{opacity:0;pointer-events:none}
 .pg-fab-wrap.dragging .pg-fab-label{opacity:0}
@@ -277,7 +243,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .pg-fab.open .ic-chat{display:none}
 .pg-fab.open .ic-close{display:block}
 .pg-fab .badge-dot{position:absolute;inset-block-start:3px;inset-inline-end:3px;width:13px;height:13px;border-radius:50%;background:#25D366;border:2px solid var(--teal)}
-@media(max-width:820px){.pg-fab-wrap{inset-block-end:calc(70px + var(--cookie-h,0px) + env(safe-area-inset-bottom))}.pg-fab{width:54px;height:54px}}
+@media(max-width:820px){.pg-fab-wrap{inset-block-end:calc(70px + var(--cookie-h,0px) + env(safe-area-inset-bottom))}.pg-fab{width:54px;height:54px}.pg-fab-wrap.chat-open{display:none}}
 .pg-panel{position:fixed;inset-block-end:92px;left:22px;right:auto;z-index:120;width:min(360px,calc(100vw - 28px));height:min(560px,calc(100vh - 150px));height:min(560px,calc(100dvh - 150px));background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 30px 70px -22px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden;direction:rtl;opacity:0;transform:translateY(18px) scale(.98);pointer-events:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
 .pg-panel.open{opacity:1;transform:none;pointer-events:auto}
 @media(max-width:820px){.pg-panel{inset-block-end:0;left:0;right:0;width:100%;height:min(78vh,600px);border-radius:16px 16px 0 0}}
@@ -287,15 +253,11 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .pg-head .ht{flex:1;min-width:0}
 .pg-head .ht b{display:block;font-size:1rem;font-weight:800;line-height:1.25}
 .pg-head .ht span{font-size:.76rem;opacity:.92;display:inline-flex;align-items:center;gap:.35rem}
-/* חיווי זמינות במקום "בדרך כלל עונים מיד", שהיא הבטחה שאיש לא עומד מאחוריה בשתיים בלילה.
-   הנקודה נגזרת מ-openNow, כלומר משעון ישראל, ולכן היא אומרת את האמת בכל שעה.
-   ירוק כשהחנות פתוחה ואפשר לדבר עם ברוך או סיגל, אפור כשלא. הצבע לבדו לא נושא את המידע:
-   הטקסט לצידו אומר את אותו דבר במילים, וזו דרישת WCAG 1.4.1. */
 .pg-dot{width:8px;height:8px;border-radius:50%;background:#9aa0a6;flex:none}
 .pg-status.on .pg-dot{background:#34c759;box-shadow:0 0 0 3px rgba(52,199,89,.28)}
 @media(prefers-reduced-motion:no-preference){.pg-status.on .pg-dot{animation:pgpulse 2.4s ease-in-out infinite}}
 .pg-head .ht span::before{content:"";width:7px;height:7px;border-radius:50%;background:#8dffbb;display:inline-block}
-.pg-head .x{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;display:grid;place-items:center;flex:none}
+.pg-head .x{background:rgba(255,255,255,.16);background-clip:content-box;border:none;color:#fff;width:44px;height:44px;padding:7px;box-sizing:border-box;border-radius:15px;cursor:pointer;display:grid;place-items:center;flex:none}
 .pg-head .x:hover{background:rgba(255,255,255,.3)}
 .pg-msgs{flex:1;overflow-y:auto;padding:1rem .85rem;display:flex;flex-direction:column;gap:.5rem;background:#faf9fb}
 .pg-b{max-width:84%;padding:.55rem .78rem;border-radius:14px;font-size:.94rem;line-height:1.55;word-wrap:break-word;white-space:pre-line}
@@ -305,7 +267,7 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .pg-bot .t{color:var(--ink-soft);text-align:end}
 .pg-user .t{color:#eaf4fa;text-align:start}
 .pg-cta{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
-.pg-cta a,.pg-cta button{display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;font-weight:700;padding:.38rem .65rem;border-radius:6px;text-decoration:none;border:none;cursor:pointer;font-family:var(--font)}
+.pg-cta a,.pg-cta button{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;min-height:44px;font-size:.82rem;font-weight:700;padding:.38rem .8rem;border-radius:6px;text-decoration:none;border:none;cursor:pointer;font-family:var(--font)}
 .pg-cta a svg,.pg-cta button svg{flex:none}
 .pg-cta .wa{background:#25D366;color:#0a2e18}
 .pg-cta .tel{background:var(--teal);color:#fff}
@@ -315,45 +277,33 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .pg-typing i:nth-child(2){animation-delay:.2s}
 .pg-typing i:nth-child(3){animation-delay:.4s}
 .pg-chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem .85rem;background:#faf9fb;border-top:1px solid var(--line)}
-/* סרגל הנושאים והצעות השלב היו שני משטחי כפתורים שהתחרו על אותו מקום: 109px ועוד 140px,
-   כלומר 42% מגובה הפאנל במובייל, ושטח השיחה הנראה ירד ל-293px מתוך גלילה של 853.
-   כשיש הצעות שלב פעילות הסרגל מתכווץ לכפתור אחד. הכפתור נשאר, ולא מוסתר לגמרי, כדי
-   שתמיד תהיה דרך גלויה לצאת מהזרימה. */
 .pg-chips>.pg-chip-more{display:none}
-/* במצב מכווץ הריפוד האנכי יורד, אחרת הסרגל הוא 61px: כפתור 44 ועוד 8+8 ריפוד וגבול.
-   גובה כולל של 44px אינו אפשרי כשבתוכו פקד שחייב להיות 44px, ולכן היעד הוא 48. */
 #pgPanel.sug-on .pg-chips{padding-block:.1rem}
 #pgPanel.sug-on .pg-chips>.pg-chip:not(.pg-chip-more){display:none}
 #pgPanel.sug-on .pg-chips>.pg-chip-more{display:inline-flex}
 .pg-sug.col{flex-direction:column;align-items:stretch}
-/* .pg-select ו-.pg-sug-label נמחקו יחד עם רשימת "עוד דגמים". ה-select השביר את הפוקוס
-   בבחירה, קפץ את הפריסה, והסתיר אפשרויות מקורא מסך שכבר קורא את השיחה. ראו buyShowModels. */
 .pg-chip{background:#fff;border:1px solid var(--teal);color:var(--teal-d);border-radius:999px;padding:.34rem .78rem;font-family:var(--font);font-size:.83rem;font-weight:700;cursor:pointer;transition:background .15s,color .15s}
 .pg-chip:hover{background:var(--teal);color:#fff}
-/* הצעה של תור קודם: נשארת קריאה בתמלול, אבל נראית ומתנהגת כלא פעילה */
 .pg-chip:disabled{opacity:.45;border-color:var(--line);color:#6b6b76;cursor:default}
 .pg-chip:disabled:hover{background:#fff;color:#6b6b76}
 .pg-input{display:flex;gap:.5rem;padding:.55rem .65rem;border-top:1px solid var(--line);background:#fff;flex:none}
-.pg-input input{flex:1;padding:.6rem .85rem;border:1px solid var(--line);border-radius:999px;font-family:inherit;font-size:.94rem;direction:rtl;text-align:start;color:var(--ink);background:#fff}
+.pg-input input{flex:1;padding:.6rem .85rem;border:1px solid var(--line);border-radius:999px;font-family:inherit;font-size:16px;direction:rtl;text-align:start;color:var(--ink);background:#fff}
 .pg-input input:focus-visible{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.pg-chip:focus-visible,.pg-cta a:focus-visible,.pg-cta button:focus-visible,.pg-foot a:focus-visible{outline:2px solid var(--teal-d);outline-offset:2px;border-radius:6px}
+.pg-panel:focus{outline:none}
+.pg-send:focus-visible,.pg-fab:focus-visible,.pg-head .x:focus-visible{outline:2px solid #fff;outline-offset:-4px;box-shadow:0 0 0 4px var(--teal-d)}
 .pg-send{background:var(--teal);color:#fff;border:none;border-radius:50%;width:42px;height:42px;flex:none;cursor:pointer;display:grid;place-items:center;transition:background .2s}
 .pg-send:hover{background:var(--teal-d)}
 .pg-send svg{transform:scaleX(-1)}
-.pg-foot{font-size:.67rem;color:var(--ink-soft);text-align:center;padding:.4rem .6rem .5rem;background:#fff;flex:none}
+.pg-foot{font-size:.75rem;line-height:1.45;color:var(--ink-soft);text-align:center;padding:.4rem .6rem .5rem;background:#fff;flex:none}
+.pg-foot a{display:inline-block;padding:.32rem .15rem;color:var(--teal-d);text-decoration:underline}
 .pg-foot a{color:var(--teal-d);text-decoration:underline}
 .a11y-head .x{background:rgba(255,255,255,.16);border:none;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;display:grid;place-items:center}
 .a11y-head .x:hover{background:rgba(255,255,255,.3)}
 .a11y-trigger:focus-visible,.a11y-card:focus-visible,.a11y-reset:focus-visible,.a11y-head .x:focus-visible{outline:3px solid #ff8c00;outline-offset:2px}
 @media(max-width:820px){.pg-phone{width:min(230px,62vw)}}
-@media(max-width:820px){/* chat widget */
-  .pg-chip{min-height:44px}#pgClose{width:44px;height:44px}#pgSend{min-height:44px}}
-/* The accessibility menu's own controls, at every width. A panel that exists for people who need
-   larger targets should not itself offer a 29px close button. */
+@media(max-width:820px){.pg-chip{min-height:44px}#pgClose{width:44px;height:44px}#pgSend{min-height:44px}}
 .a11y-head .x{width:44px;height:44px}
-/* ==== gen-nav:css:end ==== */
-/* ==== יעדי מגע 44px: נמדדו ב-375 ותוקנו ==== */
-/* min-height לבדו יצא 43 במדידה, כי הגבול והשורה אוכלים אותו. box-sizing
-   מכריע את זה, ו-flex ממרכז את התוכן בלי לשנות את המראה. */
 .pg-ad-cta{min-block-size:44px;box-sizing:border-box}
 .pg-chip{box-sizing:border-box;min-block-size:44px;display:inline-flex;align-items:center}
 .pg-send{inline-size:44px;block-size:44px}

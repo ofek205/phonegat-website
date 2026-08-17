@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:8b0c21e4f6e1e01b */
+/* sha1:cf5230e7c7d58cf5 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -1204,7 +1204,20 @@ var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדב�
   var lbl=document.getElementById('pgFabLabel');
   if(lbl)lbl.addEventListener('click',function(){if(!panel.classList.contains('open'))openChat();});
 
+  /* **הפוקוס תמיד נכנס לדיאלוג, גם במגע.** הגידור על pointer:fine נכון לשדה הקלט, כי
+     פוקוס עליו מזמן את המקלדת ובולע חצי מסך לפני שנקראה מילה. אבל role="dialog" בלי
+     העברת פוקוס בכלל פירושו ש-VoiceOver ו-TalkBack לא מכריזים שנפתח דיאלוג, והמשתמש
+     לא יודע שמשהו קרה. נמדד במובייל: אחרי openChat ה-activeElement נשאר pgFab.
+     לכן הפוקוס עובר לפאנל עצמו, שנושא tabindex="-1", והמקלדת לא נפתחת. */
   function focusInput(){try{if(matchMedia('(pointer:fine)').matches)input.focus();}catch(e){}}
+  /* **רק בפתיחה, ולא אחרי כל צ'יפ.** focusInput נקרא גם מלחיצות הצ'יפים, ופוקוס לפאנל
+     בכל הקשה היה גורם לקורא מסך להכריז מחדש "דיאלוג" בכל תור. */
+  function focusDialog(){
+    try{
+      if(matchMedia('(pointer:fine)').matches)return;   /* שם שדה הקלט כבר קיבל פוקוס */
+      panel.focus();
+    }catch(e){}
+  }
   /* מתעדכן בכל פתיחה ולא פעם אחת בטעינה, כי לשונית שנשארת פתוחה חוצה את 18:30. */
   function paintStatus(){
     var box=document.getElementById('pgStatus'),txt=document.getElementById('pgStatusTxt');
@@ -1219,7 +1232,7 @@ var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדב�
     loadFacts();loadContent();
     panel.removeAttribute('inert');panel.classList.add('open');fab.classList.add('open');wrap.classList.add('chat-open');fab.setAttribute('aria-expanded','true');
     if(!opened){opened=true;track('chat_open',{open:openNow()});var gm=greetWord()+'! אני העוזר הדיגיטלי של פון גת. '+(openNow()?'איך אפשר לעזור?':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.');botReply(gm,{sug:['repair','buy','callback']});}
-    setTimeout(function(){focusInput();},300);
+    setTimeout(function(){focusInput();focusDialog();},300);
   }
   function closeChat(){panel.classList.remove('open');fab.classList.remove('open');wrap.classList.remove('chat-open');fab.setAttribute('aria-expanded','false');panel.setAttribute('inert','');}
   fab.addEventListener('click',function(){if(suppressClick){suppressClick=false;return;}panel.classList.contains('open')?closeChat():openChat();});

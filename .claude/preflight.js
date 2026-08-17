@@ -1305,6 +1305,12 @@ if (classFails.length) {
   function rules(src) {
     var out = {}, rx = /([^{}]+)\{([^{}]*)\}/g, m2;
     var css2 = (src.match(/<style\b[^>]*>[\s\S]*?<\/style>/gi) || []).join('\n') || src;
+    /* **הערות יורדות לפני הפירסור, בדיוק כמו ב-gen-bot.js.** שני הצדדים חייבים להיקרא
+     * באותה צורה, אחרת השער משווה תפוחים לתפוזים. זה קרה: אחרי ש-gen-bot התחיל להסיר
+     * הערות, הבדיקה עדיין קראה את index.html איתן, והכריזה על דריפט ב-.pg-ad-cta
+     * ששני העותקים שלו זהים תו בתו. הסיבה היא שהפירסור כאן הוא רגקס ולא מנתח CSS,
+     * ולכן טקסט בתוך הערה נספר כסלקטור. */
+    css2 = css2.replace(/\/\*[\s\S]*?\*\//g, ' ');
     css2.replace(/@media[^{]+\{(?:[^{}]|\{[^{}]*\})*\}/g, ' ').replace(rx, function (r, sel, body) {
       sel = sel.trim();
       if (/(^|[\s,>+~])\.pg-/.test(sel)) out[sel] = body.replace(/\s+/g, '');
@@ -1526,6 +1532,55 @@ if (classFails.length) {
     bad('הבוט נוקב במחיר ב-' + hits.length + ' מחרוזות: ' + hits.join(' · ') +
         '. מחיר לגיטימי בעמוד ולא בשיחה, כי אין בה הקשר ואין תאריך');
   } else { ok('אין מחיר באף אחת מ-' + n + ' מחרוזות הבוט'); }
+})();
+
+/* ---------- 37. נגישות הצ'אט: יעדי מגע, טבעות פוקוס, וגופן שלא מזמין זום ----------
+ * חמישה ממצאים מסקירת ה-QA, שכולם קדמו לבוט אבל התפשטו איתו: הוא עבר מעמוד אחד ל-76.
+ * כולם נמדדו בדפדפן, וכולם כאן כדי שלא יחזרו בעריכה עתידית של הגיליון.
+ *
+ * למה זה בדיקת CSS ולא בדיקת דפדפן: אין כאן דפדפן ללא ראש, והרתמה רצה מול DOM מדומה
+ * בלי גיליונות סגנון בכלל. הצהרה בגיליון היא מה שאפשר לאכוף, והמדידה בדפדפן היא מה
+ * שקבע את הערכים. */
+(function () {
+  var css;
+  try { css = read('prototype/chat.css'); } catch (e) { return; }
+  var idx; try { idx = read('prototype/index.html'); } catch (e) { return; }
+  var problems = [];
+
+  function ruleOf(sel) {
+    var esc = sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var m = css.match(new RegExp('(^|\\})\\s*' + esc + '\\s*\\{([^}]*)\\}'));
+    return m ? m[2] : null;
+  }
+  /* יעד מגע 44px. הפקד החשוב ביותר בבועה, כפתור ההמרה, נמדד 34px. */
+  var cta = ruleOf('.pg-cta a,.pg-cta button');
+  if (!cta || !/min-height:\s*44px/.test(cta)) problems.push('לכפתורי ה-CTA בבועות אין min-height:44px');
+  var x = ruleOf('.pg-head .x');
+  if (!x || !/width:\s*44px/.test(x) || !/box-sizing:\s*border-box/.test(x)) {
+    problems.push('לכפתור הסגירה בהדר אין יעד 44px ב-border-box');
+  }
+  /* מתחת ל-16px, Safari באייפון מגדיל את כל העמוד בנגיעה בשדה */
+  var inp = ruleOf('.pg-input input');
+  if (!inp || !/font-size:\s*16px/.test(inp)) problems.push('לשדה הקלט אין font-size:16px, ואייפון יזום את העמוד');
+  /* טבעת פוקוס לכל פקד, ולא רק לשדה הקלט */
+  ['.pg-chip', '.pg-cta button', '.pg-send', '.pg-fab', '.pg-head .x', '.pg-foot a'].forEach(function (s) {
+    if (css.indexOf(s + ':focus-visible') < 0) problems.push('אין :focus-visible ל-' + s);
+  });
+  /* ה-FAB חייב להיות מעל הפאנל, אחרת ה-X שלו מבטיח סגירה וההקשה נוחתת על שליחה */
+  var fw = ruleOf('.pg-fab-wrap'), pn = ruleOf('.pg-panel');
+  var zf = fw && (fw.match(/z-index:\s*(\d+)/) || [])[1];
+  var zp = pn && (pn.match(/z-index:\s*(\d+)/) || [])[1];
+  if (!zf || !zp || Number(zf) <= Number(zp)) {
+    problems.push('z-index של ה-FAB (' + zf + ') אינו מעל זה של הפאנל (' + zp + ')');
+  }
+  /* והפאנל חייב להיות בר-פוקוס, אחרת קורא מסך במגע לא מכריז שנפתח דיאלוג */
+  if (!/id="pgPanel"[^>]*tabindex="-1"/.test(idx)) problems.push('ל-#pgPanel אין tabindex="-1", והפוקוס לא נכנס לדיאלוג במגע');
+
+  if (problems.length) {
+    bad('נגישות הצ\'אט: ' + problems.join(' · '));
+  } else {
+    ok('נגישות הצ\'אט: יעדי מגע 44px, טבעות פוקוס לכל פקד, גופן קלט 16px, וה-FAB מעל הפאנל');
+  }
 })();
 
 /* ---------- דוח ---------- */
