@@ -110,7 +110,11 @@ function updateYear(spec) { return num(spec.security_updates, /(\d{4})/); }
  * iPhone 17 Pro Max", והוא הכבד מהשניים. כלומר הכלי הכריז מנצח, ובכיוון ההפוך. כל האזור בנוי
  * על זה שאין הכרזת מנצח, ולכן מה שמוחזר הוא מי גדול יותר במספר, והניסוח אומר בדיוק את זה. */
 var DELTAS = [
+  /* השדה היחיד שבו הנמוך הוא היתרון, ולכן הוא היחיד שנושא low ו-lowMore. עד 17.8.2026
+     הקוטביות הזאת הייתה כתובה אצל הצורך ולא כאן, והתוצאה הייתה שהכלי נקב בדגם הקל
+     והעמוד הכתוב בדגם הכבד, על אותם 23 גרם בדיוק. */
   { key: 'weight', label: 'משקל', get: grams, unit: 'גרם', min: 12, more: 'כבד יותר',
+    low: true, lowMore: 'קל יותר',
     phrase: function (a, b) { return 'הפרש של ' + Math.abs(a - b).toFixed(0) + ' גרם'; } },
   { key: 'screen_size', label: 'גודל מסך', get: inches, unit: 'אינץ׳', min: 0.3, more: 'מסך גדול יותר',
     phrase: function (a, b) { return a.toFixed(2).replace(/\.?0+$/, '') + ' מול ' + b.toFixed(2).replace(/\.?0+$/, '') + ' אינץ׳'; } },
@@ -143,7 +147,12 @@ function deltas(specA, specB) {
       strength: gap / d.min,
       phrase: d.phrase(a, b),
       more: d.more,                       /* הניסוח הנייטרלי: "כבד יותר", לא "טוב יותר" */
-      higher: a > b ? 'a' : 'b'           /* מי גדול יותר במספר. לא מי מנצח. */
+      higher: a > b ? 'a' : 'b',          /* מי גדול יותר במספר. לא מי מנצח. */
+      /* הצד שהיתרון אצלו, והניסוח מנקודת המבט שלו. בכל השדות זה הגבוה, ובמשקל הנמוך.
+         שני אלה קיימים כדי ששני הצורכים, הכלי ועמוד ההשוואה הכתוב, יגידו את אותו דבר
+         על אותו נתון: הקוטביות היא תכונה של השדה ולא של המציג. */
+      lead: d.low ? (a < b ? 'a' : 'b') : (a > b ? 'a' : 'b'),
+      leadMore: d.low ? d.lowMore : d.more
     });
   });
   return out.sort(function (x, y) { return y.strength - x.strength; });

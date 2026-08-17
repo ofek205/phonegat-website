@@ -2526,13 +2526,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     panel.innerHTML='<b>מה זה אומר</b> '+esc(MEANS[key]);
     panel.hidden=false;
     var r=(btn.querySelector(".fxi")||btn).getBoundingClientRect();
-    var top=r.bottom+window.scrollY+8;
     /* anchored to the marker, then pulled back inside the viewport if it would hang off the edge */
     panel.style.insetInlineStart="auto"; panel.style.insetInlineEnd="auto";
-    panel.style.left="0px"; panel.style.top=top+"px";
+    panel.style.left="0px"; panel.style.top="0px";
     var w=panel.offsetWidth;
-    var left=Math.min(Math.max(8,r.right-w),document.documentElement.clientWidth-w-8);
-    panel.style.left=left+"px";
+    /* הקואורדינטות נמדדות מול offsetParent, ולא מול המסמך.
+     *
+     * שלושת מצבי הניגודיות בתפריט הנגישות שמים filter על main, ו-filter הופך אלמנט
+     * למסגרת ההתייחסות של צאצאים ממוקמים. הפאנל הוא position:absolute בתוך main, ולכן
+     * top שנמדד מהמסמך הוסיף לו את המרחק של main מראש העמוד: 127 פיקסל במקום 8, שלוש
+     * שורות טבלה מתחת לשדה שהוא מסביר, והחץ הצביע על שורה אחרת. מרחק קליק אחד מכפתור
+     * הנגישות.
+     *
+     * ob נמדד באותן קואורדינטות מסך כמו r, ולכן ההפרש ביניהם הוא ההיסט בתוך המסגרת.
+     * הנוסחה נכונה גם כשהמסגרת היא body וגם כשהיא main, ואינה נוגעת ב-scrollY בכלל:
+     * כשהמסגרת היא body, ob.top הוא מינוס הגלילה, וההפרש חוזר בדיוק לערך הקודם. */
+    var op=panel.offsetParent||document.documentElement;
+    var ob=op.getBoundingClientRect();
+    var vw=document.documentElement.clientWidth;
+    var left=Math.min(Math.max(8,r.right-w),vw-w-8);
+    panel.style.left=(left-ob.left)+"px";
+    panel.style.top=(r.bottom-ob.top+8)+"px";
     var arrow=Math.min(Math.max(10,r.left+r.width/2-left-5),w-20);
     panel.style.setProperty("--ax",arrow+"px");
     if(infoFor&&infoFor!==btn&&infoFor.setAttribute) infoFor.setAttribute("aria-expanded","false");
@@ -2876,6 +2890,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(h) h.addEventListener("transitionend", function(e){ if(e.propertyName==="transform") stick(); }); })();
   /* גם בגלילה: ה-top של ההדר נקבע לפי הבאנר שמעליו, והבאנר יכול להשתנות תוך כדי */
   window.addEventListener("scroll", stickSoon, {passive:true});
+  /* גם כשגובה של אחת השכבות משתנה בלי גלילה ובלי שינוי גודל חלון.
+     תפריט הנגישות מגדיל טקסט על ידי מחלקה על html, וזה אינו יורה אף אחד משני האירועים
+     שלמעלה: פס המצב גדל ל-107 ב-130 אחוז ול-163 ב-150 אחוז, וראש הטבלה נשאר נעוץ ב-191,
+     כלומר 81 פיקסל משמות הדגמים מוסתרים מאחורי הפס. זו הבקרה שהתקן מחייב, והיא זו ששברה
+     את הפריסה. אותו מנגנון מכסה גם את החלפת הגופן: אותו טקסט הוא 56 פיקסל בגופן האתר
+     ו-82 בגופן חלופי, ובטעינה קרה render יכול להקדים את הגופן. */
+  var hdr=document.querySelector("header.site");
+  /* המחלקות של תפריט הנגישות. MutationObserver ולא ResizeObserver, כי RO נמסר במסגרת שלב
+     הרינדור ולכן הוא אינו נורה כשהדף אינו מרנדר, ואי אפשר לאמת אותו. MO הוא microtask.
+     stick נקרא ישירות ולא דרך stickSoon, כדי שהמדידה תקרה מיד ולא בפריים הבא. */
+  try{ if(window.MutationObserver){
+    new MutationObserver(function(){ stick(); })
+      .observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
+  } }catch(e){}
+  /* הגופן מגיע אחרי הצביעה הראשונה ומשנה את גובה הפס. אותו קישור שקרוסלת המבצעים
+     כבר מחזיקה, ומאותה סיבה. */
+  try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(stick).catch(function(){}); }catch(e){}
+  /* וכל שינוי גובה אחר: זום דפדפן, גלישת טקסט, תוכן שנכנס לפס. */
+  try{ if(window.ResizeObserver){
+    var ro=new ResizeObserver(stickSoon);
+    if(hdr) ro.observe(hdr);
+    if(bar) ro.observe(bar);
+  } }catch(e){}
   stick();
 
   /* אחרי הבחירה השנייה הטבלה יושבת מתחת לרשימה של 24 דגמים, כלומר מחוץ למסך, והמשתמש
