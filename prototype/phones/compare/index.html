@@ -665,6 +665,8 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dhow details{margin-bottom:.6rem}
 .dhow summary{font-size:1.05rem}
 .dhow details p+p{padding-block-start:0}
+.dhpic{display:block;inline-size:2.75rem;block-size:auto;aspect-ratio:3/4;object-fit:contain;background:#fff;border:1px solid var(--line);margin-block-end:.45rem}
+@media(max-width:900px){.dhpic{inline-size:2.25rem;margin-block-end:.35rem}}
 .dsum{margin-block-start:2.2rem;border-block-start:1px solid var(--line);padding-block-start:1.7rem}
 .dsum h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.32rem,2.5vw,1.7rem)}
 .dwho{display:grid;gap:2.4rem;margin-block-start:1.7rem;grid-template-columns:1fr 1fr}
@@ -2588,6 +2590,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     out.sort(function(a,b){return b.strength-a.strength;});
     return out.filter(function(x){ if(seen[x.group]) return false; seen[x.group]=1; return true; });
   }
+  /* התמונה נבנית מה-slug ומדגל img, ולא מנתיב שנשלח: gen-devices שולח דגל בלבד, וההערה
+     שם אומרת במפורש שהכלי בונה את הכתובת בעצמו. במכשיר ייחוס הדגל נעדר, כי אין לו תמונה
+     ואיננו מוכרים אותו.
+     alt ריק בכוונה: שם הדגם יושב מיד לידה בשני המקומות, וקורא מסך שיקרא את שניהם יקרא את
+     אותו דבר פעמיים. אותו שיקול שכבר חל על לוגו המותג בראש העמודה. */
+  function pic(d,cls){
+    if(!d||!d.img) return "";
+    return '<img class="'+cls+'" src="/phones/img/'+d.slug+'-288.webp"'+
+      ' width="288" height="384" alt="" loading="lazy" decoding="async">';
+  }
   function nameOf(d){ return esc(d.name_he||d.name); }
   function gapsHtml(gaps){
     if(!gaps.length) return '<div class="dsum"><h3>ההבדל הגדול</h3>'+
@@ -2667,7 +2679,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var sl=sel[i], d=sl?dev(sl):null;
       var open='<button type="button" class="dopen" data-slot="'+i+'" aria-expanded="false" aria-controls="dmenu">';
       html+=d
-        ? '<li class="dslot sc'+i+'">'+open+'<span class="dtxt"><span class="lbl">מכשיר '+SLOT[i]+'</span>'+
+        ? '<li class="dslot sc'+i+'">'+open+pic(d,"dpic")+'<span class="dtxt"><span class="lbl">מכשיר '+SLOT[i]+'</span>'+
           '<span class="nm">'+ltr(d.name)+'</span></span><span class="swap">החלפה</span></button>'+
           '<button type="button" class="drop" data-drop="'+esc(sl)+'" aria-label="הסרת '+esc(d.name_he||d.name)+' מההשוואה">&times;</button></li>'
         : '<li class="dslot empty">'+open+'<span class="dplus" aria-hidden="true">+</span>'+
@@ -2769,7 +2781,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){
       var b=LOGO[d.brand];
       var mark=b?'<img class="blogo blogo-'+b[0]+'" src="/logos/'+b[0]+'.png" alt="" width="'+b[1]+'" height="'+b[2]+'" loading="lazy" decoding="async">':"";
-      return '<th scope="col" class="sc'+i+'">'+mark+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
+      return '<th scope="col" class="sc'+i+'">'+pic(d,"dhpic")+mark+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
 
     var cap=focus
       ? "מציג את "+esc(focus)+" בלבד, "+shown.length+" שדות מתוך "+diff.length+" שבהם יש הבדל."
