@@ -1364,7 +1364,9 @@ if (classFails.length) {
     try { s = read('prototype/' + rel); } catch (e) { missing.push(url); return; }
     var mm = s.match(/<main[\s\S]*?<\/main>/i);
     if (!mm) { missing.push(url); return; }
-    var h = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
+    /* אותה צורה קנונית שב-gen-bot-content.js. סוף שורה אינו שינוי תוכן, ובלי הנרמול
+       העמודים שעל הדיסק ב-CRLF דיווחו כמיושנים מול אותו טקסט בדיוק. */
+    var h = crypto.createHash('sha1').update(mm[0].replace(/\r\n/g, '\n')).digest('hex').slice(0, 16);
     if (h !== c.src[url]) stale.push(url);
   });
   /* **וגם הכיוון ההפוך.** ההשוואה למעלה רצה על העמודים שנמצאים באינדקס, ולכן עמוד שנפל
@@ -1821,6 +1823,43 @@ if (classFails.length) {
   } else if (negChecked) {
     ok(negChecked + ' שדות ששוללים תכונה נגזרים לאפס, ולא לערך חיובי');
   }
+})();
+
+/* ---------- 40. כל עמוד קיים בכתובת אחת בלבד ----------
+ * **נמדד ב-GSC ב-17.8.2026.** דוח האינדוקס הראה 20 עמודים "נסרק אך לא נכלל באינדקס",
+ * וכל עשרים הכתובות היו **ללא לוכסן בסוף**. הסיבה: Vercel הגיש כל עמוד גם ב-/path וגם
+ * ב-/path/, שתיהן 200 ובלי הפניה ביניהן. גוגל סרק את שתיהן, כיבד את הקנוניקל שמצביע על
+ * הגרסה עם הלוכסן, ולכן לא כלל את השנייה, אבל היא נשארה בדוח ובזבזה תקציב סריקה.
+ * נראה כמו בעיית תוכן והיה הגדרת שרת.
+ *
+ * `trailingSlash: true` מחזיר 308 מהצורה הקצרה לארוכה. הבדיקה כאן על ההגדרה **וגם** על
+ * הקישורים: קישור פנימי בלי לוכסן היה שולח כל קליק דרך הפניה מיותרת. */
+(function () {
+  var vj;
+  try { vj = JSON.parse(read('prototype/vercel.json')); }
+  catch (e) { bad('vercel.json שבור או חסר: ' + e.message); return; }
+  var problems = [];
+  if (vj.trailingSlash !== true) {
+    problems.push('אין "trailingSlash": true, ולכן כל עמוד יוגש בשתי כתובות');
+  }
+  var noSlash = {}, total = 0;
+  pageFiles.forEach(function (rel) {
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { return; }
+    (s.match(/href="(\/[^"#?]*)"/g) || []).forEach(function (h) {
+      var u = h.slice(6, -1);
+      total++;
+      if (u === '/' || /\.[a-z0-9]{2,5}$/i.test(u)) return;
+      if (u.slice(-1) !== '/') noSlash[u] = (noSlash[u] || 0) + 1;
+    });
+  });
+  var k = Object.keys(noSlash);
+  if (k.length) {
+    problems.push(k.length + ' יעדים פנימיים בלי לוכסן, שכל קליק אליהם עובר דרך הפניה: ' +
+      k.slice(0, 4).join(', ') + (k.length > 4 ? ' ועוד' : ''));
+  }
+  if (problems.length) bad('כתובות: ' + problems.join(' · '));
+  else ok('כל עמוד בכתובת אחת: trailingSlash מוגדר, ו-' + total + ' קישורים פנימיים נגמרים בלוכסן');
 })();
 
 /* ---------- דוח ---------- */
