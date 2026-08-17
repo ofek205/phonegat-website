@@ -210,7 +210,24 @@ var CSS = [
   '@media print{html[class*="a11y-"] :is(header.site,nav.mbar,main,footer.site){filter:none !important}html[class*="a11y-text-"]{font-size:16px !important}}',
   '.q legend .req{font-family:var(--font);font-size:.98rem;font-weight:400;color:var(--ink-soft);margin-inline-start:.4rem}',
   '.qcount{position:sticky;inset-block-start:66px;z-index:60;margin:1.6rem 0 0;padding-block:.85rem;border-block:1px solid var(--line);background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.32rem);color:var(--ink-strong)}',
-  '@media(max-width:980px){.qcount,.dstate{inset-block-start:0}}',   /* ההדר אינו דביק כאן, ולכן היסט של 66px היה משאיר רווח ריק */
+  /* ההיסט מגיע ממדידה בזמן ריצה, ולא ממספר קבוע.
+   *
+   * ההערה שהייתה כאן אמרה "ההדר אינו דביק כאן, ולכן היסט של 66px היה משאיר רווח ריק",
+   * וההנחה הזאת שגויה: header.site הוא position:sticky עם z-index 100, והמונה הוא 60.
+   * לכן ההיסט 0 בטלפון לא פתר רווח אלא יצר היעלמות, המונה נדבק מאחורי ההדר ואי אפשר
+   * לראות אותו בכלל. ובדסקטופ, ההיסט הקבוע 66 נשאר נכון רק כל עוד ההדר פתוח: הוא נסגר
+   * בגלילה למטה ב-translateY(-100%) ונשאר sticky, ואז נפתחת רצועה שקופה של 66 פיקסל
+   * שדרכה נראות השורות גולשות. אותו באג בדיוק נמצא ותוקן בכלי ההשוואה ב-17.8.2026,
+   * אחרי שאופק צילם אותו בטלפון.
+   *
+   * ‎.dstate הוסר מהכלל: הוא אינו קיים בעמוד הזה כלל, והוא היה שאילה מעמוד הכלי.
+   *
+   * הערך נכתב ל---pg-stick-1 על ידי הסקריפט שלמטה. אותו שם משתנה שהכלי משתמש בו,
+   * בכוונה: שני העמודים מודדים את אותו דבר. **המדידה עצמה כתובה פעמיים**, כאן ובמחולל
+   * של הכלי, וזה חוב מוכר: המקום הנכון שלה הוא סקריפט ההדר המשותף ב-prototype/index.html,
+   * שהוא גם זה שמוסיף ומסיר את hd-away. לא העברתי לשם כי זה קובץ שכל הסשנים נוגעים בו
+   * במקביל, וזו החלטה שצריך לקבל בנפרד ולא בתוך תיקון באג. */
+  '.qcount{inset-block-start:var(--pg-stick-1,66px)}',
   '.dhint{margin-block-start:1.5rem;border-block-start:1px solid var(--line);padding-block-start:1.3rem;color:var(--ink-soft);line-height:1.8}',
   '.q[data-bad="1"] legend{color:#b03a2b}',
   '.qgo{margin-block-start:2.2rem;display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}',
@@ -357,6 +374,30 @@ QUESTIONS.map(function (q) {
 '  "use strict";\n' +
 '  var T=' + json(TRAITS) + ';\n' +
 '  var form=document.getElementById("qform"), res=document.getElementById("qres"), err=document.getElementById("qerr");\n' +
+'  /* ההיסט של המונה הדביק. נמדד ולא קבוע, כי הקצה התחתון של ההדר משתנה: הוא 67 כשההדר\n' +
+'     פתוח, אפס כשהוא נסגר בגלילה, וגובה הבאנר הצהוב בסביבת הבדיקות. getBoundingClientRect\n' +
+'     נכון בשלושת המצבים, בשונה מ-top+offsetHeight שאינם משתנים כלל כשההדר יורד מהמסך. */\n' +
+'  function pgStick(){\n' +
+'    try{\n' +
+'      var h=document.querySelector("header.site"), base=0;\n' +
+'      if(h){ var cs=getComputedStyle(h);\n' +
+'        if(cs.position==="sticky"||cs.position==="fixed") base=Math.max(0, h.getBoundingClientRect().bottom); }\n' +
+'      document.documentElement.style.setProperty("--pg-stick-1", Math.round(base)+"px");\n' +
+'    }catch(e){}\n' +
+'  }\n' +
+'  var pgQueued=false;\n' +
+'  function pgStickSoon(){ if(pgQueued) return; pgQueued=true;\n' +
+'    /* גם rAF וגם setTimeout, ומי שנורה ראשון מנקה את הדגל. rAF לבדו נועל: בלשונית ברקע\n' +
+'       הוא אינו נורה, הדגל נשאר דלוק, וכל מדידה נוספת מדולגת לנצח. */\n' +
+'    var run=function(){ pgQueued=false; pgStick(); };\n' +
+'    if(window.requestAnimationFrame) requestAnimationFrame(run);\n' +
+'    setTimeout(run, 100); }\n' +
+'  window.addEventListener("resize", pgStickSoon);\n' +
+'  window.addEventListener("scroll", pgStickSoon, {passive:true});\n' +
+'  (function(){ var h=document.querySelector("header.site");\n' +
+'    /* המעבר הוא 280ms והגלילה יכולה להיפסק באמצעו, ואז הערך האחרון הוא של אמצע האנימציה */\n' +
+'    if(h) h.addEventListener("transitionend", function(e){ if(e.propertyName==="transform") pgStick(); }); })();\n' +
+'  pgStick();\n' +
 '  var counter=document.getElementById("qcount");\n' +
 '  if(!form||!res||!counter) return;\n' +
 '  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}\n' +

@@ -2850,7 +2850,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
   var stickQueued=false;
   function stickSoon(){ if(stickQueued) return; stickQueued=true;
-    (window.requestAnimationFrame||setTimeout)(function(){ stickQueued=false; stick(); }); }
+    /* גם rAF וגם setTimeout, ומי שנורה ראשון מנקה את הדגל. rAF לבדו נועל: בלשונית ברקע
+       הוא אינו נורה, הדגל נשאר דלוק, וכל מדידה נוספת מדולגת לנצח. הכתיבה אידמפוטנטית
+       ולכן אין נזק אם שניהם נורים. */
+    var run=function(){ stickQueued=false; stick(); };
+    if(window.requestAnimationFrame) requestAnimationFrame(run);
+    setTimeout(run, 100); }
   window.addEventListener("resize", stickSoon);
   /* המעבר של ההדר הוא 280ms, והגלילה יכולה להיפסק באמצעו. בלי זה הערך האחרון שנמדד הוא
      של אמצע האנימציה, והרצועה נשארת פתוחה חלקית עד הגלילה הבאה. */
