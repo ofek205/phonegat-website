@@ -2829,7 +2829,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var root=document.documentElement, h=document.querySelector("header.site"), base=0;
       if(h){ var cs=getComputedStyle(h);
         /* הדר שאינו דביק אינו תופס מקום בראש המסך, ואז הבסיס הוא אפס ולא הגובה שלו */
-        if(cs.position==="sticky"||cs.position==="fixed") base=(parseFloat(cs.top)||0)+h.offsetHeight; }
+        if(cs.position==="sticky"||cs.position==="fixed"){
+          /* הקצה התחתון בקואורדינטות המסך, ולא top+offsetHeight.
+           *
+           * ההדר נסגר בגלילה למטה עם translateY(-100%) ונשאר sticky, ולכן top ו-offsetHeight
+           * שלו אינם משתנים כלל כשהוא יורד מהמסך. הנוסחה הקודמת המשיכה לשמור לו 67 פיקסלים,
+           * ומכיוון שפס המצב נדבק מתחתם ולא מתחת להדר, נפתחה רצועה שקופה של 67 פיקסל שדרכה
+           * נראו שורות הטבלה גולשות מעל הפס. אופק צילם את זה בטלפון ב-17.8.2026.
+           *
+           * getBoundingClientRect().bottom נכון בכל שלושת המצבים: פתוח הוא top+גובה, סגור
+           * הוא הקצה של מה שמעליו (בסביבת הבדיקות הבאנר הצהוב, בפרודקשן אפס), ובאמצע המעבר
+           * הוא הערך הרגעי. max עם אפס, כי הדר שנגלל מעל ראש המסך מחזיר מספר שלילי. */
+          base=Math.max(0, h.getBoundingClientRect().bottom);
+        } }
       var b=document.getElementById("dstatebar");
       var bh=(b&&!b.hidden)?b.offsetHeight:0;
       root.style.setProperty("--pg-stick-1", Math.round(base)+"px");
@@ -2840,6 +2852,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function stickSoon(){ if(stickQueued) return; stickQueued=true;
     (window.requestAnimationFrame||setTimeout)(function(){ stickQueued=false; stick(); }); }
   window.addEventListener("resize", stickSoon);
+  /* המעבר של ההדר הוא 280ms, והגלילה יכולה להיפסק באמצעו. בלי זה הערך האחרון שנמדד הוא
+     של אמצע האנימציה, והרצועה נשארת פתוחה חלקית עד הגלילה הבאה. */
+  (function(){ var h=document.querySelector("header.site");
+    if(h) h.addEventListener("transitionend", function(e){ if(e.propertyName==="transform") stick(); }); })();
   /* גם בגלילה: ה-top של ההדר נקבע לפי הבאנר שמעליו, והבאנר יכול להשתנות תוך כדי */
   window.addEventListener("scroll", stickSoon, {passive:true});
   stick();
