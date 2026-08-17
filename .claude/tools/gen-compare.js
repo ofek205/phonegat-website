@@ -723,8 +723,12 @@ function toolMain(openTag, index, order, pairCount) {
   /* כולל מכשירי ייחוס: דגמים שאיננו מוכרים, שקיימים כדי שאפשר יהיה להשוות אליהם. הם מסומנים
      בבורר ונושאים גילוי נאות, כי לקוח שרואה דגם ברשימה שלנו מניח שאנחנו מוכרים אותו, וזו בדיוק
      הטעות שקרתה פעם ב-galaxy-a56 וב-xiaomi-15. */
+  /* מקובץ לפי מותג, ובתוך כל מותג מהחדש לישן. עד 17.8.2026 הסדר בתוך המותג היה סדר
+     ההוספה ל-devices.json, כלומר שרירותי: אופק ראה "iPhone 14, 17e, 16, 17 Pro Max"
+     בשורה אחת. הסדר בין המותגים נקבע ב-BRAND_LOGO ולא כאן. */
   var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(function (a, b) {
-    return a.brand === b.brand ? 0 : (a.brand < b.brand ? -1 : 1);
+    if (a.brand !== b.brand) return a.brand < b.brand ? -1 : 1;
+    return T.newestFirst(a, b);
   });
   var sellable = live.filter(function (d) { return d.status !== 'reference'; });
   /* מקובצים לפי מותג, כמו בכלי המקורי. הסדר נקבע ב-BRAND_LOGO ולא לפי א-ב, כדי שאפל תהיה

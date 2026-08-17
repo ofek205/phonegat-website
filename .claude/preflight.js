@@ -1862,6 +1862,70 @@ if (classFails.length) {
   else ok('כל עמוד בכתובת אחת: trailingSlash מוגדר, ו-' + total + ' קישורים פנימיים נגמרים בלוכסן');
 })();
 
+/* ---------- בדיקה 77: הרשימות ממוינות מהחדש לישן, ולכל דגם יש שדה launch ----------
+ *
+ * שתי הרשימות בעמוד הכלי ממוינות לפי תאריך ההכרזה. הבורר נבנה ב-gen-compare, ובורר העץ
+ * נבנה בצד הלקוח מ-devices-public.json לפי הסדר שבקובץ.
+ *
+ * למה זה צריך שער: הסדר הוא היחיד מהשניים שאין לו סימן חיצוני כשהוא נשבר. שדה launch מסונן
+ * מ-devices-public.json על ידי רשימת ההיתר של השדות הציבוריים, ולכן הסדר בקובץ הזה הוא
+ * הנתון עצמו ולא נגזרת שאפשר לחשב מחדש ממנו. דגם שיתווסף ל-devices.json בלי launch ייפול
+ * לסוף הרשימה, דגם שיתווסף בלי הרצה מחדש של gen-devices ישב במקום שרירותי, ובשני המקרים
+ * העמוד ייראה תקין לגמרי.
+ *
+ * תאריך עתידי נכשל ולא מזהיר: הוא תמיד טעות הקלדה, והוא מקפיא דגם בראש הרשימה לתמיד. אותו
+ * נימוק כמו בבדיקה 27 על חותמת הטריות.
+ */
+(function () {
+  var db, pub, T;
+  try { db = JSON.parse(read('prototype/devices.json')); }
+  catch (e) { bad('devices.json שבור: ' + e.message); return; }
+  try { pub = JSON.parse(read('prototype/devices-public.json')); }
+  catch (e) { bad('devices-public.json שבור: ' + e.message); return; }
+  try { T = require(require('path').join(__dirname, 'tools', 'lib', 'traits.js')); }
+  catch (e) { bad('traits.js לא נטען: ' + e.message); return; }
+  if (typeof T.newestFirst !== 'function') { bad('traits.js אינו מייצא newestFirst'); return; }
+
+  var problems = [];
+  var now = new Date(), cap = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+
+  var noField = [], badFmt = [], future = [], nulls = [];
+  db.devices.forEach(function (d) {
+    if (!('launch' in d)) { noField.push(d.slug); return; }
+    if (d.launch === null) {
+      nulls.push(d.slug);
+      /* null מותר, אבל חייב לבוא עם הסבר, אחרת מישהו יחפש שוב את מה שכבר חיפשנו */
+      if (!d.launch_note) problems.push(d.slug + ' הוא null בלי launch_note שמסביר למה');
+      return;
+    }
+    if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(String(d.launch))) { badFmt.push(d.slug + '=' + d.launch); return; }
+    if (String(d.launch) > cap) future.push(d.slug + '=' + d.launch);
+  });
+  if (noField.length) problems.push(noField.length + ' דגמים בלי שדה launch כלל: ' + noField.slice(0, 4).join(', '));
+  if (badFmt.length) problems.push('פורמט שאינו YYYY-MM: ' + badFmt.slice(0, 4).join(', '));
+  if (future.length) problems.push('תאריך עתידי, שמקפיא את הדגם בראש הרשימה: ' + future.join(', '));
+
+  /* הסדר בקובץ הציבורי חייב להיות בדיוק מה ש-newestFirst נותן על devices.json */
+  var want = db.devices.filter(function (d) { return d.status !== 'draft'; })
+    .sort(T.newestFirst).map(function (d) { return d.slug; });
+  var got = (pub.devices || pub).map(function (d) { return d.slug; });
+  if (want.length !== got.length) {
+    problems.push('devices-public.json מכיל ' + got.length + ' דגמים ו-devices.json ' + want.length);
+  } else {
+    for (var i = 0; i < want.length; i++) {
+      if (want[i] !== got[i]) {
+        problems.push('devices-public.json אינו ממוין מהחדש לישן: במקום ' + (i + 1) +
+          ' יש ' + got[i] + ' ואמור להיות ' + want[i] + '. הרץ gen-devices.js');
+        break;
+      }
+    }
+  }
+
+  if (problems.length) bad('מיון הדגמים: ' + problems.join(' · '));
+  else ok('הרשימות ממוינות מהחדש לישן: ' + (db.devices.length - nulls.length) + ' דגמים מתוארכים, ' +
+    nulls.length + ' בלי תאריך ועם הסבר, וסדר devices-public.json תואם');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

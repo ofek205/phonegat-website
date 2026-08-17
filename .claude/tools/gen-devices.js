@@ -16,6 +16,7 @@
  */
 'use strict';
 var fs = require('fs'), path = require('path');
+var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var ROOT = path.resolve(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 var SOURCE = 'guides/official-vs-parallel-import/index.html';  /* המסגרת + ה-CSS של הטבלה */
@@ -589,7 +590,9 @@ if (swGrew) {
        ממילא, והשאלה היחידה היא אם הוא עושה את זה אצלנו או באתר אחר.
        own:false נוסע איתו, כי בלעדיו הכלי לא יכול לדעת שהוא חייב גילוי נאות ושאסור לו
        לקשר לעמוד מכשיר שלא קיים. זה השדה החמישי, והוא לא נתון עסקי אלא סימון תצוגה. */
-    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
+    /* ממוין מהחדש לישן, כי בורר העץ בעמוד הכלי נבנה מהקובץ הזה ישירות. אותו comparator
+       שהבורר בעמוד משתמש בו, מ-traits.js, כדי ששתי הרשימות באותו עמוד יציגו אותו סדר. */
+    devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(T.newestFirst).map(function (d) {
       var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
       if (d.status === 'reference') o.own = false;
       /* img הוא דגל ולא נתיב, והוא השדה השישי. הכלי בונה את הכתובת מה-slug בעצמו, ולכן

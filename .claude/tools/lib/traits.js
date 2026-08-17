@@ -197,10 +197,61 @@ function ratioField(fieldKey, specA, specB) {
   return ratioPair(a.v, b.v);
 }
 
+/* ---------------------------------------------------------------- סדר התצוגה
+ *
+ * מהחדש לישן, לפי תאריך ההכרזה שהיצרן פרסם. שדה launch ב-devices.json, בפורמט "YYYY-MM".
+ *
+ * למה כאן ולא בכל מחולל בנפרד: הבורר בעמוד הכלי נבנה ב-gen-compare, ובורר העץ נבנה בצד
+ * הלקוח מ-devices-public.json שנכתב ב-gen-devices. שני קבצים, אותה רשימה, ואם לכל אחד
+ * יהיה comparator משלו הם יציגו את אותם דגמים בשני סדרים באותו עמוד.
+ *
+ * דגם בלי תאריך יורד לסוף הרשימה ולא לראשה. חסר נתון אינו "חדש", והנחה כזאת הייתה
+ * דוחפת דווקא את מה שאיננו יודעים עליו למעלה.
+ */
+var VARIANT_RANK = [
+  [/\bUltra\b/i, 0], [/\bPro Max\b/i, 0], [/\bPro\b/i, 1],
+  [/\bPlus\b|\+/, 2], [/\bFE\b/, 4], [/\bmini\b/i, 5], [/\d+e\b/, 6]
+];
+function variantRank(name) {
+  var s = String(name || '');
+  for (var i = 0; i < VARIANT_RANK.length; i++) if (VARIANT_RANK[i][0].test(s)) return VARIANT_RANK[i][1];
+  return 3;   /* הדגם הבסיסי, בין Plus ל-FE */
+}
+/* מספר הדגם: הגדול שבמספרים שבשם. "Galaxy A57 5G" הוא 57 ולא 5, כי 5G אינו מספר דגם.
+   "Nothing Phone (3a) Pro" הוא 3. שם בלי מספר מקבל אפס, ולכן יורד מתחת לכל ממוספר באותה דרגה. */
+function modelNum(name) {
+  var m = String(name || '').match(/\d+/g);
+  if (!m) return 0;
+  var best = 0;
+  for (var i = 0; i < m.length; i++) {
+    var v = +m[i];
+    /* 5G ו-4G אינם מספרי דגם, ולכן מדלגים עליהם כשיש מספר אחר */
+    if (/\b[45]G\b/.test(String(name)) && (v === 4 || v === 5) && m.length > 1) continue;
+    if (v > best) best = v;
+  }
+  return best;
+}
+/* מפתח מיון יחיד: תאריך הפוך, ואחריו דרגת הווריאנט. חסר תאריך מקבל מפתח שממוקם בסוף. */
+function newestFirst(a, b) {
+  var da = a && a.launch ? String(a.launch) : null;
+  var dbb = b && b.launch ? String(b.launch) : null;
+  if (da && dbb && da !== dbb) return da < dbb ? 1 : -1;
+  if (da && !dbb) return -1;
+  if (!da && dbb) return 1;
+  var ra = variantRank(a && a.name), rb = variantRank(b && b.name);
+  if (ra !== rb) return ra - rb;
+  /* ואז מספר הדגם, מהגבוה לנמוך: A57 לפני A37, שהוכרזו באותו חודש ובאותה דרגה */
+  var na = modelNum(a && a.name), nb = modelNum(b && b.name);
+  if (na !== nb) return nb - na;
+  /* שובר שוויון יציב, כדי ששתי הרצות יתנו את אותו סדר */
+  return String((a && a.slug) || '').localeCompare(String((b && b.slug) || ''));
+}
+
 module.exports = {
   num: num, inches: inches, grams: grams, storageGB: storageGB,
   battHours: battHours, battMah: battMah, opticalZoom: opticalZoom,
   ultraWide: ultraWide, sdCard: sdCard, updateYear: updateYear,
   deltas: deltas, ratioPair: ratioPair, ratioField: ratioField, gb: gb,
+  newestFirst: newestFirst, variantRank: variantRank, modelNum: modelNum,
   NUMERIC_BY_FIELD: NUMERIC_BY_FIELD, DELTAS: DELTAS
 };
