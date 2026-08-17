@@ -1,0 +1,343 @@
+{
+  "_": "מכשירי ייחוס, מקבץ שני. המקור לכולם GSMArena, מאגר מפרטים ולא היצרן. כל עמוד נפתח ואומת לפי שם הדגם שבכותרת לפני החילוץ.",
+  "devices": [
+    {
+      "slug": "galaxy-z-fold7",
+      "brand": "Samsung",
+      "name": "Samsung Galaxy Z Fold7",
+      "name_he": "גלקסי Z Fold7",
+      "series": "Galaxy Z",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת מתקפלים. הדגם במאגר כדי שאפשר יהיה להשוות אליו, וכדי שתהיה תשובה למי ששואל על מתקפל."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." }
+      },
+      "spec": {
+        "screen_size": "8 אינץ׳ פנימי, ומסך חיצוני 6.5 אינץ׳",
+        "screen_type": "Dynamic LTPO AMOLED 2X, צפיפות 368ppi בפנימי ו-422ppi בחיצוני, זכוכית Gorilla Glass Victus Ceramic 2",
+        "resolution": "2184x1968 פיקסלים בפנימי, ו-2520x1080 בחיצוני",
+        "refresh_rate": "עד 120Hz בשני המסכים",
+        "brightness": "עד 2600 ניט שיא",
+        "chip": "Qualcomm Snapdragon 8 Elite",
+        "cpu": "8 ליבות Oryon V2: שתיים ב-4.47GHz ושש ב-3.53GHz",
+        "gpu": "Adreno 830",
+        "ram": "12GB או 16GB",
+        "storage_offered": ["256GB", "512GB", "1TB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "200MP רחבה בצמצם f/1.7",
+        "camera_extra": "12MP רחבה במיוחד בצמצם f/2.2, ו-10MP טלפוטו בצמצם f/2.4",
+        "zoom": "זום אופטי 3x דרך עדשת הטלפוטו",
+        "camera_front": "10MP רחבה במיוחד במסך הפנימי, ו-10MP רחבה במסך החיצוני",
+        "video": "8K עד 30 פריימים לשנייה",
+        "battery": "4400 mAh",
+        "charging_wired": "25W",
+        "charging_wireless": "עד 15W",
+        "dimensions": "פתוח 158.4 x 143.2 x 4.2 מ״מ, סגור 158.4 x 72.8 x 8.9 מ״מ",
+        "weight": "215 גרם",
+        "water_resistance": "IP48. זו דרגה נמוכה מ-IP68 בעמידות לאבק, וזה מקובל במתקפלים",
+        "colors_manufacturer": ["כחול צל", "כסוף צל", "שחור עמוק", "מנטה"],
+        "sim": "שני ננו-סים ושני eSIM, עד שניים פעילים",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4",
+        "box_contents": null,
+        "security_updates": "שבע שנות עדכוני מערכת הפעלה",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "גלקסי Z Fold7 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא המתקפל היחיד במאגר, ולכן ההשוואה אליו עונה על שאלה אחרת לגמרי: מה נותן מסך של 8 אינץ׳ שנפתח, ומה המחיר של זה. שני דברים שכדאי לדעת: עמידות האבק שלו היא IP48 ולא IP68, והוא 4.2 מ״מ בעובי כשהוא פתוח.",
+        "pros": ["מסך פנימי 8 אינץ׳", "מצלמה 200MP", "7 שנות עדכונים", "215 גרם, קל למתקפל"],
+        "cons": ["איננו מוכרים אותו", "IP48 ולא IP68", "סוללה 4400 mAh", "טעינה 25W"]
+      }
+    },
+    {
+      "slug": "xiaomi-15-ultra",
+      "brand": "Xiaomi",
+      "name": "Xiaomi 15 Ultra",
+      "name_he": "שיאומי 15 אולטרה",
+      "series": "Xiaomi",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/xiaomi_15_ultra-13657.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא הדגם העליון של שיאומי, מעל שיאומי 15 שאנחנו כן מוכרים, ולכן ההשוואה אליו מראה מה מקבלים בקצה העליון."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.73 אינץ׳",
+        "screen_type": "LTPO AMOLED, צפיפות 522ppi, זכוכית Xiaomi Shield Glass 2.0",
+        "resolution": "3200x1440 פיקסלים",
+        "refresh_rate": "עד 120Hz, בפאנל LTPO",
+        "brightness": "עד 3200 ניט שיא",
+        "chip": "Qualcomm Snapdragon 8 Elite",
+        "cpu": "8 ליבות: שתיים ב-4.32GHz ושש ב-3.53GHz",
+        "gpu": "Adreno 830",
+        "ram": "12GB או 16GB",
+        "storage_offered": ["256GB", "512GB", "1TB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.6",
+        "camera_extra": "50MP רחבה במיוחד בצמצם f/2.2, 50MP טלפוטו בצמצם f/1.8, ו-200MP פריסקופ בצמצם f/2.6",
+        "zoom": "זום אופטי 3x בטלפוטו, ו-4.3x בעדשת הפריסקופ",
+        "camera_front": "32MP בצמצם f/2.0",
+        "video": "8K ב-30 פריימים לשנייה, ו-4K עד 120 פריימים",
+        "battery": "5410 mAh בגרסה הגלובלית",
+        "charging_wired": "90W",
+        "charging_wireless": "עד 80W",
+        "dimensions": "161.3 x 75.3 x 9.4 מ״מ",
+        "weight": "226 עד 229 גרם, לפי הגרסה",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["שחור", "לבן", "כסוף כרום", "ירוק"],
+        "sim": "שני ננו-סים ושני eSIM, עד שניים פעילים",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0",
+        "box_contents": null,
+        "security_updates": "עד ארבעה עדכוני מערכת הפעלה",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "שיאומי 15 אולטרה הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדגם שמעל שיאומי 15 שאנחנו כן מוכרים, ומה שמבדיל אותו הוא מערכת ארבע מצלמות שכוללת פריסקופ 200MP, וטעינה אלחוטית של 80W. תקופת העדכונים שלו קצרה יותר מסמסונג וגוגל, עד ארבעה דורות.",
+        "pros": ["פריסקופ 200MP", "טעינה 90W וגם 80W אלחוטית", "בהירות 3200 ניט", "מסך 3200x1440"],
+        "cons": ["איננו מוכרים אותו", "עד 4 עדכוני מערכת בלבד", "229 גרם, כבד"]
+      }
+    },
+    {
+      "slug": "pixel-9a",
+      "brand": "Google",
+      "name": "Google Pixel 9a",
+      "name_he": "גוגל פיקסל 9a",
+      "series": "Google Pixel",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/google_pixel_9a-13478.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת Pixel, ולגוגל אין יבואן רשמי בישראל. הדגם במאגר כדי להשוות אליו, והוא הדגם הזול של גוגל ולכן משתווה לגלקסי A."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.3 אינץ׳",
+        "screen_type": "P-OLED, צפיפות 422ppi, זכוכית Corning Gorilla Glass 3",
+        "resolution": "2424x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "עד 2700 ניט שיא",
+        "chip": "Google Tensor G4",
+        "cpu": "8 ליבות: אחת ב-3.1GHz, שלוש ב-2.6GHz וארבע ב-1.9GHz",
+        "gpu": "Mali-G715 MP7",
+        "ram": "8GB",
+        "storage_offered": ["128GB", "256GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "48MP בצמצם f/1.7, עם ייצוב אופטי",
+        "camera_extra": "13MP רחבה במיוחד בצמצם f/2.2",
+        "zoom": "אין עדשת זום אופטי",
+        "camera_front": "13MP בצמצם f/2.2",
+        "video": "4K עד 60 פריימים לשנייה",
+        "battery": "5100 mAh",
+        "charging_wired": "23W",
+        "charging_wireless": "עד 7.5W",
+        "dimensions": "154.7 x 73.3 x 8.9 מ״מ",
+        "weight": "186 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["אובסידיאן", "פורצלן", "איריס", "פאוני"],
+        "sim": "ננו-סים ו-eSIM",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 6E, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": "שבע שנות עדכוני מערכת הפעלה",
+        "model_numbers": ["GXQ96", "GTF7P", "G3Y12"]
+      },
+      "editorial": {
+        "what_matters": "גוגל פיקסל 9a הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדגם הזול של גוגל, ולכן הוא נמצא באותו מתחם של גלקסי A. הדבר החריג בו הוא שבע שנות עדכונים במכשיר בקטגוריה הזאת, וזה הרבה מעל מה שמקובל. מה שאין בו: עדשת זום אופטי בכלל, וזכוכית Gorilla Glass 3 שהיא דור ותיק.",
+        "pros": ["7 שנות עדכונים", "סוללה 5100 mAh", "IP68", "186 גרם, קל"],
+        "cons": ["איננו מוכרים אותו", "אין זום אופטי", "טעינה 23W", "זכוכית Gorilla Glass 3"]
+      }
+    },
+    {
+      "slug": "galaxy-s25",
+      "brand": "Samsung",
+      "name": "Samsung Galaxy S25",
+      "name_he": "גלקסי S25",
+      "series": "Galaxy S",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s25-13610.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא הדור הקודם של גלקסי S26 שאנחנו כן מוכרים, ולכן ההשוואה אליו היא דור מול דור."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." },
+        "colors_manufacturer": {
+          "src": "https://www.gsmarena.com/samsung_galaxy_s25-13610.php",
+          "at": "2026-08-17",
+          "note": "העמוד מדווח על שבעה צבעים אך אינו מונה את שמותיהם, ולכן השדה ריק ולא מנוחש."
+        }
+      },
+      "spec": {
+        "screen_size": "6.2 אינץ׳",
+        "screen_type": "Dynamic LTPO AMOLED 2X, צפיפות 416ppi, זכוכית Corning Gorilla Glass Victus 2",
+        "resolution": "2340x1080 פיקסלים",
+        "refresh_rate": "עד 120Hz, בפאנל LTPO",
+        "brightness": "עד 2600 ניט שיא",
+        "chip": "Qualcomm Snapdragon 8 Elite",
+        "cpu": "8 ליבות",
+        "gpu": "Adreno 830",
+        "ram": "12GB",
+        "storage_offered": ["128GB", "256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.8",
+        "camera_extra": "12MP רחבה במיוחד בצמצם f/2.2, ו-10MP טלפוטו בצמצם f/2.4",
+        "zoom": "זום אופטי 3x דרך עדשת הטלפוטו",
+        "camera_front": "12MP בצמצם f/2.2",
+        "video": "8K ב-24 ו-30 פריימים לשנייה, 4K ב-30 ו-60, והילוך אט עד 240 פריימים",
+        "battery": "4000 mAh",
+        "charging_wired": "25W",
+        "charging_wireless": "עד 15W",
+        "dimensions": "146.9 x 70.5 x 7.2 מ״מ",
+        "weight": "162 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": [],
+        "sim": "שני ננו-סים ושני eSIM, לפי אזור",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4",
+        "box_contents": null,
+        "security_updates": "שבע שנות עדכוני מערכת הפעלה",
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "גלקסי S25 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדור שלפני גלקסי S26, ולכן ההשוואה אליו עונה מה השתנה בין הדורות. מה שבולט בו הוא הגודל: 6.2 אינץ׳ ו-162 גרם, כלומר מהמכשירים הקטנים והקלים בקטגוריית הדגל.",
+        "pros": ["162 גרם, קל", "6.2 אינץ׳, נוח ליד אחת", "7 שנות עדכונים", "זום אופטי 3x"],
+        "cons": ["איננו מוכרים אותו", "סוללה 4000 mAh", "טעינה 25W"]
+      }
+    },
+    {
+      "slug": "iphone-16-pro",
+      "brand": "Apple",
+      "name": "Apple iPhone 16 Pro",
+      "name_he": "אייפון 16 פרו",
+      "series": "iPhone",
+      "os": "iOS",
+      "launch_year": 2024,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/apple_iphone_16_pro-13315.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת את הדגם הזה. הוא הדור הקודם של אייפון 17 פרו שאנחנו כן מוכרים, ולכן ההשוואה אליו היא דור מול דור."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." },
+        "model_numbers": { "src": null, "at": null, "note": "מספרי הדגם אינם מופיעים בעמוד." },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתקופת עדכונים מחויבת. העמוד מדווח על גרסת iOS בלבד."
+        }
+      },
+      "spec": {
+        "screen_size": "6.3 אינץ׳",
+        "screen_type": "LTPO Super Retina XDR OLED, צפיפות 460ppi, זכוכית Ceramic Shield",
+        "resolution": "2622x1206 פיקסלים",
+        "refresh_rate": "עד 120Hz, בפאנל LTPO",
+        "brightness": "עד 2000 ניט במצב בהירות גבוהה",
+        "chip": "Apple A18 Pro",
+        "cpu": "6 ליבות: שתיים ב-4.05GHz וארבע ב-2.42GHz",
+        "gpu": "GPU של אפל, 6 ליבות",
+        "ram": "8GB",
+        "storage_offered": ["128GB", "256GB", "512GB", "1TB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "48MP רחבה בצמצם f/1.8",
+        "camera_extra": "48MP רחבה במיוחד בצמצם f/2.2, ו-12MP טלפוטו בצמצם f/2.8",
+        "zoom": "זום אופטי 5x דרך עדשת הטלפוטו",
+        "camera_front": "12MP בצמצם f/1.9, עם ייצוב אופטי",
+        "video": "4K עד 120 פריימים לשנייה, כולל Dolby Vision",
+        "battery": "3582 mAh",
+        "charging_wired": "50W",
+        "charging_wireless": "עד 25W ב-MagSafe",
+        "dimensions": "149.6 x 71.5 x 8.3 מ״מ",
+        "weight": "199 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["טיטניום שחור", "טיטניום לבן", "טיטניום טבעי", "טיטניום מדברי"],
+        "sim": "שני ננו-סים ושני eSIM בגרסה הבינלאומית",
+        "esim": "תמיכה בשני eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3",
+        "box_contents": null,
+        "security_updates": null,
+        "model_numbers": null
+      },
+      "editorial": {
+        "what_matters": "אייפון 16 פרו הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. הוא הדור שלפני אייפון 17 פרו, ולכן ההשוואה אליו עונה מה השתנה בין הדורות. יש בו זום אופטי 5x כמו בפרו מקס של אותו דור, וזה היה השינוי הבולט שלו. הסוללה שלו 3582 mAh, מהקטנות בקטגוריה.",
+        "pros": ["זום אופטי 5x", "וידאו 4K ב-120 פריימים", "199 גרם", "שבב A18 Pro"],
+        "cons": ["איננו מוכרים אותו", "סוללה 3582 mAh", "8GB זיכרון"]
+      }
+    },
+    {
+      "slug": "nothing-phone-3",
+      "brand": "Nothing",
+      "name": "Nothing Phone (3) 5G",
+      "name_he": "נאת׳ינג פון 3",
+      "series": "Nothing Phone",
+      "os": "Android",
+      "launch_year": 2025,
+      "spec_source": {
+        "default": {
+          "src": "https://www.gsmarena.com/nothing_phone_(3)_5g-13969.php",
+          "kind": "מאגר מפרטים, לא היצרן",
+          "at": "2026-08-17",
+          "note": "⚠ פון גת אינה מוכרת Nothing. ל-Nothing יש יבוא רשמי בישראל דרך קמעונאים, אבל לא אצלנו. הדגם במאגר כדי להשוות אליו."
+        },
+        "box_contents": { "src": null, "at": null, "note": "תכולת האריזה אינה מופיעה בעמוד." }
+      },
+      "spec": {
+        "screen_size": "6.67 אינץ׳",
+        "screen_type": "OLED, צפיפות 460ppi, זכוכית Corning Gorilla Glass 7i",
+        "resolution": "2800x1260 פיקסלים",
+        "refresh_rate": "עד 120Hz",
+        "brightness": "עד 4500 ניט שיא",
+        "chip": "Qualcomm Snapdragon 8s Gen 4",
+        "cpu": "8 ליבות: אחת ב-3.21GHz, שלוש ב-3.0GHz, שתיים ב-2.8GHz ושתיים ב-2.0GHz",
+        "gpu": "Adreno 825",
+        "ram": "12GB או 16GB",
+        "storage_offered": ["256GB", "512GB"],
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "camera_main": "50MP רחבה בצמצם f/1.7, עם ייצוב אופטי",
+        "camera_extra": "50MP רחבה במיוחד בצמצם f/2.2, ו-50MP טלפוטו פריסקופ בצמצם f/2.7",
+        "zoom": "זום אופטי 3x דרך עדשת הפריסקופ",
+        "camera_front": "50MP בצמצם f/2.2",
+        "video": "4K ב-30 ו-60 פריימים לשנייה",
+        "battery": "5150 mAh בגרסה הבינלאומית",
+        "charging_wired": "65W",
+        "charging_wireless": "עד 15W",
+        "dimensions": "160.6 x 75.6 x 9 מ״מ",
+        "weight": "218 גרם",
+        "water_resistance": "IP68",
+        "colors_manufacturer": ["לבן", "שחור"],
+        "sim": "שני ננו-סים ו-eSIM, עד שניים פעילים",
+        "esim": "תמיכה ב-eSIM",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0",
+        "box_contents": null,
+        "security_updates": "עד חמישה עדכוני מערכת הפעלה",
+        "model_numbers": ["A024"]
+      },
+      "editorial": {
+        "what_matters": "נאת׳ינג פון 3 הוא מכשיר שאנחנו לא מוכרים, והוא כאן כדי שתוכלו להשוות אליו. המספר החריג בו הוא בהירות השיא, 4500 ניט, הגבוהה ביותר במאגר כולו. יש בו גם שלוש מצלמות אחוריות של 50MP ומצלמה קדמית של 50MP, וזה נדיר בקטגוריה שלו.",
+        "pros": ["בהירות שיא 4500 ניט", "שלוש מצלמות 50MP", "מצלמה קדמית 50MP", "טעינה 65W"],
+        "cons": ["איננו מוכרים אותו", "עד 5 עדכוני מערכת", "218 גרם"]
+      }
+    }
+  ]
+}
