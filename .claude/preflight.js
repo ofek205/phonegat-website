@@ -1583,6 +1583,36 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 38. המייל מהצ'אט מובדל מהמייל מטופס "צרו קשר" ----------
+ * שניהם הולכים לאותה תיבה דרך אותו Web3Forms. הטופס שולח "פנייה חדשה מאתר פון גת"
+ * והצ'אט שלח "פנייה מהצ׳אט - פון גת", ובסריקה מהירה בטלפון שניהם נקראים
+ * "פנייה ... פון גת". ברוך וסיגל לא יכלו לדעת עם מה הם מתעסקים לפני שפתחו.
+ * ההבדל חייב לשבת בתחילת הנושא, שהוא מה שנראה בשורת התיבה, וגם בראש גוף ההודעה. */
+(function () {
+  var home, contact;
+  try { home = read('prototype/index.html'); contact = read('prototype/contact/index.html'); }
+  catch (e) { return; }
+  var chatSubj = (home.match(/subject:'([^']*)'/) || [])[1];
+  var formSubj = (contact.match(/name="subject"\s+value="([^"]*)"/) || [])[1];
+  var problems = [];
+  if (!chatSubj) problems.push('לא נמצא נושא המייל של הצ\'אט');
+  if (!formSubj) problems.push('לא נמצא נושא המייל של הטופס');
+  if (chatSubj && formSubj) {
+    if (chatSubj === formSubj) problems.push('שני הנושאים זהים');
+    /* מבדיל בתחילת השורה, ולא באמצעה */
+    if (chatSubj.indexOf('צ׳אט') !== 0 && chatSubj.indexOf('[צ׳אט]') !== 0) {
+      problems.push('נושא המייל מהצ\'אט אינו נפתח במזהה הצ\'אט: "' + chatSubj + '"');
+    }
+    if (formSubj.indexOf('צ׳אט') >= 0) problems.push('נושא הטופס מזכיר צ\'אט, וזה מבלבל בכיוון ההפוך');
+  }
+  /* וגם בראש הגוף, כי מי שקורא בתצוגה מקדימה רואה את השורה הראשונה */
+  if (!/var L=\['המקור: העוזר בצ׳אט/.test(home)) {
+    problems.push('גוף המייל אינו נפתח בשורת מקור');
+  }
+  if (problems.length) bad('מייל הצ\'אט: ' + problems.join(' · '));
+  else ok('המייל מהצ\'אט מובדל מהטופס בנושא ובשורה הראשונה של הגוף');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
