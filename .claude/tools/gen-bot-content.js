@@ -122,7 +122,13 @@ files.forEach(function (f) {
 
   if (!inIndex(url)) { skippedPage++; return; }
   pages++;
-  srcHash[url] = crypto.createHash('sha1').update(mm[0]).digest('hex').slice(0, 16);
+  /* **צורה קנונית, בלי סופי שורה.** ההשוואה הייתה על הבתים כמו שהם, ולכן טביעת האצבע
+   * תלויה בסופי השורה של עותק העבודה. ב-Windows עם autocrlf העמודים על הדיסק ב-CRLF
+   * וב-git ב-LF, ולכן אותו עמוד בדיוק נותן שני גיבובים.
+   * זה נמצא בבדיקה מול האתר החי: שלושה עמודים דווחו כמיושנים, והם היו זהים תו בתו.
+   * הגיבוב הוא סימן לשינוי תוכן, וסוף שורה אינו תוכן. אותו canon כבר קיים ב-gen-bot.js. */
+  srcHash[url] = crypto.createHash('sha1')
+    .update(mm[0].replace(/\r\n/g, '\n')).digest('hex').slice(0, 16);
 
   /* פיצול לפי h2/h3, ושמירת הכותרת עצמה יחד עם הטקסט שאחריה */
   var chunks = mm[0].split(/(<h[23][^>]*>[\s\S]*?<\/h[23]>)/i);
