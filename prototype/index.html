@@ -2102,6 +2102,7 @@ document.addEventListener('DOMContentLoaded',function(){
     '<div class="pg-badge"><b>9.5</b><span>ציון העסק</span></div></div>'+
     '<div class="pg-acts">'+ab("nav","ניווט")+ab("wa","WhatsApp")+ab("call","חייגו")+ab("share","שיתוף")+'</div></div>';
   var TABS='<div class="pg-tabs"><div class="pg-t1">ביקורות <span>(210)</span></div><div class="pg-t2">מהרשת <span>(625)</span></div></div>';
+  /* pg-reviews:start — ציטוטים אמיתיים של לקוחות. אסור לערוך אותם, ובדיקה 40 מדלגת על האזור. */
   var R=[
     ["גיא ב.","22/01/2026","סיפור שכך היה בדרך לרכבת לאחר יום עבודה עמוס: נפל לי הטלפון, אין מסך, אין לי אפשרות לתקשר עם אף אחד. הפנו אותי לפון גת ליד התחנה. קיבלו אותי יפה אפילו שהייתי בלחץ, ותוך חצי שעה הטלפון היה מוכן. תודה למשפחה המיוחדת פון גת."],
     ["שמוליק ל.","11/05/2026","ברוך אדלשטיין היקר שלנו. יש אנשים שנותנים שירות, ויש אנשים שנותנים גם לב, חיוך ותחושה טובה. כזה הוא ברוך. התיקונים אצלו מקצועיים, אמינים, ובעיקר עומדים בזמן. תודה על השירות, היושר והיחס החם."],
@@ -2143,6 +2144,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ["ר ח.","07/08/2019","אני אוהב להגיע לפון גת. תמיד נותנים שירות הכי טוב שיש, גם בתחום הסלולר. אנשים טובים, נהנה לתקן ולקנות אצלם את כל מה שאני צריך. אם אתם צריכים מעבדה וחנות אמינים, כדאי לכם להגיע."],
     ["Ruti B","08/03/2019","אמינות ושירות הכי טוב שהכרתי. הגעתי במקרה בחיפוש אחר מעבדה, וקיבלתי שירות ואפילו לא רצו לגבות כסף למרות שפתרו לי את התקלה. את המכשירים הבאים אקנה רק בפון גת."]
   ];
+  /* pg-reviews:end */
   var COL=["#1878A8","#E4572E","#39b54a","#7B2CBF","#F3A712","#3A86FF","#D7263D","#2A9D8F","#8338EC","#EF6C33"];
   function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
   function card(r,i){return '<div class="pg-rc"><div class="pg-rc-top"><div class="pg-rc-av" style="background:'+COL[i%COL.length]+'">'+esc(r[0].trim().charAt(0))+'</div><div><div class="pg-rc-nm">'+esc(r[0])+'</div><div class="pg-rc-meta"><span class="pg-rc-st">★★★★★</span><span class="pg-rc-dt">'+esc(r[1])+'</span></div></div></div><div class="pg-rc-tx">'+esc(r[2])+'</div><div class="pg-rc-more">עוד</div></div>';}
@@ -2158,6 +2160,7 @@ document.addEventListener('DOMContentLoaded',function(){
   '</div>';
   /* ---- Google reviews (real, from the Google business profile — 4.9 / 537) ---- */
   var GCOL=["#7cb342","#039be5","#e53935","#fb8c00","#8e24aa","#00897b","#c0ca33","#3949ab","#00acc1","#f4511e"];
+  /* pg-reviews:start — ציטוטים אמיתיים של לקוחות. אסור לערוך אותם, ובדיקה 40 מדלגת על האזור. */
   var G=[
     {n:"גיא בן שעיה",d:"לפני 5 חודשים",t:"סיפור שכך היה בדרך לרכבת לאחר גמר יום עבודה עמוס במיוחד נפל לי הטלפון אין מסך אין לי אפשרות לתקשר עם אף אחד. שאלתי אם מישהו מכיר מעבדת תיקונים קרובה אמרו לי תרד בקרית גת ליד הרכבת יש חנות ממש קרובה ומומלצת הם עוד הוסיפו שהיא קיימת למעלה מ30 שנה הייתי בהלם יש דבר כזה? אז הגעתי אליהם הם באמת ממש קרובים. הם קיבלו אותי יפה אפילו שהיתי בלחץ רציתי מהר! הם ביקשו מלקוחות שהיו במקום לקבל אותי לפניהם ותוך חצי שעה הטלפון היה מוכן בזמן הזה שהייתי בחנות היו מס' לקוחות כנראה לקוחות קבועים שרק דאגו להגיד כמה הם מרוצים מהשירות של פון גת ולא מוותרים תמיד הם מגיעים רק אליהם . היום אני יכולה להגיד את אותו הדבר נכון שחפרתי אבל באמת הייתי כל כך מרוצה מהם גם במחיר וכמובן בשירות אז באמת תודה רבה למי שהמליץ לי וגם למשפחה מיוחדת פון גת שהוא לפי הבנתי עסק משפחתי"},
     {n:"נטלי סטוליארוב",d:"לפני שבועיים",t:"איתן הנער שעובד בפון גת עזר לי מאוד פתר לי בעייה שהייתה לי שנה וחצי יישר כח תודה רבה לך"},
@@ -2175,6 +2178,7 @@ document.addEventListener('DOMContentLoaded',function(){
     {n:"אורן שוקר",d:"לפני חודשיים",t:"כ״כ תמיד נהנה להגיע לכאן ולקבל שירות לטלפונים, בהכול, גם בסימים וגם בתיקונים וגם בקניית מכשירים"},
     {n:"בלן צהייה",d:"לפני חודשיים",t:"הגעתי במיוחד מבית שמש לקרית גת לפון גת כדי לקבל את השירות שלהם, תמיד שווה"}
   ];
+  /* pg-reviews:end */
   var GC={"גיא בן שעיה":"ביקורת אחת","נטלי סטוליארוב":"2 ביקורות","חחי חימ":"ביקורת אחת","זאב שלמה":"2 ביקורות","Abraham Teklom":"2 ביקורות","סבטלנה שימה":"ביקורת אחת","לב אילייאיב":"ביקורת אחת","פיבי אסנר":"2 ביקורות","Yechiel Dotan":"ביקורת אחת","Siyona Telulkar":"ביקורת אחת","מלי כדורי":"2 ביקורות","אברהם אליהו":"ביקורת אחת","רפאל דוד":"2 ביקורות","אורן שוקר":"4 ביקורות","בלן צהייה":"ביקורת אחת"};
   function gcard(r,i){return '<div class="pg-grc"><div class="pg-grc-top"><div class="pg-grc-av" style="background:'+GCOL[i%GCOL.length]+'">'+esc(r.n.trim().charAt(0))+'</div><div class="pg-grc-hd"><div class="pg-grc-nm">'+esc(r.n)+'</div><div class="pg-grc-lg">'+esc(GC[r.n]||'')+'</div></div></div><div class="pg-grc-meta"><span class="pg-grc-st">★★★★★</span><span class="pg-grc-dt">'+esc(r.d)+'</span></div><div class="pg-grc-tx">'+esc(r.t)+'</div><div style="color:#00796b;font-size:.7rem;margin-top:3px">עוד</div></div>';}
   var AB_G='<div class="pg-ab-g"><span class="pg-gback">›</span><span class="pg-gword"><b style="color:#4285F4">G</b><b style="color:#EA4335">o</b><b style="color:#FBBC05">o</b><b style="color:#4285F4">g</b><b style="color:#34A853">l</b><b style="color:#EA4335">e</b></span><span class="pg-gtitle">פון גת חנות ומעבדה לתיקון מכשירים סלולריים בקרית גת</span></div>';
@@ -2470,7 +2474,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="rev-fg wrap">
     <div class="why-card">
       <h2 id="why-h">למה לבחור בנו?</h2>
-      <p class="why-tag">וותק, אמון ושירות אישי</p>
+      <p class="why-tag">ותק, אמון ושירות אישי</p>
       <p class="rev-lead">מעל 30 שנות ניסיון. ברוך וסיגל, פנים אל פנים.</p>
     </div>
     <span class="rev-eyebrow"><span class="rev-stars" aria-hidden="true">★★★★★</span> <b>4.9</b> · מעל 1,500 ביקורות בגוגל, easy ועוד</span>
@@ -2494,6 +2498,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 (function(){
   var wall=document.getElementById('revWall'); if(!wall) return;
+  /* pg-reviews:start — ציטוטים אמיתיים של לקוחות. אסור לערוך אותם, ובדיקה 40 מדלגת על האזור. */
   var R=[
     ["גיא ב.","נפל לי הטלפון בדרך לרכבת, בלי מסך. הגעתי לפון גת, ותוך חצי שעה הטלפון היה מוכן."],
     ["שמוליק ל.","יש אנשים שנותנים שירות, ויש אנשים שנותנים גם לב וחיוך. כזה הוא ברוך."],
@@ -2523,6 +2528,7 @@ document.addEventListener('DOMContentLoaded',function(){
     ["יוסי א.","צוות מנצח, ברוך בראשו, איש יקר ואמין שמתקן כל בעיה. כדאי ומומלץ."],
     ["אלי ק.","לקוח קבוע. ברוך הטכנאי הטוב ביותר, עוזר בכל פעם. שירות מהלב תמיד."]
   ];
+  /* pg-reviews:end */
   var COL=["#1878A8","#E4572E","#39b54a","#7B2CBF","#F3A712","#3A86FF","#D7263D","#2A9D8F","#8338EC","#EF6C33"];
   function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
   function card(r,i){return '<div class="rw-card"><div class="rw-top"><div class="rw-av" style="background:'+COL[i%COL.length]+'">'+esc(r[0].trim().charAt(0))+'</div><div><div class="rw-nm">'+esc(r[0])+'</div><div class="rw-st">★★★★★</div></div></div><div class="rw-tx">'+esc(r[1])+'</div></div>';}
