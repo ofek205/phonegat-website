@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:cf5230e7c7d58cf5 */
+/* sha1:5ad2c30edc016aeb */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -994,8 +994,12 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
    * בתיבה ואפשר יהיה לסנן אותן יחד.
    * **בלי טקסט חופשי גולמי.** אותו כלל כמו באנליטיקס: נשלחים רק ערכים מרשימה סגורה או
    * שמות מהקטלוג. מה שהלקוח כתב בעצמו מגיע ממילא בשיחה שהוא ינהל בטלפון. */
+  /* **שורה ראשונה שאומרת מאיפה זה בא.** שני המיילים נראו כמעט זהים בתיבה: הטופס שולח
+     "פנייה חדשה מאתר פון גת" והצ'אט שלח "פנייה מהצ׳אט - פון גת", ובסריקה מהירה בטלפון
+     שניהם נקראים "פנייה ... פון גת". ההבדל חייב להיות בתחילת הנושא ובראש הגוף, ולא
+     בסופו: מי שקורא שלוש שורות ראשונות צריך לדעת מיד עם מה הוא מתעסק. */
   function leadBody(){
-    var L=[];
+    var L=['המקור: העוזר בצ׳אט באתר. זו אינה פנייה מטופס "צרו קשר".',''];
     if(ctx.issue)L.push('תקלה: '+safeVal(ctx.issue,REP_ISSUES));
     if(ctx.device)L.push('מכשיר: '+safeVal(ctx.device,REP_DEVICES));
     if(ctx.brand)L.push('יצרן: '+safeVal(ctx.brand,['אייפון','סמסונג','שיאומי','המלצה']));
@@ -1004,7 +1008,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(ctx.imp)L.push('יבוא: '+safeVal(ctx.imp,IMPORT_VALS));
     if(ctx.rec)L.push('ביקש המלצה על דגם');
     try{L.push('הגיע מהעמוד: '+location.pathname);}catch(e){}
-    L.push('נשלח מהעוזר בצ׳אט');
+    /* המקור כבר כתוב בשורה הראשונה, ולכן אין צורך בשורת סיום שאומרת אותו דבר */
     return L.join('\n');
   }
   function saveLead(name,phone,topic){
@@ -1029,7 +1033,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var key='99c6d9a8-827b-42d7-99f1-22e06a8643fe';
     if(!key||key.indexOf('YOUR_')===0){failed();return;}
     try{
-      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'פנייה מהצ׳אט - פון גת',from_name:'צ׳אט פון גת','שם מלא':name,'טלפון':phone,'נושא':topic,'הודעה':leadBody()})})
+      fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({access_key:key,subject:'[צ׳אט] פנייה מהעוזר באתר',from_name:'העוזר בצ׳אט של פון גת','שם מלא':name,'טלפון':phone,'נושא':topic,'הודעה':leadBody()})})
         .then(function(r){return r.ok?r.json():null;})
         .then(function(j){if(!j||j.success!==true)failed();})
         .catch(failed);
