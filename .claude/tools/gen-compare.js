@@ -1149,6 +1149,14 @@ function buildTool() {
   var missingLabel = [];
   GROUPS.forEach(function (g) { g[1].forEach(function (f) { if (LABEL_IX[f[1]] === undefined) missingLabel.push(f[1]); }); });
   if (missingLabel.length) { console.error('✗ tool: תוויות בלי אינדקס: ' + missingLabel.join(', ')); process.exit(1); }
+  /* המדד נכתב לעמוד כליטרל של אובייקט, ולא כמחרוזת ל-JSON.parse. זו בחירה נמדדת.
+     מול 3003 זוגות ו-328KB, ב-18.8.2026: ליטרל 2.3ms מול JSON.parse 3.0ms בקימפול ובהרצה,
+     והמחרוזת ל-JSON.parse גדולה ב-23KB אחרי הבריחה. כלומר האופטימיזציה שמקובלת למבני
+     נתונים גדולים מזיקה כאן, כי V8 מקמפל ליטרלים היטב והבריחה עולה יותר ממה שהיא חוסכת.
+     נמדד ונדחה. אל תמיר בלי למדוד מחדש.
+
+     ובאותה מדידה, על משקל העמוד: 679KB על הדיסק אינם מה שעובר בקו. Vercel מגיש brotli,
+     והורדה אמיתית היא 124KB. מה שגדל ריבועית הוא המקור, לא התעבורה. */
   var index = {}, n = 0;
   for (var i = 0; i < live.length; i++) {
     for (var j = i + 1; j < live.length; j++) {
