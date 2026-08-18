@@ -209,7 +209,9 @@ function ratioField(fieldKey, specA, specB) {
  * דוחפת דווקא את מה שאיננו יודעים עליו למעלה.
  */
 var VARIANT_RANK = [
-  [/\bUltra\b/i, 0], [/\bPro Max\b/i, 0], [/\bPro\b/i, 1],
+  /* Pro XL הוא ה-Pro Max של גוגל: אותו תפקיד בסדרה, ולכן אותה דרגה. בלעדיו Pixel 11 Pro
+     יצא לפני Pixel 11 Pro XL, כי שניהם נתפסים כ-Pro בלבד ושובר השוויון האלפביתי הכריע. */
+  [/\bUltra\b/i, 0], [/\bPro Max\b/i, 0], [/\bPro XL\b/i, 0], [/\bPro\b/i, 1],
   [/\bPlus\b|\+/, 2], [/\bFE\b/, 4], [/\bmini\b/i, 5], [/\d+e\b/, 6]
 ];
 function variantRank(name) {
