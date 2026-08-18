@@ -173,6 +173,67 @@ function buildTable(a, b, d) {
     bodies + '\n      </table>\n    </div>\n';
 }
 
+/* ── השוואות קרובות ──────────────────────────────────────────────
+ * עד 17.8.2026 עמוד השוואה קישר לשני המכשירים שלו ולשער, ולשום דבר אחר. כלומר קורא
+ * שסיים להחליט בין אייפון 17 לאייפון 17 פרו, ועכשיו תוהה לגבי הפרו מקס, היה צריך
+ * לחזור לשער ולחפש. 19 העמודים היו 19 קצוות מבודדים.
+ *
+ * הקרבה נמדדת בדגם משותף, ולא בניחוש: זוג שחולק מכשיר עם הזוג הזה הוא בהגדרה הצעד
+ * הבא של אותו קורא. הכיוון "מי שקרא את א׳ יקרא את ב׳" סימטרי, ולכן הקישור הדדי מעצמו.
+ *
+ * ל-iphone-16-vs-iphone-17e אין שכן משותף כלל, ולכן יש נפילה למותג. בלעדיה העמוד היחיד
+ * שהמנגנון נבנה בשבילו היה נשאר בדיוק כפי שהיה. */
+function nearPairs(p) {
+  var pairs = db._comparisons.pairs;
+  var mine = [p.a, p.b];
+  function shares(q) { return [q.a, q.b].filter(function (x) { return mine.indexOf(x) >= 0; }); }
+  var near = pairs.filter(function (q) { return q.slug !== p.slug && shares(q).length; });
+  if (!near.length) {
+    /* אותו מותג בשני הצדדים. פחות הדוק מדגם משותף, אבל עדיין אותו קורא. */
+    var brands = mine.map(function (s) { var x = D(s); return x ? x.brand : null; }).filter(Boolean);
+    near = pairs.filter(function (q) {
+      if (q.slug === p.slug) return false;
+      return [q.a, q.b].some(function (s) { var x = D(s); return x && brands.indexOf(x.brand) >= 0; });
+    });
+  }
+  return near.slice(0, 4);
+}
+
+function nearSection(p) {
+  var near = nearPairs(p);
+  if (!near.length) return '';
+  var mine = [p.a, p.b];
+  /* הכיתוב חייב לתאר את מה שבאמת קרה. בעמוד היחיד שנפל למותג אין דגם משותף לאף אחת
+     מהשורות, ומשפט שאומר "חולקות מכשיר עם זו" היה שם ההסבר על משהו אחר. */
+  var byDevice = near.some(function (q) { return [q.a, q.b].some(function (x) { return mine.indexOf(x) >= 0; }); });
+  return '<section class="block" id="near" aria-labelledby="near-h">\n  <div class="wrap box">\n' +
+    '    <h2 id="near-h">השוואות קרובות</h2>\n' +
+    '    <p class="lead">מי שמשווה שני דגמים בדרך כלל שוקל עוד אחד. ' +
+    (byDevice ? 'אלה ההשוואות שחולקות מכשיר עם זו.' : 'לזוג הזה אין השוואה נוספת עם אותו דגם, ולכן אלה השוואות אחרות של אותו מותג.') +
+    '</p>\n' +
+    '    <ul class="hub near">\n' +
+    near.map(function (q) {
+      /* הכיתוב אומר *למה* ההשוואה הזאת כאן: איזה מכשיר משותף, ומול מה הוא מושווה שם.
+         בלי זה זו רשימה של קישורים, ואי אפשר לדעת מאיזה מהם להתחיל. */
+      var sharedSlug = [q.a, q.b].filter(function (x) { return mine.indexOf(x) >= 0; })[0];
+      var other = (q.a === sharedSlug ? q.b : q.a);
+      var sd = sharedSlug ? D(sharedSlug) : null, od = other ? D(other) : null;
+      var why;
+      if (sd && od) {
+        why = 'אותו ' + (sd.name_he || sd.name) + ', מול ' + (od.name_he || od.name);
+      } else {
+        /* נפילת המותג. "אותו מותג" בארבע השורות הוא כיתוב שאינו מבדיל ביניהן, כלומר אינו
+           עוזר לבחור מאיזו להתחיל. אותו מדד שהשער מציג, ספירת השדות, כן מבדיל. */
+        var qa = D(q.a), qb = D(q.b);
+        var qd = (qa && qb) ? diffSpec(qa, qb, q.slug) : null;
+        why = qd ? qd.rows.length + ' שדות שונים · ' + qd.same + ' זהים' : '';
+      }
+      return '      <li><a href="/compare/' + q.slug + '/"><b>' + esc(q.h1) + '</b>' +
+        '<span>' + esc(why) + '</span></a></li>';
+    }).join('\n') +
+    '\n    </ul>\n  </div>\n</section>\n\n';
+}
+
 function buildMain(p, a, b, d, openTag) {
   var url = PROD + 'compare/' + p.slug + '/';
   var waPick = wa('היי, אני מתלבט בין ' + a.name + ' ל-' + b.name + '. אשמח לעזרה בבחירה');
@@ -270,6 +331,8 @@ function buildMain(p, a, b, d, openTag) {
     '      <div class="prose"><p>' + esc(p.bottom_line) + '</p></div>\n' +
     '    </div>\n  </div>\n</section>\n\n' +
 
+    nearSection(p) +
+
     '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">עדיין מתלבטים?</h2>\n' +
     '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
@@ -334,7 +397,13 @@ function hubCss() {
     'border:1px solid var(--line);background:#fff;align-self:center}' +
     /* מכשיר ייחוס נשאר בלי תמונה, בהחלטת אופק. הוא ממילא .noown ולא <a>, ולכן הוא לא
        משתמש בגריד הזה בכלל, ואין כאן שורה שנשארת עם עמודה ריקה. */
-    '\n@media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}';
+    '\n@media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}' +
+    /* .hub.near — בלי המספור.
+     * ב-.hub המספר 01, 02, 03 הוא אינדקס של רשימה מלאה ומסודרת, וזה נכון בשער שמציג את כל
+     * 19 ההשוואות. בבלוק "השוואות קרובות" יש ארבע מתוכן, שנבחרו לפי דגם משותף ולא לפי דירוג,
+     * ומספר סידורי היה אומר לקורא שיש כאן סדר עדיפות שאין. */
+    '\n.hub.near a{grid-template-columns:1fr}' +
+    '\n.hub.near a::before{content:none}';
 }
 
 /* ה-CSS של עמוד ההשוואה. מוזרק כאן ולא יושב בעמוד המקור, כי המקור הוא עמוד מכשיר ואין בו

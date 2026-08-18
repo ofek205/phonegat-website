@@ -20,7 +20,9 @@ module.exports = function carriesChat(url) {
   if (url === '/contact/') return true;                  /* העמוד עם הכוונה הגבוהה ביותר באתר */
   if (url === '/guides/') return true;
   if (url === '/upcoming-phones/') return true;
-  /* accessibility.html ו-privacy.html נשארים בחוץ: אין בהם הדר ולא פוטר, ואין לאן להזריק.
-     זה קדם לבוט, וזו בעיה נפרדת שמתועדת ב-CLAUDE.md. */
+  /* accessibility.html ו-privacy.html נשארים בחוץ, ומ-17.8.2026 מסיבה אחרת: עד אז לא היו
+     בהם הדר ולא פוטר ולא היה לאן להזריק, והיום יש. הם בחוץ כי מי שקורא מדיניות פרטיות או
+     הצהרת נגישות אינו בשלב קנייה, ובוט שקופץ שם מפריע לקריאה שהיא בעצמה זכות. הטלפון,
+     ה-WhatsApp והניווט המלא נמצאים בהדר ובפוטר, ולכן אין כאן דרך חסומה. */
   return false;
 };

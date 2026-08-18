@@ -1412,13 +1412,18 @@ if (classFails.length) {
   pageFiles.forEach(function (rel) {
     var s;
     try { s = read('prototype/' + rel); } catch (e) { return; }
-    var self = '/' + rel.replace(/index\.html$/, '').replace(/\.html$/, '/');
-    if (self === '/') self = '/';
+    /* שתי צורות ולא אחת. עמוד בתיקייה נמצא בכתובת עם לוכסן, אבל קובץ .html בשורש
+       נמצא בכתובת שכוללת את הסיומת: privacy.html מוגש כ-/privacy.html, וכל 78 העמודים
+       מקשרים אליו כך בפוטר. גרסה קודמת גזרה ממנו /privacy/, כלומר כתובת שאינה קיימת,
+       ולכן העמוד שסימן את *עצמו* נכון נספר כשגוי. */
+    var selves = rel === 'index.html' ? ['/']
+      : /index\.html$/.test(rel) ? ['/' + rel.replace(/index\.html$/, '')]
+      : ['/' + rel, '/' + rel.replace(/\.html$/, '/')];
     var re = /<a[^>]*aria-current="page"[^>]*>/g, m;
     while ((m = re.exec(s)) !== null) {
       var href = (m[0].match(/href="([^"]*)"/) || [])[1];
       if (!href) continue;
-      if (href !== self) wrong.push(rel + ' → ' + href);
+      if (selves.indexOf(href) < 0) wrong.push(rel + ' → ' + href);
     }
   });
   if (wrong.length) {
@@ -1924,6 +1929,38 @@ if (classFails.length) {
   if (problems.length) bad('מיון הדגמים: ' + problems.join(' · '));
   else ok('הרשימות ממוינות מהחדש לישן: ' + (db.devices.length - nulls.length) + ' דגמים מתוארכים, ' +
     nulls.length + ' בלי תאריך ועם הסבר, וסדר devices-public.json תואם');
+})();
+
+/* ---------- 41. אורך הכותרת ----------
+ * גוגל חותך כותרת ארוכה ומחליף אותה בטקסט משלו, שנלקח מהעמוד. כלומר הכותרת שנכתבה
+ * בקפידה פשוט אינה מוצגת, ואין לזה שום סימן חיצוני: העמוד מדורג, נלחץ, והכותרת אחרת.
+ *
+ * ב-17.8.2026 היו 16 כאלה, וכולן מאותה צורה: שם עברי, שם אנגלי בסוגריים, וזנב שמסביר
+ * מה יש בעמוד. הזנב הוא מה שקוצר, כי בשם יש מילת חיפוש ובזנב אין.
+ *
+ * 60 הוא הסף המקובל בעברית, ומעל 75 הקיצוץ כמעט ודאי. אזהרה בין השניים ונפילה מעל,
+ * כי כותרת אחת שגדלה בשלושה תווים אינה סיבה לחסום העלאה. */
+(function () {
+  var over = [], warn = [];
+  pageFiles.forEach(function (rel) {
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { return; }
+    var t = (s.match(/<title>([\s\S]*?)<\/title>/i) || [])[1];
+    if (!t) return;
+    t = t.replace(/&quot;/g, '"').replace(/&amp;/g, '&').trim();
+    if (t.length > 75) over.push(rel + ' (' + t.length + ')');
+    else if (t.length > 60) warn.push(rel + ' (' + t.length + ')');
+  });
+  if (over.length) {
+    bad(over.length + ' כותרות מעל 75 תווים, ולכן גוגל יחליף אותן בטקסט משלו: ' +
+      over.slice(0, 4).join(', ') + (over.length > 4 ? ' ועוד' : '') +
+      '. הכותרת של עמוד מכשיר יושבת ב-devices.json תחת seo.title');
+  } else if (warn.length) {
+    warns.push(warn.length + ' כותרות בין 60 ל-75 תווים, בטווח שגוגל עלול לחתוך: ' +
+      warn.slice(0, 4).join(', ') + (warn.length > 4 ? ' ועוד' : ''));
+  } else {
+    ok(pageFiles.length + ' כותרות, כולן עד 60 תווים');
+  }
 })();
 
 /* ---------- דוח ---------- */

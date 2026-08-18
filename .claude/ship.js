@@ -85,6 +85,62 @@ function die(msg, hint) {
   process.exit(1);
 }
 
+/* ---------- אימות שהפריסה באמת נוצרה ----------
+ *
+ * **זה קרה ב-17.8.2026, ופעמיים.** `ship.js prod` דחף ל-main בהצלחה, הדפיס "עלה לאתר
+ * החי", ו-Vercel לא בנה כלום. הקומיט היה אצל GitHub, אין פריסה שנכשלה, אין פריסה בתור,
+ * ופשוט לא נוצרה פריסה. גילינו את זה רק כי מישהו בדק את רשימת הפריסות ביד. אחר כך זה
+ * חזר על עצמו בדחיפה לענף הבדיקות.
+ *
+ * **דחיפה מוצלחת אינה פריסה.** git מדווח על מה שהוא עשה, ולא על מה שוובהוק עשה אחריו,
+ * ולכן ההודעה "עלה לאתר החי" הייתה הבטחה שהסקריפט לא יכול לקיים. אם לא רואים שהפריסה
+ * נוצרה, אומרים את זה במקום להבטיח.
+ *
+ * הבדיקה נשענת על ה-CLI של Vercel, שכבר מותקן ומאומת. **היעדרו אינו כישלון**: אם הוא לא
+ * שם, מדווחים שאי אפשר לאמת ומבקשים בדיקה ידנית. זה עדיף על שתיקה, ועדיף על חסימה. */
+function deployAgeMinutes() {
+  var raw = out('vercel ls phonegat-website --yes 2>&1');
+  if (!raw) return null;
+  var lines = raw.split('\n').filter(function (l) { return /https:\/\/\S+\.vercel\.app/.test(l); });
+  if (!lines.length) return null;
+  var best = null;
+  lines.forEach(function (l) {
+    var m = l.match(/^\s*(\d+)\s*([smhd])\b/);
+    if (!m) return;
+    var n = Number(m[1]);
+    var mins = m[2] === 's' ? n / 60 : m[2] === 'm' ? n : m[2] === 'h' ? n * 60 : n * 1440;
+    if (best === null || mins < best) best = mins;
+  });
+  return best;
+}
+function verifyDeploy(target) {
+  var before = deployAgeMinutes();
+  if (before === null) {
+    console.log('\n  ' + C.y + '! אי אפשר לאמת שהפריסה נוצרה' + C.x);
+    console.log('  ' + C.d + 'ה-CLI של Vercel לא זמין או לא מאומת. בדוק ביד ב-vercel.com' + C.x);
+    return;
+  }
+  /* חלון ההמתנה קצר בכוונה: בנייה של אתר סטטי כאן לוקחת 5 עד 8 שניות, ולכן פריסה
+     שלא נוצרה בתוך דקה כמעט ודאי לא תיווצר. */
+  var waited = 0;
+  while (waited < 60) {
+    var age = deployAgeMinutes();
+    if (age !== null && age <= 1.2) {
+      console.log('  ' + C.g + '✓ נוצרה פריסה חדשה ב-Vercel (' + target + ')' + C.x);
+      return;
+    }
+    try { cp.execSync(process.platform === 'win32' ? 'timeout /t 6 /nobreak >nul' : 'sleep 6', { stdio: 'ignore' }); }
+    catch (e) { /* timeout מחזיר קוד יציאה שאינו אפס, וזה תקין */ }
+    waited += 6;
+  }
+  console.log('\n  ' + C.r + C.b + '✗ הדחיפה עברה אבל Vercel לא יצר פריסה' + C.x);
+  console.log('  ' + C.d + 'הקוד אצל GitHub, ולכן הקוד לא אבד. מה שלא קרה הוא הבנייה.' + C.x);
+  console.log('\n  מה לבדוק:');
+  console.log('  1. ' + C.b + 'vercel.com → phonegat-website → Settings → Git' + C.x + '  שהחיבור למאגר קיים');
+  console.log('  2. ' + C.b + 'Deployments → Redeploy' + C.x + '  כדי לבנות ידנית עכשיו');
+  console.log('  ' + C.d + 'האתר החי ממשיך להגיש את הפריסה הקודמת עד שזה נפתר.' + C.x);
+}
+
 function preflight() {
   console.log(C.d + 'מריץ בדיקות…' + C.x);
   try { run('node .claude/preflight.js'); }
@@ -161,10 +217,11 @@ if (cmd === 'stage') {
     }
     die('הדחיפה ל-' + branch + ' נכשלה.', perr);
   }
-  console.log('\n' + C.g + C.b + '✓ עלה לסביבת הבדיקות של הסשן הזה' + C.x);
+  console.log('\n' + C.g + C.b + '✓ נדחף ל-' + branch + C.x);
+  verifyDeploy('preview');
   console.log('\n  ' + C.b + previewUrl(slug) + C.x);
-  console.log('\n  ' + C.d + 'הפריסה לוקחת ~דקה. חפש את הפס הצהוב למעלה.' + C.x);
-  console.log('  ' + C.d + 'בדוק גם בטלפון. כשזה תקין:  node .claude/ship.js prod' + C.x + '\n');
+  console.log('\n  ' + C.d + 'חפש את הפס הצהוב למעלה. בדוק גם בטלפון.' + C.x);
+  console.log('  ' + C.d + 'כשזה תקין:  node .claude/ship.js prod' + C.x + '\n');
 
 } else if (cmd === 'whoami') {
   /* בלי דחיפה ובלי בדיקות — רק "לאן אני שולח". שימושי כשארבעה סשנים פתוחים
@@ -204,9 +261,9 @@ if (cmd === 'stage') {
         '  ' + C.b + 'node .claude/ship.js stage' + C.x + '\n' +
         '  ' + C.b + 'node .claude/ship.js prod' + C.x);
   }
-  console.log('\n' + C.g + C.b + '✓ עלה לאתר החי' + C.x);
-  console.log('\n  ' + C.b + LIVE_URL + C.x);
-  console.log('\n  ' + C.d + 'הפריסה לוקחת ~דקה.' + C.x + '\n');
+  console.log('\n' + C.g + C.b + '✓ נדחף ל-main' + C.x);
+  verifyDeploy('production');
+  console.log('\n  ' + C.b + LIVE_URL + C.x + '\n');
 
 } else {
   console.log('\n' + C.b + 'PHONE GAT — העלאה' + C.x + '\n');

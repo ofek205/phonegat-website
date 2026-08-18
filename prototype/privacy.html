@@ -45,15 +45,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="description" content="מדיניות הפרטיות של אתר פון גת, קרית גת. איזה מידע נאסף, כיצד אנו משתמשים בו, שמירתו וזכויותיכם לפי חוק הגנת הפרטיות.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://www.phonegat.co.il/privacy.html">
+<!-- שיתוף ונתונים מובנים. עד 17.8.2026 שני העמודים המשפטיים היו היחידים מבין 78 בלי og:image,
+     בלי og:description ובלי JSON-LD, ולכן קישור אליהם ב-WhatsApp הגיע בלי תמונה ובלי תקציר.
+     התמונה היא og-home.jpg, אותה תמונה של כל האתר, כי לעמוד משפטי אין תמונה משלו. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="פון גת">
+<meta property="og:locale" content="he_IL">
+<meta property="og:title" content="מדיניות פרטיות | פון גת">
+<meta property="og:description" content="מדיניות הפרטיות של אתר פון גת, קרית גת. איזה מידע נאסף, כיצד אנו משתמשים בו, שמירתו וזכויותיכם לפי חוק הגנת הפרטיות.">
+<meta property="og:url" content="https://www.phonegat.co.il/privacy.html">
+<meta property="og:image" content="https://www.phonegat.co.il/og-home.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="850">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="מדיניות פרטיות | פון גת">
+<meta name="twitter:description" content="מדיניות הפרטיות של אתר פון גת, קרית גת. איזה מידע נאסף, כיצד אנו משתמשים בו, שמירתו וזכויותיכם לפי חוק הגנת הפרטיות.">
+<meta name="twitter:image" content="https://www.phonegat.co.il/og-home.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MobilePhoneStore","@id":"https://www.phonegat.co.il/#business","name":"פון גת","url":"https://www.phonegat.co.il/","logo":"https://www.phonegat.co.il/logo-mark.png","telephone":"+972-52-5893366","address":{"@type":"PostalAddress","streetAddress":"רחבת תשרי 2","addressLocality":"קרית גת","addressCountry":"IL"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","@id":"https://www.phonegat.co.il/privacy.html","name":"מדיניות פרטיות","description":"מדיניות הפרטיות של אתר פון גת, קרית גת. איזה מידע נאסף, כיצד אנו משתמשים בו, שמירתו וזכויותיכם לפי חוק הגנת הפרטיות.","inLanguage":"he-IL","dateModified":"2026-07-20","publisher":{"@id":"https://www.phonegat.co.il/#business"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"פון גת","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"מדיניות פרטיות","item":"https://www.phonegat.co.il/privacy.html"}]}
+</script>
 <style>
-  :root{--teal:#1878A8;--teal-d:#12617F;--ink:#2b2b2e;--ink-strong:#141210;--soft:#5b5560;--line:#e2e0e4;--font:"Assistant","Heebo","Segoe UI",system-ui,sans-serif}
+  /* ארבעת המשתנים האחרונים נדרשים על ידי ההדר והפוטר המשותפים, וערכיהם זהים לשאר האתר */
+  :root{--teal:#1878A8;--teal-d:#12617F;--ink:#2b2b2e;--ink-strong:#141210;--soft:#5b5560;--line:#e2e0e4;--font:"Assistant","Heebo","Segoe UI",system-ui,sans-serif;--ink-soft:#6b6670;--on-dark-soft:#c4c0c8;--maxw:1400px;--ease:cubic-bezier(.4,0,.2,1)}
   *{box-sizing:border-box}
   body{margin:0;font-family:var(--font);font-size:18px;line-height:1.75;color:var(--ink);background:#fff}
-  .skip{position:absolute;inset-inline-start:-9999px;top:0;background:var(--teal);color:#fff;padding:.6rem 1rem;z-index:20}
+  /* 300 ולא 20: ההדר המשותף הוא sticky ב-z-index 100, וקישור הדילוג ב-20 היה נפתח *מתחתיו*
+     בפוקוס, כלומר בלתי נראה בדיוק במקרה שהוא נבנה בשבילו. אותו ערך כמו בשאר האתר. */
+  .skip{position:absolute;inset-inline-start:-9999px;top:0;background:var(--teal);color:#fff;padding:.6rem 1rem;z-index:300}
   .skip:focus{inset-inline-start:0}
-  .top{background:#0b0b0b;color:#fff;padding:1rem clamp(14px,4vw,32px)}
-  .top a{color:#fff;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:.4rem}
-  .top a:hover{color:var(--teal)}
   main{max-width:840px;margin-inline:auto;padding:clamp(24px,5vw,56px) clamp(16px,4vw,32px) 90px}
   h1,h2,h3,h4{font-weight:800}  /* אותו משקל ככל האתר; קודם ירשו 700 מברירת המחדל של הדפדפן */
 h1{font-size:clamp(1.7rem,4vw,2.4rem);color:var(--ink-strong);margin:0 0 .4rem}
@@ -116,9 +141,9 @@ html.a11y-text-130 body{font-size:23.4px}
 html.a11y-text-150{font-size:24px}
 html.a11y-text-150 body{font-size:27px}
 html.a11y-readable-font body,html.a11y-readable-font body *{font-family:Arial,"Segoe UI",system-ui,sans-serif !important}
-html.a11y-contrast-high :is(.top,main){filter:contrast(1.35)}
-html.a11y-contrast-invert :is(.top,main){filter:invert(1) hue-rotate(180deg)}
-html.a11y-contrast-mono :is(.top,main){filter:grayscale(1) contrast(1.08)}
+html.a11y-contrast-high :is(header.site,main,footer.site){filter:contrast(1.35)}
+html.a11y-contrast-invert :is(header.site,main,footer.site){filter:invert(1) hue-rotate(180deg)}
+html.a11y-contrast-mono :is(header.site,main,footer.site){filter:grayscale(1) contrast(1.08)}
 html.a11y-lines-16 :is(p,li,summary,.txt,.pbody){line-height:1.8 !important}
 html.a11y-lines-20 :is(p,li,summary,.txt,.pbody){line-height:2 !important}
 html.a11y-headings :is(h1,h2,h3){outline:2px dashed var(--teal);outline-offset:4px;background:rgba(24,120,168,.07)}
@@ -165,6 +190,93 @@ html.a11y-cursor-large *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www
    announces a change it does not make is worse than no control at all. */
 html.a11y-stop-motion *,html.a11y-stop-motion *::before,html.a11y-stop-motion *::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
 /* ==== chrome:css:end ==== */
+/* ==== chrome:hf:start: ההדר והפוטר המשותפים, סגירת התלות מ-/guides/ ==== */
+/* בלוק הניווט של gen-nav.js נכתב אחרי זה, בסוף בלוק הסגנון הזה, ולכן הוא מנצח היכן
+ * ששניהם נוגעים באותו סלקטור.
+ * אין לכתוב כאן את התג הסוגר של style גם לא בתוך הערה: מנתח ה-HTML סוגר את הבלוק
+ * ברצף התווים הזה בלי להתחשב בתחביר CSS, וכל מה שאחריו הופך לטקסט על העמוד. */
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(12px,3vw,28px)}
+.btn-wa{background:#25D366;color:#0a2e18}
+.btn-wa:hover{background:#20c15c}
+header.site{background:#fff;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:1rem;min-height:66px}
+.logo{display:inline-flex;align-items:center;min-height:44px}
+.logo img{height:38px;width:auto}
+nav.main{display:flex;gap:1.15rem;font-weight:600;font-size:.98rem;margin-inline-start:auto;flex-wrap:wrap}
+nav.main a{color:var(--ink);padding:.3rem 0}
+nav.main a:hover{color:#000}
+.hicons{display:flex;align-items:center;gap:1rem;margin-inline-start:1.6rem}
+.hicons .ic{color:var(--ink);display:inline-flex;align-items:center;justify-content:center;inline-size:44px;block-size:44px;margin-inline:-12px}
+.burger{display:none;background:none;border:none;color:var(--ink-strong);font-size:1.7rem;cursor:pointer;margin-inline-start:auto;min-width:44px;min-height:44px}
+footer.site{background:#000;color:var(--on-dark-soft);padding:2.6rem 0 3rem}
+footer .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:1.8rem}
+footer.site h4{font-family:var(--font);font-weight:700;color:#fff;margin-bottom:.7rem}
+footer .fl{list-style:none;padding:0;margin:0;display:grid;gap:.45rem}
+footer .flogo{background:#fff;border-radius:8px;padding:5px;display:inline-flex}
+footer .flogo img{height:42px;width:auto}
+footer .copy{border-top:1px solid #222;margin-top:1.8rem;padding-top:1rem;font-size:.85rem}
+footer .copy a{text-decoration:underline;background-image:linear-gradient(currentColor,currentColor);background-repeat:no-repeat;background-position:100% 100%;background-size:0 1px;transition:background-size .3s var(--ease)}
+footer .copy a:hover{background-size:100% 1px}
+/* ── ניטרול הכללים הכלליים של העמוד המשפטי בתוך המסגרת ──────────
+ * לעמוד הזה יש a{color:var(--teal-d)}, li{margin:.4rem 0} ו-h4 בלי margin מאופס, וכולם
+ * חלים גם על ההדר והפוטר. הבולט מביניהם: קישורי הפוטר יצאו טורקיז על שחור, יחס ניגודיות
+ * 2.2:1 מול 12.7:1 של הצבע הנכון, כלומר כשל נגישות ולא רק הבדל גוון. נמצא בהשוואת
+ * סגנון מחושב מול /guides/, לא בעין. */
+header.site img,footer.site img{display:block;max-width:100%}
+footer.site a{color:inherit}
+footer.site h4{line-height:1.15;margin:0 0 .7rem}
+footer.site li{margin:0}
+footer.site p{margin:0}
+@media(min-width:1101px) and (max-width:1200px){nav.main{gap:.9rem;font-size:.95rem}}
+@media(min-width:981px) and (max-width:1100px){nav.main{gap:.7rem;font-size:.9rem}}
+@media(max-width:980px){
+  nav.main{display:none;position:absolute;inset-inline:0;top:100%;background:#fff;flex-direction:column;gap:0;padding:.4rem 0;border-bottom:1px solid var(--line);z-index:110}
+  nav.main.open{display:flex}
+  nav.main a{padding:.75rem clamp(12px,3vw,28px);border-top:1px solid var(--line)}
+  .burger{display:block}
+  .hicons{display:none}
+}
+@media(max-width:820px){
+  footer .fl a{display:inline-flex;align-items:center;min-height:44px}
+  footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
+  footer .copy a{display:inline-block;padding-block:.72rem}
+}
+@media(max-width:720px){footer .cols{grid-template-columns:1fr}}
+/* ==== chrome:hf:end ==== */
+/* ==== gen-nav:css:start ==== */
+/* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
+nav.main .ndrop{position:relative}
+nav.main>a{display:inline-flex;align-items:center;min-height:44px}
+nav.main .ntrig{background:none;border:0;color:var(--ink);font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;padding:.3rem 0}
+nav.main .ntrig:hover,nav.main .ntrig[aria-expanded="true"]{color:var(--teal)}
+nav.main .npanel{display:none;flex-direction:column;gap:.2rem;position:absolute;inset-inline-start:0;inset-block-start:calc(100% + .55rem);background:#fff;border:1px solid var(--line);padding:1.15rem 1.35rem;z-index:130}
+nav.main .npanel.open{display:flex}
+nav.main .npanel::before{content:"";position:absolute;inset-inline:0;inset-block-end:100%;block-size:.7rem}
+nav.main .nrow{display:flex;align-items:flex-start;gap:0 1.9rem}
+nav.main .ncol{min-inline-size:8.6rem}
+nav.main .nhead{color:var(--ink-soft);font-size:.95rem;font-weight:700;margin:0 0 .35rem;letter-spacing:.02em}
+nav.main .npanel a{display:flex;align-items:center;color:var(--ink);font-weight:500;min-block-size:44px;padding-block:.3rem;white-space:nowrap;border:0}
+nav.main .npanel a:hover{color:var(--teal)}
+nav.main .npanel a[aria-current="page"]{color:var(--teal);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+nav.main >a[aria-current="page"]{font-weight:800;text-decoration:underline;text-underline-offset:4px}
+nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
+nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
+nav.main a.ntool{font-weight:800}
+@media(max-width:980px){
+  nav.main .ndrop{display:block}
+  nav.main .ntrig{display:flex;inline-size:100%;padding:.7rem clamp(12px,3vw,28px);border-bottom:1px solid var(--line);min-height:48px}
+  nav.main>a{display:flex;align-items:center;inline-size:100%;min-height:48px;padding:.7rem clamp(12px,3vw,28px)}
+  nav.main .npanel{position:static;border:0;background:#fff;padding:.15rem 0 .45rem;gap:0;min-inline-size:0}
+  nav.main .npanel::before{content:none}
+  nav.main .nrow{flex-direction:column;gap:0;align-items:stretch}
+  nav.main .ncol{min-inline-size:0}
+  nav.main .nhead{padding:.7rem clamp(18px,5vw,36px) .15rem;margin:0}
+  nav.main .npanel a{padding:.62rem clamp(24px,6vw,44px);border-bottom:1px solid var(--line)}
+  nav.main .nall{border-top:1px solid var(--line);margin:0;padding-block-start:0;flex-direction:column;gap:0}
+  nav.main .ndrop:last-of-type .npanel{inset-inline-end:auto}
+  nav.main.open{display:block;max-height:calc(100vh - 12rem);max-height:calc(100dvh - 12rem);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+}
+/* ==== gen-nav:css:end ==== */
 </style>
 <script>
 /* accessibility prefs bootstrap (same store as the home page, runs before paint) */
@@ -191,9 +303,70 @@ c.toggle('a11y-stop-motion',!!p.motion);}catch(e){}})();
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   <a class="skip" href="#main-content">דלג לתוכן הראשי</a>
-  <div class="top">
-    <a href="/"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l-6 6 6 6M3 12h18"/></svg>חזרה לאתר פון גת</a>
+<header class="site" role="banner">
+  <div class="wrap hrow">
+    <a class="logo" href="/" aria-label="פון גת, דף הבית"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת, חנות ומעבדת סלולר בקרית גת" width="295" height="112"></picture></a>
+    <button class="burger" id="burger" aria-label="תפריט" aria-expanded="false" aria-controls="nav" aria-haspopup="true">☰</button>
+    <nav class="main" id="nav" aria-label="ניווט ראשי">
+      <a href="/phones/compare/" class="ntool">כלי השוואה בין הדגמים</a>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-devices-t" aria-expanded="false" aria-controls="nd-devices">מכשירים</button>
+        <div class="npanel" id="nd-devices" role="group" aria-labelledby="nd-devices-t">
+          <div class="nrow">
+            <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
+            <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
+            <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
+          </div>
+          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-repairs-t" aria-expanded="false" aria-controls="nd-repairs">תיקונים</button>
+        <div class="npanel" id="nd-repairs" role="group" aria-labelledby="nd-repairs-t">
+          <div class="nrow">
+            <div class="ncol"><p class="nhead">לפי תקלה</p><a href="/phone-screen-replacement-kiryat-gat/">החלפת מסך</a><a href="/phone-battery-replacement-kiryat-gat/">החלפת סוללה</a><a href="/charging-port-repair-kiryat-gat/">שקע טעינה</a><a href="/phone-camera-repair-kiryat-gat/">מצלמה</a><a href="/phone-speaker-microphone-repair-kiryat-gat/">רמקול ומיקרופון</a><a href="/phone-back-glass-repair-kiryat-gat/">גב אחורי</a><a href="/face-id-repair-kiryat-gat/">Face ID</a></div>
+            <div class="ncol"><p class="nhead">לפי דגם</p><a href="/iphone-repair-kiryat-gat/">תיקון אייפון</a><a href="/galaxy-a-screen-replacement-kiryat-gat/">מסך גלקסי A</a><a href="/galaxy-a-battery-replacement-kiryat-gat/">סוללה גלקסי A</a><a href="/redmi-repair-kiryat-gat/">תיקון רדמי נוט</a><a href="/xiaomi-repair-kiryat-gat/">שיאומי ופוקו</a></div>
+          </div>
+          <div class="nall"><a href="/mobile-phone-repair-kiryat-gat/">מעבדת הסלולר</a><a href="/phone-problems/">מדריך תקלות</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-guides-t" aria-expanded="false" aria-controls="nd-guides">מדריכים</button>
+        <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
+            <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
+          </div>
+          <div class="nall"><a href="/guides/">כל המדריכים</a></div>
+        </div>
+      </div>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-areas-t" aria-expanded="false" aria-controls="nd-areas">אזורי שירות</button>
+        <div class="npanel" id="nd-areas" role="group" aria-labelledby="nd-areas-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/mobile-phone-repair-kiryat-gat/">קריית גת</a><a href="/phone-repair-kiryat-malachi/">קריית מלאכי</a><a href="/phone-repair-lachish/">מועצה אזורית לכיש</a><a href="/phone-repair-yoav/">מועצה אזורית יואב</a><a href="/phone-repair-shafir/">מועצה אזורית שפיר</a><a href="/phone-repair-beer-tuvia/">מועצה אזורית באר טוביה</a><a href="/phone-repair-hof-ashkelon/">מועצה אזורית חוף אשקלון</a><a href="/phone-repair-har-hevron/">מועצה אזורית הר חברון</a><a href="/phone-repair-mate-yehuda/">מועצה אזורית מטה יהודה</a></div>
+          </div>
+        </div>
+      </div>
+      <a href="/#deals">מבצעים</a>
+      <div class="ndrop">
+        <button type="button" class="ntrig" id="nd-about-t" aria-expanded="false" aria-controls="nd-about">פון גת</button>
+        <div class="npanel" id="nd-about" role="group" aria-labelledby="nd-about-t">
+          <div class="nrow">
+            <div class="ncol"><a href="/#team">מי אנחנו</a><a href="/#reviews">ביקורות</a><a href="/#services">שירותים</a></div>
+            <div class="ncol"><a href="/#press">כתבו עלינו</a><a href="/#map">מיקום</a><a href="/#faq">שאלות נפוצות</a></div>
+          </div>
+        </div>
+      </div>
+      <a href="/contact/">צרו קשר</a>
+    </nav>
+    <div class="hicons">
+      <a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>
+      <a class="btn btn-wa btn-sm" href="https://wa.me/97286812050"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a>
+    </div>
   </div>
+</header>
+
 
   <main id="main-content" role="main" tabindex="-1">
     <h1>מדיניות פרטיות</h1>
@@ -251,6 +424,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p>תאריך עדכון אחרון: <span class="ltr">20/07/2026</span></p>
     </div>
   </main>
+
+<footer class="site" role="contentinfo">
+  <div class="wrap cols">
+    <div><a class="flogo" href="/"><picture><source srcset="/logo-mark.webp" type="image/webp"><img src="/logo-mark.png" alt="פון גת" width="295" height="112" loading="lazy"></picture></a><p style="margin-top:1rem;max-width:34ch">מעבדת הסלולר הוותיקה בקרית גת. כל עולם הסלולר במקום אחד, מכל הלב.</p></div>
+    <div><h4>יצירת קשר</h4><ul class="fl"><li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li><li>רחבת תשרי 2, קרית גת</li></ul></div>
+    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳–ה׳: <span class="ltr">9:00–18:30</span></li><li>ו׳: <span class="ltr">9:00–13:00</span></li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>
+  </div>
+  <div class="wrap copy">© פון גת · כל הזכויות שמורות · <a href="/accessibility.html">הצהרת נגישות</a> · <a href="/privacy.html" aria-current="page">מדיניות פרטיות</a></div>
+</footer>
 
 <!-- ==== chrome:markup:start ==== -->
 <button class="a11y-trigger" id="a11yTrigger" aria-label="פתיחת תפריט נגישות" aria-expanded="false" aria-controls="a11yPanel" aria-keyshortcuts="Alt+A">
@@ -432,5 +614,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   },true);
 })();
 </script>
+<!-- ==== chrome:burger:start ==== -->
+<script>
+/* תפריט מובייל. אותו קוד כמו בשאר העמודים. */
+(function(){
+  var b=document.getElementById("burger"),n=document.getElementById("nav");
+  if(!b||!n)return;
+  b.addEventListener("click",function(){var o=n.classList.toggle("open");b.setAttribute("aria-expanded",o?"true":"false");});
+  n.addEventListener("click",function(e){if(e.target.tagName==="A"){n.classList.remove("open");b.setAttribute("aria-expanded","false");}});
+})();
+</script>
+<!-- ==== chrome:burger:end ==== -->
+<!-- gen-nav:js:start -->
+<script>/* ניווט נפתח — .claude/tools/gen-nav.js. אל תערוך ידנית. */
+(function(){var nav=document.getElementById("nav");if(!nav)return;
+var trigs=[].slice.call(nav.querySelectorAll(".ntrig"));
+function pan(t){return document.getElementById(t.getAttribute("aria-controls"))}
+function shut(t){t.setAttribute("aria-expanded","false");var p=pan(t);if(p)p.classList.remove("open")}
+function shutAll(x){trigs.forEach(function(t){if(t!==x)shut(t)})}
+function open(t){shutAll(t);t.setAttribute("aria-expanded","true");var p=pan(t);if(p)p.classList.add("open")}
+var HQ=window.matchMedia?window.matchMedia("(hover:hover) and (pointer:fine) and (min-width:981px)"):null;
+trigs.forEach(function(t){
+  t.addEventListener("click",function(){t.getAttribute("aria-expanded")==="true"?shut(t):open(t)});
+  var d=t.parentNode;
+  d.addEventListener("mouseenter",function(){if(HQ&&HQ.matches)open(t)});
+  d.addEventListener("mouseleave",function(){if(HQ&&HQ.matches)shut(t)});
+  t.addEventListener("keydown",function(e){
+    if(e.key==="ArrowDown"){e.preventDefault();open(t);var a=pan(t).querySelector("a");if(a)a.focus()}
+    else if(e.key==="Escape"){shut(t)}});
+  var p=pan(t);if(!p)return;
+  p.addEventListener("keydown",function(e){
+    var L=[].slice.call(p.querySelectorAll("a")),i=L.indexOf(document.activeElement);
+    if(e.key==="Escape"){e.preventDefault();shut(t);t.focus()}
+    else if(e.key==="ArrowDown"&&i>-1){e.preventDefault();L[(i+1)%L.length].focus()}
+    else if(e.key==="ArrowUp"&&i>-1){e.preventDefault();L[(i-1+L.length)%L.length].focus()}})});
+document.addEventListener("click",function(e){if(!nav.contains(e.target))shutAll()});
+nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))shutAll()});
+})();</script>
+<!-- gen-nav:js:end -->
 </body>
 </html>
