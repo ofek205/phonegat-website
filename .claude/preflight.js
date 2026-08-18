@@ -1906,6 +1906,25 @@ if (classFails.length) {
     if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(String(d.launch))) { badFmt.push(d.slug + '=' + d.launch); return; }
     if (String(d.launch) > cap) future.push(d.slug + '=' + d.launch);
   });
+  /* מקור התאריך: דומיין יצרן, או דומיין אחר שאומר בהערה שהוא אינו היצרן.
+     הרשימה היא של היצרנים ולא של החיצוניים, כדי שמקור חיצוני חדש ייתפס מיד ומקור יצרן חדש
+     יחייב החלטה מודעת. ל-Nothing ול-OnePlus אין ארכיון הודעות מתוארך, ולכן ארבעה תאריכים
+     נלקחו ממגזין ישראלי, וזה מותר לתאריך היסטורי אבל חייב להיות כתוב. */
+  var MAKER = ['apple.com', 'samsung.com', 'mi.com', 'oneplus.com', 'blog.google',
+    'support.google.com', 'store.google.com', 'fi.google.com', 'nothing.tech', 'motorola.com'];
+  var noSrc = [], quiet = [];
+  db.devices.forEach(function (d) {
+    if (!d.launch) return;
+    if (!d.launch_src) { noSrc.push(d.slug); return; }
+    var host = String(d.launch_src).split('//').pop().split('/')[0].toLowerCase();
+    var maker = MAKER.some(function (m) { return host === m || host.slice(-(m.length + 1)) === '.' + m; });
+    if (!maker && !d.launch_note) quiet.push(d.slug + ' (' + host + ')');
+  });
+  if (noSrc.length) problems.push(noSrc.length + ' דגמים מתוארכים בלי launch_src: ' + noSrc.slice(0, 4).join(', '));
+  if (quiet.length) {
+    problems.push('תאריך ממקור שאינו יצרן ובלי launch_note שאומר זאת: ' + quiet.slice(0, 4).join(', ') +
+      '. אם זה כן דומיין של יצרן, הוסף אותו ל-MAKER בבדיקה הזאת.');
+  }
   if (noField.length) problems.push(noField.length + ' דגמים בלי שדה launch כלל: ' + noField.slice(0, 4).join(', '));
   if (badFmt.length) problems.push('פורמט שאינו YYYY-MM: ' + badFmt.slice(0, 4).join(', '));
   if (future.length) problems.push('תאריך עתידי, שמקפיא את הדגם בראש הרשימה: ' + future.join(', '));
