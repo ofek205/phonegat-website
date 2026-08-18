@@ -41,6 +41,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -83,6 +84,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -124,6 +126,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -166,6 +169,7 @@
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A276B"
       },
+      "launch": "2026-06",
       "img": 1
     },
     {
@@ -212,6 +216,7 @@
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A576B"
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -257,6 +262,7 @@
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A376B"
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -303,6 +309,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-03",
       "own": false
     },
     {
@@ -348,6 +355,7 @@
         "connectivity": "Wi-Fi 6, Bluetooth 5.3",
         "security_updates": null
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -397,6 +405,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "storage_expandable": "אין חריץ לכרטיס זיכרון"
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -445,6 +454,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -493,6 +503,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -539,6 +550,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2026-01",
       "img": 1
     },
     {
@@ -584,6 +596,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2026-01",
       "img": 1
     },
     {
@@ -628,6 +641,7 @@
         "security_updates": null,
         "model_numbers": "CPH2769"
       },
+      "launch": "2025-12",
       "own": false
     },
     {
@@ -673,6 +687,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-11",
       "own": false
     },
     {
@@ -720,6 +735,7 @@
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -766,6 +782,7 @@
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -812,6 +829,7 @@
         "security_updates": "עדכון עד אנדרואיד 17 לפי העמוד",
         "model_numbers": null
       },
+      "launch": "2025-09",
       "own": false
     },
     {
@@ -859,6 +877,7 @@
         "connectivity": "5G sub-6GHz עם 4x4 MIMO, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -900,6 +919,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-09",
       "own": false
     },
     {
@@ -945,6 +965,7 @@
         "security_updates": "עדכוני אבטחה עד 31 באוגוסט 2031, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A075F"
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -991,6 +1012,7 @@
         "security_updates": "עדכוני אבטחה עד 30 בספטמבר 2032, ועד שבעה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-S731B"
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -1038,6 +1060,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1090,6 +1113,7 @@
           "GN4F5"
         ]
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1134,6 +1158,7 @@
         "security_updates": "שישה דורות שדרוג של מערכת ההפעלה ושש שנים של עדכוני אבטחה מתאריך ההשקה העולמי. סמסונג אינה נוקבת בתאריך סיום מדויק בעמוד הזה, בשונה מ-A57 ומ-A37",
         "model_numbers": "SM-A175F, הדגם שסמסונג ישראל מוכרת. קיימת גם גרסת SM-A176B באותו שם מסחרי, והיא 5G"
       },
+      "launch": "2025-08",
       "img": 1
     },
     {
@@ -1180,6 +1205,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1226,6 +1252,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1273,6 +1300,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1319,6 +1347,7 @@
           "A024"
         ]
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1364,6 +1393,7 @@
         "security_updates": "עד שלושה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-04",
       "own": false
     },
     {
@@ -1409,6 +1439,7 @@
         "security_updates": "שלושה עדכוני מערכת הפעלה מובטחים",
         "model_numbers": null
       },
+      "launch": "2025-04",
       "own": false
     },
     {
@@ -1456,6 +1487,7 @@
         "security_updates": "עד ארבעה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1500,6 +1532,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1540,6 +1573,7 @@
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2032",
         "model_numbers": "SM-A566B"
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1585,6 +1619,7 @@
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2031",
         "model_numbers": "SM-A366B"
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1636,6 +1671,7 @@
           "SM-A266W"
         ]
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1682,6 +1718,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1732,6 +1769,7 @@
           "G3Y12"
         ]
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1777,6 +1815,7 @@
         "security_updates": "עד שלושה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1827,6 +1866,7 @@
           "A3410"
         ]
       },
+      "launch": "2025-02",
       "own": false
     },
     {
@@ -1869,6 +1909,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -1916,6 +1957,7 @@
         "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD",
         "security_updates": null
       },
+      "launch": "2025-01",
       "img": 1
     },
     {
@@ -1962,6 +2004,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2003,6 +2046,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2044,6 +2088,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2091,6 +2136,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "img": 1
     },
     {
@@ -2138,6 +2184,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-09",
       "own": false
     },
     {
@@ -2186,6 +2233,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-09",
       "own": false
     },
     {
@@ -2232,6 +2280,7 @@
         "connectivity": "Wi-Fi 7, Bluetooth 5.3",
         "security_updates": null
       },
+      "launch": "2024-09",
       "img": 1
     },
     {
@@ -2277,6 +2326,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-05",
       "own": false
     },
     {
@@ -2322,6 +2372,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-02",
       "own": false
     },
     {
@@ -2360,6 +2411,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2405,6 +2457,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2450,6 +2503,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2488,6 +2542,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2526,6 +2581,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2572,6 +2628,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2619,6 +2676,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2667,6 +2725,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2715,6 +2774,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2763,6 +2823,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2808,6 +2869,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-03",
       "own": false
     },
     {
@@ -2852,6 +2914,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-02",
       "own": false
     },
     {
@@ -2900,6 +2963,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -2948,6 +3012,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -2997,6 +3062,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -3046,6 +3112,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -3092,6 +3159,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-03",
       "own": false
     },
     {
@@ -3141,6 +3209,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3190,6 +3259,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3239,6 +3309,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3288,6 +3359,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3335,6 +3407,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3382,6 +3455,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3431,6 +3505,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3480,6 +3555,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {

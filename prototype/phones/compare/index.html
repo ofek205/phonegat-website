@@ -610,6 +610,7 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dmenu .dmlist .blogo-oneplus{block-size:18px}
 .dmenu .dmlist .blogo-nothing{block-size:14px}
 .cmp-grid thead .blogo-apple{height:17px}
+.cmp-grid thead .dhyear{font-weight:500;font-size:.82em;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums;margin-inline-start:.3rem}
 .cmp-grid thead .blogo-samsung{height:13px}
 .cmp-grid thead .blogo-xiaomi{height:17px}
 .cmp-grid thead .blogo-google{height:17px}
@@ -2523,6 +2524,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var TDEF=[{"key":"weight","label":"משקל","min":12,"more":"כבד יותר","fmt":"int","unit":" גרם","each":false,"gap":true,"low":true,"lowMore":"קל יותר","group":"weight","pri":0,"zero":null,"who":"אם חשוב שהמכשיר יהיה קל ביד"},{"key":"screen_size","label":"גודל מסך","min":0.3,"more":"מסך גדול יותר","fmt":"dec","unit":" אינץ׳","each":false,"gap":false,"low":false,"lowMore":"מסך גדול יותר","group":"screen_size","pri":0,"zero":null,"who":"אם אתם קוראים וצופים בסרטונים"},{"key":"storage_offered","label":"אחסון מקסימלי","min":128,"more":"אחסון גדול יותר","fmt":"gb","unit":"","each":false,"gap":false,"low":false,"lowMore":"אחסון גדול יותר","group":"storage_offered","pri":0,"zero":null,"who":"אם אתם מצלמים הרבה ולא רוצים למחוק"},{"key":"battery_hours","label":"שעות וידאו","min":4,"more":"יותר שעות וידאו","fmt":"int","unit":" שעות","each":false,"gap":false,"low":false,"lowMore":"יותר שעות וידאו","group":"batt","pri":1,"zero":null,"who":"אם אתם מחוץ לבית כל היום"},{"key":"battery_mah","label":"קיבולת סוללה","min":400,"more":"קיבולת גדולה יותר","fmt":"int","unit":" mAh","each":false,"gap":false,"low":false,"lowMore":"קיבולת גדולה יותר","group":"batt","pri":2,"zero":null,"who":"אם אתם מחוץ לבית כל היום"},{"key":"zoom","label":"זום אופטי","min":1,"more":"זום אופטי גדול יותר","fmt":"dec","unit":"x","each":true,"gap":false,"low":false,"lowMore":"זום אופטי גדול יותר","group":"zoom","pri":0,"zero":"אין זום אופטי","who":"אם אתם מצלמים דברים רחוקים"}];
   /* MAX is the ceiling; slots is what is actually on screen. Three at once muddled the
      comparison, so two is the default and the third is asked for. */
+  /* שנת ההכרזה בראש הטור. שנה ולא חודש, כי התא nowrap וצריך להיכנס פעמיים במסך של 375,
+     ובאותה שורה של השם, כי ראש הטבלה דביק ושורה שנייה הייתה מגביהה אותו. */
+  function yr(d){return d&&d.launch?' <span class="dhyear">'+String(d.launch).slice(0,4)+'</span>':'';}
   var MAX=3, slots=2, sel=[], DB=null, focus=null, means=false, menuFor=null, menuOpen={};
   /* One sentence per field, keyed by the spec key. Written once and reused across all 136 pairs.
      It says what the difference MEANS, never who wins: the page declares no winner, and several of
@@ -2891,7 +2895,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){
       var b=LOGO[d.brand];
       var mark=b?'<img class="blogo blogo-'+b[0]+'" src="/logos/'+b[0]+'.png" alt="" width="'+b[1]+'" height="'+b[2]+'" loading="lazy" decoding="async">':"";
-      return '<th scope="col" class="sc'+i+'">'+pic(d,"dhpic")+mark+ltr(d.name)+"</th>";}).join("")+"</tr></thead>";
+      return '<th scope="col" class="sc'+i+'">'+pic(d,"dhpic")+mark+ltr(d.name)+yr(d)+"</th>";}).join("")+"</tr></thead>";
 
     var cap=focus
       ? "מציג את "+esc(focus)+" בלבד, "+shown.length+" שדות מתוך "+diff.length+" שבהם יש הבדל."

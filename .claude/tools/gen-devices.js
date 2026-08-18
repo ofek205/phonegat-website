@@ -96,6 +96,24 @@ function buildMain(d, openTag) {
   var S = d.spec, C = d.commercial, E = d.editorial || {};
   var srcDefault = (d.spec_source && d.spec_source.default) || {};
   var atDate = srcDefault.at ? srcDefault.at.split('-').reverse().join('/') : null;
+  /* חודש ההכרזה, מ-"YYYY-MM" לעברית. חודש ולא יום, כי זה מה שיש במאגר: סדרה שלמה מוכרזת
+     ביום אחד וההגעה למדפים היא בתאריך אחר, ולכן יום היה מדויק יותר ממה שאנחנו יודעים. */
+  var HEB_MONTH = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
+    'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+  var launchTxt = null;
+  if (d.launch) {
+    var lm = String(d.launch).match(/^(\d{4})-(\d{2})$/);
+    if (!lm) {
+      console.error('✗ ' + d.slug + ': launch אינו בפורמט YYYY-MM אלא "' + d.launch + '"');
+      process.exit(1);
+    }
+    var mi = +lm[2] - 1;
+    if (mi < 0 || mi > 11) {
+      console.error('✗ ' + d.slug + ': חודש ' + lm[2] + ' אינו בין 01 ל-12');
+      process.exit(1);
+    }
+    launchTxt = HEB_MONTH[mi] + ' ' + lm[1];
+  }
 
   /* --- שורות המפרט, מקובצות. רק שדות שיש בהם ערך, וקטגוריה ריקה נשמטת כולה --- */
   var specCount = 0;
@@ -143,6 +161,10 @@ function buildMain(d, openTag) {
   '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a></div>\n' +
   '      <p class="meta">\n' +
   '        <span>' + esc(d.brand) + (d.os ? ', ' + esc(d.os) : '') + '</span>\n' +
+  /* "הוכרז" ולא "יצא": התאריך הוא ההכרזה של היצרן, וההגעה לישראל היא בפער משתנה שאינו
+     מפורסם. שני התאריכים באותה שורה בכוונה, כי הם עונים על שתי שאלות שקל לבלבל ביניהן:
+     מתי היצרן הכריז על המכשיר, ומתי אנחנו בדקנו את המפרט. */
+  (launchTxt ? '        <span>הוכרז ב' + esc(launchTxt) + '</span>\n' : '') +
   (atDate ? '        <span>מפרט נבדק ב' + esc(atDate) + '</span>\n' : '') +
   '        <span>מעבדה במקום, יותר מ-30 שנה</span>\n' +
   '        <span>ליווי לפני הקנייה ואחריה</span>\n' +
@@ -533,14 +555,30 @@ if (!only) {
       process.exit(1);
     } else {
       hub = hub.replace(re, '$1' + items + '$2');
-      /* גם השורה שמונה אותם, אחרת היא אומרת מספר אחר ממה שמוצג */
-      var leadRe = /<p class="lead">[^<]*<\/p>(\r?\n\s*)<ul class="hub">/;
-      if (!leadRe.test(hub)) { console.error('✗ לא נמצאה שורת המונה ב-/phones/'); process.exit(1); }
-      hub = hub.replace(leadRe,
-        '<p class="lead">' + (live.length === 1
-          ? 'עמוד ראשון באוויר. הדגמים הנוספים נכנסים בימים הקרובים.'
-          : live.length + ' דגמים, ונוסיף עוד.') +
-        ' לכל דגם עמוד עם המפרט המלא מאתר היצרן, ומה הנתונים אומרים בשימוש יומיומי.</p>$1<ul class="hub">');
+      /* גם השורה שמונה אותם, אחרת היא אומרת מספר אחר ממה שמוצג.
+         תוחם למקטע id="devices" בלבד. עד 18.8.2026 הרגקס היה /<p class="lead">[^<]*<\/p>\s*<ul
+         class="hub">/ על כל הקובץ, ו-[^<]* אסר תגיות בתוך הפסקה. פסקת המכשירים מכילה קישור
+         ל-/upcoming-phones/, ולכן היא לא התאימה, והרגקס נפל על פסקת מקטע המדריכים, שאין בה
+         קישור. התוצאה: מונה המכשירים קפא על 18 מאז שהיו 18 דגמים, ומקטע המדריכים קיבל בכל
+         הרצה פסקה שמתארת מכשירים. השער הישן, if (!leadRe.test(hub)), עבר בשלום, כי התאמה
+         שגויה מספקת "יש התאמה" כמו נכונה. לכן השער כאן מאמת מה נמצא, ולא רק שנמצא משהו. */
+      var secRe = /(<section class="block" id="devices"[\s\S]*?<\/section>)/;
+      var secM = hub.match(secRe);
+      if (!secM) { console.error('✗ לא נמצא מקטע id="devices" ב-/phones/'); process.exit(1); }
+      var sec = secM[1];
+      var leadRe = /<p class="lead">[\s\S]*?<\/p>(\r?\n\s*)<ul class="hub">/;
+      var leadM = sec.match(leadRe);
+      if (!leadM) { console.error('✗ לא נמצאה שורת המונה בתוך מקטע id="devices" ב-/phones/'); process.exit(1); }
+      /* אין כאן בדיקה שהרשימה שאחרי השורה היא רשימת מכשירים, ובכוונה: המחולל מחליף את
+         הרשימה כמה שורות קודם, ולכן בדיקה כזאת תמיד תראה /phones/ שהוא עצמו כתב, ולא תוכל
+         להיכשל אף פעם. מה שמגן הוא התיחום למקטע id="devices" למעלה, שנבדק ואכן עוצר. */
+      var leadTxt = '<p class="lead">' + (live.length === 1
+        ? 'עמוד ראשון באוויר. הדגמים הנוספים נכנסים בימים הקרובים.'
+        : live.length + ' דגמים, ונוסיף עוד.') +
+        ' לכל דגם עמוד עם המפרט המלא מאתר היצרן, ומה הנתונים אומרים בשימוש יומיומי.' +
+        ' מתלבטים אם <a href="/upcoming-phones/">לחכות לדגם הבא</a>?' +
+        ' יש לנו עמוד שמסביר איך לדעת את זה לבד.</p>';
+      hub = hub.replace(sec, sec.replace(leadRe, leadTxt + '$1<ul class="hub">'));
       /* ItemList ב-schema חייב להישאר תואם למה שמוצג */
       var il = { '@context': 'https://schema.org', '@type': 'ItemList',
         itemListElement: live.map(function (x, i) {
@@ -580,7 +618,8 @@ if (swGrew) {
  * של "רק approved נכנס" חי במחולל ה-HTML ולא בקובץ ה-JSON.
  *
  * מה שנכנס לקובץ הציבורי: בדיוק ארבעת השדות שהכלי קורא בזמן ריצה, ולא יותר.
- * נמדד מהקוד עצמו: DB.devices, d.slug, d.name, d.name_he, d.spec[key]. */
+ * נמדד מהקוד עצמו: DB.devices, d.slug, d.name, d.name_he, d.spec[key], d.launch.
+ * ועוד שני סימוני תצוגה שאינם נתון עסקי, own ו-img, שמתועדים למטה. */
 (function buildPublic() {
   var pub = {
     _: 'נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך. מכיל רק את השדות שכלי ההשוואה קורא בזמן ריצה, וכולם מוצגים בעמודי המכשיר בכל מקרה.',
@@ -594,6 +633,10 @@ if (swGrew) {
        שהבורר בעמוד משתמש בו, מ-traits.js, כדי ששתי הרשימות באותו עמוד יציגו אותו סדר. */
     devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(T.newestFirst).map(function (d) {
       var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
+      /* launch נוסע כדי שראש הטור בכלי יציג שנה. הוא עומד בקריטריון של הקובץ, כי
+         מ-18.8.2026 חודש ההכרזה מוצג בעמוד המכשיר בכל מקרה, והוא עובדה שהיצרן פרסם
+         ולא נתון עסקי. דגם בלי תאריך לא מקבל את השדה, והכלי פשוט לא מציג שנה. */
+      if (d.launch) o.launch = d.launch;
       if (d.status === 'reference') o.own = false;
       /* img הוא דגל ולא נתיב, והוא השדה השישי. הכלי בונה את הכתובת מה-slug בעצמו, ולכן
          נתיב כאן היה עותק שני של אותה נוסחה שנפרד ממנה בשקט ברגע שמידה משתנה.
