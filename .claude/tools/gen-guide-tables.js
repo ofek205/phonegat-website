@@ -57,6 +57,28 @@ function joinHe(items) {
   return rest + ' ' + dash + last;
 }
 
+/* מספר במילים, לצורות כמו "בשישה". רק עד עשרים, כי מעבר לזה ספרה קריאה יותר בעברית
+   ואין לנו מקטע שדורש את זה. נופל לספרה אם אין מילה. */
+var WORDS_M = ['אפס', 'אחד', 'שניים', 'שלושה', 'ארבעה', 'חמישה', 'שישה', 'שבעה', 'שמונה',
+  'תשעה', 'עשרה', 'אחד עשר', 'שנים עשר', 'שלושה עשר', 'ארבעה עשר', 'חמישה עשר', 'שישה עשר',
+  'שבעה עשר', 'שמונה עשר', 'תשעה עשר', 'עשרים'];
+function word(n) { return WORDS_M[n] || String(n); }
+
+/* מחליף מקטע פרוזה בין סימנים. בניגוד ל-replaceBlock, כאן אין הזחה ואין שורות. */
+function replaceSpan(file, mark, text) {
+  var p = path.join(PROTO, file);
+  var s2 = fs.readFileSync(p, 'utf8');
+  var start = '<!-- gen-guide-tables:' + mark + ':start -->';
+  var end = '<!-- gen-guide-tables:' + mark + ':end -->';
+  var i = s2.indexOf(start), j = s2.indexOf(end);
+  if (i < 0 || j < 0) {
+    console.error('✗ ' + file + ': סימני "' + mark + '" חסרים. מספר שלא התעדכן גרוע מקריסה, ולכן עצירה.');
+    process.exit(1);
+  }
+  if (j < i) { console.error('✗ ' + file + ': סימן הסוף של "' + mark + '" לפני ההתחלה'); process.exit(1); }
+  fs.writeFileSync(p, s2.slice(0, i + start.length) + text + s2.slice(j));
+}
+
 function replaceBlock(file, mark, body) {
   var p = path.join(PROTO, file);
   var s = fs.readFileSync(p, 'utf8');
@@ -194,6 +216,27 @@ var withSlot = SOLD.filter(function (d) {
 });
 var below = SOLD.filter(function (d) { return ipRank(ipTokens(d)) < IMMERSION_FROM; });
 
+/* ------------------------------------------------------ 3. מספרים בפרוזה
+ *
+ * חמישה מספרים שהיו קפואים בטקסט, וכל אחד מהם תיאר את הקטלוג. הם נגזרים כאן ולא נכתבים,
+ * מאותו נימוק שהטבלאות נגזרות: הם היו נכונים ביום שנכתבו ולא ביום שאחריו.
+ *
+ * eSIM נמדד לפי מה שהיצרן מפרסם, וההצהרה "אין תמיכה ב-eSIM" נחשבת לשלילה ולא לשתיקה.
+ * זה חשוב בעמוד eSIM עצמו, שכל עניינו ללמד את הקורא להבחין בין השניים.
+ */
+var esimYes = SOLD.filter(function (d) {
+  var v = String((d.spec && d.spec.esim) || '');
+  return v && !/^\s*(אין|ללא|לא)/.test(v);
+});
+
+replaceSpan('guides/first-phone-for-kid/index.html', 'kidstat', SOLD.length + ' דגמים נבדקו');
+replaceSpan('guides/first-phone-for-kid/index.html', 'kidslot', 'ב' + word(withSlot.length));
+replaceSpan('guides/how-much-storage/index.html', 'storeslot', 'ב-' + withSlot.length + ' בלבד');
+replaceSpan('guides/how-much-storage/index.html', 'storestat', SOLD.length + ' דגמים בטבלה');
+['esimshort', 'esimlong', 'esimbody'].forEach(function (m) {
+  replaceSpan('guides/esim-israel/index.html', m, esimYes.length + ' מ-' + SOLD.length);
+});
+
 replaceBlock('guides/first-phone-for-kid/index.html', 'ip', ipBody);
 replaceBlock('guides/how-much-storage/index.html', 'storage', stBody);
 
@@ -214,6 +257,8 @@ console.log('✓ first-phone-for-kid: טבלת IP, ' + ipKeys.length + ' רמו�
   (noRating.length ? ' (' + noRating.length + ' בלי דירוג, אינם בטבלה)' : ''));
 console.log('  ' + ipKeys.map(function (k) { return k + '=' + ipGroups[k].length; }).join('  '));
 console.log('✓ how-much-storage: טבלת נפחים, ' + SOLD.length + ' דגמים, ' + withSlot.length + ' עם חריץ');
+console.log('✓ esim-israel: ' + esimYes.length + ' מ-' + SOLD.length + ' תומכים ב-eSIM');
+console.log('✓ first-phone-for-kid: הסטטיסטיקה והמספר בפרוזה נגזרו');
 console.log('  ' + below.length + ' דגמים מתחת ל-IP' + IMMERSION_FROM + ', כלומר בלי הבטחה לשיקוע');
 console.log('');
 console.log('הרצה: node .claude/preflight.js');
