@@ -1043,8 +1043,14 @@ if (classFails.length) {
  * קריטית ב-Search Console. ב-13.8.2026 הגיע מייל על 21 עמודי המכשיר, כלומר כל אחד מהם.
  * ההערה במחולל הבטיחה "לא זכאי לתוצאות עשירות", וזה היה חצי נכון.
  *
- * ישות מקוננת תחת about או mainEntity פטורה: שם היא ההקשר של המאמר ולא הישות הראשית של
- * הדף, ולכן אינה מועמדת ל-snippet. זה מה שעמודי ההשוואה עושים, ונכון שיישאר.
+ * ⚠ **הפטור ל-about ו-mainEntity הוסר ב-24.8.2026, אחרי שגוגל הפריכה אותו.** עד אז הבדיקה
+ * דילגה על ישות מקוננת תחת about, בהנחה ששם היא ההקשר של המאמר ואינה מועמדת ל-snippet.
+ * ההנחה נשמעה סבירה והייתה שגויה: הגיע מייל על אותה שגיאה בדיוק, וכל 38 הישויות שנמצאו
+ * באתר היו Product חשוף בתוך about של 19 עמודי ההשוואה, כלומר בדיוק מה שהפטור התיר.
+ * הבדיקה עברה בירוק כל אותו זמן והבטיחה שקט שלא היה.
+ *
+ * גוגל בודקת כל ישות Product בדף, בלי קשר למקום שלה בעץ. לכן אין פטור לפי מקום, ולא
+ * להחזיר אחד. עמודי ההשוואה מצהירים Thing על הדגמים שהמאמר עוסק בהם, ולא Product.
  *
  * ⚠ הפתרון לכשל כאן אינו aggregateRating. אין ביקורות מוצר לדגמים האלה, וסימון ביקורות
  * מומצא הוא הפרת מדיניות שגוררת ענישה ידנית. בלי מחיר אמיתי, לא לפלוט Product. */
@@ -1056,7 +1062,7 @@ if (classFails.length) {
       return;
     }
     if (!node || typeof node !== 'object') return;
-    if (node['@type'] === 'Product' && !nested) {
+    if (node['@type'] === 'Product') {
       var has = function (k) { return Object.prototype.hasOwnProperty.call(node, k); };
       if (!has('offers') && !has('aggregateRating') && !has('review')) {
         offenders.push(file + (node.name ? ' (' + node.name + ')' : ''));
@@ -1064,8 +1070,8 @@ if (classFails.length) {
     }
     Object.keys(node).forEach(function (k) {
       if (k === '@context' || k === '@type') return;
-      /* about / mainEntity מורידים את הישות מדרגת "הישות של הדף" */
-      inspect(node[k], nested || k === 'about' || k === 'mainEntity', file);
+      /* בכל מקום בעץ, גם תחת about ותחת mainEntity. ראו ההערה למעלה. */
+      inspect(node[k], nested, file);
     });
   }
   pageFiles.forEach(function (f) {
