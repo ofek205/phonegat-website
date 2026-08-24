@@ -3373,8 +3373,20 @@ nav.main a.ntool{font-weight:800}
   var msgs=document.querySelectorAll('.announce .msg'), i=0, annTimer=null;
   var prefersReduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function show(n){msgs.forEach(function(m,k){m.classList.toggle('on',k===n)})}
-  function annStart(){if(prefersReduce||annTimer)return;annTimer=setInterval(function(){i=(i+1)%msgs.length;show(i)},6000);}
+  /* שני מקורות לכיבוי תנועה, ולא אחד. prefersReduce לבדו הוא הגדרת מערכת ההפעלה, ולכן
+     ההתאמה "עצירת אנימציות" שבתפריט הנגישות שלנו לא עצרה את הרצועה: היא מוסיפה מחלקה
+     ל-html, והכללים שלה הם CSS, בזמן שהסיבוב כאן הוא setInterval שאין ל-CSS דרך לגעת בו.
+     ההצהרה תיעדה את זה כמגבלה ידועה מ-17.8.2026, ותוקן ב-24.8.2026.
+     בקרה שמצהירה על עצירה ולא עוצרת גרועה מהיעדר בקרה. */
+  function motionOff(){return prefersReduce||document.documentElement.classList.contains('a11y-stop-motion');}
+  function annStart(){if(motionOff()||annTimer)return;annTimer=setInterval(function(){i=(i+1)%msgs.length;show(i)},6000);}
   function annStop(){if(annTimer){clearInterval(annTimer);annTimer=null;}}
+  /* מגיב גם להחלפה חיה של ההתאמה. observer ולא קריאה מתוך קוד תפריט הנגישות, כדי לא
+     לחבר בין שני הסקריפטים: כל אחד מהם ממשיך לא להכיר את השני. */
+  if(window.MutationObserver){
+    new MutationObserver(function(){if(motionOff())annStop();else annStart();})
+      .observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  }
   var annBar=document.querySelector('.announce');
   if(annBar){annBar.addEventListener('mouseenter',annStop);annBar.addEventListener('mouseleave',annStart);annBar.addEventListener('focusin',annStop);annBar.addEventListener('focusout',annStart);}
   document.getElementById('annNext').addEventListener('click',function(){i=(i+1)%msgs.length;show(i);annStop();annStart();});
