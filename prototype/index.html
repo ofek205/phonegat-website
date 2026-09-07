@@ -729,6 +729,10 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .person .p-tag{font-weight:800;font-size:clamp(1.1rem,2vw,1.3rem);color:var(--teal-d);margin:0 0 .9rem}
 .person .p-text p:not(.p-role):not(.p-tag){color:var(--ink-soft);margin:.7rem 0;line-height:1.7}
 .person .p-photo{margin:0}
+/* התמונה עטופה ב-picture כדי להגיש WebP עם נפילה ל-JPG. picture הוא inline כברירת מחדל,
+   ואז ה-img שבתוכו עם width:100% היה מתייחס למכל שמתכווץ לתוכן במקום לרוחב ה-figure.
+   block מחזיר את ההתנהגות למה שהייתה כשה-img היה ילד ישיר. */
+.p-photo picture{display:block}
 .person .p-photo img,.person .p-photo .ph-fig{width:100%;height:auto;aspect-ratio:4/5;border-radius:10px;display:block}
 .person .p-photo img{object-fit:cover;box-shadow:0 4px 12px -2px rgba(0,0,0,.10),0 24px 50px -20px rgba(0,0,0,.28)}
 .person .p-photo img[src="sigal.jpg"]{object-position:center top}   /* same 4/5 frame as Baruch; cover crops from the top so the face stays in */
@@ -2444,10 +2448,10 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
           <button class="more-btn p-more" aria-expanded="false" data-target="pbBaruch">הצג עוד</button>
         </div>
-        <figure class="p-photo"><img src="baruch.jpg" alt="ברוך אדלשטיין ליד שולחן המעבדה בפון גת" loading="lazy" width="640" height="800" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של ברוך&lt;br&gt;במעבדה (baruch.jpg)&lt;/div&gt;'"></figure>
+        <figure class="p-photo"><picture><source srcset="baruch.webp" type="image/webp"><img src="baruch.jpg" alt="ברוך אדלשטיין ליד שולחן המעבדה בפון גת" loading="lazy" width="640" height="800" onerror="(this.closest('figure')||this.parentNode).innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של ברוך&lt;br&gt;במעבדה (baruch.jpg)&lt;/div&gt;'"></picture></figure>
       </article>
       <article class="person photo-first">
-        <figure class="p-photo"><img src="sigal.jpg" alt="סיגל אדלשטיין בפון גת" loading="lazy" width="1200" height="1101" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של סיגל&lt;br&gt;(sigal.jpg)&lt;/div&gt;'"></figure>
+        <figure class="p-photo"><picture><source srcset="sigal.webp" type="image/webp"><img src="sigal.jpg" alt="סיגל אדלשטיין בפון גת" loading="lazy" width="1200" height="1101" onerror="(this.closest('figure')||this.parentNode).innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של סיגל&lt;br&gt;(sigal.jpg)&lt;/div&gt;'"></picture></figure>
         <div class="p-text">
           <p class="p-role">בעלים ומנהלת קשרי הלקוחות</p>
           <h3>סיגל אדלשטיין</h3>
