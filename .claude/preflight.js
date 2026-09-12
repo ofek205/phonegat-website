@@ -1988,6 +1988,52 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 42. מדידת הלידים זהה בכל העמודים ----------
+ * הבלוק pg-contact-tap הוא המדידה היחידה של לחיצה על טלפון ועל WhatsApp, ומ-12.9.2026
+ * הוא מדווח גם את שלושת ה-Key events שהוגדרו ב-GA4. אין לו מחולל: הוא הועתק ל-78 עמודים,
+ * ולכן אין שום דבר שמונע מעמוד אחד להישאר מאחור אחרי עריכה.
+ *
+ * זה נכשל בשקט בצורה הגרועה ביותר: העמוד עובד, הקישור עובד, והמדידה פשוט לא נשלחת ממנו.
+ * בדוח ב-GA4 זה ייראה כמו עמוד שאינו ממיר, ולא כמו עמוד שאינו נמדד.
+ *
+ * הבדיקה משווה טביעת אצבע בין העמודים. אחידות, לא תוכן: היא אינה קובעת מה הבלוק צריך
+ * להכיל, רק שכולם נושאים את אותו אחד, ובנוסף ששלושת שמות האירועים לא נעלמו ממנו. */
+(function () {
+  var crypto = require('crypto');
+  var sigs = {}, none = [];
+  pageFiles.forEach(function (rel) {
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { return; }
+    var i = s.indexOf('pg-contact-tap');
+    if (i < 0) { none.push(rel); return; }
+    var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
+    if (a < 0 || z < 0) { none.push(rel); return; }
+    var key = crypto.createHash('md5').update(s.slice(a, z + 9).replace(/\r/g, '')).digest('hex').slice(0, 8);
+    (sigs[key] = sigs[key] || []).push(rel);
+  });
+  var keys = Object.keys(sigs), problems = [];
+  if (none.length) problems.push(none.length + ' עמודים בלי מדידת לידים כלל: ' + none.slice(0, 4).join(', '));
+  if (keys.length > 1) {
+    /* הרוב הוא הגרסה הנוכחית, והחריגים הם מי שנשאר מאחור */
+    keys.sort(function (a, b) { return sigs[b].length - sigs[a].length; });
+    var odd = keys.slice(1).reduce(function (acc, k) { return acc.concat(sigs[k]); }, []);
+    problems.push(odd.length + ' עמודים עם גרסה שונה של הבלוק: ' + odd.slice(0, 4).join(', ') +
+      (odd.length > 4 ? ' ועוד' : ''));
+  }
+  if (keys.length) {
+    var sample = read('prototype/' + sigs[keys[0]][0]);
+    ['whatsapp_click', 'phone_click', 'generate_lead'].forEach(function (ev) {
+      if (sample.indexOf(ev) < 0) problems.push('האירוע ' + ev + ' נעלם מהבלוק');
+    });
+  }
+  if (problems.length) {
+    bad('מדידת הלידים: ' + problems.join(' · ') +
+      ' — הקישור ימשיך לעבוד והמדידה פשוט לא תישלח, כלומר העמוד ייראה בדוח כמי שאינו ממיר');
+  } else {
+    ok('מדידת הלידים זהה בכל ' + sigs[keys[0]].length + ' העמודים, עם שלושת אירועי GA4');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

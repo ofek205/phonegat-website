@@ -2419,20 +2419,44 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
    Every page carries 3 to 5 byte-identical tel:/wa.me links, so a GTM Click URL trigger cannot
    tell the header icon from the bottom bar. The position is read from the DOM at click time
    rather than stamped on 878 anchors, so moving a link keeps the report honest. Capture phase,
-   because other handlers on this page stop propagation for their own controls. */
+   because other handlers on this page stop propagation for their own controls.
+
+   מ-12.9.2026 הוא מדווח גם את שלושת האירועים שהוגדרו כ-Key events ב-GA4:
+   whatsapp_click, phone_click ו-generate_lead. contact_tap נשאר כפי שהיה, כי הוא
+   נושא את location שאין לשלושת החדשים, ומחיקתו הייתה מאבדת מדידה קיימת.
+
+   ⚠ dataLayer.push ולא gtag(). GA4 נטען כאן דרך GTM בלבד: אין gtag.js בשום עמוד,
+   ומזהה המדידה חי בתוך המכל של GTM ולא בקוד. ה-gtag() שבראש הקובץ הוא shim של שורה
+   אחת ל-Consent Mode, וקריאה כמו gtag("event","whatsapp_click",…) דרכו רק דוחפת
+   arguments ל-dataLayer. בלי תגית GA4 שמוגדרת ב-GTM היא לא מגיעה ל-GA4 בכלל, כלומר
+   הייתה נראית כמו מדידה שעובדת ולא שולחת כלום. שלושת האירועים כאן דורשים שלוש תגיות
+   ב-GTM, ובלעדיהן הם יושבים ב-dataLayer ולא נספרים.
+
+   אין השהיה מלאכותית לפני הניווט: GA4 שולח ב-sendBeacon כברירת מחדל, וזה בדיוק
+   המנגנון ששורד ניווט. tel: ממילא לא מוריד את העמוד, הוא פותח את החייגן מעליו. */
 (function(){
   var SPOTS=['mbar','rail','hicons','hcta','pg-panel','a11y-panel','cookie','ch-btns'];
+  /* רחב יותר מ-wa.me בלבד, כדי שצורה אחרת שתיכנס לאתר מחר לא תיפול בשקט */
+  var WA=/^(https?:)?\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+  var TEL=/^tel:/i, WAAPP=/^whatsapp:/i;
+  function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
   document.addEventListener('click',function(e){
     try{
-      var t=e.target,a=(t&&t.closest)?t.closest('a[href^="tel:"],a[href^="https://wa.me"]'):null;
+      var t=e.target,a=(t&&t.closest)?t.closest('a[href]'):null;
       if(!a)return;
+      var href=a.getAttribute('href')||'';
+      var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
+      if(!isTel&&!isWa)return;
       var loc='content',i;
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
       if(loc==='content'&&a.closest('footer'))loc='footer';
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:'contact_tap',
-        channel:/^tel:/.test(a.getAttribute('href')||'')?'phone':'whatsapp',
-        location:loc});
+      var method=isTel?'phone':'whatsapp';
+      /* a.href ולא ה-attribute: הכתובת המלאה אחרי פתרון, כפי שהיא בפועל */
+      var url=a.href||href, pagePath=location.pathname;
+      push({event:'contact_tap',channel:method,location:loc});
+      push({event:method==='phone'?'phone_click':'whatsapp_click',
+        event_category:'lead',method:method,link_url:url,page_path:pagePath,link_location:loc});
+      push({event:'generate_lead',event_category:'lead',method:method,page_path:pagePath});
     }catch(_){}
   },true);
 })();
