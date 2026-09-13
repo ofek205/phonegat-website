@@ -2437,6 +2437,91 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
+<script>
+/* pg-compare-track: שימוש בכלי ההשוואה ובעמודי ההשוואה הכתובים.
+   אותו דפוס כמו מדידת הלידים: dataLayer.push שטוח, בלי eventModel ובלי gtag.
+   הסיבה מתועדת ב-.claude/gtm/README.md: GA4 מגיע לאתר דרך GTM בלבד, ותגית שמחפשת
+   פרמטר בשורש לא תמצא אותו אם הוא נדחף עטוף.
+
+   בלוק אחד לכל 78 העמודים, שמחליט לפי הכתובת מה לירות. כך אין שלושה קטעים שונים
+   שצריך לזכור להפיץ בנפרד, וסימון מקור הכניסה עובד מכל עמוד שיש בו קישור לכלי. */
+(function(){
+  function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
+  var P=location.pathname;
+  var CMP=/^\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)\/?$/;
+  var TOOL=/^\/phones\/compare\/?$/;
+
+  /* בכל עמוד: לחיצה על קישור לכלי מסמנת מאיפה הגיעו. נקרא בעמוד הכלי ונמחק.
+     sessionStorage ולא referrer לבדו, כי referrer אומר רק "מאיזה עמוד" ולא
+     "מאיזה מקום בעמוד", והניווט הוא הכניסה שמעניין להבדיל. */
+  document.addEventListener('click',function(e){
+    try{
+      var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
+      if(!a)return;
+      if(!/\/phones\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
+      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
+    }catch(_){}
+  },true);
+
+  /* עמוד השוואה כתוב. הדגמים מגיעים מה-slug, שצורתו תמיד <א>-vs-<ב>. */
+  var m=P.match(CMP);
+  if(m){
+    push({event:'compare_view',event_category:'engagement',page_path:P,
+      model_a:m[1],model_b:m[2]});
+    return;
+  }
+  if(!TOOL.test(P))return;
+
+  var entry='other';
+  try{
+    var s=sessionStorage.getItem('pg_cmp_entry');
+    if(s){entry=s;sessionStorage.removeItem('pg_cmp_entry');}
+    else if(!document.referrer)entry='direct';
+  }catch(_){if(!document.referrer)entry='direct';}
+  push({event:'compare_tool_open',event_category:'engagement',page_path:P,entry_point:entry});
+
+  /* הסלוט אינו רשום על פריט הדגם עצמו, הוא מצב פנימי של הכלי. לכן זוכרים איזה
+     כפתור פתח את הבורר לאחרונה. זה הסיגנל הטוב ביותר בלי לגעת בקוד הכלי. */
+  var lastSlot='0', lastPair='';
+  document.addEventListener('click',function(e){
+    try{
+      var t=e.target; if(!t||!t.closest)return;
+      var open=t.closest('button.dopen');
+      if(open){lastSlot=open.getAttribute('data-slot')||'0';return;}
+      var chip=t.closest('button.dchip');
+      if(!chip)return;
+      /* לחיצה חוזרת על דגם שנבחר מבטלת אותו. אנחנו ב-capture, לפני שהכלי הגיב,
+         ולכן aria-pressed עדיין מחזיק את המצב שלפני הלחיצה. בלי השדה הזה ביטול
+         היה נספר כבחירה, והדוח היה מנפח את מספר הדגמים שנבחרו. */
+      var wasOn=chip.getAttribute('aria-pressed')==='true';
+      push({event:'compare_select_model',event_category:'engagement',page_path:P,
+        model_id:chip.getAttribute('data-slug')||'',
+        model_name:(chip.textContent||'').trim(),
+        slot:'abc'.charAt(+lastSlot)||'a',
+        action:wasOn?'deselect':'select'});
+      /* אין בכלי כפתור "השווה": ההשוואה מתרנדרת חי. הרגע שבו היא באמת התחילה
+         הוא כשהבחירה מגיעה לשניים, והכלי כותב אותה ל-?d= בכתובת. setTimeout
+         כדי לקרוא אחרי שהכלי הספיק לעדכן.
+         החתימה ממוינת: בחירה מחדש של אותו דגם, או החלפת סדר בין הסלוטים, אינה
+         השוואה חדשה ואינה מדווחת שוב. נמדד: בלי המיון זה ירה כפילות.
+         models ו-model_count מדווחים כי בחירת דגם שלישי היא השוואה אחרת לגמרי,
+         ובלעדיהם היא הייתה נראית בדוח זהה לזוג שקדם לה. */
+      setTimeout(function(){
+        try{
+          var d=(location.search.match(/[?&]d=([^&]*)/)||[])[1]||'';
+          var L=decodeURIComponent(d).split(',').filter(Boolean);
+          if(L.length<2)return;
+          var sig=L.slice().sort().join(',');
+          if(sig===lastPair)return;
+          lastPair=sig;
+          push({event:'compare_start',event_category:'engagement',page_path:P,
+            model_a:L[0],model_b:L[1],models:L.join(','),model_count:L.length});
+        }catch(_){}
+      },0);
+    }catch(_){}
+  },true);
+})();
+</script>
 <!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <div class="pg-cpn-ov" id="pgCpnOv">
   <div class="pg-cpn" role="dialog" aria-modal="true" aria-labelledby="pgCpnTitle">

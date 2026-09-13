@@ -2013,37 +2013,48 @@ if (classFails.length) {
  * להכיל, רק שכולם נושאים את אותו אחד, ובנוסף ששלושת שמות האירועים לא נעלמו ממנו. */
 (function () {
   var crypto = require('crypto');
-  var sigs = {}, none = [];
-  pageFiles.forEach(function (rel) {
-    var s;
-    try { s = read('prototype/' + rel); } catch (e) { return; }
-    var i = s.indexOf('pg-contact-tap');
-    if (i < 0) { none.push(rel); return; }
-    var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
-    if (a < 0 || z < 0) { none.push(rel); return; }
-    var key = crypto.createHash('md5').update(s.slice(a, z + 9).replace(/\r/g, '')).digest('hex').slice(0, 8);
-    (sigs[key] = sigs[key] || []).push(rel);
-  });
-  var keys = Object.keys(sigs), problems = [];
-  if (none.length) problems.push(none.length + ' עמודים בלי מדידת לידים כלל: ' + none.slice(0, 4).join(', '));
-  if (keys.length > 1) {
-    /* הרוב הוא הגרסה הנוכחית, והחריגים הם מי שנשאר מאחור */
-    keys.sort(function (a, b) { return sigs[b].length - sigs[a].length; });
-    var odd = keys.slice(1).reduce(function (acc, k) { return acc.concat(sigs[k]); }, []);
-    problems.push(odd.length + ' עמודים עם גרסה שונה של הבלוק: ' + odd.slice(0, 4).join(', ') +
-      (odd.length > 4 ? ' ועוד' : ''));
-  }
-  if (keys.length) {
-    var sample = read('prototype/' + sigs[keys[0]][0]);
-    ['whatsapp_click', 'phone_click', 'generate_lead'].forEach(function (ev) {
-      if (sample.indexOf(ev) < 0) problems.push('האירוע ' + ev + ' נעלם מהבלוק');
+  /* שני בלוקי מדידה, אותו כלל בדיוק: עותק זהה בכל עמוד, ושמות האירועים בתוכו */
+  var BLOCKS = [
+    { marker: 'pg-contact-tap', what: 'מדידת הלידים',
+      events: ['whatsapp_click', 'phone_click', 'generate_lead'] },
+    { marker: 'pg-compare-track', what: 'מדידת ההשוואה',
+      events: ['compare_tool_open', 'compare_view', 'compare_select_model', 'compare_start'] }
+  ];
+  var problems = [], counts = [];
+  BLOCKS.forEach(function (B) {
+    var sigs = {}, none = [];
+    pageFiles.forEach(function (rel) {
+      var s;
+      try { s = read('prototype/' + rel); } catch (e) { return; }
+      var i = s.indexOf(B.marker);
+      if (i < 0) { none.push(rel); return; }
+      var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
+      if (a < 0 || z < 0) { none.push(rel); return; }
+      var key = crypto.createHash('md5').update(s.slice(a, z + 9).replace(/\r/g, '')).digest('hex').slice(0, 8);
+      (sigs[key] = sigs[key] || []).push(rel);
     });
-  }
+    var keys = Object.keys(sigs);
+    if (none.length) problems.push(B.what + ': ' + none.length + ' עמודים בלעדיה: ' + none.slice(0, 3).join(', '));
+    if (keys.length > 1) {
+      /* הרוב הוא הגרסה הנוכחית, והחריגים הם מי שנשאר מאחור */
+      keys.sort(function (a, b) { return sigs[b].length - sigs[a].length; });
+      var odd = keys.slice(1).reduce(function (acc, k) { return acc.concat(sigs[k]); }, []);
+      problems.push(B.what + ': ' + odd.length + ' עמודים עם גרסה שונה: ' + odd.slice(0, 3).join(', ') +
+        (odd.length > 3 ? ' ועוד' : ''));
+    }
+    if (keys.length) {
+      var sample = read('prototype/' + sigs[keys[0]][0]);
+      B.events.forEach(function (ev) {
+        if (sample.indexOf(ev) < 0) problems.push(B.what + ': האירוע ' + ev + ' נעלם מהבלוק');
+      });
+      counts.push(B.what + ' ב-' + sigs[keys[0]].length);
+    }
+  });
   if (problems.length) {
-    bad('מדידת הלידים: ' + problems.join(' · ') +
-      ' — הקישור ימשיך לעבוד והמדידה פשוט לא תישלח, כלומר העמוד ייראה בדוח כמי שאינו ממיר');
+    bad('מדידה: ' + problems.join(' · ') +
+      ' — העמוד ימשיך לעבוד והמדידה פשוט לא תישלח ממנו, כלומר בדוח הוא ייראה כמי שאינו ממיר');
   } else {
-    ok('מדידת הלידים זהה בכל ' + sigs[keys[0]].length + ' העמודים, עם שלושת אירועי GA4');
+    ok(counts.join(', ') + ' עמודים, זהה בכולם, עם כל שמות האירועים');
   }
 })();
 
