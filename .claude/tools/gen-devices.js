@@ -140,7 +140,15 @@ function buildMain(d, openTag) {
   '    <div class="inner">\n' +
   '      <h1 id="gh">' + ltr(d.name) + '</h1>\n' +
   (E.what_matters ? '      <p class="sub">' + esc(E.what_matters) + '</p>\n' : '') +
-  '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a></div>\n' +
+  /* שני ערוצים ולא אחד. WhatsApp מתאים למי שרוצה לשלוח שאלה ולחזור אליה, וחיוג
+     מתאים למי שעומד בחנות או רוצה תשובה עכשיו, ואלה שני אנשים שונים. עד 13.9.2026
+     היה כאן כפתור אחד, ומי שהעדיף לדבר היה צריך לגלול עד הפוטר.
+     ⚠ שני המספרים אינם מתחלפים: ה-WhatsApp העסקי הוא 08-6812050, והחיוג הוא
+     052-5893366. הם מגיעים לשני מקומות שונים, והחלפה ביניהם שולחת לקוח לאף אחד. */
+  '      <div class="hcta">' +
+  '<a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a>' +
+  '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>' +
+  '</div>\n' +
   '      <p class="meta">\n' +
   '        <span>' + esc(d.brand) + (d.os ? ', ' + esc(d.os) : '') + '</span>\n' +
   (atDate ? '        <span>מפרט נבדק ב' + esc(atDate) + '</span>\n' : '') +

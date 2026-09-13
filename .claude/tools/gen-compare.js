@@ -1260,9 +1260,16 @@ function buildTool() {
       });
     }
   });
+  /* ⚠ ה-script יורד מעמוד המקור לפני הבדיקה. השער שואל "האם השם הזה כבר **מוגדר**",
+   * וסלקטור בתוך JS הוא **שימוש** ולא הגדרה. ב-13.9.2026 נוסף לעמודים בלוק מדידה
+   * שכתוב בו closest('button.dopen') ו-closest('button.dchip'), והשער נפל עליו
+   * והפסיק לבנות את הכלי. מדידה שקוראת מחלקה אינה מגדירה אותה מחדש, ואין כאן שום
+   * התנגשות. אותה טעות בדיוק כמו בדיקה 31, שהשוותה CSS בלי להסיר הערות קודם. */
+  var srcNoJs = src.replace(/<script[\s\S]*?<\/script>/gi, ' ');
   Object.keys(mine).forEach(function (c) {
     if (SHARED_OVERRIDE[c]) return;
-    if (new RegExp('\\' + c + '(?![a-z0-9-])').test(CSS) || new RegExp('\\' + c + '(?![a-z0-9-])').test(src)) clash.push(c);
+    var re = new RegExp('\\' + c + '(?![a-z0-9-])');
+    if (re.test(CSS) || re.test(srcNoJs)) clash.push(c);
   });
   /* שער על השער: שם ברשימת ההיתר שאינו מוגדר בגיליון המשותף אינו עקיפה אלא שם חדש
    * שהתחפש לאחת, ואז ההיתר מסתיר בדיוק את מה שהשער בא לתפוס. */
