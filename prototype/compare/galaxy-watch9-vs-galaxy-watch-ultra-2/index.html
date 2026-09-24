@@ -1716,7 +1716,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" id="devices" aria-labelledby="h-dev">
   <div class="wrap box">
     <h2 id="h-dev">שני המכשירים</h2>
-    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של שני השעונים, ולהוסיף שעון שלישי.</p>
+    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של שני השעונים, ולהוסיף עוד אחד.</p>
       <ul class="hub">
         <li><a href="/watches/compare/?d=galaxy-watch9,galaxy-watch-ultra-2"><b><bdo dir="ltr">Galaxy Watch9</bdo></b><span>Samsung · כל השדות בכלי ההשוואה</span></a></li>
         <li><a href="/watches/compare/?d=galaxy-watch9,galaxy-watch-ultra-2"><b><bdo dir="ltr">Galaxy Watch Ultra 2</bdo></b><span>Samsung · כל השדות בכלי ההשוואה</span></a></li>
@@ -2232,9 +2232,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
   var P=location.pathname;
   var CMP=/^\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)\/?$/;
-  /* שני כלים באותו מבנה בדיוק (button.dchip, button.dopen, ?d=), ולכן אותה מדידה. מבדילים
+  /* שלושה כלים באותו מבנה בדיוק (button.dchip, button.dopen, ?d=), ולכן אותה מדידה. מבדילים
      ביניהם ב-page_path, שכבר עובר ל-GA4 בתגיות, כדי שלא יידרש פרמטר חדש ב-GTM. */
-  var TOOL=/^\/(phones|watches)\/compare\/?$/;
+  var TOOL=/^\/(phones|watches|headphones)\/compare\/?$/;
 
   /* בכל עמוד: לחיצה על קישור לכלי מסמנת מאיפה הגיעו. נקרא בעמוד הכלי ונמחק.
      sessionStorage ולא referrer לבדו, כי referrer אומר רק "מאיזה עמוד" ולא
@@ -2243,7 +2243,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     try{
       var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
       if(!a)return;
-      if(!/\/(phones|watches)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
+      if(!/\/(phones|watches|headphones)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
       sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
     }catch(_){}
   },true);

@@ -1931,7 +1931,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h1 id="h1">השוואת מכשירים</h1>
     <p class="asub">המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.</p>
-    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%93%D7%92%D7%9E%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>. רוצים להשוות שעונים חכמים? <a href="/watches/compare/">לכלי השעונים</a>.</p>
+    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%93%D7%92%D7%9E%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>. רוצים <a href="/watches/compare/">להשוות שעונים חכמים</a>?</p>
   </div>
 </section>
 
@@ -3606,9 +3606,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
   var P=location.pathname;
   var CMP=/^\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)\/?$/;
-  /* שני כלים באותו מבנה בדיוק (button.dchip, button.dopen, ?d=), ולכן אותה מדידה. מבדילים
+  /* שלושה כלים באותו מבנה בדיוק (button.dchip, button.dopen, ?d=), ולכן אותה מדידה. מבדילים
      ביניהם ב-page_path, שכבר עובר ל-GA4 בתגיות, כדי שלא יידרש פרמטר חדש ב-GTM. */
-  var TOOL=/^\/(phones|watches)\/compare\/?$/;
+  var TOOL=/^\/(phones|watches|headphones)\/compare\/?$/;
 
   /* בכל עמוד: לחיצה על קישור לכלי מסמנת מאיפה הגיעו. נקרא בעמוד הכלי ונמחק.
      sessionStorage ולא referrer לבדו, כי referrer אומר רק "מאיזה עמוד" ולא
@@ -3617,7 +3617,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     try{
       var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
       if(!a)return;
-      if(!/\/(phones|watches)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
+      if(!/\/(phones|watches|headphones)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
       sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
     }catch(_){}
   },true);
