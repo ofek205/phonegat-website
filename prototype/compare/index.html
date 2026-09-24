@@ -638,7 +638,6 @@ a.cv-card,div.cv-card{text-decoration:none;cursor:default}
 a.cv-card{cursor:pointer}
 a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
 a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
-span.cv-flip{cursor:default}
 .cv-sug .cv-hwa{margin-inline-start:auto}
 .cv-res{padding-block-start:1.6rem}
 .cv-grp[hidden]{display:none}
@@ -774,6 +773,13 @@ p.cv-legend{display:block}
 .cv-app .cv-prose{font-size:1rem}
 .cv-app .cv-lead2{font-size:.9rem}
 }
+/* "מול" בעמוד השוואה קבוע: כיתוב בין שני הכרטיסים, לא עיגול שנראה כמו כפתור */
+.cv-vs2{justify-self:center;font-weight:800;font-size:1.05rem;color:rgba(255,255,255,.85)}
+/* בכלי: "מול" עם סימן החלפה מתחתיו, כדי שיהיה ברור שהלחיצה מחליפה בין הצדדים */
+.cv-flip{flex-direction:column;gap:1px;line-height:1.05}
+.cv-flip .cv-swap{display:block}
+.cv-flip:disabled .cv-swap{opacity:.6}
+@media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}

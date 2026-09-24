@@ -638,7 +638,6 @@ a.cv-card,div.cv-card{text-decoration:none;cursor:default}
 a.cv-card{cursor:pointer}
 a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
 a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
-span.cv-flip{cursor:default}
 .cv-sug .cv-hwa{margin-inline-start:auto}
 .cv-res{padding-block-start:1.6rem}
 .cv-grp[hidden]{display:none}
@@ -774,6 +773,13 @@ p.cv-legend{display:block}
 .cv-app .cv-prose{font-size:1rem}
 .cv-app .cv-lead2{font-size:.9rem}
 }
+/* "מול" בעמוד השוואה קבוע: כיתוב בין שני הכרטיסים, לא עיגול שנראה כמו כפתור */
+.cv-vs2{justify-self:center;font-weight:800;font-size:1.05rem;color:rgba(255,255,255,.85)}
+/* בכלי: "מול" עם סימן החלפה מתחתיו, כדי שיהיה ברור שהלחיצה מחליפה בין הצדדים */
+.cv-flip{flex-direction:column;gap:1px;line-height:1.05}
+.cv-flip .cv-swap{display:block}
+.cv-flip:disabled .cv-swap{opacity:.6}
+@media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2041,7 +2047,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="cv-sub">לפי עמודי המפרט של אפל, שני השעונים חולקים את מעבד S11 ואת אותה רשימת תכונות בריאות. ההבדלים הם בגוף ובסוללה: ל-Ultra 4 מארז טיטניום של 49 מ״מ, בהירות של עד 3000 ניט במקום 2000, עמידות לצלילה עד 40 מטר, וסוללה של עד 50 שעות שימוש רגיל במקום 24. את זה משלמים במשקל: כ-63 גרם, מול 31.5 עד 52.9 ב-Series 12, לפי הגודל והחומר.</p>
     <div class="cv-cards" data-pg-data>
         <a class="cv-card" data-slot="0" href="/watches/compare/?d=apple-watch-series-12,apple-watch-ultra-4"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Apple Watch Series 12</bdo></span><span class="cv-meta">Apple · הוכרז ב-2026</span></span><span class="cv-act">כל השדות</span></a>
-        <span class="cv-flip" aria-hidden="true">מול</span>
+        <span class="cv-vs2" aria-hidden="true">מול</span>
         <a class="cv-card" data-slot="1" href="/watches/compare/?d=apple-watch-series-12,apple-watch-ultra-4"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Apple Watch Ultra 4</bdo></span><span class="cv-meta">Apple · הוכרז ב-2026</span></span><span class="cv-act">כל השדות</span></a>
     </div>
     <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/apple-watch-vs-galaxy-watch/"><bdo dir="ltr">Apple Watch Series 12</bdo> מול <bdo dir="ltr">Galaxy Watch9</bdo></a><a class="cv-sa" href="/compare/apple-watch-vs-garmin/"><bdo dir="ltr">Apple Watch Series 12</bdo> מול <bdo dir="ltr">Garmin Venu 4</bdo></a><a class="cv-sa" href="/watches/compare/?d=apple-watch-series-12,apple-watch-ultra-4">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Apple%20Watch%20Series%2012%20%D7%9C%D7%91%D7%99%D7%9F%20Apple%20Watch%20Ultra%204."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>

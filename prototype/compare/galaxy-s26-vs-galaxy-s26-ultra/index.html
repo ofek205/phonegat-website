@@ -638,7 +638,6 @@ a.cv-card,div.cv-card{text-decoration:none;cursor:default}
 a.cv-card{cursor:pointer}
 a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
 a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
-span.cv-flip{cursor:default}
 .cv-sug .cv-hwa{margin-inline-start:auto}
 .cv-res{padding-block-start:1.6rem}
 .cv-grp[hidden]{display:none}
@@ -774,6 +773,13 @@ p.cv-legend{display:block}
 .cv-app .cv-prose{font-size:1rem}
 .cv-app .cv-lead2{font-size:.9rem}
 }
+/* "מול" בעמוד השוואה קבוע: כיתוב בין שני הכרטיסים, לא עיגול שנראה כמו כפתור */
+.cv-vs2{justify-self:center;font-weight:800;font-size:1.05rem;color:rgba(255,255,255,.85)}
+/* בכלי: "מול" עם סימן החלפה מתחתיו, כדי שיהיה ברור שהלחיצה מחליפה בין הצדדים */
+.cv-flip{flex-direction:column;gap:1px;line-height:1.05}
+.cv-flip .cv-swap{display:block}
+.cv-flip:disabled .cv-swap{opacity:.6}
+@media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2041,7 +2047,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="cv-sub">האולטרה הוא מכשיר אחר ולא גרסה גדולה של אותו דבר. יש בו מסך 6.9 אינץ׳ ברזולוציה גבוהה יותר, תמיכה בעט S, מצלמה ראשית של 200MP וארבע עדשות במקום שלוש, וזום אופטי שמגיע ל-5x. גלקסי S26 מחזיר במקום זה 47 גרם ומכשיר שנכנס ליד אחת.</p>
     <div class="cv-cards" data-pg-data>
         <a class="cv-card" data-slot="0" href="/phones/galaxy-s26/"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy S26</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2026</span></span><span class="cv-act">המפרט המלא</span></a>
-        <span class="cv-flip" aria-hidden="true">מול</span>
+        <span class="cv-vs2" aria-hidden="true">מול</span>
         <a class="cv-card" data-slot="1" href="/phones/galaxy-s26-ultra/"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy S26 Ultra</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2026</span></span><span class="cv-act">המפרט המלא</span></a>
     </div>
     <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/iphone-17-vs-galaxy-s26/">אייפון 17 מול גלקסי <bdo dir="ltr">S26</bdo></a><a class="cv-sa" href="/compare/galaxy-s26-plus-vs-galaxy-s26/">גלקסי <bdo dir="ltr">S26+</bdo> מול גלקסי <bdo dir="ltr">S26</bdo></a><a class="cv-sa" href="/compare/galaxy-s26-vs-oneplus-15r/">גלקסי <bdo dir="ltr">S26</bdo> מול וואן פלוס <bdo dir="ltr">15R</bdo></a><a class="cv-sa" href="/phones/compare/?d=galaxy-s26,galaxy-s26-ultra">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20S26%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20S26%20Ultra."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>

@@ -317,7 +317,7 @@ function buildMain(p, a, b, d, openTag) {
     '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
     '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
     '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
-    '        <span class="cv-flip" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
+    '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
     '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
     '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
@@ -795,7 +795,7 @@ function toolMain(openTag, index, order, pairCount) {
   '    <div class="cv-row1">\n      <h1 id="h1">' + esc(CAT ? CAT.h1 : 'השוואת מכשירים') + '</h1>\n      ' + catSwitch + '\n    </div>\n' +
   '    <p class="cv-sub">' + esc(CAT ? CAT.asub : 'המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.') + '</p>\n' +
   '    <div class="cv-cards">\n' + card(0) +
-  '        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" disabled>מול</button>\n' + card(1) +
+  '        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" title="החלפת צדדים" disabled>מול<svg class="cv-swap" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h11l-3-3M17 17H6l3 3"></path></svg></button>\n' + card(1) +
   /* הצד השלישי, מוסתר עד שמבקשים אותו. ההסרה היא כפתור אח ולא בתוך הכרטיס, כי כפתור בתוך כפתור אינו HTML תקין. */
   '        <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>\n' +
   '        <div class="cv-c3" id="cvc3" hidden>\n' + card(2) +

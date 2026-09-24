@@ -655,7 +655,6 @@ a.cv-card,div.cv-card{text-decoration:none;cursor:default}
 a.cv-card{cursor:pointer}
 a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
 a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
-span.cv-flip{cursor:default}
 .cv-sug .cv-hwa{margin-inline-start:auto}
 .cv-res{padding-block-start:1.6rem}
 .cv-grp[hidden]{display:none}
@@ -791,6 +790,13 @@ p.cv-legend{display:block}
 .cv-app .cv-prose{font-size:1rem}
 .cv-app .cv-lead2{font-size:.9rem}
 }
+/* "מול" בעמוד השוואה קבוע: כיתוב בין שני הכרטיסים, לא עיגול שנראה כמו כפתור */
+.cv-vs2{justify-self:center;font-weight:800;font-size:1.05rem;color:rgba(255,255,255,.85)}
+/* בכלי: "מול" עם סימן החלפה מתחתיו, כדי שיהיה ברור שהלחיצה מחליפה בין הצדדים */
+.cv-flip{flex-direction:column;gap:1px;line-height:1.05}
+.cv-flip .cv-swap{display:block}
+.cv-flip:disabled .cv-swap{opacity:.6}
+@media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2058,7 +2064,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="cv-sub">המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.</p>
     <div class="cv-cards">
         <button type="button" class="dopen cv-card empty" data-slot="0" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד א׳</span></span><span class="cv-act">בחירה</span></button>
-        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" disabled>מול</button>
+        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" title="החלפת צדדים" disabled>מול<svg class="cv-swap" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h11l-3-3M17 17H6l3 3"></path></svg></button>
         <button type="button" class="dopen cv-card empty" data-slot="1" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ב׳</span></span><span class="cv-act">בחירה</span></button>
         <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>
         <div class="cv-c3" id="cvc3" hidden>
