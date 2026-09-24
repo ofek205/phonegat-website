@@ -50,7 +50,7 @@ var CATS = {
     crumb: 'השוואת שעונים', link: 'לכלי השעונים', ask: 'להשוות שעונים חכמים',
     slot: 'שעון', third: 'הוסיפו שעון שלישי', plural: 'השעונים', them: 'שני השעונים',
     waPick: 'היי, אני מתלבט בין כמה שעונים חכמים ואשמח לעזרה בבחירה',
-    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות סוללה בדרכים שונות, ולכן השורה הזאת מראה את מה שכל יצרן אמר ולא מספר אחד שאפשר להשוות.',
+    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות סוללה בדרכים שונות, ולכן בשורה הזאת מופיע מה שכל יצרן כתב, כפי שהוא.',
     loadErr: 'לא ניתן לטעון את נתוני השעונים. נסו לרענן את העמוד.',
     tab: 'שעונים חכמים', card: 'בין Apple Watch ל-Galaxy Watch', noun: 'שעונים חכמים', own: 'משלהם', any: 'כל שני שעונים', hubH: 'השוואות שעונים חכמים', hubLead: 'Apple Watch ו-Galaxy Watch, עם המפרט מאתרי היצרנים.'
   },
@@ -63,7 +63,7 @@ var CATS = {
     crumb: 'השוואת אוזניות', link: 'לכלי האוזניות', ask: 'להשוות אוזניות',
     slot: 'דגם', third: 'הוסיפו דגם שלישי', plural: 'האוזניות', them: 'שני הדגמים',
     waPick: 'היי, אני מתלבט בין כמה אוזניות ואשמח לעזרה בבחירה',
-    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות זמן האזנה בתנאים שונים, ולכן השורה הזאת מראה את מה שכל יצרן אמר ולא מספר אחד שאפשר להשוות.',
+    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות זמן האזנה בתנאים שונים, ולכן בשורה הזאת מופיע מה שכל יצרן כתב, כפי שהוא.',
     loadErr: 'לא ניתן לטעון את נתוני האוזניות. נסו לרענן את העמוד.',
     tab: 'אוזניות', card: 'בין AirPods ל-Galaxy Buds', noun: 'אוזניות', own: 'משלהן', any: 'כל שני דגמים', hubH: 'השוואות אוזניות', hubLead: 'AirPods ו-Galaxy Buds, עם המפרט מאתרי היצרנים.'
   }
@@ -214,7 +214,7 @@ function buildTable(a, b, d) {
   return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
     '      <table class="cmp cmp-spec cmp-vs">\n' +
     '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, לפי המקורות שמתחת לטבלה. ' +
-    (d.same ? sameMoreTxt(d.same) + ' בשני הדגמים ואינם מופיעים כאן.' : 'אין שדה שזהה בשניהם.') + '</caption>\n' +
+    (d.same ? sameMoreTxt(d.same) + (d.same === 1 ? ' בשני הדגמים ואינו מופיע כאן.' : ' בשני הדגמים ואינם מופיעים כאן.') : 'אין שדה שזהה בשניהם.') + '</caption>\n' +
     bodies + '\n      </table>\n    </div>\n' +
     sourcesLine(a, b, d);
 }
@@ -258,8 +258,7 @@ function sourcesLine(a, b, d) {
     }).join(', ');
   }
   var parts = dates.map(function (at, i) {
-    var day = at ? dayHe(at) : '';
-    if (at && oneYear && i < dates.length - 1) day = day.replace(/ \d{4}$/, '');
+    var day = at ? at.split('-').reverse().map(function (x) { return String(+x); }).join('.') : '';
     return (at ? 'נבדקו ב-' + day + ': ' : '') + byDate[at].map(function (o) {
       return '<b>' + ltr(o.x.name) + '</b>, ' + linksOf(o.links);
     }).join('; ');
@@ -303,7 +302,7 @@ function nearSection(p) {
   return '<section class="block" id="near" aria-labelledby="near-h">\n  <div class="wrap box">\n' +
     '    <h2 id="near-h">השוואות קרובות</h2>\n' +
     '    <p class="lead">מי שמשווה שני דגמים בדרך כלל שוקל עוד אחד. ' +
-    (byDevice ? 'אלה ההשוואות שחולקות מכשיר עם זו.' : 'לזוג הזה אין השוואה נוספת עם אותו דגם, ולכן אלה השוואות אחרות של אותו מותג.') +
+    (byDevice ? (CAT ? 'אלה ההשוואות שחולקות דגם עם זו.' : 'אלה ההשוואות שחולקות מכשיר עם זו.') : 'לזוג הזה אין השוואה נוספת עם אותו דגם, ולכן אלה השוואות אחרות של אותו מותג.') +
     '</p>\n' +
     '    <ul class="hub near">\n' +
     near.map(function (q) {
@@ -342,7 +341,10 @@ function buildMain(p, a, b, d, openTag) {
     '      <p class="meta">\n' +
     '        <span>' + d.rows.length + ' שדות שונים</span>\n' +
     '        <span>' + sameTxt(d.same) + '</span>\n' +
-    '        <span>המפרטים מאתרי היצרנים</span>\n' +
+    '        <span>' + ([a, b].some(function (x) {
+      var S = x.spec_source || {};
+      return d.rows.some(function (r) { var src = S[r.key] && S[r.key].src ? S[r.key] : S['default']; return src && /לא היצרן|אינו היצרן|GSMArena/.test(src.kind || ''); });
+    }) ? 'רוב המפרטים מאתרי היצרנים' : 'המפרטים מאתרי היצרנים') + '</span>\n' +
     '        <span>בלי הכרזת מנצח</span>\n' +
     '      </p>\n    </div>\n  </div>\n</section>\n\n' +
 
@@ -420,7 +422,7 @@ function buildMain(p, a, b, d, openTag) {
     '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
     '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
     '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + (d.same ? sameMoreTxt(d.same) +
-    ' בשניהם, ולכן אין טעם להציג אותם.' : 'בזוג הזה אין שדה שזהה בשניהם.') + '</p>\n' +
+    (d.same === 1 ? ' בשניהם, ולכן אין טעם להציג אותו.' : ' בשניהם, ולכן אין טעם להציג אותם.') : 'בזוג הזה אין שדה שזהה בשניהם.') + '</p>\n' +
     buildTable(a, b, d) +
     '  </div>\n</section>\n\n' +
 
@@ -461,9 +463,15 @@ function buildMain(p, a, b, d, openTag) {
        גם על iPhone 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. נמצא בבדיקה של 24.9.2026. */
     (function () {
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+      /* מכשיר ייחוס: הדגם שאיננו מוכרים. עד 24.9.2026 הזוג A57 מול Nothing נפתח בגילוי נאות
+         שאיננו מוכרים את Nothing, ונסגר ב"שני המכשירים אצלנו בחנות". */
+      var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+      var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
       var nmOf = function (x) { return esc(x.name_he || x.name); };
       /* שעונים ואוזניות: איננו יודעים אם הדגם בחנות, ולכן לא נאמר שהוא שם. שאלה, לא הבטחה. */
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
+        : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
+        : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
         : !away.length ? 'שני המכשירים אצלנו בחנות.'
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
@@ -503,7 +511,7 @@ function schema(p, a, b, url) {
        * עמוד, בדיוק כמו ה-.noown ברשימה. */
       about: [a, b].map(function (x) {
         var o = { '@type': 'Thing', name: x.name };
-        if (x.status !== 'reference') o.url = PROD + 'phones/' + x.slug + '/';
+        if (x.status !== 'reference' && !CAT) o.url = PROD + 'phones/' + x.slug + '/';
         return o;
       }),
       publisher: { '@id': PROD + '#business' } },
@@ -1097,12 +1105,12 @@ function toolMain(openTag, index, order, pairCount) {
   (CAT
     ? '      <p>' + esc(CAT.how) + '</p>\n'
     : '      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>\n') +
-  '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>\n' +
+  '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם.</p>\n' +
   '    </details>\n' +
   '    <details>\n      <summary>למה אין כאן מחיר, ואין הכרזה מי טוב יותר</summary>\n' +
-  '      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו ולא מטבלה. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים ולא מכריז על מנצח. על ההחלטה נעבור איתכם.</p>\n' +
+  '      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים בלי להכריז על מנצח. על ההחלטה נעבור איתכם.</p>\n' +
   '    </details>\n' +
-  '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>\n' +
+  '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. ' + (CAT ? '' : '<a href="/phones/">כל המכשירים</a> עם המפרט המלא.') + '</p>\n' +
   '  </div>\n</section>\n\n' +
 
   '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
@@ -1253,7 +1261,7 @@ if (!only && !CAT) {
     return { cat: c, pairs: (j._comparisons && j._comparisons.pairs) || [] };
   }).filter(function (x) { return x.pairs.length; });
   var wp = [].concat.apply([], catPairs.map(function (x) { return x.pairs; }));
-  var hubTitle = 'השוואות מכשירים: ' + (pairs.length + wp.length) + ' השוואות אמיתיות בין דגמים | פון גת';
+  var hubTitle = (wp.length ? 'השוואות טלפונים, שעונים ואוזניות: ' : 'השוואות מכשירים: ') + (pairs.length + wp.length) + ' השוואות | פון גת';
   var hubDesc = (refPairs
     ? 'השוואות בין דגמים, לפי המפרט שהיצרנים מפרסמים. חלקן מול דגם שאיננו מוכרים, כדי שיהיה מול מה להשוות.'
     : 'השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים.') +
@@ -1557,6 +1565,7 @@ function buildTool() {
     /* לשעונים ולאוזניות אין עמודי מכשיר, והכלי קישר ל-/phones/<slug>/, כלומר ל-404. נמצא ב-24.9.2026
        בבדיקה בדפדפן, אחרי שכלי השעונים כבר עלה לסביבת הבדיקות. הסינון מחזיר false, ולכן אין קישור. */
     once('return d && d.own!==false;', 'return false;', 'קישורי המפרט המלא');
+    once('data-add="1">הוסיפו מכשיר שלישי</button></li>\'', 'data-add="1">' + CAT.third + '</button></li>\'', 'כפתור הדגם השלישי');
     /* תווית התא אחרי בחירה. ה-HTML הסטטי כבר אומר "שעון א׳", וה-JS החזיר אותו ל"מכשיר א׳" ברגע הבחירה */
     var lblFrom = '<span class="dtxt"><span class="lbl">מכשיר \'+SLOT[i]', lblN = h.split(lblFrom).length - 1;
     if (lblN !== 2) { console.error('✗ ' + CAT.key + ': תווית התא, ציפיתי לשני מופעים ונמצאו ' + lblN); process.exit(1); }

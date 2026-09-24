@@ -140,7 +140,14 @@ function buildMain(d, openTag) {
   }).filter(Boolean);
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
-  var facts = [
+  var AWAY = !!C.not_in_store;
+  /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
+     ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
+  var facts = AWAY ? [
+    ['מחיר', C.price, C.price_note || PH.price],
+    ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
+    ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
+  ] : [
     /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
        שאין מחירון באתר עומדת. נוסף ב-24.9.2026 לאייפון 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. */
     ['מחיר', C.price, C.price_note || PH.price],
@@ -173,7 +180,7 @@ function buildMain(d, openTag) {
      ⚠ שני המספרים אינם מתחלפים: ה-WhatsApp העסקי הוא 08-6812050, והחיוג הוא
      052-5893366. הם מגיעים לשני מקומות שונים, והחלפה ביניהם שולחת לקוח לאף אחד. */
   '      <div class="hcta">' +
-  '<a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a>' +
+  '<a class="btn btn-wa btn-hero" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>' +
   '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>' +
   '</div>\n' +
   '      <p class="meta">\n' +
@@ -323,7 +330,7 @@ function buildMain(d, openTag) {
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
-  '      <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">בדיקת מחיר ומלאי</a>\n' +
+  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>\n' +
   '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
