@@ -17,8 +17,8 @@
  *      לא ייצא בלעדיה.
  *
  * הבעלות: כל מה שבתוך <main> בעמודים האלה, שני בלוקי ה-JSON-LD (Article ו-BreadcrumbList),
- * ה-title והתיאורים ב-head, והמקטע "הדגמים שבדרך" בעמוד /upcoming-phones/. שאר העמוד,
- * כלומר המסגרת, הגיע מ-new-page.js ונשאר שלו.
+ * ה-title והתיאורים ב-head, בלוקי המדידה (מועתקים מעמוד הרכזת), והמקטע "הדגמים שבדרך"
+ * בעמוד /upcoming-phones/. שאר העמוד, כלומר המסגרת, הגיע מ-new-page.js ונשאר שלו.
  *
  * בר-הרצה חוזרת. מסרב לרוץ אם עמוד או סימן חסרים.
  * ========================================================================== */
@@ -272,6 +272,38 @@ function setMeta(s, re, val, what, file) {
   return s.replace(re, function (m, a, b) { return a + esc(val) + b; });
 }
 
+/* בלוקי המדידה. אין להם מחולל: הם הועתקו ביד לכל העמודים, ובדיקה 42 ב-preflight דורשת עותק
+   זהה בכולם. העמודים כאן נוצרו מ-new-page.js לפני שבלוק ההשוואה נוסף, ולכן נשארו עם גרסה
+   ישנה של בלוק הלידים ובלי בלוק ההשוואה, וזה נתגלה רק כשהענף שולב עם main ב-24.9.2026.
+   מכאן והלאה המחולל מעתיק אותם מעמוד הרכזת בכל הרצה, כך שעדכון של הבלוק ברכזת מגיע לכאן
+   לבד. בלוק שחסר ברכזת פשוט אינו מועתק. */
+var MEASURE = ['pg-contact-tap', 'pg-compare-track'];
+var HUB_SRC = fs.readFileSync(path.join(PROTO, 'upcoming-phones/index.html'), 'utf8');
+function blockAt(s, marker) {
+  var i = s.indexOf(marker);
+  if (i < 0) return null;
+  var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
+  if (a < 0 || z < 0) return null;
+  return { a: a, z: z + '</script>'.length, text: s.slice(a, z + '</script>'.length) };
+}
+function syncMeasure(s, nl, rel) {
+  var prevEnd = -1;
+  MEASURE.forEach(function (m) {
+    var src = blockAt(HUB_SRC, m);
+    if (!src) return;
+    var text = src.text.replace(/\r\n/g, '\n').split('\n').join(nl);
+    var cur = blockAt(s, m);
+    if (cur) { s = s.slice(0, cur.a) + text + s.slice(cur.z); prevEnd = cur.a + text.length; }
+    else {
+      var at = prevEnd >= 0 ? prevEnd : s.lastIndexOf('</body>');
+      if (at < 0) { console.error('✗ ' + rel + ': אין </body> ואין מקום לבלוק ' + m); process.exit(1); }
+      s = s.slice(0, at) + nl + text + s.slice(at);
+      prevEnd = at + nl.length + text.length;
+    }
+  });
+  return s;
+}
+
 var written = 0;
 data.pages.forEach(function (pg) {
   var rel = 'upcoming-phones/' + pg.slug + '/index.html';
@@ -285,6 +317,7 @@ data.pages.forEach(function (pg) {
   var a = s.indexOf('<main'), b = s.indexOf('</main>');
   if (a < 0 || b < 0) { console.error('✗ ' + rel + ': אין <main>'); process.exit(1); }
   s = s.slice(0, a) + buildMain(pg).split('\n').join(nl) + s.slice(b + '</main>'.length);
+  s = syncMeasure(s, nl, rel);
 
   var url = SITE + '/upcoming-phones/' + pg.slug + '/';
   s = setMeta(s, /(<title>)[^<]*(<\/title>)/, pg.title, 'title', rel);
