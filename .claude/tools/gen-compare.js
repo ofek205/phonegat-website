@@ -80,7 +80,8 @@ var GROUPS = db._spec_groups.groups;
 var only = CAT ? null : process.argv[2];
 var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+/* גם מירכאות: esc נכנס גם לתוך מאפיינים (data-cat, data-q, alt), ושם " סוגר את הערך */
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
@@ -163,62 +164,6 @@ function diffSpec(a, b, pairSlug) {
   return { rows: rows, same: same, missing: missing };
 }
 
-function buildTable(a, b, d) {
-  var byGroup = {}, order = [];
-  d.rows.forEach(function (r) {
-    if (!byGroup[r.group]) { byGroup[r.group] = []; order.push(r.group); }
-    byGroup[r.group].push(r);
-  });
-  /* "לא מפורסם" ולא מקף ולא רווח: שדה שהיצרן לא מפרסם אינו אפס, וקורא צריך לדעת
-   * שההיעדר הוא של המידע ולא של התכונה. */
-  function cell(v) {
-    return v === null
-      ? '<td><i>לא מפורסם אצל היצרן</i></td>'
-      /* ltrRuns ולא esc, מאותה סיבה שבעמודי המכשיר: bidi הפך את סדר המספרים בתא. */
-      : '<td>' + BIDI.ltrRuns(v) + '</td>';
-  }
-  /* קו יחסי לשורה שיש בה מספר בשני הצדדים.
-   *
-   * זה מה שהופך את הטבלה מרשימה לקריאה: 167 גרם מול 214 גרם הם שני מספרים שצריך להחסיר,
-   * ושני קווים באורך שונה הם הבדל שרואים. הקו הוא 2px, בלי רקע ובלי מסגרת, כלומר בדיוק
-   * מה שמערכת העיצוב קוראת לו "קו שערה ורווח במקום קופסה".
-   *
-   * הרוחב יושב במשתנה CSS ולא ב-inline style של width, כדי שאפשר יהיה לכבות אותו ב-media
-   * אחד אם יתברר שהוא מפריע, בלי לגעת ב-HTML המחולל. */
-  /* ratioField ולא ratioPair: היא בודקת שהיחידות זהות לפני שהיא מחזירה יחס. ראו את ההערה
-   * ליד NUMERIC_BY_FIELD ב-traits.js — כאן הקו הציג 1% מול 100% כי הוא השווה שעות ל-mAh. */
-  function bars(fieldKey, a, b) {
-    /* בקטגוריה, קו רק לשדה שהכלי מאשר (_numok), כדי שהעמוד והכלי יציירו אותו דבר. עד 24.9.2026
-       עמודי השעונים ציירו גם קו לסוללה, שהכלי לא מצייר, ובאוזניות הקו היה משווה אוזנייה בודדת
-       לאוזניות קשת של 386 גרם. */
-    if (CAT && !(db._numok || {})[fieldKey]) return null;
-    return T.ratioField(fieldKey, a.spec, b.spec);
-  }
-  var bodies = order.map(function (gname) {
-    return '        <tbody>\n' +
-      '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(gname) + '</th></tr>\n' +
-      byGroup[gname].map(function (r) {
-        var bar = bars(r.key, a, b);
-        /* aria-hidden על הקו: הוא חזרה חזותית על המספר שכבר נמצא בתא, וקורא מסך שיקרא
-         * אותו פעמיים לא יקבל שום מידע נוסף. */
-        function withBar(td, side) {
-          if (!bar) return td;
-          return td.replace('</td>', '<span class="dbar" style="--w:' + bar[side] + '%" aria-hidden="true"></span></td>');
-        }
-        return '          <tr class="fld"><th colspan="2" scope="rowgroup">' + esc(r.label) + '</th></tr>\n' +
-          '          <tr><th scope="row">' + ltr(a.name) + '</th>' + withBar(cell(r.a), 'a') + '</tr>\n' +
-          '          <tr><th scope="row">' + ltr(b.name) + '</th>' + withBar(cell(r.b), 'b') + '</tr>';
-      }).join('\n') + '\n        </tbody>';
-  }).join('\n');
-
-  return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
-    '      <table class="cmp cmp-spec cmp-vs">\n' +
-    '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, לפי המקורות שמתחת לטבלה. ' +
-    (d.same ? sameMoreTxt(d.same) + (d.same === 1 ? ' בשני הדגמים ואינו מופיע כאן.' : ' בשני הדגמים ואינם מופיעים כאן.') : 'אין שדה שזהה בשניהם.') + '</caption>\n' +
-    bodies + '\n      </table>\n    </div>\n' +
-    sourcesLine(a, b, d);
-}
-
 var MONTHS_HE = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 function dayHe(iso) { var p = String(iso).split('-'); return p.length === 3 ? (+p[2]) + ' ב' + MONTHS_HE[+p[1] - 1] + ' ' + p[0] : String(iso); }
 /* לכל אחד משני הדגמים: המקורות של השדות שבטבלה, מקובצים לפי כתובת. שדה שמקורו מאגר ולא היצרן
@@ -292,42 +237,6 @@ function nearPairs(p) {
   return near.slice(0, 4);
 }
 
-function nearSection(p) {
-  var near = nearPairs(p);
-  if (!near.length) return '';
-  var mine = [p.a, p.b];
-  /* הכיתוב חייב לתאר את מה שבאמת קרה. בעמוד היחיד שנפל למותג אין דגם משותף לאף אחת
-     מהשורות, ומשפט שאומר "חולקות מכשיר עם זו" היה שם ההסבר על משהו אחר. */
-  var byDevice = near.some(function (q) { return [q.a, q.b].some(function (x) { return mine.indexOf(x) >= 0; }); });
-  return '<section class="block" id="near" aria-labelledby="near-h">\n  <div class="wrap box">\n' +
-    '    <h2 id="near-h">השוואות קרובות</h2>\n' +
-    '    <p class="lead">מי שמשווה שני דגמים בדרך כלל שוקל עוד אחד. ' +
-    (byDevice ? (CAT ? 'אלה ההשוואות שחולקות דגם עם זו.' : 'אלה ההשוואות שחולקות מכשיר עם זו.') : 'לזוג הזה אין השוואה נוספת עם אותו דגם, ולכן אלה השוואות אחרות של אותו מותג.') +
-    '</p>\n' +
-    '    <ul class="hub near">\n' +
-    near.map(function (q) {
-      /* הכיתוב אומר *למה* ההשוואה הזאת כאן: איזה מכשיר משותף, ומול מה הוא מושווה שם.
-         בלי זה זו רשימה של קישורים, ואי אפשר לדעת מאיזה מהם להתחיל. */
-      var sharedSlug = [q.a, q.b].filter(function (x) { return mine.indexOf(x) >= 0; })[0];
-      var other = (q.a === sharedSlug ? q.b : q.a);
-      var sd = sharedSlug ? D(sharedSlug) : null, od = other ? D(other) : null;
-      var why;
-      /* בקטגוריה name_he זהה ל-name, ו"X מול Y" היה חוזר על הכותרת בסדר הפוך. שם ספירת השדות. */
-      if (sd && od && !CAT) {
-        why = (sd.name_he || sd.name) + ' מול ' + (od.name_he || od.name);
-      } else {
-        /* נפילת המותג. "אותו מותג" בארבע השורות הוא כיתוב שאינו מבדיל ביניהן, כלומר אינו
-           עוזר לבחור מאיזו להתחיל. אותו מדד שהשער מציג, ספירת השדות, כן מבדיל. */
-        var qa = D(q.a), qb = D(q.b);
-        var qd = (qa && qb) ? diffSpec(qa, qb, q.slug) : null;
-        why = qd ? qd.rows.length + ' שדות שונים · ' + sameTxt(qd.same) : '';
-      }
-      return '      <li><a href="/compare/' + q.slug + '/"><b>' + esc(q.h1) + '</b>' +
-        '<span>' + esc(why) + '</span></a></li>';
-    }).join('\n') +
-    '\n    </ul>\n  </div>\n</section>\n\n';
-}
-
 /* עמוד השוואה קבוע בעיצוב ח׳ (24.9.2026), אותה שפה כמו הכלי. שני הבדלים מהכלי, בכוונה:
    1. כל התוכן ב-HTML. גוגל קורא את העמוד בלי JavaScript, ולכן התחומים, הקווים והטקסט הכתוב נבנים כאן.
       "מה חשוב לכם" מתווסף מעל זה ב-page.client.js, ועמוד בלי JS מציג פשוט את כל התחומים.
@@ -345,8 +254,25 @@ function fmtN(v, f) {
 function gapChip(x, t) {
   var hi = Math.max(x.a, x.b), lo = Math.min(x.a, x.b);
   if (lo === 0 && t.zero) return t.zero + ' באחד מהם';
-  if (lo > 0 && hi / lo >= 2) { var r = hi / lo; return 'פי ' + (r < 10 ? Math.round(r * 10) / 10 : Math.round(r)); }
+  if (lo > 0 && (hi / lo >= 2 || t.each)) { var r = hi / lo; return 'פי ' + (r < 10 ? Math.round(r * 10) / 10 : Math.round(r)); }
   return 'הפרש ' + fmtN(x.gap, t.fmt) + (t.fmt === 'gb' ? '' : t.unit);
+}
+/* ההבדלים הגדולים לעמוד קבוע, באותם כללים כמו bigGaps בכלי: לכל קבוצה כרטיס אחד (שעות וידאו לפני mAh),
+   ו-mAh יורד כשהוא מצביע הפוך משעות הווידאו של אותו יצרן. עד התיקון העמוד הציג את שניהם. */
+function pickGaps(a, b) {
+  var all = T.deltas(a.spec, b.spec), best = {};
+  all.forEach(function (x) {
+    var t = tdefOf(x.key); x.grp = t ? t.group : x.key; x.pri = t ? t.pri : 0;
+    var c = best[x.grp]; if (!c || x.pri < c.pri || (x.pri === c.pri && x.strength > c.strength)) best[x.grp] = x;
+  });
+  var H = T.DELTAS.filter(function (d) { return d.key === 'battery_hours'; })[0];
+  return all.filter(function (x) {
+    if (best[x.grp] !== x) return false;
+    if (x.key !== 'battery_mah' || !H) return true;
+    var ha = H.get(a.spec), hb = H.get(b.spec);
+    if (typeof ha !== 'number' || typeof hb !== 'number' || ha === hb) return true;
+    return (ha > hb ? 'a' : 'b') === x.lead;
+  }).sort(function (p, q) { return q.strength - p.strength; }).slice(0, 3);
 }
 function bigNum(v, t) {
   if (v === 0 && t.zero) return '<span class="cv-big cv-big-w">' + esc(t.zero) + '</span>';
@@ -381,7 +307,7 @@ function buildMain(p, a, b, d, openTag) {
     return '        <a class="cv-card" data-slot="' + i + '" href="/phones/' + x.slug + '/">' + inner + '<span class="cv-act">המפרט המלא</span></a>\n';
   };
   /* השוואות שחולקות דגם עם הזוג הזה. השם העברי בקישור, כי כך מחפשים בגוגל. */
-  var near = nearPairs(p).slice(0, 3);
+  var near = nearPairs(p).slice(0, 4);
   var nearHtml = near.map(function (q) {
     var qa = D(q.a), qb = D(q.b);
     if (!qa || !qb) return '';
@@ -418,13 +344,13 @@ function buildMain(p, a, b, d, openTag) {
   var refs = [a, b].filter(function (x) { return x.status === 'reference'; });
   var disc = refs.length
     ? '    <p class="dnote">את ' + refs.map(function (x) { return esc(nmHe(x)); }).join(' ואת ') + ' איננו מוכרים, ' +
-      (refs.length === 1 ? 'והוא כאן כדי שאפשר יהיה להשוות אליו' : 'והם כאן כדי שאפשר יהיה להשוות אליהם') + '. את המפרט לקחנו מאתר היצרן.</p>\n'
+      (refs.length === 1 ? 'והוא כאן כדי שאפשר יהיה להשוות אליו' : 'והם כאן כדי שאפשר יהיה להשוות אליהם') + '. המקור של כל שדה מופיע בסוף הרשימה.</p>\n'
     : '';
 
   /* ---------- ההבדלים הגדולים במספרים. מחושב מ-traits.js, אותם רפים כמו בכלי. */
   var bigs = '';
   if (!CAT) {
-    var ds = T.deltas(a.spec, b.spec).slice(0, 3);
+    var ds = pickGaps(a, b);
     if (ds.length) {
       bigs = '    <h2 class="cv-h2" id="gaps-h">ההבדלים הגדולים במספרים</h2>\n' +
         '    <ul data-pg-data class="cv-top3' + (ds.length < 3 ? ' n' + ds.length : '') + '">\n' + ds.map(function (x) {
@@ -435,7 +361,7 @@ function buildMain(p, a, b, d, openTag) {
             '<p class="cv-lead">' + esc(nmHe(lead)) + ': ' + esc(x.leadMore) + '</p></li>';
         }).join('\n') + '\n    </ul>\n' +
         '    <p class="aside">"גדול יותר" אינו "טוב יותר". ' +
-        (d.rows.some(function (r) { return r.key === 'screen_size'; }) ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.' : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') + '</p>\n';
+        (ds.some(function (x) { return /^(screen_size|weight|battery_hours|battery_mah)$/.test(x.key); }) ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.' : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') + '</p>\n';
     }
   }
 
@@ -449,7 +375,8 @@ function buildMain(p, a, b, d, openTag) {
     var dk = BAR_DELTA[k]; if (CAT || !dk) return false;
     var def = T.DELTAS.filter(function (x) { return x.key === dk; })[0]; if (!def) return false;
     var va = def.get(a.spec), vb = def.get(b.spec);
-    return typeof va === 'number' && typeof vb === 'number' && Math.abs(va - vb) < def.min;
+    var gap = typeof va === 'number' && typeof vb === 'number' ? Math.abs(va - vb) : -1;
+    return gap > 0 && gap < def.min;
   };
   var cell = function (x, v, side, bar) {
     return '<div class="cv-v cv-' + side + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(x.name) + '</span>' +
@@ -460,7 +387,7 @@ function buildMain(p, a, b, d, openTag) {
     if (CAT) return '';
     var da = dimsOf(a), db2 = dimsOf(b); if (!da || !db2) return '';
     var fig = function (x, side) { return '<figure class="cv-' + side + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + 'px;height:' + x.h + 'px"></span><figcaption>' + ltr(x.h + ' × ' + x.w) + ' מ״מ</figcaption></figure>'; };
-    return '<div class="cv-size">' + fig(da, 'a') + fig(db2, 'b') + '<p>בקנה מידה אמיתי, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>';
+    return '<div class="cv-size">' + fig(da, 'a') + fig(db2, 'b') + '<p>שניהם באותו קנה מידה, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>';
   };
   var groups = order.map(function (g, gi) {
     var rows = byGroup[g];
@@ -504,7 +431,7 @@ function buildMain(p, a, b, d, openTag) {
   var bottom = '<section class="block" id="bottom" aria-labelledby="h-bl">\n  <div class="wrap">\n' +
     '    <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>\n' +
     '    <p class="cv-prose">' + esc(p.bottom_line) + '</p>\n' +
-    '    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הזוג ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span>' +
+    '    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם שני הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span>' +
     '<span class="cv-bubble" id="cvwatext">' + esc(waMsg) + '</span></div><div class="cv-wb">' +
     '<a class="btn btn-wa" id="cvwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>\n' +
     '  </div>\n</section>\n</div>\n\n';
@@ -868,7 +795,7 @@ function toolMain(openTag, index, order, pairCount) {
   '    <div class="cv-row1">\n      <h1 id="h1">' + esc(CAT ? CAT.h1 : 'השוואת מכשירים') + '</h1>\n      ' + catSwitch + '\n    </div>\n' +
   '    <p class="cv-sub">' + esc(CAT ? CAT.asub : 'המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.') + '</p>\n' +
   '    <div class="cv-cards">\n' + card(0) +
-  '        <button type="button" class="cv-flip" id="cvflip" aria-label="החלפת צדדים" disabled>מול</button>\n' + card(1) +
+  '        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" disabled>מול</button>\n' + card(1) +
   /* הצד השלישי, מוסתר עד שמבקשים אותו. ההסרה היא כפתור אח ולא בתוך הכרטיס, כי כפתור בתוך כפתור אינו HTML תקין. */
   '        <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>\n' +
   '        <div class="cv-c3" id="cvc3" hidden>\n' + card(2) +
