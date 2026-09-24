@@ -134,7 +134,9 @@ function buildMain(d, openTag) {
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var facts = [
-    ['מחיר', C.price, PH.price],
+    /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
+       שאין מחירון באתר עומדת. נוסף ב-24.9.2026 לאייפון 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. */
+    ['מחיר', C.price, C.price_note || PH.price],
     ['מלאי', C.stock, PH.stock],
     ['נפחים בחנות', val(C.storage_stocked), val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : PH.stock],
     ['צבעים בחנות', val(C.colors_stocked), PH.colors],

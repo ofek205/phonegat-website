@@ -269,6 +269,31 @@
       "url": "/compare/iphone-17-vs-pixel-10/",
       "name": "אייפון 17 מול גוגל פיקסל 10",
       "status": "review"
+    },
+    {
+      "url": "/phones/iphone-18-pro-max/",
+      "name": "אייפון 18 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/phones/iphone-18-pro/",
+      "name": "אייפון 18 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-pro-max-vs-iphone-18-pro-max/",
+      "name": "אייפון 17 פרו מקס מול אייפון 18 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-pro-vs-iphone-18-pro/",
+      "name": "אייפון 17 פרו מול אייפון 18 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-18-pro-vs-iphone-18-pro-max/",
+      "name": "אייפון 18 פרו מול אייפון 18 פרו מקס",
+      "status": "review"
     }
   ]
 }

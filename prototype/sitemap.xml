@@ -170,19 +170,19 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/guides/esim-israel/</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/guides/first-phone-for-kid/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/guides/how-much-storage/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -206,7 +206,7 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/phones/find-my-phone/</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -303,6 +303,18 @@
   <url>
     <loc>https://www.phonegat.co.il/phones/iphone-17e/</loc>
     <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/phones/iphone-18-pro-max/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/phones/iphone-18-pro/</loc>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -409,8 +421,20 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/compare/iphone-17-pro-max-vs-iphone-18-pro-max/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/compare/iphone-17-pro-vs-iphone-17-pro-max/</loc>
     <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/iphone-17-pro-vs-iphone-18-pro/</loc>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -429,6 +453,12 @@
   <url>
     <loc>https://www.phonegat.co.il/compare/iphone-17-vs-pixel-10/</loc>
     <lastmod>2026-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/iphone-18-pro-vs-iphone-18-pro-max/</loc>
+    <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
