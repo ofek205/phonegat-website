@@ -395,7 +395,28 @@ function schema(p, a, b, url) {
     { '@context': 'https://schema.org', '@type': 'Article',
       headline: p.h1, description: p.description,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      about: [a, b].map(function (x) { return { '@type': 'Product', name: x.name, brand: { '@type': 'Brand', name: x.brand } }; }),
+      /* Thing ולא Product, ולא בגלל דיוק סמנטי אלא בגלל שגיאה אמיתית ב-Search Console.
+       *
+       * ב-24.8.2026 הגיע מייל "יש לציין offers, review, או aggregateRating" על האתר, וכל 38
+       * הישויות שנמצאו היו כאן: Product חשוף עם name ו-brand בתוך about של המאמר. ההנחה
+       * שישות מקוננת תחת about פטורה מהדרישה הזאת הייתה שגויה. גוגל בודקת כל ישות Product
+       * בדף, בלי קשר למקום שלה בעץ.
+       *
+       * ושלושת השדות שהיא מבקשת אסורים כאן, כל אחד מסיבה אחרת:
+       *   offers          חצי מהדגמים בעמודי ההשוואה הם מכשירי ייחוס שאיננו מוכרים, ואיננו
+       *                   מפרסמים מחירים בכלל. offers היה אומר ללקוח שאנחנו מוכרים אותם.
+       *   review          אין לנו ביקורות לכל דגם.
+       *   aggregateRating 537 הביקורות הן על העסק ולא על מכשיר. לתלות אותן בדגם זו המצאה,
+       *                   וזו הפרת מדיניות שגוררת ענישה ידנית.
+       *
+       * ולכן הפתרון היחיד הוא לא להצהיר Product. Thing נושא את השם וגם את הקישור לעמוד
+       * המכשיר, שהוא סיגנל טוב יותר מ-brand שהיה כאן. מכשיר ייחוס נשאר בלי url, כי אין לו
+       * עמוד, בדיוק כמו ה-.noown ברשימה. */
+      about: [a, b].map(function (x) {
+        var o = { '@type': 'Thing', name: x.name };
+        if (x.status !== 'reference') o.url = PROD + 'phones/' + x.slug + '/';
+        return o;
+      }),
       publisher: { '@id': PROD + '#business' } },
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: [
@@ -1361,9 +1382,16 @@ function buildTool() {
       });
     }
   });
+  /* ⚠ ה-script יורד מעמוד המקור לפני הבדיקה. השער שואל "האם השם הזה כבר **מוגדר**",
+   * וסלקטור בתוך JS הוא **שימוש** ולא הגדרה. ב-13.9.2026 נוסף לעמודים בלוק מדידה
+   * שכתוב בו closest('button.dopen') ו-closest('button.dchip'), והשער נפל עליו
+   * והפסיק לבנות את הכלי. מדידה שקוראת מחלקה אינה מגדירה אותה מחדש, ואין כאן שום
+   * התנגשות. אותה טעות בדיוק כמו בדיקה 31, שהשוותה CSS בלי להסיר הערות קודם. */
+  var srcNoJs = src.replace(/<script[\s\S]*?<\/script>/gi, ' ');
   Object.keys(mine).forEach(function (c) {
     if (SHARED_OVERRIDE[c]) return;
-    if (new RegExp('\\' + c + '(?![a-z0-9-])').test(CSS) || new RegExp('\\' + c + '(?![a-z0-9-])').test(src)) clash.push(c);
+    var re = new RegExp('\\' + c + '(?![a-z0-9-])');
+    if (re.test(CSS) || re.test(srcNoJs)) clash.push(c);
   });
   /* שער על השער: שם ברשימת ההיתר שאינו מוגדר בגיליון המשותף אינו עקיפה אלא שם חדש
    * שהתחפש לאחת, ואז ההיתר מסתיר בדיוק את מה שהשער בא לתפוס. */

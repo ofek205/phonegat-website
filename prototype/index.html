@@ -729,6 +729,10 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
 .person .p-tag{font-weight:800;font-size:clamp(1.1rem,2vw,1.3rem);color:var(--teal-d);margin:0 0 .9rem}
 .person .p-text p:not(.p-role):not(.p-tag){color:var(--ink-soft);margin:.7rem 0;line-height:1.7}
 .person .p-photo{margin:0}
+/* התמונה עטופה ב-picture כדי להגיש WebP עם נפילה ל-JPG. picture הוא inline כברירת מחדל,
+   ואז ה-img שבתוכו עם width:100% היה מתייחס למכל שמתכווץ לתוכן במקום לרוחב ה-figure.
+   block מחזיר את ההתנהגות למה שהייתה כשה-img היה ילד ישיר. */
+.p-photo picture{display:block}
 .person .p-photo img,.person .p-photo .ph-fig{width:100%;height:auto;aspect-ratio:4/5;border-radius:10px;display:block}
 .person .p-photo img{object-fit:cover;box-shadow:0 4px 12px -2px rgba(0,0,0,.10),0 24px 50px -20px rgba(0,0,0,.28)}
 .person .p-photo img[src="sigal.jpg"]{object-position:center top}   /* same 4/5 frame as Baruch; cover crops from the top so the face stays in */
@@ -2444,10 +2448,10 @@ document.addEventListener('DOMContentLoaded',function(){
           </div>
           <button class="more-btn p-more" aria-expanded="false" data-target="pbBaruch">הצג עוד</button>
         </div>
-        <figure class="p-photo"><img src="baruch.jpg" alt="ברוך אדלשטיין ליד שולחן המעבדה בפון גת" loading="lazy" width="640" height="800" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של ברוך&lt;br&gt;במעבדה (baruch.jpg)&lt;/div&gt;'"></figure>
+        <figure class="p-photo"><picture><source srcset="baruch.webp" type="image/webp"><img src="baruch.jpg" alt="ברוך אדלשטיין ליד שולחן המעבדה בפון גת" loading="lazy" width="640" height="800" onerror="(this.closest('figure')||this.parentNode).innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של ברוך&lt;br&gt;במעבדה (baruch.jpg)&lt;/div&gt;'"></picture></figure>
       </article>
       <article class="person photo-first">
-        <figure class="p-photo"><img src="sigal.jpg" alt="סיגל אדלשטיין בפון גת" loading="lazy" width="1200" height="1101" onerror="this.parentNode.innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של סיגל&lt;br&gt;(sigal.jpg)&lt;/div&gt;'"></figure>
+        <figure class="p-photo"><picture><source srcset="sigal.webp" type="image/webp"><img src="sigal.jpg" alt="סיגל אדלשטיין בפון גת" loading="lazy" width="1200" height="1101" onerror="(this.closest('figure')||this.parentNode).innerHTML='&lt;div class=&quot;ph-fig&quot;&gt;כאן תבוא תמונה של סיגל&lt;br&gt;(sigal.jpg)&lt;/div&gt;'"></picture></figure>
         <div class="p-text">
           <p class="p-role">בעלים ומנהלת קשרי הלקוחות</p>
           <h3>סיגל אדלשטיין</h3>
@@ -3373,8 +3377,20 @@ nav.main a.ntool{font-weight:800}
   var msgs=document.querySelectorAll('.announce .msg'), i=0, annTimer=null;
   var prefersReduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function show(n){msgs.forEach(function(m,k){m.classList.toggle('on',k===n)})}
-  function annStart(){if(prefersReduce||annTimer)return;annTimer=setInterval(function(){i=(i+1)%msgs.length;show(i)},6000);}
+  /* שני מקורות לכיבוי תנועה, ולא אחד. prefersReduce לבדו הוא הגדרת מערכת ההפעלה, ולכן
+     ההתאמה "עצירת אנימציות" שבתפריט הנגישות שלנו לא עצרה את הרצועה: היא מוסיפה מחלקה
+     ל-html, והכללים שלה הם CSS, בזמן שהסיבוב כאן הוא setInterval שאין ל-CSS דרך לגעת בו.
+     ההצהרה תיעדה את זה כמגבלה ידועה מ-17.8.2026, ותוקן ב-24.8.2026.
+     בקרה שמצהירה על עצירה ולא עוצרת גרועה מהיעדר בקרה. */
+  function motionOff(){return prefersReduce||document.documentElement.classList.contains('a11y-stop-motion');}
+  function annStart(){if(motionOff()||annTimer)return;annTimer=setInterval(function(){i=(i+1)%msgs.length;show(i)},6000);}
   function annStop(){if(annTimer){clearInterval(annTimer);annTimer=null;}}
+  /* מגיב גם להחלפה חיה של ההתאמה. observer ולא קריאה מתוך קוד תפריט הנגישות, כדי לא
+     לחבר בין שני הסקריפטים: כל אחד מהם ממשיך לא להכיר את השני. */
+  if(window.MutationObserver){
+    new MutationObserver(function(){if(motionOff())annStop();else annStart();})
+      .observe(document.documentElement,{attributes:true,attributeFilter:['class']});
+  }
   var annBar=document.querySelector('.announce');
   if(annBar){annBar.addEventListener('mouseenter',annStop);annBar.addEventListener('mouseleave',annStart);annBar.addEventListener('focusin',annStop);annBar.addEventListener('focusout',annStart);}
   document.getElementById('annNext').addEventListener('click',function(){i=(i+1)%msgs.length;show(i);annStop();annStart();});
@@ -5121,20 +5137,129 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
    Every page carries 3 to 5 byte-identical tel:/wa.me links, so a GTM Click URL trigger cannot
    tell the header icon from the bottom bar. The position is read from the DOM at click time
    rather than stamped on 878 anchors, so moving a link keeps the report honest. Capture phase,
-   because other handlers on this page stop propagation for their own controls. */
+   because other handlers on this page stop propagation for their own controls.
+
+   מ-12.9.2026 הוא מדווח גם את שלושת האירועים שהוגדרו כ-Key events ב-GA4:
+   whatsapp_click, phone_click ו-generate_lead. contact_tap נשאר כפי שהיה, כי הוא
+   נושא את location שאין לשלושת החדשים, ומחיקתו הייתה מאבדת מדידה קיימת.
+
+   ⚠ dataLayer.push ולא gtag(). GA4 נטען כאן דרך GTM בלבד: אין gtag.js בשום עמוד,
+   ומזהה המדידה חי בתוך המכל של GTM ולא בקוד. ה-gtag() שבראש הקובץ הוא shim של שורה
+   אחת ל-Consent Mode, וקריאה כמו gtag("event","whatsapp_click",…) דרכו רק דוחפת
+   arguments ל-dataLayer. בלי תגית GA4 שמוגדרת ב-GTM היא לא מגיעה ל-GA4 בכלל, כלומר
+   הייתה נראית כמו מדידה שעובדת ולא שולחת כלום. שלושת האירועים כאן דורשים שלוש תגיות
+   ב-GTM, ובלעדיהן הם יושבים ב-dataLayer ולא נספרים.
+
+   אין השהיה מלאכותית לפני הניווט: GA4 שולח ב-sendBeacon כברירת מחדל, וזה בדיוק
+   המנגנון ששורד ניווט. tel: ממילא לא מוריד את העמוד, הוא פותח את החייגן מעליו. */
 (function(){
   var SPOTS=['mbar','rail','hicons','hcta','pg-panel','a11y-panel','cookie','ch-btns'];
+  /* רחב יותר מ-wa.me בלבד, כדי שצורה אחרת שתיכנס לאתר מחר לא תיפול בשקט */
+  var WA=/^(https?:)?\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i;
+  var TEL=/^tel:/i, WAAPP=/^whatsapp:/i;
+  function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
   document.addEventListener('click',function(e){
     try{
-      var t=e.target,a=(t&&t.closest)?t.closest('a[href^="tel:"],a[href^="https://wa.me"]'):null;
+      var t=e.target,a=(t&&t.closest)?t.closest('a[href]'):null;
       if(!a)return;
+      var href=a.getAttribute('href')||'';
+      var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
+      if(!isTel&&!isWa)return;
       var loc='content',i;
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
       if(loc==='content'&&a.closest('footer'))loc='footer';
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:'contact_tap',
-        channel:/^tel:/.test(a.getAttribute('href')||'')?'phone':'whatsapp',
-        location:loc});
+      var method=isTel?'phone':'whatsapp';
+      /* a.href ולא ה-attribute: הכתובת המלאה אחרי פתרון, כפי שהיא בפועל */
+      var url=a.href||href, pagePath=location.pathname;
+      push({event:'contact_tap',channel:method,location:loc});
+      push({event:method==='phone'?'phone_click':'whatsapp_click',
+        event_category:'lead',method:method,link_url:url,page_path:pagePath,link_location:loc});
+      push({event:'generate_lead',event_category:'lead',method:method,page_path:pagePath});
+    }catch(_){}
+  },true);
+})();
+</script>
+<script>
+/* pg-compare-track: שימוש בכלי ההשוואה ובעמודי ההשוואה הכתובים.
+   אותו דפוס כמו מדידת הלידים: dataLayer.push שטוח, בלי eventModel ובלי gtag.
+   הסיבה מתועדת ב-.claude/gtm/README.md: GA4 מגיע לאתר דרך GTM בלבד, ותגית שמחפשת
+   פרמטר בשורש לא תמצא אותו אם הוא נדחף עטוף.
+
+   בלוק אחד לכל 78 העמודים, שמחליט לפי הכתובת מה לירות. כך אין שלושה קטעים שונים
+   שצריך לזכור להפיץ בנפרד, וסימון מקור הכניסה עובד מכל עמוד שיש בו קישור לכלי. */
+(function(){
+  function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
+  var P=location.pathname;
+  var CMP=/^\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)\/?$/;
+  var TOOL=/^\/phones\/compare\/?$/;
+
+  /* בכל עמוד: לחיצה על קישור לכלי מסמנת מאיפה הגיעו. נקרא בעמוד הכלי ונמחק.
+     sessionStorage ולא referrer לבדו, כי referrer אומר רק "מאיזה עמוד" ולא
+     "מאיזה מקום בעמוד", והניווט הוא הכניסה שמעניין להבדיל. */
+  document.addEventListener('click',function(e){
+    try{
+      var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
+      if(!a)return;
+      if(!/\/phones\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
+      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
+    }catch(_){}
+  },true);
+
+  /* עמוד השוואה כתוב. הדגמים מגיעים מה-slug, שצורתו תמיד <א>-vs-<ב>. */
+  var m=P.match(CMP);
+  if(m){
+    push({event:'compare_view',event_category:'engagement',page_path:P,
+      model_a:m[1],model_b:m[2]});
+    return;
+  }
+  if(!TOOL.test(P))return;
+
+  var entry='other';
+  try{
+    var s=sessionStorage.getItem('pg_cmp_entry');
+    if(s){entry=s;sessionStorage.removeItem('pg_cmp_entry');}
+    else if(!document.referrer)entry='direct';
+  }catch(_){if(!document.referrer)entry='direct';}
+  push({event:'compare_tool_open',event_category:'engagement',page_path:P,entry_point:entry});
+
+  /* הסלוט אינו רשום על פריט הדגם עצמו, הוא מצב פנימי של הכלי. לכן זוכרים איזה
+     כפתור פתח את הבורר לאחרונה. זה הסיגנל הטוב ביותר בלי לגעת בקוד הכלי. */
+  var lastSlot='0', lastPair='';
+  document.addEventListener('click',function(e){
+    try{
+      var t=e.target; if(!t||!t.closest)return;
+      var open=t.closest('button.dopen');
+      if(open){lastSlot=open.getAttribute('data-slot')||'0';return;}
+      var chip=t.closest('button.dchip');
+      if(!chip)return;
+      /* לחיצה חוזרת על דגם שנבחר מבטלת אותו. אנחנו ב-capture, לפני שהכלי הגיב,
+         ולכן aria-pressed עדיין מחזיק את המצב שלפני הלחיצה. בלי השדה הזה ביטול
+         היה נספר כבחירה, והדוח היה מנפח את מספר הדגמים שנבחרו. */
+      var wasOn=chip.getAttribute('aria-pressed')==='true';
+      push({event:'compare_select_model',event_category:'engagement',page_path:P,
+        model_id:chip.getAttribute('data-slug')||'',
+        model_name:(chip.textContent||'').trim(),
+        slot:'abc'.charAt(+lastSlot)||'a',
+        action:wasOn?'deselect':'select'});
+      /* אין בכלי כפתור "השווה": ההשוואה מתרנדרת חי. הרגע שבו היא באמת התחילה
+         הוא כשהבחירה מגיעה לשניים, והכלי כותב אותה ל-?d= בכתובת. setTimeout
+         כדי לקרוא אחרי שהכלי הספיק לעדכן.
+         החתימה ממוינת: בחירה מחדש של אותו דגם, או החלפת סדר בין הסלוטים, אינה
+         השוואה חדשה ואינה מדווחת שוב. נמדד: בלי המיון זה ירה כפילות.
+         models ו-model_count מדווחים כי בחירת דגם שלישי היא השוואה אחרת לגמרי,
+         ובלעדיהם היא הייתה נראית בדוח זהה לזוג שקדם לה. */
+      setTimeout(function(){
+        try{
+          var d=(location.search.match(/[?&]d=([^&]*)/)||[])[1]||'';
+          var L=decodeURIComponent(d).split(',').filter(Boolean);
+          if(L.length<2)return;
+          var sig=L.slice().sort().join(',');
+          if(sig===lastPair)return;
+          lastPair=sig;
+          push({event:'compare_start',event_category:'engagement',page_path:P,
+            model_a:L[0],model_b:L[1],models:L.join(','),model_count:L.length});
+        }catch(_){}
+      },0);
     }catch(_){}
   },true);
 })();

@@ -648,23 +648,36 @@ if (classFails.length) {
   else ok('h1 ו-title ייחודיים בכל עמוד');
 })();
 
-/* תאריך ביקורת הנגישות מול הדף החדש ביותר: הצהרה שמכסה "כל הדפים" ומתוארכת לפני
- * הדף האחרון מצהירה על כיסוי שאין לה, וזה הדבר הקל ביותר להצביע עליו בתביעה */
+/* תאריך ביקורת הנגישות: חלון זמן, ולא זמן השינוי של הקבצים.
+ *
+ * הגרסה הראשונה השוותה את תאריך הביקורת ל-mtime של העמוד החדש ביותר, בנימוק שהצהרה
+ * שמכסה "כל הדפים" ומתוארכת לפני הדף האחרון מצהירה על כיסוי שאין לה. הנימוק נכון,
+ * המנגנון לא: המחוללים כותבים מחדש עשרות עמודים בכל הרצה, ולכן כל שינוי בכל מקום
+ * הדליק את האזהרה, גם שינוי שאין לו שום נגיעה לנגישות. תיקון סכמה ב-JSON-LD הדליק
+ * אותה, והמרת תמונה ל-WebP הדליקה אותה.
+ *
+ * **וזה הפך אותה למזיקה.** שער שדורש לחתום מחדש על ביקורת נגישות בכל דחיפה מלמד
+ * לעדכן את התאריך בלי לבדוק, וזה בדיוק הרישום האוטומטי שההצהרה קיימת כדי למנוע.
+ * אזהרה שנדלקת תמיד שקולה לאזהרה שכבויה, רק שהיא גם מרעישה.
+ *
+ * חלון זמן עושה את העבודה שהנימוק המקורי התכוון אליה: הוא שואל "מתי נבדק לאחרונה",
+ * שזו השאלה שבית משפט ישאל, ולא "האם נגעת בקובץ". 90 יום כמו בבדיקה 27, ומאותו
+ * נימוק. תאריך עתידי נכשל, כי הוא תמיד טעות הקלדה שמשתיקה את השער לחודשים. */
 (function () {
   var st = readPage('accessibility.html'); if (!st) return;
   var m = st.match(/תאריך עריכת ביקורת הנגישות האחרונה:\s*<span[^>]*>(\d{2})\/(\d{2})\/(\d{4})/);
   if (!m) { warn('לא נמצא תאריך ביקורת בהצהרת הנגישות'); return; }
   var audit = new Date(+m[3], +m[2] - 1, +m[1]);
-  var newest = 0, newestFile = '';
-  CONTENT_PAGES.forEach(function (f) {
-    try { var t = fs.statSync(path.join(pagesDir, f)).mtime.getTime();
-          if (t > newest) { newest = t; newestFile = f; } } catch (e) {}
-  });
-  /* יום חסד: עריכה קטנה באותו יום אינה מחייבת ביקורת מחדש */
-  if (newest - audit.getTime() > 36 * 3600 * 1000) {
-    warn('תאריך ביקורת הנגישות (' + m[1] + '/' + m[2] + '/' + m[3] + ') מקדים את ' + newestFile +
-         ' — ההצהרה מכסה "כל הדפים", ולכן היא מצהירה על כיסוי שאין לה');
-  } else ok('תאריך ביקורת הנגישות מעודכן מול הדפים');
+  var shown = m[1] + '/' + m[2] + '/' + m[3];
+  var days = Math.floor((Date.now() - audit.getTime()) / 86400000);
+  if (days < 0) {
+    bad('תאריך ביקורת הנגישות (' + shown + ') עתידי — תמיד טעות הקלדה, והוא משתיק את השער לחודשים');
+  } else if (days > 90) {
+    warn('ביקורת הנגישות נערכה לפני ' + days + ' יום (' + shown + ') — ההצהרה מכסה "כל הדפים", ' +
+         'ואחרי 90 יום של שינויים היא מצהירה על כיסוי שלא נבדק. לערוך ביקורת ולעדכן את שני התאריכים');
+  } else {
+    ok('ביקורת הנגישות נערכה לפני ' + days + ' יום (' + shown + '), בתוך חלון 90 הימים');
+  }
 })();
 
 /* ---------- 18. הסייטמאפ מול הדפים שבאמת חיים ----------
@@ -1043,8 +1056,14 @@ if (classFails.length) {
  * קריטית ב-Search Console. ב-13.8.2026 הגיע מייל על 21 עמודי המכשיר, כלומר כל אחד מהם.
  * ההערה במחולל הבטיחה "לא זכאי לתוצאות עשירות", וזה היה חצי נכון.
  *
- * ישות מקוננת תחת about או mainEntity פטורה: שם היא ההקשר של המאמר ולא הישות הראשית של
- * הדף, ולכן אינה מועמדת ל-snippet. זה מה שעמודי ההשוואה עושים, ונכון שיישאר.
+ * ⚠ **הפטור ל-about ו-mainEntity הוסר ב-24.8.2026, אחרי שגוגל הפריכה אותו.** עד אז הבדיקה
+ * דילגה על ישות מקוננת תחת about, בהנחה ששם היא ההקשר של המאמר ואינה מועמדת ל-snippet.
+ * ההנחה נשמעה סבירה והייתה שגויה: הגיע מייל על אותה שגיאה בדיוק, וכל 38 הישויות שנמצאו
+ * באתר היו Product חשוף בתוך about של 19 עמודי ההשוואה, כלומר בדיוק מה שהפטור התיר.
+ * הבדיקה עברה בירוק כל אותו זמן והבטיחה שקט שלא היה.
+ *
+ * גוגל בודקת כל ישות Product בדף, בלי קשר למקום שלה בעץ. לכן אין פטור לפי מקום, ולא
+ * להחזיר אחד. עמודי ההשוואה מצהירים Thing על הדגמים שהמאמר עוסק בהם, ולא Product.
  *
  * ⚠ הפתרון לכשל כאן אינו aggregateRating. אין ביקורות מוצר לדגמים האלה, וסימון ביקורות
  * מומצא הוא הפרת מדיניות שגוררת ענישה ידנית. בלי מחיר אמיתי, לא לפלוט Product. */
@@ -1056,7 +1075,7 @@ if (classFails.length) {
       return;
     }
     if (!node || typeof node !== 'object') return;
-    if (node['@type'] === 'Product' && !nested) {
+    if (node['@type'] === 'Product') {
       var has = function (k) { return Object.prototype.hasOwnProperty.call(node, k); };
       if (!has('offers') && !has('aggregateRating') && !has('review')) {
         offenders.push(file + (node.name ? ' (' + node.name + ')' : ''));
@@ -1064,8 +1083,8 @@ if (classFails.length) {
     }
     Object.keys(node).forEach(function (k) {
       if (k === '@context' || k === '@type') return;
-      /* about / mainEntity מורידים את הישות מדרגת "הישות של הדף" */
-      inspect(node[k], nested || k === 'about' || k === 'mainEntity', file);
+      /* בכל מקום בעץ, גם תחת about ותחת mainEntity. ראו ההערה למעלה. */
+      inspect(node[k], nested, file);
     });
   }
   pageFiles.forEach(function (f) {
@@ -1979,6 +1998,63 @@ if (classFails.length) {
       warn.slice(0, 4).join(', ') + (warn.length > 4 ? ' ועוד' : ''));
   } else {
     ok(pageFiles.length + ' כותרות, כולן עד 60 תווים');
+  }
+})();
+
+/* ---------- 42. מדידת הלידים זהה בכל העמודים ----------
+ * הבלוק pg-contact-tap הוא המדידה היחידה של לחיצה על טלפון ועל WhatsApp, ומ-12.9.2026
+ * הוא מדווח גם את שלושת ה-Key events שהוגדרו ב-GA4. אין לו מחולל: הוא הועתק ל-78 עמודים,
+ * ולכן אין שום דבר שמונע מעמוד אחד להישאר מאחור אחרי עריכה.
+ *
+ * זה נכשל בשקט בצורה הגרועה ביותר: העמוד עובד, הקישור עובד, והמדידה פשוט לא נשלחת ממנו.
+ * בדוח ב-GA4 זה ייראה כמו עמוד שאינו ממיר, ולא כמו עמוד שאינו נמדד.
+ *
+ * הבדיקה משווה טביעת אצבע בין העמודים. אחידות, לא תוכן: היא אינה קובעת מה הבלוק צריך
+ * להכיל, רק שכולם נושאים את אותו אחד, ובנוסף ששלושת שמות האירועים לא נעלמו ממנו. */
+(function () {
+  var crypto = require('crypto');
+  /* שני בלוקי מדידה, אותו כלל בדיוק: עותק זהה בכל עמוד, ושמות האירועים בתוכו */
+  var BLOCKS = [
+    { marker: 'pg-contact-tap', what: 'מדידת הלידים',
+      events: ['whatsapp_click', 'phone_click', 'generate_lead'] },
+    { marker: 'pg-compare-track', what: 'מדידת ההשוואה',
+      events: ['compare_tool_open', 'compare_view', 'compare_select_model', 'compare_start'] }
+  ];
+  var problems = [], counts = [];
+  BLOCKS.forEach(function (B) {
+    var sigs = {}, none = [];
+    pageFiles.forEach(function (rel) {
+      var s;
+      try { s = read('prototype/' + rel); } catch (e) { return; }
+      var i = s.indexOf(B.marker);
+      if (i < 0) { none.push(rel); return; }
+      var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
+      if (a < 0 || z < 0) { none.push(rel); return; }
+      var key = crypto.createHash('md5').update(s.slice(a, z + 9).replace(/\r/g, '')).digest('hex').slice(0, 8);
+      (sigs[key] = sigs[key] || []).push(rel);
+    });
+    var keys = Object.keys(sigs);
+    if (none.length) problems.push(B.what + ': ' + none.length + ' עמודים בלעדיה: ' + none.slice(0, 3).join(', '));
+    if (keys.length > 1) {
+      /* הרוב הוא הגרסה הנוכחית, והחריגים הם מי שנשאר מאחור */
+      keys.sort(function (a, b) { return sigs[b].length - sigs[a].length; });
+      var odd = keys.slice(1).reduce(function (acc, k) { return acc.concat(sigs[k]); }, []);
+      problems.push(B.what + ': ' + odd.length + ' עמודים עם גרסה שונה: ' + odd.slice(0, 3).join(', ') +
+        (odd.length > 3 ? ' ועוד' : ''));
+    }
+    if (keys.length) {
+      var sample = read('prototype/' + sigs[keys[0]][0]);
+      B.events.forEach(function (ev) {
+        if (sample.indexOf(ev) < 0) problems.push(B.what + ': האירוע ' + ev + ' נעלם מהבלוק');
+      });
+      counts.push(B.what + ' ב-' + sigs[keys[0]].length);
+    }
+  });
+  if (problems.length) {
+    bad('מדידה: ' + problems.join(' · ') +
+      ' — העמוד ימשיך לעבוד והמדידה פשוט לא תישלח ממנו, כלומר בדוח הוא ייראה כמי שאינו ממיר');
+  } else {
+    ok(counts.join(', ') + ' עמודים, זהה בכולם, עם כל שמות האירועים');
   }
 })();
 
