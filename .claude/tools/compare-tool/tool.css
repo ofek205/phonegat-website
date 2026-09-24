@@ -271,3 +271,66 @@ p.cv-legend{display:block}
 .cv-val{font-size:1rem}
 .cv-r.n3 .cv-val{font-size:.95rem}
 }
+/* ===== טלפון, קומפקטי (24.9.2026). אופק ראה בטסטים שבמובייל הכל גדול מדי. הגדלים יורדים, יעדי המגע
+   נשארים 44px. שני הכרטיסים זה לצד זה במקום זה מתחת לזה, וזה לבדו מקצר את ההדר בחצי. */
+@media(max-width:720px){
+.cv-top{padding-block:16px 16px}
+.cv-top h1{font-size:1.3rem}
+.cv-top .cv-row1{gap:10px}
+.cv-top .catsw a{padding:0 12px;font-size:.92rem}
+.cv-top .cv-sub{font-size:.92rem;margin-top:.5rem}
+.cv-cards{grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr);gap:6px;margin-block-start:1rem}
+.cv-card{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:2px 8px;min-height:64px;padding:10px 10px 12px;border-radius:8px}
+.cv-card .cv-dot{inline-size:10px;block-size:10px;margin-block-start:6px}
+.cv-card .cv-act{grid-column:2;font-size:.8rem}
+.cv-nm{font-size:1rem;line-height:1.25}
+.cv-meta{font-size:.76rem}
+.cv-flip{inline-size:44px;block-size:44px;font-size:.82rem}
+.cv-cards.three .cv-card{grid-template-columns:auto minmax(0,1fr) auto;align-items:center}
+.cv-cards.three .cv-card .cv-act{grid-column:3;grid-row:1}
+.cv-cards.three .cv-nm{font-size:1rem}
+.cv-add{font-size:.9rem;margin-block-start:.7rem}
+.cv-sug{margin-top:.8rem;font-size:.88rem}
+.cv-sug .cv-sa{padding:11px 13px}
+.cv-count{font-size:1.1rem}
+.cv-same li{font-size:.86rem;padding:4px 8px}
+.cv-src{font-size:.84rem}
+.cv-app .cv-h2{font-size:1.1rem;margin:1.4rem 0 .6rem}
+.cv-t{padding:12px 14px;gap:8px}
+.cv-th b{font-size:.95rem}
+.cv-gap{font-size:.8rem}
+.cv-big{font-size:1.4rem}
+.cv-big small{font-size:.78rem}
+.cv-tv.n3 .cv-big{font-size:1.15rem}
+.cv-tn{font-size:.78rem}
+.cv-lead{font-size:.9rem}
+.cv-prio p{font-size:.9rem}
+.cv-chip{font-size:.9rem;padding:0 11px}
+.cv-status{font-size:.84rem}
+.cv-legend{font-size:.84rem;padding:8px 10px}
+.cv-bi{min-height:42px;padding-block:6px}
+.cv-bar .cv-bn,.cv-bar .cv-bn{font-size:.88rem}
+.cv-app .cv-gh h3{font-size:1.1rem}
+.cv-gh span{font-size:.84rem}
+.cv-grp{margin-block-start:1.2rem}
+.cv-r{padding-block:11px}
+.cv-rl{font-size:.92rem}
+.cv-val,.cv-r.n3 .cv-val{font-size:.9rem}
+.cv-r.n3 .cv-val{font-size:.84rem}
+.cv-val .vch{font-size:.84rem}
+.cv-na{font-size:.86rem}
+.cv-note{font-size:.88rem;padding:8px 10px}
+.cv-small{font-size:.76rem}
+.cv-size figcaption{font-size:.8rem}
+.cv-size p{font-size:.88rem}
+.cv-rest{font-size:.95rem;min-height:48px}
+.cv-wa{padding:14px;gap:14px}
+.cv-wa .cv-wt b{font-size:1.05rem}
+.cv-wa .cv-wt span{font-size:.88rem}
+.cv-wa .cv-wt .cv-bubble{font-size:.9rem}
+.cv-app .cv-ph h2{font-size:1rem}
+.dchip{font-size:.92rem;padding:.45rem .8rem}
+.dbrand{font-size:.92rem}
+.cv-app .cv-prose{font-size:1rem}
+.cv-app .cv-lead2{font-size:.9rem}
+}
