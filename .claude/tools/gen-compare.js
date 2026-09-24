@@ -1116,7 +1116,12 @@ if (!only && !WATCHES) {
   /* נקבה, כי "השוואות" נקבה. מעל עשר נופל לספרות במקום להמציא מילים ארוכות. */
   var FEM = ['אפס', 'אחת', 'שתיים', 'שלוש', 'ארבע', 'חמש', 'שש', 'שבע', 'שמונה', 'תשע', 'עשר'];
   var refWord = refPairs <= 10 ? FEM[refPairs] : String(refPairs);
-  var hubTitle = 'השוואות מכשירים: ' + pairs.length + ' השוואות אמיתיות בין דגמים | פון גת';
+  /* השוואות השעונים נבנות במצב --watches מ-watches.json, ומוצגות כאן במקטע משלהן כדי שיהיה
+     אליהן קישור מתוך תוכן ולא רק מהתפריט. נקרא מהקובץ ולא מועתק, כדי שלא ייפרד. הספירה בכותרת
+     כוללת אותן: עד 24.9.2026 הכותרת אמרה 22 כשהעמוד הציג 27. */
+  var wp = [];
+  try { var wj = JSON.parse(fs.readFileSync(path.join(PROTO, 'watches.json'), 'utf8')); wp = (wj._comparisons && wj._comparisons.pairs) || []; } catch (e) { wp = []; }
+  var hubTitle = 'השוואות מכשירים: ' + (pairs.length + wp.length) + ' השוואות אמיתיות בין דגמים | פון גת';
   var hubDesc = (refPairs
     ? 'השוואות בין דגמים, לפי המפרט שהיצרנים מפרסמים. חלקן מול דגם שאיננו מוכרים, כדי שיהיה מול מה להשוות.'
     : 'השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים.') +
@@ -1141,7 +1146,7 @@ if (!only && !WATCHES) {
       { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
       { '@type': 'ListItem', position: 2, name: 'השוואות', item: hubUrl }
     ] },
-    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: pairs.map(function (p, i) {
+    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: pairs.concat(wp).map(function (p, i) {
       return { '@type': 'ListItem', position: i + 1, name: p.h1, url: PROD + 'compare/' + p.slug + '/' };
     }) }
   ];
@@ -1153,10 +1158,10 @@ if (!only && !WATCHES) {
   var hubMain = openTag2 + '\n\n' +
     '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
     '      <h1 id="h1">השוואות בין דגמים</h1>\n' +
-    '      <p class="sub">' + pairs.length + ' השוואות' +
+    '      <p class="sub">' + (wp.length ? pairs.length + ' השוואות טלפונים ו-' + wp.length + ' של שעונים חכמים' : pairs.length + ' השוואות') +
     (refPairs
-      ? '. ב' + refWord + ' מהן אחד הדגמים אינו נמכר אצלנו, והוא שם רק כדי שיהיה מול מה להשוות'
-      : ', כולן בין דגמים שיש לנו בחנות') +
+      ? '. ב' + refWord + ' מ' + (wp.length ? 'השוואות הטלפונים' : 'הן') + ' אחד הדגמים אינו נמכר אצלנו, והוא שם רק כדי שיהיה מול מה להשוות'
+      : ', כולן בין ' + (wp.length ? 'טלפונים' : 'דגמים') + ' שיש לנו בחנות') +
     '. בכל אחת רק השדות שבהם שני הדגמים באמת שונים, לפי המפרט שהיצרן מפרסם. אין כאן הכרזת מנצח, כי חנות שמכריזה מנצח מוכרת את המנצח.</p>\n' +
     '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '">' +
     '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
@@ -1179,12 +1184,8 @@ if (!only && !WATCHES) {
     '    <p class="aside">ואם הדגם עצמו לא אצלנו באתר, <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
     '  </div>\n</section>\n\n' +
 
-    /* השוואות השעונים נבנות במצב --watches מ-watches.json, ומוצגות כאן במקטע משלהן כדי שיהיה
-       אליהן קישור מתוך תוכן ולא רק מהתפריט. נקרא מהקובץ ולא מועתק, כדי שלא ייפרד. */
+    /* השוואות השעונים, מ-wp שנקרא למעלה */
     (function () {
-      var wj;
-      try { wj = JSON.parse(fs.readFileSync(path.join(PROTO, 'watches.json'), 'utf8')); } catch (e) { return ''; }
-      var wp = (wj._comparisons && wj._comparisons.pairs) || [];
       if (!wp.length) return '';
       return '<section class="block" id="watches" aria-labelledby="h-watches">\n  <div class="wrap box">\n' +
         '    <h2 id="h-watches">השוואות שעונים חכמים</h2>\n' +
@@ -1219,7 +1220,7 @@ if (!only && !WATCHES) {
 
   hh = hh.slice(0, mS2) + hubMain + hh.slice(mE2);
   fs.writeFileSync(hubPath, hh);
-  console.log('✓ /compare/ נבנה: ' + pairs.length + ' השוואות ברשימה וב-ItemList');
+  console.log('✓ /compare/ נבנה: ' + pairs.length + ' השוואות טלפונים ו-' + wp.length + ' של שעונים, ברשימה וב-ItemList');
 
   var swPath2 = path.join(PROTO, 'sw.js'), sw2 = fs.readFileSync(swPath2, 'utf8');
   if (sw2.indexOf("'/compare/'") < 0) { fs.writeFileSync(swPath2, sw2.replace('const SHELL = [', "const SHELL = ['/compare/', ")); swGrew = true; }
