@@ -2080,6 +2080,10 @@ function pgComparePage() {
   function soon() { if (q) return; q = true; var run = function () { q = false; stick(); }; if (window.requestAnimationFrame) requestAnimationFrame(run); setTimeout(run, 100); }
   window.addEventListener("resize", soon);
   window.addEventListener("scroll", soon, { passive: true });
+  /* ההדר של האתר נסגר ונפתח באנימציה של 280ms, והגלילה נגמרת באמצעה. בלי המדידה בסוף המעבר הפס
+     נשאר במקום של אמצע האנימציה: נמדד בטסטים, רווח של 32px בגלילה למטה, ו-24px מתחת להדר בגלילה
+     למעלה. הכלי כבר מקשיב לזה, והעמוד לא הקשיב. */
+  (function () { var h = document.querySelector("header.site"); if (h) h.addEventListener("transitionend", function (e) { if (e.propertyName === "transform") stick(); }); })();
   try { if (window.MutationObserver) new MutationObserver(stick).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] }); } catch (e) {}
   stick();
   var box = document.getElementById("cvgroups"), prio = document.getElementById("cvprio");
