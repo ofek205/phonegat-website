@@ -321,10 +321,7 @@ function buildMain(p, a, b, d, openTag) {
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
     '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
     '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
-    '  </div>\n</section>\n' +
-    '<div class="cv-bar" id="cvbar" data-pg-data><div class="wrap cv-bi"><span class="cv-bn cv-a"><span class="cv-dot" aria-hidden="true"></span>' + ltr(a.name) +
-    '</span><span class="cv-vs">מול</span><span class="cv-bn cv-b"><span class="cv-dot" aria-hidden="true"></span>' + ltr(b.name) +
-    '</span><span class="cv-bc">' + diffCount(d.rows.length) + '</span></div></div>\n';
+    '  </div>\n</section>\n';
 
   /* ---------- מה זהה */
   var changed = {}; d.rows.forEach(function (r) { changed[r.key] = 1; });
@@ -379,7 +376,7 @@ function buildMain(p, a, b, d, openTag) {
     return gap > 0 && gap < def.min;
   };
   var cell = function (x, v, side, bar) {
-    return '<div class="cv-v cv-' + side + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(x.name) + '</span>' +
+    return '<div class="cv-v cv-' + side + '"><span class="a11y-sr">' + esc(x.name) + ': </span>' +
       (v === null ? '<span class="cv-na">לא מפורסם אצל היצרן</span>' : '<span class="cv-val">' + BIDI.ltrRuns(v) + '</span>') +
       (bar ? fillBar(bar[side]) : '') + '</div>';
   };
@@ -395,7 +392,7 @@ function buildMain(p, a, b, d, openTag) {
       (rows.some(function (r) { return r.key === 'dimensions'; }) ? sizeHtml() : '') +
       rows.map(function (r) {
         var bar = barsOf(r.key);
-        return '<div class="cv-r"><div class="cv-rl">' + esc(r.label) + (small(r.key) ? '<br><span class="cv-small">הבדל קטן</span>' : '') + '</div>' +
+        return '<div class="cv-r"><div class="cv-rl"><span>' + esc(r.label) + '</span>' + (small(r.key) ? '<span class="cv-small">הבדל קטן</span>' : '') + '</div>' +
           cell(a, r.a, 'a', bar) + cell(b, r.b, 'b', bar) + '</div>';
       }).join('') + '</section>\n';
   }).join('');
@@ -406,9 +403,12 @@ function buildMain(p, a, b, d, openTag) {
     '    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>\n' +
     /* ריק ומוסתר עד ש-page.client.js בונה בו את הכפתורים. בלי JS אין כפתור שלא עושה כלום. */
     '    <div class="cv-prio" id="cvprio" hidden></div>\n' +
-    (anyBar ? '    <div class="cv-legend" data-pg-data><span class="cv-k cv-a"><i aria-hidden="true"></i>' + ltr(a.name) + '</span><span class="cv-k cv-b"><i aria-hidden="true"></i>' + ltr(b.name) +
-      '</span><span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>\n' : '') +
-    '    <div id="cvgroups" data-pg-data>\n' + groups + '    </div>\n' +
+    (anyBar ? '    <p class="cv-legend">קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</p>\n' : '') +
+    /* כותרת העמודות, דביקה מעל התחומים. aria-hidden: קורא מסך מקבל את שם הדגם בתוך כל תא. */
+    '    <div class="cv-table">\n' +
+    '    <div class="cv-bar" id="cvbar" aria-hidden="true" data-pg-data><div class="cv-bi"><span class="cv-bc">' + diffCount(d.rows.length) + '</span>' +
+    '<span class="cv-bn cv-a"><span class="cv-dot"></span>' + ltr(a.name) + '</span><span class="cv-bn cv-b"><span class="cv-dot"></span>' + ltr(b.name) + '</span></div></div>\n' +
+    '    <div id="cvgroups" data-pg-data>\n' + groups + '    </div>\n    </div>\n' +
     sourcesLine(a, b, d) +
     '  </div>\n</section>\n\n';
 
@@ -805,7 +805,6 @@ function toolMain(openTag, index, order, pairCount) {
   '    <p class="cv-sug" id="cvsug" hidden></p>\n' +
   '  </div>\n</section>\n' +
   /* הפס הלבן עם שני השמות. hidden עד שיש זוג. */
-  '<div class="cv-bar" id="cvbar" hidden></div>\n' +
   '<section class="block" id="pick" aria-label="ההשוואה">\n  <div class="wrap">\n' +
   '    <div class="cv-pick" id="cvpick" role="region" aria-labelledby="cvpick-h" hidden>\n' +
   '      <div class="cv-ph">\n        <h2 id="cvpick-h">בחירת דגם</h2>\n' +

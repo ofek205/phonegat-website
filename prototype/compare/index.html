@@ -689,6 +689,28 @@ span.cv-flip{cursor:default}
 .cv-more a{display:inline-block;padding-block:12px}
 .cv-count[tabindex]:focus{outline:none}
 .cv-count[tabindex]:focus-visible{outline:2px solid var(--teal-d);outline-offset:4px}
+/* ===== כותרת העמודות (24.9.2026): הפס הדביק יושב מעל התחומים, וכל שם מעל העמודה שלו.
+   אותם מסלולים בדיוק כמו .cv-r, כדי שהשם ייפול מעל הערך. השם ירד מכל שורה. */
+.cv-table{margin-block-start:1rem}
+.cv-bar{margin-inline:-8px;padding-inline:8px}
+.cv-bi{display:grid;grid-template-columns:170px repeat(2,minmax(0,1fr));gap:6px 22px;align-items:center;min-height:50px;padding-block:8px}
+.cv-bi.n3{grid-template-columns:150px repeat(3,minmax(0,1fr));gap:6px 18px}
+.cv-bar .cv-bc{margin:0;font-size:.95rem}
+.cv-bar .cv-bn{min-width:0;overflow-wrap:anywhere;font-size:1.05rem;line-height:1.3}
+.cv-bar .cv-bn .cv-dot{flex:none}
+p.cv-legend{display:block}
+/* בטלפון הערכים נשארים זה לצד זה, כל אחד מתחת לשם שלו בכותרת. שם השדה וההסבר על כל הרוחב. */
+@media(max-width:820px){
+.cv-bi,.cv-bi.n3{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.cv-bi.n3{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 10px}
+.cv-bar .cv-bc{display:none}
+.cv-bar .cv-bn{font-size:.98rem}
+.cv-r{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.cv-r.n3{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 10px}
+.cv-rl,.cv-note,.cv-r.n3 .cv-note{grid-column:1/-1}
+.cv-val{font-size:1rem}
+.cv-r.n3 .cv-val{font-size:.95rem}
+}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}

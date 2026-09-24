@@ -20,7 +20,7 @@ var sel = [null, null, null], DB = null, pickFor = null, on = {}, restOpen = fal
 var openNote = {};                    /* ההסברים שנפתחו, לפי שדה, כדי שיישארו פתוחים ברינדור מחדש */
 var cur = null;                       /* הזוג שעל המסך: {ds, diff, cats} */
 function $(id) { return document.getElementById(id); }
-var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip"),
+var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = null, sug = $("cvsug"), flip = $("cvflip"),
     addBtn = $("cvadd"), c3 = $("cvc3"), vs3 = $("cvvs3"), cardsBox = document.querySelector(".cv-cards");
 function onScreen() { return sel.slice(0, slots); }
 /* הצדדים שיש בהם דגם, לפי מספר הצד. עד התיקון הוספת צד שלישי בלי לבחור בו העלימה את ההשוואה של
@@ -325,7 +325,7 @@ function render() {
   sides = filled();
   var ds = sides.map(function (i) { return dev(sel[i]); });
   if (ds.length < 2) {
-    cur = null; if (bar) bar.hidden = true; stick();
+    cur = null; bar = null; stick();
     out.innerHTML = '<p class="dempty">' + (ds.length ? "בחרו עוד דגם, ותראו כאן את ההבדלים ביניהם." : "בחרו שני דגמים, ותראו כאן את ההבדלים ביניהם.") + "</p>";
     return;
   }
@@ -337,7 +337,7 @@ function render() {
     p.k.forEach(function (ix) { set[ix] = 1; });
     if (ds.length === 2) pairSame = p.s;
   }
-  if (missingPair) { cur = null; if (bar) bar.hidden = true; stick(); out.innerHTML = '<p class="dempty">' + CFG.pairErr + "</p>"; return; }
+  if (missingPair) { cur = null; bar = null; stick(); out.innerHTML = '<p class="dempty">' + CFG.pairErr + "</p>"; return; }
   var diff = ORDER.filter(function (r, ix) { return set[ix]; });
   var cats = []; diff.forEach(function (r) { if (cats.indexOf(r[0]) < 0) cats.push(r[0]); });
   Object.keys(on).forEach(function (c) { if (cats.indexOf(c) < 0) delete on[c]; });
@@ -347,13 +347,10 @@ function render() {
   var sameN = pairSame === null ? same.length : pairSame;
   cur = { ds: ds, diff: diff, cats: cats };
 
-  if (bar) {
-    bar.hidden = false;
-    bar.innerHTML = '<div class="wrap cv-bi">' + ds.map(function (d, i) {
-      return (i ? '<span class="cv-vs">מול</span>' : "") + '<span class="cv-bn ' + scOf(i) + '"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>";
-    }).join("") + '<span class="cv-bc">' + diffTxt(diff.length) + "</span></div>";
-  }
-  stick();
+  /* כותרת העמודות: דביקה מעל התחומים, וכל שם יושב מעל העמודה שלו. aria-hidden, כי קורא מסך מקבל
+     את שם הדגם בתוך כל תא, ולא צריך לשמוע אותו גם כאן. */
+  var colHead = '<div class="cv-bar" id="cvbar" aria-hidden="true"><div class="cv-bi' + (ds.length === 3 ? " n3" : "") + '"><span class="cv-bc">' + diffTxt(diff.length) + "</span>" +
+    ds.map(function (d, i) { return '<span class="cv-bn ' + scOf(i) + '"><span class="cv-dot"></span>' + ltr(d.name) + "</span>"; }).join("") + "</div></div>";
 
   var refs = ds.filter(function (d) { return d.own === false; });
   var disc = refs.length ? '<p class="dnote">את ' + refs.map(function (d) { return esc(d.name_he || d.name); }).join(" ואת ") + " איננו מוכרים, " +
@@ -391,19 +388,19 @@ function render() {
       var n = diff.filter(function (r) { return r[0] === c; }).length;
       return '<button type="button" class="cv-chip" data-cat="' + esc(c) + '" aria-pressed="' + (on[c] ? "true" : "false") + '">' + CHECK + esc(c) + " <span>" + n + "</span></button>";
     }).join("") + '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p></div>' +
-    (anyBar ? '<div class="cv-legend">' + ds.map(function (d, i) { return '<span class="cv-k ' + scOf(i) + '"><i aria-hidden="true"></i>' + ltr(d.name) + "</span>"; }).join("") +
-      "<span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>" : "");
+    (anyBar ? '<p class="cv-legend">קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</p>' : "");
 
   var links = CFG.specLinks ? ds.filter(function (d) { return d.own !== false; }).map(function (d) {
     return '<a href="/phones/' + esc(d.slug) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
   }).join(" · ") : "";
 
-  out.innerHTML = disc + head + top + prio + '<div id="cvlist"></div>' +
+  out.innerHTML = disc + head + top + prio + '<div class="cv-table">' + colHead + '<div id="cvlist"></div></div>' +
     (links ? '<p class="cv-more">' + links + "</p>" : "") +
     '<div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span>' +
     '<span class="cv-bubble" id="cvwatext"></span></div><div class="cv-wb">' +
     '<a class="btn btn-wa" id="cvwa" href="#"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a>' +
     '<button type="button" class="btn btn-teal" id="dcopy">העתקת קישור להשוואה</button><span class="dok" id="dcopied" role="status"></span></div></div>';
+  bar = $("cvbar"); stick();
   var sig = ds.map(function (d) { return d.slug; }).sort().join(",");
   if (sig !== lastPair) { lastPair = sig; restOpen = false; }
   renderList(false);
@@ -417,7 +414,7 @@ function rowHtml(r, ds) {
     if (empty(raw)) v = '<span class="cv-na">לא מפורסם אצל היצרן</span>';
     else if (Array.isArray(raw)) v = '<span class="cv-val">' + raw.map(function (x) { return '<span class="vch">' + ltrRuns(x) + "</span>"; }).join("") + "</span>";
     else v = '<span class="cv-val">' + ltrRuns(raw) + "</span>";
-    return '<div class="cv-v ' + scOf(i) + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
+    return '<div class="cv-v ' + scOf(i) + '"><span class="a11y-sr">' + esc(d.name) + ": </span>" + v +
       (n ? fill(100 * n.v[i] / n.max) : "") + "</div>";
   };
   var mean = MEANS[r[2]], mid = "m-" + r[2], open = !!openNote[r[2]];
