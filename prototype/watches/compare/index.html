@@ -597,7 +597,16 @@ footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
 .cv-gh span{font-size:.95rem;color:var(--ink-soft)}
 .cv-gh .cv-pk{font-weight:700;color:var(--teal-d)}
 .cv-r{display:grid;grid-template-columns:170px minmax(0,1fr) minmax(0,1fr);gap:8px 22px;padding-block:16px;border-block-end:1px solid #ebe9ee;align-items:start}
-.cv-rl{font-size:1.06rem;font-weight:800;color:var(--ink-strong);padding-block-start:2px}
+.cv-rl{font-size:1.06rem;font-weight:800;color:var(--ink-strong);display:flex;flex-wrap:wrap;align-items:center;gap:0 .2rem;align-self:start}
+/* העיגול 22 פיקסל, שטח הלחיצה 44. background-clip שומר על העיגול קטן בזמן שהכפתור גדול */
+.cv-i{box-sizing:content-box;inline-size:22px;block-size:22px;padding:11px;margin:-11px -6px -11px -11px;border-radius:50%;background:transparent;border:0;cursor:pointer;display:inline-grid;place-items:center;font:inherit;font-size:.82rem;font-weight:800;font-style:normal;color:var(--ink-soft);position:relative}
+.cv-i::before{content:"";position:absolute;inset:11px;border-radius:50%;border:1px solid var(--cv-edge);transition:background .15s,border-color .15s}
+.cv-i:hover::before,.cv-i[aria-expanded="true"]::before{background:var(--teal-d);border-color:var(--teal-d)}
+.cv-i:hover,.cv-i[aria-expanded="true"]{color:#fff}
+.cv-i:focus-visible{outline:none}
+.cv-i:focus-visible::before{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--teal-d)}
+.cv-i{z-index:0}.cv-i::before{z-index:-1}
+.cv-rl .cv-small{flex-basis:100%;inline-size:max-content}
 .cv-small{display:inline-block;margin-block-start:.35rem;font-size:.9rem;font-weight:700;color:var(--ink-soft);border:1px solid var(--line);border-radius:4px;padding:1px 7px}
 .cv-v{display:flex;flex-direction:column;gap:6px;min-width:0}
 .cv-who{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink-soft)}
@@ -605,7 +614,9 @@ footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
 .cv-val{font-size:1.12rem;font-weight:700;line-height:1.45;color:var(--ink-strong);overflow-wrap:anywhere}
 .cv-val .vch{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:.05rem .5rem;margin:0 0 .3rem .35rem;font-size:1rem;font-weight:600;white-space:nowrap}
 .cv-na{font-size:1.02rem;font-weight:400;font-style:italic;color:var(--ink-soft)}
-.cv-note{grid-column:2/4;margin:0;font-size:1.02rem;line-height:1.6;color:#3d3a42}
+.cv-note{grid-column:2/4;margin:0;font-size:1rem;line-height:1.65;color:#3d3a42;background:#f6f8fa;border-inline-start:3px solid var(--teal-d);border-radius:4px;padding:10px 14px}
+.cv-note[hidden]{display:none}
+.cv-note b{color:var(--teal-d);font-weight:700;margin-inline-end:.3rem}
 .cv-rest{margin-block-start:1.2rem;inline-size:100%;min-height:52px;border:1px dashed #9aa7b0;border-radius:6px;background:#f8fafb;font:inherit;font-size:1.05rem;font-weight:700;color:var(--teal-d);cursor:pointer}
 .cv-rest:hover{border-style:solid;border-color:var(--teal-d)}
 .cv-rest[hidden]{display:none}
@@ -2082,7 +2093,8 @@ var CFG={"pub":"/watches-public.json","specLinks":false,"outline":false,"bars":f
    - הבחירה ב-?d= בכתובת, ב-replaceState. גם compare_start נקרא משם.
    - bigGaps, כולל הכלל שמוריד mAh כשהוא סותר את שעות הווידאו.
    מה השתנה: שני צדדים כברירת מחדל ושלישי כשמבקשים, "משווים גם" שמחליף צד, בורר שנפתח רק כשבוחרים צד,
-   "מה חשוב לכם" שמסדר ולא מסנן, והסבר קבוע מתחת לכל שדה במקום חלונית. */
+   "מה חשוב לכם" שמסדר ולא מסנן, והסבר לכל שדה מאחורי כפתור i שנפתח מתחת לשורה ולא בחלונית צפה.
+   הסבר קבוע מתחת לכל שדה נוסה ב-24.9.2026 והוסר באותו יום: אופק אמר שהוא מציף את העין. */
 /* פונקציה ולא קוד חופשי, כדי שהשומר בשורה הראשונה יוכל לצאת בלי שגיאה, ושהקובץ ייקרא גם לבד */
 function pgCompareMain() {
 var SIDE = ["א׳", "ב׳", "ג׳"], SC = ["cv-a", "cv-b", "cv-c"];
@@ -2090,6 +2102,7 @@ var SIDE = ["א׳", "ב׳", "ג׳"], SC = ["cv-a", "cv-b", "cv-c"];
    רק שניים, ואופק ביקש להשאיר את האפשרות לשלושה. */
 var slots = 2;
 var sel = [null, null, null], DB = null, pickFor = null, on = {}, restOpen = false, lastPair = "";
+var openNote = {};                    /* ההסברים שנפתחו, לפי שדה, כדי שיישארו פתוחים ברינדור מחדש */
 var cur = null;                       /* הזוג שעל המסך: {ds, diff, cats} */
 function $(id) { return document.getElementById(id); }
 var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip"),
@@ -2492,8 +2505,11 @@ function rowHtml(r, ds) {
     return '<div class="cv-v ' + scOf(i) + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
       (n ? fill(100 * n.v[i] / n.max) : "") + "</div>";
   };
-  return '<div class="cv-r' + (ds.length === 3 ? " n3" : "") + '"><div class="cv-rl">' + esc(r[1]) + (small ? "<br>" + small : "") + "</div>" + ds.map(cell).join("") +
-    (MEANS[r[2]] ? '<p class="cv-note">' + esc(MEANS[r[2]]) + "</p>" : "") + "</div>";
+  var mean = MEANS[r[2]], mid = "m-" + r[2], open = !!openNote[r[2]];
+  return '<div class="cv-r' + (ds.length === 3 ? " n3" : "") + '"><div class="cv-rl"><span>' + esc(r[1]) + "</span>" +
+    (mean ? '<button type="button" class="cv-i" data-mean="' + esc(r[2]) + '" aria-expanded="' + (open ? "true" : "false") + '" aria-controls="' + mid + '" aria-label="מה זה ' + esc(r[1]) + '">i</button>' : "") +
+    (small ? '<span class="cv-small">הבדל קטן</span>' : "") + "</div>" + ds.map(cell).join("") +
+    (mean ? '<p class="cv-note" id="' + mid + '"' + (open ? "" : " hidden") + "><b>מה זה אומר</b> " + esc(mean) + "</p>" : "") + "</div>";
 }
 function sizeHtml(ds) {
   if (!CFG.outline) return "";
@@ -2526,6 +2542,16 @@ function renderList(fromChip) {
 }
 out.addEventListener("click", function (e) {
   var t = e.target; if (!t || !t.closest) return;
+  /* פתיחה וסגירה במקום, בלי רינדור מחדש, כדי שהפוקוס יישאר על הכפתור */
+  var ib = t.closest(".cv-i");
+  if (ib) {
+    var key = ib.getAttribute("data-mean"), note = $("m-" + key), opening = ib.getAttribute("aria-expanded") !== "true";
+    if (opening) openNote[key] = 1; else delete openNote[key];
+    ib.setAttribute("aria-expanded", opening ? "true" : "false");
+    if (note) note.hidden = !opening;
+    if (opening) push("cmp_explain", { field: key });
+    return;
+  }
   var c = t.closest(".cv-chip");
   if (c) { var k = c.getAttribute("data-cat"); on[k] = !on[k]; if (!on[k]) delete on[k]; if (!Object.keys(on).length) restOpen = false; push("cmp_priority", { category: k, on: !!on[k] }); renderList(true); return; }
   if (t.closest(".cv-rest")) { restOpen = !restOpen; push("cmp_rest", { open: restOpen }); renderList(true); var rb = out.querySelector(".cv-rest"); if (rb) rb.focus(); return; }

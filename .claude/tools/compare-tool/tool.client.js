@@ -8,7 +8,8 @@
    - הבחירה ב-?d= בכתובת, ב-replaceState. גם compare_start נקרא משם.
    - bigGaps, כולל הכלל שמוריד mAh כשהוא סותר את שעות הווידאו.
    מה השתנה: שני צדדים כברירת מחדל ושלישי כשמבקשים, "משווים גם" שמחליף צד, בורר שנפתח רק כשבוחרים צד,
-   "מה חשוב לכם" שמסדר ולא מסנן, והסבר קבוע מתחת לכל שדה במקום חלונית. */
+   "מה חשוב לכם" שמסדר ולא מסנן, והסבר לכל שדה מאחורי כפתור i שנפתח מתחת לשורה ולא בחלונית צפה.
+   הסבר קבוע מתחת לכל שדה נוסה ב-24.9.2026 והוסר באותו יום: אופק אמר שהוא מציף את העין. */
 /* פונקציה ולא קוד חופשי, כדי שהשומר בשורה הראשונה יוכל לצאת בלי שגיאה, ושהקובץ ייקרא גם לבד */
 function pgCompareMain() {
 var SIDE = ["א׳", "ב׳", "ג׳"], SC = ["cv-a", "cv-b", "cv-c"];
@@ -16,6 +17,7 @@ var SIDE = ["א׳", "ב׳", "ג׳"], SC = ["cv-a", "cv-b", "cv-c"];
    רק שניים, ואופק ביקש להשאיר את האפשרות לשלושה. */
 var slots = 2;
 var sel = [null, null, null], DB = null, pickFor = null, on = {}, restOpen = false, lastPair = "";
+var openNote = {};                    /* ההסברים שנפתחו, לפי שדה, כדי שיישארו פתוחים ברינדור מחדש */
 var cur = null;                       /* הזוג שעל המסך: {ds, diff, cats} */
 function $(id) { return document.getElementById(id); }
 var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip"),
@@ -418,8 +420,11 @@ function rowHtml(r, ds) {
     return '<div class="cv-v ' + scOf(i) + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
       (n ? fill(100 * n.v[i] / n.max) : "") + "</div>";
   };
-  return '<div class="cv-r' + (ds.length === 3 ? " n3" : "") + '"><div class="cv-rl">' + esc(r[1]) + (small ? "<br>" + small : "") + "</div>" + ds.map(cell).join("") +
-    (MEANS[r[2]] ? '<p class="cv-note">' + esc(MEANS[r[2]]) + "</p>" : "") + "</div>";
+  var mean = MEANS[r[2]], mid = "m-" + r[2], open = !!openNote[r[2]];
+  return '<div class="cv-r' + (ds.length === 3 ? " n3" : "") + '"><div class="cv-rl"><span>' + esc(r[1]) + "</span>" +
+    (mean ? '<button type="button" class="cv-i" data-mean="' + esc(r[2]) + '" aria-expanded="' + (open ? "true" : "false") + '" aria-controls="' + mid + '" aria-label="מה זה ' + esc(r[1]) + '">i</button>' : "") +
+    (small ? '<span class="cv-small">הבדל קטן</span>' : "") + "</div>" + ds.map(cell).join("") +
+    (mean ? '<p class="cv-note" id="' + mid + '"' + (open ? "" : " hidden") + "><b>מה זה אומר</b> " + esc(mean) + "</p>" : "") + "</div>";
 }
 function sizeHtml(ds) {
   if (!CFG.outline) return "";
@@ -452,6 +457,16 @@ function renderList(fromChip) {
 }
 out.addEventListener("click", function (e) {
   var t = e.target; if (!t || !t.closest) return;
+  /* פתיחה וסגירה במקום, בלי רינדור מחדש, כדי שהפוקוס יישאר על הכפתור */
+  var ib = t.closest(".cv-i");
+  if (ib) {
+    var key = ib.getAttribute("data-mean"), note = $("m-" + key), opening = ib.getAttribute("aria-expanded") !== "true";
+    if (opening) openNote[key] = 1; else delete openNote[key];
+    ib.setAttribute("aria-expanded", opening ? "true" : "false");
+    if (note) note.hidden = !opening;
+    if (opening) push("cmp_explain", { field: key });
+    return;
+  }
   var c = t.closest(".cv-chip");
   if (c) { var k = c.getAttribute("data-cat"); on[k] = !on[k]; if (!on[k]) delete on[k]; if (!Object.keys(on).length) restOpen = false; push("cmp_priority", { category: k, on: !!on[k] }); renderList(true); return; }
   if (t.closest(".cv-rest")) { restOpen = !restOpen; push("cmp_rest", { open: restOpen }); renderList(true); var rb = out.querySelector(".cv-rest"); if (rb) rb.focus(); return; }
