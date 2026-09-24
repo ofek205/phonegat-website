@@ -567,6 +567,11 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .apph .asub{margin:.7rem 0 0;max-inline-size:56ch;color:var(--ink-soft);font-weight:300;font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7}
 .apph .ahelp{margin:.9rem 0 0;color:var(--ink-soft);font-size:1rem}
 .apph .ahelp a{color:var(--teal-d);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding-block:.55rem}
+.apph .catsw{display:flex;flex-wrap:wrap;gap:8px;margin:.9rem 0 0}
+.apph .catsw a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none}
+.apph .catsw a:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.apph .catsw a[aria-current="page"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff}
+.apph .catsw a:focus-visible{outline:3px solid var(--teal-d);outline-offset:2px}
 #pick{border-top:0;padding-block-start:clamp(16px,2.2vw,24px)}
 .dapp{--edge:#8f8b96;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);padding:1.05rem 1.15rem 1.3rem}
 .dapp .dhead{display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap}
@@ -1875,7 +1880,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
           </div>
-          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/watches/compare/">להשוות שעונים חכמים</a><a href="/headphones/compare/" aria-current="page">להשוות אוזניות</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
+          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>
       </div>
       <div class="ndrop">
@@ -1930,8 +1935,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="apph" aria-labelledby="h1">
   <div class="wrap">
     <h1 id="h1">השוואת אוזניות</h1>
+    <nav class="catsw" aria-label="מעבר בין כלי השוואה"><a href="/phones/compare/">טלפונים</a><a href="/watches/compare/">שעונים חכמים</a><a href="/headphones/compare/" aria-current="page">אוזניות</a></nav>
     <p class="asub">אוזניות AirPods ו-Galaxy Buds, והמפרט של כל דגם מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": חלק מהתכונות עובדות רק עם טלפון של אותו יצרן.</p>
-    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%90%D7%95%D7%96%D7%A0%D7%99%D7%95%D7%AA%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>. רוצים <a href="/phones/compare/">להשוות טלפונים</a>, או <a href="/watches/compare/">להשוות שעונים חכמים</a>?</p>
+    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%90%D7%95%D7%96%D7%A0%D7%99%D7%95%D7%AA%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>.</p>
   </div>
 </section>
 
@@ -3141,7 +3147,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
       var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
       if(!a)return;
       if(!/\/(phones|watches|headphones)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
-      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
+      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':a.closest('nav.catsw')?'switch':'other');
     }catch(_){}
   },true);
 

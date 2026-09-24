@@ -52,7 +52,7 @@ var CATS = {
     waPick: 'היי, אני מתלבט בין כמה שעונים חכמים ואשמח לעזרה בבחירה',
     how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות סוללה בדרכים שונות, ולכן השורה הזאת מראה את מה שכל יצרן אמר ולא מספר אחד שאפשר להשוות.',
     loadErr: 'לא ניתן לטעון את נתוני השעונים. נסו לרענן את העמוד.',
-    noun: 'שעונים חכמים', own: 'משלהם', any: 'כל שני שעונים', hubH: 'השוואות שעונים חכמים', hubLead: 'Apple Watch ו-Galaxy Watch, עם המפרט מאתרי היצרנים.'
+    tab: 'שעונים חכמים', card: 'בין Apple Watch ל-Galaxy Watch', noun: 'שעונים חכמים', own: 'משלהם', any: 'כל שני שעונים', hubH: 'השוואות שעונים חכמים', hubLead: 'Apple Watch ו-Galaxy Watch, עם המפרט מאתרי היצרנים.'
   },
   headphones: {
     flag: '--headphones', file: 'headphones.json', pub: 'headphones-public.json', path: 'headphones/compare/',
@@ -65,7 +65,7 @@ var CATS = {
     waPick: 'היי, אני מתלבט בין כמה אוזניות ואשמח לעזרה בבחירה',
     how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות זמן האזנה בתנאים שונים, ולכן השורה הזאת מראה את מה שכל יצרן אמר ולא מספר אחד שאפשר להשוות.',
     loadErr: 'לא ניתן לטעון את נתוני האוזניות. נסו לרענן את העמוד.',
-    noun: 'אוזניות', own: 'משלהן', any: 'כל שני דגמים', hubH: 'השוואות אוזניות', hubLead: 'AirPods ו-Galaxy Buds, עם המפרט מאתרי היצרנים.'
+    tab: 'אוזניות', card: 'בין AirPods ל-Galaxy Buds', noun: 'אוזניות', own: 'משלהן', any: 'כל שני דגמים', hubH: 'השוואות אוזניות', hubLead: 'AirPods ו-Galaxy Buds, עם המפרט מאתרי היצרנים.'
   }
 };
 var CAT = null;
@@ -644,6 +644,13 @@ var APP_CSS = [
   '.apph .asub{margin:.7rem 0 0;max-inline-size:56ch;color:var(--ink-soft);font-weight:300;font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7}',
   '.apph .ahelp{margin:.9rem 0 0;color:var(--ink-soft);font-size:1rem}',
   '.apph .ahelp a{color:var(--teal-d);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding-block:.55rem}',
+  /* מתג הקטגוריות. 4px ולא גלולה, בצורת הכפתורים של האתר. הנוכחי במילוי ולא רק בצבע, כדי
+     שיזוהה גם בלי הבחנה בצבעים. לבן על ‎--teal-d‎ הוא 6.6:1. עוטף לשורה שנייה במסך צר. */
+  '.apph .catsw{display:flex;flex-wrap:wrap;gap:8px;margin:.9rem 0 0}',
+  '.apph .catsw a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none}',
+  '.apph .catsw a:hover{border-color:var(--teal-d);color:var(--teal-d)}',
+  '.apph .catsw a[aria-current="page"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff}',
+  '.apph .catsw a:focus-visible{outline:3px solid var(--teal-d);outline-offset:2px}',
   /* בלוק שלוש האמירות (.dfacts) נמחק ב-16.8.2026 לבקשת אופק. הוא עבר גלגול שלם, משלושה
      צעדים ממוספרים לשלוש אמירות אחרי מעבר קופירייטר, ובסוף נפסל כולו. מה שנשאר מעל הכלי
      הוא כותרת, משפט אחד על מה יש ברשימה ושורת עזרה, והכלי עצמו מתחיל מיד אחריהם. */
@@ -979,12 +986,15 @@ function toolMain(openTag, index, order, pairCount) {
   /* ההבדלים המספריים מוגדרים ב-traits.js על שדות של טלפון. לשעונים הם ריקים, ולא מחושבים. */
   if (!CAT) live.forEach(function (d) { TRAITS[d.slug] = traitsOf(d); });
   var waPick = wa(CAT ? CAT.waPick : 'היי, אני מתלבט בין כמה דגמים ואשמח לעזרה בבחירה');
-  /* קישורים לשאר הכלים. בכל כלי: הטלפונים, ושאר הקטגוריות שקיימות על הדיסק. */
-  var otherTools = [{ path: 'phones/compare/', ask: 'להשוות טלפונים', link: 'לכלי הטלפונים' }]
-    .concat(CAT_LIVE).filter(function (c) { return !CAT ? c.path !== 'phones/compare/' : c.path !== CAT.path; });
-  var otherTxt = otherTools.map(function (c, i) {
-    return (i ? ', או ' : '') + '<a href="/' + c.path + '">' + c.ask + '</a>';
-  }).join('');
+  /* מתג הקטגוריות, מתחת לכותרת בכל כלי. עד 24.9.2026 המעבר בין הכלים היה שני קישורים בתוך
+     משפט שאלה ("רוצים להשוות X, או Y?"), ואופק אמר שזה לא מובן. המלצת מנהל המוצר: שלושה
+     קישורים קבועים, הנוכחי מסומן, והמעבר ביניהם לא שומר בחירה, כי אי אפשר להשוות שעון לטלפון.
+     nav ולא tablist: אלה שלושה עמודים, לא פאנלים באותו עמוד. */
+  var catSwitch = '    <nav class="catsw" aria-label="מעבר בין כלי השוואה">' +
+    [{ path: 'phones/compare/', tab: 'טלפונים' }].concat(CAT_LIVE).map(function (c) {
+      var here = CAT ? c.path === CAT.path : c.path === 'phones/compare/';
+      return '<a href="/' + c.path + '"' + (here ? ' aria-current="page"' : '') + '>' + esc(c.tab) + '</a>';
+    }).join('') + '</nav>\n';
   /* \\u003c ולא <: מחרוזת שמכילה סוגר סקריפט בתוך <script> סוגרת אותו, וזו תקלה שמפילה
    * את כל ה-JS בעמוד בשקט. אין כאן סוגרים כאלה, וזו חגורה. */
   var json = function (o) { return JSON.stringify(o).replace(/</g, '\\u003c'); };
@@ -994,12 +1004,11 @@ function toolMain(openTag, index, order, pairCount) {
      לא חוזר על השני. עד 16.8.2026 אותו הסבר הופיע פעמיים, פעם ב-hero ופעם מעל הבורר. */
   '<section class="apph" aria-labelledby="h1">\n  <div class="wrap">\n' +
   (CAT
-    ? '    <h1 id="h1">' + esc(CAT.h1) + '</h1>\n' +
+    ? '    <h1 id="h1">' + esc(CAT.h1) + '</h1>\n' + catSwitch +
       '    <p class="asub">' + esc(CAT.asub) + '</p>\n'
-    : '    <h1 id="h1">השוואת מכשירים</h1>\n' +
+    : '    <h1 id="h1">השוואת מכשירים</h1>\n' + catSwitch +
       '    <p class="asub">המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.</p>\n') +
-  '    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="' + waPick + '">כתבו לנו ב-WhatsApp</a>.' +
-  (otherTools.length ? ' רוצים ' + otherTxt + '?' : '') + '</p>\n' +
+  '    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="' + waPick + '">כתבו לנו ב-WhatsApp</a>.</p>\n' +
   '  </div>\n</section>\n\n' +
 
   '<section class="block" id="pick" aria-labelledby="pick-h">\n  <div class="wrap box">\n' +
@@ -1295,8 +1304,19 @@ if (!only && !CAT) {
     '      <p class="meta">\n        <span>המפרטים מאתרי היצרנים</span>\n        <span>רק מה שונה</span>\n' +
     '        <span>בלי הכרזת מנצח</span>\n        <span>ייעוץ ללא עלות</span>\n      </p>\n    </div>\n  </div>\n</section>\n\n' +
 
+    /* כרטיסי הקטגוריות. קישורי עוגן לאותו עמוד, לא עמודים חדשים. רכיב .hub הקיים, בלי CSS חדש. */
+    '<section class="block" id="cats" aria-labelledby="h-cats">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-cats">לפי קטגוריה</h2>\n' +
+    '      <ul class="hub">\n' +
+    '        <li><a href="#list"><b>השוואות טלפונים</b><span>' + pairs.length + ' השוואות בין הדגמים שבאתר</span></a></li>\n' +
+    catPairs.map(function (x) {
+      return '        <li><a href="#' + x.cat.key + '"><b>' + esc(x.cat.hubH) + '</b><span>' + x.pairs.length + ' השוואות ' + esc(x.cat.card) + '</span></a></li>\n';
+    }).join('') +
+    '      </ul>\n' +
+    '  </div>\n</section>\n\n' +
+
     '<section class="block" id="list" aria-labelledby="h-list">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-list">ההשוואות</h2>\n' +
+    '    <h2 id="h-list">השוואות טלפונים</h2>\n' +
     '    <p class="lead">אם ההשוואה שאתם מחפשים אינה כאן, שלחו לנו את שני הדגמים ונעבור עליהם איתכם.</p>\n' +
     '      <ul class="hub">\n' +
     pairs.map(function (p) {
@@ -1307,8 +1327,7 @@ if (!only && !CAT) {
     }).join('\n') + '\n      </ul>\n' +
     /* "מתוך השנים עשר" קפא כאן מאז שהיו 12 דגמים, והכלי מחזיק היום יותר מ-80. המספר הוסר ב-24.9.2026
        ולא עודכן, כי מספר בפרוזה הוא עותק שני של נתון שחי במאגר. */
-    '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מהמאגר, או שלושה.' +
-    catPairs.map(function (x) { return ' ל' + x.cat.noun + ' יש <a href="/' + x.cat.path + '">כלי השוואה ' + x.cat.own + '</a>.'; }).join('') + '</p>\n' +
+    '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מהמאגר, או שלושה.</p>\n' +
     '    <p class="aside">ואם הדגם עצמו לא אצלנו באתר, <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
     '  </div>\n</section>\n\n' +
 
