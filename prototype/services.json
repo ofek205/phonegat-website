@@ -359,6 +359,26 @@
       "url": "/headphones/compare/",
       "name": "השוואת אוזניות",
       "status": "review"
+    },
+    {
+      "url": "/compare/apple-watch-vs-garmin/",
+      "name": "Apple Watch Series 12 מול Garmin Venu 4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-watch-vs-garmin/",
+      "name": "Galaxy Watch9 מול Garmin Venu 4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/forerunner-170-vs-forerunner-570/",
+      "name": "Garmin Forerunner 170 מול Garmin Forerunner 570",
+      "status": "review"
+    },
+    {
+      "url": "/compare/venu-4-vs-instinct-3/",
+      "name": "Garmin Venu 4 מול Garmin Instinct 3 AMOLED",
+      "status": "review"
     }
   ]
 }

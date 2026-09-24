@@ -415,6 +415,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/compare/apple-watch-vs-garmin/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/forerunner-170-vs-forerunner-570/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-a17-vs-galaxy-a07/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -493,6 +505,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-watch-vs-garmin/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-watch8-vs-galaxy-watch9/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -566,6 +584,12 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/redmi-note-15-vs-galaxy-a17/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/venu-4-vs-instinct-3/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
