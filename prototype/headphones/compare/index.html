@@ -496,7 +496,7 @@ footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
 .cv-sug{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:1.1rem 0 0;font-size:.98rem}
 .cv-sug[hidden]{display:none}
 .cv-sug .cv-sl{font-weight:700;color:rgba(255,255,255,.88)}
-.cv-sug .cv-sa{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);color:#fff;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.cv-sug .cv-sa{box-sizing:border-box;min-height:44px;padding:11px 16px;line-height:1.3;border-radius:22px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);color:#fff;font-weight:700;text-decoration:none;display:inline-block;white-space:nowrap}
 .cv-sug .cv-sa:hover{background:rgba(255,255,255,.16);border-color:#fff;color:#fff}
 .cv-sug .cv-sa:focus-visible{outline:3px solid #fff;outline-offset:2px}
 @media(max-width:720px){
@@ -639,6 +639,25 @@ footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
 .dhow details{margin-bottom:.6rem}
 .dhow summary{font-size:1.05rem}
 .dhow details p+p{padding-block-start:0}
+/* עמודי ההשוואה הקבועים: אותה שפה, עם כרטיסים שהם קישורים ותוכן כתוב מתחת לתחומים */
+a.cv-card,div.cv-card{text-decoration:none;cursor:default}
+a.cv-card{cursor:pointer}
+a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
+a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
+span.cv-flip{cursor:default}
+.cv-sug .cv-hwa{margin-inline-start:auto}
+.cv-res{padding-block-start:1.6rem}
+.cv-grp[hidden]{display:none}
+.cv-big-w{font-size:1.15rem}
+.cv-app .cv-lead2{margin:.3rem 0 0;color:var(--ink-soft)}
+.cv-app .cv-ph3{margin:1.3rem 0 0;font-size:1.15rem;font-weight:800;color:var(--ink-strong)}
+.cv-app .cv-prose{margin:.8rem 0 0;max-inline-size:72ch;font-size:1.08rem;line-height:1.8;color:var(--ink)}
+.cv-app .two .col h3{display:flex;align-items:center;gap:.55rem}
+.cv-app .two .cv-a h3{border-bottom-color:var(--cv-a)}
+.cv-app .two .cv-b h3{border-bottom-color:var(--cv-b)}
+.cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
+/* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
+@media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2328,7 +2347,7 @@ function render() {
   if (TDEF.length) {
     var gaps = bigGaps(ds).slice(0, 3);
     if (gaps.length) {
-      top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3 n' + gaps.length + '">' + gaps.map(function (x) {
+      top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3' + (gaps.length < 3 ? ' n' + gaps.length : '') + '">' + gaps.map(function (x) {
         var t = x.t, va = (TRAITS[ds[0].slug] || {})[x.key], vb = (TRAITS[ds[1].slug] || {})[x.key], mx = Math.max(va, vb) || 1;
         return '<li class="cv-t"><div class="cv-th"><b>' + esc(t.label) + '</b><span class="cv-gap">' + ltrRuns(gapChip(x)) + "</span></div>" +
           '<div class="cv-tv"><div class="cv-a">' + bigNum(va, t) + fill(100 * va / mx) + '<span class="cv-tn">' + ltr(ds[0].name) + "</span></div>" +

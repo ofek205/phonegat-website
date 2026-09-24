@@ -328,147 +328,196 @@ function nearSection(p) {
     '\n    </ul>\n  </div>\n</section>\n\n';
 }
 
+/* עמוד השוואה קבוע בעיצוב ח׳ (24.9.2026), אותה שפה כמו הכלי. שני הבדלים מהכלי, בכוונה:
+   1. כל התוכן ב-HTML. גוגל קורא את העמוד בלי JavaScript, ולכן התחומים, הקווים והטקסט הכתוב נבנים כאן.
+      "מה חשוב לכם" מתווסף מעל זה ב-page.client.js, ועמוד בלי JS מציג פשוט את כל התחומים.
+   2. בלי משפט ההסבר מתחת לכל שדה. הוא זהה בכל העמודים, ו-33 עמודים עם אותן 29 פסקאות נראים לגוגל
+      כמו עמוד אחד עם שמות מוחלפים. הטקסט הייחודי של כל זוג (lede, למי עדיף, angle, השורה התחתונה) נשאר. */
+var PAGE_CLIENT = fs.readFileSync(path.join(__dirname, 'compare-tool', 'page.client.js'), 'utf8').replace(/\r/g, '');
+/* שדות שיש להם מספר באותה יחידה בשני הצדדים, ואיזה DELTAS מודד אותם. זהה למפה שבכלי. */
+var BAR_DELTA = { screen_size: 'screen_size', weight: 'weight', storage_offered: 'storage_offered', battery: 'battery_hours', zoom: 'zoom' };
+function tdefOf(k) { return TDEF.filter(function (t) { return t.key === k; })[0] || null; }
+function fmtN(v, f) {
+  if (f === 'gb') return v >= 1024 ? (v / 1024) + 'TB' : v + 'GB';
+  if (f === 'dec') return String(Math.round(v * 100) / 100);
+  return String(Math.round(v));
+}
+function gapChip(x, t) {
+  var hi = Math.max(x.a, x.b), lo = Math.min(x.a, x.b);
+  if (lo === 0 && t.zero) return t.zero + ' באחד מהם';
+  if (lo > 0 && hi / lo >= 2) { var r = hi / lo; return 'פי ' + (r < 10 ? Math.round(r * 10) / 10 : Math.round(r)); }
+  return 'הפרש ' + fmtN(x.gap, t.fmt) + (t.fmt === 'gb' ? '' : t.unit);
+}
+function bigNum(v, t) {
+  if (v === 0 && t.zero) return '<span class="cv-big cv-big-w">' + esc(t.zero) + '</span>';
+  var u = t.fmt === 'gb' ? '' : t.unit.trim();
+  return '<span class="cv-big">' + ltr(fmtN(v, t.fmt)) + (u ? '<small>' + esc(u) + '</small>' : '') + '</span>';
+}
+function fillBar(w) {
+  return '<span class="cv-track" aria-hidden="true"><span class="cv-fill" style="width:' + Math.max(0, Math.min(100, Math.round(w))) + '%"></span></span>';
+}
+function dimsOf(x) {
+  var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(String(val(x.spec.dimensions || '')));
+  return m ? { h: +m[1], w: +m[2] } : null;
+}
+function diffCount(n) { return n === 1 ? 'הבדל אחד' : n + ' הבדלים'; }
+function sameTail(n) { return n === 0 ? ', ואין שדות זהים' : n === 1 ? ', ושדה אחד זהה' : n === 2 ? ', ושני שדות זהים' : ', ו-' + n + ' שדות זהים'; }
+
 function buildMain(p, a, b, d, openTag) {
-  var url = PROD + 'compare/' + p.slug + '/';
-  var waPick = wa('היי, אני מתלבט בין ' + a.name + ' ל-' + b.name + '. אשמח לעזרה בבחירה');
+  var waMsg = 'היי, אשמח לעזרה בבחירה בין ' + a.name + ' לבין ' + b.name + '.';
+  var waPick = wa(waMsg);
+  var nmHe = function (x) { return x.name_he || x.name; };
+  var year = function (x) { return x.launch ? String(x.launch).slice(0, 4) : ''; };
+  var toolHref = '/' + (CAT ? CAT.path : 'phones/compare/') + '?d=' + a.slug + ',' + b.slug;
 
-  var s = openTag + '\n\n' +
-    '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
-    '      <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
-    '      <p class="sub">' + esc(p.lede) + '</p>\n' +
-    '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + waPick + '">' +
-    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
-    '      <p class="meta">\n' +
-    '        <span>' + d.rows.length + ' שדות שונים</span>\n' +
-    '        <span>' + sameTxt(d.same) + '</span>\n' +
-    '        <span>' + ([a, b].some(function (x) {
-      var S = x.spec_source || {};
-      return d.rows.some(function (r) { var src = S[r.key] && S[r.key].src ? S[r.key] : S['default']; return src && /לא היצרן|אינו היצרן|GSMArena/.test(src.kind || ''); });
-    }) ? 'רוב המפרטים מאתרי היצרנים' : 'המפרטים מאתרי היצרנים') + '</span>\n' +
-    '        <span>בלי הכרזת מנצח</span>\n' +
-    '      </p>\n    </div>\n  </div>\n</section>\n\n' +
+  /* ---------- ההדר הכהה: הכותרת, שני הכרטיסים, ומשווים גם */
+  var card = function (x, i) {
+    var inner = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
+      '<span class="cv-meta">' + esc(x.brand) + (year(x) ? ' · הוכרז ב-' + year(x) : '') + '</span></span>';
+    /* מכשיר ייחוס: אין לו עמוד, ולכן אין קישור. הטקסט אומר במפורש שאיננו מוכרים אותו. */
+    if (x.status === 'reference') return '        <div class="cv-card" data-slot="' + i + '">' + inner + '<span class="cv-act">לא נמכר אצלנו</span></div>\n';
+    /* לשעונים ולאוזניות אין עמוד מכשיר. הכרטיס מוביל לכלי, עם הזוג כבר בחור. */
+    if (CAT) return '        <a class="cv-card" data-slot="' + i + '" href="' + toolHref + '">' + inner + '<span class="cv-act">כל השדות</span></a>\n';
+    return '        <a class="cv-card" data-slot="' + i + '" href="/phones/' + x.slug + '/">' + inner + '<span class="cv-act">המפרט המלא</span></a>\n';
+  };
+  /* השוואות שחולקות דגם עם הזוג הזה. השם העברי בקישור, כי כך מחפשים בגוגל. */
+  var near = nearPairs(p).slice(0, 3);
+  var nearHtml = near.map(function (q) {
+    var qa = D(q.a), qb = D(q.b);
+    if (!qa || !qb) return '';
+    return '<a class="cv-sa" href="/compare/' + q.slug + '/">' + BIDI.ltrRuns(nmHe(qa)) + ' מול ' + BIDI.ltrRuns(nmHe(qb)) + '</a>';
+  }).join('');
+  var top = '<div class="cv-app">\n<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
+    '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
+    '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
+    '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
+    '        <span class="cv-flip" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
+    '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
+    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
+    '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '  </div>\n</section>\n' +
+    '<div class="cv-bar" id="cvbar" data-pg-data><div class="wrap cv-bi"><span class="cv-bn cv-a"><span class="cv-dot" aria-hidden="true"></span>' + ltr(a.name) +
+    '</span><span class="cv-vs">מול</span><span class="cv-bn cv-b"><span class="cv-dot" aria-hidden="true"></span>' + ltr(b.name) +
+    '</span><span class="cv-bc">' + diffCount(d.rows.length) + '</span></div></div>\n';
 
-    /* שני המכשירים, קישור לעמוד המלא של כל אחד. הרכיב .hub, אותו רכיב של מרכז המכשירים. */
-    '<section class="block" id="devices" aria-labelledby="h-dev">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-dev">' + (CAT ? CAT.them : 'שני המכשירים') + '</h2>\n' +
-    (CAT
-      ? '    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של ' + CAT.them + ', ולהוסיף עוד אחד.</p>\n'
-      : '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n') +
-    '      <ul class="hub' + ([a, b].some(hasPhoto) ? ' pics' : '') + '">\n' +
-    /* כאן לא חוזרים על המפרט. הטבלה נמצאת מיד למטה, וכשמשווים שני דגמים באותו גודל מסך
-     * התוצאה הייתה "מסך 6.3 אינץ׳" פעמיים זה מתחת לזה, ועוד פעם בפסקה הפותחת. */
-    [a, b].map(function (x) {
-      /* מכשיר ייחוס אין לו עמוד, ולכן אין למה לקשר. פריט ולא קישור, והטקסט
-         אומר במפורש שאיננו מוכרים אותו. */
-      if (x.status === 'reference') {
-        return '        <li><span class="noown"><b>' + ltr(x.name) + '</b>' +
-          '<span>' + esc(x.brand) + ' · לא נמכר אצלנו, מופיע כאן להשוואה</span></span></li>';
-      }
-      /* לשעונים ולאוזניות אין עמוד מכשיר. הקישור הוא לכלי, עם הזוג כבר בחור. */
-      if (CAT) {
-        return '        <li><a href="/' + CAT.path + '?d=' + a.slug + ',' + b.slug + '"><b>' + ltr(x.name) + '</b>' +
-          '<span>' + esc(x.brand) + ' · כל השדות בכלי ההשוואה</span></a></li>';
-      }
-      return '        <li><a href="/phones/' + x.slug + '/">' + photo(x) + '<b>' + ltr(x.name) + '</b>' +
-        '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
-    }).join('\n') + '\n      </ul>\n' +
-    '  </div>\n</section>\n\n' +
+  /* ---------- מה זהה */
+  var changed = {}; d.rows.forEach(function (r) { changed[r.key] = 1; });
+  var same = [];
+  GROUPS.forEach(function (g) { g[1].forEach(function (f) {
+    var va = a.spec[f[0]], vb = b.spec[f[0]];
+    if (changed[f[0]] || va === null || va === undefined || vb === null || vb === undefined) return;
+    var v = String(val(va));
+    same.push(v.length <= 22 ? f[1] + ': ' + v : f[1]);
+  }); });
+  var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>';
+  /* התגיות רק כשהן מסכימות עם הספירה של diffSpec, אחרת המספר והתגיות אומרים שני דברים */
+  var sameHtml = same.length === d.same && same.length
+    ? '    <ul class="cv-same" data-pg-data aria-label="זהים בשניהם">' + same.slice(0, 5).map(function (t) { return '<li>' + CHECK + BIDI.ltrRuns(t) + '</li>'; }).join('') +
+      (same.length > 5 ? '<li>ועוד ' + (same.length - 5) + '</li>' : '') + '</ul>\n'
+    : '';
+  var refs = [a, b].filter(function (x) { return x.status === 'reference'; });
+  var disc = refs.length
+    ? '    <p class="dnote">את ' + refs.map(function (x) { return esc(nmHe(x)); }).join(' ואת ') + ' איננו מוכרים, ' +
+      (refs.length === 1 ? 'והוא כאן כדי שאפשר יהיה להשוות אליו' : 'והם כאן כדי שאפשר יהיה להשוות אליהם') + '. את המפרט לקחנו מאתר היצרן.</p>\n'
+    : '';
 
-    /* "ההבדלים הגדולים" — הבלוק שהופך את העמוד מטבלה למשהו שקרא את הטבלה.
-     *
-     * מחושב מ-traits.js: לכל שדה שאפשר להשוות במספרים יש רף, וההפרשים מדורגים לפי כמה הם
-     * עוברים אותו. הניסוח אומר מי גדול יותר ולא מי טוב יותר, ולכן משקל מופיע כ"כבד יותר".
-     *
-     * ואם אין אף הפרש מעל הרף, הבלוק אומר את זה במקום להיעלם. שני דגמים שנבדלים רק בזיכרון
-     * ובמעבד הם מקרה אמיתי (A56 מול A36), וזו תשובה שימושית יותר מרשימה ריקה. */
-    (function () {
-      /* ההפרשים המספריים מוגדרים ב-traits.js על שדות של טלפון. על שעון הם היו קוראים את
-         המספר הראשון בטווח כמו "31.5 עד 39.5 גרם" כאילו הוא המשקל, ולכן המקטע לא נבנה. */
-      if (CAT) return '';
-      var ds = T.deltas(a.spec, b.spec).slice(0, 4);
-      var nm = function (side) { return side === 'a' ? (a.name_he || a.name) : (b.name_he || b.name); };
-      if (!ds.length) {
-        return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
-          '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
-          /* "גדול" ולא "אין בכלל": בין A56 ל-A36 יש הפרש של 3 גרם, כלומר קיים ומתחת לרף.
-           * ניסוח שאומר "אין הבדל מדיד" בזמן שבטבלה מתחתיו מצוירים קווים הוא ניסוח שקורא
-           * ישים עליו את האצבע. */
-          '    <p class="lead">בין שני הדגמים האלה <b>אין הבדל מדיד גדול</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים, וזה מה שהקווים בטבלה למטה מראים. מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.</p>\n' +
-          '  </div>\n</section>\n\n';
-      }
-      return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
-        '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
-        '    <p class="lead">' + (ds.length === 1
-          ? 'מתוך ' + d.rows.length + ' השדות השונים, יש <b>הבדל אחד</b> שאפשר למדוד במספרים.'
-          : 'מתוך ' + d.rows.length + ' השדות השונים, אלה <b>' + ds.length + ' ההבדלים הגדולים</b> שאפשר למדוד במספרים.') +
-        ' השאר מופיעים בטבלה.</p>\n' +
-        '    <ul class="gaps">\n' +
-        ds.map(function (x) {
-          /* lead ולא higher: הקוטביות מגיעה מ-DELTAS, וכך העמוד הזה והכלי נוקבים באותו
-             דגם על אותו הפרש. במשקל זה הדגם הקל. */
-          return '      <li><b>' + esc(x.label) + '</b><span>' + esc(x.phrase) + '</span>' +
-            '<em>' + esc(nm(x.lead)) + ': ' + esc(x.leadMore) + '</em></li>';
+  /* ---------- ההבדלים הגדולים במספרים. מחושב מ-traits.js, אותם רפים כמו בכלי. */
+  var bigs = '';
+  if (!CAT) {
+    var ds = T.deltas(a.spec, b.spec).slice(0, 3);
+    if (ds.length) {
+      bigs = '    <h2 class="cv-h2" id="gaps-h">ההבדלים הגדולים במספרים</h2>\n' +
+        '    <ul data-pg-data class="cv-top3' + (ds.length < 3 ? ' n' + ds.length : '') + '">\n' + ds.map(function (x) {
+          var t = tdefOf(x.key), mx = Math.max(x.a, x.b) || 1, lead = x.lead === 'a' ? a : b;
+          return '      <li class="cv-t"><div class="cv-th"><b>' + esc(x.label) + '</b><span class="cv-gap">' + BIDI.ltrRuns(gapChip(x, t)) + '</span></div>' +
+            '<div class="cv-tv"><div class="cv-a">' + bigNum(x.a, t) + fillBar(100 * x.a / mx) + '<span class="cv-tn">' + ltr(a.name) + '</span></div>' +
+            '<div class="cv-b">' + bigNum(x.b, t) + fillBar(100 * x.b / mx) + '<span class="cv-tn">' + ltr(b.name) + '</span></div></div>' +
+            '<p class="cv-lead">' + esc(nmHe(lead)) + ': ' + esc(x.leadMore) + '</p></li>';
         }).join('\n') + '\n    </ul>\n' +
-        /* המשפט על המסך נאמר רק כשהמסכים באמת שונים. בזוג שהמסכים שלו זהים, כמו 17 פרו מול
-           18 פרו, הוא טען דבר שאינו חל על הזוג. */
         '    <p class="aside">"גדול יותר" אינו "טוב יותר". ' +
-        (d.rows.some(function (r) { return r.key === 'screen_size'; })
-          ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.'
-          : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') +
-        ' מה מכריע אצלכם? על זה נעבור יחד.</p>\n' +
-        '  </div>\n</section>\n\n';
-    })() +
+        (d.rows.some(function (r) { return r.key === 'screen_size'; }) ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.' : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') + '</p>\n';
+    }
+  }
 
-    '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
-    '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
-    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + (d.same ? sameMoreTxt(d.same) +
-    (d.same === 1 ? ' בשניהם, ולכן אין טעם להציג אותו.' : ' בשניהם, ולכן אין טעם להציג אותם.') : 'בזוג הזה אין שדה שזהה בשניהם.') + '</p>\n' +
-    buildTable(a, b, d) +
-    '  </div>\n</section>\n\n' +
+  /* ---------- התחומים */
+  var byGroup = {}, order = [];
+  d.rows.forEach(function (r) { if (!byGroup[r.group]) { byGroup[r.group] = []; order.push(r.group); } byGroup[r.group].push(r); });
+  /* בקטגוריה, קו רק לשדה שהכלי מאשר (_numok), כדי שהעמוד והכלי יציירו אותו דבר */
+  var barsOf = function (k) { if (CAT && !(db._numok || {})[k]) return null; return T.ratioField(k, a.spec, b.spec); };
+  var anyBar = d.rows.some(function (r) { return !!barsOf(r.key); });
+  var small = function (k) {
+    var dk = BAR_DELTA[k]; if (CAT || !dk) return false;
+    var def = T.DELTAS.filter(function (x) { return x.key === dk; })[0]; if (!def) return false;
+    var va = def.get(a.spec), vb = def.get(b.spec);
+    return typeof va === 'number' && typeof vb === 'number' && Math.abs(va - vb) < def.min;
+  };
+  var cell = function (x, v, side, bar) {
+    return '<div class="cv-v cv-' + side + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(x.name) + '</span>' +
+      (v === null ? '<span class="cv-na">לא מפורסם אצל היצרן</span>' : '<span class="cv-val">' + BIDI.ltrRuns(v) + '</span>') +
+      (bar ? fillBar(bar[side]) : '') + '</div>';
+  };
+  var sizeHtml = function () {
+    if (CAT) return '';
+    var da = dimsOf(a), db2 = dimsOf(b); if (!da || !db2) return '';
+    var fig = function (x, side) { return '<figure class="cv-' + side + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + 'px;height:' + x.h + 'px"></span><figcaption>' + ltr(x.h + ' × ' + x.w) + ' מ״מ</figcaption></figure>'; };
+    return '<div class="cv-size">' + fig(da, 'a') + fig(db2, 'b') + '<p>בקנה מידה אמיתי, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>';
+  };
+  var groups = order.map(function (g, gi) {
+    var rows = byGroup[g];
+    return '      <section class="cv-grp" data-cat="' + esc(g) + '" data-n="' + rows.length + '" aria-labelledby="g-' + gi + '"><div class="cv-gh"><h3 id="g-' + gi + '">' + esc(g) + '</h3><span>' + diffCount(rows.length) + '</span></div>' +
+      (rows.some(function (r) { return r.key === 'dimensions'; }) ? sizeHtml() : '') +
+      rows.map(function (r) {
+        var bar = barsOf(r.key);
+        return '<div class="cv-r"><div class="cv-rl">' + esc(r.label) + (small(r.key) ? '<br><span class="cv-small">הבדל קטן</span>' : '') + '</div>' +
+          cell(a, r.a, 'a', bar) + cell(b, r.b, 'b', bar) + '</div>';
+      }).join('') + '</section>\n';
+  }).join('');
 
-    '<section class="block" id="who" aria-labelledby="h-who">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-who">למי עדיף כל אחד</h2>\n' +
+  var res = '<section class="block cv-res" id="table" aria-labelledby="cmp-h">\n  <div class="wrap">\n' + disc +
+    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs +
+    '    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>\n' +
+    '    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>\n' +
+    /* ריק ומוסתר עד ש-page.client.js בונה בו את הכפתורים. בלי JS אין כפתור שלא עושה כלום. */
+    '    <div class="cv-prio" id="cvprio" hidden></div>\n' +
+    (anyBar ? '    <div class="cv-legend" data-pg-data><span class="cv-k cv-a"><i aria-hidden="true"></i>' + ltr(a.name) + '</span><span class="cv-k cv-b"><i aria-hidden="true"></i>' + ltr(b.name) +
+      '</span><span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>\n' : '') +
+    '    <div id="cvgroups" data-pg-data>\n' + groups + '    </div>\n' +
+    sourcesLine(a, b, d) +
+    '  </div>\n</section>\n\n';
+
+  /* ---------- הטקסט הכתוב של הזוג: למי עדיף, הזווית הייחודית, השורה התחתונה */
+  var who = '<section class="block" id="who" aria-labelledby="h-who">\n  <div class="wrap">\n' +
+    '    <h2 id="h-who" class="cv-h2">למי עדיף כל אחד</h2>\n' +
     '    <div class="two">\n' +
-    [[a, p.for_a], [b, p.for_b]].map(function (pair) {
-      return '      <div class="col">\n' +
-        '        <h3>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
-        pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') +
-        '\n        </ul>\n' +
-        (pair[0].status === 'reference' ? ''
-          : CAT ? ''
-          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
-            esc(pair[0].name_he || pair[0].name) + '</a></p>') + '\n      </div>';
-    }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n' +
+    [[a, p.for_a, 'a'], [b, p.for_b, 'b']].map(function (pair) {
+      return '      <div class="col cv-' + pair[2] + '">\n' +
+        '        <h3><span class="cv-dot" aria-hidden="true"></span>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
+        pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') + '\n        </ul>\n' +
+        (pair[0].status === 'reference' || CAT ? ''
+          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' + esc(nmHe(pair[0])) + '</a></p>') + '\n      </div>';
+    }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n';
+  var angle = p.angle && p.angle_h
+    ? '<section class="block" id="angle" aria-labelledby="h-angle">\n  <div class="wrap">\n' +
+      '    <h2 id="h-angle" class="cv-h2">' + esc(p.angle_h) + '</h2>\n' +
+      p.angle.map(function (t) { return '    <p class="cv-prose">' + esc(t) + '</p>\n'; }).join('') + '  </div>\n</section>\n\n'
+    : '';
+  var bottom = '<section class="block" id="bottom" aria-labelledby="h-bl">\n  <div class="wrap">\n' +
+    '    <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>\n' +
+    '    <p class="cv-prose">' + esc(p.bottom_line) + '</p>\n' +
+    '    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הזוג ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span>' +
+    '<span class="cv-bubble" id="cvwatext">' + esc(waMsg) + '</span></div><div class="cv-wb">' +
+    '<a class="btn btn-wa" id="cvwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>\n' +
+    '  </div>\n</section>\n</div>\n\n';
 
-    /* מקטע שייחודי לעמוד: השאלה שמכריעה דווקא בזוג הזה, עם כותרת משלו. נוסף ב-24.9.2026 כדי
-       שעמודים שבנויים מאותה תבנית לא ייראו כמו אותו עמוד עם שמות מוחלפים, שזה מה שגוגל מוריד
-       בדירוג. אופציונלי: זוג בלי angle פשוט לא מקבל את המקטע. */
-    (p.angle && p.angle_h
-      ? '<section class="block" id="angle" aria-labelledby="h-angle">\n  <div class="wrap box">\n' +
-        '    <h2 id="h-angle">' + esc(p.angle_h) + '</h2>\n' +
-        p.angle.map(function (t) { return '    <p>' + esc(t) + '</p>\n'; }).join('') +
-        '  </div>\n</section>\n\n'
-      : '') +
-
-    '<section class="rules" aria-labelledby="h-bl">\n  <div class="wrap">\n    <div class="box">\n' +
-    '      <h2 id="h-bl">השורה התחתונה</h2>\n' +
-    '      <div class="prose"><p>' + esc(p.bottom_line) + '</p></div>\n' +
-    '    </div>\n  </div>\n</section>\n\n' +
-
-    nearSection(p) +
-
-    '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
+  var cta = '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">עדיין מתלבטים?</h2>\n' +
-    /* not_in_store: דגם שהוכרז ועוד לא הגיע. בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות"
-       גם על iPhone 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. נמצא בבדיקה של 24.9.2026. */
     (function () {
+      /* not_in_store ומכשיר ייחוס: בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות" גם על דגם שעוד לא
+         הגיע, וגם על דגם שאיננו מוכרים בכלל */
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
-      /* מכשיר ייחוס: הדגם שאיננו מוכרים. עד 24.9.2026 הזוג A57 מול Nothing נפתח בגילוי נאות
-         שאיננו מוכרים את Nothing, ונסגר ב"שני המכשירים אצלנו בחנות". */
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
-      var nmOf = function (x) { return esc(x.name_he || x.name); };
-      /* שעונים ואוזניות: איננו יודעים אם הדגם בחנות, ולכן לא נאמר שהוא שם. שאלה, לא הבטחה. */
+      var nmOf = function (x) { return esc(nmHe(x)); };
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
         : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
         : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
@@ -484,7 +533,11 @@ function buildMain(p, a, b, d, openTag) {
     '    </div>\n' +
     '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
     '  </div>\n</section>\n\n';
-  return s;
+
+  var script = '<script>\n(function(){\n"use strict";\nvar PG={a:' + JSON.stringify(a.name).replace(/</g, '\\u003c') + ',b:' + JSON.stringify(b.name).replace(/</g, '\\u003c') +
+    ',slug:' + JSON.stringify(p.slug) + '};\n' + PAGE_CLIENT + '\npgComparePage();\n})();\n</scr' + 'ipt>\n\n';
+
+  return openTag + '\n\n' + top + res + who + angle + bottom + cta + script;
 }
 
 function schema(p, a, b, url) {
@@ -950,7 +1003,8 @@ db._comparisons.pairs.forEach(function (p) {
 
   var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
   if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ ' + p.slug + ': לא נמצא עוגן ה-CSS'); process.exit(1); }
-  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS);
+  /* אותו גיליון כמו הכלי, כדי ששני המקומות ייראו כמו מוצר אחד */
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS + '\n' + APP_CSS);
 
   var d = diffSpec(a, b, p.slug);
   if (!d.rows.length) { console.error('✗ ' + p.slug + ': אין אף שדה שונה. אין מה להשוות'); process.exit(1); }

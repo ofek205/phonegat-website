@@ -315,7 +315,7 @@ function render() {
   if (TDEF.length) {
     var gaps = bigGaps(ds).slice(0, 3);
     if (gaps.length) {
-      top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3 n' + gaps.length + '">' + gaps.map(function (x) {
+      top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3' + (gaps.length < 3 ? ' n' + gaps.length : '') + '">' + gaps.map(function (x) {
         var t = x.t, va = (TRAITS[ds[0].slug] || {})[x.key], vb = (TRAITS[ds[1].slug] || {})[x.key], mx = Math.max(va, vb) || 1;
         return '<li class="cv-t"><div class="cv-th"><b>' + esc(t.label) + '</b><span class="cv-gap">' + ltrRuns(gapChip(x)) + "</span></div>" +
           '<div class="cv-tv"><div class="cv-a">' + bigNum(va, t) + fill(100 * va / mx) + '<span class="cv-tn">' + ltr(ds[0].name) + "</span></div>" +

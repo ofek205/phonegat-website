@@ -61,15 +61,32 @@ function mainHtml(html) {
  * אחד מהם מציע 256GB, כלומר בדיוק מה שצריך לקרות. לספור את זה כחזרה זה להפוך את הבדיקה
  * לרעש בעמוד היחיד שבו היא לא רלוונטית. .checks ‏.mistakes ו-.ticks כן נספרים, כי אלה
  * רשימות שנכתבו ביד. */
+/* אזור נתונים שאינו <table>. עמודי ההשוואה בעיצוב ח׳ (24.9.2026) מציגים את המפרט בתחומים ובכרטיסים
+ * ולא בטבלה, והבדיקה על נתון שחוזר שלוש פעמים ספרה אותו כגוף, כלומר דיווחה "48MP×7" על הערכים
+ * עצמם. האלמנט מסומן במפורש ב-data-pg-data, ונחתך עם כל מה שבתוכו, כמו טבלה. */
+function stripData(h) {
+  var re = /<(div|ul|section)\b[^>]*\sdata-pg-data\b[^>]*>/g, m;
+  while ((m = re.exec(h))) {
+    var tag = m[1], depth = 0, t = new RegExp('<' + tag + '\\b|</' + tag + '>', 'g'), x;
+    t.lastIndex = m.index;
+    while ((x = t.exec(h))) {
+      depth += x[0].charAt(1) === '/' ? -1 : 1;
+      if (!depth) { h = h.slice(0, m.index) + ' ' + h.slice(x.index + x[0].length); break; }
+    }
+    if (depth) break;
+    re.lastIndex = m.index;
+  }
+  return h;
+}
 function writtenText(html) {
-  return mainHtml(html).replace(/<table[\s\S]*?<\/table>/g, ' ')
+  return stripData(mainHtml(html)).replace(/<table[\s\S]*?<\/table>/g, ' ')
     .replace(/<ul class="hub"[\s\S]*?<\/ul>/g, ' ')
     .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
     .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&[a-z]+;/g, ' ')
     .replace(/\s+/g, ' ').trim();
 }
 function proseText(html) {
-  var m = mainHtml(html).replace(/<table[\s\S]*?<\/table>/g, ' ')
+  var m = stripData(mainHtml(html)).replace(/<table[\s\S]*?<\/table>/g, ' ')
                         .replace(/<(ul|ol)[\s\S]*?<\/\1>/g, ' ');
   return m.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
           .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&[a-z]+;/g, ' ')

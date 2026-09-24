@@ -438,6 +438,210 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 @media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}
 .hub.near a{grid-template-columns:1fr}
 .hub.near a::before{content:none}
+/* כלי ההשוואה, גרסה ח׳ מהקנבס (24.9.2026). gen-compare.js קורא את הקובץ ומזריק אותו לשלושת הכלים.
+   השמות החדשים מתחילים ב-cv- כדי לא לדרוך על הגיליון המשותף. שלושה שמות נשמרו מהכלי הקודם בכוונה:
+   dopen, dchip ו-catsw. בלוק המדידה מדידת ההשוואה, שזהה ב-100 עמודים, מזהה לפיהם בחירת דגם,
+   פתיחת צד ומעבר בין כלים, ושינוי שם היה משתיק אותו בשקט.
+   הצבעים לפי צד ולא לפי מותג: צד א׳ סגול, צד ב׳ כתום, והטורקיז של האתר לכפתורים ולקישורים בלבד.
+   סגול וכתום נבדלים גם בעיוורון צבעים אדום-ירוק, והם לא נקראים כמו הכחול של סמסונג. */
+.cv-app{--cv-a:#5b3fc4;--cv-a-t:#5b3fc4;--cv-a-track:#efecfa;--cv-a-edge:#7c63d8;--cv-b:#b45309;--cv-b-t:#8a3f06;--cv-b-track:#f6eee6;--cv-b-edge:#e8892b;--cv-dark:#0f3b4c;--cv-edge:#8f8b96}
+/* ההדר הכהה של ו׳, שאופק בחר. */
+.cv-top{background:var(--cv-dark);color:#fff;padding-block:clamp(22px,3vw,34px) clamp(20px,2.6vw,30px)}
+.cv-top .cv-row1{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap}
+.cv-top h1{margin:0;color:#fff;font-size:clamp(1.55rem,3vw,2.05rem);line-height:1.2}
+.cv-top .catsw{display:flex;gap:4px;padding:4px;border-radius:6px;background:rgba(255,255,255,.1);margin:0}
+.cv-top .catsw a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:4px;color:#fff;font-weight:700;text-decoration:none}
+.cv-top .catsw a:hover{background:rgba(255,255,255,.14)}
+.cv-top .catsw a[aria-current="page"]{background:#fff;color:var(--cv-dark);font-weight:800}
+.cv-top .catsw a:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-top .cv-sub{margin:.7rem 0 0;color:rgba(255,255,255,.86);font-size:1.02rem;line-height:1.6;max-inline-size:70ch}
+.cv-cards{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;gap:14px;margin-block-start:1.3rem}
+.cv-card{min-height:88px;box-sizing:border-box;padding:14px 18px;border:0;border-radius:10px;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:start;font:inherit;color:var(--ink-strong);inline-size:100%}
+.cv-card[data-slot="0"]{box-shadow:inset 0 -5px 0 var(--cv-a-edge)}
+.cv-card[data-slot="1"]{box-shadow:inset 0 -5px 0 var(--cv-b-edge)}
+.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cv-card[aria-expanded="true"]{outline:3px solid #fff;outline-offset:3px}
+.cv-dot{inline-size:14px;block-size:14px;border-radius:50%;flex:none;display:inline-block}
+.cv-a .cv-dot,.cv-card[data-slot="0"] .cv-dot{background:var(--cv-a)}
+.cv-b .cv-dot,.cv-card[data-slot="1"] .cv-dot{background:var(--cv-b)}
+.cv-card.empty .cv-dot{background:none;border:2px dashed var(--cv-edge)}
+.cv-ct{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.cv-nm{font-size:clamp(1.3rem,2.2vw,1.65rem);font-weight:800;line-height:1.2}
+.cv-card.empty .cv-nm{color:var(--teal-d)}
+.cv-meta{font-size:.95rem;color:var(--ink-soft)}
+.cv-act{font-size:.95rem;font-weight:700;flex:none}
+.cv-card[data-slot="0"] .cv-act{color:var(--cv-a-t)}
+.cv-card[data-slot="1"] .cv-act{color:var(--cv-b-t)}
+.cv-flip{inline-size:64px;block-size:64px;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:var(--cv-dark);color:#fff;font:inherit;font-size:1.1rem;font-weight:800;cursor:pointer;display:grid;place-items:center;justify-self:center}
+.cv-flip:hover:not(:disabled){border-color:#fff}
+.cv-flip:disabled{opacity:.55;cursor:default}
+.cv-flip:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-sug{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:1.1rem 0 0;font-size:.98rem}
+.cv-sug[hidden]{display:none}
+.cv-sug .cv-sl{font-weight:700;color:rgba(255,255,255,.88)}
+.cv-sug .cv-sa{box-sizing:border-box;min-height:44px;padding:11px 16px;line-height:1.3;border-radius:22px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);color:#fff;font-weight:700;text-decoration:none;display:inline-block;white-space:nowrap}
+.cv-sug .cv-sa:hover{background:rgba(255,255,255,.16);border-color:#fff;color:#fff}
+.cv-sug .cv-sa:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media(max-width:720px){
+.cv-cards{grid-template-columns:1fr;gap:10px}
+.cv-card{min-height:66px;padding:10px 14px}
+.cv-flip{inline-size:48px;block-size:48px;font-size:1rem}
+}
+/* הבורר: נפתח מתחת להדר, עם סינון ורשימה לפי מותג. עד ח׳ כל 81 הדגמים היו פרושים מתחת לתאים תמיד,
+   וזה מה שאופק קרא לו עמוס. עכשיו הרשימה מופיעה רק כשבוחרים צד. */
+#pick{border-top:0;padding-block:0}
+.cv-pick{margin-block-start:1.2rem;border:1px solid var(--cv-edge);border-radius:10px;background:#fff;box-shadow:var(--shadow-sm);padding:.9rem 1.1rem 1.1rem}
+.cv-pick[hidden]{display:none}
+.cv-ph{display:flex;align-items:center;gap:.6rem 1rem;flex-wrap:wrap}
+.cv-app .cv-ph h2{margin:0;font-size:1.2rem;font-weight:800;max-width:none;display:flex;align-items:center;gap:.5rem}
+.cv-ph .cv-x{margin-inline-start:auto;font:inherit;font-size:1.5rem;line-height:1;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-inline-size:44px;min-height:44px;border-radius:6px}
+.cv-ph .cv-x:hover{color:var(--teal-d);background:#eef5f7}
+.dfind{position:relative}
+.dfind input{font-family:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--cv-edge);border-radius:4px;padding-block:.6rem;padding-inline:2.5rem 1rem;min-height:44px;inline-size:min(20rem,78vw);box-sizing:border-box}
+.dfind input::placeholder{color:var(--ink-soft);opacity:1}
+.dfico{position:absolute;inset-inline-start:.9rem;inset-block-start:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}
+.cv-list{max-block-size:min(58vh,520px);overflow-y:auto;margin-block-start:.4rem;padding-inline-end:.2rem}
+.dgrp[hidden],.dpick li[hidden]{display:none}
+.dbrand{display:flex;align-items:center;gap:.55rem;font-weight:800;color:var(--ink-strong);margin:1.1rem 0 .55rem;padding-block-end:.4rem;border-block-end:1px solid var(--line)}
+.dbrand .blogo{display:inline-block;inline-size:auto;flex:none}
+.dbrand .blogo-apple,.dbrand .blogo-xiaomi,.dbrand .blogo-google,.dbrand .blogo-oneplus{block-size:18px}
+.dbrand .blogo-samsung{block-size:13px}
+.dbrand .blogo-nothing{block-size:14px}
+.dpick{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.dchip{font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--cv-edge);border-radius:4px;padding:.55rem 1rem;min-height:44px;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.dchip:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.dchip[aria-pressed="true"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff;font-weight:700}
+.dchip.side0{border-inline-start:4px solid var(--cv-a)}
+.dchip.side1{border-inline-start:4px solid var(--cv-b)}
+.dnone{margin-block-start:1rem;color:var(--ink-soft)}
+.dnone[hidden]{display:none}
+/* הפס הלבן עם שני השמות, נדבק מתחת להדר של האתר בגלילה. הגובה של ההדר נמדד בזמן ריצה. */
+.cv-bar{position:sticky;inset-block-start:var(--pg-stick-1,0px);z-index:60;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-block-end:1px solid var(--line);box-shadow:0 2px 8px rgba(20,18,16,.06)}
+.cv-bar[hidden]{display:none}
+.cv-bi{display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;min-height:52px;padding-block:.4rem}
+.cv-bar .cv-bn{display:inline-flex;align-items:center;gap:.45rem;font-weight:800;color:var(--ink-strong)}
+.cv-bar .cv-bn .cv-dot{inline-size:10px;block-size:10px}
+.cv-bar .cv-vs{color:var(--ink-soft);font-weight:400}
+.cv-bar .cv-bc{margin-inline-start:auto;color:var(--ink-soft);font-size:.95rem}
+@media(max-width:560px){.cv-bar .cv-bc{display:none}}
+/* בטלפון, אחרי שנבחר זוג, המשפט שמסביר את הכלי כבר מיותר והוא דוחף את התוצאה מתחת לקו הקיפול */
+@media(max-width:720px){.cv-top.has-pair .cv-sub{display:none}}
+/* התוצאה */
+#dout{padding-block:1.6rem 0}
+.dempty{margin:0;color:var(--ink-soft);line-height:1.8}
+.dnote{margin:0 0 1.2rem;border-inline-start:3px solid var(--orange);padding-inline-start:1.1rem;color:var(--ink-soft);line-height:1.75}
+.cv-count{margin:0;font-size:clamp(1.3rem,2.2vw,1.5rem);font-weight:800;color:var(--ink-strong)}
+.cv-same{display:flex;gap:8px;flex-wrap:wrap;margin:.7rem 0 0;padding:0;list-style:none}
+.cv-same li{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;background:#f3f6f8;border:1px solid #e2e7ea;font-size:1rem;color:var(--ink)}
+.cv-same li svg{flex:none;color:var(--teal-d)}
+.cv-src{margin:.7rem 0 0;color:var(--ink-soft);font-size:.95rem}
+.cv-app .cv-h2{margin:2rem 0 .8rem;font-size:1.3rem;font-weight:800;color:var(--ink-strong);max-width:none}
+.cv-top3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.cv-top3.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cv-top3.n1{grid-template-columns:minmax(0,1fr)}
+.cv-t{border:1px solid var(--line);border-radius:6px;padding:16px 18px;background:#fcfcfd;display:flex;flex-direction:column;gap:12px}
+.cv-th{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cv-th b{font-size:1.05rem;color:var(--ink-strong)}
+.cv-gap{font-size:.92rem;font-weight:800;padding:3px 9px;border-radius:4px;background:#eef5f7;color:#0f4f68;white-space:nowrap}
+.cv-tv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.cv-tv>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cv-big{font-size:1.9rem;font-weight:800;line-height:1}
+.cv-big small{font-size:.95rem;font-weight:400;color:var(--ink-soft);margin-inline-start:4px}
+.cv-tv .cv-a .cv-big{color:var(--cv-a-t)}
+.cv-tv .cv-b .cv-big{color:var(--cv-b-t)}
+.cv-tn{font-size:.9rem;font-weight:700;color:var(--ink-soft)}
+.cv-lead{margin:0;font-size:1rem;line-height:1.5;color:var(--ink)}
+.cv-track{display:block;block-size:8px;border-radius:4px;overflow:hidden}
+.cv-a .cv-track{background:var(--cv-a-track)}
+.cv-b .cv-track{background:var(--cv-b-track)}
+.cv-t .cv-track{block-size:6px}
+.cv-fill{display:block;block-size:100%;border-radius:inherit}
+.cv-a .cv-fill{background:var(--cv-a)}
+.cv-b .cv-fill{background:var(--cv-b)}
+@media(max-width:900px){.cv-top3,.cv-top3.n2{grid-template-columns:minmax(0,1fr)}}
+/* מה חשוב לכם: מסדר ולא מסנן. שום הבדל לא נעלם, מה שלא נבחר מתקפל תחת כפתור. */
+.cv-prio p{margin:.3rem 0 0;color:var(--ink-soft)}
+.cv-chips{display:flex;gap:8px;flex-wrap:wrap;margin-block-start:.8rem}
+.cv-chip{min-height:44px;padding:0 14px;border-radius:4px;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--cv-edge)}
+.cv-chip:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.cv-chip span{font-weight:400}
+.cv-chip svg{display:none}
+.cv-chip[aria-pressed="true"]{background:var(--teal-d);color:#fff;border-color:var(--teal-d)}
+.cv-chip[aria-pressed="true"] svg{display:inline}
+.cv-status{margin:.7rem 0 0 !important;font-size:.95rem}
+.cv-legend{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin-block-start:1.3rem;padding:10px 14px;border-radius:4px;background:#f6f8fa;font-size:.95rem;color:var(--ink-soft)}
+.cv-legend .cv-k{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ink)}
+.cv-legend .cv-k i{display:inline-block;inline-size:18px;block-size:6px;border-radius:3px}
+.cv-legend .cv-a i{background:var(--cv-a)}
+.cv-legend .cv-b i{background:var(--cv-b)}
+.cv-grp{margin-block-start:1.6rem}
+.cv-gh{display:flex;align-items:baseline;gap:10px;padding-block-end:8px;border-block-end:2px solid var(--ink-strong)}
+.cv-app .cv-gh h3{margin:0;font-size:1.4rem;font-weight:800}
+.cv-gh span{font-size:.95rem;color:var(--ink-soft)}
+.cv-gh .cv-pk{font-weight:700;color:var(--teal-d)}
+.cv-r{display:grid;grid-template-columns:170px minmax(0,1fr) minmax(0,1fr);gap:8px 22px;padding-block:16px;border-block-end:1px solid #ebe9ee;align-items:start}
+.cv-rl{font-size:1.06rem;font-weight:800;color:var(--ink-strong);padding-block-start:2px}
+.cv-small{display:inline-block;margin-block-start:.35rem;font-size:.9rem;font-weight:700;color:var(--ink-soft);border:1px solid var(--line);border-radius:4px;padding:1px 7px}
+.cv-v{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cv-who{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink-soft)}
+.cv-who .cv-dot{inline-size:8px;block-size:8px}
+.cv-val{font-size:1.12rem;font-weight:700;line-height:1.45;color:var(--ink-strong);overflow-wrap:anywhere}
+.cv-val .vch{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:.05rem .5rem;margin:0 0 .3rem .35rem;font-size:1rem;font-weight:600;white-space:nowrap}
+.cv-na{font-size:1.02rem;font-weight:400;font-style:italic;color:var(--ink-soft)}
+.cv-note{grid-column:2/4;margin:0;font-size:1.02rem;line-height:1.6;color:#3d3a42}
+.cv-rest{margin-block-start:1.2rem;inline-size:100%;min-height:52px;border:1px dashed #9aa7b0;border-radius:6px;background:#f8fafb;font:inherit;font-size:1.05rem;font-weight:700;color:var(--teal-d);cursor:pointer}
+.cv-rest:hover{border-style:solid;border-color:var(--teal-d)}
+.cv-rest[hidden]{display:none}
+/* שרטוט בקנה מידה: מילימטר אחד הוא פיקסל אחד, רעיון מ-PhoneArena */
+.cv-size{display:flex;align-items:flex-end;gap:28px;padding-block:18px 6px;flex-wrap:wrap}
+.cv-size figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cv-size .cv-ol{box-sizing:border-box;border:3px solid;border-radius:14px;display:block}
+.cv-size .cv-a .cv-ol{border-color:var(--cv-a);background:#f7f5fd}
+.cv-size .cv-b .cv-ol{border-color:var(--cv-b);background:#fbf6f1}
+.cv-size figcaption{font-size:.9rem;color:var(--ink-soft)}
+.cv-size p{margin:0;max-inline-size:420px;font-size:1rem;line-height:1.55;color:var(--ink)}
+@media(max-width:820px){
+.cv-r{grid-template-columns:minmax(0,1fr);gap:8px}
+.cv-note{grid-column:auto}
+}
+.cv-more{margin:1.6rem 0 0;color:var(--ink-soft)}
+.cv-wa{margin-block-start:1.8rem;padding:22px 24px;border-radius:8px;border:1px solid #cfe0e7;background:#f3f8fa;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.cv-wa .cv-wt{flex:1 1 320px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cv-wa .cv-wt b{font-size:1.25rem;color:var(--ink-strong)}
+.cv-wa .cv-wt span{color:var(--ink-soft)}
+.cv-bubble{align-self:flex-start;max-inline-size:640px;font-size:1.02rem;line-height:1.5;padding:10px 14px;border-radius:8px 8px 8px 2px;background:#e3f5e8;border:1px solid #c4e6cf;color:#1f2a22}
+.cv-wa .cv-wb{display:flex;flex-direction:column;align-items:stretch;gap:8px;flex:none}
+.cv-wa .dok{color:var(--teal-d);font-size:.95rem;font-weight:600;text-align:center;min-height:1.2em}
+@media(prefers-reduced-motion:no-preference){
+.cv-grp{animation:cvrise .3s ease-out both}
+.cv-fill{transform-origin:right center;animation:cvgrow .55s cubic-bezier(.2,.8,.2,1) both}
+}
+@keyframes cvrise{from{transform:translateY(6px)}to{transform:none}}
+@keyframes cvgrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* המקטע איך זה עובד מתקפל */
+.dhow details{margin-bottom:.6rem}
+.dhow summary{font-size:1.05rem}
+.dhow details p+p{padding-block-start:0}
+/* עמודי ההשוואה הקבועים: אותה שפה, עם כרטיסים שהם קישורים ותוכן כתוב מתחת לתחומים */
+a.cv-card,div.cv-card{text-decoration:none;cursor:default}
+a.cv-card{cursor:pointer}
+a.cv-card:hover .cv-act{text-decoration:underline;text-underline-offset:3px}
+a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
+span.cv-flip{cursor:default}
+.cv-sug .cv-hwa{margin-inline-start:auto}
+.cv-res{padding-block-start:1.6rem}
+.cv-grp[hidden]{display:none}
+.cv-big-w{font-size:1.15rem}
+.cv-app .cv-lead2{margin:.3rem 0 0;color:var(--ink-soft)}
+.cv-app .cv-ph3{margin:1.3rem 0 0;font-size:1.15rem;font-weight:800;color:var(--ink-strong)}
+.cv-app .cv-prose{margin:.8rem 0 0;max-inline-size:72ch;font-size:1.08rem;line-height:1.8;color:var(--ink)}
+.cv-app .two .col h3{display:flex;align-items:center;gap:.55rem}
+.cv-app .two .cv-a h3{border-bottom-color:var(--cv-a)}
+.cv-app .two .cv-b h3{border-bottom-color:var(--cv-b)}
+.cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
+/* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
+@media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
+
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
@@ -1697,121 +1901,47 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <main id="main" role="main" tabindex="-1">
 
-<section class="ghero" aria-labelledby="h1">
+<div class="cv-app">
+<section class="cv-top" aria-labelledby="h1">
   <div class="wrap">
-    <div class="inner">
-      <h1 id="h1">Galaxy Buds4 מול Galaxy Buds4 Pro</h1>
-      <p class="sub">שני הדגמים של סמסונג מפברואר 2026. Buds4 פתוחות, בלי כיסויי אוזניות, ו-Buds4 Pro נכנסות לתעלת האוזן עם כיסויים בשלוש מידות. יש הבדל גם בעמידות: IP54 ב-Buds4 מול IP57 ב-Buds4 Pro, ובשני המקרים זה דירוג של האוזניות בלבד.</p>
-      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20%D7%9C-Galaxy%20Buds4%20Pro.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>
-      <p class="meta">
-        <span>15 שדות שונים</span>
-        <span>3 שדות זהים</span>
-        <span>המפרטים מאתרי היצרנים</span>
-        <span>בלי הכרזת מנצח</span>
-      </p>
+    <h1 id="h1">Galaxy Buds4 מול Galaxy Buds4 Pro</h1>
+    <p class="cv-sub">שני הדגמים של סמסונג מפברואר 2026. Buds4 פתוחות, בלי כיסויי אוזניות, ו-Buds4 Pro נכנסות לתעלת האוזן עם כיסויים בשלוש מידות. יש הבדל גם בעמידות: IP54 ב-Buds4 מול IP57 ב-Buds4 Pro, ובשני המקרים זה דירוג של האוזניות בלבד.</p>
+    <div class="cv-cards" data-pg-data>
+        <a class="cv-card" data-slot="0" href="/headphones/compare/?d=galaxy-buds4,galaxy-buds4-pro"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2026</span></span><span class="cv-act">כל השדות</span></a>
+        <span class="cv-flip" aria-hidden="true">מול</span>
+        <a class="cv-card" data-slot="1" href="/headphones/compare/?d=galaxy-buds4,galaxy-buds4-pro"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2026</span></span><span class="cv-act">כל השדות</span></a>
     </div>
+    <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/airpods-pro-3-vs-galaxy-buds4-pro/"><bdo dir="ltr">AirPods Pro 3</bdo> מול <bdo dir="ltr">Galaxy Buds4 Pro</bdo></a><a class="cv-sa" href="/compare/galaxy-buds3-vs-galaxy-buds4/"><bdo dir="ltr">Galaxy Buds3</bdo> מול <bdo dir="ltr">Galaxy Buds4</bdo></a><a class="cv-sa" href="/compare/airpods-5-vs-galaxy-buds4/"><bdo dir="ltr">AirPods 5</bdo> מול <bdo dir="ltr">Galaxy Buds4</bdo></a><a class="cv-sa" href="/headphones/compare/?d=galaxy-buds4,galaxy-buds4-pro">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20Pro."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>
   </div>
 </section>
-
-<section class="block" id="devices" aria-labelledby="h-dev">
-  <div class="wrap box">
-    <h2 id="h-dev">שני הדגמים</h2>
-    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של שני הדגמים, ולהוסיף עוד אחד.</p>
-      <ul class="hub">
-        <li><a href="/headphones/compare/?d=galaxy-buds4,galaxy-buds4-pro"><b><bdo dir="ltr">Galaxy Buds4</bdo></b><span>Samsung · כל השדות בכלי ההשוואה</span></a></li>
-        <li><a href="/headphones/compare/?d=galaxy-buds4,galaxy-buds4-pro"><b><bdo dir="ltr">Galaxy Buds4 Pro</bdo></b><span>Samsung · כל השדות בכלי ההשוואה</span></a></li>
-      </ul>
-  </div>
-</section>
-
-<section class="block" id="table" aria-labelledby="cmp-h">
-  <div class="wrap box">
-    <h2 id="cmp-h">מה שונה ביניהם</h2>
-    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. 3 שדות נוספים זהים בשניהם, ולכן אין טעם להציג אותם.</p>
-    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">
-      <table class="cmp cmp-spec cmp-vs">
-        <caption>15 שדות שבהם יש הבדל, לפי המקורות שמתחת לטבלה. 3 שדות נוספים זהים בשני הדגמים ואינם מופיעים כאן.</caption>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">סוג ועיצוב</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">סוג</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>פתוחות (<bdo dir="ltr">open-fit</bdo>), ללא כיסויי אוזניות באריזה, עם להב</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>תוך-אוזני (<bdo dir="ltr">canal</bdo>) עם כיסויי אוזניות, להב מתכתי</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">משקל</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>אוזנייה 4.6 גרם, נרתיק 45.1 גרם</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>אוזנייה 5.1 גרם, נרתיק 44.3 גרם</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">מידות</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>אוזנייה 30.5×19.3×18.3 מ״מ, נרתיק 51×51×28.3 מ״מ</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>אוזנייה 30.9×19.6×18.1 מ״מ, נרתיק 51×51×28.3 מ״מ</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">שמע</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">סינון רעשים (ANC)</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>כן, <bdo dir="ltr">ANC</bdo> שמותאם לצורת האוזן; כוונון <bdo dir="ltr">ANC</bdo> וצלילי סביבה בזמן אמת</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>כן, <bdo dir="ltr">ANC</bdo> אדפטיבי ובקרת רעש אדפטיבית</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">מצבי שמע</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>צליל סביבה, <bdo dir="ltr">EQ</bdo> אדפטיבי, <bdo dir="ltr">ANC</bdo> אדפטיבי, אודיו 360; ללא <bdo dir="ltr">Voice Detect</bdo> ו-<bdo dir="ltr">Siren Detect</bdo></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>צליל סביבה, בקרת רעש אדפטיבית, זיהוי קולי (<bdo dir="ltr">Voice Detect</bdo>), זיהוי סירנות (<bdo dir="ltr">Siren Detect</bdo>), אודיו <bdo dir="ltr">360, EQ</bdo> אדפטיבי</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">רמקולים</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>רמקול דינמי חד-כיווני 11 מ״מ</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>רמקול דו-כיווני: וופר 11 מ״מ וטוויטר 5.5×3.5 מ״מ, מגבר כפול</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">קודקים</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td><bdo dir="ltr">SSC HiFi, SSC UHQ, AAC, SBC, LC3</bdo></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td><bdo dir="ltr">SSC, SSC-UHQ, AAC, SBC, LC3</bdo></td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">שיחות ושליטה</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">מיקרופונים ושיחות</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>6 מיקרופונים, סינון רעש <bdo dir="ltr">DNN</bdo>, שיחות <bdo dir="ltr">Super Wideband</bdo> עד <bdo dir="ltr">16kHz</bdo></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>6 מיקרופונים (שלושה בכל אוזנייה), סינון רעש <bdo dir="ltr">DNN</bdo>, שיחות <bdo dir="ltr">Super Wideband</bdo> עד <bdo dir="ltr">16kHz</bdo></td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">שליטה</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>צביטה והחלקה על הלהב, פקודות קוליות. על מחוות ראש המקורות של סמסונג סותרים: העמוד הישראלי מציג אותן, וההודעה לעיתונות מייחסת אותן ל-<bdo dir="ltr">Buds4 Pro</bdo></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>צביטה והחלקה על הלהב, מחוות ראש, פקודות קוליות</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">סוללה וטעינה</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">סוללה</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>מוזיקה: עד 5 שעות (<bdo dir="ltr">ANC</bdo> פועל) / 6 (כבוי), עם הנרתיק עד 24 / 30. שיחה: עד 3.5 / 4, עם הנרתיק עד 18 / 20. סוללה (אופייני): <bdo dir="ltr">45 mAh</bdo> לאוזנייה, <bdo dir="ltr">515 mAh</bdo> לנרתיק</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>מוזיקה: עד 6 שעות (<bdo dir="ltr">ANC</bdo> פועל) / עד 7 (כבוי), עם הנרתיק עד 26 / 30. שיחה: עד 4.5 / 5, עם הנרתיק עד 20 / 22. סוללה (אופייני): <bdo dir="ltr">61 mAh</bdo> לאוזנייה, <bdo dir="ltr">530 mAh</bdo> לנרתיק</td></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">טעינה</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>נרתיק תומך בטעינה אלחוטית; משטח טעינה לא כלול</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>נרתיק תומך בטעינה אלחוטית; משטח טעינה, מטען וכבל לא כלולים</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">עמידות</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">עמידות למים ולאבק</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td><bdo dir="ltr">IP54</bdo>, לאוזניות בלבד</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td><bdo dir="ltr">IP57</bdo> לאוזניות (בדיקת מעבדה: עד מטר מים מתוקים, עד 30 דקות); הנרתיק אינו עמיד במים</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">חיישנים ובריאות</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">חיישנים ובריאות</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td><bdo dir="ltr">VPU</bdo>, חיישן לחץ ומגע (החלקה), <bdo dir="ltr">IR</bdo>, מד תאוצה, ג׳יירוסקופ, חיישן <bdo dir="ltr">Hall</bdo>; לא פורסמו תכונות בריאות</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>חיישן תנועה, ג׳יירוסקופ, חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע, <bdo dir="ltr">VPU</bdo>; תזכורת מתיחת צוואר</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">תאימות ותכונות</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">Bluetooth</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td><bdo dir="ltr">Bluetooth 6.1, Auto Switch, Auracast</bdo></td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td><bdo dir="ltr">Bluetooth 6.1</bdo>; פרופילים <bdo dir="ltr">A2DP, AVRCP, HFP, PBP, TMAP</bdo>; <bdo dir="ltr">LE Audio, Auracast</bdo>; החלפה אוטומטית</td></tr>
-        </tbody>
-        <tbody>
-          <tr class="grp"><th colspan="2" scope="rowgroup">באריזה</th></tr>
-          <tr class="fld"><th colspan="2" scope="rowgroup">באריזה</th></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4</bdo></th><td>אוזניות, נרתיק טעינה, מדריך למתחילים; כבל <bdo dir="ltr">USB Type-C</bdo> לא כלול</td></tr>
-          <tr><th scope="row"><bdo dir="ltr">Galaxy Buds4 Pro</bdo></th><td>אוזניות, שלושה סטים של כיסויי אוזניות (<bdo dir="ltr">S/M/L</bdo>), נרתיק טעינה, מדריך להתחלה מהירה; כבל <bdo dir="ltr">USB Type-C</bdo> לא כלול</td></tr>
-        </tbody>
-      </table>
+<div class="cv-bar" id="cvbar" data-pg-data><div class="wrap cv-bi"><span class="cv-bn cv-a"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-vs">מול</span><span class="cv-bn cv-b"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-bc">15 הבדלים</span></div></div>
+<section class="block cv-res" id="table" aria-labelledby="cmp-h">
+  <div class="wrap">
+    <p class="cv-count">15 הבדלים, ו-3 שדות זהים</p>
+    <ul class="cv-same" data-pg-data aria-label="זהים בשניהם"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>עובד עם</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>שמור למכשירי היצרן</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>תרגום בזמן אמת</li></ul>
+    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>
+    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>
+    <div class="cv-prio" id="cvprio" hidden></div>
+    <div id="cvgroups" data-pg-data>
+      <section class="cv-grp" data-cat="סוג ועיצוב" data-n="3" aria-labelledby="g-0"><div class="cv-gh"><h3 id="g-0">סוג ועיצוב</h3><span>3 הבדלים</span></div><div class="cv-r"><div class="cv-rl">סוג</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">פתוחות (<bdo dir="ltr">open-fit</bdo>), ללא כיסויי אוזניות באריזה, עם להב</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">תוך-אוזני (<bdo dir="ltr">canal</bdo>) עם כיסויי אוזניות, להב מתכתי</span></div></div><div class="cv-r"><div class="cv-rl">משקל</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">אוזנייה 4.6 גרם, נרתיק 45.1 גרם</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">אוזנייה 5.1 גרם, נרתיק 44.3 גרם</span></div></div><div class="cv-r"><div class="cv-rl">מידות</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">אוזנייה 30.5×19.3×18.3 מ״מ, נרתיק 51×51×28.3 מ״מ</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">אוזנייה 30.9×19.6×18.1 מ״מ, נרתיק 51×51×28.3 מ״מ</span></div></div></section>
+      <section class="cv-grp" data-cat="שמע" data-n="4" aria-labelledby="g-1"><div class="cv-gh"><h3 id="g-1">שמע</h3><span>4 הבדלים</span></div><div class="cv-r"><div class="cv-rl">סינון רעשים (ANC)</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">כן, <bdo dir="ltr">ANC</bdo> שמותאם לצורת האוזן; כוונון <bdo dir="ltr">ANC</bdo> וצלילי סביבה בזמן אמת</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">כן, <bdo dir="ltr">ANC</bdo> אדפטיבי ובקרת רעש אדפטיבית</span></div></div><div class="cv-r"><div class="cv-rl">מצבי שמע</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">צליל סביבה, <bdo dir="ltr">EQ</bdo> אדפטיבי, <bdo dir="ltr">ANC</bdo> אדפטיבי, אודיו 360; ללא <bdo dir="ltr">Voice Detect</bdo> ו-<bdo dir="ltr">Siren Detect</bdo></span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">צליל סביבה, בקרת רעש אדפטיבית, זיהוי קולי (<bdo dir="ltr">Voice Detect</bdo>), זיהוי סירנות (<bdo dir="ltr">Siren Detect</bdo>), אודיו <bdo dir="ltr">360, EQ</bdo> אדפטיבי</span></div></div><div class="cv-r"><div class="cv-rl">רמקולים</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">רמקול דינמי חד-כיווני 11 מ״מ</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">רמקול דו-כיווני: וופר 11 מ״מ וטוויטר 5.5×3.5 מ״מ, מגבר כפול</span></div></div><div class="cv-r"><div class="cv-rl">קודקים</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val"><bdo dir="ltr">SSC HiFi, SSC UHQ, AAC, SBC, LC3</bdo></span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val"><bdo dir="ltr">SSC, SSC-UHQ, AAC, SBC, LC3</bdo></span></div></div></section>
+      <section class="cv-grp" data-cat="שיחות ושליטה" data-n="2" aria-labelledby="g-2"><div class="cv-gh"><h3 id="g-2">שיחות ושליטה</h3><span>2 הבדלים</span></div><div class="cv-r"><div class="cv-rl">מיקרופונים ושיחות</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">6 מיקרופונים, סינון רעש <bdo dir="ltr">DNN</bdo>, שיחות <bdo dir="ltr">Super Wideband</bdo> עד <bdo dir="ltr">16kHz</bdo></span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">6 מיקרופונים (שלושה בכל אוזנייה), סינון רעש <bdo dir="ltr">DNN</bdo>, שיחות <bdo dir="ltr">Super Wideband</bdo> עד <bdo dir="ltr">16kHz</bdo></span></div></div><div class="cv-r"><div class="cv-rl">שליטה</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">צביטה והחלקה על הלהב, פקודות קוליות. על מחוות ראש המקורות של סמסונג סותרים: העמוד הישראלי מציג אותן, וההודעה לעיתונות מייחסת אותן ל-<bdo dir="ltr">Buds4 Pro</bdo></span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">צביטה והחלקה על הלהב, מחוות ראש, פקודות קוליות</span></div></div></section>
+      <section class="cv-grp" data-cat="סוללה וטעינה" data-n="2" aria-labelledby="g-3"><div class="cv-gh"><h3 id="g-3">סוללה וטעינה</h3><span>2 הבדלים</span></div><div class="cv-r"><div class="cv-rl">סוללה</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">מוזיקה: עד 5 שעות (<bdo dir="ltr">ANC</bdo> פועל) / 6 (כבוי), עם הנרתיק עד 24 / 30. שיחה: עד 3.5 / 4, עם הנרתיק עד 18 / 20. סוללה (אופייני): <bdo dir="ltr">45 mAh</bdo> לאוזנייה, <bdo dir="ltr">515 mAh</bdo> לנרתיק</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">מוזיקה: עד 6 שעות (<bdo dir="ltr">ANC</bdo> פועל) / עד 7 (כבוי), עם הנרתיק עד 26 / 30. שיחה: עד 4.5 / 5, עם הנרתיק עד 20 / 22. סוללה (אופייני): <bdo dir="ltr">61 mAh</bdo> לאוזנייה, <bdo dir="ltr">530 mAh</bdo> לנרתיק</span></div></div><div class="cv-r"><div class="cv-rl">טעינה</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">נרתיק תומך בטעינה אלחוטית; משטח טעינה לא כלול</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">נרתיק תומך בטעינה אלחוטית; משטח טעינה, מטען וכבל לא כלולים</span></div></div></section>
+      <section class="cv-grp" data-cat="עמידות" data-n="1" aria-labelledby="g-4"><div class="cv-gh"><h3 id="g-4">עמידות</h3><span>הבדל אחד</span></div><div class="cv-r"><div class="cv-rl">עמידות למים ולאבק</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val"><bdo dir="ltr">IP54</bdo>, לאוזניות בלבד</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val"><bdo dir="ltr">IP57</bdo> לאוזניות (בדיקת מעבדה: עד מטר מים מתוקים, עד 30 דקות); הנרתיק אינו עמיד במים</span></div></div></section>
+      <section class="cv-grp" data-cat="חיישנים ובריאות" data-n="1" aria-labelledby="g-5"><div class="cv-gh"><h3 id="g-5">חיישנים ובריאות</h3><span>הבדל אחד</span></div><div class="cv-r"><div class="cv-rl">חיישנים ובריאות</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val"><bdo dir="ltr">VPU</bdo>, חיישן לחץ ומגע (החלקה), <bdo dir="ltr">IR</bdo>, מד תאוצה, ג׳יירוסקופ, חיישן <bdo dir="ltr">Hall</bdo>; לא פורסמו תכונות בריאות</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">חיישן תנועה, ג׳יירוסקופ, חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע, <bdo dir="ltr">VPU</bdo>; תזכורת מתיחת צוואר</span></div></div></section>
+      <section class="cv-grp" data-cat="תאימות ותכונות" data-n="1" aria-labelledby="g-6"><div class="cv-gh"><h3 id="g-6">תאימות ותכונות</h3><span>הבדל אחד</span></div><div class="cv-r"><div class="cv-rl">Bluetooth</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val"><bdo dir="ltr">Bluetooth 6.1, Auto Switch, Auracast</bdo></span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val"><bdo dir="ltr">Bluetooth 6.1</bdo>; פרופילים <bdo dir="ltr">A2DP, AVRCP, HFP, PBP, TMAP</bdo>; <bdo dir="ltr">LE Audio, Auracast</bdo>; החלפה אוטומטית</span></div></div></section>
+      <section class="cv-grp" data-cat="באריזה" data-n="1" aria-labelledby="g-7"><div class="cv-gh"><h3 id="g-7">באריזה</h3><span>הבדל אחד</span></div><div class="cv-r"><div class="cv-rl">באריזה</div><div class="cv-v cv-a"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></span><span class="cv-val">אוזניות, נרתיק טעינה, מדריך למתחילים; כבל <bdo dir="ltr">USB Type-C</bdo> לא כלול</span></div><div class="cv-v cv-b"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></span><span class="cv-val">אוזניות, שלושה סטים של כיסויי אוזניות (<bdo dir="ltr">S/M/L</bdo>), נרתיק טעינה, מדריך להתחלה מהירה; כבל <bdo dir="ltr">USB Type-C</bdo> לא כלול</span></div></div></section>
     </div>
     <p class="aside">המקורות. נבדקו ב-24.9.2026: <b><bdo dir="ltr">Galaxy Buds4</bdo></b>, <a href="https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound" rel="noopener">ההודעה לעיתונות של סמסונג</a>, <a href="https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds4-white-sm-r540nzwailo/" rel="noopener">אתר היצרן, גרסה ישראלית</a>; <b><bdo dir="ltr">Galaxy Buds4 Pro</bdo></b>, <a href="https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound" rel="noopener">ההודעה לעיתונות של סמסונג</a>, <a href="https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds4-pro-white-sm-r640nzwailo/" rel="noopener">אתר היצרן, גרסה ישראלית</a>.</p>
   </div>
 </section>
 
 <section class="block" id="who" aria-labelledby="h-who">
-  <div class="wrap box">
-    <h2 id="h-who">למי עדיף כל אחד</h2>
+  <div class="wrap">
+    <h2 id="h-who" class="cv-h2">למי עדיף כל אחד</h2>
     <div class="two">
-      <div class="col">
-        <h3><bdo dir="ltr">Galaxy Buds4</bdo></h3>
+      <div class="col cv-a">
+        <h3><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4</bdo></h3>
         <ul class="ticks">
           <li>אם כיסויים בתוך האוזן לא נוחים לכם. Buds4 בעיצוב פתוח.</li>
           <li>אם אתם רוצים אוזנייה קלה יותר. 4.6 גרם, מול 5.1 ב-Buds4 Pro.</li>
@@ -1819,8 +1949,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </ul>
 
       </div>
-      <div class="col">
-        <h3><bdo dir="ltr">Galaxy Buds4 Pro</bdo></h3>
+      <div class="col cv-b">
+        <h3><span class="cv-dot" aria-hidden="true"></span><bdo dir="ltr">Galaxy Buds4 Pro</bdo></h3>
         <ul class="ticks">
           <li>אם אתם מתאמנים ומזיעים הרבה. IP57 מול IP54. לפי סמסונג גם Buds4 Pro אינן מומלצות לים או לבריכה.</li>
           <li>אם אתם רוצים יותר זמן האזנה. עד 6 שעות מוזיקה עם סינון רעשים, מול 5 ב-Buds4.</li>
@@ -1833,46 +1963,105 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section class="block" id="angle" aria-labelledby="h-angle">
-  <div class="wrap box">
-    <h2 id="h-angle">מאיפה הגיעו הנתונים של Buds4</h2>
-    <p>לעמוד של Galaxy Buds4 באתר סמסונג ישראל אין טבלת מפרט, בשונה מהעמוד של Buds4 Pro. לכן רוב הנתונים של Buds4 כאן, כמו הסוללה, העמידות והמשקל, לקוחים מההודעה של סמסונג לעיתונות מפברואר 2026, וזה כתוב בשורת המקורות מתחת לטבלה.</p>
-    <p>יש בהודעה פרט אחד שכדאי להכיר. הגרסה המשופרת של סינון הרעשים ושל האקולייזר האדפטיביים מיוחסת בה רק ל-Buds4 Pro, אבל סינון רעשים שמותאם לצורת האוזן מופיע גם בעמוד של Buds4. יש גם סתירה אחת: העמוד הישראלי של Buds4 מציג מחוות ראש, וההודעה מייחסת אותן ל-Pro. אם אחד מאלה מכריע אצלכם, שאלו אותנו לפני הקנייה.</p>
-  </div>
-</section>
-
-<section class="rules" aria-labelledby="h-bl">
   <div class="wrap">
-    <div class="box">
-      <h2 id="h-bl">השורה התחתונה</h2>
-      <div class="prose"><p>ההבדל העיקרי הוא בצורה, פתוחות מול תוך-אוזניות. אחריו באים העמידות, זמן ההאזנה, ושתי תכונות של שמיעת הסביבה שסמסונג מונה רק ב-Pro.</p></div>
-    </div>
+    <h2 id="h-angle" class="cv-h2">מאיפה הגיעו הנתונים של Buds4</h2>
+    <p class="cv-prose">לעמוד של Galaxy Buds4 באתר סמסונג ישראל אין טבלת מפרט, בשונה מהעמוד של Buds4 Pro. לכן רוב הנתונים של Buds4 כאן, כמו הסוללה, העמידות והמשקל, לקוחים מההודעה של סמסונג לעיתונות מפברואר 2026, וזה כתוב בשורת המקורות מתחת לטבלה.</p>
+    <p class="cv-prose">יש בהודעה פרט אחד שכדאי להכיר. הגרסה המשופרת של סינון הרעשים ושל האקולייזר האדפטיביים מיוחסת בה רק ל-Buds4 Pro, אבל סינון רעשים שמותאם לצורת האוזן מופיע גם בעמוד של Buds4. יש גם סתירה אחת: העמוד הישראלי של Buds4 מציג מחוות ראש, וההודעה מייחסת אותן ל-Pro. אם אחד מאלה מכריע אצלכם, שאלו אותנו לפני הקנייה.</p>
   </div>
 </section>
 
-<section class="block" id="near" aria-labelledby="near-h">
-  <div class="wrap box">
-    <h2 id="near-h">השוואות קרובות</h2>
-    <p class="lead">מי שמשווה שני דגמים בדרך כלל שוקל עוד אחד. אלה ההשוואות שחולקות דגם עם זו.</p>
-    <ul class="hub near">
-      <li><a href="/compare/airpods-pro-3-vs-galaxy-buds4-pro/"><b>AirPods Pro 3 מול Galaxy Buds4 Pro</b><span>20 שדות שונים · אין שדות זהים</span></a></li>
-      <li><a href="/compare/galaxy-buds3-vs-galaxy-buds4/"><b>Galaxy Buds3 מול Galaxy Buds4</b><span>18 שדות שונים · אין שדות זהים</span></a></li>
-      <li><a href="/compare/airpods-5-vs-galaxy-buds4/"><b>AirPods 5 מול Galaxy Buds4</b><span>20 שדות שונים · אין שדות זהים</span></a></li>
-    </ul>
+<section class="block" id="bottom" aria-labelledby="h-bl">
+  <div class="wrap">
+    <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>
+    <p class="cv-prose">ההבדל העיקרי הוא בצורה, פתוחות מול תוך-אוזניות. אחריו באים העמידות, זמן ההאזנה, ושתי תכונות של שמיעת הסביבה שסמסונג מונה רק ב-Pro.</p>
+    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הזוג ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span><span class="cv-bubble" id="cvwatext">היי, אשמח לעזרה בבחירה בין Galaxy Buds4 לבין Galaxy Buds4 Pro.</span></div><div class="cv-wb"><a class="btn btn-wa" id="cvwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20Pro."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>
   </div>
 </section>
+</div>
 
 <section class="cta" aria-labelledby="cta-h">
   <div class="wrap">
     <h2 id="cta-h">עדיין מתלבטים?</h2>
     <p>רוצים לדעת אם האוזניות האלה אצלנו? תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>
     <div class="row">
-      <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20%D7%9C-Galaxy%20Buds4%20Pro.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>
+      <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20Buds4%20Pro."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
       <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>
     </div>
     <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>
   </div>
 </section>
+
+<script>
+(function(){
+"use strict";
+var PG={a:"Galaxy Buds4",b:"Galaxy Buds4 Pro",slug:"galaxy-buds4-vs-galaxy-buds4-pro"};
+/* עמודי ההשוואה הקבועים, עיצוב ח׳. gen-compare.js עוטף את הקוד הזה ומזריק לפניו את PG: {a, b, slug}.
+   כל התוכן כבר ב-HTML. הקוד מוסיף רק את "מה חשוב לכם": כפתור לכל תחום, שמעלה אותו לראש ומקפל את השאר
+   תחת כפתור אחד. שום הבדל לא נעלם. עמוד בלי JavaScript מציג את כל התחומים, בלי כפתורים שלא עושים כלום. */
+function pgComparePage() {
+  /* הפס הלבן נדבק מתחת להדר של האתר, שגובהו משתנה לפי רוחב, באנר ותפריט נגישות */
+  function stick() {
+    try { var h = document.querySelector("header.site"), base = 0;
+      if (h) { var cs = getComputedStyle(h); if (cs.position === "sticky" || cs.position === "fixed") base = Math.max(0, h.getBoundingClientRect().bottom); }
+      document.documentElement.style.setProperty("--pg-stick-1", Math.round(base) + "px"); } catch (e) {}
+  }
+  var q = false;
+  function soon() { if (q) return; q = true; var run = function () { q = false; stick(); }; if (window.requestAnimationFrame) requestAnimationFrame(run); setTimeout(run, 100); }
+  window.addEventListener("resize", soon);
+  window.addEventListener("scroll", soon, { passive: true });
+  try { if (window.MutationObserver) new MutationObserver(stick).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] }); } catch (e) {}
+  stick();
+  var box = document.getElementById("cvgroups"), prio = document.getElementById("cvprio");
+  if (!box || !prio) return;
+  var grps = Array.prototype.slice.call(box.querySelectorAll(".cv-grp[data-cat]"));
+  if (grps.length < 2) return;
+  var cats = grps.map(function (g) { return { name: g.getAttribute("data-cat"), n: +g.getAttribute("data-n") || 0, el: g }; });
+  var on = {}, restOpen = false;
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function diffTxt(n) { return n === 1 ? "הבדל אחד" : n + " הבדלים"; }
+  function push(ev, d) { try { window.dataLayer = window.dataLayer || []; var o = { event: ev, page_slug: PG.slug }; for (var k in d) o[k] = d[k]; window.dataLayer.push(o); } catch (e) {} }
+  var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>';
+  prio.innerHTML = '<h3 class="cv-ph3">מה חשוב לכם?</h3><p>בחרו תחום, והוא יעלה לראש הרשימה. שום הבדל לא נעלם.</p><div class="cv-chips">' +
+    cats.map(function (c) { return '<button type="button" class="cv-chip" data-cat="' + esc(c.name) + '" aria-pressed="false">' + CHECK + esc(c.name) + " <span>" + c.n + "</span></button>"; }).join("") +
+    '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p>';
+  prio.hidden = false;
+  var rest = document.createElement("button");
+  rest.type = "button"; rest.className = "cv-rest"; rest.hidden = true;
+  box.parentNode.insertBefore(rest, box.nextSibling);
+
+  function apply() {
+    var picked = cats.filter(function (c) { return on[c.name]; }), others = cats.filter(function (c) { return !on[c.name]; });
+    var restN = 0; others.forEach(function (c) { restN += c.n; });
+    /* הסדר ב-DOM ולא רק בתצוגה, כדי שקורא מסך ומקלדת יעברו באותו סדר שרואים */
+    (picked.length ? picked.concat(others) : cats).forEach(function (c) { box.appendChild(c.el); c.el.hidden = picked.length > 0 && !on[c.name] && !restOpen; });
+    rest.hidden = !(picked.length && restN);
+    rest.setAttribute("aria-expanded", restOpen ? "true" : "false");
+    rest.textContent = restOpen ? "לקפל את שאר התחומים" : "עוד " + diffTxt(restN) + " בתחומים שלא בחרתם";
+    Array.prototype.forEach.call(prio.querySelectorAll(".cv-chip"), function (b) { b.setAttribute("aria-pressed", on[b.getAttribute("data-cat")] ? "true" : "false"); });
+    var total = 0; cats.forEach(function (c) { total += c.n; });
+    var st = document.getElementById("cvstatus");
+    if (st) st.textContent = !picked.length ? "מוצגים כל " + total + " ההבדלים, לפי תחום."
+      : "בראש הרשימה: " + picked.map(function (c) { return c.name; }).join(", ") + "." + (restN ? " עוד " + diffTxt(restN) + " בתחומים האחרים." : " אלה כל ההבדלים.");
+    var msg = "היי, אשמח לעזרה בבחירה בין " + PG.a + " לבין " + PG.b + "." + (picked.length ? " חשוב לי: " + picked.map(function (c) { return c.name; }).join(", ") + "." : "");
+    var wt = document.getElementById("cvwatext"), w = document.getElementById("cvwa");
+    if (wt) wt.textContent = msg;
+    if (w) w.setAttribute("href", "https://wa.me/97286812050?text=" + encodeURIComponent(msg));
+  }
+  prio.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest(".cv-chip") : null; if (!b) return;
+    var k = b.getAttribute("data-cat"); if (on[k]) delete on[k]; else on[k] = 1;
+    if (!Object.keys(on).length) restOpen = false;
+    push("cmp_priority", { category: k, on: !!on[k] }); apply();
+  });
+  rest.addEventListener("click", function () { restOpen = !restOpen; push("cmp_rest", { open: restOpen }); apply(); });
+  apply();
+
+}
+
+pgComparePage();
+})();
+</script>
 
 </main>
 
