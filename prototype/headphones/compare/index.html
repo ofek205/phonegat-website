@@ -438,123 +438,16 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 @media(max-width:560px){.hub.pics a{grid-template-columns:2.7rem 3.4rem 1fr}.hub.pics img{width:3.4rem}}
 .hub.near a{grid-template-columns:1fr}
 .hub.near a::before{content:none}
-.cmp-wrap{margin-top:1.8rem;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.cmp-wrap:focus-visible{outline:2px solid var(--teal);outline-offset:4px}
-.cmp-wrap{max-width:100%}
-.dstate{position:sticky;inset-block-start:66px;z-index:70;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block-end:1px solid var(--line);padding-block:.9rem;margin-block-start:1.8rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}
-@media(max-width:980px){
-.qcount,.dstate{inset-block-start:0}
-}
-.dstate p{margin:0;color:var(--ink-soft);font-size:1rem}
-.dstate b{color:var(--ink-strong);font-weight:700}
-.dstate button{margin-inline-start:auto}
-.dstate .btn-sm{padding-block:.78rem}
-.dstate .btn-teal{background:none;color:var(--teal-d);border:1px solid var(--line)}
-.dstate .btn-teal:hover{background:#f2f6f8;border-color:var(--teal-d)}
-.dempty{margin-top:1.8rem;border-block-start:1px solid var(--line);padding-block-start:1.4rem;color:var(--ink-soft);line-height:1.8}
-.dslots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin-block-start:1.5rem;list-style:none;padding:0}
-.dslot{border:1px solid var(--line);border-radius:6px;min-height:66px;display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem}
-.dslot .lbl{font-family:var(--mono);font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft);display:block}
-.dslot .nm{font-weight:700;color:var(--ink-strong);font-size:1.02rem;line-height:1.35;display:block}
-.dslot .dpic{width:2.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border:1px solid var(--line);background:#fff;border-radius:0}
-/* מתחת ל-640 התא עצמו רק 178 פיקסל, ושתי התמונות יושבות זו לצד זו. מדדתי בספארי
-   במובייל: התמונה גוזלת 42 מתוך 95 הפיקסלים של עמודת השם, "Galaxy S26 Ultra" נשבר
-   משתי שורות לשלוש, והתא גדל מ-88 ל-133 פיקסל. תמונונת של 34 פיקסל אינה שווה את
-   המחיר הזה, וזה בדיוק השיקול שבגללו הרשימה ב-/phones/ נשארה בלי תמונות. */
-@media(max-width:640px){
-.dslot .dpic{display:none}
-}
-.dslot.empty{border-style:dashed}
-.dslot.empty .nm{font-weight:500;color:var(--ink-soft)}
-.dslot .drop{margin-inline-start:auto;background:none;border:0;cursor:pointer;color:var(--ink-soft);font-size:1.25rem;line-height:1;padding:.8rem;border-radius:6px;min-inline-size:44px}
-.dslot .drop:hover{color:var(--teal-d);background:#f2f6f8}
-@media(max-width:720px){
-.dslots{grid-template-columns:1fr}
-.dslot{min-height:58px}
-}
-.dbrand{font-family:var(--mono);font-size:.98rem;letter-spacing:.08em;color:var(--ink-strong);margin-block:1.7rem .1rem;padding-block-end:.45rem;border-block-end:1px solid var(--ink-strong)}
-.dbrand{display:flex;align-items:center;gap:.55rem}
-.blogo{display:inline-block;width:auto;flex:none}
-.cmp-grid thead th{white-space:nowrap}
-.cmp-grid thead th .blogo{display:inline-block;vertical-align:-.12em;margin-inline-end:.4rem}
-.dfocus{display:flex;flex-wrap:wrap;gap:.5rem;margin-block-start:1.5rem;align-items:center}
-.dfocus .fl{font-size:.98rem;color:var(--ink-soft);margin-inline-end:.15rem}
-.dfocus button{font-family:inherit;font-size:.98rem;font-weight:600;color:var(--ink);background:none;border:1px solid var(--line);border-radius:999px;padding:.75rem 1.05rem;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
-.dfocus button:hover{border-color:var(--teal-d);color:var(--teal-d)}
-.dfocus button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
-.cmp-grid{width:100%;min-width:0;border-collapse:collapse;text-align:start}
-.cmp-grid th,.cmp-grid td{border-block-start:1px solid var(--line);padding:.9rem 1.05rem;vertical-align:top;line-height:1.7;text-align:start}
-.cmp-grid thead th{border-block-start:0;border-block-end:2px solid var(--ink-strong);font-family:var(--font);font-weight:700;font-size:1.02rem;padding-block:0 .7rem}
-.cmp-grid tbody th[scope="row"]{font-family:var(--font);font-weight:700;color:var(--ink-strong);position:sticky;inset-inline-start:0;background:#fff;z-index:1;min-width:9rem}
-.cmp-grid td{color:var(--ink-soft)}
-.cmp-grid .grp th{border-block-start:2px solid var(--ink-strong);padding-block:1.5rem .5rem;font-family:var(--mono);font-size:.98rem;letter-spacing:.08em;color:var(--ink-strong);background:#fff}
-.cmp-grid tbody:first-of-type .grp th{border-block-start:0;padding-block-start:.9rem}
-.cmp-grid td i{font-style:italic}
-@media(max-width:720px){
-.cmp-grid th,.cmp-grid td{padding:.8rem .5rem}
-.cmp-grid tbody th[scope="row"]{min-width:5.5rem;max-inline-size:5.5rem}
-}
-.cmp-wrap{overflow-x:visible}
-.cmp-grid thead th{position:sticky;inset-block-start:146px;z-index:2;background:#fff}
-@media(max-width:980px){
-.cmp-grid thead th{inset-block-start:80px}
-}
-@media(max-width:900px){
-.cmp-wrap{overflow-x:auto}
-.cmp-grid thead th{position:static}
-.cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:6.5rem}
-}
-.cmp-grid .mean td{border-block-start:0;padding-block:0 1rem;color:var(--ink-soft);font-size:.98rem;line-height:1.7}
-.cmp-grid .mean b{color:var(--teal-d);font-weight:700}
-.cmp-grid .mean span{display:inline-block;max-inline-size:78ch}
-.cmp-grid tr.mean{display:none}
-.cmp-grid tr.mean.open{display:table-row}
-@media(hover:hover) and (pointer:fine){
-.cmp-grid tr.vrow:hover>*{background:#f6fafb}
-}
-.cmp-grid .fx{font:inherit;color:inherit;background:none;border:0;padding:0;text-align:start;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;min-height:44px}
-.cmp-grid .fx::after{content:"?";display:inline-grid;place-items:center;inline-size:1.2rem;block-size:1.2rem;border:1px solid var(--line);border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--ink-soft);flex:none;transition:background .15s,border-color .15s,color .15s}
-.cmp-grid .fx:hover::after,.cmp-grid .fx[aria-expanded="true"]::after{background:var(--teal);border-color:var(--teal);color:#fff}
-.cmp-grid .fx:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-.cmp-grid td.na{color:var(--ink-soft)}
-.cmp-grid td.na span[aria-hidden]{font-family:var(--mono);font-size:1.1rem;opacity:.55}
-.dslot.sc0{border-inline-start:3px solid var(--teal)}
-.dslot.sc1{border-inline-start:3px solid var(--purple)}
-.dslot.sc2{border-inline-start:3px solid var(--orange)}
-.cmp-grid thead th.sc0,.cmp-grid thead th.sc1,.cmp-grid thead th.sc2{border-block-end-width:3px}
-.cmp-grid thead th.sc0{border-block-end-color:var(--teal)}
-.cmp-grid thead th.sc1{border-block-end-color:var(--purple)}
-.cmp-grid thead th.sc2{border-block-end-color:var(--orange)}
-.cmp-grid .vch{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:.1rem .5rem;margin:0 0 .3rem .35rem;font-size:.98rem;line-height:1.6;white-space:nowrap}
-.cmp-grid .nv{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--ink-strong);line-height:1.25}
-.cmp-grid .fx::after{content:none}
-.cmp-grid .fxi{display:inline-grid;place-items:center;inline-size:1.2rem;block-size:1.2rem;border:1px solid var(--line);border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:700;font-style:normal;color:var(--ink-soft);flex:none;transition:background .15s,border-color .15s,color .15s}
-.cmp-grid .fxi:hover,.cmp-grid .fx:focus-visible .fxi{background:var(--teal);border-color:var(--teal);color:#fff}
-.minfo{position:absolute;z-index:80;max-inline-size:min(34rem,88vw);background:#fff;border:1px solid var(--ink-strong);border-radius:8px;box-shadow:var(--shadow-sm);padding:.85rem 1rem;color:var(--ink);font-size:.98rem;line-height:1.7}
-.minfo b{color:var(--teal-d);font-weight:700}
-.minfo::before{content:"";position:absolute;left:var(--ax,16px);inset-block-start:-6px;inline-size:10px;block-size:10px;background:#fff;border-inline-start:1px solid var(--ink-strong);border-block-start:1px solid var(--ink-strong);transform:rotate(45deg)}
-.cmp-wrap{background:#fcfcfd;border:1px solid var(--line);border-radius:10px;padding:.2rem 1.1rem 1.1rem}
-.cmp-grid thead th,.cmp-grid tbody th[scope="row"],.cmp-grid .grp th{background:#fcfcfd}
-@media(max-width:900px){
-.cmp-wrap{padding:.2rem .55rem .55rem;border-radius:8px}
-}
-.dslots.two{grid-template-columns:repeat(2,minmax(0,1fr))}
-.dadd{grid-column:1/-1;justify-self:start;font-family:inherit;font-size:.98rem;font-weight:600;color:var(--teal-d);background:none;border:1px dashed var(--line);border-radius:6px;padding:.7rem 1.1rem;cursor:pointer;min-height:44px}
-.dadd:hover{border-color:var(--teal-d);background:#f2f6f8}
-.dfocus .sep{margin-inline-start:.35rem}
-.dfocus .sep::before{content:"";display:inline-block;inline-size:.85rem;block-size:.85rem;border:1px solid var(--ink-soft);border-radius:3px;margin-inline-end:.5rem;vertical-align:-.04em;transition:background .2s,border-color .2s}
-.dfocus .sep[aria-pressed="true"]{background:none;color:var(--ink);border-color:var(--line)}
-.dfocus .sep[aria-pressed="true"]::before{background:var(--teal);border-color:var(--teal)}
-.dfocus .sep:hover{border-color:var(--teal-d);color:var(--teal-d)}
+/* מסגרת העמוד: תפריט הנגישות והפוטר. מחוץ ל-tool.css כי אלה שמות של הגיליון המשותף, והשער של buildTool בודק רק את שמות הכלי. */
+html.a11y-contrast-high :is(header.site,main,footer.site){filter:contrast(1.35)}
+html.a11y-contrast-invert :is(header.site,main,footer.site){filter:invert(1) hue-rotate(180deg)}
+html.a11y-contrast-mono :is(header.site,main,footer.site){filter:grayscale(1) contrast(1.08)}
 footer .fl{list-style:none;padding:0;margin:0;display:grid;gap:.45rem}
 @media(max-width:820px){
 footer .fl a{display:inline-flex;align-items:center;min-height:44px}
 footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
 }
-html.a11y-contrast-high :is(header.site,.picker,main,footer.site){filter:contrast(1.35)}
-html.a11y-contrast-invert :is(header.site,.picker,main,footer.site){filter:invert(1) hue-rotate(180deg)}
-html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:grayscale(1) contrast(1.08)}
-.dnote{margin:1.4rem 0 0;border-inline-start:3px solid var(--orange);padding-inline-start:1.1rem;color:var(--ink-soft);line-height:1.75}
+
 /* האקורדיון — נשלף מ-index.html בזמן החילול. עותק אחד. */
 .dhow details{border:1px solid var(--line);border-radius:6px;margin-bottom:.6rem;background:#fff}
 .dhow summary{cursor:pointer;padding:1rem 1.2rem;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:1rem}
@@ -562,120 +455,191 @@ html.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:graysca
 .dhow summary::after{content:"+";color:var(--teal);font-size:1.4rem;line-height:1}
 .dhow details[open] summary::after{content:"–"}
 .dhow details p{padding:0 1.2rem 1rem;color:var(--ink-soft)}
-.apph{background:linear-gradient(180deg,#f6f8fa,#fff);border-block-end:1px solid var(--line);padding-block:clamp(24px,3.4vw,38px) clamp(16px,2.2vw,24px)}
-.apph h1{font-size:clamp(1.95rem,4.2vw,2.9rem)}
-.apph .asub{margin:.7rem 0 0;max-inline-size:56ch;color:var(--ink-soft);font-weight:300;font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7}
-.apph .ahelp{margin:.9rem 0 0;color:var(--ink-soft);font-size:1rem}
-.apph .ahelp a{color:var(--teal-d);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding-block:.55rem}
-.apph .catsw{display:flex;flex-wrap:wrap;gap:8px;margin:.9rem 0 0}
-.apph .catsw a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);font-weight:700;text-decoration:none}
-.apph .catsw a:hover{border-color:var(--teal-d);color:var(--teal-d)}
-.apph .catsw a[aria-current="page"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff}
-.apph .catsw a:focus-visible{outline:3px solid var(--teal-d);outline-offset:2px}
-#pick{border-top:0;padding-block-start:clamp(16px,2.2vw,24px)}
-.dapp{--edge:#8f8b96;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);padding:1.05rem 1.15rem 1.3rem}
-.dapp .dhead{display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap}
-.dapp .dhead h2{margin:0;max-width:none;font-family:var(--mono);font-size:.98rem;font-weight:700;letter-spacing:.08em;color:var(--ink-strong)}
-.dapp .dlbl{font-family:var(--mono);font-size:.98rem;font-weight:700;letter-spacing:.08em;color:var(--ink-strong)}
-.dapp .dsep{border-block-start:1px solid var(--line);margin-block:1.3rem}
-.dapp .dslots{margin-block-start:1rem}
-.dstate[hidden]{display:none}
-.dstate{inset-block-start:var(--pg-stick-1,66px)}
-.cmp-grid thead th{inset-block-start:var(--pg-stick-2,146px)}
-@media(max-width:900px){.cmp-grid thead th{position:static}}
-@media(max-width:720px){.dapp .dslots.two{grid-template-columns:1fr}}
-.dapp .dslot.empty{border-color:var(--edge);background:#fafcfd}
-.dapp .dslot{padding:0}
-.dapp .dopen{flex:1;display:flex;align-items:center;gap:.7rem;font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:start;padding:.65rem .9rem;min-height:44px;border-radius:6px}
-.dapp .dopen .dtxt{display:flex;flex-direction:column;min-width:0}
-.dapp .dslot.empty .nm{color:var(--teal-d);font-weight:700}
-.dapp .dplus{flex:none;display:grid;place-items:center;inline-size:2rem;block-size:2rem;border-radius:50%;border:1px dashed var(--edge);color:var(--teal-d);font-size:1.35rem;line-height:1}
-.dapp .dslot.empty:hover{border-color:var(--teal);background:#f2f8fb}
-.dapp .dslot.empty:hover .dplus{border-style:solid;border-color:var(--teal);background:var(--teal);color:#fff}
-.dapp .dopen .swap{margin-inline-start:auto;font-size:.92rem;color:var(--ink-soft);flex:none}
-.dapp .dopen:hover .swap{color:var(--teal-d)}
-.dmenu{margin-block-start:.9rem;border:1px solid var(--edge);border-radius:10px;background:#fff;box-shadow:var(--shadow-sm);overflow:hidden}
-.dmenu[hidden]{display:none}
-.dmenu .dmhead{display:flex;align-items:center;gap:.5rem;padding:.2rem .5rem;border-block-end:1px solid var(--line);background:#f6f8fa}
-.dmenu .dmtitle{font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.06em;color:var(--ink-strong);padding-inline:.4rem}
-.dmenu .dmx{font:inherit;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-height:44px;border-radius:6px;margin-inline-start:auto;font-size:1.4rem;line-height:1;min-inline-size:44px}
-.dmenu .dmx:hover{color:var(--teal-d);background:#eaf1f5}
-.dmenu .dmlist{list-style:none;margin:0;padding:0;max-block-size:min(52vh,400px);overflow-y:auto}
-.dmenu .dmlist>li+li{border-block-start:1px solid var(--line)}
-.dmenu .dmlist button{inline-size:100%;display:flex;align-items:center;gap:.7rem;font:inherit;color:var(--ink);background:none;border:0;cursor:pointer;text-align:start;padding:.8rem .9rem;min-height:48px}
-.dmenu .dmlist button:hover{background:#f2f8fb;color:var(--teal-d)}
-.dmenu .dmlist .bn{font-weight:600}
-.dmenu .dmlist .cnt{margin-inline-start:auto;font-family:var(--mono);font-size:.9rem;color:var(--ink-soft)}
-.dmenu .dmlist .nologo{inline-size:34px;flex:none}
-.dmenu .dmlist .blogo{flex:none;inline-size:auto}
-.dmenu .dmlist .blogo-apple{block-size:18px}
-.dmenu .dmlist .blogo-samsung{block-size:13px}
-.dmenu .dmlist .blogo-xiaomi{block-size:18px}
-.dmenu .dmlist .blogo-google{block-size:18px}
-.dmenu .dmlist .blogo-oneplus{block-size:18px}
-.dmenu .dmlist .blogo-nothing{block-size:14px}
-.cmp-grid thead .blogo-apple{height:17px}
-.cmp-grid thead .dhyear{font-weight:500;font-size:.82em;color:var(--ink-soft);white-space:nowrap;font-variant-numeric:tabular-nums;margin-inline-start:.3rem}
-.cmp-grid thead .blogo-samsung{height:13px}
-.cmp-grid thead .blogo-xiaomi{height:17px}
-.cmp-grid thead .blogo-google{height:17px}
-.cmp-grid thead .blogo-oneplus{height:17px}
-.cmp-grid thead .blogo-nothing{height:13px}
-.dmenu .dmlist button[aria-current="true"] .bn{color:var(--teal-d)}
-.dmenu .dmbrand[aria-expanded="true"]{background:#f2f8fb}
-.dmenu .dmtog{flex:none;display:inline-grid;place-items:center;inline-size:1.35rem;block-size:1.35rem;color:var(--teal);font-size:1.3rem;line-height:1}
-.dmenu .dmtog::before{content:"+"}
-.dmenu [aria-expanded="true"] .dmtog::before{content:"–"}
-.dmenu .dmsub{list-style:none;margin:0;padding:0;background:#fafcfd}
-.dmenu .dmsub>li{border-inline-start:2px solid var(--edge);margin-inline-start:1.7rem}
-.dmenu .dmsub>li+li{border-block-start:1px solid var(--line)}
-.dmenu .dmsub>li:hover{border-inline-start-color:var(--teal)}
-.dmenu .dmsub button{padding-inline-start:1.1rem;min-height:46px}
-.dapp .dclr{margin-inline-start:auto;font-family:inherit;font-size:.96rem;font-weight:600;color:var(--ink-soft);background:none;border:1px solid var(--edge);border-radius:999px;padding:.55rem 1.05rem;min-height:44px;cursor:pointer;transition:color .18s,border-color .18s}
-.dapp .dclr:hover{color:var(--teal-d);border-color:var(--teal-d)}
-.dapp .dfind{position:relative;margin-inline-start:auto}
-.dapp .dfind input{font-family:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--edge);border-radius:999px;padding-block:.6rem;padding-inline:2.5rem 1rem;min-height:44px;inline-size:min(17rem,58vw)}
-.dapp .dfind input::placeholder{color:var(--ink-soft);opacity:1}
-.dapp .dfico{position:absolute;inset-inline-start:.9rem;inset-block-start:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}
-.dapp .dnone{margin-block-start:1.3rem;color:var(--ink-soft)}
-.dapp .dbrand{margin-block:1.5rem .75rem}
-.dpick{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
-.dpick li[hidden],.dgrp[hidden]{display:none}
-.dchip{font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--edge);border-radius:999px;padding:.6rem 1.05rem;min-height:44px;display:inline-flex;align-items:center;cursor:pointer;transition:border-color .18s,background .18s,color .18s}
-.dchip:hover{border-color:var(--teal-d);color:var(--teal-d)}
-.dfocus button{border-color:var(--edge)}
-.cmp-grid .fxi{border-color:var(--edge)}
-.dadd{border-color:var(--edge)}
-.dshare{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-block-start:1.6rem}
-.dshare .dok{color:var(--teal-d);font-size:.96rem;font-weight:600}
-@media(max-width:900px){
-  .cmp-wrap{overflow-x:visible}
-  .cmp-grid{table-layout:fixed;width:100%}
-  .cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:0}
-  .cmp-grid thead th:first-child{width:24%}
-  .cmp-grid tbody th[scope="row"]{min-width:0;max-inline-size:none;position:static}
-  .cmp-grid thead th{white-space:normal;position:sticky;inset-block-start:var(--pg-stick-2,146px)}
-  .cmp-grid th,.cmp-grid td{overflow-wrap:anywhere;padding:.7rem .4rem}
-  .cmp-grid .vch{white-space:normal}
-  .cmp-grid .nv{font-size:1.1rem}
+/* כלי ההשוואה, גרסה ח׳ מהקנבס (24.9.2026). gen-compare.js קורא את הקובץ ומזריק אותו לשלושת הכלים.
+   השמות החדשים מתחילים ב-cv- כדי לא לדרוך על הגיליון המשותף. שלושה שמות נשמרו מהכלי הקודם בכוונה:
+   dopen, dchip ו-catsw. בלוק המדידה מדידת ההשוואה, שזהה ב-100 עמודים, מזהה לפיהם בחירת דגם,
+   פתיחת צד ומעבר בין כלים, ושינוי שם היה משתיק אותו בשקט.
+   הצבעים לפי צד ולא לפי מותג: צד א׳ סגול, צד ב׳ כתום, והטורקיז של האתר לכפתורים ולקישורים בלבד.
+   סגול וכתום נבדלים גם בעיוורון צבעים אדום-ירוק, והם לא נקראים כמו הכחול של סמסונג. */
+.cv-app{--cv-a:#5b3fc4;--cv-a-t:#5b3fc4;--cv-a-track:#efecfa;--cv-a-edge:#7c63d8;--cv-b:#b45309;--cv-b-t:#8a3f06;--cv-b-track:#f6eee6;--cv-b-edge:#e8892b;--cv-dark:#0f3b4c;--cv-edge:#8f8b96}
+/* ההדר הכהה של ו׳, שאופק בחר. */
+.cv-top{background:var(--cv-dark);color:#fff;padding-block:clamp(22px,3vw,34px) clamp(20px,2.6vw,30px)}
+.cv-top .cv-row1{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap}
+.cv-top h1{margin:0;color:#fff;font-size:clamp(1.55rem,3vw,2.05rem);line-height:1.2}
+.cv-top .catsw{display:flex;gap:4px;padding:4px;border-radius:6px;background:rgba(255,255,255,.1);margin:0}
+.cv-top .catsw a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:4px;color:#fff;font-weight:700;text-decoration:none}
+.cv-top .catsw a:hover{background:rgba(255,255,255,.14)}
+.cv-top .catsw a[aria-current="page"]{background:#fff;color:var(--cv-dark);font-weight:800}
+.cv-top .catsw a:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-top .cv-sub{margin:.7rem 0 0;color:rgba(255,255,255,.86);font-size:1.02rem;line-height:1.6;max-inline-size:70ch}
+.cv-cards{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;gap:14px;margin-block-start:1.3rem}
+.cv-card{min-height:88px;box-sizing:border-box;padding:14px 18px;border:0;border-radius:10px;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:start;font:inherit;color:var(--ink-strong);inline-size:100%}
+.cv-card[data-slot="0"]{box-shadow:inset 0 -5px 0 var(--cv-a-edge)}
+.cv-card[data-slot="1"]{box-shadow:inset 0 -5px 0 var(--cv-b-edge)}
+.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cv-card[aria-expanded="true"]{outline:3px solid #fff;outline-offset:3px}
+.cv-dot{inline-size:14px;block-size:14px;border-radius:50%;flex:none;display:inline-block}
+.cv-a .cv-dot,.cv-card[data-slot="0"] .cv-dot{background:var(--cv-a)}
+.cv-b .cv-dot,.cv-card[data-slot="1"] .cv-dot{background:var(--cv-b)}
+.cv-card.empty .cv-dot{background:none;border:2px dashed var(--cv-edge)}
+.cv-ct{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.cv-nm{font-size:clamp(1.3rem,2.2vw,1.65rem);font-weight:800;line-height:1.2}
+.cv-card.empty .cv-nm{color:var(--teal-d)}
+.cv-meta{font-size:.95rem;color:var(--ink-soft)}
+.cv-act{font-size:.95rem;font-weight:700;flex:none}
+.cv-card[data-slot="0"] .cv-act{color:var(--cv-a-t)}
+.cv-card[data-slot="1"] .cv-act{color:var(--cv-b-t)}
+.cv-flip{inline-size:64px;block-size:64px;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:var(--cv-dark);color:#fff;font:inherit;font-size:1.1rem;font-weight:800;cursor:pointer;display:grid;place-items:center;justify-self:center}
+.cv-flip:hover:not(:disabled){border-color:#fff}
+.cv-flip:disabled{opacity:.55;cursor:default}
+.cv-flip:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-sug{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:1.1rem 0 0;font-size:.98rem}
+.cv-sug[hidden]{display:none}
+.cv-sug .cv-sl{font-weight:700;color:rgba(255,255,255,.88)}
+.cv-sug .cv-sa{min-height:44px;padding:0 16px;border-radius:22px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);color:#fff;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.cv-sug .cv-sa:hover{background:rgba(255,255,255,.16);border-color:#fff;color:#fff}
+.cv-sug .cv-sa:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media(max-width:720px){
+.cv-cards{grid-template-columns:1fr;gap:10px}
+.cv-card{min-height:66px;padding:10px 14px}
+.cv-flip{inline-size:48px;block-size:48px;font-size:1rem}
 }
-.dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}
-.dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}
-.dchip.sc2{background:var(--orange);border-color:#c07a2e;color:#241a08;font-weight:700}
-.dchip.sc0:hover,.dchip.sc1:hover{color:#fff}
-.dchip.sc2:hover{color:#241a08}
+/* הבורר: נפתח מתחת להדר, עם סינון ורשימה לפי מותג. עד ח׳ כל 81 הדגמים היו פרושים מתחת לתאים תמיד,
+   וזה מה שאופק קרא לו עמוס. עכשיו הרשימה מופיעה רק כשבוחרים צד. */
+#pick{border-top:0;padding-block:0}
+.cv-pick{margin-block-start:1.2rem;border:1px solid var(--cv-edge);border-radius:10px;background:#fff;box-shadow:var(--shadow-sm);padding:.9rem 1.1rem 1.1rem}
+.cv-pick[hidden]{display:none}
+.cv-ph{display:flex;align-items:center;gap:.6rem 1rem;flex-wrap:wrap}
+.cv-app .cv-ph h2{margin:0;font-size:1.2rem;font-weight:800;max-width:none;display:flex;align-items:center;gap:.5rem}
+.cv-ph .cv-x{margin-inline-start:auto;font:inherit;font-size:1.5rem;line-height:1;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-inline-size:44px;min-height:44px;border-radius:6px}
+.cv-ph .cv-x:hover{color:var(--teal-d);background:#eef5f7}
+.dfind{position:relative}
+.dfind input{font-family:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--cv-edge);border-radius:4px;padding-block:.6rem;padding-inline:2.5rem 1rem;min-height:44px;inline-size:min(20rem,78vw);box-sizing:border-box}
+.dfind input::placeholder{color:var(--ink-soft);opacity:1}
+.dfico{position:absolute;inset-inline-start:.9rem;inset-block-start:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}
+.cv-list{max-block-size:min(58vh,520px);overflow-y:auto;margin-block-start:.4rem;padding-inline-end:.2rem}
+.dgrp[hidden],.dpick li[hidden]{display:none}
+.dbrand{display:flex;align-items:center;gap:.55rem;font-weight:800;color:var(--ink-strong);margin:1.1rem 0 .55rem;padding-block-end:.4rem;border-block-end:1px solid var(--line)}
+.dbrand .blogo{display:inline-block;inline-size:auto;flex:none}
+.dbrand .blogo-apple,.dbrand .blogo-xiaomi,.dbrand .blogo-google,.dbrand .blogo-oneplus{block-size:18px}
+.dbrand .blogo-samsung{block-size:13px}
+.dbrand .blogo-nothing{block-size:14px}
+.dpick{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.dchip{font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--cv-edge);border-radius:4px;padding:.55rem 1rem;min-height:44px;display:inline-flex;align-items:center;gap:.4rem;cursor:pointer}
+.dchip:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.dchip[aria-pressed="true"]{background:var(--teal-d);border-color:var(--teal-d);color:#fff;font-weight:700}
+.dchip.side0{border-inline-start:4px solid var(--cv-a)}
+.dchip.side1{border-inline-start:4px solid var(--cv-b)}
+.dnone{margin-block-start:1rem;color:var(--ink-soft)}
+.dnone[hidden]{display:none}
+/* הפס הלבן עם שני השמות, נדבק מתחת להדר של האתר בגלילה. הגובה של ההדר נמדד בזמן ריצה. */
+.cv-bar{position:sticky;inset-block-start:var(--pg-stick-1,0px);z-index:60;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-block-end:1px solid var(--line);box-shadow:0 2px 8px rgba(20,18,16,.06)}
+.cv-bar[hidden]{display:none}
+.cv-bi{display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;min-height:52px;padding-block:.4rem}
+.cv-bar .cv-bn{display:inline-flex;align-items:center;gap:.45rem;font-weight:800;color:var(--ink-strong)}
+.cv-bar .cv-bn .cv-dot{inline-size:10px;block-size:10px}
+.cv-bar .cv-vs{color:var(--ink-soft);font-weight:400}
+.cv-bar .cv-bc{margin-inline-start:auto;color:var(--ink-soft);font-size:.95rem}
+@media(max-width:560px){.cv-bar .cv-bc{display:none}}
+/* בטלפון, אחרי שנבחר זוג, המשפט שמסביר את הכלי כבר מיותר והוא דוחף את התוצאה מתחת לקו הקיפול */
+@media(max-width:720px){.cv-top.has-pair .cv-sub{display:none}}
+/* התוצאה */
+#dout{padding-block:1.6rem 0}
+.dempty{margin:0;color:var(--ink-soft);line-height:1.8}
+.dnote{margin:0 0 1.2rem;border-inline-start:3px solid var(--orange);padding-inline-start:1.1rem;color:var(--ink-soft);line-height:1.75}
+.cv-count{margin:0;font-size:clamp(1.3rem,2.2vw,1.5rem);font-weight:800;color:var(--ink-strong)}
+.cv-same{display:flex;gap:8px;flex-wrap:wrap;margin:.7rem 0 0;padding:0;list-style:none}
+.cv-same li{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;background:#f3f6f8;border:1px solid #e2e7ea;font-size:1rem;color:var(--ink)}
+.cv-same li svg{flex:none;color:var(--teal-d)}
+.cv-src{margin:.7rem 0 0;color:var(--ink-soft);font-size:.95rem}
+.cv-app .cv-h2{margin:2rem 0 .8rem;font-size:1.3rem;font-weight:800;color:var(--ink-strong);max-width:none}
+.cv-top3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.cv-top3.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cv-top3.n1{grid-template-columns:minmax(0,1fr)}
+.cv-t{border:1px solid var(--line);border-radius:6px;padding:16px 18px;background:#fcfcfd;display:flex;flex-direction:column;gap:12px}
+.cv-th{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cv-th b{font-size:1.05rem;color:var(--ink-strong)}
+.cv-gap{font-size:.92rem;font-weight:800;padding:3px 9px;border-radius:4px;background:#eef5f7;color:#0f4f68;white-space:nowrap}
+.cv-tv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.cv-tv>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cv-big{font-size:1.9rem;font-weight:800;line-height:1}
+.cv-big small{font-size:.95rem;font-weight:400;color:var(--ink-soft);margin-inline-start:4px}
+.cv-tv .cv-a .cv-big{color:var(--cv-a-t)}
+.cv-tv .cv-b .cv-big{color:var(--cv-b-t)}
+.cv-tn{font-size:.9rem;font-weight:700;color:var(--ink-soft)}
+.cv-lead{margin:0;font-size:1rem;line-height:1.5;color:var(--ink)}
+.cv-track{display:block;block-size:8px;border-radius:4px;overflow:hidden}
+.cv-a .cv-track{background:var(--cv-a-track)}
+.cv-b .cv-track{background:var(--cv-b-track)}
+.cv-t .cv-track{block-size:6px}
+.cv-fill{display:block;block-size:100%;border-radius:inherit}
+.cv-a .cv-fill{background:var(--cv-a)}
+.cv-b .cv-fill{background:var(--cv-b)}
+@media(max-width:900px){.cv-top3,.cv-top3.n2{grid-template-columns:minmax(0,1fr)}}
+/* מה חשוב לכם: מסדר ולא מסנן. שום הבדל לא נעלם, מה שלא נבחר מתקפל תחת כפתור. */
+.cv-prio p{margin:.3rem 0 0;color:var(--ink-soft)}
+.cv-chips{display:flex;gap:8px;flex-wrap:wrap;margin-block-start:.8rem}
+.cv-chip{min-height:44px;padding:0 14px;border-radius:4px;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;background:#fff;color:var(--ink);border:1px solid var(--cv-edge)}
+.cv-chip:hover{border-color:var(--teal-d);color:var(--teal-d)}
+.cv-chip span{font-weight:400}
+.cv-chip svg{display:none}
+.cv-chip[aria-pressed="true"]{background:var(--teal-d);color:#fff;border-color:var(--teal-d)}
+.cv-chip[aria-pressed="true"] svg{display:inline}
+.cv-status{margin:.7rem 0 0 !important;font-size:.95rem}
+.cv-legend{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;margin-block-start:1.3rem;padding:10px 14px;border-radius:4px;background:#f6f8fa;font-size:.95rem;color:var(--ink-soft)}
+.cv-legend .cv-k{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--ink)}
+.cv-legend .cv-k i{display:inline-block;inline-size:18px;block-size:6px;border-radius:3px}
+.cv-legend .cv-a i{background:var(--cv-a)}
+.cv-legend .cv-b i{background:var(--cv-b)}
+.cv-grp{margin-block-start:1.6rem}
+.cv-gh{display:flex;align-items:baseline;gap:10px;padding-block-end:8px;border-block-end:2px solid var(--ink-strong)}
+.cv-app .cv-gh h3{margin:0;font-size:1.4rem;font-weight:800}
+.cv-gh span{font-size:.95rem;color:var(--ink-soft)}
+.cv-gh .cv-pk{font-weight:700;color:var(--teal-d)}
+.cv-r{display:grid;grid-template-columns:170px minmax(0,1fr) minmax(0,1fr);gap:8px 22px;padding-block:16px;border-block-end:1px solid #ebe9ee;align-items:start}
+.cv-rl{font-size:1.06rem;font-weight:800;color:var(--ink-strong);padding-block-start:2px}
+.cv-small{display:inline-block;margin-block-start:.35rem;font-size:.9rem;font-weight:700;color:var(--ink-soft);border:1px solid var(--line);border-radius:4px;padding:1px 7px}
+.cv-v{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cv-who{display:inline-flex;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink-soft)}
+.cv-who .cv-dot{inline-size:8px;block-size:8px}
+.cv-val{font-size:1.12rem;font-weight:700;line-height:1.45;color:var(--ink-strong);overflow-wrap:anywhere}
+.cv-val .vch{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:.05rem .5rem;margin:0 0 .3rem .35rem;font-size:1rem;font-weight:600;white-space:nowrap}
+.cv-na{font-size:1.02rem;font-weight:400;font-style:italic;color:var(--ink-soft)}
+.cv-note{grid-column:2/4;margin:0;font-size:1.02rem;line-height:1.6;color:#3d3a42}
+.cv-rest{margin-block-start:1.2rem;inline-size:100%;min-height:52px;border:1px dashed #9aa7b0;border-radius:6px;background:#f8fafb;font:inherit;font-size:1.05rem;font-weight:700;color:var(--teal-d);cursor:pointer}
+.cv-rest:hover{border-style:solid;border-color:var(--teal-d)}
+.cv-rest[hidden]{display:none}
+/* שרטוט בקנה מידה: מילימטר אחד הוא פיקסל אחד, רעיון מ-PhoneArena */
+.cv-size{display:flex;align-items:flex-end;gap:28px;padding-block:18px 6px;flex-wrap:wrap}
+.cv-size figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cv-size .cv-ol{box-sizing:border-box;border:3px solid;border-radius:14px;display:block}
+.cv-size .cv-a .cv-ol{border-color:var(--cv-a);background:#f7f5fd}
+.cv-size .cv-b .cv-ol{border-color:var(--cv-b);background:#fbf6f1}
+.cv-size figcaption{font-size:.9rem;color:var(--ink-soft)}
+.cv-size p{margin:0;max-inline-size:420px;font-size:1rem;line-height:1.55;color:var(--ink)}
+@media(max-width:820px){
+.cv-r{grid-template-columns:minmax(0,1fr);gap:8px}
+.cv-note{grid-column:auto}
+}
+.cv-more{margin:1.6rem 0 0;color:var(--ink-soft)}
+.cv-wa{margin-block-start:1.8rem;padding:22px 24px;border-radius:8px;border:1px solid #cfe0e7;background:#f3f8fa;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.cv-wa .cv-wt{flex:1 1 320px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cv-wa .cv-wt b{font-size:1.25rem;color:var(--ink-strong)}
+.cv-wa .cv-wt span{color:var(--ink-soft)}
+.cv-bubble{align-self:flex-start;max-inline-size:640px;font-size:1.02rem;line-height:1.5;padding:10px 14px;border-radius:8px 8px 8px 2px;background:#e3f5e8;border:1px solid #c4e6cf;color:#1f2a22}
+.cv-wa .cv-wb{display:flex;flex-direction:column;align-items:stretch;gap:8px;flex:none}
+.cv-wa .dok{color:var(--teal-d);font-size:.95rem;font-weight:600;text-align:center;min-height:1.2em}
+@media(prefers-reduced-motion:no-preference){
+.cv-grp{animation:cvrise .3s ease-out both}
+.cv-fill{transform-origin:right center;animation:cvgrow .55s cubic-bezier(.2,.8,.2,1) both}
+}
+@keyframes cvrise{from{transform:translateY(6px)}to{transform:none}}
+@keyframes cvgrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* המקטע איך זה עובד מתקפל */
 .dhow details{margin-bottom:.6rem}
 .dhow summary{font-size:1.05rem}
 .dhow details p+p{padding-block-start:0}
-.dhpic{display:block;inline-size:2.75rem;block-size:auto;aspect-ratio:3/4;object-fit:contain;background:#fff;border:1px solid var(--line);margin-block-end:.45rem}
-@media(max-width:900px){.dhpic{inline-size:2.25rem;margin-block-end:.35rem}}
-.dsum{margin-block-start:2.2rem;border-block-start:1px solid var(--line);padding-block-start:1.7rem}
-.dsum h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.32rem,2.5vw,1.7rem)}
-.dwho{display:grid;gap:2.4rem;margin-block-start:1.7rem;grid-template-columns:1fr 1fr}
-.dwho.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:1100px){.dwho.n3{grid-template-columns:1fr 1fr}}
-@media(max-width:820px){.dwho,.dwho.n3{grid-template-columns:1fr;gap:1.9rem}}
-.dwho h4{font-family:var(--serif);font-weight:400;font-size:clamp(1.16rem,2.1vw,1.4rem);margin:0 0 .2rem;padding-block-end:.7rem;border-block-end:2px solid var(--ink-strong)}
+
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
 
@@ -1932,39 +1896,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <main id="main" role="main" tabindex="-1">
 
-<section class="apph" aria-labelledby="h1">
+<div class="cv-app">
+<section class="cv-top" aria-labelledby="h1">
   <div class="wrap">
-    <h1 id="h1">השוואת אוזניות</h1>
-    <nav class="catsw" aria-label="מעבר בין כלי השוואה"><a href="/phones/compare/">טלפונים</a><a href="/watches/compare/">שעונים חכמים</a><a href="/headphones/compare/" aria-current="page">אוזניות</a></nav>
-    <p class="asub">אוזניות AirPods ו-Galaxy Buds, והמפרט של כל דגם מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": חלק מהתכונות עובדות רק עם טלפון של אותו יצרן.</p>
-    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%90%D7%95%D7%96%D7%A0%D7%99%D7%95%D7%AA%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>.</p>
+    <div class="cv-row1">
+      <h1 id="h1">השוואת אוזניות</h1>
+      <nav class="catsw" aria-label="מעבר בין כלי השוואה"><a href="/phones/compare/">טלפונים</a><a href="/watches/compare/">שעונים חכמים</a><a href="/headphones/compare/" aria-current="page">אוזניות</a></nav>
+    </div>
+    <p class="cv-sub">אוזניות AirPods ו-Galaxy Buds, והמפרט של כל דגם מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": חלק מהתכונות עובדות רק עם טלפון של אותו יצרן.</p>
+    <div class="cv-cards">
+        <button type="button" class="dopen cv-card empty" data-slot="0" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד א׳</span></span><span class="cv-act">בחירה</span></button>
+        <button type="button" class="cv-flip" id="cvflip" aria-label="החלפת צדדים" disabled>מול</button>
+        <button type="button" class="dopen cv-card empty" data-slot="1" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ב׳</span></span><span class="cv-act">בחירה</span></button>
+    </div>
+    <p class="cv-sug" id="cvsug" hidden></p>
   </div>
 </section>
-
-<section class="block" id="pick" aria-labelledby="pick-h">
-  <div class="wrap box">
-    <div class="dapp">
-      <div class="dhead">
-        <h2 id="pick-h">הבחירה שלכם</h2>
-        <button type="button" class="dclr" id="dclear" hidden>נקו את הבחירה</button>
-      </div>
-      <ul class="dslots two" id="dslots">
-        <li class="dslot empty"><button type="button" class="dopen" data-slot="0" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">דגם א׳</span><span class="nm">בחרו דגם</span></span></button></li>
-        <li class="dslot empty"><button type="button" class="dopen" data-slot="1" aria-expanded="false" aria-controls="dmenu"><span class="dplus" aria-hidden="true">+</span><span class="dtxt"><span class="lbl">דגם ב׳</span><span class="nm">בחרו דגם</span></span></button></li>
-        <li><button type="button" class="dadd" data-add="1">הוסיפו דגם שלישי</button></li>
-      </ul>
-      <div class="dmenu" id="dmenu" hidden></div>
-      <div class="dsep"></div>
-      <div class="dhead">
-        <p class="dlbl" id="dpick-h">כל הדגמים</p>
+<div class="cv-bar" id="cvbar" hidden></div>
+<section class="block" id="pick" aria-label="ההשוואה">
+  <div class="wrap">
+    <div class="cv-pick" id="cvpick" role="region" aria-labelledby="cvpick-h" hidden>
+      <div class="cv-ph">
+        <h2 id="cvpick-h">בחירת דגם</h2>
         <div class="dfind">
           <svg class="dfico" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M13.4 13.4 18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
           <label class="a11y-sr" for="dq">סינון לפי שם דגם</label>
           <input id="dq" type="search" autocomplete="off" placeholder="סינון לפי שם" aria-describedby="dqh">
           <span class="a11y-sr" id="dqh" role="status"></span>
         </div>
+        <button type="button" class="cv-x" aria-label="סגירת הבורר">&times;</button>
       </div>
-      <div id="dpick" role="group" aria-labelledby="dpick-h">
+      <div class="cv-list" id="dpick" role="group" aria-labelledby="cvpick-h">
         <div class="dgrp">
           <p class="dbrand"><img class="blogo blogo-apple" src="/logos/apple.png" alt="" width="17" height="20" loading="lazy" decoding="async">Apple</p>
           <ul class="dpick">
@@ -1988,15 +1950,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <p class="dnone" id="dnone" hidden>אין דגם בשם הזה. נקו את הסינון כדי לראות את כל הרשימה.</p>
     </div>
-    <div class="dstate" id="dstatebar" hidden>
-      <p id="dstate" role="status"></p>
-    </div>
-    <div class="minfo" id="minfo" hidden></div>
     <div id="dout">
-      <p class="dempty">כאן תופיע טבלת ההבדלים. הכלי צריך JavaScript כדי לעבוד.</p>
+      <p class="dempty">כאן יופיעו ההבדלים. הכלי צריך JavaScript כדי לעבוד.</p>
     </div>
   </div>
 </section>
+</div>
 
 <section class="block" id="ready" aria-labelledby="ready-h">
   <div class="wrap box">
@@ -2019,6 +1978,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <summary>איך הכלי מחשב את ההבדלים</summary>
       <p>רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות זמן האזנה בתנאים שונים, ולכן בשורה הזאת מופיע מה שכל יצרן כתב, כפי שהוא.</p>
       <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם.</p>
+      <p>"מה חשוב לכם" מסדר את התחומים ואינו מסתיר אף הבדל: מה שלא בחרתם מתקפל תחת כפתור אחד.</p>
     </details>
     <details>
       <summary>למה אין כאן מחיר, ואין הכרזה מי טוב יותר</summary>
@@ -2042,723 +2002,438 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <script>
-/* כלי ההשוואה. אין כאן חישוב הבדלים: PAIRS מכיל את התוצאה של diffSpec מהמחולל, כלומר
-   שמות השדות שנמצאו שונים בכל זוג. הערכים נשלפים מ-devices.json בזמן ריצה. כך ההחלטה
-   "מה שונה" חיה במקום אחד בלבד, ואי אפשר שהכלי והעמוד הקבוע יגידו דברים שונים. */
 (function(){
-  "use strict";
-  
-  
-  var PAIRS={"airpods-5|airpods-5-wireless-charging-case":{"k":"1.3.9.10.11.12.19","s":12},"airpods-5|airpods-pro-3":{"k":"0.1.2.3.4.7.9.10.11.12.14.16.19","s":6},"airpods-5|airpods-max-2":{"k":"0.1.2.3.4.5.7.8.9.10.11.12.13.14.17.19","s":3},"airpods-5|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|airpods-pro-3":{"k":"0.1.2.4.7.9.10.11.12.14.16.19","s":7},"airpods-5-wireless-charging-case|airpods-max-2":{"k":"0.1.2.4.5.7.8.9.10.11.12.13.14.17.19","s":4},"airpods-5-wireless-charging-case|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|airpods-max-2":{"k":"0.1.2.4.5.7.8.9.10.11.12.13.14.16.17.19","s":3},"airpods-pro-3|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"galaxy-buds4-pro|galaxy-buds4":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.18.19","s":3},"galaxy-buds4-pro|galaxy-buds3":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4-pro|galaxy-buds3-pro":{"k":"0.1.2.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":1},"galaxy-buds4-pro|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18","s":1},"galaxy-buds4-pro|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.14.15.16.17.18.19","s":1},"galaxy-buds4|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.10.11.18.19","s":8},"galaxy-buds3|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18","s":0},"galaxy-buds3-pro|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3-pro|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3-fe|galaxy-buds-core":{"k":"0.1.2.4.5.6.8.9.10.11.13.14.16.18.19","s":3}};
-  var ORDER=[["סוג ועיצוב","סוג","form"],["סוג ועיצוב","משקל","weight"],["סוג ועיצוב","מידות","dimensions"],["שמע","סינון רעשים (ANC)","anc"],["שמע","מצבי שמע","audio_features"],["שמע","רמקולים","drivers"],["שמע","קודקים","codecs"],["שמע","שבב","chip"],["שיחות ושליטה","מיקרופונים ושיחות","mics"],["שיחות ושליטה","שליטה","controls"],["סוללה וטעינה","סוללה","battery"],["סוללה וטעינה","טעינה","charging"],["סוללה וטעינה","נרתיק","case"],["עמידות","עמידות למים ולאבק","water_resistance"],["חיישנים ובריאות","חיישנים ובריאות","sensors_health"],["תאימות ותכונות","עובד עם","compatibility"],["תאימות ותכונות","שמור למכשירי היצרן","ecosystem"],["תאימות ותכונות","תרגום בזמן אמת","translation"],["תאימות ותכונות","Bluetooth","bluetooth"],["באריזה","באריזה","in_box"]];
-  var BRANDS=[{"brand":"Apple","logo":["apple",17,20]},{"brand":"Samsung","logo":["samsung",96,14]}];
-  var TRAITS={};
-  var TDEF=[];
-  /* MAX is the ceiling; slots is what is actually on screen. Three at once muddled the
-     comparison, so two is the default and the third is asked for. */
-  /* שנת ההכרזה בראש הטור. שנה ולא חודש, כי התא nowrap וצריך להיכנס פעמיים במסך של 375,
-     ובאותה שורה של השם, כי ראש הטבלה דביק ושורה שנייה הייתה מגביהה אותו. */
-  function yr(d){return d&&d.launch?' <span class="dhyear">'+String(d.launch).slice(0,4)+'</span>':'';}
-  var MAX=3, slots=2, sel=[], DB=null, focus=null, means=false, menuFor=null, menuOpen={};
-  /* One sentence per field, keyed by the spec key. Written once and reused across all 136 pairs.
-     It says what the difference MEANS, never who wins: the page declares no winner, and several of
-     these exist precisely to stop a bigger number reading as a better one. */
-  /* Fields where the leading figure may be set in display size. Deliberately short: cpu, gpu, ram,
-     the camera megapixels and the battery hours are all excluded, because each of those carries an
-     explanation saying the number is not comparable, and typesetting it large would argue the
-     opposite of the sentence beneath it. */
-  var NUMOK={};
-  var MEANS={"compatibility":"קודם כל בדקו את השורה הזאת. כל האוזניות כאן מתחברות בבלוטות׳ לכל טלפון, אבל חלק מהתכונות עובדות רק עם טלפון של אותו יצרן. אפל כותבת שעם מכשירים שאינם שלה הפונקציונליות עשויה להיות מוגבלת, וסמסונג מפרטת אילו תכונות שמורות למכשירי Galaxy.","ecosystem":"תכונות שהיצרן כותב שעובדות רק עם טלפון, טאבלט או מחשב שלו.","translation":"תרגום שיחה בזמן אמת דרך האוזניות. נכון ל-24 בספטמבר 2026, עברית אינה ברשימת השפות של אפל, ואינה ברשימת השפות שסמסונג מפרסמת בעמודי Buds4.","form":"תוך-אוזניות עם כריות נכנסות לתעלת האוזן ואוטמות אותה. פתוחות יושבות באוזן בלי כרית, ואוזניות מעל האוזן מכסות אותה כולה.","weight":"באוזניות אלחוטיות המשקל הוא של אוזנייה אחת, ובנפרד של הנרתיק. באוזניות מעל האוזן זה משקל האוזניות כולן.","dimensions":"בעיקר כדי לדעת אם הנרתיק נכנס לכיס.","anc":"סינון רעשים אקטיבי מבטל רעש קבוע כמו מנוע או מזגן. באוזניות פתוחות הוא פועל בלי לאטום את האוזן.","audio_features":"מצב שקיפות מכניס את קולות הסביבה, ומצב אדפטיבי מחליט לבד כמה לסנן. שמע מרחבי הוא צליל שנשמע כאילו הוא מגיע מסביבכם.","drivers":"הרמקול שבתוך האוזנייה. אפל אינה מפרסמת את הגודל שלו.","codecs":"הדרך שבה השמע נדחס בין הטלפון לאוזניות. SSC-UHQ של סמסונג עובד רק עם חלק ממכשירי Galaxy. אפל אינה מפרסמת רשימת קודקים.","chip":"השבב שמנהל את החיבור, סינון הרעשים והתכונות. סמסונג אינה מפרסמת את שם השבב.","mics":"כמה מיקרופונים יש ואיך הם מסננים רעש בשיחות.","controls":"איך עוצרים שיר, עונים לשיחה ומשנים עוצמה בלי להוציא את הטלפון.","battery":"כל יצרן מודד בתנאים שלו, ולכן המספרים של אפל ושל סמסונג אינם ברי השוואה ישירה. הזמן בפועל תלוי בעוצמה ובשימוש בסינון רעשים.","charging":"אם הנרתיק נטען גם על משטח אלחוטי, ואילו מטענים הוא מקבל.","case":"תכונות של הנרתיק עצמו, כמו רמקול שעוזר למצוא אותו.","water_resistance":"IP54 הוא עמידות בפני התזות מים ואבק. IP57 עומד גם בשקיעה קצרה בבדיקת מעבדה. אף אחד מהם אינו אישור לשחייה, והעמידות פוחתת עם הזמן.","sensors_health":"חיישנים שמזהים שהאוזנייה באוזן, ותכונות בריאות כמו מדידת דופק ובדיקת שמיעה, עם זמינות בישראל כשהיצרן מפרסם אותה.","bluetooth":"גרסה חדשה יותר מאפשרת תכונות כמו LE Audio, אבל רק כשגם הטלפון תומך בהן.","in_box":"מה מגיע באריזה. בחלק מהדגמים הכבל אינו כלול."};
-  var wrap=document.getElementById("dpick"), out=document.getElementById("dout"),
-      state=document.getElementById("dstate"), bar=document.getElementById("dstatebar"),
-      clear=document.getElementById("dclear");
-  if(!wrap||!out) return;
-  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
-  function ltr(s){return '<bdo dir="ltr">'+esc(s)+"</bdo>";}
-  var RUN=/[A-Za-z0-9][A-Za-z0-9.,:%\/+–\-]*(?:[ ]+[A-Za-z0-9][A-Za-z0-9.,:%\/+–\-]*)*/g;
-  function ltrRuns(raw) {
-    if (raw === null || raw === undefined) return '';
-    var s = String(raw), out = '', last = 0, m;
-    RUN.lastIndex = 0;
-    while ((m = RUN.exec(s)) !== null) {
-      var run = m[0];
-      /* פיסוק בסוף הריצה הוא של המשפט העברי ולא של הריצה, ולכן הוא נשאר בחוץ */
-      var core = run.replace(/[.,:\s]+$/, '');
-      var tail = run.slice(core.length);
-      out += esc(s.slice(last, m.index));
-      if (/[A-Za-z]/.test(core)) out += '<bdo dir="ltr">' + esc(core) + '</bdo>' + esc(tail);
-      else out += esc(run);
-      last = m.index + run.length;
-    }
-    return out + esc(s.slice(last));
-  }
-  
-  function dev(sl){for(var i=0;i<DB.devices.length;i++){if(DB.devices[i].slug===sl)return DB.devices[i];}return null;}
-  /* k הוא רשימת אינדקסים לתוך ORDER, מופרדים בנקודה. עד 17.8.2026 היו שם התוויות עצמן,
-     וזה תפח עם מספר הדגמים. */
-  function keysFor(a,b){var p=PAIRS[a+"|"+b]||PAIRS[b+"|"+a];return p?{k:p.k?p.k.split(".").map(Number):[],s:p.s}:null;}
-  function val(v){return Array.isArray(v)?v.join(", "):v;}
+"use strict";
+var PAIRS={"airpods-5|airpods-5-wireless-charging-case":{"k":"1.3.9.10.11.12.19","s":12},"airpods-5|airpods-pro-3":{"k":"0.1.2.3.4.7.9.10.11.12.14.16.19","s":6},"airpods-5|airpods-max-2":{"k":"0.1.2.3.4.5.7.8.9.10.11.12.13.14.17.19","s":3},"airpods-5|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|airpods-pro-3":{"k":"0.1.2.4.7.9.10.11.12.14.16.19","s":7},"airpods-5-wireless-charging-case|airpods-max-2":{"k":"0.1.2.4.5.7.8.9.10.11.12.13.14.17.19","s":4},"airpods-5-wireless-charging-case|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-5-wireless-charging-case|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|airpods-max-2":{"k":"0.1.2.4.5.7.8.9.10.11.12.13.14.16.17.19","s":3},"airpods-pro-3|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-pro-3|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds4-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds4":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"airpods-max-2|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19","s":0},"galaxy-buds4-pro|galaxy-buds4":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.18.19","s":3},"galaxy-buds4-pro|galaxy-buds3":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4-pro|galaxy-buds3-pro":{"k":"0.1.2.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":1},"galaxy-buds4-pro|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18","s":1},"galaxy-buds4-pro|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds4|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.14.15.16.17.18.19","s":1},"galaxy-buds4|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3|galaxy-buds3-pro":{"k":"0.1.2.3.4.5.10.11.18.19","s":8},"galaxy-buds3|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18","s":0},"galaxy-buds3-pro|galaxy-buds3-fe":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3-pro|galaxy-buds-core":{"k":"0.1.2.3.4.5.6.8.9.10.11.13.14.15.16.17.18.19","s":0},"galaxy-buds3-fe|galaxy-buds-core":{"k":"0.1.2.4.5.6.8.9.10.11.13.14.16.18.19","s":3}};
+var ORDER=[["סוג ועיצוב","סוג","form"],["סוג ועיצוב","משקל","weight"],["סוג ועיצוב","מידות","dimensions"],["שמע","סינון רעשים (ANC)","anc"],["שמע","מצבי שמע","audio_features"],["שמע","רמקולים","drivers"],["שמע","קודקים","codecs"],["שמע","שבב","chip"],["שיחות ושליטה","מיקרופונים ושיחות","mics"],["שיחות ושליטה","שליטה","controls"],["סוללה וטעינה","סוללה","battery"],["סוללה וטעינה","טעינה","charging"],["סוללה וטעינה","נרתיק","case"],["עמידות","עמידות למים ולאבק","water_resistance"],["חיישנים ובריאות","חיישנים ובריאות","sensors_health"],["תאימות ותכונות","עובד עם","compatibility"],["תאימות ותכונות","שמור למכשירי היצרן","ecosystem"],["תאימות ותכונות","תרגום בזמן אמת","translation"],["תאימות ותכונות","Bluetooth","bluetooth"],["באריזה","באריזה","in_box"]];
+var TRAITS={};
+var TDEF=[];
+var MEANS={"compatibility":"קודם כל בדקו את השורה הזאת. כל האוזניות כאן מתחברות בבלוטות׳ לכל טלפון, אבל חלק מהתכונות עובדות רק עם טלפון של אותו יצרן. אפל כותבת שעם מכשירים שאינם שלה הפונקציונליות עשויה להיות מוגבלת, וסמסונג מפרטת אילו תכונות שמורות למכשירי Galaxy.","ecosystem":"תכונות שהיצרן כותב שעובדות רק עם טלפון, טאבלט או מחשב שלו.","translation":"תרגום שיחה בזמן אמת דרך האוזניות. נכון ל-24 בספטמבר 2026, עברית אינה ברשימת השפות של אפל, ואינה ברשימת השפות שסמסונג מפרסמת בעמודי Buds4.","form":"תוך-אוזניות עם כריות נכנסות לתעלת האוזן ואוטמות אותה. פתוחות יושבות באוזן בלי כרית, ואוזניות מעל האוזן מכסות אותה כולה.","weight":"באוזניות אלחוטיות המשקל הוא של אוזנייה אחת, ובנפרד של הנרתיק. באוזניות מעל האוזן זה משקל האוזניות כולן.","dimensions":"בעיקר כדי לדעת אם הנרתיק נכנס לכיס.","anc":"סינון רעשים אקטיבי מבטל רעש קבוע כמו מנוע או מזגן. באוזניות פתוחות הוא פועל בלי לאטום את האוזן.","audio_features":"מצב שקיפות מכניס את קולות הסביבה, ומצב אדפטיבי מחליט לבד כמה לסנן. שמע מרחבי הוא צליל שנשמע כאילו הוא מגיע מסביבכם.","drivers":"הרמקול שבתוך האוזנייה. אפל אינה מפרסמת את הגודל שלו.","codecs":"הדרך שבה השמע נדחס בין הטלפון לאוזניות. SSC-UHQ של סמסונג עובד רק עם חלק ממכשירי Galaxy. אפל אינה מפרסמת רשימת קודקים.","chip":"השבב שמנהל את החיבור, סינון הרעשים והתכונות. סמסונג אינה מפרסמת את שם השבב.","mics":"כמה מיקרופונים יש ואיך הם מסננים רעש בשיחות.","controls":"איך עוצרים שיר, עונים לשיחה ומשנים עוצמה בלי להוציא את הטלפון.","battery":"כל יצרן מודד בתנאים שלו, ולכן המספרים של אפל ושל סמסונג אינם ברי השוואה ישירה. הזמן בפועל תלוי בעוצמה ובשימוש בסינון רעשים.","charging":"אם הנרתיק נטען גם על משטח אלחוטי, ואילו מטענים הוא מקבל.","case":"תכונות של הנרתיק עצמו, כמו רמקול שעוזר למצוא אותו.","water_resistance":"IP54 הוא עמידות בפני התזות מים ואבק. IP57 עומד גם בשקיעה קצרה בבדיקת מעבדה. אף אחד מהם אינו אישור לשחייה, והעמידות פוחתת עם הזמן.","sensors_health":"חיישנים שמזהים שהאוזנייה באוזן, ותכונות בריאות כמו מדידת דופק ובדיקת שמיעה, עם זמינות בישראל כשהיצרן מפרסם אותה.","bluetooth":"גרסה חדשה יותר מאפשרת תכונות כמו LE Audio, אבל רק כשגם הטלפון תומך בהן.","in_box":"מה מגיע באריזה. בחלק מהדגמים הכבל אינו כלול."};
+var READY=[["airpods-pro-3","galaxy-buds4-pro"],["airpods-5","airpods-pro-3"],["galaxy-buds4","galaxy-buds4-pro"],["galaxy-buds3","galaxy-buds4"],["airpods-pro-3","airpods-max-2"],["airpods-5","galaxy-buds4"]];
+var CFG={"pub":"/headphones-public.json","specLinks":false,"outline":false,"bars":false,"pairErr":"לא הצלחנו לחשב את ההשוואה הזאת. נסו לבחור שוב.","loadErr":"לא ניתן לטעון את נתוני האוזניות. נסו לרענן את העמוד.","src":"המפרט לקוח מאתרי היצרנים."};
+/* כלי ההשוואה, גרסה ח׳ (24.9.2026). הקוד הזה רץ בדפדפן. gen-compare.js עוטף אותו בפונקציה ומזריק לפניו
+   את הנתונים: PAIRS, ORDER, TRAITS, TDEF, MEANS, READY ו-CFG. אין כאן חישוב הבדלים: PAIRS מחזיק את התוצאה
+   של diffSpec מהמחולל, ולכן הכלי והעמודים הכתובים לא יכולים לומר שני דברים שונים על אותו זוג.
 
-  /* מדידה. הכלי לא מדד כלום עד 15.8.2026, ולכן לא היה אפשר לומר אם מישהו משתמש בו.
-     דוחף ל-dataLayer ישירות ולא דרך track(): track מוגדר בדפי תוכן אחרים ולא כאן, ועותק שלו
-     כאן היה מקור אמת שני. GTM לא נטען מחוץ לפרודקשן, אבל ה-dataLayer כן, ולכן החיווט בדיק. */
-  function push(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev};for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(e){}}
-  var SLOT=["א׳","ב׳","ג׳"];
-  function d0(id){return id?document.getElementById(id):null;}
-  /* The panel: one element, placed under whichever marker asked for it. Document coordinates, so
-     it travels with the page and needs no repositioning on scroll. */
-  var panel=document.getElementById("minfo"), infoFor=null;
-  var canHover=false; try{canHover=window.matchMedia("(hover:hover) and (pointer:fine)").matches;}catch(e){}
-  function hideInfo(){ if(!panel) return; panel.hidden=true;
-    if(infoFor&&infoFor.setAttribute) infoFor.setAttribute("aria-expanded","false");
-    infoFor=null; }
-  function showInfo(btn,on){
-    if(!panel) return;
-    if(!on){ hideInfo(); return; }
-    var key=btn.getAttribute("data-mean"); if(!MEANS[key]) return;
-    panel.innerHTML='<b>מה זה אומר</b> '+esc(MEANS[key]);
-    panel.hidden=false;
-    var r=(btn.querySelector(".fxi")||btn).getBoundingClientRect();
-    /* anchored to the marker, then pulled back inside the viewport if it would hang off the edge */
-    panel.style.insetInlineStart="auto"; panel.style.insetInlineEnd="auto";
-    panel.style.left="0px"; panel.style.top="0px";
-    var w=panel.offsetWidth;
-    /* הקואורדינטות נמדדות מול offsetParent, ולא מול המסמך.
-     *
-     * שלושת מצבי הניגודיות בתפריט הנגישות שמים filter על main, ו-filter הופך אלמנט
-     * למסגרת ההתייחסות של צאצאים ממוקמים. הפאנל הוא position:absolute בתוך main, ולכן
-     * top שנמדד מהמסמך הוסיף לו את המרחק של main מראש העמוד: 127 פיקסל במקום 8, שלוש
-     * שורות טבלה מתחת לשדה שהוא מסביר, והחץ הצביע על שורה אחרת. מרחק קליק אחד מכפתור
-     * הנגישות.
-     *
-     * ob נמדד באותן קואורדינטות מסך כמו r, ולכן ההפרש ביניהם הוא ההיסט בתוך המסגרת.
-     * הנוסחה נכונה גם כשהמסגרת היא body וגם כשהיא main, ואינה נוגעת ב-scrollY בכלל:
-     * כשהמסגרת היא body, ob.top הוא מינוס הגלילה, וההפרש חוזר בדיוק לערך הקודם. */
-    var op=panel.offsetParent||document.documentElement;
-    var ob=op.getBoundingClientRect();
-    var vw=document.documentElement.clientWidth;
-    var left=Math.min(Math.max(8,r.right-w),vw-w-8);
-    panel.style.left=(left-ob.left)+"px";
-    panel.style.top=(r.bottom-ob.top+8)+"px";
-    var arrow=Math.min(Math.max(10,r.left+r.width/2-left-5),w-20);
-    panel.style.setProperty("--ax",arrow+"px");
-    if(infoFor&&infoFor!==btn&&infoFor.setAttribute) infoFor.setAttribute("aria-expanded","false");
-    btn.setAttribute("aria-expanded","true");
-    infoFor=btn;
-  }
-  /* Hover is scoped to the marker itself, not the whole label: hovering the label would open a
-     panel at every field the pointer crosses on its way down the column. And hover is only ever an
-     addition, never the only way in, since a phone has no hover and a keyboard has no pointer. */
-  if(canHover){
-    out.addEventListener("pointerover",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i) showInfo(i.closest(".fx"),true);});
-    out.addEventListener("pointerout",function(e){var i=e.target.closest&&e.target.closest(".fxi"); if(i&&i.closest(".fx")===infoFor) hideInfo();});
-  }
-  /* מיקוד אינו פותח את ההסבר. הוא פתח, ואז ה-click שבא אחריו מצא מצב פתוח וסגר,
-     ולכן ההקשה הראשונה על סימן המידע לא עשתה כלום בכל דפדפן שממקד כפתור בלחיצה.
-     קורא מסך מקבל את הטקסט מ-aria-describedby ברגע המיקוד, בלי הפאנל, ו-Enter או
-     רווח יורים click ופותחים אותו כרגיל. */
-  out.addEventListener("focusout",function(e){var b=e.target.closest&&e.target.closest(".fx"); if(b&&b===infoFor) hideInfo();});
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape") hideInfo(); });
-  document.addEventListener("click",function(e){ if(infoFor&&!(e.target.closest&&(e.target.closest(".fx")||e.target.closest("#minfo")))) hideInfo(); });
+   מה נשאר מהכלי הקודם בכוונה:
+   - button.dopen עם data-slot ו-button.dchip עם data-slug ו-aria-pressed. בלוק המדידה מדידת ההשוואה,
+     שזהה ב-100 עמודים, מזהה לפיהם את הצד ואת בחירת הדגם.
+   - הבחירה ב-?d= בכתובת, ב-replaceState. גם compare_start נקרא משם.
+   - bigGaps, כולל הכלל שמוריד mAh כשהוא סותר את שעות הווידאו.
+   מה השתנה: שני צדדים בלבד (מנהל המוצר: "+" מחליף ולא מוסיף עמודה), בורר שנפתח רק כשבוחרים צד,
+   "מה חשוב לכם" שמסדר ולא מסנן, והסבר קבוע מתחת לכל שדה במקום חלונית. */
+/* פונקציה ולא קוד חופשי, כדי שהשומר בשורה הראשונה יוכל לצאת בלי שגיאה, ושהקובץ ייקרא גם לבד */
+function pgCompareMain() {
+var SIDE = ["א׳", "ב׳"];
+var sel = [null, null], DB = null, pickFor = null, on = {}, restOpen = false, lastPair = "";
+var cur = null;                       /* הזוג שעל המסך: {ds, diff, cats} */
+function $(id) { return document.getElementById(id); }
+var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip");
+if (!out || !pick || !list) return;
 
-  /* ------------ שכבת הפרשנות: ההבדל הגדול, ולמי מתאים כל אחד
-   *
-   * שלושה מכשירים עובדים כאן באותו קוד בלי מקרה מיוחד: לכל שדה נלקחים הגבוה והנמוך מבין
-   * הנבחרים, וההפרש ביניהם נמדד מול הרף. עם שני מכשירים זו בדיוק אותה תוצאה. */
-  function fmtN(v,f){
-    if(f==="gb") return v>=1024?(v/1024)+"TB":v+"GB";
-    if(f==="dec") return String(Math.round(v*100)/100);
-    return String(Math.round(v));
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function ltr(s) { return '<bdo dir="ltr">' + esc(s) + "</bdo>"; }
+/* ריצה לועזית בתוך משפט עברי מקבלת כיוון משלה, אחרת "48MP, צמצם" מתהפך. הפיסוק בסוף הריצה שייך למשפט. */
+var RUN = /[A-Za-z0-9ƒ][A-Za-z0-9.,:%\/+–\-ƒ]*(?:[ ]+[A-Za-z0-9ƒ][A-Za-z0-9.,:%\/+–\-ƒ]*)*/g;
+function ltrRuns(raw) {
+  if (raw === null || raw === undefined) return "";
+  var s = String(raw), o = "", last = 0, m;
+  RUN.lastIndex = 0;
+  while ((m = RUN.exec(s)) !== null) {
+    var run = m[0], core = run.replace(/[.,:\s]+$/, ""), tail = run.slice(core.length);
+    o += esc(s.slice(last, m.index));
+    o += /[A-Za-z]/.test(core) ? '<bdo dir="ltr">' + esc(core) + "</bdo>" + esc(tail) : esc(run);
+    last = m.index + run.length;
   }
-  function bigGaps(ds){
-    var out=[],seen={};
-    TDEF.forEach(function(t){
-      var hi=null,lo=null;
-      ds.forEach(function(d){
-        if(!d) return;
-        var v=(TRAITS[d.slug]||{})[t.key];
-        if(v===null||v===undefined) return;
-        if(hi===null||v>hi.v) hi={v:v,d:d};
-        if(lo===null||v<lo.v) lo={v:v,d:d};
-      });
-      /* אותו מכשיר בשני הקצוות = כל מי שמפרסם את השדה מפרסם אותו מספר, כלומר אין הפרש */
-      if(hi===null||lo===null||hi.d===lo.d) return;
-      var gap=hi.v-lo.v;
-      if(gap<t.min) return;
-      var phrase=t.gap?("הפרש של "+fmtN(gap,t.fmt)+t.unit)
-        :(lo.v===0&&t.zero)?(fmtN(hi.v,t.fmt)+t.unit+" מול "+t.zero)
-        :(t.each?(fmtN(hi.v,t.fmt)+t.unit+" מול "+fmtN(lo.v,t.fmt)+t.unit)
-                :(fmtN(hi.v,t.fmt)+" מול "+fmtN(lo.v,t.fmt)+t.unit));
-      /* leadMore הוא הניסוח מנקודת המבט של הדגם שהיתרון אצלו, וגם הבלוק העליון וגם
-         "למי מתאים" משתמשים בו. עד כאן הבלוק העליון נקב בשם הדגם הגבוה במספר, ובמשקל זה
-         הדגם הכבד: הרשימה אמרה "גלקסי A17: כבד יותר" ומתחתיה "קל יותר, הפרש של 23 גרם"
-         על ה-S26, אותם 23 גרם ושני שמות שונים. */
-      var leadMore=t.low?t.lowMore:t.more;
-      out.push({key:t.key,label:t.label,phrase:phrase,more:leadMore,hi:t.low?lo.d:hi.d,who:t.who,group:t.group,
-        pri:t.pri,lead:t.low?lo.d:hi.d,gain:leadMore+", "+phrase,strength:gap/t.min});
+  return o + esc(s.slice(last));
+}
+function dev(sl) { if (!DB || !sl) return null; for (var i = 0; i < DB.devices.length; i++) if (DB.devices[i].slug === sl) return DB.devices[i]; return null; }
+function keysFor(a, b) { var p = PAIRS[a + "|" + b] || PAIRS[b + "|" + a]; return p ? { k: p.k ? p.k.split(".").map(Number) : [], s: p.s } : null; }
+function empty(v) { return v === null || v === undefined || v === "" || (Array.isArray(v) && !v.length); }
+function val(v) { return Array.isArray(v) ? v.join(", ") : String(v); }
+function push(ev, d) { try { window.dataLayer = window.dataLayer || []; var o = { event: ev }; for (var k in d) o[k] = d[k]; window.dataLayer.push(o); } catch (e) {} }
+function year(d) { return d && d.launch ? String(d.launch).slice(0, 4) : ""; }
+var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>';
+var canHover = false; try { canHover = window.matchMedia("(hover:hover) and (pointer:fine)").matches; } catch (e) {}
+
+/* ---------------- עברית: אין, יחיד, זוגי ורבים */
+function diffTxt(n) { return n === 1 ? "הבדל אחד" : n + " הבדלים"; }
+function sameTail(n) { return n === 0 ? ", ואין שדות זהים" : n === 1 ? ", ושדה אחד זהה" : n === 2 ? ", ושני שדות זהים" : ", ו-" + n + " שדות זהים"; }
+
+/* ---------------- ההבדלים הגדולים במספרים. אותה לוגיקה שהייתה, בלי שינוי. */
+function fmtN(v, f) {
+  if (f === "gb") return v >= 1024 ? (v / 1024) + "TB" : v + "GB";
+  if (f === "dec") return String(Math.round(v * 100) / 100);
+  return String(Math.round(v));
+}
+function bigGaps(ds) {
+  var res = [], seen = {};
+  TDEF.forEach(function (t) {
+    var hi = null, lo = null;
+    ds.forEach(function (d) {
+      var v = (TRAITS[d.slug] || {})[t.key];
+      if (v === null || v === undefined) return;
+      if (hi === null || v > hi.v) hi = { v: v, d: d };
+      if (lo === null || v < lo.v) lo = { v: v, d: d };
     });
-    /* המיון הוא לפי עוצמה, וזה גם סדר התצוגה. הבחירה בתוך קבוצה היא לפי pri קודם:
-       שעות וידאו לפני mAh, כי הראשונה היא סיבולת והשנייה קיבולת. שוויון ב-pri נשבר
-       לפי עוצמה, כמו קודם. */
-    out.sort(function(a,b){return b.strength-a.strength;});
-    out.forEach(function(x){ var b=seen[x.group];
-      if(!b||x.pri<b.pri||(x.pri===b.pri&&x.strength>b.strength)) seen[x.group]=x; });
-    return out.filter(function(x){
-      if(seen[x.group]!==x) return false;
-      /* סתירה בין קיבולת לסיבולת אינה מוצגת בחצי.
-         העדיפות מטפלת במקרה שבו שתי המדידות עוברות את הרף, אבל ב-15 זוגות הפרש השעות
-         נמצא מתחת לרף ולכן אינו נכנס לרשימה כלל, ונשאר ה-mAh לבדו. בחלק מהם הוא מצביע
-         על הדגם ההפוך: galaxy-s26 מול galaxy-a56 הוא 30 שעות מול 29 לטובת הסמסונג
-         ו-4300 מול 5000 mAh לטובת ה-A56, ושתי המדידות מפורסמות על ידי אותו יצרן.
-         אמירה כזאת אי אפשר להגן עליה, ולכן השורה יורדת. */
-      if(x.key!=="battery_mah") return true;
-      var hi=null, lo=null;
-      ds.forEach(function(d){
-        if(!d) return;
-        var v=(TRAITS[d.slug]||{}).battery_hours;
-        if(v===null||v===undefined) return;
-        if(hi===null||v>hi.v) hi={v:v,d:d};
-        if(lo===null||v<lo.v) lo={v:v,d:d};
-      });
-      if(hi===null||lo===null||hi.d===lo.d) return true;   /* אין השוואת שעות */
-      return hi.d===x.lead;                                /* יורד רק כשהכיוונים מנוגדים */
+    if (hi === null || lo === null || hi.d === lo.d) return;
+    var gap = hi.v - lo.v;
+    if (gap < t.min) return;
+    res.push({ t: t, key: t.key, group: t.group, pri: t.pri, gap: gap, hi: hi, lo: lo,
+      lead: t.low ? lo.d : hi.d, more: t.low ? t.lowMore : t.more, strength: gap / t.min });
+  });
+  res.sort(function (a, b) { return b.strength - a.strength; });
+  res.forEach(function (x) { var b = seen[x.group]; if (!b || x.pri < b.pri || (x.pri === b.pri && x.strength > b.strength)) seen[x.group] = x; });
+  return res.filter(function (x) {
+    if (seen[x.group] !== x) return false;
+    /* mAh שמצביע הפוך משעות הווידאו של אותו יצרן אינו אמירה שאפשר להגן עליה, ולכן הוא יורד */
+    if (x.key !== "battery_mah") return true;
+    var hi = null, lo = null;
+    ds.forEach(function (d) { var v = (TRAITS[d.slug] || {}).battery_hours; if (v === null || v === undefined) return;
+      if (hi === null || v > hi.v) hi = { v: v, d: d }; if (lo === null || v < lo.v) lo = { v: v, d: d }; });
+    if (hi === null || lo === null || hi.d === lo.d) return true;
+    return hi.d === x.lead;
+  });
+}
+function gapChip(x) {
+  var t = x.t;
+  if (x.lo.v === 0 && t.zero) return t.zero + " באחד מהם";
+  var r = x.hi.v / x.lo.v;
+  if (x.lo.v > 0 && r >= 2) { var q = r < 10 ? Math.round(r * 10) / 10 : Math.round(r); return "פי " + q; }
+  return "הפרש " + fmtN(x.gap, t.fmt) + (t.fmt === "gb" ? "" : t.unit);
+}
+function bigNum(v, t) {
+  if (v === 0 && t.zero) return '<span class="cv-big" style="font-size:1.15rem">' + esc(t.zero) + "</span>";
+  var u = t.fmt === "gb" ? "" : t.unit.trim();
+  return '<span class="cv-big">' + ltr(fmtN(v, t.fmt)) + (u ? "<small>" + esc(u) + "</small>" : "") + "</span>";
+}
+function fill(w) { return '<span class="cv-track"><span class="cv-fill" style="width:' + Math.max(0, Math.min(100, Math.round(w))) + '%"></span></span>'; }
+
+/* שדות שיש להם מספר בשני הצדדים באותה יחידה. המפתח בטבלה הוא שם השדה במפרט, והערך הוא המפתח ב-TRAITS. */
+var BAR = CFG.bars ? { screen_size: "screen_size", weight: "weight", storage_offered: "storage_offered", battery: "battery_hours", zoom: "zoom" } : {};
+function tdefOf(k) { for (var i = 0; i < TDEF.length; i++) if (TDEF[i].key === k) return TDEF[i]; return null; }
+function nums(field, ds) {
+  var k = BAR[field]; if (!k) return null;
+  var a = (TRAITS[ds[0].slug] || {})[k], b = (TRAITS[ds[1].slug] || {})[k];
+  if (typeof a !== "number" || typeof b !== "number" || Math.max(a, b) <= 0) return null;
+  return { a: a, b: b, t: tdefOf(k) };
+}
+/* גובה ורוחב מתוך "150.0 x 71.9 x 8.75 מ״מ". רק בצורה הזאת בדיוק, אחרת אין שרטוט. */
+function dims(d) { var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(val(d.spec.dimensions || "")); return m ? { h: +m[1], w: +m[2] } : null; }
+
+/* ---------------- הכרטיסים בהדר */
+function renderCards() {
+  [0, 1].forEach(function (i) {
+    var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (!b) return;
+    var d = dev(sel[i]);
+    b.classList.toggle("empty", !d);
+    b.setAttribute("aria-expanded", pickFor === i ? "true" : "false");
+    b.innerHTML = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct">' +
+      (d ? '<span class="cv-nm">' + ltr(d.name) + '</span><span class="cv-meta">' + esc(d.brand) + (year(d) ? " · הוכרז ב-" + year(d) : "") + "</span>"
+         : '<span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ' + SIDE[i] + "</span>") +
+      '</span><span class="cv-act">' + (d ? "החלפה" : "בחירה") + "</span>";
+  });
+  if (flip) flip.disabled = !(sel[0] || sel[1]);
+  var topSec = document.querySelector(".cv-top"); if (topSec) topSec.classList.toggle("has-pair", !!(dev(sel[0]) && dev(sel[1])));
+  renderSug();
+}
+/* "משווים גם": השוואות מוכנות שחולקות דגם אחד עם הזוג שעל המסך. הלחיצה מחליפה את הצד השני, ולא מוסיפה עמודה. */
+function renderSug() {
+  if (!sug) return;
+  if (!(sel[0] && sel[1]) || !READY.length) { sug.hidden = true; return; }
+  var got = [], sig = [sel[0], sel[1]].sort().join("|");
+  READY.forEach(function (p) {
+    if (got.length >= 2 || [p[0], p[1]].sort().join("|") === sig) return;
+    var keep = sel.indexOf(p[0]) >= 0 ? p[0] : sel.indexOf(p[1]) >= 0 ? p[1] : null;
+    if (!keep) return;
+    var other = keep === p[0] ? p[1] : p[0];
+    if (!dev(other) || !keysFor(keep, other)) return;
+    var at = sel.indexOf(keep), pair = at === 0 ? [keep, other] : [other, keep];
+    got.push(pair);
+  });
+  if (!got.length) { sug.hidden = true; return; }
+  sug.hidden = false;
+  sug.innerHTML = '<span class="cv-sl">משווים גם:</span>' + got.map(function (p) {
+    return '<a class="cv-sa" href="?d=' + esc(p.join(",")) + '" data-sug="' + esc(p.join(",")) + '">' + ltr(dev(p[0]).name) + " מול " + ltr(dev(p[1]).name) + "</a>";
+  }).join("");
+}
+
+/* ---------------- הבורר */
+var autoClick = false;
+function openPick(i, focusIt) {
+  pickFor = i;
+  pick.hidden = false;
+  var h = $("cvpick-h"), d = dev(sel[i]);
+  if (h) h.innerHTML = '<span class="cv-dot" aria-hidden="true" style="background:' + (i ? "var(--cv-b)" : "var(--cv-a)") + '"></span>' +
+    (d ? "החלפת " + ltr(d.name) : "בחירת דגם לצד " + SIDE[i]);
+  syncChips();
+  renderCards();
+  if (focusIt) {
+    var q = $("dq");
+    if (canHover && q) q.focus(); else if (h) { h.setAttribute("tabindex", "-1"); h.focus(); }
+    try { var r = pick.getBoundingClientRect(); if (r.top < 0 || r.top > window.innerHeight * 0.6) pick.scrollIntoView({ block: "start" }); } catch (e) {}
+  }
+}
+function closePick(back) {
+  var i = pickFor; pickFor = null; pick.hidden = true; renderCards();
+  if (back && i !== null) { var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (b) b.focus(); }
+}
+function syncChips() {
+  Array.prototype.forEach.call(list.querySelectorAll(".dchip"), function (c) {
+    var s = c.getAttribute("data-slug");
+    c.setAttribute("aria-pressed", pickFor !== null && sel[pickFor] === s ? "true" : "false");
+    c.classList.toggle("side0", sel[0] === s);
+    c.classList.toggle("side1", sel[1] === s);
+  });
+}
+/* בלוק המדידה זוכר את הצד לפי הלחיצה האחרונה על button.dopen. כשהבורר עובר לצד ב׳ מעצמו, הלחיצה הזאת
+   נשלחת כדי שהמדידה תדע, והמטפל כאן מתעלם ממנה. */
+function tellSide(i) {
+  var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (!b) return;
+  autoClick = true; try { b.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true })); } catch (e) {} autoClick = false;
+}
+document.addEventListener("click", function (e) {
+  var t = e.target; if (!t || !t.closest) return;
+  var card = t.closest(".cv-card");
+  if (card) {
+    if (autoClick) return;
+    var i = +card.getAttribute("data-slot");
+    if (pickFor === i) closePick(true); else { openPick(i, true); push("cmp_menu_open", { slot: i }); }
+    return;
+  }
+  if (t.closest(".cv-x")) { closePick(true); return; }
+  var chip = t.closest(".dchip");
+  if (chip && pickFor !== null && DB) {
+    var i2 = pickFor, s = chip.getAttribute("data-slug"), o = 1 - i2, was = !!(sel[0] && sel[1]);
+    if (sel[i2] === s) sel[i2] = null;
+    else if (sel[o] === s) { sel[o] = sel[i2]; sel[i2] = s; }
+    else sel[i2] = s;
+    push("cmp_pick", { device: s, slot: i2, selected: (sel[0] ? 1 : 0) + (sel[1] ? 1 : 0) });
+    if (sel[i2] && !sel[o]) { tellSide(o); openPick(o, true); }
+    else if (sel[i2]) closePick(false);
+    else openPick(i2, false);
+    render();
+    if (!was && sel[0] && sel[1]) toResults();
+    return;
+  }
+  if (flip && t.closest("#cvflip")) {
+    sel = [sel[1], sel[0]]; push("cmp_flip", {});
+    if (pickFor !== null) openPick(pickFor, false);
+    render(); return;
+  }
+  var sg = t.closest("[data-sug]");
+  if (sg) {
+    e.preventDefault();
+    var pr = sg.getAttribute("data-sug").split(",");
+    if (dev(pr[0]) && dev(pr[1])) { sel = [pr[0], pr[1]]; push("cmp_suggest", { pair: pr.join(",") }); closePick(false); render(); toResults(); }
+    return;
+  }
+  if (pickFor !== null && !t.closest("#cvpick") && !t.closest(".cv-card")) closePick(false);
+});
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pickFor !== null) closePick(true); });
+
+/* סינון. הקבוצה כולה נעלמת כשאין בה התאמה, אחרת נשארות כותרות מותג בלי תוכן. */
+var q = $("dq"), noneEl = $("dnone"), qh = $("dqh"), qUsed = false, qhT = 0;
+function applyFilter() {
+  if (!q) return;
+  var s = q.value.trim().toLowerCase(), shown = 0;
+  Array.prototype.forEach.call(list.querySelectorAll(".dgrp"), function (g) {
+    var vis = 0;
+    Array.prototype.forEach.call(g.querySelectorAll("li"), function (li) {
+      var c = li.querySelector(".dchip"); if (!c) return;
+      var hit = !s || (c.getAttribute("data-q") || "").toLowerCase().indexOf(s) >= 0;
+      li.hidden = !hit; if (hit) vis++;
     });
+    g.hidden = !vis; shown += vis;
+  });
+  if (noneEl) noneEl.hidden = shown > 0;
+  if (qh) { clearTimeout(qhT); var msg = !s ? "" : (shown ? shown + " דגמים מוצגים" : "אין דגם מתאים"); qhT = setTimeout(function () { qh.textContent = msg; }, 500); }
+}
+if (q) q.addEventListener("input", function () { if (!qUsed && q.value.trim()) { qUsed = true; push("cmp_filter", {}); } applyFilter(); });
+
+/* ---------------- הכתובת */
+function syncURL() { try { var L = sel.filter(Boolean); history.replaceState(null, "", L.length ? "?d=" + L.join(",") : location.pathname); } catch (e) {} }
+function fromURL() {
+  try { var m = /[?&]d=([^&]+)/.exec(location.search); if (!m) return [];
+    return decodeURIComponent(m[1]).split(",").filter(function (s) { return !!dev(s); })
+      .filter(function (s, i, a) { return a.indexOf(s) === i; }).slice(0, 2);
+  } catch (e) { return []; }
+}
+
+/* ---------------- ההיצמדות: הפס הלבן נדבק מתחת להדר של האתר, שגובהו משתנה לפי רוחב, באנר ותפריט נגישות */
+function stick() {
+  try {
+    var h = document.querySelector("header.site"), base = 0;
+    if (h) { var cs = getComputedStyle(h); if (cs.position === "sticky" || cs.position === "fixed") base = Math.max(0, h.getBoundingClientRect().bottom); }
+    document.documentElement.style.setProperty("--pg-stick-1", Math.round(base) + "px");
+    var bh = bar && !bar.hidden ? bar.offsetHeight : 0;
+    document.documentElement.style.setProperty("--pg-stick-2", Math.round(base + bh) + "px");
+  } catch (e) {}
+}
+var stickQ = false;
+function stickSoon() { if (stickQ) return; stickQ = true; var run = function () { stickQ = false; stick(); }; if (window.requestAnimationFrame) requestAnimationFrame(run); setTimeout(run, 100); }
+window.addEventListener("resize", stickSoon);
+window.addEventListener("scroll", stickSoon, { passive: true });
+(function () { var h = document.querySelector("header.site"); if (h) h.addEventListener("transitionend", function (e) { if (e.propertyName === "transform") stick(); }); })();
+try { if (window.MutationObserver) new MutationObserver(stick).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] }); } catch (e) {}
+try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(stick).catch(function () {}); } catch (e) {}
+stick();
+function toResults() {
+  try { var off = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--pg-stick-2")) || 0;
+    window.scrollTo({ top: out.getBoundingClientRect().top + window.scrollY - off - 16 }); } catch (e) {}
+}
+
+/* ---------------- התוצאה */
+function render() {
+  renderCards(); syncURL();
+  var ds = [dev(sel[0]), dev(sel[1])];
+  if (!ds[0] || !ds[1]) {
+    cur = null; if (bar) bar.hidden = true; stick();
+    out.innerHTML = '<p class="dempty">' + (ds[0] || ds[1] ? "בחרו עוד דגם, ותראו כאן את ההבדלים ביניהם." : "בחרו שני דגמים, ותראו כאן את ההבדלים ביניהם.") + "</p>";
+    return;
   }
-  /* התמונה נבנית מה-slug ומדגל img, ולא מנתיב שנשלח: gen-devices שולח דגל בלבד, וההערה
-     שם אומרת במפורש שהכלי בונה את הכתובת בעצמו. במכשיר ייחוס הדגל נעדר, כי אין לו תמונה
-     ואיננו מוכרים אותו.
-     alt ריק בכוונה: שם הדגם יושב מיד לידה בשני המקומות, וקורא מסך שיקרא את שניהם יקרא את
-     אותו דבר פעמיים. אותו שיקול שכבר חל על לוגו המותג בראש העמודה. */
-  function pic(d,cls){
-    if(!d||!d.img) return "";
-    return '<img class="'+cls+'" src="/phones/img/'+d.slug+'-288.webp"'+
-      ' width="288" height="384" alt="" loading="lazy" decoding="async">';
+  var p = keysFor(ds[0].slug, ds[1].slug);
+  if (!p) { cur = null; if (bar) bar.hidden = true; out.innerHTML = '<p class="dempty">' + CFG.pairErr + "</p>"; return; }
+  var set = {}; p.k.forEach(function (ix) { set[ix] = 1; });
+  var diff = ORDER.filter(function (r, ix) { return set[ix]; });
+  var cats = []; diff.forEach(function (r) { if (cats.indexOf(r[0]) < 0) cats.push(r[0]); });
+  Object.keys(on).forEach(function (c) { if (cats.indexOf(c) < 0) delete on[c]; });
+  /* מה שזהה: שדות שאינם בהבדלים ושיש להם ערך בשני הצדדים. רק כשהספירה מסכימה עם המחולל מוצגות התגיות. */
+  var same = ORDER.filter(function (r, ix) { return !set[ix] && !empty(ds[0].spec[r[2]]) && !empty(ds[1].spec[r[2]]); });
+  var sameN = p.s;
+  cur = { ds: ds, diff: diff, cats: cats };
+
+  if (bar) {
+    bar.hidden = false;
+    bar.innerHTML = '<div class="wrap cv-bi"><span class="cv-bn cv-a"><span class="cv-dot" aria-hidden="true"></span>' + ltr(ds[0].name) + '</span><span class="cv-vs">מול</span>' +
+      '<span class="cv-bn cv-b"><span class="cv-dot" aria-hidden="true"></span>' + ltr(ds[1].name) + '</span><span class="cv-bc">' + diffTxt(diff.length) + "</span></div>";
   }
-  /* עברית מבחינה בין אין, יחיד, זוגי ורבים, והכלי הדפיס "0 זהים" ב-46 מ-276 הזוגות.
-     אותה הבחנה שהעמודים הכתובים עושים ב-sameTxt, שקיים שם ולא היה כאן. */
-  function sameTxt(n){ return n===0?"אין שדות זהים":n===1?"שדה אחד זהה":n===2?"שני שדות זהים":n+" זהים"; }
-  function sameMoreTxt(n){ return n===1?"שדה אחד נוסף זהה":n===2?"שני שדות נוספים זהים":n+" שדות נוספים זהים"; }
-  function nameOf(d){ return esc(d.name_he||d.name); }
-  /* extras הוא מספר השורות ב"למי מתאים" שאינן נגזרות מהרשימה הזאת: חריץ זיכרון, עדשה
-     רחבה במיוחד ואורך העדכונים. בלעדיו המשפט הכריז "אין הבדל מדיד גדול" בזמן שמתחתיו
-     הופיעה שורה על עדכוני אבטחה עד 2032 מול 2031, שהוא הבדל מדיד בשנים. */
-  function gapsHtml(gaps,extras){ if(!TDEF.length) return "";
-    if(!gaps.length) return '<div class="dsum"><h3>ההבדל הגדול</h3>'+
-      '<p class="lead">בין הדגמים האלה <b>אין הבדל גדול שאפשר למתוח עליו קו</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים. '+
-      (extras?'מה שכן מפריד ביניהם מופיע מתחת לטבלה.':'מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.')+'</p></div>';
-    /* בלי חיתוך. השורות של מי מתאים למי נגזרות מהרשימה הזאת, ולכן הבדל שנחתך ממנה
-       היה מייצר שורה שמצביעה על משהו שאינו על המסך. bigGaps מאחד את קבוצת הסוללה,
-       ולכן המקסימום בפועל הוא חמש שורות, בכל 276 הזוגות ובכל השלשות. */
-    var top=gaps;
-    return '<div class="dsum"><h3>ההבדל הגדול</h3>'+
-      '<p class="lead">'+(top.length===1?'יש <b>הבדל אחד</b> שאפשר למדוד במספרים.'
-        :'אלה <b>'+top.length+' ההבדלים הגדולים</b> שאפשר למדוד במספרים.')+
-      ' כל השאר בטבלה שמתחת.</p><ul class="gaps">'+
-      top.map(function(x){
-        return '<li><b>'+esc(x.label)+'</b><span>'+esc(x.phrase)+'</span><em>'+
-          nameOf(x.hi)+': '+esc(x.more)+'</em></li>';
-      }).join("")+'</ul>'+
-      '<p class="aside">"גדול יותר" אינו "טוב יותר": מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.</p></div>';
-  }
-  /* כל שורה כאן תלויה בהפרש שנמדד ועבר את הרף שלו. שורה בלי הפרש מאחוריה הייתה הופכת את
-     הכלי מכלי מדידה לדעה, וזה בדיוק מה שהעמוד מבטיח שהוא לא עושה. */
-  function whoOf(gaps,ds,d){
-    var t=TRAITS[d.slug]||{},out=[];
-    gaps.forEach(function(g){ if(g.lead===d) out.push(g.who+": "+g.gain+"."); });
-    var others=ds.filter(function(x){return x&&x!==d;});
-    /* רק כשיצרן של דגם אחר בבחירה אומר במפורש שאין. null אינו 0, ואמירה על מה שאיננו
-       יודעים גרועה מהיעדר אמירה. */
-    var hasNo=function(k){return others.some(function(x){return (TRAITS[x.slug]||{})[k]===0;});};
-    if(t.sd===1&&hasNo("sd")) out.push("אם אתם רוצים להוסיף זיכרון: יש חריץ לכרטיס זיכרון.");
-    if(t.uw===1&&hasNo("uw")) out.push("אם אתם מצלמים נופים או קבוצות: יש עדשה רחבה במיוחד.");
-    /* רק סמסונג נוקבת בתאריך סיום עדכונים. כשהצד השני שותק אין השוואה, ולכן אין שורה:
-       אפל תומכת בפועל שנים רבות ואינה מתחייבת, ולהציג את השתיקה שלה כחיסרון יהיה שקר. */
-    if(t.upd){
-      var lo=null;
-      others.forEach(function(x){var v=(TRAITS[x.slug]||{}).upd; if(v&&(lo===null||v<lo)) lo=v;});
-      if(lo!==null&&t.upd-lo>=1) out.push("אם אתם מחזיקים מכשיר חמש שנים ויותר: עדכוני אבטחה עד "+t.upd+", מול "+lo+".");
-    }
-    return out;
-  }
-  function whoHtml(cols,ds){
-    /* אף עמודה בלי שורה אחת = אין מה לפרש, וגם אין מה להציג. המשפט על היעדר הבדל מדיד
-       נאמר כבר למעלה, ואין טעם לומר אותו פעמיים בשתי כותרות. */
-    if(!cols.some(function(c){return c.li.length;})) return "";
-    return '<div class="dsum"><h3>למי מתאים כל אחד</h3>'+
-      '<p class="lead">מה שיש בכל אחד ואין '+(ds.length>2?'באחרים':'בשני')+', לפי המפרט. זו אינה המלצה: מה מכריע תלוי במה שחשוב לכם, ועל זה נעבור איתכם.</p>'+
-      '<div class="dwho n'+ds.length+'">'+
-      cols.map(function(c){
-        return "<div><h4>"+ltr(c.d.name)+"</h4>"+(c.li.length
-          ? '<ul class="ticks">'+c.li.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>"
-          : '<p class="aside">בשדות שאפשר למדוד במספרים אין לדגם הזה יתרון כאן. מה שכן שונה בו מופיע בטבלה.</p>')+"</div>";
-      }).join("")+"</div></div>";
-  }
-  function catsOf(rows){var out=[],m={};rows.forEach(function(r){if(!m[r[0]]){m[r[0]]=1;out.push(r[0]);}});return out;}
-  function syncChips(){Array.prototype.forEach.call(wrap.querySelectorAll(".dchip"),function(c){
-    var i=sel.indexOf(c.getAttribute("data-slug"));
-    c.setAttribute("aria-pressed", i>=0?"true":"false");
-    c.classList.remove("sc0","sc1","sc2");
-    if(i>=0) c.classList.add("sc"+i);});}
-  /* the selection is the whole state, so it belongs in the URL. replaceState and not pushState:
-     every chip press would otherwise become a back-button step. */
-  function syncURL(){try{history.replaceState(null,"",sel.length?"?d="+sel.join(","):location.pathname);}catch(e){}}
-  function fromURL(){try{var m=/[?&]d=([^&]+)/.exec(location.search);if(!m)return [];
-    /* גם ניפוי כפילויות. הקישור נערך ביד, ו-?d=iphone-17,iphone-17 מילא את שני התאים
-       באותו דגם. אין זוג כזה במדד, ולכן הכלי הציג "לא הצלחנו לחשב את ההשוואה הזאת",
-       כלומר האשים את עצמו בתקלה במקום להתמודד עם קלט. נמצא בבדיקת QA ב-16.8.2026. */
-    return decodeURIComponent(m[1]).split(",").filter(function(s){return !!dev(s);})
-      .filter(function(s,i,a){return a.indexOf(s)===i;}).slice(0,MAX);}catch(e){return [];}}
-
-  /* התא הוא כפתור. עד 16.8.2026 הוא היה li בלבד, כלומר טקסט אפור שנראה כמו שדה ריק ולא
-     היה אפשר להקיש עליו כלל: כלי הבדיקה של הדפדפן הראה "Keyboard-focusable ✗". עכשיו לחיצה
-     עליו פותחת בורר יצרן ואז דגם, וזה גם מה שהופך אותו לבולט: הוא מזמין פעולה. הכפתור
-     והמחיקה הם אחים ולא מקוננים, כי כפתור בתוך כפתור אינו HTML תקין ואינו נגיש. */
-  function renderSlots(){
-    var box=document.getElementById("dslots"); if(!box) return;
-    box.hidden=false; box.className="dslots"+(slots<3?" two":""); var html="";
-    for(var i=0;i<slots;i++){
-      var sl=sel[i], d=sl?dev(sl):null;
-      var open='<button type="button" class="dopen" data-slot="'+i+'" aria-expanded="false" aria-controls="dmenu">';
-      html+=d
-        ? '<li class="dslot sc'+i+'">'+open+pic(d,"dpic")+'<span class="dtxt"><span class="lbl">דגם '+SLOT[i]+'</span>'+
-          '<span class="nm">'+ltr(d.name)+'</span></span><span class="swap">החלפה</span></button>'+
-          '<button type="button" class="drop" data-drop="'+esc(sl)+'" aria-label="הסרת '+esc(d.name_he||d.name)+' מההשוואה">&times;</button></li>'
-        : '<li class="dslot empty">'+open+'<span class="dplus" aria-hidden="true">+</span>'+
-          '<span class="dtxt"><span class="lbl">דגם '+SLOT[i]+'</span>'+
-          '<span class="nm">'+(i<2?"בחרו דגם":"אפשר גם שלישי")+'</span></span></button></li>';
-    }
-    if(slots<MAX) html+='<li><button type="button" class="dadd" data-add="1">הוסיפו דגם שלישי</button></li>';
-    box.innerHTML=html;
-    if(menuFor!==null && menuFor<slots){
-      var b=box.querySelector('.dopen[data-slot="'+menuFor+'"]');
-      if(b) b.setAttribute("aria-expanded","true");
-    }
-  }
-
-  function render(){
-    var names=sel.map(function(s){var d=dev(s);return d?(d.name_he||d.name):s;});
-    renderSlots(); syncURL();
-    if(sel.length<2){
-      focus=null;
-      /* הפס הוא מחוון התקדמות ולא הוראה. כשאין בחירה אין מה לדווח, ולכן הוא נעלם: המשפט
-         שהיה כאן אמר "בחרו שני דגמים", וכך אמרו גם שני הצעדים בראש העמוד וגם השורה
-         שמתחתיו, שלוש פעמים זו מעל זו. אופק ראה את זה ב-16.8.2026. */
-      if(bar) bar.hidden=!sel.length;
-      if(sel.length) state.innerHTML="נבחר "+esc(names[0])+". בחרו עוד אחד.";
-      /* אחרי שהטקסט נכתב ולא לפניו: גובה הפס נקבע על ידי הטקסט שבתוכו, ומדידה מוקדמת
-         נתנה 30 במקום 56. סינכרוני ולא ב-rAF, כי בלשונית ברקע rAF אינו נורה כלל. */
-      stick();
-      clear.hidden=!sel.length;
-      out.innerHTML='<p class="dempty">כאן תופיע טבלת ההבדלים.</p>';
-      return;
-    }
-    if(bar) bar.hidden=false;
-    clear.hidden=false;
-    /* שדה שונה בין שלושה אם ורק אם הוא שונה באחד הזוגות. איחוד קבוצות, לא אלגוריתם חדש. */
-    var set={}, same=null, missingPair=false;
-    for(var i=0;i<sel.length;i++){for(var j=i+1;j<sel.length;j++){
-      var p=keysFor(sel[i],sel[j]);
-      if(!p){missingPair=true;continue;}
-      p.k.forEach(function(ix){set[ix]=1;});
-      if(sel.length===2) same=p.s;
-    }}
-    if(missingPair){ if(bar) bar.hidden=true;
-      out.innerHTML='<p class="dempty">לא הצלחנו לחשב את ההשוואה הזאת. נסו לבחור שוב.</p>';return;}
-    var diff=ORDER.filter(function(r,ix){return set[ix];});
-    var cats=catsOf(diff);
-    /* a focus left over from the previous pair may not exist in this one */
-    if(focus && cats.indexOf(focus)<0) focus=null;
-    var shown=focus?diff.filter(function(r){return r[0]===focus;}):diff;
-    state.innerHTML="<b>"+names.map(esc).join(" מול ")+"</b> · "+diff.length+" שדות שונים"+
-      (same!==null?" · "+sameTxt(same):"");
-    /* אותה סיבה: שמות שנשברים לשתי שורות מגביהים את הפס, וראש הטבלה נדבק מתחתיו */
-    stick();
-
-    var fh='<div class="dfocus"><span class="fl">מה חשוב לכם:</span>'+
-      '<button type="button" data-cat="" aria-pressed="'+(focus?"false":"true")+'">הכל ('+diff.length+')</button>';
-    cats.forEach(function(c){
-      var n=0; diff.forEach(function(r){if(r[0]===c)n++;});
-      fh+='<button type="button" data-cat="'+esc(c)+'" aria-pressed="'+(focus===c?"true":"false")+'">'+esc(c)+' ('+n+')</button>';
-    });
-    fh+='<button type="button" class="sep" data-means="1" aria-pressed="'+(means?"true":"false")+'">כל ההסברים</button></div>';
-
-    var ds=sel.map(dev), cat=null, body="", bodyOpen=false, span=ds.length+1;
-    var gaps=bigGaps(ds);
-    /* פעם אחת, ומוזן לשני הבלוקים: העליון צריך לדעת אם יש מתחתיו שורות שאינן ברשימה שלו */
-    var whoRows=ds.map(function(d){return {d:d,li:whoOf(gaps,ds,d)};});
-    var whoExtra=0;
-    whoRows.forEach(function(c){ whoExtra+=c.li.length; });
-    whoExtra=Math.max(0, whoExtra-gaps.length);
-    /* גילוי נאות. מי שקורא השוואה צריך לדעת שלכותב יש אינטרס בצד אחד, וזו בדיוק הסיבה
-       שדגם שאיננו מוכרים מסומן ולא מוסתר. אותו כלל שעמודי ההשוואה הכתובים כבר מקיימים. */
-    var refs=ds.filter(function(d){return d&&d.own===false;});
-    var disc=refs.length?'<p class="dnote">'+
-      'את '+refs.map(function(d){return esc(d.name_he||d.name);}).join(' ואת ')+
-      ' איננו מוכרים, '+(refs.length===1?'והוא כאן כדי שאפשר יהיה להשוות אליו':'והם כאן כדי שאפשר יהיה להשוות אליהם')+'. את המפרט לקחנו מאתר היצרן.</p>':'';
-    shown.forEach(function(r){
-      if(r[0]!==cat){ if(bodyOpen) body+="</tbody>"; cat=r[0];
-        body+='<tbody><tr class="grp"><th colspan="'+span+'" scope="rowgroup">'+esc(cat)+"</th></tr>"; bodyOpen=true; }
-      var mid="m-"+r[2];
-      body+='<tr class="vrow"><th scope="row">'+(MEANS[r[2]]
-        ? '<button type="button" class="fx" aria-expanded="false" aria-describedby="'+mid+'d" data-mean="'+esc(r[2])+'">'+esc(r[1])+'<span class="fxi" aria-hidden="true">i</span></button>'+
-          '<span class="a11y-sr" id="'+mid+'d">'+esc(MEANS[r[2]])+'</span>'
-        : esc(r[1]))+"</th>";
-      ds.forEach(function(d){
-        var raw=d?d.spec[r[2]]:null;
-        var isEmpty=raw===null||raw===undefined||raw===""||(Array.isArray(raw)&&!raw.length);
-        if(isEmpty){
-          body+='<td class="na"><span aria-hidden="true">\u2013</span><span class="a11y-sr">לא מפורסם אצל היצרן</span></td>';
-        } else if(Array.isArray(raw)){
-          body+="<td>"+raw.map(function(x){return '<span class="vch">'+ltrRuns(x)+"</span>";}).join("")+"</td>";
-        } else {
-          /* the figure is given size only when whitespace follows it, so a value like 2622x1206 is
-             left as one run rather than being split at the first number */
-          var m=NUMOK[r[2]]?/^\s*([0-9]+(?:[.,][0-9]+)?)(\s+)([\s\S]+)$/.exec(String(raw)):null;
-          body+=m?'<td><b class="nv">'+esc(m[1])+"</b>"+esc(m[2])+ltrRuns(m[3])+"</td>"
-                 :"<td>"+ltrRuns(raw)+"</td>";
-        }
-      });
-      body+="</tr>";
-      if(means&&MEANS[r[2]]) body+='<tr class="mean open" id="'+mid+'"><td colspan="'+span+'"><span><b>מה זה אומר</b> '+esc(MEANS[r[2]])+'</span></td></tr>';
-    });
-    if(bodyOpen) body+="</tbody>";
-    /* the mark is decorative here: the device name sits right beside it, so alt stays empty */
-    var LOGO={"Apple":["apple",14,17],"Samsung":["samsung",89,13],"Xiaomi":["xiaomi",16,17],"Google":["google",17,17],"Nothing":["nothing",73,13],"OnePlus":["oneplus",17,17]};
-    var head='<thead><tr><th scope="col">שדה</th>'+ds.map(function(d,i){
-      var b=LOGO[d.brand];
-      var mark=b?'<img class="blogo blogo-'+b[0]+'" src="/logos/'+b[0]+'.png" alt="" width="'+b[1]+'" height="'+b[2]+'" loading="lazy" decoding="async">':"";
-      return '<th scope="col" class="sc'+i+'">'+pic(d,"dhpic")+mark+ltr(d.name)+yr(d)+"</th>";}).join("")+"</tr></thead>";
-
-    var cap=focus
-      ? "מציג את "+esc(focus)+" בלבד, "+shown.length+" שדות מתוך "+diff.length+" שבהם יש הבדל."
-      /* באפס אין מה להוסיף, ולכן המשפט נגמר. "ו-0 שדות נוספים זהים" נשמע כמו תקלה. */
-      : diff.length+" שדות שבהם יש הבדל"+(same?", ו"+sameMoreTxt(same)+" ואינם מופיעים כאן":"")+".";
-
-    var msg="היי, אני משווה בין "+names.join(" ל")+" ואשמח לעזרה בבחירה";
-    var share='<div class="dshare">'+
-      '<a class="btn btn-wa" href="https://wa.me/97286812050?text='+encodeURIComponent(msg)+'">'+
-      '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו לנו את ההשוואה</a>'+
-      '<button type="button" class="btn btn-teal" id="dcopy">העתקת קישור להשוואה</button>'+
-      '<span class="dok" id="dcopied" role="status"></span></div>';
-
-    /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא
-       מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML. */
-    /* הגילוי הנאות ראשון, אחריו הפרשנות, ואז הטבלה. ההבדל הגדול הוא התשובה לשאלה
-       שבשמה נכנסו, והטבלה היא הראיה שמתחתיה, בדיוק כמו בעמודי ההשוואה הכתובים. */
-    out.innerHTML=disc+gapsHtml(gaps,whoExtra)+fh+'<div class="cmp-wrap" tabindex="0" role="region" aria-label="טבלת ההבדלים">'+
-      '<table class="cmp cmp-grid"><caption'+(focus?"":' class="a11y-sr"')+">"+cap+"</caption>"+head+body+"</table></div>"+whoHtml(whoRows,ds)+share+
-      '<p class="aside">'+ds.filter(function(d){
-        /* מכשיר ייחוס אינו מופיע כאן בכלל. אין לו עמוד ולכן אין לו קישור, ועד 17.8.2026 הוא
-           הופיע כטקסט "איננו מוכרים אותו" במקום קישור, כלומר אמירה על מה שאיננו מוכרים
-           בדיוק במקום שממנו אופק ביקש להוריד אותה. שמיטה אומרת פחות ומדויקת יותר. */
-        return false;
-      }).map(function(d){
-        return '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";
-      }).join(" · ")+"</p>";
-  }
-
-
-  /* ================= שלוש שכבות דביקות, ומדידה אחת שמחזיקה את כולן
-   *
-   * ההדר של האתר, פס המצב, וראש הטבלה נערמים זה מתחת לזה. עד 16.8.2026 כל אחד מהם קיבל
-   * מספר קבוע ב-CSS: 66 לפס ו-146 לראש הטבלה, ו-0 ו-80 מתחת ל-980. המספרים האלה לא
-   * הסתדרו עם המציאות באף רוחב. ב-1280 ההדר מסתיים ב-119 ולכן פס המצב שנדבק ב-66 נעלם
-   * מתחתיו, וראש הטבלה שנדבק ב-146 השאיר רצועה של 27 פיקסלים שדרכה נראו שורות הטבלה
-   * גולשות. ב-390 פס המצב נדבק ב-0, כלומר מוסתר לגמרי מאחורי ההדר.
-   *
-   * ומעבר לזה, המספרים לא היו יכולים להיות נכונים: ה-top של ההדר עצמו אינו קבוע. הוא 42,
-   * 46 או 52 לפי הרוחב ולפי הבאנר שמעליו, והבאנר הצהוב קיים בסביבת הבדיקות ולא בפרודקשן.
-   * כלומר גם אם היינו מכוונים את המספרים למסך אחד, הם היו שגויים באתר החי.
-   *
-   * לכן המדידה נעשית בזמן ריצה ונכתבת לשני משתני CSS. position:sticky חייב מספר, אבל
-   * המספר יכול לבוא ממדידה. */
-  function stick(){
-    try{
-      var root=document.documentElement, h=document.querySelector("header.site"), base=0;
-      if(h){ var cs=getComputedStyle(h);
-        /* הדר שאינו דביק אינו תופס מקום בראש המסך, ואז הבסיס הוא אפס ולא הגובה שלו */
-        if(cs.position==="sticky"||cs.position==="fixed"){
-          /* הקצה התחתון בקואורדינטות המסך, ולא top+offsetHeight.
-           *
-           * ההדר נסגר בגלילה למטה עם translateY(-100%) ונשאר sticky, ולכן top ו-offsetHeight
-           * שלו אינם משתנים כלל כשהוא יורד מהמסך. הנוסחה הקודמת המשיכה לשמור לו 67 פיקסלים,
-           * ומכיוון שפס המצב נדבק מתחתם ולא מתחת להדר, נפתחה רצועה שקופה של 67 פיקסל שדרכה
-           * נראו שורות הטבלה גולשות מעל הפס. אופק צילם את זה בטלפון ב-17.8.2026.
-           *
-           * getBoundingClientRect().bottom נכון בכל שלושת המצבים: פתוח הוא top+גובה, סגור
-           * הוא הקצה של מה שמעליו (בסביבת הבדיקות הבאנר הצהוב, בפרודקשן אפס), ובאמצע המעבר
-           * הוא הערך הרגעי. max עם אפס, כי הדר שנגלל מעל ראש המסך מחזיר מספר שלילי. */
-          base=Math.max(0, h.getBoundingClientRect().bottom);
-        } }
-      var b=document.getElementById("dstatebar");
-      var bh=(b&&!b.hidden)?b.offsetHeight:0;
-      root.style.setProperty("--pg-stick-1", Math.round(base)+"px");
-      root.style.setProperty("--pg-stick-2", Math.round(base+bh)+"px");
-    }catch(e){}
-  }
-  var stickQueued=false;
-  function stickSoon(){ if(stickQueued) return; stickQueued=true;
-    /* גם rAF וגם setTimeout, ומי שנורה ראשון מנקה את הדגל. rAF לבדו נועל: בלשונית ברקע
-       הוא אינו נורה, הדגל נשאר דלוק, וכל מדידה נוספת מדולגת לנצח. הכתיבה אידמפוטנטית
-       ולכן אין נזק אם שניהם נורים. */
-    var run=function(){ stickQueued=false; stick(); };
-    if(window.requestAnimationFrame) requestAnimationFrame(run);
-    setTimeout(run, 100); }
-  window.addEventListener("resize", stickSoon);
-  /* המעבר של ההדר הוא 280ms, והגלילה יכולה להיפסק באמצעו. בלי זה הערך האחרון שנמדד הוא
-     של אמצע האנימציה, והרצועה נשארת פתוחה חלקית עד הגלילה הבאה. */
-  (function(){ var h=document.querySelector("header.site");
-    if(h) h.addEventListener("transitionend", function(e){ if(e.propertyName==="transform") stick(); }); })();
-  /* גם בגלילה: ה-top של ההדר נקבע לפי הבאנר שמעליו, והבאנר יכול להשתנות תוך כדי */
-  window.addEventListener("scroll", stickSoon, {passive:true});
-  /* גם כשגובה של אחת השכבות משתנה בלי גלילה ובלי שינוי גודל חלון.
-     תפריט הנגישות מגדיל טקסט על ידי מחלקה על html, וזה אינו יורה אף אחד משני האירועים
-     שלמעלה: פס המצב גדל ל-107 ב-130 אחוז ול-163 ב-150 אחוז, וראש הטבלה נשאר נעוץ ב-191,
-     כלומר 81 פיקסל משמות הדגמים מוסתרים מאחורי הפס. זו הבקרה שהתקן מחייב, והיא זו ששברה
-     את הפריסה. אותו מנגנון מכסה גם את החלפת הגופן: אותו טקסט הוא 56 פיקסל בגופן האתר
-     ו-82 בגופן חלופי, ובטעינה קרה render יכול להקדים את הגופן. */
-  var hdr=document.querySelector("header.site");
-  /* המחלקות של תפריט הנגישות. MutationObserver ולא ResizeObserver, כי RO נמסר במסגרת שלב
-     הרינדור ולכן הוא אינו נורה כשהדף אינו מרנדר, ואי אפשר לאמת אותו. MO הוא microtask.
-     stick נקרא ישירות ולא דרך stickSoon, כדי שהמדידה תקרה מיד ולא בפריים הבא. */
-  try{ if(window.MutationObserver){
-    new MutationObserver(function(){ stick(); })
-      .observe(document.documentElement,{attributes:true,attributeFilter:["class"]});
-  } }catch(e){}
-  /* הגופן מגיע אחרי הצביעה הראשונה ומשנה את גובה הפס. אותו קישור שקרוסלת המבצעים
-     כבר מחזיקה, ומאותה סיבה. */
-  try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(stick).catch(function(){}); }catch(e){}
-  /* וכל שינוי גובה אחר: זום דפדפן, גלישת טקסט, תוכן שנכנס לפס. */
-  try{ if(window.ResizeObserver){
-    var ro=new ResizeObserver(stickSoon);
-    if(hdr) ro.observe(hdr);
-    if(bar) ro.observe(bar);
-  } }catch(e){}
   stick();
 
-  /* אחרי הבחירה השנייה הטבלה יושבת מתחת לרשימה של 24 דגמים, כלומר מחוץ למסך, והמשתמש
-     היה צריך לגלול כדי לגלות שקרה משהו. behavior לא נמסר כאן בכוונה: ה-CSS כבר קובע
-     scroll-behavior:smooth ומכבה אותו תחת prefers-reduced-motion, ולכן ההעדפה נשמרת. */
-  function toResults(){try{var t=document.getElementById("dout"); if(!t) return;
-    /* אותה מדידה ששתי השכבות הדביקות משתמשות בה, ועוד רווח נשימה */
-    var off=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--pg-stick-2"))||146;
-    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-off-24});}catch(e){}}
+  var refs = ds.filter(function (d) { return d.own === false; });
+  var disc = refs.length ? '<p class="dnote">את ' + refs.map(function (d) { return esc(d.name_he || d.name); }).join(" ואת ") + " איננו מוכרים, " +
+    (refs.length === 1 ? "והוא כאן כדי שאפשר יהיה להשוות אליו" : "והם כאן כדי שאפשר יהיה להשוות אליהם") + ". את המפרט לקחנו מאתר היצרן.</p>" : "";
 
-  wrap.addEventListener("click",function(e){
-    var b=e.target.closest?e.target.closest(".dchip"):null;
-    if(!b||!DB) return;
-    var sl=b.getAttribute("data-slug"), at=sel.indexOf(sl), was=sel.length;
-    if(at>=0) sel.splice(at,1);
-    else { if(sel.length>=slots) sel.shift(); sel.push(sl); }
-    push("cmp_pick",{device:sl,action:at>=0?"remove":"add",selected:sel.length});
-    syncChips();
-    render();
-    if(was<2&&sel.length>=2) toResults();
-  });
-  /* ================= בורר היצרן והדגם
-   *
-   * דרך שנייה לבחור, לצד רשימת הצ׳יפים: לחיצה על תא פותחת רשימת יצרנים, ובחירת יצרן פותחת
-   * את הדגמים שלו. זו הדרך שמי שיודע איזה מותג הוא מחפש מצפה לה, והיא גם מה שנותן לתא
-   * הריק תפקיד. הפאנל נפתח מתחת לתאים ולא כחלונית מרחפת: אין חישוב מיקום, אין קצה מסך
-   * לטפל בו, ובטלפון זה מגירה ולא משהו שמכסה את מה שמתחתיו.
-   *
-   * הוא אינו מחליף את הרשימה למטה. לרשימה יש יתרון שלבורר אין, לראות הכול בבת אחת. */
-  var menu=document.getElementById("dmenu");
-  function menuHtml(){
-    var body="";
-    BRANDS.forEach(function(b){
-      var items=DB.devices.filter(function(d){return d.brand===b.brand;});
-      if(!items.length) return;
-      var open=!!menuOpen[b.brand], id="dmg-"+b.brand.replace(/[^A-Za-z0-9]/g,""), L=b.logo;
-      body+='<li class="dmnode">'+
-        '<button type="button" class="dmbrand" data-brand="'+esc(b.brand)+'" aria-expanded="'+(open?"true":"false")+'" aria-controls="'+id+'">'+
-        '<span class="dmtog" aria-hidden="true"></span>'+
-        (L?'<img class="blogo blogo-'+L[0]+'" src="/logos/'+L[0]+'.png" alt="" width="'+L[1]+'" height="'+L[2]+'" loading="lazy" decoding="async">':'<span class="nologo" aria-hidden="true"></span>')+
-        '<span class="bn">'+esc(b.brand)+'</span><span class="cnt">'+(items.length===1?"דגם אחד":items.length+" דגמים")+'</span></button>'+
-        '<ul class="dmsub" id="'+id+'"'+(open?'':' hidden')+'>'+
-        items.map(function(d){
-          var on=sel.indexOf(d.slug)>=0;
-          /* "כבר בהשוואה" בלבד. התג "לא אצלנו" הוסר כאן יחד עם זה שברשימת הצ׳יפים. */
-          return '<li><button type="button" data-pick="'+esc(d.slug)+'"'+(on?' aria-current="true"':'')+'>'+
-            '<span class="bn">'+ltr(d.name)+'</span>'+
-            (on?'<span class="cnt">כבר בהשוואה</span>':'')+'</button></li>';
-        }).join("")+'</ul></li>';
-    });
-    return '<div class="dmhead"><p class="dmtitle">בחרו יצרן ודגם</p>'+
-      '<button type="button" class="dmx" aria-label="סגירת הבורר">&times;</button></div>'+
-      '<ul class="dmlist">'+body+'</ul>';
+  var sameHtml = "";
+  if (same.length === sameN && same.length) {
+    var tags = same.map(function (r) { var v = val(ds[0].spec[r[2]]); return v.length <= 22 ? r[1] + ": " + v : r[1]; });
+    var shown = tags.slice(0, 5);
+    sameHtml = '<ul class="cv-same" aria-label="זהים בשניהם">' + shown.map(function (t) { return "<li>" + CHECK + ltrRuns(t) + "</li>"; }).join("") +
+      (tags.length > shown.length ? "<li>ועוד " + (tags.length - shown.length) + "</li>" : "") + "</ul>";
   }
-  function openMenu(i){
-    if(!menu||!DB) return;
-    menuFor=i; menuOpen={};
-    /* הענף של הדגם שכבר יושב בתא נפתח מעצמו, כמו עץ תיקיות שחושף את הפריט הנוכחי */
-    var cur=sel[i]?dev(sel[i]):null; if(cur) menuOpen[cur.brand]=true;
-    menu.innerHTML=menuHtml(); menu.hidden=false;
-    renderSlots();
-    push("cmp_menu_open",{slot:i});
-    var f=menu.querySelector('.dmbrand[aria-expanded="true"]')||menu.querySelector(".dmbrand");
-    if(f) f.focus();
-  }
-  function closeMenu(back){
-    if(!menu||menuFor===null) return;
-    var i=menuFor; menuFor=null; menuOpen={};
-    menu.hidden=true; menu.innerHTML="";
-    renderSlots();
-    if(back){ var b=document.querySelector('.dopen[data-slot="'+i+'"]'); if(b) b.focus(); }
-  }
-  /* התא ה-i הוא הבקשה, לא הבטחה. sel נשאר רציף בכוונה: מערך עם חורים היה מגיע ל-keysFor
-     כ-undefined ומחזיר "לא הצלחנו לחשב", כלומר תקלה שנראית כמו באג. מי שבוחר לתא ג׳ כשיש
-     דגם אחד מקבל אותו בתא ב׳, וזה מה שהוא התכוון אליו. */
-  function setSlot(i, slug){
-    var at=sel.indexOf(slug);
-    /* הדגם כבר יושב בתא אחר: מחליפים מקומות. splice ואז השמה היו מוחקים את מי
-       שיושב בתא היעד, כלומר המשתמש ביקש להחליף דגם אחד ואיבד שניים. */
-    if(at>=0 && at!==i){
-      /* תא תפוס: מחליפים מקומות, וזו ההתנהגות שהמשתמש ביקש.
-         תא ריק שמעבר לאורך הבחירה: אין מה להעביר. הענף שהיה כאן עשה splice ואז push,
-         כלומר סידר מחדש את א׳ ו-ב׳, החליף להם צבעים ועמודות בטבלה, והשאיר את ג׳ ריקה.
-         המשתמש ביקש להוסיף ויצא עם אותם שני דגמים בסדר הפוך. הדגם כבר בהשוואה, הבורר
-         כבר מסמן אותו "כבר בהשוואה", ולכן התשובה הנכונה היא לא לגעת בכלום. */
-      if(i<sel.length){ sel[at]=sel[i]; sel[i]=slug; return true; }
-      return false;
+  var head = '<p class="cv-count">' + diffTxt(diff.length) + sameTail(sameN) + "</p>" + sameHtml +
+    '<p class="cv-src">' + esc(CFG.src) + "</p>";
+
+  var top = "";
+  if (TDEF.length) {
+    var gaps = bigGaps(ds).slice(0, 3);
+    if (gaps.length) {
+      top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3 n' + gaps.length + '">' + gaps.map(function (x) {
+        var t = x.t, va = (TRAITS[ds[0].slug] || {})[x.key], vb = (TRAITS[ds[1].slug] || {})[x.key], mx = Math.max(va, vb) || 1;
+        return '<li class="cv-t"><div class="cv-th"><b>' + esc(t.label) + '</b><span class="cv-gap">' + ltrRuns(gapChip(x)) + "</span></div>" +
+          '<div class="cv-tv"><div class="cv-a">' + bigNum(va, t) + fill(100 * va / mx) + '<span class="cv-tn">' + ltr(ds[0].name) + "</span></div>" +
+          '<div class="cv-b">' + bigNum(vb, t) + fill(100 * vb / mx) + '<span class="cv-tn">' + ltr(ds[1].name) + "</span></div></div>" +
+          '<p class="cv-lead">' + ltr(x.lead.name) + ": " + esc(x.more) + "</p></li>";
+      }).join("") + "</ul>";
     }
-    if(at===i) return false;
-    if(i<sel.length) sel[i]=slug; else sel.push(slug);
-    if(sel.length>slots) sel.length=slots;
-    return true;
   }
-  if(menu) menu.addEventListener("click",function(e){
-    if(!e.target.closest) return;
-    /* סימון לפני כל טיפול. הבורר מחליף את ה-innerHTML של עצמו, ולכן עד שהאירוע מגיע
-       ל-document הכפתור שנלחץ כבר מנותק מהעץ ו-closest("#dmenu") מחזיר null. בלי הסימון
-       הזה בחירה הייתה נחשבת ללחיצה מבחוץ וסוגרת את הבורר. */
-    e.pgInMenu=1;
-    if(e.target.closest(".dmx")){ closeMenu(true); return; }
-    var b=e.target.closest("[data-brand]");
-    /* פתיחה וסגירה במקום, בלי לבנות את הבורר מחדש: כך הפוקוס נשאר על שורת היצרן שנלחצה,
-       מיקום הגלילה נשמר, ואפשר להחזיק כמה ענפים פתוחים יחד כמו בעץ תיקיות. */
-    if(b){ var name=b.getAttribute("data-brand"), was=b.getAttribute("aria-expanded")==="true";
-      menuOpen[name]=!was;
-      b.setAttribute("aria-expanded", was?"false":"true");
-      var sub=document.getElementById(b.getAttribute("aria-controls"));
-      if(sub) sub.hidden=was;
-      return; }
-    var p=e.target.closest("[data-pick]");
-    if(p){ var i=menuFor, was=sel.length, sl=p.getAttribute("data-pick");
-      /* בחירה שלא שינתה כלום משאירה את הבורר פתוח, כדי שלא ייראה כאילו קרה משהו.
-         זה קורה רק כשהדגם כבר בהשוואה והתא שנבחר ריק ומעבר לאורך הבחירה. */
-      if(!setSlot(i, sl)){ p.focus(); return; }
-      push("cmp_pick",{device:sl,action:was>=sel.length?"swap":"add",selected:sel.length,via:"menu"});
-      menuFor=null; menuOpen={}; menu.hidden=true; menu.innerHTML="";
-      syncChips(); render();
-      /* render בונה מחדש את התאים, ולכן מיקוד שנקבע לפניו הולך לאיבוד. כשההשוואה נפתחה
-         הפוקוס עובר אליה, כי היא התוצאה של הפעולה, ואחרת הוא חוזר לתא שממנו יצאנו. */
-      if(was<2&&sel.length>=2){
-        var reg=document.querySelector("#dout .cmp-wrap");
-        if(reg&&reg.focus) try{reg.focus({preventScroll:true});}catch(err){}
-        toResults();
-      } else {
-        var back=document.querySelector('.dopen[data-slot="'+i+'"]'); if(back) back.focus();
-      }
-    }
-  });
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&menuFor!==null) closeMenu(true); });
-  document.addEventListener("click",function(e){
-    if(menuFor===null||!e.target.closest||e.pgInMenu) return;
-    if(!e.target.closest(".dopen")) closeMenu(false);
-  });
 
-  /* the slot drops its own device, and the category chips and copy button live inside markup that
-     render() replaces, so both are delegated rather than bound per element */
-  var slotBox=document.getElementById("dslots");
-  if(slotBox) slotBox.addEventListener("click",function(e){
-    if(e.target.closest&&e.target.closest("[data-add]")){slots=MAX;renderSlots();
-      push("cmp_add_slot",{});
-      /* הכפתור שנלחץ נמחק ברינדור, ולכן הפוקוס עובר לתא החדש שנוצר בזכותו */
-      var na=document.querySelector('.dopen[data-slot="'+(MAX-1)+'"]'); if(na) na.focus();
-      return;}
-    var o=e.target.closest?e.target.closest(".dopen"):null;
-    if(o){ var i=parseInt(o.getAttribute("data-slot"),10);
-      if(menuFor===i) closeMenu(true); else openMenu(i); return; }
-    var b=e.target.closest?e.target.closest(".drop"):null; if(!b) return;
-    var at=sel.indexOf(b.getAttribute("data-drop"));
-    if(at>=0){sel.splice(at,1);syncChips();render();
-      /* ה-× שנלחץ נמחק ברינדור. הפוקוס עובר לתא שממנו הוסר הדגם. */
-      var bk=document.querySelector('.dopen[data-slot="'+Math.min(at,slots-1)+'"]'); if(bk) bk.focus();}
-  });
-  out.addEventListener("click",function(e){
-    if(!e.target.closest) return;
-    var fx=e.target.closest(".fx");
-    if(fx){ /* המצב נקרא מהכפתור ולא ממשתנה משותף. focusin רץ לפני click בדפדפן
-           שממקד כפתור בלחיצה, ואז ההשוואה למשתנה הפכה את הלחיצה הראשונה לסגירה. */
-      var opening=fx.getAttribute("aria-expanded")!=="true";
-      if(opening) push("cmp_explain",{field:fx.getAttribute("data-mean")||""});
-      showInfo(fx,opening); return; }
-    var mb=e.target.closest("[data-means]");
-    if(mb){means=!means;render();return;}
-    var f=e.target.closest(".dfocus button");
-    if(f){var c=f.getAttribute("data-cat");focus=c||null;push("cmp_focus",{category:focus||"all"});render();return;}
-    var waBtn=e.target.closest(".dshare a[href*=\"wa.me\"]");
-    if(waBtn){ push("cmp_share_whatsapp",{devices:sel.join(",")}); return; }
-    if(e.target.closest("#dcopy")){
-      push("cmp_copy_link",{devices:sel.join(",")});
-      var note=document.getElementById("dcopied");
-      var url=location.href;
-      var done=function(){if(note)note.textContent="הקישור הועתק";};
-      var fail=function(){if(note)note.textContent="לא הצלחנו להעתיק. אפשר להעתיק מהכתובת למעלה.";};
-      try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done,fail); else fail(); }catch(err){fail();}
-    }
-  });
-  clear.addEventListener("click",function(){
-    sel=[]; slots=2;
-    Array.prototype.forEach.call(wrap.querySelectorAll(".dchip"),function(c){c.setAttribute("aria-pressed","false");});
-    if(q){q.value=""; applyFilter();}
-    render();
-    /* אחרי איפוס הסינון כל הצ׳יפים גלויים שוב, ולכן הראשון תמיד קיים ובר-מיקוד */
-    var first=wrap.querySelector(".dchip"); if(first) first.focus();
-  });
+  var anyBar = diff.some(function (r) { return !!nums(r[2], ds); });
+  var prio = '<div class="cv-prio"><h2 class="cv-h2">מה חשוב לכם?</h2><p>בחרו תחום, והוא יעלה לראש הרשימה. שום הבדל לא נעלם.</p>' +
+    '<div class="cv-chips">' + cats.map(function (c) {
+      var n = diff.filter(function (r) { return r[0] === c; }).length;
+      return '<button type="button" class="cv-chip" data-cat="' + esc(c) + '" aria-pressed="' + (on[c] ? "true" : "false") + '">' + CHECK + esc(c) + " <span>" + n + "</span></button>";
+    }).join("") + '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p></div>' +
+    (anyBar ? '<div class="cv-legend"><span class="cv-k cv-a"><i aria-hidden="true"></i>' + ltr(ds[0].name) + '</span><span class="cv-k cv-b"><i aria-hidden="true"></i>' + ltr(ds[1].name) +
+      "</span><span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>" : "");
 
-  /* סינון מהיר. 24 דגמים עוד נסרקים בעין, אבל הרשימה גדלה, ומי שיודע מה הוא מחפש לא צריך
-     לסרוק. הקבוצה כולה נעלמת כשאין בה התאמה, אחרת נשארות כותרות מותג מרחפות בלי תוכן. */
-  var q=document.getElementById("dq"), noneEl=document.getElementById("dnone"),
-      qh=document.getElementById("dqh"), qUsed=false, qhT=0;
-  function applyFilter(){
-    if(!q) return;
-    var s=q.value.trim().toLowerCase(), shown=0;
-    Array.prototype.forEach.call(wrap.querySelectorAll(".dgrp"),function(g){
-      var vis=0;
-      Array.prototype.forEach.call(g.querySelectorAll("li"),function(li){
-        var c=li.querySelector(".dchip"); if(!c) return;
-        var hit=!s||(c.getAttribute("data-q")||"").toLowerCase().indexOf(s)>=0;
-        li.hidden=!hit; if(hit) vis++;
-      });
-      g.hidden=!vis; shown+=vis;
-    });
-    if(noneEl) noneEl.hidden=shown>0;
-    /* מודיע לקורא מסך כמה נשארו. בלי זה הקלדה בשדה משנה את הרשימה בלי שום חיווי. */
-    /* ההכרזה מושהית, הסינון עצמו לא. בלי זה הקלדת "galaxy" מייצרת שש הכרזות
-       בתור של קורא המסך, וכולן חוץ מהאחרונה חסרות ערך. */
-    if(qh){ clearTimeout(qhT); var msg=!s?"":(shown?shown+" דגמים מוצגים":"אין דגם מתאים");
-      qhT=setTimeout(function(){qh.textContent=msg;},500); }
+  var links = CFG.specLinks ? ds.filter(function (d) { return d.own !== false; }).map(function (d) {
+    return '<a href="/phones/' + esc(d.slug) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
+  }).join(" · ") : "";
+
+  out.innerHTML = disc + head + top + prio + '<div id="cvlist"></div>' +
+    (links ? '<p class="cv-more">' + links + "</p>" : "") +
+    '<div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הזוג ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span>' +
+    '<span class="cv-bubble" id="cvwatext"></span></div><div class="cv-wb">' +
+    '<a class="btn btn-wa" id="cvwa" href="#"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a>' +
+    '<button type="button" class="btn btn-teal" id="dcopy">העתקת קישור להשוואה</button><span class="dok" id="dcopied" role="status"></span></div></div>';
+  renderList(false);
+  var sig = [ds[0].slug, ds[1].slug].sort().join(",");
+  if (sig !== lastPair) { lastPair = sig; restOpen = false; }
+}
+
+function rowHtml(r, ds) {
+  var n = nums(r[2], ds), small = "";
+  if (n && n.t && Math.abs(n.a - n.b) < n.t.min) small = '<span class="cv-small">הבדל קטן</span>';
+  var mx = n ? Math.max(n.a, n.b) : 1;
+  var cell = function (d, i) {
+    var raw = d.spec[r[2]], v;
+    if (empty(raw)) v = '<span class="cv-na">לא מפורסם אצל היצרן</span>';
+    else if (Array.isArray(raw)) v = '<span class="cv-val">' + raw.map(function (x) { return '<span class="vch">' + ltrRuns(x) + "</span>"; }).join("") + "</span>";
+    else v = '<span class="cv-val">' + ltrRuns(raw) + "</span>";
+    return '<div class="cv-v ' + (i ? "cv-b" : "cv-a") + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
+      (n ? fill(100 * (i ? n.b : n.a) / mx) : "") + "</div>";
+  };
+  return '<div class="cv-r"><div class="cv-rl">' + esc(r[1]) + (small ? "<br>" + small : "") + "</div>" + cell(ds[0], 0) + cell(ds[1], 1) +
+    (MEANS[r[2]] ? '<p class="cv-note">' + esc(MEANS[r[2]]) + "</p>" : "") + "</div>";
+}
+function sizeHtml(ds) {
+  if (!CFG.outline) return "";
+  var a = dims(ds[0]), b = dims(ds[1]); if (!a || !b) return "";
+  var fig = function (x, d, c) { return '<figure class="' + c + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + "px;height:" + x.h + 'px"></span><figcaption>' + ltr(x.h + " × " + x.w) + " מ״מ</figcaption></figure>"; };
+  return '<div class="cv-size">' + fig(a, ds[0], "cv-a") + fig(b, ds[1], "cv-b") + "<p>בקנה מידה אמיתי, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>";
+}
+function renderList(fromChip) {
+  if (!cur) return;
+  var ds = cur.ds, diff = cur.diff, cats = cur.cats;
+  var picked = cats.filter(function (c) { return on[c]; }), others = cats.filter(function (c) { return !on[c]; });
+  var order = picked.length ? picked.concat(restOpen ? others : []) : cats;
+  var restN = 0; others.forEach(function (c) { restN += diff.filter(function (r) { return r[0] === c; }).length; });
+  var html = order.map(function (c) {
+    var rows = diff.filter(function (r) { return r[0] === c; });
+    var hasDim = rows.some(function (r) { return r[2] === "dimensions"; });
+    return '<section class="cv-grp" aria-labelledby="g-' + cats.indexOf(c) + '"><div class="cv-gh"><h3 id="g-' + cats.indexOf(c) + '">' + esc(c) + "</h3><span>" + diffTxt(rows.length) + "</span>" +
+      (on[c] ? '<span class="cv-pk">בחרתם</span>' : "") + "</div>" + (hasDim ? sizeHtml(ds) : "") + rows.map(function (r) { return rowHtml(r, ds); }).join("") + "</section>";
+  }).join("");
+  if (picked.length && restN) html += '<button type="button" class="cv-rest" aria-expanded="' + (restOpen ? "true" : "false") + '">' + (restOpen ? "לקפל את שאר התחומים" : "עוד " + diffTxt(restN) + " בתחומים שלא בחרתם") + "</button>";
+  $("cvlist").innerHTML = html;
+  Array.prototype.forEach.call(out.querySelectorAll(".cv-chip"), function (b) { b.setAttribute("aria-pressed", on[b.getAttribute("data-cat")] ? "true" : "false"); });
+  var st = $("cvstatus");
+  if (st) st.textContent = !picked.length ? (diff.length === 1 ? "מוצג ההבדל היחיד." : "מוצגים כל " + diff.length + " ההבדלים, לפי תחום.")
+    : "בראש הרשימה: " + picked.join(", ") + "." + (restN ? " עוד " + diffTxt(restN) + " בתחומים האחרים." : " אלה כל ההבדלים.");
+  var msg = "היי, אשמח לעזרה בבחירה בין " + ds[0].name + " לבין " + ds[1].name + "." + (picked.length ? " חשוב לי: " + picked.join(", ") + "." : "");
+  var wt = $("cvwatext"), wa = $("cvwa");
+  if (wt) wt.textContent = msg;
+  if (wa) wa.setAttribute("href", "https://wa.me/97286812050?text=" + encodeURIComponent(msg));
+}
+out.addEventListener("click", function (e) {
+  var t = e.target; if (!t || !t.closest) return;
+  var c = t.closest(".cv-chip");
+  if (c) { var k = c.getAttribute("data-cat"); on[k] = !on[k]; if (!on[k]) delete on[k]; push("cmp_priority", { category: k, on: !!on[k] }); renderList(true); return; }
+  if (t.closest(".cv-rest")) { restOpen = !restOpen; push("cmp_rest", { open: restOpen }); renderList(true); var rb = out.querySelector(".cv-rest"); if (rb) rb.focus(); return; }
+  if (t.closest("#cvwa")) { push("cmp_share_whatsapp", { devices: sel.join(","), priorities: Object.keys(on).join(",") }); return; }
+  if (t.closest("#dcopy")) {
+    push("cmp_copy_link", { devices: sel.join(",") });
+    var note = $("dcopied"), url = location.href;
+    var done = function () { if (note) note.textContent = "הקישור הועתק"; };
+    var fail = function () { if (note) note.textContent = "לא הצלחנו להעתיק. אפשר להעתיק מהכתובת למעלה."; };
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, fail); else fail(); } catch (err) { fail(); }
   }
-  /* בלי הטקסט עצמו ובלי הקשה-הקשה: השאלה היחידה שנמדדת כאן היא אם משתמשים בסינון בכלל */
-  if(q) q.addEventListener("input",function(){ if(!qUsed&&q.value.trim()){qUsed=true;push("cmp_filter",{});} applyFilter(); });
+});
 
-  /* הקובץ הציבורי ולא devices.json. הפרטי מכיל _rules, _candidates_findings, spec_source,
-     commercial ו-recommendation: החלטות עסקיות עם תאריכים, מחקר מתחרים, ומקום לציטוטים של
-     ברוך וסיגל לפני אישור פרסום. הגידור של "רק approved נכנס" חי במחולל ה-HTML ולא בקובץ
-     ה-JSON, ולכן בקשת GET אחת הייתה מחזירה טיוטה. gen-devices.js גוזר קובץ ציבורי עם
-     ארבעת השדות שהקוד כאן באמת קורא, ולא יותר. */
-  fetch("/headphones-public.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
-    DB=d;
-    /* a link like ?d=iphone-17,galaxy-s26 arrives before the data does, so the slugs can only
-       be resolved here, once dev() has something to resolve them against */
-    var pre=fromURL(); if(pre.length){sel=pre; if(sel.length>2) slots=MAX; syncChips();}
-    render();
-  }).catch(function(){
-    out.innerHTML='<p class="dempty">לא ניתן לטעון את נתוני האוזניות. נסו לרענן את העמוד.</p>';
-  });
-})();</script>
+/* הקובץ הציבורי ולא הנתונים המלאים: הוא מחזיק רק את השדות שהכלי קורא */
+fetch(CFG.pub, { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+  DB = d;
+  var pre = fromURL();
+  sel = [pre[0] || null, pre[1] || null];
+  if (!sel[0]) openPick(0, false); else if (!sel[1]) openPick(1, false);
+  render();
+}).catch(function () { out.innerHTML = '<p class="dempty">' + CFG.loadErr + "</p>"; });
+}
+
+pgCompareMain();
+})();
+</script>
 
 </main>
 
