@@ -1303,7 +1303,7 @@ if (!only && !CAT) {
       var a = D(p.a), b = D(p.b);
       var d = diffSpec(a, b, p.slug);
       return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc((a.name_he || a.name) + ' מול ' + (b.name_he || b.name)) + '</b>' +
-        '<span>' + d.rows.length + ' שדות שונים · ' + d.same + ' זהים</span></a></li>';
+        '<span>' + d.rows.length + ' שדות שונים · ' + sameTxt(d.same) + '</span></a></li>';
     }).join('\n') + '\n      </ul>\n' +
     /* "מתוך השנים עשר" קפא כאן מאז שהיו 12 דגמים, והכלי מחזיק היום יותר מ-80. המספר הוסר ב-24.9.2026
        ולא עודכן, כי מספר בפרוזה הוא עותק שני של נתון שחי במאגר. */
