@@ -1,0 +1,1020 @@
+{
+  "_": "אוזניות לכלי ההשוואה ב-/headphones/compare/. נוצר ב-24.9.2026 לבקשת אופק. נפרד מ-devices.json מאותה סיבה כמו watches.json: כל צרכן של devices.json מניח טלפון. המחולל: gen-compare.js --headphones. status listed פירושו \"מופיע בכלי\", ואינו אומר אם אנחנו מוכרים את הדגם.",
+  "_rules": [
+    "אותה היררכיית מקורות כמו בטלפונים. אפל: אין עמודי מפרט ישראליים ל-AirPods, ולכן הגלובליים. סמסונג: העמוד הישראלי, וההודעה לעיתונות לשדות שהוא אינו מונה.",
+    "סתירה בין מקורות של אותו יצרן מוצגת כסתירה ולא מוכרעת בשקט. שתיים כאלה היום: צליל הסביבה ב-Buds3, ומספר המיקרופונים ב-Buds Core.",
+    "battery אינו בר השוואה בין היצרנים, וההסבר בשדה אומר את זה. גם _numok ריק בכוונה: קו יחסי בין אוזנייה של 5 גרם לאוזניות קשת של 386 גרם היה משווה שני דברים שונים.",
+    "translation: עברית אינה נתמכת היום אצל אף אחד מהיצרנים. כשזה ישתנה, לעדכן גם את _means.translation ואת עמוד AirPods Pro 3 מול Buds4 Pro."
+  ],
+  "_spec_groups": {
+    "groups": [
+      [
+        "סוג ועיצוב",
+        [
+          [
+            "form",
+            "סוג"
+          ],
+          [
+            "weight",
+            "משקל"
+          ],
+          [
+            "dimensions",
+            "מידות"
+          ]
+        ]
+      ],
+      [
+        "שמע",
+        [
+          [
+            "anc",
+            "סינון רעשים (ANC)"
+          ],
+          [
+            "audio_features",
+            "מצבי שמע"
+          ],
+          [
+            "drivers",
+            "רמקולים"
+          ],
+          [
+            "codecs",
+            "קודקים"
+          ],
+          [
+            "chip",
+            "שבב"
+          ]
+        ]
+      ],
+      [
+        "שיחות ושליטה",
+        [
+          [
+            "mics",
+            "מיקרופונים ושיחות"
+          ],
+          [
+            "controls",
+            "שליטה"
+          ]
+        ]
+      ],
+      [
+        "סוללה וטעינה",
+        [
+          [
+            "battery",
+            "סוללה"
+          ],
+          [
+            "charging",
+            "טעינה"
+          ],
+          [
+            "case",
+            "נרתיק"
+          ]
+        ]
+      ],
+      [
+        "עמידות",
+        [
+          [
+            "water_resistance",
+            "עמידות למים ולאבק"
+          ]
+        ]
+      ],
+      [
+        "חיישנים ובריאות",
+        [
+          [
+            "sensors_health",
+            "חיישנים ובריאות"
+          ]
+        ]
+      ],
+      [
+        "תאימות ותכונות",
+        [
+          [
+            "compatibility",
+            "עובד עם"
+          ],
+          [
+            "ecosystem",
+            "שמור למכשירי היצרן"
+          ],
+          [
+            "translation",
+            "תרגום בזמן אמת"
+          ],
+          [
+            "bluetooth",
+            "Bluetooth"
+          ]
+        ]
+      ],
+      [
+        "באריזה",
+        [
+          [
+            "in_box",
+            "באריזה"
+          ]
+        ]
+      ]
+    ]
+  },
+  "_means": {
+    "compatibility": "קודם כל בדקו את השורה הזאת. כל האוזניות כאן מתחברות בבלוטות׳ לכל טלפון, אבל חלק מהתכונות עובדות רק עם טלפון של אותו יצרן. אפל כותבת שעם מכשירים שאינם שלה הפונקציונליות עשויה להיות מוגבלת, וסמסונג מפרטת אילו תכונות שמורות למכשירי Galaxy.",
+    "ecosystem": "תכונות שהיצרן כותב שעובדות רק עם טלפון, טאבלט או מחשב שלו. אפל אינה מפרטת רשימה כזאת, ולכן אצלה השורה ריקה.",
+    "translation": "תרגום שיחה בזמן אמת דרך האוזניות. נכון ל-24 בספטמבר 2026, עברית אינה ברשימת השפות של אפל, ואינה ברשימת השפות שסמסונג מפרסמת בעמודי Buds4.",
+    "form": "תוך-אוזניות עם כריות נכנסות לתעלת האוזן ואוטמות אותה. פתוחות יושבות באוזן בלי כרית, ואוזניות מעל האוזן מכסות אותה כולה.",
+    "weight": "באוזניות אלחוטיות המשקל הוא של אוזנייה אחת, ובנפרד של הנרתיק. באוזניות מעל האוזן זה משקל האוזניות כולן.",
+    "dimensions": "בעיקר כדי לדעת אם הנרתיק נכנס לכיס.",
+    "anc": "סינון רעשים אקטיבי מבטל רעש קבוע כמו מנוע או מזגן. באוזניות פתוחות הוא פועל בלי לאטום את האוזן. לפי אפל, ב-AirPods Pro 3 הוא חזק עד פי 3 מאשר ב-AirPods 5 הפתוחות.",
+    "audio_features": "מצב שקיפות מכניס את קולות הסביבה, ומצב אדפטיבי מחליט לבד כמה לסנן. שמע מרחבי הוא צליל שנשמע כאילו הוא מגיע מסביבכם.",
+    "drivers": "הרמקול שבתוך האוזנייה. אפל אינה מפרסמת את הגודל שלו.",
+    "codecs": "הדרך שבה השמע נדחס בין הטלפון לאוזניות. SSC-UHQ של סמסונג עובד רק עם חלק ממכשירי Galaxy. אפל אינה מפרסמת רשימת קודקים.",
+    "chip": "השבב שמנהל את החיבור, סינון הרעשים והתכונות. סמסונג אינה מפרסמת את שם השבב.",
+    "mics": "כמה מיקרופונים יש ואיך הם מסננים רעש בשיחות.",
+    "controls": "איך עוצרים שיר, עונים לשיחה ומשנים עוצמה בלי להוציא את הטלפון.",
+    "battery": "כל יצרן מודד בתנאים שלו, ולכן המספרים של אפל ושל סמסונג אינם ברי השוואה ישירה. הזמן בפועל תלוי בעוצמה ובשימוש בסינון רעשים.",
+    "charging": "אם הנרתיק נטען גם על משטח אלחוטי, ואילו מטענים הוא מקבל.",
+    "case": "תכונות של הנרתיק עצמו, כמו רמקול שעוזר למצוא אותו.",
+    "water_resistance": "IP54 הוא עמידות בפני התזות מים ואבק. IP57 עומד גם בשקיעה קצרה בבדיקת מעבדה. אף אחד מהם אינו אישור לשחייה, והעמידות פוחתת עם הזמן.",
+    "sensors_health": "חיישנים שמזהים שהאוזנייה באוזן, ותכונות בריאות כמו מדידת דופק ובדיקת שמיעה, עם זמינות בישראל כשהיצרן מפרסם אותה.",
+    "bluetooth": "גרסה חדשה יותר מאפשרת תכונות כמו LE Audio, אבל רק כשגם הטלפון תומך בהן.",
+    "in_box": "מה מגיע באריזה. בחלק מהדגמים הכבל אינו כלול."
+  },
+  "_numok": {},
+  "_comparisons": {
+    "pairs": [
+      {
+        "a": "airpods-pro-3",
+        "b": "galaxy-buds4-pro",
+        "slug": "airpods-pro-3-vs-galaxy-buds4-pro",
+        "h1": "AirPods Pro 3 מול Galaxy Buds4 Pro",
+        "title": "AirPods Pro 3 מול Galaxy Buds4 Pro: מה ההבדל | פון גת",
+        "description": "AirPods Pro 3 או Galaxy Buds4 Pro? השוואה לפי המפרט של אפל וסמסונג: סוללה, עמידות, תכונות שמיעה, תרגום ותאימות לטלפון. פון גת קרית גת.",
+        "keywords": [
+          "AirPods Pro 3 מול Galaxy Buds4 Pro",
+          "איירפודס פרו 3 או גלקסי באדס 4 פרו",
+          "אוזניות לאייפון או לאנדרואיד",
+          "השוואת אוזניות אלחוטיות"
+        ],
+        "lede": "דגמי ה-Pro של שני היצרנים, ושניהם אוזניות תוך-אוזניות עם כריות וסינון רעשים. לפני כל השוואה של מספרים יש שאלה שמכריעה: איזה טלפון יש לכם. לפי אפל, עם מכשירים שאינם של אפל הפונקציונליות של AirPods עשויה להיות מוגבלת. לפי סמסונג, אפליקציית Galaxy Wearable אינה נתמכת ב-iOS, ולכן עם אייפון אין שליטה באוזניות מהטלפון.",
+        "for_a": [
+          "אם יש לכם אייפון. AirPods מתוכננות למכשירי אפל, ולפי אפל עם מכשירים אחרים הפונקציונליות עשויה להיות מוגבלת.",
+          "אם חשובות לכם תכונות שמיעה. לפי דף הזמינות של אפל, בדיקת השמיעה, מצב מכשיר השמיעה והגנת השמיעה של AirPods Pro 3 זמינים גם בישראל.",
+          "אם תרצו מדידת דופק באימון. יש ב-AirPods Pro 3 חיישן דופק, ולפי אפל הסוללה בזמן מדידה מגיעה עד 6.5 שעות."
+        ],
+        "for_b": [
+          "אם יש לכם טלפון גלקסי. אודיו 360, Auto Switch ו-SSC-UHQ עובדים לפי סמסונג רק עם מכשירי Galaxy תואמים.",
+          "אם אתם רוצים Bluetooth חדש יותר. 6.1 עם LE Audio ב-Buds4 Pro, מול 5.3 ב-AirPods Pro 3.",
+          "אם אתם מעדיפים שליטה בצביטה ובהחלקה על הלהב."
+        ],
+        "angle_h": "תרגום בזמן אמת, ומה המצב בעברית",
+        "angle": [
+          "שני היצרנים מציגים תרגום בזמן אמת דרך האוזניות: Live Translation אצל אפל, ו-Interpreter ו-Live Translate אצל סמסונג. זו תכונה שמופיעה בפרסום של שני הדגמים, ולכן שווה לדעת מה היא עושה בעברית.",
+          "נכון ל-24 בספטמבר 2026, עברית אינה ברשימת השפות של אף אחד מהם. ברשימה של אפל לתרגום עם AirPods אין עברית, ובעמוד של Galaxy Buds4 Pro באתר סמסונג ישראל מופיעה ערבית ולא עברית. מי שקונה אחד מהם בשביל תרגום לעברית או ממנה לא יקבל את זה היום.",
+          "רשימות השפות מתעדכנות עם גרסאות תוכנה. מי שהתכונה הזאת מכריעה אצלו ירצה לבדוק את הרשימה שוב לפני הקנייה."
+        ],
+        "bottom_line": "ההחלטה כאן נקבעת בעיקר לפי הטלפון. עם אייפון, AirPods Pro 3 נותנות את כל התכונות שאפל מונה, כולל תכונות השמיעה שזמינות בישראל. עם גלקסי, Buds4 Pro נותנות את התכונות שסמסונג שומרת למכשירי Galaxy. עם טלפון של היצרן השני, שתיהן יעבדו כאוזניות Bluetooth, בלי חלק מהתכונות."
+      },
+      {
+        "a": "airpods-5",
+        "b": "airpods-pro-3",
+        "slug": "airpods-5-vs-airpods-pro-3",
+        "h1": "AirPods 5 מול AirPods Pro 3",
+        "title": "AirPods 5 מול AirPods Pro 3: מה ההבדל | פון גת",
+        "description": "AirPods 5 או AirPods Pro 3? עיצוב פתוח מול כריות, סינון רעשים, סוללה, חיישן דופק ותכונות שמיעה, לפי המפרט של אפל. פון גת קרית גת.",
+        "keywords": [
+          "AirPods 5 מול AirPods Pro 3",
+          "איירפודס 5 או איירפודס פרו 3",
+          "AirPods 5 או Pro",
+          "איזה איירפודס לקנות"
+        ],
+        "lede": "בשתיהן שבב H2 וסינון רעשים, ושתיהן בדירוג IP57 לפי אפל. ההבדל הראשון הוא בצורה: AirPods 5 בעיצוב פתוח בלי כריות, ו-AirPods Pro 3 נכנסות לתעלת האוזן עם כריות סיליקון בחמש מידות. משם מגיעים שאר ההבדלים, כי חיישן הדופק ותכונות השמיעה נמצאים רק ב-Pro 3.",
+        "for_a": [
+          "אם כריות בתוך האוזן לא נוחות לכם. AirPods 5 יושבות באוזן בלי כריות.",
+          "אם אתם רוצים אוזניות קלות יותר. 4.3 גרם לאוזנייה, מול 5.55 ב-Pro 3.",
+          "אם אינכם צריכים טעינה אלחוטית. יש גרסה עם נרתיק USB-C בלבד, והגרסה עם הנרתיק האלחוטי נמכרת בנפרד."
+        ],
+        "for_b": [
+          "אם אתם צריכים תכונות שמיעה: בדיקת שמיעה, מצב מכשיר שמיעה והגנת שמיעה. לפי אפל שלושתן זמינות בישראל.",
+          "אם אתם מתאמנים ורוצים מדידת דופק מהאוזניות.",
+          "אם אתם רוצים יותר זמן האזנה. עד 8 שעות עם סינון רעשים, מול 4 ב-AirPods 5 עם הנרתיק הבסיסי ו-5 עם הנרתיק האלחוטי."
+        ],
+        "angle_h": "סינון רעשים באוזניות פתוחות",
+        "angle": [
+          "AirPods 5 הן אוזניות פתוחות, כלומר הן לא אוטמות את תעלת האוזן, ובכל זאת יש בהן סינון רעשים אקטיבי. Pro 3 אוטמות את האוזן עם כרית, ולפי אפל סינון הרעשים בהן חזק עד פי 3 מזה של AirPods 5, בבדיקה לפי תקן IEC.",
+          "המשמעות המעשית: מי שקונה בשביל שקט באוטובוס או במטוס יקבל יותר מ-Pro 3, לפי המספרים של אפל. מי שלא אוהב כרית בתוך התעלה מוותר על חלק מהשקט הזה, ומקבל אוזניות בלי כרית."
+        ],
+        "bottom_line": "אם כריות מפריעות לכם, AirPods 5 הן הכיוון, ועדיין עם סינון רעשים. אם אתם רוצים יותר שקט, תכונות שמיעה או מדידת דופק, הם נמצאים ב-Pro 3."
+      },
+      {
+        "a": "galaxy-buds4",
+        "b": "galaxy-buds4-pro",
+        "slug": "galaxy-buds4-vs-galaxy-buds4-pro",
+        "h1": "Galaxy Buds4 מול Galaxy Buds4 Pro",
+        "title": "Galaxy Buds4 מול Galaxy Buds4 Pro: ההבדלים | פון גת",
+        "description": "Galaxy Buds4 או Buds4 Pro? עיצוב פתוח מול תוך-אוזני, עמידות IP54 מול IP57, סוללה ותכונות, לפי המפרט של סמסונג. פון גת קרית גת.",
+        "keywords": [
+          "Galaxy Buds4 מול Buds4 Pro",
+          "גלקסי באדס 4 או באדס 4 פרו",
+          "Buds4 Pro מה ההבדל",
+          "אוזניות סמסונג 2026"
+        ],
+        "lede": "שני הדגמים של סמסונג מפברואר 2026. Buds4 פתוחות, בלי כיסויי אוזניות, ו-Buds4 Pro נכנסות לתעלת האוזן עם כיסויים בשלוש מידות. יש הבדל גם בעמידות: IP54 ב-Buds4 מול IP57 ב-Buds4 Pro, ובשני המקרים זה דירוג של האוזניות בלבד.",
+        "for_a": [
+          "אם כיסויים בתוך האוזן לא נוחים לכם. Buds4 בעיצוב פתוח.",
+          "אם אתם רוצים אוזנייה קלה יותר. 4.6 גרם, מול 5.1 ב-Buds4 Pro.",
+          "אם אתם מחפשים את הדגם הפתוח מהדור החדש, עם אותו Bluetooth 6.1 כמו ב-Pro."
+        ],
+        "for_b": [
+          "אם אתם מתאמנים ומזיעים הרבה. IP57 מול IP54. לפי סמסונג גם Buds4 Pro אינן מומלצות לים או לבריכה.",
+          "אם אתם רוצים יותר זמן האזנה. עד 6 שעות מוזיקה עם סינון רעשים, מול 5 ב-Buds4.",
+          "אם חשובים לכם זיהוי קולי וזיהוי סירנות. סמסונג מונה אותם ב-Buds4 Pro, ולא ב-Buds4."
+        ],
+        "angle_h": "מאיפה הגיעו הנתונים של Buds4",
+        "angle": [
+          "לעמוד של Galaxy Buds4 באתר סמסונג ישראל אין טבלת מפרט, בשונה מהעמוד של Buds4 Pro. לכן רוב הנתונים של Buds4 כאן, כמו הסוללה, העמידות והמשקל, לקוחים מההודעה של סמסונג לעיתונות מפברואר 2026, וזה כתוב בשורת המקורות מתחת לטבלה.",
+          "בהודעה עצמה יש סתירה אחת שכדאי להכיר. בגוף הטקסט, סינון הרעשים האדפטיבי המשופר מיוחס רק ל-Buds4 Pro, ובטבלה שבסוף ההודעה הוא מופיע גם ב-Buds4. אם התכונה הזאת מכריעה אצלכם, שאלו אותנו לפני הקנייה."
+        ],
+        "bottom_line": "ההבדל העיקרי הוא בצורה, פתוחות מול תוך-אוזניות. אחריו באים העמידות, זמן ההאזנה, ושתי תכונות של שמיעת הסביבה שסמסונג מונה רק ב-Pro."
+      },
+      {
+        "a": "galaxy-buds3",
+        "b": "galaxy-buds4",
+        "slug": "galaxy-buds3-vs-galaxy-buds4",
+        "h1": "Galaxy Buds3 מול Galaxy Buds4",
+        "title": "Galaxy Buds3 מול Galaxy Buds4: שווה לשדרג? | פון גת",
+        "description": "Galaxy Buds3 או Galaxy Buds4? מה השתנה בין הדורות לפי המפרט של סמסונג: סוללה, עמידות, Bluetooth וקודקים. פון גת קרית גת.",
+        "keywords": [
+          "Galaxy Buds3 מול Buds4",
+          "גלקסי באדס 3 או באדס 4",
+          "שדרוג מ-Buds3 ל-Buds4",
+          "Buds4 מה חדש"
+        ],
+        "lede": "שני דורות של האוזניות הפתוחות של סמסונג, והשאלה היא אם יש סיבה לעבור. לפי המפרט, זמני הסוללה שסמסונג מפרסמת לשני הדורות זהים: עד 5 שעות מוזיקה עם סינון רעשים, ועד 24 עם הנרתיק. מה שכן השתנה הוא ה-Bluetooth, מ-5.4 ל-6.1, והעמידות, שהיא IP57 ב-Buds3 ו-IP54 ב-Buds4.",
+        "for_a": [
+          "אם עמידות חשובה לכם. ל-Buds3 דירוג IP57, מול IP54 ב-Buds4.",
+          "אם יש לכם Buds3 שעובדות טוב. לפי המפרט, זמן הסוללה של Buds4 זהה."
+        ],
+        "for_b": [
+          "אם אתם רוצים Bluetooth 6.1 וקודק LC3. סמסונג מונה את LC3 ב-Buds4, ולא ב-Buds3.",
+          "אם שידור Auracast מעניין אתכם. סמסונג מציינת אותו ב-Buds4, ובעמוד של Buds3 הוא לא מופיע."
+        ],
+        "angle_h": "האם יש סיבה לשדרג מ-Buds3",
+        "angle": [
+          "לפי המספרים שסמסונג מפרסמת, לא בגלל הסוללה: אותן 5 שעות מוזיקה עם סינון רעשים ואותן 24 עם הנרתיק. גם המשקל כמעט זהה, 4.7 גרם לאוזנייה מול 4.6.",
+          "ההבדלים הם בתקשורת ובעמידות. Buds4 עוברות ל-Bluetooth 6.1 ומונות את LC3, הקודק של LE Audio. מנגד, סמסונג מדרגת אותן ב-IP54, מול IP57 ב-Buds3. מי שמתאמן בחוץ ומזיע הרבה ירצה לשים לב לשורה הזאת בטבלה."
+        ],
+        "bottom_line": "מי שיש לו Buds3 לא מקבל לפי המפרט סוללה ארוכה יותר. מי שקונה עכשיו בוחר בין תקשורת חדשה יותר ב-Buds4 לבין עמידות גבוהה יותר ב-Buds3."
+      },
+      {
+        "a": "airpods-pro-3",
+        "b": "airpods-max-2",
+        "slug": "airpods-pro-3-vs-airpods-max-2",
+        "h1": "AirPods Pro 3 מול AirPods Max 2",
+        "title": "AirPods Pro 3 מול AirPods Max 2: באוזן או מעליה | פון גת",
+        "description": "AirPods Pro 3 או AirPods Max 2? אוזניות תוך-אוזניות מול אוזניות מעל האוזן: משקל, סוללה, עמידות ושמע בכבל, לפי המפרט של אפל. פון גת קרית גת.",
+        "keywords": [
+          "AirPods Pro 3 מול AirPods Max 2",
+          "איירפודס פרו או איירפודס מקס",
+          "AirPods Max 2 מפרט",
+          "אוזניות קשת של אפל"
+        ],
+        "lede": "אוזניות תוך-אוזניות מול אוזניות מעל האוזן, שתיהן של אפל ועם שבב H2. ההבדל שמרגישים ראשון הוא המשקל: 386.2 גרם ל-AirPods Max 2 כולל הכריות, מול 5.55 גרם לכל אוזנייה של Pro 3. ההבדל השני הוא הסוללה: עד 20 שעות ב-Max 2, ועד 8 שעות לטעינה ב-Pro 3, עם עד 24 שעות בסך הכול כשטוענים מהנרתיק.",
+        "for_a": [
+          "אם אתם רוצים משהו שנכנס לכיס.",
+          "אם אתם מתאמנים. IP57 וחיישן דופק, ול-Max 2 אפל אינה מפרסמת דירוג עמידות.",
+          "אם אתם צריכים תכונות שמיעה, שלפי אפל זמינות בישראל. ב-Max 2 אפל מונה רק Loud Sound Reduction."
+        ],
+        "for_b": [
+          "אם אתם מאזינים שעות ברצף. עד 20 שעות בטעינה אחת.",
+          "אם אתם רוצים שמע בכבל. אפל מונה ב-Max 2 שמע Lossless והשהיה נמוכה בחיבור USB-C.",
+          "אם אתם מעדיפים כפתורים. Digital Crown לעוצמה ולניגון, וכפתור למצבי ההאזנה."
+        ],
+        "angle_h": "המשקל, ולמה כדאי להרגיש אותו",
+        "angle": [
+          "386.2 גרם על הראש, מול שתי אוזניות של 5.55 גרם כל אחת. זה ההבדל הגדול בין שני הדגמים, והוא לא מופיע בשום שורה אחרת בטבלה: לא בסוללה, לא בשבב ולא בסינון הרעשים.",
+          "מי שמאזין בישיבה ליד שולחן ירגיש את זה פחות. מי שמאזין בהליכה, בשכיבה או בנסיעה ארוכה ירגיש את זה יותר. זה משהו שכדאי לנסות על הראש לפני שקונים."
+        ],
+        "bottom_line": "Pro 3 מתאימות ליום מחוץ לבית, לאימון ולכיס. Max 2 מתאימות להאזנה ארוכה במקום אחד, ולמי שרוצה שמע בכבל. ההחלטה פחות תלויה במפרט ויותר במקום שבו תשתמשו בהן."
+      },
+      {
+        "a": "airpods-5",
+        "b": "galaxy-buds4",
+        "slug": "airpods-5-vs-galaxy-buds4",
+        "h1": "AirPods 5 מול Galaxy Buds4",
+        "title": "AirPods 5 מול Galaxy Buds4: אוזניות פתוחות | פון גת",
+        "description": "AirPods 5 או Galaxy Buds4? שתי אוזניות פתוחות עם סינון רעשים: סוללה, עמידות, טעינה ומה עובד עם טלפון של היצרן השני. פון גת קרית גת.",
+        "keywords": [
+          "AirPods 5 מול Galaxy Buds4",
+          "איירפודס 5 או גלקסי באדס 4",
+          "אוזניות פתוחות עם סינון רעשים",
+          "אוזניות לאייפון או לגלקסי"
+        ],
+        "lede": "שתיהן אוזניות פתוחות עם סינון רעשים, מאותה שנה, וכל אחת מהיצרן של הטלפון שלה. לפי היצרנים, זמן ההאזנה עם סינון רעשים דומה: עד 4 שעות ב-AirPods 5 עם הנרתיק הבסיסי ועד 5 עם הנרתיק האלחוטי, ועד 5 ב-Galaxy Buds4.",
+        "for_a": [
+          "אם יש לכם אייפון.",
+          "אם עמידות חשובה לכם. IP57 לאוזניות ולנרתיק, מול IP54 לאוזניות בלבד ב-Buds4.",
+          "אם אינכם צריכים טעינה אלחוטית. יש גרסה עם נרתיק USB-C בלבד."
+        ],
+        "for_b": [
+          "אם יש לכם טלפון גלקסי. אודיו 360, Auto Switch ו-SSC-UHQ עובדים לפי סמסונג רק עם מכשירי Galaxy תואמים.",
+          "אם אתם רוצים Bluetooth 6.1 וקודק LC3."
+        ],
+        "angle_h": "מה עובד עם טלפון של היצרן השני",
+        "angle": [
+          "שתיהן יתחברו כאוזניות Bluetooth גם לטלפון של היצרן השני, אבל כל אחת מאבדת שם משהו. אפל כותבת שעם מכשירים שאינם שלה הפונקציונליות עשויה להיות מוגבלת. סמסונג כותבת שעם iPhone אין שליטה באוזניות מהמכשיר, כי אפליקציית Galaxy Wearable אינה נתמכת ב-iOS.",
+          "אפל אינה מפרטת אילו תכונות חסרות. סמסונג מפרטת את מה ששמור למכשירי Galaxy: אודיו 360, Auto Switch, SSC-UHQ, שיחות Super Wideband ותרגום. לכן ברוב המקרים קונים את האוזניות של יצרן הטלפון."
+        ],
+        "bottom_line": "הבחירה כאן נקבעת כמעט תמיד לפי הטלפון: עם אייפון, AirPods 5, ועם גלקסי, Buds4. ואם הטלפון שלכם אינו של אף אחד מהם, השוו את העמידות ואת זמן ההאזנה."
+      }
+    ]
+  },
+  "devices": [
+    {
+      "slug": "airpods-5",
+      "name": "AirPods 5",
+      "name_he": "AirPods 5",
+      "brand": "Apple",
+      "status": "listed",
+      "launch": "2026-09",
+      "launch_src": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/airpods-5/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "אין עמוד ישראלי: apple.com/il/airpods/ מפנה, ועמודי המפרט תחת /il/ החזירו 404 ב-24.9.2026."
+        },
+        "form": {
+          "src": "https://www.apple.com/airpods-5/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "sensors_health": {
+          "src": "https://www.apple.com/airpods/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://www.apple.com/airpods-5/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "codecs": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת רשימת קודקים."
+        },
+        "ecosystem": {
+          "src": null,
+          "at": null,
+          "note": "אפל כותבת רק שהפונקציונליות עם מכשירים אחרים עשויה להיות מוגבלת, ואינה מפרטת אילו תכונות."
+        },
+        "translation": {
+          "src": "https://www.apple.com/ios/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "התמיכה בדגם מעמוד ההשוואה של אפל (שורת Live Translation). רשימת השפות מדף הזמינות."
+        }
+      },
+      "spec": {
+        "form": "עיצוב פתוח (open-ear), בלי כריות",
+        "weight": "אוזנייה: 4.3 גרם; נרתיק: 32.3 גרם",
+        "dimensions": "אוזנייה: 30.2 × 18.3 × 18.1 מ״מ (גובה × רוחב × עומק); נרתיק: 46.2 × 50.1 × 21.2 מ״מ",
+        "anc": "כן. ANC קיים בשני דגמי הדור הזה (עם הנרתיק הבסיסי ועם הנרתיק האלחוטי)",
+        "audio_features": "Adaptive Audio, מצב Transparency, מודעות לשיחה (Conversation Awareness), שמע מרחבי מותאם אישית עם מעקב ראש דינמי, Adaptive EQ",
+        "drivers": "רמקול בעיצוב אפל (high-excursion). הגודל לא פורסם",
+        "codecs": null,
+        "chip": "H2",
+        "mics": "שני מיקרופונים מכווני אלומה (beamforming) ומיקרופון פנימי; Voice Isolation בשיחות; הקלטת שמע באיכות סטודיו",
+        "controls": "חיישן לחץ (force sensor) על המוט: ניגון, שיחות, דילוג והחלפת מצב האזנה. החלקה לשינוי עוצמה קיימת רק בדגם עם הנרתיק האלחוטי",
+        "battery": "עד 4 שעות האזנה עם ANC, עד 6 שעות כשבקרת הרעש כבויה; עד 20 שעות עם הנרתיק (עם ANC); 5 דקות בנרתיק נותנות בערך שעת האזנה",
+        "charging": "נרתיק עם חיבור USB-C בלבד; Apple לא מציינת טעינה אלחוטית לדגם הזה",
+        "case": "נרתיק טעינה בסיסי (USB-C). Apple מציינת רמקול ל-Find My רק בנרתיק האלחוטי",
+        "water_resistance": "IP57 לאוזניות ולנרתיק, לפי תקן IEC 60529. לפי Apple: מיועד לספורט ופעילות שאינם במים, העמידות אינה קבועה ועלולה לפחות עם השימוש, ואין לטעון כשהן רטובות.",
+        "sensors_health": "אין חיישן דופק ואין תכונות בריאות שמיעה (Hearing Test, Hearing Aid, Hearing Protection)",
+        "compatibility": "iPhone, iPad, Mac, Apple Watch, Apple TV ו-Vision Pro עם גרסת מערכת ההפעלה העדכנית. לפי Apple אפשר להשתמש בהן כאוזניות Bluetooth גם עם מכשירים שאינם של Apple, אבל הפונקציונליות עשויה להיות מוגבלת. Apple לא מזכירה Android בשמו ולא מפרטת אילו תכונות עובדות בו.",
+        "ecosystem": null,
+        "translation": "Live Translation נתמך. ברשימת השפות של אפל לתרגום עם AirPods אין עברית",
+        "bluetooth": "Bluetooth 5.3",
+        "in_box": "אוזניות, נרתיק טעינה (USB-C), תיעוד"
+      }
+    },
+    {
+      "slug": "airpods-5-wireless-charging-case",
+      "name": "AirPods 5 with Wireless Charging Case",
+      "name_he": "AirPods 5 with Wireless Charging Case",
+      "brand": "Apple",
+      "status": "listed",
+      "launch": "2026-09",
+      "launch_src": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/airpods-5/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "אין עמוד ישראלי: apple.com/il/airpods/ מפנה, ועמודי המפרט תחת /il/ החזירו 404 ב-24.9.2026."
+        },
+        "form": {
+          "src": "https://www.apple.com/airpods-5/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "anc": {
+          "src": "https://www.apple.com/airpods/compare/",
+          "kind": "עמוד ההשוואה של אפל",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": "https://www.apple.com/airpods/compare/",
+          "kind": "עמוד ההשוואה של אפל",
+          "at": "2026-09-24"
+        },
+        "case": {
+          "src": "https://www.apple.com/airpods/compare/",
+          "kind": "עמוד ההשוואה של אפל",
+          "at": "2026-09-24"
+        },
+        "sensors_health": {
+          "src": "https://www.apple.com/airpods/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://www.apple.com/airpods-5/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "codecs": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת רשימת קודקים."
+        },
+        "ecosystem": {
+          "src": null,
+          "at": null,
+          "note": "אפל כותבת רק שהפונקציונליות עם מכשירים אחרים עשויה להיות מוגבלת, ואינה מפרטת אילו תכונות."
+        },
+        "translation": {
+          "src": "https://www.apple.com/ios/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "התמיכה בדגם מעמוד ההשוואה של אפל (שורת Live Translation). רשימת השפות מדף הזמינות."
+        }
+      },
+      "spec": {
+        "form": "עיצוב פתוח (open-ear), בלי כריות",
+        "weight": "אוזנייה: 4.3 גרם; נרתיק: 34.7 גרם",
+        "dimensions": "אוזנייה: 30.2 × 18.3 × 18.1 מ״מ (גובה × רוחב × עומק); נרתיק: 46.2 × 50.1 × 21.2 מ״מ",
+        "anc": "כן",
+        "audio_features": "Adaptive Audio, מצב Transparency, מודעות לשיחה (Conversation Awareness), שמע מרחבי מותאם אישית עם מעקב ראש דינמי, Adaptive EQ",
+        "drivers": "רמקול בעיצוב אפל (high-excursion). הגודל לא פורסם",
+        "codecs": null,
+        "chip": "H2",
+        "mics": "שני מיקרופונים מכווני אלומה (beamforming) ומיקרופון פנימי; Voice Isolation בשיחות; הקלטת שמע באיכות סטודיו",
+        "controls": "חיישן לחץ (force sensor) על המוט, עם החלקה למעלה ולמטה לשינוי עוצמת השמע",
+        "battery": "עד 5 שעות האזנה עם ANC, עד 7 שעות כשבקרת הרעש כבויה; עד 22 שעות עם הנרתיק (עם ANC); 5 דקות בנרתיק נותנות בערך שעת האזנה",
+        "charging": "USB-C, מטען Apple Watch או מטען Qi מאושר. MagSafe לא מופיע ברשימה",
+        "case": "רמקול ל-Find My בנרתיק",
+        "water_resistance": "IP57 לאוזניות ולנרתיק, לפי תקן IEC 60529. לפי Apple: מיועד לספורט ופעילות שאינם במים, העמידות אינה קבועה ועלולה לפחות עם השימוש, ואין לטעון כשהן רטובות.",
+        "sensors_health": "אין חיישן דופק ואין תכונות בריאות שמיעה (Hearing Test, Hearing Aid, Hearing Protection)",
+        "compatibility": "iPhone, iPad, Mac, Apple Watch, Apple TV ו-Vision Pro עם גרסת מערכת ההפעלה העדכנית. לפי Apple אפשר להשתמש בהן כאוזניות Bluetooth גם עם מכשירים שאינם של Apple, אבל הפונקציונליות עשויה להיות מוגבלת. Apple לא מזכירה Android בשמו ולא מפרטת אילו תכונות עובדות בו.",
+        "ecosystem": null,
+        "translation": "Live Translation נתמך. ברשימת השפות של אפל לתרגום עם AirPods אין עברית",
+        "bluetooth": "Bluetooth 5.3",
+        "in_box": "אוזניות, נרתיק טעינה (USB-C) עם רמקול, תיעוד"
+      }
+    },
+    {
+      "slug": "airpods-pro-3",
+      "name": "AirPods Pro 3",
+      "name_he": "AirPods Pro 3",
+      "brand": "Apple",
+      "status": "listed",
+      "launch": "2025-09",
+      "launch_src": "https://www.apple.com/newsroom/2025/09/introducing-airpods-pro-3-the-ultimate-audio-experience/",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/airpods-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "אין עמוד ישראלי: apple.com/il/airpods/ מפנה, ועמודי המפרט תחת /il/ החזירו 404 ב-24.9.2026."
+        },
+        "controls": {
+          "src": "https://www.apple.com/airpods/compare/",
+          "kind": "עמוד ההשוואה של אפל",
+          "at": "2026-09-24"
+        },
+        "case": {
+          "src": "https://www.apple.com/airpods/compare/",
+          "kind": "עמוד ההשוואה של אפל",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://www.apple.com/airpods-pro/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "codecs": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת רשימת קודקים."
+        },
+        "ecosystem": {
+          "src": null,
+          "at": null,
+          "note": "אפל כותבת רק שהפונקציונליות עם מכשירים אחרים עשויה להיות מוגבלת, ואינה מפרטת אילו תכונות."
+        },
+        "translation": {
+          "src": "https://www.apple.com/ios/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "התמיכה בדגם מעמוד ההשוואה של אפל (שורת Live Translation). רשימת השפות מדף הזמינות."
+        }
+      },
+      "spec": {
+        "form": "תוך-אוזני, עם כריות סיליקון בחמש מידות (XXS, XS, S, M, L)",
+        "weight": "אוזנייה: 5.55 גרם; נרתיק: 43.99 גרם",
+        "dimensions": "אוזנייה: 30.9 × 19.2 × 27.0 מ״מ (גובה × רוחב × עומק); נרתיק: 47.2 × 62.2 × 21.8 מ״מ",
+        "anc": "כן",
+        "audio_features": "Adaptive Audio, מצב Transparency, מודעות לשיחה (Conversation Awareness), Personalized Volume, Loud Sound Reduction, שמע מרחבי מותאם אישית עם מעקב ראש דינמי, Adaptive EQ",
+        "drivers": "רמקול בעיצוב אפל (high-excursion). הגודל לא פורסם",
+        "codecs": null,
+        "chip": "H2; בנרתיק שבב Ultra Wideband מהדור השני",
+        "mics": "שני מיקרופונים מכווני אלומה (beamforming) ומיקרופון פנימי; Voice Isolation בשיחות; הקלטת שמע באיכות סטודיו",
+        "controls": "חיישן לחץ (force sensor) על המוט, עם החלקה לשינוי עוצמת השמע",
+        "battery": "עד 8 שעות האזנה עם ANC (עד 7.5 עם שמע מרחבי ומעקב ראש); עד 6.5 שעות עם מדידת דופק באימון; עד 10 שעות ב-Transparency עם Hearing Aid; עד 24 שעות עם הנרתיק (עם ANC); 5 דקות בנרתיק נותנות בערך שעת האזנה",
+        "charging": "USB-C, מטען MagSafe, מטען Apple Watch או מטען Qi מאושר",
+        "case": "נרתיק MagSafe עם רמקול ל-Find My ולולאת רצועה",
+        "water_resistance": "IP57 לאוזניות ולנרתיק, לפי תקן IEC 60529. לפי Apple: מיועד לספורט ופעילות שאינם במים, העמידות אינה קבועה ועלולה לפחות עם השימוש, ואין לטעון כשהן רטובות.",
+        "sensors_health": "חיישן דופק לאימונים; Hearing Test, Hearing Aid (כולל Conversation Boost אוטומטי) ו-Hearing Protection. לפי דף הזמינות של אפל, תכונות השמיעה זמינות בישראל",
+        "compatibility": "iPhone, iPad, Mac, Apple Watch, Apple TV ו-Vision Pro עם גרסת מערכת ההפעלה העדכנית. לפי Apple אפשר להשתמש בהן כאוזניות Bluetooth גם עם מכשירים שאינם של Apple, אבל הפונקציונליות עשויה להיות מוגבלת. Apple לא מזכירה Android בשמו ולא מפרטת אילו תכונות עובדות בו.",
+        "ecosystem": null,
+        "translation": "Live Translation נתמך. ברשימת השפות של אפל לתרגום עם AirPods אין עברית",
+        "bluetooth": "Bluetooth 5.3",
+        "in_box": "אוזניות, נרתיק MagSafe (USB-C) עם רמקול ולולאת רצועה, כריות סיליקון בחמש מידות, תיעוד. כבל USB-C נמכר בנפרד"
+      }
+    },
+    {
+      "slug": "airpods-max-2",
+      "name": "AirPods Max 2",
+      "name_he": "AirPods Max 2",
+      "brand": "Apple",
+      "status": "listed",
+      "launch": "2026-03",
+      "launch_src": "https://www.apple.com/newsroom/2026/03/apple-introduces-airpods-max-2-powered-by-h2/",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/airpods-max/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "אין עמוד ישראלי: apple.com/il/airpods/ מפנה, ועמודי המפרט תחת /il/ החזירו 404 ב-24.9.2026."
+        },
+        "form": {
+          "src": "https://www.apple.com/airpods-max/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "sensors_health": {
+          "src": "https://www.apple.com/airpods/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://www.apple.com/airpods-max/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24"
+        },
+        "codecs": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת רשימת קודקים."
+        },
+        "ecosystem": {
+          "src": null,
+          "at": null,
+          "note": "אפל כותבת רק שהפונקציונליות עם מכשירים אחרים עשויה להיות מוגבלת, ואינה מפרטת אילו תכונות."
+        },
+        "translation": {
+          "src": "https://www.apple.com/ios/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "התמיכה בדגם מעמוד ההשוואה של אפל (שורת Live Translation). רשימת השפות מדף הזמינות."
+        },
+        "water_resistance": {
+          "src": null,
+          "at": null,
+          "note": "Apple לא מפרסמת דירוג עמידות למים או לאבק ל-AirPods Max 2: אין סעיף כזה בדף המפרט, והשורה \"Sweat and Water resistance\" ריקה בעמודה שלהן בדף ההשוואה."
+        }
+      },
+      "spec": {
+        "form": "אוזניות מעל האוזן (over-ear)",
+        "weight": "אוזניות כולל כריות: 386.2 גרם; Smart Case: 134.5 גרם",
+        "dimensions": "גובה 187.3 מ״מ, רוחב 168.6 מ״מ, עומק 83.4 מ״מ",
+        "anc": "כן",
+        "audio_features": "Adaptive Audio, מצב Transparency, מודעות לשיחה (Conversation Awareness), Personalized Volume, Loud Sound Reduction, שמע מרחבי מותאם אישית עם מעקב ראש דינמי, Adaptive EQ, שמע Lossless והשהיה נמוכה בחיבור USB-C",
+        "drivers": "רמקול דינמי בעיצוב אפל. הגודל לא פורסם",
+        "codecs": null,
+        "chip": "H2 בכל אחת מכוסות האוזן",
+        "mics": "תשעה מיקרופונים: שמונה ל-ANC ושלושה לקליטת קול (שניים משותפים עם ה-ANC ואחד נוסף); Voice Isolation בשיחות; הקלטת שמע באיכות סטודיו",
+        "controls": "Digital Crown (סיבוב לעוצמה, לחיצות לניגון, לשיחות ולדילוג, לחיצה ארוכה ל-Siri) וכפתור להחלפת מצב האזנה",
+        "battery": "עד 20 שעות האזנה עם ANC; 5 דקות טעינה נותנות בערך 1.5 שעות האזנה; אחסון ב-Smart Case שומר על הסוללה במצב צריכה נמוכה מאוד",
+        "charging": "טעינה דרך USB-C",
+        "case": "Smart Case, שמכניס את האוזניות למצב צריכה נמוכה מאוד",
+        "water_resistance": null,
+        "sensors_health": "אין חיישן דופק. בתחום השמיעה: Loud Sound Reduction בלבד, בלי Hearing Test, Hearing Aid או Hearing Protection",
+        "compatibility": "iPhone, iPad, Mac, Apple Watch, Apple TV ו-Vision Pro עם גרסת מערכת ההפעלה העדכנית. לפי Apple אפשר להשתמש בהן כאוזניות Bluetooth גם עם מכשירים שאינם של Apple, אבל הפונקציונליות עשויה להיות מוגבלת. Apple לא מזכירה Android בשמו ולא מפרטת אילו תכונות עובדות בו.",
+        "ecosystem": null,
+        "translation": "Live Translation נתמך. ברשימת השפות של אפל לתרגום עם AirPods אין עברית",
+        "bluetooth": "Bluetooth 5.3",
+        "in_box": "אוזניות, Smart Case, כבל טעינה USB-C, תיעוד"
+      }
+    },
+    {
+      "slug": "galaxy-buds4-pro",
+      "name": "Galaxy Buds4 Pro",
+      "name_he": "Galaxy Buds4 Pro",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2026-02",
+      "launch_src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds4-pro-white-sm-r640nzwailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "form": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        }
+      },
+      "spec": {
+        "form": "תוך-אוזני (canal) עם כיסויי אוזניות, להב מתכתי",
+        "weight": "אוזנייה 5.1 גרם, נרתיק 44.3 גרם",
+        "dimensions": "אוזנייה 30.9×18.1×19.6 מ״מ, נרתיק 51×28.3×51 מ״מ (גובה×רוחב×עומק)",
+        "anc": "כן, ANC אדפטיבי ובקרת רעש אדפטיבית",
+        "audio_features": "צליל סביבה, בקרת רעש אדפטיבית, זיהוי קולי (Voice Detect), זיהוי סירנות (Siren Detect), אודיו 360, EQ אדפטיבי",
+        "drivers": "רמקול דו-כיווני: וופר 11 מ״מ וטוויטר 5.5×3.5 מ״מ, מגבר כפול",
+        "codecs": "SSC, SSC-UHQ, AAC, SBC, LC3",
+        "chip": null,
+        "mics": "6 מיקרופונים (שלושה בכל אוזנייה), סינון רעש DNN, שיחות Super Wideband עד 16kHz",
+        "controls": "צביטה והחלקה על הלהב, מחוות ראש, פקודות קוליות",
+        "battery": "מוזיקה: עד 6 שעות (ANC פועל) / עד 7 (כבוי), עם הנרתיק עד 26 / 30. שיחה: עד 4.5 / 5, עם הנרתיק עד 20 / 22. סוללה (אופייני): 61 mAh לאוזנייה, 530 mAh לנרתיק",
+        "charging": "נרתיק תומך בטעינה אלחוטית; משטח טעינה, מטען וכבל לא כלולים",
+        "case": null,
+        "water_resistance": "IP57 לאוזניות (בדיקת מעבדה: עד מטר מים מתוקים, עד 30 דקות); הנרתיק אינו עמיד במים",
+        "sensors_health": "חיישן תנועה, ג׳יירוסקופ, חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע, VPU; תזכורת מתיחת צוואר",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 12.0 ואילך ולפחות 1.5GB זיכרון; במכשירי Galaxy עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. iPhone: אפשר לחבר, אבל Galaxy Wearable לא נתמכת ב-iOS ואין שליטה באוזניות מהמכשיר",
+        "ecosystem": "אודיו 360, Auto Switch, SSC-UHQ, שיחות Super Wideband, Interpreter ו-Live Translate: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "Interpreter ו-Live Translate עם סמארטפון Galaxy עם Galaxy AI ו-One UI 6.1.1 ואילך. רשימת השפות בעמוד אינה כוללת עברית",
+        "bluetooth": "Bluetooth 6.1; פרופילים A2DP, AVRCP, HFP, PBP, TMAP; LE Audio; החלפה אוטומטית",
+        "in_box": "אוזניות, שלושה סטים של כיסויי אוזניות (S/M/L), נרתיק טעינה, מדריך להתחלה מהירה; כבל USB Type-C לא כלול"
+      }
+    },
+    {
+      "slug": "galaxy-buds4",
+      "name": "Galaxy Buds4",
+      "name_he": "Galaxy Buds4",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2026-02",
+      "launch_src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds4-white-sm-r540nzwailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "לעמוד הישראלי של Buds4 אין טבלת מפרט. רוב השדות מההודעה לעיתונות, וכל אחד מסומן במקור שלו."
+        },
+        "form": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "weight": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "dimensions": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "audio_features": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "codecs": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "battery": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "water_resistance": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "sensors_health": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "bluetooth": {
+          "src": "https://news.samsung.com/global/samsung-unveils-all-new-galaxy-buds4-series-with-ultimate-sound",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        }
+      },
+      "spec": {
+        "form": "פתוחות (open-fit), ללא כיסויי אוזניות באריזה, עם להב",
+        "weight": "אוזנייה 4.6 גרם, נרתיק 45.1 גרם",
+        "dimensions": "אוזנייה 18.3×19.3×30.5 מ״מ, נרתיק 51×51×28.3 מ״מ",
+        "anc": "כן, ANC שמותאם לצורת האוזן; כוונון ANC וצלילי סביבה בזמן אמת",
+        "audio_features": "צליל סביבה, EQ אדפטיבי, ANC אדפטיבי, אודיו 360; ללא Voice Detect ו-Siren Detect",
+        "drivers": "רמקול דינמי חד-כיווני 11 מ״מ",
+        "codecs": "SSC HiFi, SSC UHQ, AAC, SBC, LC3",
+        "chip": null,
+        "mics": "6 מיקרופונים, סינון רעש DNN, שיחות Super Wideband עד 16kHz",
+        "controls": "צביטה והחלקה על הלהב, פקודות קוליות",
+        "battery": "מוזיקה: עד 5 שעות (ANC פועל) / 6 (כבוי), עם הנרתיק עד 24 / 30. שיחה: עד 3.5 / 4, עם הנרתיק עד 18 / 20. סוללה (אופייני): 45 mAh לאוזנייה, 515 mAh לנרתיק",
+        "charging": "נרתיק תומך בטעינה אלחוטית; משטח טעינה לא כלול",
+        "case": null,
+        "water_resistance": "IP54, לאוזניות בלבד",
+        "sensors_health": "VPU, חיישן לחץ ומגע (החלקה), IR, מד תאוצה, ג׳יירוסקופ, חיישן Hall; לא פורסמו תכונות בריאות",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 12.0 ואילך ולפחות 1.5GB זיכרון; במכשירי Galaxy עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. iPhone: אפשר לחבר, אבל Galaxy Wearable לא נתמכת ב-iOS ואין שליטה באוזניות מהמכשיר",
+        "ecosystem": "אודיו 360, Auto Switch, SSC-UHQ, שיחות Super Wideband, Interpreter ו-Live Translate: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "Interpreter ו-Live Translate עם סמארטפון Galaxy עם Galaxy AI ו-One UI 6.1.1 ואילך. רשימת השפות בעמוד אינה כוללת עברית",
+        "bluetooth": "Bluetooth 6.1, Auto Switch, Auracast",
+        "in_box": "אוזניות, נרתיק טעינה, מדריך למתחילים; כבל USB Type-C לא כלול"
+      }
+    },
+    {
+      "slug": "galaxy-buds3",
+      "name": "Galaxy Buds3",
+      "name_he": "Galaxy Buds3",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2024-07",
+      "launch_src": "https://news.samsung.com/global/samsung-galaxy-z-fold-6-and-z-flip-6-elevate-galaxy-ai-to-new-heights",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds3-silver-sm-r530nzaailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "form": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-z-fold-6-and-z-flip-6-elevate-galaxy-ai-to-new-heights",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        },
+        "in_box": {
+          "src": null,
+          "at": null,
+          "note": "Not stated on the IL Buds3 page or in the newsroom release."
+        }
+      },
+      "spec": {
+        "form": "פתוחות (open-type), עם להב",
+        "weight": "אוזנייה 4.7 גרם, נרתיק 46.5 גרם",
+        "dimensions": "אוזנייה 31.9×20.4×18.1 מ״מ, נרתיק 24.4×58.9×48.7 מ״מ",
+        "anc": "כן, ANC אדפטיבי (Adaptive ANC); כבוי כברירת מחדל",
+        "audio_features": "אודיו 360 ו-EQ אדפטיבי. על צליל סביבה המקורות של סמסונג סותרים: טבלת המפרט בישראל אומרת שאין, וההודעה לעיתונות אומרת שיש",
+        "drivers": "רמקול דינמי 11 מ״מ, חד-כיווני",
+        "codecs": "SSC עד 24bit/96kHz (בטלפונים תומכים); AAC, SBC",
+        "chip": null,
+        "mics": "6 מיקרופונים; שיחות Super Wideband",
+        "controls": "צביטה והחלקה על הלהב, פקודות קוליות",
+        "battery": "מוזיקה: עד 5 שעות (ANC פועל) / 6 (כבוי), עם הנרתיק עד 24 / 30. שיחה: עד 3.5 / 4, עם הנרתיק עד 18 / 20. סוללה (אופייני): 48 mAh לאוזנייה, 515 mAh לנרתיק",
+        "charging": "נרתיק תומך בטעינה אלחוטית",
+        "case": null,
+        "water_resistance": "IP57 (בדיקת מעבדה: עד מטר מים מתוקים, עד 30 דקות); הנרתיק אינו עמיד במים",
+        "sensors_health": "חיישן תנועה, ג׳יירוסקופ, חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע, VPU; לא פורסמו תכונות בריאות",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 11.0 ואילך ולפחות 1.5GB זיכרון; במכשירים עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. iPhone: העמוד מציין רק ש-Galaxy Wearable אינה נתמכת ב-iOS",
+        "ecosystem": "אודיו 360, Auto Switch, שמע UHQ דרך SSC, Interpreter ו-Live Translate: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "תרגום שמע רק עם סמארטפון Samsung Galaxy; העמוד אינו מפרט שפות",
+        "bluetooth": "Bluetooth 5.4; פרופילים A2DP, AVRCP, HFP, PBP, TMAP",
+        "in_box": null
+      }
+    },
+    {
+      "slug": "galaxy-buds3-pro",
+      "name": "Galaxy Buds3 Pro",
+      "name_he": "Galaxy Buds3 Pro",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2024-07",
+      "launch_src": "https://news.samsung.com/global/samsung-galaxy-z-fold-6-and-z-flip-6-elevate-galaxy-ai-to-new-heights",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds3-pro-silver-sm-r630nzaailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "form": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-z-fold-6-and-z-flip-6-elevate-galaxy-ai-to-new-heights",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "drivers": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-z-fold-6-and-z-flip-6-elevate-galaxy-ai-to-new-heights",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        }
+      },
+      "spec": {
+        "form": "תוך-אוזני (canal) עם כיסויי אוזניות, להב עם Blade Lights",
+        "weight": "אוזנייה 5.4 גרם, נרתיק 46.5 גרם",
+        "dimensions": "אוזנייה 33.2×19.8×18.1 מ״מ, נרתיק 24.4×58.9×48.7 מ״מ",
+        "anc": "כן, ANC אדפטיבי ובקרת רעש אדפטיבית",
+        "audio_features": "צליל סביבה, אודיו 360, EQ אדפטיבי, בקרת רעש אדפטיבית, Voice Detect, Siren Detect",
+        "drivers": "רמקול דו-כיווני: דינמי 10.5 מ״מ וטוויטר מישורי (planar) 6.1 מ״מ, מגבר כפול",
+        "codecs": "SSC עד 24bit/96kHz (בטלפונים תומכים); AAC, SBC",
+        "chip": null,
+        "mics": "6 מיקרופונים; שיחות Super Wideband",
+        "controls": "צביטה והחלקה על הלהב, פקודות קוליות",
+        "battery": "מוזיקה: עד 6 שעות (ANC פועל) / 7 (כבוי), עם הנרתיק עד 26 / 30. שיחה: עד 4.5 / 5, עם הנרתיק עד 20 / 22. סוללה (אופייני): 53 mAh לאוזנייה, 515 mAh לנרתיק",
+        "charging": "USB-C, נרתיק תומך בטעינה אלחוטית",
+        "case": null,
+        "water_resistance": "IP57 (בדיקת מעבדה: עד מטר מים מתוקים, עד 30 דקות); הנרתיק אינו עמיד במים",
+        "sensors_health": "חיישן תנועה, ג׳יירוסקופ, חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע, VPU; לא פורסמו תכונות בריאות",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 11.0 ואילך ולפחות 1.5GB זיכרון; במכשירים עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. iPhone: העמוד מציין רק ש-Galaxy Wearable אינה נתמכת ב-iOS",
+        "ecosystem": "אודיו 360, Auto Switch, שמע UHQ דרך SSC, Interpreter ו-Live Translate: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "תרגום שמע רק עם סמארטפון Samsung Galaxy; העמוד אינו מפרט שפות",
+        "bluetooth": "Bluetooth 5.4; פרופילים A2DP, AVRCP, HFP, PBP, TMAP",
+        "in_box": "אוזניות, נרתיק טעינה, שלושה סטים של כיסויי אוזניות (S, M, L), כבל USB, מדריך להתחלה מהירה"
+      }
+    },
+    {
+      "slug": "galaxy-buds3-fe",
+      "name": "Galaxy Buds3 FE",
+      "name_he": "Galaxy Buds3 FE",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2025-08",
+      "launch_src": "https://news.samsung.com/global/samsung-introduces-galaxy-buds3-fe-with-iconic-design-enhanced-sound-and-galaxy-ai-integration",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds3-fe-gray-sm-r420nzaailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        }
+      },
+      "spec": {
+        "form": "תוך-אוזני עם כיסויי אוזניות, עם להב",
+        "weight": "אוזנייה 5 גרם, נרתיק 41.8 גרם",
+        "dimensions": "אוזנייה 33.8×18.0×21.1 מ״מ, נרתיק 24.4×58.9×48.7 מ״מ",
+        "anc": "כן, מופעל כברירת מחדל; לא צוין ANC אדפטיבי",
+        "audio_features": "צליל סביבה, אודיו 360 (ללא מעקב ראש)",
+        "drivers": "רמקול דינמי חד-כיווני; קוטר לא פורסם",
+        "codecs": "SSC, AAC, SBC",
+        "chip": null,
+        "mics": "6 מיקרופונים; סינון רעש במודל למידת מכונה",
+        "controls": "צביטה והחלקה על הלהב",
+        "battery": "מוזיקה: עד 6 שעות (ANC פועל) / 8.5 (כבוי), עם הנרתיק עד 24 / 30. שיחה: עד 4 / 4, עם הנרתיק עד 18 / 18. סוללה (אופייני): 53 mAh לאוזנייה, 515 mAh לנרתיק",
+        "charging": "טעינה בכבל בלבד; טעינה אלחוטית אינה נתמכת; כבל USB Type-C לא כלול",
+        "case": null,
+        "water_resistance": "IP54",
+        "sensors_health": "חיישן מכסה, חיישן לחץ, חיישן קרבה, חיישן מגע; לא פורסמו תכונות בריאות",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 11.0 ואילך ולפחות 1.5GB זיכרון; במכשירים עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. העמוד אינו מזכיר iPhone או iOS",
+        "ecosystem": "אודיו 360, Auto Switch, Interpreter ו-Live Translate: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "Interpreter ו-Live Translate עם מכשירי Samsung Galaxy תואמים; העמוד אינו מפרט שפות",
+        "bluetooth": "Bluetooth 5.4; פרופילים A2DP, AVRCP, HFP; החלפה אוטומטית",
+        "in_box": "אוזניות, שלושה סטים של כיסויי אוזניות (S/M/L), נרתיק טעינה, מדריך להתחלה מהירה; כבל USB Type-C לא כלול"
+      }
+    },
+    {
+      "slug": "galaxy-buds-core",
+      "name": "Galaxy Buds Core",
+      "name_he": "Galaxy Buds Core",
+      "brand": "Samsung",
+      "status": "listed",
+      "launch": "2025-09",
+      "launch_src": "https://news.samsung.com/my/samsung-unveils-galaxy-buds-core-for-the-everyday-user",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds-core-white-sm-r410nzwailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "chip": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרסמת שם שבב."
+        },
+        "case": {
+          "src": null,
+          "at": null,
+          "note": "סמסונג אינה מפרטת תכונות של הנרתיק מעבר לטעינה."
+        },
+        "in_box": {
+          "src": null,
+          "at": null,
+          "note": "Not stated on the IL page or the newsroom release."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "Neither USB-C nor wireless charging is stated on the IL Buds Core page or the Malaysia newsroom release."
+        }
+      },
+      "spec": {
+        "form": "אוזניות עם כנפיות סיליקון (wingtips) לייצוב",
+        "weight": "אוזנייה 5.3 גרם, נרתיק 31.2 גרם",
+        "dimensions": "אוזנייה 22.2×17.1×19.2 מ״מ, נרתיק 27.7×50.0×50.0 מ״מ",
+        "anc": "כן, מופעל כברירת מחדל; לא צוין ANC אדפטיבי",
+        "audio_features": "צליל סביבה; ללא אודיו 360",
+        "drivers": "רמקול חד-כיווני; קוטר לא פורסם",
+        "codecs": "AAC, SBC, Scalable Codec",
+        "chip": null,
+        "mics": "6 לפי טבלת המפרט; טקסט העמוד מציין שלושה מיקרופונים",
+        "controls": "מגע באוזנייה",
+        "battery": "עם הנרתיק: עד 20 שעות מוזיקה (ANC פועל), עד 35 (כבוי); זמן לאוזנייה בלבד לא פורסם. סוללה (אופייני): 65 mAh לאוזנייה, 500 mAh לנרתיק",
+        "charging": null,
+        "case": null,
+        "water_resistance": "IP54",
+        "sensors_health": "חיישן מכסה, חיישן קרבה, חיישן מגע; לא פורסמו תכונות בריאות",
+        "compatibility": "חיבור כשמע Bluetooth בכל מערכת הפעלה. לאפליקציית Galaxy Wearable: Android 11.0 ואילך ולפחות 1.5GB זיכרון; במכשירים עם One UI 8.0 ואילך ההגדרות בהגדרות הטלפון. העמוד אינו מזכיר iPhone או iOS",
+        "ecosystem": "Auto Switch (סמארטפונים וטאבלטים של Samsung Galaxy עם One UI 3.1 ומעלה), Interpreter: רק עם מכשירי Samsung Galaxy תואמים",
+        "translation": "Interpreter ו-Live Translate עם מכשירי Samsung Galaxy תואמים; העמוד אינו מפרט שפות",
+        "bluetooth": "Bluetooth 5.4; פרופילים A2DP, AVRCP, HFP",
+        "in_box": null
+      }
+    }
+  ]
+}

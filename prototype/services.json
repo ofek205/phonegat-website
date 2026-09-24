@@ -324,6 +324,41 @@
       "url": "/compare/galaxy-watch9-vs-galaxy-watch-ultra-2/",
       "name": "Galaxy Watch9 מול Galaxy Watch Ultra 2",
       "status": "review"
+    },
+    {
+      "url": "/compare/airpods-pro-3-vs-galaxy-buds4-pro/",
+      "name": "AirPods Pro 3 מול Galaxy Buds4 Pro",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-5-vs-airpods-pro-3/",
+      "name": "AirPods 5 מול AirPods Pro 3",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-buds4-vs-galaxy-buds4-pro/",
+      "name": "Galaxy Buds4 מול Galaxy Buds4 Pro",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-buds3-vs-galaxy-buds4/",
+      "name": "Galaxy Buds3 מול Galaxy Buds4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-pro-3-vs-airpods-max-2/",
+      "name": "AirPods Pro 3 מול AirPods Max 2",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-5-vs-galaxy-buds4/",
+      "name": "AirPods 5 מול Galaxy Buds4",
+      "status": "review"
+    },
+    {
+      "url": "/headphones/compare/",
+      "name": "השוואת אוזניות",
+      "status": "review"
     }
   ]
 }

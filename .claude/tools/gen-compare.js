@@ -86,7 +86,7 @@ function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 /* עברית מבחינה בין יחיד, זוגי ורבים, והמחולל הדפיס "1 שדות זהים".
  * שלושה מקומות מרנדרים את אותו מספר, ולכן פונקציה אחת ולא שלוש מחרוזות. */
-function sameTxt(n){ return n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
+function sameTxt(n){ return n === 0 ? 'אין שדות זהים' : n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
 function sameMoreTxt(n){ return n === 1 ? 'שדה אחד נוסף זהה' : (n === 2 ? 'שני שדות נוספים זהים' : n + ' שדות נוספים זהים'); }
 function D(slug) { return db.devices.filter(function (d) { return d.slug === slug; })[0]; }
 
@@ -188,6 +188,10 @@ function buildTable(a, b, d) {
   /* ratioField ולא ratioPair: היא בודקת שהיחידות זהות לפני שהיא מחזירה יחס. ראו את ההערה
    * ליד NUMERIC_BY_FIELD ב-traits.js — כאן הקו הציג 1% מול 100% כי הוא השווה שעות ל-mAh. */
   function bars(fieldKey, a, b) {
+    /* בקטגוריה, קו רק לשדה שהכלי מאשר (_numok), כדי שהעמוד והכלי יציירו אותו דבר. עד 24.9.2026
+       עמודי השעונים ציירו גם קו לסוללה, שהכלי לא מצייר, ובאוזניות הקו היה משווה אוזנייה בודדת
+       לאוזניות קשת של 386 גרם. */
+    if (CAT && !(db._numok || {})[fieldKey]) return null;
     return T.ratioField(fieldKey, a.spec, b.spec);
   }
   var bodies = order.map(function (gname) {
@@ -209,9 +213,58 @@ function buildTable(a, b, d) {
 
   return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
     '      <table class="cmp cmp-spec cmp-vs">\n' +
-    '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, מתוך המפרט שהיצרנים מפרסמים. ' +
-    sameMoreTxt(d.same) + ' בשני הדגמים ואינם מופיעים כאן.</caption>\n' +
-    bodies + '\n      </table>\n    </div>\n';
+    '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, לפי המקורות שמתחת לטבלה. ' +
+    (d.same ? sameMoreTxt(d.same) + ' בשני הדגמים ואינם מופיעים כאן.' : 'אין שדה שזהה בשניהם.') + '</caption>\n' +
+    bodies + '\n      </table>\n    </div>\n' +
+    sourcesLine(a, b, d);
+}
+
+var MONTHS_HE = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+function dayHe(iso) { var p = String(iso).split('-'); return p.length === 3 ? (+p[2]) + ' ב' + MONTHS_HE[+p[1] - 1] + ' ' + p[0] : String(iso); }
+/* לכל אחד משני הדגמים: המקורות של השדות שבטבלה, מקובצים לפי כתובת. שדה שמקורו מאגר ולא היצרן
+   נושא kind שאומר את זה, ולכן הקורא רואה את זה כאן ולא רק מי שפותח את הקובץ. */
+function sourcesLine(a, b, d) {
+  /* מקובץ לפי תאריך הבדיקה, וכל תאריך נאמר פעם אחת. תאריך ליד כל מקור היה חוזר ארבע עד שש
+     פעמים באותה שורה, וה-copy-audit סימן את זה בכל עמודי ההשוואה. כשכל התאריכים באותה שנה,
+     השנה נכתבת רק בתאריך האחרון, כמו שכותבים בעברית "ב-9, ב-10 וב-16 באוגוסט 2026". */
+  var byDate = {}, dates = [];
+  [a, b].forEach(function (x) {
+    var S = x.spec_source || {}, seen = {};
+    d.rows.forEach(function (r) {
+      var v = x.spec[r.key];
+      if (v === null || v === undefined) return;
+      var src = S[r.key] && S[r.key].src ? S[r.key] : S['default'];
+      if (!src || !src.src || !/^https:\/\//.test(src.src) || seen[src.src]) return;
+      seen[src.src] = 1;
+      var at = src.at || '';
+      if (!byDate[at]) { byDate[at] = []; dates.push(at); }
+      var g = byDate[at], last = g[g.length - 1];
+      if (!last || last.x !== x) g.push(last = { x: x, links: [] });
+      last.links.push({ src: src.src, kind: src.kind || 'אתר היצרן' });
+    });
+  });
+  if (!dates.length) return '';
+  dates.sort();
+  var years = {}; dates.forEach(function (at) { years[at.slice(0, 4)] = 1; });
+  var oneYear = Object.keys(years).length === 1;
+  /* שני מקורות מאותו סוג לאותו דגם: התווית פעם אחת, עם שני קישורים */
+  function linksOf(list) {
+    var kinds = [], by = {};
+    list.forEach(function (l) { if (!by[l.kind]) { by[l.kind] = []; kinds.push(l.kind); } by[l.kind].push(l.src); });
+    return kinds.map(function (k) {
+      var u = by[k];
+      if (u.length === 1) return '<a href="' + esc(u[0]) + '" rel="noopener">' + esc(k) + '</a>';
+      return esc(k) + ' (' + u.map(function (x, i) { return '<a href="' + esc(x) + '" rel="noopener">עמוד ' + (i + 1) + '</a>'; }).join(', ') + ')';
+    }).join(', ');
+  }
+  var parts = dates.map(function (at, i) {
+    var day = at ? dayHe(at) : '';
+    if (at && oneYear && i < dates.length - 1) day = day.replace(/ \d{4}$/, '');
+    return (at ? 'נבדקו ב-' + day + ': ' : '') + byDate[at].map(function (o) {
+      return '<b>' + ltr(o.x.name) + '</b>, ' + linksOf(o.links);
+    }).join('; ');
+  });
+  return '    <p class="aside">המקורות. ' + parts.join('. ') + '.</p>\n';
 }
 
 /* ── השוואות קרובות ──────────────────────────────────────────────
@@ -260,14 +313,15 @@ function nearSection(p) {
       var other = (q.a === sharedSlug ? q.b : q.a);
       var sd = sharedSlug ? D(sharedSlug) : null, od = other ? D(other) : null;
       var why;
-      if (sd && od) {
+      /* בקטגוריה name_he זהה ל-name, ו"X מול Y" היה חוזר על הכותרת בסדר הפוך. שם ספירת השדות. */
+      if (sd && od && !CAT) {
         why = (sd.name_he || sd.name) + ' מול ' + (od.name_he || od.name);
       } else {
         /* נפילת המותג. "אותו מותג" בארבע השורות הוא כיתוב שאינו מבדיל ביניהן, כלומר אינו
            עוזר לבחור מאיזו להתחיל. אותו מדד שהשער מציג, ספירת השדות, כן מבדיל. */
         var qa = D(q.a), qb = D(q.b);
         var qd = (qa && qb) ? diffSpec(qa, qb, q.slug) : null;
-        why = qd ? qd.rows.length + ' שדות שונים · ' + qd.same + ' זהים' : '';
+        why = qd ? qd.rows.length + ' שדות שונים · ' + sameTxt(qd.same) : '';
       }
       return '      <li><a href="/compare/' + q.slug + '/"><b>' + esc(q.h1) + '</b>' +
         '<span>' + esc(why) + '</span></a></li>';
@@ -294,7 +348,7 @@ function buildMain(p, a, b, d, openTag) {
 
     /* שני המכשירים, קישור לעמוד המלא של כל אחד. הרכיב .hub, אותו רכיב של מרכז המכשירים. */
     '<section class="block" id="devices" aria-labelledby="h-dev">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-dev">שני המכשירים</h2>\n' +
+    '    <h2 id="h-dev">' + (CAT ? CAT.them : 'שני המכשירים') + '</h2>\n' +
     (CAT
       ? '    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של ' + CAT.them + ', ולהוסיף עוד אחד.</p>\n'
       : '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n') +
@@ -365,8 +419,8 @@ function buildMain(p, a, b, d, openTag) {
 
     '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
     '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
-    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + sameMoreTxt(d.same) +
-    ' בשניהם, ולכן אין טעם להציג אותם.</p>\n' +
+    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + (d.same ? sameMoreTxt(d.same) +
+    ' בשניהם, ולכן אין טעם להציג אותם.' : 'בזוג הזה אין שדה שזהה בשניהם.') + '</p>\n' +
     buildTable(a, b, d) +
     '  </div>\n</section>\n\n' +
 
@@ -1274,7 +1328,7 @@ if (!only && !CAT) {
     '<section class="block" id="how" aria-labelledby="h-how">\n  <div class="wrap box">\n' +
     '    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>\n' +
     '    <div class="prose">\n' +
-    '      <p>כל הנתונים בטבלאות מגיעים מאתר היצרן, וליד כל טבלה כתוב מאיזה עמוד ומאיזה תאריך. שדה שהיצרן לא מפרסם מסומן כלא מפורסם, ולא מנוחש ולא נשלף מאתר אחר.</p>\n' +
+    '      <p>הנתונים בטבלאות מגיעים מאתר היצרן, ומתחת לכל טבלה כתוב מאיזה עמוד ומאיזה תאריך. כשהיצרן אינו מפרסם נתון פיזי קבוע, כמו משקל או בהירות, הוא נלקח לפעמים ממאגר מפרטים מוכר, וזה כתוב באותה שורה. שדה שאין לו מקור מסומן כלא מפורסם, ולא מנוחש.</p>\n' +
     '      <p>הטבלה מציגה רק שדות שבהם שני הדגמים שונים. אם עשרים שדות זהים בשניהם, אין טעם להציג אותם, וההצגה שלהם רק מסתירה את מה שכן שונה. מספר השדות הזהים מופיע בכל עמוד.</p>\n' +
     '      <p>בכל השוואה יש מקטע "למי עדיף כל אחד", ואין בשום עמוד קביעה מי המכשיר הטוב יותר. גם אין מחירים בטבלאות. את המחיר תקבלו מאיתנו, והוא משתנה.</p>\n' +
     '    </div>\n' +
@@ -1478,6 +1532,16 @@ function buildTool() {
       if (c !== 1) { console.error('✗ watches: ' + what + ', ציפיתי למופע אחד ונמצאו ' + c); process.exit(1); }
       h = h.replace(from, to);
     };
+    /* ההבדל הגדול נגזר מ-TDEF, שמוגדר על שדות של טלפון ובקטגוריה הוא ריק. בלי זה הכלי הכריז בכל זוג
+       שאין הבדל גדול, כי המסך, המשקל, האחסון והסוללה קרובים, גם בין אוזנייה לאוזניות קשת. */
+    once('function gapsHtml(gaps,extras){', 'function gapsHtml(gaps,extras){ if(!TDEF.length) return "";', 'בלוק ההבדל הגדול');
+    /* לשעונים ולאוזניות אין עמודי מכשיר, והכלי קישר ל-/phones/<slug>/, כלומר ל-404. נמצא ב-24.9.2026
+       בבדיקה בדפדפן, אחרי שכלי השעונים כבר עלה לסביבת הבדיקות. הסינון מחזיר false, ולכן אין קישור. */
+    once('return d && d.own!==false;', 'return false;', 'קישורי המפרט המלא');
+    /* תווית התא אחרי בחירה. ה-HTML הסטטי כבר אומר "שעון א׳", וה-JS החזיר אותו ל"מכשיר א׳" ברגע הבחירה */
+    var lblFrom = '<span class="dtxt"><span class="lbl">מכשיר \'+SLOT[i]', lblN = h.split(lblFrom).length - 1;
+    if (lblN !== 2) { console.error('✗ ' + CAT.key + ': תווית התא, ציפיתי לשני מופעים ונמצאו ' + lblN); process.exit(1); }
+    h = h.split(lblFrom).join('<span class="dtxt"><span class="lbl">' + CAT.slot + ' \'+SLOT[i]');
     once('fetch("/devices-public.json"', 'fetch("/' + CAT.pub + '"', 'כתובת קובץ הנתונים');
     once('var NUMOK={screen_size:1,weight:1,brightness:1,security_updates:1};',
          'var NUMOK=' + JSON.stringify(db._numok || {}) + ';', 'NUMOK');

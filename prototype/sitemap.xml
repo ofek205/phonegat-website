@@ -373,6 +373,30 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/compare/airpods-5-vs-airpods-pro-3/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/airpods-5-vs-galaxy-buds4/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/airpods-pro-3-vs-airpods-max-2/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/airpods-pro-3-vs-galaxy-buds4-pro/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/compare/apple-watch-se-3-vs-series-11/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -428,6 +452,18 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-a57-vs-nothing-phone-3a-pro/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-buds3-vs-galaxy-buds4/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-buds4-vs-galaxy-buds4-pro/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

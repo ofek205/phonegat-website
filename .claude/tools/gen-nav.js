@@ -82,6 +82,7 @@ function structure() {
         { href: '/phones/find-my-phone/', label: 'למצוא מכשיר שמתאים לי' },
         /* נוסף 24.9.2026. פועל בשם הפועל, לפי הכלל שלמעלה, כי זה כלי שמפעילים. */
         { href: '/watches/compare/', label: 'להשוות שעונים חכמים' },
+        { href: '/headphones/compare/', label: 'להשוות אוזניות' },
         { href: '/upcoming-phones/', label: 'לחכות לדגם הבא?' }
       ]
     },

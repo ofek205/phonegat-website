@@ -1875,7 +1875,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
           </div>
-          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/watches/compare/" aria-current="page">להשוות שעונים חכמים</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
+          <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/watches/compare/" aria-current="page">להשוות שעונים חכמים</a><a href="/headphones/compare/">להשוות אוזניות</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>
       </div>
       <div class="ndrop">
@@ -1931,7 +1931,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h1 id="h1">השוואת שעונים חכמים</h1>
     <p class="asub">שעוני Apple Watch ו-Galaxy Watch, והמפרט של כל אחד מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": Apple Watch עובד רק עם אייפון, ושעוני Galaxy רק עם אנדרואיד.</p>
-    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%A9%D7%A2%D7%95%D7%A0%D7%99%D7%9D%20%D7%97%D7%9B%D7%9E%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>. רוצים <a href="/phones/compare/">להשוות טלפונים</a>?</p>
+    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%9C%D7%91%D7%98%20%D7%91%D7%99%D7%9F%20%D7%9B%D7%9E%D7%94%20%D7%A9%D7%A2%D7%95%D7%A0%D7%99%D7%9D%20%D7%97%D7%9B%D7%9E%D7%99%D7%9D%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94">כתבו לנו ב-WhatsApp</a>. רוצים <a href="/phones/compare/">להשוות טלפונים</a>, או <a href="/headphones/compare/">להשוות אוזניות</a>?</p>
   </div>
 </section>
 
@@ -2235,7 +2235,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   /* extras הוא מספר השורות ב"למי מתאים" שאינן נגזרות מהרשימה הזאת: חריץ זיכרון, עדשה
      רחבה במיוחד ואורך העדכונים. בלעדיו המשפט הכריז "אין הבדל מדיד גדול" בזמן שמתחתיו
      הופיעה שורה על עדכוני אבטחה עד 2032 מול 2031, שהוא הבדל מדיד בשנים. */
-  function gapsHtml(gaps,extras){
+  function gapsHtml(gaps,extras){ if(!TDEF.length) return "";
     if(!gaps.length) return '<div class="dsum"><h3>ההבדל הגדול</h3>'+
       '<p class="lead">בין הדגמים האלה <b>אין הבדל גדול שאפשר למתוח עליו קו</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים. '+
       (extras?'מה שכן מפריד ביניהם מופיע מתחת לטבלה.':'מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.')+'</p></div>';
@@ -2313,11 +2313,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var sl=sel[i], d=sl?dev(sl):null;
       var open='<button type="button" class="dopen" data-slot="'+i+'" aria-expanded="false" aria-controls="dmenu">';
       html+=d
-        ? '<li class="dslot sc'+i+'">'+open+pic(d,"dpic")+'<span class="dtxt"><span class="lbl">מכשיר '+SLOT[i]+'</span>'+
+        ? '<li class="dslot sc'+i+'">'+open+pic(d,"dpic")+'<span class="dtxt"><span class="lbl">שעון '+SLOT[i]+'</span>'+
           '<span class="nm">'+ltr(d.name)+'</span></span><span class="swap">החלפה</span></button>'+
           '<button type="button" class="drop" data-drop="'+esc(sl)+'" aria-label="הסרת '+esc(d.name_he||d.name)+' מההשוואה">&times;</button></li>'
         : '<li class="dslot empty">'+open+'<span class="dplus" aria-hidden="true">+</span>'+
-          '<span class="dtxt"><span class="lbl">מכשיר '+SLOT[i]+'</span>'+
+          '<span class="dtxt"><span class="lbl">שעון '+SLOT[i]+'</span>'+
           '<span class="nm">'+(i<2?"בחרו דגם":"אפשר גם שלישי")+'</span></span></button></li>';
     }
     if(slots<MAX) html+='<li><button type="button" class="dadd" data-add="1">הוסיפו מכשיר שלישי</button></li>';
@@ -2444,7 +2444,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         /* מכשיר ייחוס אינו מופיע כאן בכלל. אין לו עמוד ולכן אין לו קישור, ועד 17.8.2026 הוא
            הופיע כטקסט "איננו מוכרים אותו" במקום קישור, כלומר אמירה על מה שאיננו מוכרים
            בדיוק במקום שממנו אופק ביקש להוריד אותה. שמיטה אומרת פחות ומדויקת יותר. */
-        return d && d.own!==false;
+        return false;
       }).map(function(d){
         return '<a href="/phones/'+esc(d.slug)+'/">המפרט המלא של '+esc(d.name_he||d.name)+"</a>";
       }).join(" · ")+"</p>";
