@@ -220,7 +220,7 @@ function nearSection(p) {
       var sd = sharedSlug ? D(sharedSlug) : null, od = other ? D(other) : null;
       var why;
       if (sd && od) {
-        why = 'אותו ' + (sd.name_he || sd.name) + ', מול ' + (od.name_he || od.name);
+        why = (sd.name_he || sd.name) + ' מול ' + (od.name_he || od.name);
       } else {
         /* נפילת המותג. "אותו מותג" בארבע השורות הוא כיתוב שאינו מבדיל ביניהן, כלומר אינו
            עוזר לבחור מאיזו להתחיל. אותו מדד שהשער מציג, ספירת השדות, כן מבדיל. */
@@ -302,7 +302,13 @@ function buildMain(p, a, b, d, openTag) {
           return '      <li><b>' + esc(x.label) + '</b><span>' + esc(x.phrase) + '</span>' +
             '<em>' + esc(nm(x.lead)) + ': ' + esc(x.leadMore) + '</em></li>';
         }).join('\n') + '\n    </ul>\n' +
-        '    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם? זה בדיוק מה שנעבור עליו יחד.</p>\n' +
+        /* המשפט על המסך נאמר רק כשהמסכים באמת שונים. בזוג שהמסכים שלו זהים, כמו 17 פרו מול
+           18 פרו, הוא טען דבר שאינו חל על הזוג. */
+        '    <p class="aside">"גדול יותר" אינו "טוב יותר". ' +
+        (d.rows.some(function (r) { return r.key === 'screen_size'; })
+          ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.'
+          : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') +
+        ' מה מכריע אצלכם? על זה נעבור יחד.</p>\n' +
         '  </div>\n</section>\n\n';
     })() +
 
@@ -335,7 +341,16 @@ function buildMain(p, a, b, d, openTag) {
 
     '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">עדיין מתלבטים?</h2>\n' +
-    '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+    /* not_in_store: דגם שהוכרז ועוד לא הגיע. בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות"
+       גם על iPhone 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. נמצא בבדיקה של 24.9.2026. */
+    (function () {
+      var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+      var nmOf = function (x) { return esc(x.name_he || x.name); };
+      var lead = !away.length ? 'שני המכשירים אצלנו בחנות.'
+        : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
+        : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
+      return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
+    })() +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
     '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
