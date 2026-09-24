@@ -70,6 +70,11 @@ data.pages.forEach(function (pg) {
   if (pg.checked && (!ISO.test(pg.checked) || pg.checked > today)) fail(W + ': checked לא תקין או עתידי');
   if (pg.title && pg.title.length > 60) fail(W + ': title של ' + pg.title.length + ' תווים, מעל 60');
   (pg.official || []).forEach(function (o, i) { checkSrc(W + '.official[' + i + ']', o.src, true); });
+  (pg.extra_sources || []).forEach(function (s, i) { checkSrc(W + '.extra_sources[' + i + ']', s, false); });
+  (pg.answers || []).forEach(function (x, i) { if (!x.q || !x.a) fail(W + '.answers[' + i + ']: חסרים q או a'); });
+  (pg.related_devices || []).forEach(function (s) {
+    if (!fs.existsSync(path.join(PROTO, 'phones', s, 'index.html'))) fail(W + ': related_devices מפנה לעמוד שאינו קיים, phones/' + s);
+  });
   (pg.timing || []).concat(pg.rumors || []).forEach(function (r, i) {
     if (!STATUS[r.status]) fail(W + ': status לא מוכר, ' + r.status);
     if (r.status === 'official') fail(W + ': שמועה מסומנת official. מידע רשמי שייך ל-official');
@@ -152,6 +157,13 @@ function buildMain(pg) {
       '      </ol>\n' : '') +
     '    </div>\n  </div>\n</section>\n\n';
 
+  /* תשובות קצרות, במילים שמקלידים בגוגל. מיד אחרי ההצהרה, כי זה מה שגוגל שולף כתשובה.
+     בלי סכמת FAQ: גוגל הגביל את התוצאות העשירות שלה לאתרי ממשל ובריאות. */
+  if ((pg.answers || []).length) {
+    o += section('answers', 'תשובות קצרות',
+      pg.answers.map(function (x) { return '    <h3>' + esc(x.q) + '</h3>\n    <p>' + esc(x.a) + '</p>\n'; }).join(''));
+  }
+
   /* מה ידוע רשמית */
   if ((pg.official || []).length) {
     o += section('official', pg.official_h || 'מה ידוע בוודאות',
@@ -232,6 +244,7 @@ function buildMain(pg) {
   function add(s) { if (s && !seen[s.url]) { seen[s.url] = 1; srcs.push(s); } }
   (pg.official || []).forEach(function (x) { add(x.src); });
   add(pg.specs_src);
+  (pg.extra_sources || []).forEach(add);
   (pg.timing || []).forEach(function (x) { add(x.src); });
   (pg.rumors || []).forEach(function (x) { add(x.src); });
   o += section('sources', 'המקורות',

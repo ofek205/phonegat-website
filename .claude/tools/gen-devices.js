@@ -25,6 +25,13 @@ var PROD = 'https://www.phonegat.co.il/';
 var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 var PH = db._placeholder_copy;
+/* עמודי הדגמים שבדרך, מ-gen-upcoming. כל עמוד שם מונה ב-related_devices את עמודי המכשיר
+   שיקשרו אליו. עד 24.9.2026 עמודי השמועות קושרו רק זה לזה, כלומר מתוך קבוצה שגוגל עוד לא
+   מכיר, ולא מהעמודים שכבר מדורגים. */
+var UPCOMING = (function () {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'upcoming.json'), 'utf8')).pages || []; }
+  catch (e) { return []; }
+})();
 var only = process.argv[2];
 var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 
@@ -280,6 +287,19 @@ function buildMain(d, openTag) {
     'להשוות את ' + ltr(d.name) + ' לדגם אחר</a></p>\n' +
     '    <p class="aside">הכלי מחזיק ' + db.devices.filter(function (x) { return x.status !== 'draft'; }).length +
     ' דגמים, ואפשר להשוות שלושה יחד. <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>\n' +
+    '  </div>\n</section>\n\n';
+  }
+
+  /* --- מה בדרך: קישור לעמודי הדגמים שעוד לא יצאו --- */
+  var ups = UPCOMING.filter(function (u) { return (u.related_devices || []).indexOf(d.slug) >= 0; });
+  if (ups.length) {
+    out += '<section class="block" id="upcoming" aria-labelledby="h-upcoming">\n  <div class="wrap box">\n' +
+      '    <h2 id="h-upcoming">מה בדרך אצל ' + esc(d.brand === 'Apple' ? 'אפל' : d.brand) + '</h2>\n' +
+      '    <p class="lead">על הדגמים שעוד לא בחנויות ריכזנו את מה שידוע, עם המקור של כל פרט. מה שלא הוכרז רשמית מסומן כשמועה.</p>\n' +
+      '    <ul>\n' + ups.map(function (u) {
+        return '      <li><a href="/upcoming-phones/' + u.slug + '/">' + esc(u.h1) + '</a>, ' +
+          (u.kind === 'rumor' ? 'שמועות, לא מאומת' : 'הוכרז רשמית, עוד לא בחנויות') + '</li>';
+      }).join('\n') + '\n    </ul>\n' +
     '  </div>\n</section>\n\n';
   }
 
