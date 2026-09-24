@@ -62,7 +62,9 @@ function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
  * התיקון היה צריך לקרות פעמיים ואיש לא היה יודע שהשני קיים. זה בדיוק מה ש-traits.js נוצר למנוע. */
 var T = require('./lib/traits.js');
 
-var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && d.status !== 'reference'; });
+/* not_in_store מוחרג: השאלון ממליץ מה לקנות, והמלצה על דגם שעוד לא בחנות היא המלצה שאי אפשר
+   לממש אצלנו. עד 24.9.2026 אייפון 18 פרו הופיע בו. */
+var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !(d.commercial && d.commercial.not_in_store); });
 var fail = [];
 var TRAITS = live.map(function (d) {
   var S = d.spec;

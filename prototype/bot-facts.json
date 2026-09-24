@@ -352,6 +352,72 @@
       }
     },
     {
+      "slug": "iphone-duo",
+      "name": "iPhone Duo",
+      "name_he": "iPhone Duo",
+      "brand": "Apple",
+      "kind": "reference",
+      "warranty_by": null,
+      "warranty_months": null,
+      "service_terms": null,
+      "payments": null,
+      "data_transfer": null,
+      "good_for": [],
+      "less_for": [],
+      "what_matters": "iPhone Duo הוא האייפון המתקפל של אפל, והוא כאן כדי שתוכלו להשוות אליו. הוא עוד לא נמכר אצלנו. יש בו מסך פנימי של 7.6 אינץ׳ ומסך חיצוני של 5.4, שבב A20 Pro ושתי מצלמות אחוריות, בלי עדשת טלפוטו. הזיהוי הוא בטביעת אצבע, Touch ID, ולא Face ID, ולפי אפל הוא עובד עם eSIM בלבד.",
+      "pros": [
+        "זום אופטי 5x",
+        "7 שנות עדכונים",
+        "בהירות שיא 3000 ניט",
+        "IP68"
+      ],
+      "cons": [
+        "אין יבואן רשמי בישראל",
+        "הגרסה האמריקאית eSIM בלבד",
+        "סוללה קטנה יחסית"
+      ],
+      "daily_benefits": [],
+      "spec": {
+        "screen_size": "7.6 אינץ׳ פתוח, 5.4 אינץ׳ סגור",
+        "screen_type": "OLED מתקפל בפנים ו-OLED בחוץ, עם תצוגה תמידית. ציפוי nano-texture על המסך הפנימי",
+        "resolution": "פנימי 1878x2670 פיקסלים ב-430 ppi, חיצוני 1398x2034 פיקסלים ב-460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "3000 ניט שיא בחוץ",
+        "chip": "שבב A20 Pro",
+        "cpu": "6 ליבות, 2 ליבות על ו-4 ליעילות",
+        "gpu": "7 ליבות עם מאיצים נוירונליים",
+        "ram": null,
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB",
+          "2TB"
+        ],
+        "camera_main": "ראשית 48MP Fusion ב-26 מ״מ, צמצם ƒ/1.6",
+        "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות. אין עדשת טלפוטו",
+        "zoom": "זום באיכות אופטית 2x פנימה ו-2x החוצה, זום דיגיטלי עד 10x",
+        "camera_front": "חיצונית 12MP Center Stage בצמצם ƒ/2.2, ופנימית מתחת למסך בצמצם ƒ/1.8",
+        "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
+        "battery": "עד 44 שעות הפעלת וידאו על המסך החיצוני, ועד 31 על הפנימי",
+        "charging_wired": "עד 50 אחוז בכ-20 דקות עם מתאם 60W ומעלה",
+        "charging_wireless": "MagSafe ו-Qi2 עד 25W",
+        "dimensions": "פתוח 164.6 x 117.8 x 5.2 מ״מ, סגור 84.1 x 117.8 x 11.3 מ״מ",
+        "weight": "254 גרם",
+        "sim": "eSIM בלבד, בלי חריץ ל-SIM פיזי",
+        "esim": "תמיכה בשני eSIM",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "Night Sky",
+          "Star White"
+        ],
+        "box_contents": "מכשיר עם iOS 27 וכבל טעינה USB-C באורך מטר",
+        "model_numbers": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
+        "security_updates": null
+      }
+    },
+    {
       "slug": "iphone-18-pro-max",
       "name": "iPhone 18 Pro Max",
       "name_he": "אייפון 18 פרו מקס",

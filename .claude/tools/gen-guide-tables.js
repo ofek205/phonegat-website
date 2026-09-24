@@ -33,7 +33,9 @@ var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 
 /* רק מה שאנחנו מוכרים. מכשיר ייחוס אינו בקטלוג, ואין לו עמוד לקשר אליו. */
-var SOLD = db.devices.filter(function (d) { return d.status !== 'reference' && d.status !== 'draft'; })
+/* not_in_store מוחרג: הטבלאות אומרות "הדגמים שאנחנו מוכרים", ודגם שהוכרז ועוד לא הגיע לחנות
+   אינו כזה. עד 24.9.2026 אייפון 18 פרו נספר בהן, כלומר טענה שאנחנו מוכרים דגם שאין בחנות. */
+var SOLD = db.devices.filter(function (d) { return d.status !== 'reference' && d.status !== 'draft' && !(d.commercial && d.commercial.not_in_store); })
   .sort(T.newestFirst);
 
 var esc = function (s) {
