@@ -1,0 +1,764 @@
+{
+  "_": "שעונים חכמים לכלי ההשוואה ב-/watches/compare/. נוצר ב-24.9.2026 לבקשת אופק. נפרד מ-devices.json בכוונה: כל צרכן של devices.json מניח טלפון. המחולל: gen-compare.js --watches. status listed פירושו \"מופיע בכלי\", ואינו אומר אם אנחנו מוכרים את השעון.",
+  "_rules": [
+    "אותה היררכיית מקורות כמו בטלפונים: עמוד המפרט הישראלי של היצרן, אחריו הגלובלי. כל שדה ריק נושא הערה שאומרת למה.",
+    "battery אינו בר השוואה בין היצרנים: אפל מודדת שעות שימוש רגיל, וסמסונג שעות עם תצוגה תמידית כבויה או פועלת. ההסבר בשדה אומר את זה, ואסור להציג אותו כמספר אחד.",
+    "compatibility הוא השדה החשוב לקונה: Apple Watch רק עם אייפון, Galaxy Watch רק עם אנדרואיד עם שירותי Google, לפי המקורות הרשמיים."
+  ],
+  "_spec_groups": {
+    "groups": [
+      [
+        "מסך",
+        [
+          [
+            "case_sizes",
+            "גודל מארז"
+          ],
+          [
+            "display",
+            "מסך"
+          ],
+          [
+            "resolution",
+            "רזולוציה"
+          ],
+          [
+            "brightness",
+            "בהירות"
+          ]
+        ]
+      ],
+      [
+        "גוף ועמידות",
+        [
+          [
+            "dimensions",
+            "מידות"
+          ],
+          [
+            "weight",
+            "משקל"
+          ],
+          [
+            "materials",
+            "חומרים"
+          ],
+          [
+            "water_resistance",
+            "עמידות למים ולאבק"
+          ]
+        ]
+      ],
+      [
+        "ביצועים",
+        [
+          [
+            "chip",
+            "מעבד"
+          ],
+          [
+            "ram",
+            "זיכרון RAM"
+          ],
+          [
+            "storage",
+            "אחסון"
+          ]
+        ]
+      ],
+      [
+        "סוללה",
+        [
+          [
+            "battery",
+            "סוללה"
+          ],
+          [
+            "charging",
+            "טעינה"
+          ]
+        ]
+      ],
+      [
+        "בריאות ובטיחות",
+        [
+          [
+            "health",
+            "בריאות"
+          ],
+          [
+            "safety",
+            "בטיחות"
+          ]
+        ]
+      ],
+      [
+        "תקשורת",
+        [
+          [
+            "connectivity",
+            "תקשורת"
+          ],
+          [
+            "cellular",
+            "סלולר"
+          ]
+        ]
+      ],
+      [
+        "תאימות ועדכונים",
+        [
+          [
+            "compatibility",
+            "עובד עם"
+          ],
+          [
+            "security_updates",
+            "עדכוני אבטחה"
+          ]
+        ]
+      ]
+    ]
+  },
+  "_means": {
+    "compatibility": "קודם כל בדקו את השורה הזאת. Apple Watch עובד רק עם אייפון, ושעוני Galaxy עובדים רק עם טלפון אנדרואיד. שעון שלא מתאים לטלפון שלכם לא יעבוד איתו.",
+    "case_sizes": "הגודל נמדד בגובה המארז ולא באלכסון המסך. מארז גדול נותן מסך גדול יותר, וקטן נוח יותר על פרק יד צר.",
+    "display": "OLED ו-AMOLED מאירים כל פיקסל בנפרד, ולכן אפשר להשאיר את השעה מוצגת כל הזמן בלי לרוקן את הסוללה מהר.",
+    "resolution": "מספר הפיקסלים במסך. בשעון ההבדל כמעט לא מורגש, כי מסתכלים עליו לשניות.",
+    "brightness": "הבהירות המרבית, בשמש. זה מה שקובע אם רואים את המסך בחוץ בצהריים.",
+    "dimensions": "העובי הוא מה שמורגש מתחת לשרוול. הגובה והרוחב קובעים איך השעון יושב על פרק היד.",
+    "weight": "בלי רצועה. הבדל של כ-10 גרם ומעלה מורגש בשינה ובאימון, פחות ביום רגיל.",
+    "materials": "אלומיניום קל יותר, וטיטניום וקרמיקה עמידים יותר בשריטות. הזכוכית שמעל המסך היא מה שנשרט ראשון.",
+    "water_resistance": "5 ATM או WR50 מספיקים לשחייה. 10 ATM או WR100 מתאימים גם לספורט מים. הדירוג נבדק במים מתוקים בתנאי מעבדה, והוא נשחק עם הזמן.",
+    "chip": "המעבד קובע כמה חלקה התגובה של השעון. בין דגמים מאותו דור ההבדל קטן ביומיום.",
+    "ram": "אפל אינה מפרסמת את נפח הזיכרון, ולכן אין כאן מה להשוות מולה.",
+    "storage": "מקום לאפליקציות, למוזיקה ולפודקאסטים שמורידים לשעון. חשוב בעיקר למי שמתאמן בלי טלפון.",
+    "battery": "אפל מודדת בשעות של שימוש רגיל, וסמסונג בשעות עם תצוגה תמידית כבויה או פועלת. לכן המספרים של שני היצרנים אינם ברי השוואה ישירה.",
+    "charging": "כמה מהר השעון חוזר לעבוד. שימושי למי שטוען אותו רק בבוקר.",
+    "health": "החיישנים והתכונות שהיצרן מונה. זמינות תכונות רפואיות, כמו ECG, משתנה לפי מדינה, ואפל מציינת שאפליקציית החמצן בדם מיועדת לרווחה ולא לשימוש רפואי.",
+    "safety": "תכונות שמזעיקות עזרה בזמן חירום. חלקן דורשות גרסה עם סלולר או טלפון קרוב.",
+    "connectivity": "GPS מודד ריצה בלי טלפון. NFC ו-Apple Pay מאפשרים לשלם עם השעון, בתנאי שהבנק שלכם תומך בזה.",
+    "cellular": "גרסה עם סלולר עובדת בלי הטלפון בכיס: שיחות, הודעות ומפות. היא דורשת קו מתאים מהמפעיל.",
+    "security_updates": "עד מתי היצרן מתחייב לעדכוני אבטחה. סמסונג נוקבת בתאריך בחלק מהדגמים, ואפל אינה נוקבת בתאריך."
+  },
+  "_numok": {
+    "weight": 1
+  },
+  "_comparisons": {
+    "pairs": []
+  },
+  "devices": [
+    {
+      "brand": "Apple",
+      "status": "listed",
+      "os": "watchOS",
+      "launch": "2026-09",
+      "launch_src": "https://www.apple.com/newsroom/2026/09/the-latest-iphone-apple-watch-and-airpods-lineups-arrive-in-stores-worldwide/",
+      "slug": "apple-watch-series-12",
+      "name": "Apple Watch Series 12",
+      "series": "Series",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/apple-watch-series-12/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "העמוד הישראלי, apple.com/il/apple-watch-series-12/specs/, החזיר 404 ב-24.9.2026."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת נפח זיכרון."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        }
+      },
+      "spec": {
+        "case_sizes": "42 או 46 מ״מ",
+        "display": "Always-On Retina, OLED עם LTPO3",
+        "resolution": "374x446 או 416x496 פיקסלים, 326 ppi",
+        "brightness": "עד 2000 ניט",
+        "dimensions": "42 x 37 x 9.7 או 46 x 40 x 9.7 מ״מ. בקרמיקה 43 x 37 x 9.85 או 47 x 41 x 9.85",
+        "weight": "אלומיניום 31.5 עד 39.5 גרם, טיטניום 36.5 או 44.9, קרמיקה 41.7 עד 52.9",
+        "materials": "אלומיניום, טיטניום או קרמיקה. Ceramic Shield 2 באלומיניום, ספיר בטיטניום ובקרמיקה",
+        "water_resistance": "WR50, עד 50 מטר, ועמידות לאבק IP6X",
+        "chip": "S11, מעבד כפול ליבות",
+        "ram": null,
+        "storage": "64GB",
+        "battery": "עד 24 שעות שימוש רגיל, ועד 38 במצב חיסכון",
+        "charging": "80 אחוז בכ-30 דקות",
+        "health": "ECG, חמצן בדם, טמפרטורה, מדדים חיוניים ו-HRV, התראות על דום נשימה בשינה ועל יתר לחץ דם",
+        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה ופנס",
+        "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
+        "cellular": "יש גרסה עם סלולר",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27",
+        "security_updates": null
+      },
+      "name_he": "Apple Watch Series 12"
+    },
+    {
+      "brand": "Apple",
+      "status": "listed",
+      "os": "watchOS",
+      "launch": "2026-09",
+      "launch_src": "https://www.apple.com/newsroom/2026/09/the-latest-iphone-apple-watch-and-airpods-lineups-arrive-in-stores-worldwide/",
+      "slug": "apple-watch-ultra-4",
+      "name": "Apple Watch Ultra 4",
+      "series": "Ultra",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/apple-watch-ultra-4/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "הגרסה הישראלית של העמוד עוד לא קיימת. המקור השני בהיררכיה."
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת נפח זיכרון."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        },
+        "safety": {
+          "src": "https://www.apple.com/apple-watch-ultra-4/specs/",
+          "kind": "אתר היצרן, גרסה גלובלית",
+          "at": "2026-09-24",
+          "note": "העמוד הבינלאומי מונה תקשורת לוויינית. בעמוד הישראלי של Ultra 3 התכונה לא מופיעה, ולכן היא נכתבת כאן כחלק מהגרסה הבינלאומית בלבד."
+        }
+      },
+      "spec": {
+        "case_sizes": "49 מ״מ",
+        "display": "Always-On Retina, OLED עם LTPO3",
+        "resolution": "422x514 פיקסלים, 326 ppi",
+        "brightness": "עד 3000 ניט",
+        "dimensions": "49 x 44 x 12 מ״מ",
+        "weight": "63.0 או 63.1 גרם, לפי הצבע",
+        "materials": "טיטניום, עם זכוכית ספיר שטוחה",
+        "water_resistance": "WR100, עד 100 מטר, IP6X, וצלילה עד 40 מטר לפי EN13319",
+        "chip": "S11, מעבד כפול ליבות",
+        "ram": null,
+        "storage": "64GB",
+        "battery": "עד 50 שעות שימוש רגיל, ועד 84 במצב חיסכון",
+        "charging": "80 אחוז בכ-45 דקות",
+        "health": "ECG, חמצן בדם, טמפרטורה, מדדים חיוניים ו-HRV, התראות על דום נשימה בשינה ועל יתר לחץ דם",
+        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה, צופר חירום ופנס. בגרסה הבינלאומית גם תקשורת לוויינית",
+        "connectivity": "GPS כפול תדר, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
+        "cellular": "כל הדגמים עם סלולר",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27",
+        "security_updates": null
+      },
+      "name_he": "Apple Watch Ultra 4"
+    },
+    {
+      "brand": "Apple",
+      "status": "listed",
+      "os": "watchOS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "apple-watch-series-11",
+      "name": "Apple Watch Series 11",
+      "series": "Series",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/il/apple-watch-series-11/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת נפח זיכרון."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        }
+      },
+      "spec": {
+        "case_sizes": "42 או 46 מ״מ",
+        "display": "Always-On Retina, OLED עם LTPO3",
+        "resolution": "374x446 או 416x496 פיקסלים, 326 ppi",
+        "brightness": "עד 2000 ניט",
+        "dimensions": "42 x 36 x 9.7 או 46 x 39 x 9.7 מ״מ",
+        "weight": "אלומיניום 29.7 עד 37.8 גרם, טיטניום 34.6 או 43.1",
+        "materials": "אלומיניום או טיטניום. Ion-X באלומיניום, ספיר בטיטניום",
+        "water_resistance": "WR50, עד 50 מטר, ועמידות לאבק IP6X",
+        "chip": "S10, מעבד כפול ליבות",
+        "ram": null,
+        "storage": "64GB",
+        "battery": "עד 24 שעות שימוש רגיל, ועד 38 במצב חיסכון",
+        "charging": "80 אחוז בכ-30 דקות",
+        "health": "ECG, חמצן בדם, טמפרטורה, התראות על דום נשימה בשינה ועל יתר לחץ דם",
+        "safety": "SOS, זיהוי תאונת דרכים וזיהוי נפילה",
+        "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
+        "cellular": "יש גרסה עם סלולר",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "security_updates": null
+      },
+      "name_he": "Apple Watch Series 11"
+    },
+    {
+      "brand": "Apple",
+      "status": "listed",
+      "os": "watchOS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "apple-watch-ultra-3",
+      "name": "Apple Watch Ultra 3",
+      "series": "Ultra",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/il/apple-watch-ultra-3/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת נפח זיכרון."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        }
+      },
+      "spec": {
+        "case_sizes": "49 מ״מ",
+        "display": "Always-On Retina, OLED עם LTPO3",
+        "resolution": "422x514 פיקסלים, 326 ppi",
+        "brightness": "עד 3000 ניט",
+        "dimensions": "49 x 44 x 12 מ״מ",
+        "weight": "61.6 או 61.8 גרם, לפי הצבע",
+        "materials": "טיטניום, עם זכוכית ספיר שטוחה",
+        "water_resistance": "WR100, עד 100 מטר, IP6X, וצלילה עד 40 מטר לפי EN13319",
+        "chip": "S10, מעבד כפול ליבות",
+        "ram": null,
+        "storage": "64GB",
+        "battery": "עד 42 שעות שימוש רגיל, ועד 72 במצב חיסכון",
+        "charging": "80 אחוז בכ-45 דקות",
+        "health": "ECG, חמצן בדם, טמפרטורה, התראות על דום נשימה בשינה ועל יתר לחץ דם",
+        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה, צופר חירום ופנס",
+        "connectivity": "GPS כפול תדר, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
+        "cellular": "כל הדגמים עם סלולר",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "security_updates": null
+      },
+      "name_he": "Apple Watch Ultra 3"
+    },
+    {
+      "brand": "Apple",
+      "status": "listed",
+      "os": "watchOS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "apple-watch-se-3",
+      "name": "Apple Watch SE 3",
+      "series": "SE",
+      "spec_source": {
+        "default": {
+          "src": "https://www.apple.com/il/apple-watch-se-3/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "ram": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה מפרסמת נפח זיכרון."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        },
+        "water_resistance": {
+          "src": "https://www.apple.com/il/apple-watch-se-3/specs/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "העמוד מונה WR50 ואינו מונה דירוג אבק, בשונה מ-Series 11."
+        }
+      },
+      "spec": {
+        "case_sizes": "40 או 44 מ״מ",
+        "display": "Always-On Retina, OLED עם LTPO",
+        "resolution": "324x394 או 368x448 פיקסלים, 326 ppi",
+        "brightness": "עד 1000 ניט",
+        "dimensions": "40 x 34 x 10.7 או 44 x 38 x 10.7 מ״מ",
+        "weight": "26.3 עד 33.0 גרם",
+        "materials": "אלומיניום, עם זכוכית Ion-X",
+        "water_resistance": "WR50, עד 50 מטר",
+        "chip": "S10, מעבד כפול ליבות",
+        "ram": null,
+        "storage": "64GB",
+        "battery": "עד 18 שעות שימוש רגיל, ועד 32 במצב חיסכון",
+        "charging": "80 אחוז בכ-45 דקות",
+        "health": "מד דופק, טמפרטורה, התראות על קצב לב לא סדיר ועל דום נשימה בשינה. אין ECG ואין חמצן בדם",
+        "safety": "SOS, זיהוי תאונת דרכים וזיהוי נפילה",
+        "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, Apple Pay",
+        "cellular": "יש גרסה עם סלולר",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "security_updates": null
+      },
+      "name_he": "Apple Watch SE 3"
+    },
+    {
+      "brand": "Samsung",
+      "status": "listed",
+      "os": "Wear OS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "galaxy-watch9",
+      "name": "Galaxy Watch9",
+      "series": "Watch",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch9-40mm-cream-bluetooth-sm-l340nzeailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "הגרסאות של 40 ו-44 מ״מ נקראו כל אחת מהעמוד שלה."
+        },
+        "compatibility": {
+          "src": "https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_IL&OriginYN=N&ModelType=N&ModelName=SM-L340&CttFileID=11579965&CDCttType=UM",
+          "kind": "מדריך המשתמש של היצרן",
+          "at": "2026-09-24",
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store."
+        },
+        "brightness": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט של סמסונג ישראל אינה מונה בהירות."
+        },
+        "materials": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה חומר."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה זמן טעינה."
+        },
+        "safety": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה תכונות בטיחות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "בעמוד של הדגם הזה אין תאריך. בעמוד של Ultra 2 יש."
+        }
+      },
+      "spec": {
+        "case_sizes": "40 או 44 מ״מ",
+        "display": "Super AMOLED, 1.3 או 1.5 אינץ׳",
+        "resolution": "438x438 או 480x480 פיקסלים",
+        "brightness": null,
+        "dimensions": "42.7 x 40.4 x 8.6 או 46.0 x 43.7 x 8.6 מ״מ",
+        "weight": "31.5 או 34 גרם",
+        "materials": null,
+        "water_resistance": "5 ATM",
+        "chip": "5 ליבות, עד 2.1GHz",
+        "ram": "2GB",
+        "storage": "32GB",
+        "battery": "390 או 445 mAh. עד 40 שעות כשהתצוגה התמידית כבויה, ועד 30 כשהיא פועלת",
+        "charging": null,
+        "health": "חיישן לב חשמלי, מד דופק אופטי, ניתוח הרכב גוף ומדידת טמפרטורה",
+        "safety": null,
+        "connectivity": "GPS, Wi-Fi, Bluetooth 6.0, NFC",
+        "cellular": "יש גרסה עם LTE, ב-eSIM",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "security_updates": null
+      },
+      "name_he": "Galaxy Watch9"
+    },
+    {
+      "brand": "Samsung",
+      "status": "listed",
+      "os": "Wear OS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "galaxy-watch-ultra-2",
+      "name": "Galaxy Watch Ultra 2",
+      "series": "Ultra",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra2-titanium-silver-lte-sm-l715fzsailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "compatibility": {
+          "src": "https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_IL&OriginYN=N&ModelType=N&ModelName=SM-L340&CttFileID=11579965&CDCttType=UM",
+          "kind": "מדריך המשתמש של היצרן",
+          "at": "2026-09-24",
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. אותו מדריך מכסה את SM-L71X."
+        },
+        "brightness": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה בהירות."
+        },
+        "materials": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה חומר."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה זמן טעינה."
+        },
+        "safety": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה תכונות בטיחות."
+        }
+      },
+      "spec": {
+        "case_sizes": "47 מ״מ",
+        "display": "Super AMOLED, 1.5 אינץ׳",
+        "resolution": "498x498 פיקסלים",
+        "brightness": null,
+        "dimensions": "47.4 x 47.1 x 10.7 מ״מ",
+        "weight": "61.5 גרם",
+        "materials": null,
+        "water_resistance": "10 ATM ו-IP69K",
+        "chip": "5 ליבות, עד 2.1GHz",
+        "ram": "2GB",
+        "storage": "64GB",
+        "battery": "800 mAh. עד 80 שעות כשהתצוגה התמידית כבויה, ועד 60 כשהיא פועלת",
+        "charging": null,
+        "health": "חיישן לב חשמלי, מד דופק אופטי, ניתוח הרכב גוף ומדידת טמפרטורה",
+        "safety": null,
+        "connectivity": "GPS, Wi-Fi, Bluetooth 6.0, NFC",
+        "cellular": "גרסת LTE, ב-eSIM",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "security_updates": "עד 31 ביולי 2031"
+      },
+      "name_he": "Galaxy Watch Ultra 2"
+    },
+    {
+      "brand": "Samsung",
+      "status": "listed",
+      "os": "Wear OS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "galaxy-watch8",
+      "name": "Galaxy Watch8",
+      "series": "Watch",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-44mm-silver-bluetooth-sm-l330nzsailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "הגרסה של 40 מ״מ נקראה מ-sm-l320ndaailo."
+        },
+        "compatibility": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-44mm-silver-bluetooth-sm-l330nzsailo/",
+          "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
+          "at": "2026-09-24",
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X."
+        },
+        "brightness": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה בהירות."
+        },
+        "materials": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה חומר."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה זמן טעינה."
+        },
+        "safety": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה תכונות בטיחות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אין תאריך בעמוד."
+        }
+      },
+      "spec": {
+        "case_sizes": "40 או 44 מ״מ",
+        "display": "Super AMOLED, 1.3 או 1.5 אינץ׳",
+        "resolution": "438x438 או 480x480 פיקסלים",
+        "brightness": null,
+        "dimensions": "42.7 x 40.4 x 8.6 או 46.0 x 43.7 x 8.6 מ״מ",
+        "weight": "30 או 34 גרם",
+        "materials": null,
+        "water_resistance": "5 ATM",
+        "chip": "5 ליבות, עד 1.6GHz",
+        "ram": "2GB",
+        "storage": "32GB",
+        "battery": "325 או 435 mAh. עד 40 שעות כשהתצוגה התמידית כבויה",
+        "charging": null,
+        "health": "חיישן לב חשמלי, מד דופק אופטי, ניתוח הרכב גוף ומדידת טמפרטורה",
+        "safety": null,
+        "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
+        "cellular": "יש גרסה עם LTE, ב-eSIM",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "security_updates": null
+      },
+      "name_he": "Galaxy Watch8"
+    },
+    {
+      "brand": "Samsung",
+      "status": "listed",
+      "os": "Wear OS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "galaxy-watch8-classic",
+      "name": "Galaxy Watch8 Classic",
+      "series": "Classic",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-classic-46mm-black-bluetooth-sm-l500nzkailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "dimensions": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-classic-46mm-black-bluetooth-sm-l500nzkailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "העמוד כותב \"10.6 x 46.4 x 46.0\" תחת הכותרת גובה x רוחב x עובי, כלומר בסדר הפוך. נכתב כאן מהגדול לקטן."
+        },
+        "compatibility": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-classic-46mm-black-bluetooth-sm-l500nzkailo/",
+          "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
+          "at": "2026-09-24",
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X מכסה את SM-L500."
+        },
+        "brightness": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה בהירות."
+        },
+        "materials": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה חומר."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה זמן טעינה."
+        },
+        "safety": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה תכונות בטיחות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אין תאריך בעמוד."
+        }
+      },
+      "spec": {
+        "case_sizes": "46 מ״מ",
+        "display": "Super AMOLED, 1.3 אינץ׳",
+        "resolution": "438x438 פיקסלים",
+        "brightness": null,
+        "dimensions": "46.4 x 46.0 x 10.6 מ״מ",
+        "weight": "63.5 גרם",
+        "materials": null,
+        "water_resistance": "5 ATM",
+        "chip": "5 ליבות, עד 1.6GHz",
+        "ram": "2GB",
+        "storage": "64GB",
+        "battery": "445 mAh. עד 40 שעות כשהתצוגה התמידית כבויה, ועד 30 כשהיא פועלת",
+        "charging": null,
+        "health": "חיישן לב חשמלי, מד דופק אופטי, ניתוח הרכב גוף ומדידת טמפרטורה",
+        "safety": null,
+        "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
+        "cellular": "יש גרסה עם LTE, ב-eSIM",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "security_updates": null
+      },
+      "name_he": "Galaxy Watch8 Classic"
+    },
+    {
+      "brand": "Samsung",
+      "status": "listed",
+      "os": "Wear OS",
+      "launch": null,
+      "launch_src": null,
+      "slug": "galaxy-watch-ultra-2025",
+      "name": "Galaxy Watch Ultra (2025)",
+      "series": "Ultra",
+      "spec_source": {
+        "default": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1ilo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24"
+        },
+        "compatibility": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1ilo/",
+          "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
+          "at": "2026-09-24",
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L705F."
+        },
+        "brightness": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה בהירות."
+        },
+        "materials": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה חומר."
+        },
+        "charging": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה זמן טעינה."
+        },
+        "safety": {
+          "src": null,
+          "at": null,
+          "note": "טבלת המפרט אינה מונה תכונות בטיחות."
+        },
+        "security_updates": {
+          "src": null,
+          "at": null,
+          "note": "אין תאריך בעמוד."
+        }
+      },
+      "spec": {
+        "case_sizes": "47 מ״מ",
+        "display": "Super AMOLED, 1.5 אינץ׳",
+        "resolution": "480x480 פיקסלים",
+        "brightness": null,
+        "dimensions": "47.4 x 47.1 x 12.1 מ״מ",
+        "weight": "60.5 גרם",
+        "materials": null,
+        "water_resistance": "10 ATM",
+        "chip": "5 ליבות, עד 1.6GHz",
+        "ram": "2GB",
+        "storage": "64GB",
+        "battery": "590 mAh. עד 80 שעות כשהתצוגה התמידית כבויה, ועד 60 כשהיא פועלת",
+        "charging": null,
+        "health": "חיישן לב חשמלי, מד דופק אופטי, ניתוח הרכב גוף ומדידת טמפרטורה",
+        "safety": null,
+        "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
+        "cellular": "גרסת LTE, ב-eSIM",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "security_updates": null
+      },
+      "name_he": "Galaxy Watch Ultra (2025)"
+    }
+  ]
+}
