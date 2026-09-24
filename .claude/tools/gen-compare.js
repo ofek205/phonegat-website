@@ -260,7 +260,9 @@ function buildMain(p, a, b, d, openTag) {
     /* שני המכשירים, קישור לעמוד המלא של כל אחד. הרכיב .hub, אותו רכיב של מרכז המכשירים. */
     '<section class="block" id="devices" aria-labelledby="h-dev">\n  <div class="wrap box">\n' +
     '    <h2 id="h-dev">שני המכשירים</h2>\n' +
-    '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n' +
+    (WATCHES
+      ? '    <p class="lead">בעמוד הזה רק ההבדלים. בכלי ההשוואה אפשר לראות את כל השדות של שני השעונים, ולהוסיף שעון שלישי.</p>\n'
+      : '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n') +
     '      <ul class="hub' + ([a, b].some(hasPhoto) ? ' pics' : '') + '">\n' +
     /* כאן לא חוזרים על המפרט. הטבלה נמצאת מיד למטה, וכשמשווים שני דגמים באותו גודל מסך
      * התוצאה הייתה "מסך 6.3 אינץ׳" פעמיים זה מתחת לזה, ועוד פעם בפסקה הפותחת. */
@@ -270,6 +272,11 @@ function buildMain(p, a, b, d, openTag) {
       if (x.status === 'reference') {
         return '        <li><span class="noown"><b>' + ltr(x.name) + '</b>' +
           '<span>' + esc(x.brand) + ' · לא נמכר אצלנו, מופיע כאן להשוואה</span></span></li>';
+      }
+      /* לשעונים אין עמוד מכשיר. הקישור הוא לכלי, עם הזוג כבר בחור. */
+      if (WATCHES) {
+        return '        <li><a href="/watches/compare/?d=' + a.slug + ',' + b.slug + '"><b>' + ltr(x.name) + '</b>' +
+          '<span>' + esc(x.brand) + ' · כל השדות בכלי ההשוואה</span></a></li>';
       }
       return '        <li><a href="/phones/' + x.slug + '/">' + photo(x) + '<b>' + ltr(x.name) + '</b>' +
         '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
@@ -284,6 +291,9 @@ function buildMain(p, a, b, d, openTag) {
      * ואם אין אף הפרש מעל הרף, הבלוק אומר את זה במקום להיעלם. שני דגמים שנבדלים רק בזיכרון
      * ובמעבד הם מקרה אמיתי (A56 מול A36), וזו תשובה שימושית יותר מרשימה ריקה. */
     (function () {
+      /* ההפרשים המספריים מוגדרים ב-traits.js על שדות של טלפון. על שעון הם היו קוראים את
+         המספר הראשון בטווח כמו "31.5 עד 39.5 גרם" כאילו הוא המשקל, ולכן המקטע לא נבנה. */
+      if (WATCHES) return '';
       var ds = T.deltas(a.spec, b.spec).slice(0, 4);
       var nm = function (side) { return side === 'a' ? (a.name_he || a.name) : (b.name_he || b.name); };
       if (!ds.length) {
@@ -334,9 +344,20 @@ function buildMain(p, a, b, d, openTag) {
         pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') +
         '\n        </ul>\n' +
         (pair[0].status === 'reference' ? ''
+          : WATCHES ? ''
           : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
             esc(pair[0].name_he || pair[0].name) + '</a></p>') + '\n      </div>';
     }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n' +
+
+    /* מקטע שייחודי לעמוד: השאלה שמכריעה דווקא בזוג הזה, עם כותרת משלו. נוסף ב-24.9.2026 כדי
+       שעמודים שבנויים מאותה תבנית לא ייראו כמו אותו עמוד עם שמות מוחלפים, שזה מה שגוגל מוריד
+       בדירוג. אופציונלי: זוג בלי angle פשוט לא מקבל את המקטע. */
+    (p.angle && p.angle_h
+      ? '<section class="block" id="angle" aria-labelledby="h-angle">\n  <div class="wrap box">\n' +
+        '    <h2 id="h-angle">' + esc(p.angle_h) + '</h2>\n' +
+        p.angle.map(function (t) { return '    <p>' + esc(t) + '</p>\n'; }).join('') +
+        '  </div>\n</section>\n\n'
+      : '') +
 
     '<section class="rules" aria-labelledby="h-bl">\n  <div class="wrap">\n    <div class="box">\n' +
     '      <h2 id="h-bl">השורה התחתונה</h2>\n' +
@@ -352,7 +373,9 @@ function buildMain(p, a, b, d, openTag) {
     (function () {
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
       var nmOf = function (x) { return esc(x.name_he || x.name); };
-      var lead = !away.length ? 'שני המכשירים אצלנו בחנות.'
+      /* שעונים: איננו יודעים אם השעון בחנות, ולכן לא נאמר שהוא שם. שאלה, לא הבטחה. */
+      var lead = WATCHES ? 'רוצים לדעת אם השעונים האלה אצלנו?'
+        : !away.length ? 'שני המכשירים אצלנו בחנות.'
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
@@ -933,6 +956,17 @@ function toolMain(openTag, index, order, pairCount) {
 
   /* מתקפל. ההסבר נשאר זמין במלואו, אבל הוא כבר לא פסקאות שקוראים בדרך לכלי:
      מי שרוצה לדעת איך זה מחושב פותח, ומי שבא להשוות לא עובר דרכו. */
+  /* השוואות השעונים המוכנות, כקישורים סטטיים. הכלי עצמו noindex,follow, ולכן גוגל עוקב אחריהם,
+     וכך לכל עמוד השוואה יש קישור נכנס גם כשהוא לא חולק שעון עם השוואה אחרת. */
+  (WATCHES && (db._comparisons.pairs || []).length
+    ? '<section class="block" id="ready" aria-labelledby="ready-h">\n  <div class="wrap box">\n' +
+      '    <h2 id="ready-h">השוואות מוכנות</h2>\n' +
+      '    <ul class="hub">\n' + db._comparisons.pairs.map(function (p) {
+        return '      <li><a href="/compare/' + p.slug + '/"><b>' + esc(p.h1) + '</b></a></li>';
+      }).join('\n') + '\n    </ul>\n' +
+      '  </div>\n</section>\n\n'
+    : '') +
+
   '<section class="block" id="how" aria-labelledby="how-h">\n  <div class="wrap box dhow">\n' +
   '    <h2 id="how-h" class="a11y-sr">איך הכלי עובד</h2>\n' +
   '    <details>\n      <summary>איך הכלי מחשב את ההבדלים</summary>\n' +
@@ -1144,6 +1178,23 @@ if (!only && !WATCHES) {
     '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מהמאגר, או שלושה. ולשעונים חכמים יש <a href="/watches/compare/">כלי השוואה משלהם</a>.</p>\n' +
     '    <p class="aside">ואם הדגם עצמו לא אצלנו באתר, <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
     '  </div>\n</section>\n\n' +
+
+    /* השוואות השעונים נבנות במצב --watches מ-watches.json, ומוצגות כאן במקטע משלהן כדי שיהיה
+       אליהן קישור מתוך תוכן ולא רק מהתפריט. נקרא מהקובץ ולא מועתק, כדי שלא ייפרד. */
+    (function () {
+      var wj;
+      try { wj = JSON.parse(fs.readFileSync(path.join(PROTO, 'watches.json'), 'utf8')); } catch (e) { return ''; }
+      var wp = (wj._comparisons && wj._comparisons.pairs) || [];
+      if (!wp.length) return '';
+      return '<section class="block" id="watches" aria-labelledby="h-watches">\n  <div class="wrap box">\n' +
+        '    <h2 id="h-watches">השוואות שעונים חכמים</h2>\n' +
+        '    <p class="lead">Apple Watch ו-Galaxy Watch, עם המפרט מאתרי היצרנים. <a href="/watches/compare/">בכלי השעונים</a> אפשר לבחור כל שני שעונים.</p>\n' +
+        '      <ul class="hub">\n' +
+        wp.map(function (p) {
+          return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc(p.h1) + '</b></a></li>';
+        }).join('\n') + '\n      </ul>\n' +
+        '  </div>\n</section>\n\n';
+    })() +
 
     '<section class="block" id="how" aria-labelledby="h-how">\n  <div class="wrap box">\n' +
     '    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>\n' +

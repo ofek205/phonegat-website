@@ -373,6 +373,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/compare/apple-watch-se-3-vs-series-11/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/apple-watch-series-12-vs-ultra-4/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/apple-watch-vs-galaxy-watch/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-a17-vs-galaxy-a07/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -434,6 +452,18 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-s26-vs-oneplus-15r/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-watch8-vs-galaxy-watch9/</loc>
+    <lastmod>2026-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/compare/galaxy-watch9-vs-galaxy-watch-ultra-2/</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

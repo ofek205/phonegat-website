@@ -121,22 +121,22 @@
     ]
   },
   "_means": {
-    "compatibility": "קודם כל בדקו את השורה הזאת. Apple Watch עובד רק עם אייפון, ושעוני Galaxy עובדים רק עם טלפון אנדרואיד. שעון שלא מתאים לטלפון שלכם לא יעבוד איתו.",
-    "case_sizes": "הגודל נמדד בגובה המארז ולא באלכסון המסך. מארז גדול נותן מסך גדול יותר, וקטן נוח יותר על פרק יד צר.",
-    "display": "OLED ו-AMOLED מאירים כל פיקסל בנפרד, ולכן אפשר להשאיר את השעה מוצגת כל הזמן בלי לרוקן את הסוללה מהר.",
+    "compatibility": "קודם כל בדקו את השורה הזאת. Apple Watch עובד רק עם אייפון, ושעוני Galaxy עובדים רק עם טלפון אנדרואיד בגרסה שסמסונג מציינת. שעון שלא מתאים לטלפון שלכם לא יעבוד איתו, וחלק מתכונות הבריאות בשעוני Galaxy דורשות טלפון Galaxy.",
+    "case_sizes": "אפל מודדת את גובה המארז, והמספר של סמסונג קרוב יותר לרוחב שלו. לכן 44 מ״מ של סמסונג ו-46 מ״מ של אפל אינם בני השוואה ישירה. כדי להשוות גודל אמיתי, הסתכלו בשורת המידות.",
+    "display": "OLED ו-AMOLED מאירים כל פיקסל בנפרד, וזה מה שמאפשר להשאיר את השעה מוצגת כל הזמן. התצוגה התמידית עדיין צורכת סוללה, וסמסונג מפרסמת כמה בשורת הסוללה.",
     "resolution": "מספר הפיקסלים במסך. בשעון ההבדל כמעט לא מורגש, כי מסתכלים עליו לשניות.",
     "brightness": "הבהירות המרבית, בשמש. זה מה שקובע אם רואים את המסך בחוץ בצהריים.",
     "dimensions": "העובי הוא מה שמורגש מתחת לשרוול. הגובה והרוחב קובעים איך השעון יושב על פרק היד.",
     "weight": "בלי רצועה. הבדל של כ-10 גרם ומעלה מורגש בשינה ובאימון, פחות ביום רגיל.",
     "materials": "אלומיניום קל יותר, וטיטניום וקרמיקה עמידים יותר בשריטות. הזכוכית שמעל המסך היא מה שנשרט ראשון.",
-    "water_resistance": "5 ATM או WR50 מספיקים לשחייה. 10 ATM או WR100 מתאימים גם לספורט מים. הדירוג נבדק במים מתוקים בתנאי מעבדה, והוא נשחק עם הזמן.",
+    "water_resistance": "לפי היצרנים, 5 ATM ו-WR50 מתאימים לשחייה בבריכה ובים, ולא לצלילה או לספורט מים מהיר. גם 10 ATM אינו אישור לצלילה: על Galaxy Watch Ultra (2025) סמסונג כותבת שהוא אינו מתאים לצלילה. צוללים רק עם שעון שהיצרן מאשר לכך במפורש, לפי תקן EN13319. IP6X הוא עמידות לאבק, ו-IP68 הוא אבק ושיקוע קצר. כל הדירוגים נבדקו בתנאי מעבדה, והעמידות פוחתת עם הזמן.",
     "chip": "המעבד קובע כמה חלקה התגובה של השעון. בין דגמים מאותו דור ההבדל קטן ביומיום.",
     "ram": "אפל אינה מפרסמת את נפח הזיכרון, ולכן אין כאן מה להשוות מולה.",
     "storage": "מקום לאפליקציות, למוזיקה ולפודקאסטים שמורידים לשעון. חשוב בעיקר למי שמתאמן בלי טלפון.",
     "battery": "אפל מודדת בשעות של שימוש רגיל, וסמסונג בשעות עם תצוגה תמידית כבויה או פועלת. לכן המספרים של שני היצרנים אינם ברי השוואה ישירה.",
     "charging": "כמה מהר השעון חוזר לעבוד. שימושי למי שטוען אותו רק בבוקר.",
-    "health": "החיישנים והתכונות שהיצרן מונה. זמינות תכונות רפואיות, כמו ECG, משתנה לפי מדינה, ואפל מציינת שאפליקציית החמצן בדם מיועדת לרווחה ולא לשימוש רפואי.",
-    "safety": "תכונות שמזעיקות עזרה בזמן חירום. חלקן דורשות גרסה עם סלולר או טלפון קרוב.",
+    "health": "החיישנים והתכונות שהיצרן מונה. זמינות תכונות רפואיות, כמו ECG והתראות על יתר לחץ דם, משתנה לפי מדינה ולפי דגם. אפל מציינת שאפליקציית החמצן בדם מיועדת לרווחה ולא לשימוש רפואי.",
+    "safety": "תכונות שמזעיקות עזרה בזמן חירום. חלקן דורשות גרסה עם סלולר או טלפון קרוב, ותקשורת לוויינית זמינה רק במדינות שאפל מונה, וישראל אינה ביניהן.",
     "connectivity": "GPS מודד ריצה בלי טלפון. NFC ו-Apple Pay מאפשרים לשלם עם השעון, בתנאי שהבנק שלכם תומך בזה.",
     "cellular": "גרסה עם סלולר עובדת בלי הטלפון בכיס: שיחות, הודעות ומפות. היא דורשת קו מתאים מהמפעיל.",
     "security_updates": "עד מתי היצרן מתחייב לעדכוני אבטחה. סמסונג נוקבת בתאריך בחלק מהדגמים, ואפל אינה נוקבת בתאריך."
@@ -145,7 +145,160 @@
     "weight": 1
   },
   "_comparisons": {
-    "pairs": []
+    "pairs": [
+      {
+        "a": "apple-watch-series-12",
+        "b": "galaxy-watch9",
+        "slug": "apple-watch-vs-galaxy-watch",
+        "h1": "Apple Watch או Galaxy Watch: איזה שעון מתאים לכם",
+        "title": "Apple Watch או Galaxy Watch: מה ההבדל ואיזה לבחור | פון גת",
+        "description": "ההבדל הראשון הוא לא במפרט אלא בטלפון: Apple Watch עובד רק עם אייפון, ו-Galaxy Watch רק עם אנדרואיד. השוואה בין Series 12 ל-Watch9. פון גת קרית גת.",
+        "keywords": [
+          "Apple Watch או Galaxy Watch",
+          "אפל ווטש או גלקסי ווטש",
+          "Apple Watch Series 12 מול Galaxy Watch9",
+          "שעון חכם לאייפון או לאנדרואיד"
+        ],
+        "lede": "לפני כל השוואה של מסך או סוללה יש שאלה אחת שמכריעה: איזה טלפון יש לכם. לפי אפל, Apple Watch עובד רק עם אייפון, ולפי מדריך המשתמש של סמסונג, Galaxy Watch עובד רק עם טלפון אנדרואיד עם שירותי Google. בעמוד הזה משווים את הדגם המרכזי של כל אחת מהן: Apple Watch Series 12 ו-Galaxy Watch9.",
+        "for_a": [
+          "אם יש לכם אייפון. זה תנאי ולא העדפה: Series 12 דורש iPhone 11 ומעלה עם iOS 27 ומעלה.",
+          "אם חשובות לכם התראות הבריאות שאפל מונה, כמו התראות על דום נשימה בשינה. התראות יתר לחץ דם ב-Series 12 עוד ממתינות לאישורים, ולפי אפל ייתכן שאינן זמינות בישראל.",
+          "אם אתם רוצים לבחור בין אלומיניום, טיטניום וקרמיקה."
+        ],
+        "for_b": [
+          "אם יש לכם טלפון אנדרואיד עם שירותי Google ו-Android 13 ומעלה. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy.",
+          "אם אתם מעדיפים את Wear OS של Google, עם האפליקציות מ-Google Play.",
+          "אם חשוב לכם מדד של הרכב גוף. לפי סמסונג יש בשעון חיישן לניתוח עכבה ביו-אלקטרית."
+        ],
+        "angle_h": "למה הטלפון מכריע ולא המפרט",
+        "angle": [
+          "שעון חכם אינו מכשיר עצמאי. הוא מתחבר לטלפון דרך אפליקציה של היצרן, ומשם הוא מקבל הודעות, שיחות ועדכונים. של אפל קיימת רק באייפון, ושל סמסונג, לפי המדריך שלה, רק בטלפוני אנדרואיד עם שירותי Google.",
+          "מי שיש לו אייפון ובוחר Galaxy Watch, או להפך, יקבל שעון שלא יעבוד עם הטלפון שלו. וזו גם הסיבה שהשוואת מספרים בין שני השעונים מועילה בעיקר למי שמתלבט גם איזה טלפון לקנות.",
+          "ועוד דבר ששווה לדעת: אפל וסמסונג מודדות סוללה אחרת. אפל נוקבת בשעות של שימוש רגיל, וסמסונג בשעות עם תצוגה תמידית כבויה או פועלת. לכן 24 שעות מול 40 שעות אינם אותו מדד."
+        ],
+        "bottom_line": "קודם בודקים איזה טלפון יש לכם, ורק אחר כך משווים. מי שמחזיק אייפון בוחר בין דגמי Apple Watch, ומי שמחזיק גלקסי או טלפון אנדרואיד אחר בוחר בין דגמי Galaxy Watch. בכלי השעונים אפשר להשוות בתוך כל משפחה."
+      },
+      {
+        "a": "apple-watch-series-12",
+        "b": "apple-watch-ultra-4",
+        "slug": "apple-watch-series-12-vs-ultra-4",
+        "h1": "Apple Watch Series 12 או Ultra 4: מה ההבדל",
+        "title": "Apple Watch Series 12 או Ultra 4: מה ההבדל | פון גת",
+        "description": "אותו מעבד S11 ואותן תכונות בריאות. ההבדל בסוללה, עד 50 שעות מול 24, במסך בהיר יותר, בעמידות לצלילה ובמשקל. פון גת קרית גת.",
+        "keywords": [
+          "Apple Watch Series 12 או Ultra 4",
+          "אפל ווטש 12 או אולטרה 4",
+          "Apple Watch Ultra 4 מול Series 12"
+        ],
+        "lede": "לפי עמודי המפרט של אפל, שני השעונים חולקים את מעבד S11 ואת אותה רשימת תכונות בריאות. ההבדלים הם בגוף ובסוללה: ל-Ultra 4 מארז טיטניום של 49 מ״מ, בהירות של עד 3000 ניט במקום 2000, עמידות לצלילה עד 40 מטר, וסוללה של עד 50 שעות שימוש רגיל במקום 24. את זה משלמים במשקל: כ-63 גרם, מול 31.5 עד 52.9 ב-Series 12, לפי הגודל והחומר.",
+        "for_a": [
+          "אם אתם רוצים שעון קל לכל היום ולשינה. בגרסת האלומיניום Series 12 שוקל 31.5 עד 39.5 גרם.",
+          "אם אתם רוצים לבחור גודל. יש שני גדלים, 42 ו-46 מ״מ, ושלושה חומרים.",
+          "אם אתם טוענים כל לילה בכל מקרה. 80 אחוז בכ-30 דקות, מהר יותר מ-Ultra 4."
+        ],
+        "for_b": [
+          "אם אתם צוללים או עושים ספורט מים. Ultra 4 עמיד עד 100 מטר ומתאים לצלילה עד 40 מטר לפי EN13319.",
+          "אם אתם שוכחים לטעון. עד 50 שעות שימוש רגיל, ועד 84 במצב חיסכון.",
+          "אם אתם במסלולים בשטח. GPS כפול תדר, צופר חירום, ומסך של עד 3000 ניט שנראה בשמש."
+        ],
+        "angle_h": "מה מקבלים בתמורה לסוללה הגדולה",
+        "angle": [
+          "הסוללה של Ultra 4 מחזיקה בערך פי שניים, לפי אפל, אבל היא מגיעה במארז אחד בלבד: 49 מ״מ, בטיטניום, בכ-63 גרם. על פרק יד צר זה שעון גדול, ומרגישים אותו בשינה.",
+          "Series 12 מתחיל ב-42 מ״מ ובערך במחצית מהמשקל. מי שבעיקר רוצה התראות, מדידת דופק ומעקב שינה מקבל בו את אותן תכונות בריאות."
+        ],
+        "bottom_line": "Ultra 4 בנוי לשעות ארוכות בשטח ובמים. מי שמשתמש בשעון בעיקר ביום-יום ובשינה יקבל ב-Series 12 את אותן תכונות בריאות, בשעון קל וקטן יותר."
+      },
+      {
+        "a": "apple-watch-se-3",
+        "b": "apple-watch-series-11",
+        "slug": "apple-watch-se-3-vs-series-11",
+        "h1": "Apple Watch SE 3 או Series 11: על מה מוותרים בדגם הזול",
+        "title": "Apple Watch SE 3 או Series 11: מה ההבדל | פון גת",
+        "description": "SE 3 הוא הדגם הזול של אפל, ואין בו ECG ואין בו מדידת חמצן בדם. מה עוד שונה מול Series 11, ולמי הוא מספיק. פון גת קרית גת.",
+        "keywords": [
+          "Apple Watch SE 3 או Series 11",
+          "אפל ווטש SE 3 מול סדרה 11",
+          "Apple Watch SE 3 ECG"
+        ],
+        "lede": "שני השעונים מופיעים היום באתר של אפל ישראל, ושניהם עם אותו מעבד, S10. לפי עמודי המפרט, SE 3 מוותר על שלושה דברים: אין בו ECG, אין בו מדידת חמצן בדם, והמסך שלו מגיע ל-1000 ניט במקום 2000. בנוסף הסוללה שלו מחזיקה עד 18 שעות שימוש רגיל, מול 24 ב-Series 11.",
+        "for_a": [
+          "אם אתם רוצים שעון להתראות, לאימונים ולמעקב שינה. את כל אלה SE 3 עושה, כולל התראות על דום נשימה בשינה.",
+          "אם אתם רוצים את הגודל הקטן. SE 3 מגיע גם ב-40 מ״מ, ושוקל החל מ-26.3 גרם.",
+          "אם 18 שעות מספיקות לכם, כלומר אתם טוענים כל לילה."
+        ],
+        "for_b": [
+          "אם חשוב לכם ECG או מדידת חמצן בדם.",
+          "אם אתם רוצים יותר סוללה. עד 24 שעות שימוש רגיל, ועד 38 במצב חיסכון.",
+          "אם אתם רוצים גם עמידות לאבק. ל-Series 11 יש דירוג IP6X, ובעמוד של SE 3 אין דירוג אבק."
+        ],
+        "angle_h": "מה באמת חסר ב-SE 3",
+        "angle": [
+          "ההבדל שקל לפספס הוא בבריאות. SE 3 מודד דופק וטמפרטורה ומתריע על קצב לב לא סדיר, אבל לפי עמוד המפרט של אפל אין בו אפליקציית ECG ואין בו מדידת חמצן בדם. מי שקונה שעון בגלל שתי התכונות האלה צריך את Series 11.",
+          "בתכונות הבטיחות, לעומת זאת, אין הבדל: בשני השעונים יש SOS, זיהוי תאונת דרכים וזיהוי נפילה, ולשניהם יש גרסה עם סלולר."
+        ],
+        "bottom_line": "SE 3 מספיק למי שרוצה התראות, אימונים ומעקב שינה וטוען כל ערב. מי שמחפש ECG, חמצן בדם או סוללה ארוכה יותר צריך את Series 11."
+      },
+      {
+        "a": "galaxy-watch8",
+        "b": "galaxy-watch9",
+        "slug": "galaxy-watch8-vs-galaxy-watch9",
+        "h1": "Galaxy Watch8 או Watch9: מה השתנה",
+        "title": "Galaxy Watch8 או Watch9: מה השתנה ושווה לשדרג | פון גת",
+        "description": "אותם גדלים ואותן מידות. ב-Watch9 מעבד מהיר יותר, סוללה גדולה יותר ו-Bluetooth 6.0. למי יש סיבה לשדרג, ולמי אין. פון גת קרית גת.",
+        "keywords": [
+          "Galaxy Watch8 או Watch9",
+          "גלקסי ווטש 8 מול 9",
+          "Galaxy Watch9 מה חדש"
+        ],
+        "lede": "לפי עמודי המוצר של סמסונג ישראל, שני הדורות נראים כמעט אותו דבר מבחוץ: אותם גדלים, 40 ו-44 מ״מ, אותן מידות ואותו מסך. מה שהשתנה בפנים הוא המעבד, עד 2.1GHz במקום 1.6, הסוללה, 390 או 445 mAh במקום 325 או 435, ו-Bluetooth 6.0 במקום 5.3. בגודל הקטן Watch9 גם כבד ב-1.5 גרם.",
+        "for_a": [
+          "אם יש לכם כבר Watch8. מבחוץ אין הבדל, וההבדלים בפנים קטנים.",
+          "אם 40 שעות, כשהתצוגה התמידית כבויה, מספיקות לכם. סמסונג נוקבת באותו מספר בשני הדורות.",
+          "אם אתם רוצים את אותו גודל ואותו מסך, והמעבד המהיר פחות חשוב לכם."
+        ],
+        "for_b": [
+          "אם אתם קונים עכשיו שעון ראשון, ולא משדרגים.",
+          "אם אתם רוצים את המעבד המהיר יותר. עד 2.1GHz מול 1.6.",
+          "אם חשובה לכם סוללה גדולה יותר. 390 מול 325 mAh בגודל הקטן, ו-445 מול 435 בגדול."
+        ],
+        "angle_h": "ההבדל בסוללה קטן ממה שנראה",
+        "angle": [
+          "הקיבולת של Watch9 גדולה יותר, בעיקר בגודל של 40 מ״מ: 390 mAh מול 325. אבל סמסונג נוקבת לשני הדורות באותו זמן שימוש, עד 40 שעות כשהתצוגה התמידית כבויה. כלומר, לפי היצרן, התוספת בקיבולת לא הפכה לזמן שימוש ארוך יותר.",
+          "לכן למי שמחזיק Watch8 אין סיבה של סוללה לשדרג. הסיבה, אם יש, היא המעבד."
+        ],
+        "bottom_line": "מי שמחזיק Watch8 יכול להישאר איתו בשקט. מי שקונה עכשיו יקבל ב-Watch9 מעבד מהיר יותר וסוללה גדולה יותר באותו גודל, ואת ההפרש במחיר שווה לבדוק לפני שמחליטים."
+      },
+      {
+        "a": "galaxy-watch9",
+        "b": "galaxy-watch-ultra-2",
+        "slug": "galaxy-watch9-vs-galaxy-watch-ultra-2",
+        "h1": "Galaxy Watch9 או Watch Ultra 2: מתי שווה ללכת על ה-Ultra",
+        "title": "Galaxy Watch9 או Watch Ultra 2: מה ההבדל | פון גת",
+        "description": "אותו מעבד ואותם חיישנים. ב-Ultra 2 סוללה של 800 mAh ועד 80 שעות, עמידות 10 ATM ו-IP69K ומארז של 47 מ״מ, אבל גם כמעט פי שניים משקל. פון גת קרית גת.",
+        "keywords": [
+          "Galaxy Watch9 או Watch Ultra 2",
+          "גלקסי ווטש 9 מול אולטרה 2",
+          "Galaxy Watch Ultra 2 מה ההבדל"
+        ],
+        "lede": "לפי עמודי המוצר של סמסונג ישראל, לשני השעונים אותו מעבד, עד 2.1GHz, ואותם חיישני בריאות. ההבדל הוא בגוף ובסוללה: ל-Ultra 2 מארז של 47 מ״מ, סוללה של 800 mAh שמחזיקה עד 80 שעות כשהתצוגה התמידית כבויה, ועמידות של 10 ATM ו-IP69K. Watch9 מגיע ב-40 או 44 מ״מ, עם עד 40 שעות ועמידות של 5 ATM ו-IP68.",
+        "for_a": [
+          "אם אתם רוצים שעון קל. 31.5 או 34 גרם, מול 61.5 ב-Ultra 2.",
+          "אם יש לכם פרק יד צר. יש גודל של 40 מ״מ.",
+          "אם 5 ATM מספיקים לכם, כלומר שחייה ולא ספורט מים."
+        ],
+        "for_b": [
+          "אם אתם יוצאים לכמה ימים בלי מטען. לפי סמסונג, עד 80 שעות כשהתצוגה התמידית כבויה.",
+          "אם אתם צוללים או יוצאים לשטח. ל-Ultra 2 יש 10 ATM, IP69K ותקן הצלילה EN13319.",
+          "אם חשוב לכם לדעת עד מתי יגיעו עדכוני אבטחה. סמסונג נוקבת לדגם הזה בתאריך, 31 ביולי 2031."
+        ],
+        "angle_h": "למה המשקל הוא ההחלטה כאן",
+        "angle": [
+          "ההבדלים של Ultra 2 אמיתיים, אבל כולם באים עם שעון כמעט כפול במשקל: 61.5 גרם מול 31.5 או 34. בשינה ובאימון זה ההבדל שמרגישים ראשון.",
+          "מי שטוען את השעון כל יום או יומיים לא ינצל את 80 השעות, ויקבל ב-Watch9 את אותו מעבד ואת אותם חיישני בריאות בשעון קל בהרבה."
+        ],
+        "bottom_line": "Ultra 2 מתאים למי שבאמת צריך סוללה לכמה ימים ועמידות לספורט מים. לכל שאר השימושים Watch9 נותן את אותו מעבד ואותם חיישנים, בערך בחצי מהמשקל."
+      }
+    ]
   },
   "devices": [
     {
@@ -173,6 +326,12 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        },
+        "health": {
+          "src": "https://www.apple.com/watchos/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "ישראל מסומנת שם בהערה 7: \"Hypertension Notifications may not be available on Apple Watch Series 12 or Ultra 4 in your region, as additional regulatory clearances for these devices are in process\"."
         }
       },
       "spec": {
@@ -189,11 +348,11 @@
         "storage": "64GB",
         "battery": "עד 24 שעות שימוש רגיל, ועד 38 במצב חיסכון",
         "charging": "80 אחוז בכ-30 דקות",
-        "health": "ECG, חמצן בדם, טמפרטורה, מדדים חיוניים ו-HRV, התראות על דום נשימה בשינה ועל יתר לחץ דם",
-        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה ופנס",
+        "health": "ECG, חמצן בדם, טמפרטורה, התראות על דום נשימה בשינה ועל יתר לחץ דם. לפי אפל, בדגם הזה התראות יתר לחץ דם עוד ממתינות לאישורים רגולטוריים, וייתכן שאינן זמינות בישראל",
+        "safety": "SOS, זיהוי תאונת דרכים וזיהוי נפילה",
         "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
         "cellular": "יש גרסה עם סלולר",
-        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27 ומעלה",
         "security_updates": null
       },
       "name_he": "Apple Watch Series 12"
@@ -225,10 +384,16 @@
           "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
         },
         "safety": {
-          "src": "https://www.apple.com/apple-watch-ultra-4/specs/",
-          "kind": "אתר היצרן, גרסה גלובלית",
+          "src": "https://www.apple.com/watchos/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
           "at": "2026-09-24",
-          "note": "העמוד הבינלאומי מונה תקשורת לוויינית. בעמוד הישראלי של Ultra 3 התכונה לא מופיעה, ולכן היא נכתבת כאן כחלק מהגרסה הבינלאומית בלבד."
+          "note": "עמוד המפרט מונה תקשורת לוויינית (SOS, הודעות, Find My). ברשימות המדינות של שלוש התכונות האלה ישראל אינה מופיעה."
+        },
+        "health": {
+          "src": "https://www.apple.com/watchos/feature-availability/",
+          "kind": "דף זמינות התכונות של אפל",
+          "at": "2026-09-24",
+          "note": "ישראל מסומנת שם בהערה 7: \"Hypertension Notifications may not be available on Apple Watch Series 12 or Ultra 4 in your region, as additional regulatory clearances for these devices are in process\"."
         }
       },
       "spec": {
@@ -245,11 +410,11 @@
         "storage": "64GB",
         "battery": "עד 50 שעות שימוש רגיל, ועד 84 במצב חיסכון",
         "charging": "80 אחוז בכ-45 דקות",
-        "health": "ECG, חמצן בדם, טמפרטורה, מדדים חיוניים ו-HRV, התראות על דום נשימה בשינה ועל יתר לחץ דם",
-        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה, צופר חירום ופנס. בגרסה הבינלאומית גם תקשורת לוויינית",
+        "health": "ECG, חמצן בדם, טמפרטורה, התראות על דום נשימה בשינה ועל יתר לחץ דם. לפי אפל, בדגם הזה התראות יתר לחץ דם עוד ממתינות לאישורים רגולטוריים, וייתכן שאינן זמינות בישראל",
+        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה וצופר חירום. יש בו תקשורת לוויינית, אבל אפל אינה מציעה אותה בישראל",
         "connectivity": "GPS כפול תדר, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
         "cellular": "כל הדגמים עם סלולר",
-        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 27 ומעלה",
         "security_updates": null
       },
       "name_he": "Apple Watch Ultra 4"
@@ -298,7 +463,7 @@
         "safety": "SOS, זיהוי תאונת דרכים וזיהוי נפילה",
         "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
         "cellular": "יש גרסה עם סלולר",
-        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26 ומעלה",
         "security_updates": null
       },
       "name_he": "Apple Watch Series 11"
@@ -327,6 +492,12 @@
           "src": null,
           "at": null,
           "note": "אפל אינה נוקבת בתאריך סיום לעדכוני אבטחה."
+        },
+        "safety": {
+          "src": "https://support.apple.com/en-us/125095",
+          "kind": "מפרט טכני באתר התמיכה של אפל",
+          "at": "2026-09-24",
+          "note": "עמוד המפרט מונה תקשורת לוויינית (SOS, הודעות, Find My). ברשימות המדינות של שלוש התכונות האלה ישראל אינה מופיעה. העמוד הישראלי של Ultra 3 אינו מזכיר את התכונה, ודף התמיכה הבינלאומי כן."
         }
       },
       "spec": {
@@ -344,10 +515,10 @@
         "battery": "עד 42 שעות שימוש רגיל, ועד 72 במצב חיסכון",
         "charging": "80 אחוז בכ-45 דקות",
         "health": "ECG, חמצן בדם, טמפרטורה, התראות על דום נשימה בשינה ועל יתר לחץ דם",
-        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה, צופר חירום ופנס",
+        "safety": "SOS, זיהוי תאונת דרכים, זיהוי נפילה וצופר חירום. יש בו תקשורת לוויינית, אבל אפל אינה מציעה אותה בישראל",
         "connectivity": "GPS כפול תדר, Wi-Fi 4, Bluetooth 5.3, UWB, Apple Pay",
         "cellular": "כל הדגמים עם סלולר",
-        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26 ומעלה",
         "security_updates": null
       },
       "name_he": "Apple Watch Ultra 3"
@@ -402,7 +573,7 @@
         "safety": "SOS, זיהוי תאונת דרכים וזיהוי נפילה",
         "connectivity": "GPS, Wi-Fi 4, Bluetooth 5.3, Apple Pay",
         "cellular": "יש גרסה עם סלולר",
-        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26",
+        "compatibility": "רק אייפון: iPhone 11 ומעלה, או iPhone SE מהדור השני ומעלה, עם iOS 26 ומעלה",
         "security_updates": null
       },
       "name_he": "Apple Watch SE 3"
@@ -427,17 +598,25 @@
           "src": "https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_IL&OriginYN=N&ModelType=N&ModelName=SM-L340&CttFileID=11579965&CDCttType=UM",
           "kind": "מדריך המשתמש של היצרן",
           "at": "2026-09-24",
-          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store."
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. גרסת Android וזיכרון מטבלת ההודעה לעיתונות: Android 13.0 or higher and with more than 1.5GB of memory. הדרישה לטלפון Galaxy מהערת השוליים בהודעה לעיתונות של סמסונג: \"Galaxy smartphone with Android OS 12 or above are required\"."
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט של סמסונג ישראל אינה מונה בהירות."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "טבלת המפרט של סמסונג ישראל אינה מונה בהירות. הערך מטבלת המפרט בהודעה הגלובלית."
         },
         "materials": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה חומר."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "aluminum casing ו-Sapphire Crystal, מההודעה הגלובלית."
+        },
+        "water_resistance": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "העמוד הישראלי מונה 5ATM. ה-IP68 מטבלת ההודעה הגלובלית: 5ATM + / IP68 / MIL-STD-810H."
         },
         "charging": {
           "src": null,
@@ -459,11 +638,11 @@
         "case_sizes": "40 או 44 מ״מ",
         "display": "Super AMOLED, 1.3 או 1.5 אינץ׳",
         "resolution": "438x438 או 480x480 פיקסלים",
-        "brightness": null,
+        "brightness": "עד 3000 ניט",
         "dimensions": "42.7 x 40.4 x 8.6 או 46.0 x 43.7 x 8.6 מ״מ",
         "weight": "31.5 או 34 גרם",
-        "materials": null,
-        "water_resistance": "5 ATM",
+        "materials": "אלומיניום, עם זכוכית ספיר",
+        "water_resistance": "5 ATM ו-IP68",
         "chip": "5 ליבות, עד 2.1GHz",
         "ram": "2GB",
         "storage": "32GB",
@@ -473,7 +652,7 @@
         "safety": null,
         "connectivity": "GPS, Wi-Fi, Bluetooth 6.0, NFC",
         "cellular": "יש גרסה עם LTE, ב-eSIM",
-        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google, Android 13 ומעלה ויותר מ-1.5GB זיכרון. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy עם Android 12 ומעלה",
         "security_updates": null
       },
       "name_he": "Galaxy Watch9"
@@ -497,17 +676,25 @@
           "src": "https://org.downloadcenter.samsung.com/downloadfile/ContentsFile.aspx?CDSite=UNI_IL&OriginYN=N&ModelType=N&ModelName=SM-L340&CttFileID=11579965&CDCttType=UM",
           "kind": "מדריך המשתמש של היצרן",
           "at": "2026-09-24",
-          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. אותו מדריך מכסה את SM-L71X."
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. אותו מדריך מכסה את SM-L71X. גרסת Android וזיכרון מטבלת ההודעה לעיתונות. הדרישה לטלפון Galaxy מהערת השוליים בהודעה לעיתונות של סמסונג: \"Galaxy smartphone with Android OS 12 or above are required\"."
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה בהירות."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "טבלת המפרט של סמסונג ישראל אינה מונה בהירות. הערך מההודעה הגלובלית."
         },
         "materials": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה חומר."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch-ultra2-and-watch9-your-health-companion-on-the-wrist",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "גוף טיטניום לפי העמוד הישראלי, Sapphire Crystal לפי ההודעה הגלובלית."
+        },
+        "water_resistance": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra2-titanium-silver-lte-sm-l715fzsailo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "העמוד הישראלי: דירוג IP69K ותקן EN13319. ההודעה הגלובלית מוסיפה 10ATM."
         },
         "charging": {
           "src": null,
@@ -524,11 +711,11 @@
         "case_sizes": "47 מ״מ",
         "display": "Super AMOLED, 1.5 אינץ׳",
         "resolution": "498x498 פיקסלים",
-        "brightness": null,
+        "brightness": "עד 5000 ניט",
         "dimensions": "47.4 x 47.1 x 10.7 מ״מ",
         "weight": "61.5 גרם",
-        "materials": null,
-        "water_resistance": "10 ATM ו-IP69K",
+        "materials": "טיטניום, עם זכוכית ספיר",
+        "water_resistance": "10 ATM, IP69K ותקן הצלילה EN13319",
         "chip": "5 ליבות, עד 2.1GHz",
         "ram": "2GB",
         "storage": "64GB",
@@ -538,7 +725,7 @@
         "safety": null,
         "connectivity": "GPS, Wi-Fi, Bluetooth 6.0, NFC",
         "cellular": "גרסת LTE, ב-eSIM",
-        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google, Android 13 ומעלה ויותר מ-1.5GB זיכרון. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy עם Android 12 ומעלה",
         "security_updates": "עד 31 ביולי 2031"
       },
       "name_he": "Galaxy Watch Ultra 2"
@@ -563,17 +750,25 @@
           "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-44mm-silver-bluetooth-sm-l330nzsailo/",
           "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
           "at": "2026-09-24",
-          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X."
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X. מההודעה לעיתונות: Android 12.0 or higher and with more than 1.5GB of memory. הדרישה לטלפון Galaxy מהערת השוליים בהודעה לעיתונות של סמסונג: \"Galaxy smartphone with Android OS 12 or above are required\"."
         },
         "brightness": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה בהירות."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "טבלת המפרט של סמסונג ישראל אינה מונה בהירות. בהודעה הגלובלית, על Galaxy Watch8: peak brightness of 3,000nits."
         },
         "materials": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה חומר."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "ההודעה מונה Sapphire Crystal ואינה מונה את חומר המארז."
+        },
+        "water_resistance": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "ה-IP68 מטבלת ההודעה הגלובלית: 5ATM + IP68 / MIL-STD-810H."
         },
         "charging": {
           "src": null,
@@ -595,11 +790,11 @@
         "case_sizes": "40 או 44 מ״מ",
         "display": "Super AMOLED, 1.3 או 1.5 אינץ׳",
         "resolution": "438x438 או 480x480 פיקסלים",
-        "brightness": null,
+        "brightness": "עד 3000 ניט",
         "dimensions": "42.7 x 40.4 x 8.6 או 46.0 x 43.7 x 8.6 מ״מ",
         "weight": "30 או 34 גרם",
-        "materials": null,
-        "water_resistance": "5 ATM",
+        "materials": "זכוכית ספיר מעל המסך",
+        "water_resistance": "5 ATM ו-IP68",
         "chip": "5 ליבות, עד 1.6GHz",
         "ram": "2GB",
         "storage": "32GB",
@@ -609,7 +804,7 @@
         "safety": null,
         "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
         "cellular": "יש גרסה עם LTE, ב-eSIM",
-        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google, Android 12 ומעלה ויותר מ-1.5GB זיכרון. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy עם Android 12 ומעלה",
         "security_updates": null
       },
       "name_he": "Galaxy Watch8"
@@ -639,17 +834,24 @@
           "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch8-classic-46mm-black-bluetooth-sm-l500nzkailo/",
           "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
           "at": "2026-09-24",
-          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X מכסה את SM-L500."
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L32X_L33X_L50X מכסה את SM-L500. Android 12 ומעלה מההודעה לעיתונות של סדרת Watch8. הדרישה לטלפון Galaxy מהערת השוליים בהודעה לעיתונות של סמסונג: \"Galaxy smartphone with Android OS 12 or above are required\"."
         },
         "brightness": {
           "src": null,
           "at": null,
-          "note": "טבלת המפרט אינה מונה בהירות."
+          "note": "טבלת המפרט אינה מונה בהירות, וההודעה לעיתונות מונה 3000 ניט רק ל-Galaxy Watch8."
         },
         "materials": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה חומר."
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "ההודעה מונה Sapphire Crystal ואינה מונה את חומר המארז."
+        },
+        "water_resistance": {
+          "src": "https://news.samsung.com/global/samsung-galaxy-watch8-series-ultra-comfort-from-sleep-to-workout",
+          "kind": "ההודעה לעיתונות של סמסונג",
+          "at": "2026-09-24",
+          "note": "ה-IP68 מטבלת ההודעה הגלובלית, שמשותפת ל-Watch8 ול-Watch8 Classic."
         },
         "charging": {
           "src": null,
@@ -674,8 +876,8 @@
         "brightness": null,
         "dimensions": "46.4 x 46.0 x 10.6 מ״מ",
         "weight": "63.5 גרם",
-        "materials": null,
-        "water_resistance": "5 ATM",
+        "materials": "זכוכית ספיר מעל המסך",
+        "water_resistance": "5 ATM ו-IP68",
         "chip": "5 ליבות, עד 1.6GHz",
         "ram": "2GB",
         "storage": "64GB",
@@ -685,7 +887,7 @@
         "safety": null,
         "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
         "cellular": "יש גרסה עם LTE, ב-eSIM",
-        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google, Android 12 ומעלה ויותר מ-1.5GB זיכרון. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy עם Android 12 ומעלה",
         "security_updates": null
       },
       "name_he": "Galaxy Watch8 Classic"
@@ -709,7 +911,7 @@
           "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1ilo/",
           "kind": "מדריך המשתמש של היצרן, מקושר מהעמוד",
           "at": "2026-09-24",
-          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L705F."
+          "note": "מדריך המשתמש הרשמי של סמסונג: \"It is compatible with Android phones that support Google mobile services\". את אפליקציית Galaxy Wearable מתקינים לפי המדריך רק מ-Galaxy Store או מ-Play Store. המדריך SM-L705F. הדרישה לטלפון Galaxy מהערת השוליים בהודעה לעיתונות של סמסונג: \"Galaxy smartphone with Android OS 12 or above are required\". סתירה בין המקורות: הערת שוליים בעמוד הישראלי כותבת Android 11.0 ומעלה עם 1.5GB, על Galaxy Watch7 ו-Galaxy Watch Ultra יחד. ההודעה לעיתונות של Watch8, שיצא עם אותה גרסת Wear OS, כותבת Android 12 ומעלה. נכתבה הדרישה המחמירה, כי טעות לכיוון השני פירושה שעון שלא עובד עם הטלפון."
         },
         "brightness": {
           "src": null,
@@ -717,9 +919,16 @@
           "note": "טבלת המפרט אינה מונה בהירות."
         },
         "materials": {
-          "src": null,
-          "at": null,
-          "note": "טבלת המפרט אינה מונה חומר."
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1ilo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "העמוד מונה טיטניום וזכוכית ספיר קריסטל, מחוץ לטבלת המפרט."
+        },
+        "water_resistance": {
+          "src": "https://www.samsung.com/il/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1ilo/",
+          "kind": "אתר היצרן, גרסה ישראלית",
+          "at": "2026-09-24",
+          "note": "הערת השוליים בעמוד הישראלי: IP68, אינו מתאים לצלילה ולפעילויות במים בלחץ גבוה."
         },
         "charging": {
           "src": null,
@@ -744,8 +953,8 @@
         "brightness": null,
         "dimensions": "47.4 x 47.1 x 12.1 מ״מ",
         "weight": "60.5 גרם",
-        "materials": null,
-        "water_resistance": "10 ATM",
+        "materials": "טיטניום, עם זכוכית ספיר",
+        "water_resistance": "10 ATM ו-IP68. לפי סמסונג, אינו מתאים לצלילה ולפעילויות במים בלחץ גבוה",
         "chip": "5 ליבות, עד 1.6GHz",
         "ram": "2GB",
         "storage": "64GB",
@@ -755,7 +964,7 @@
         "safety": null,
         "connectivity": "GPS, Wi-Fi, Bluetooth 5.3, NFC",
         "cellular": "גרסת LTE, ב-eSIM",
-        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google",
+        "compatibility": "רק טלפוני אנדרואיד עם שירותי Google, Android 12 ומעלה ויותר מ-1.5GB זיכרון. זיהוי סימנים של דום נשימה בשינה דורש טלפון Galaxy עם Android 12 ומעלה",
         "security_updates": null
       },
       "name_he": "Galaxy Watch Ultra (2025)"

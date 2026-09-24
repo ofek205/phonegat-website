@@ -747,8 +747,12 @@ if (swGrew) {
        כך הבוט מקשר רק לעמוד שבאמת קיים, ולא מייצר 404 בשיחה. */
     comparePages: (function () {
       try {
+        /* רק השוואות של טלפונים מ-devices.json. מאז 24.9.2026 יושבות באותה תיקייה גם השוואות
+           שעונים מ-watches.json, והבוט, שמכיר טלפונים בלבד, דיווח עליהן "דגם לא נמצא". */
+        var phonePairs = {};
+        (db._comparisons && db._comparisons.pairs || []).forEach(function (p) { phonePairs[p.slug] = 1; });
         return fs.readdirSync(path.join(PROTO, 'compare')).filter(function (n) {
-          return n.indexOf('-vs-') > 0 && fs.existsSync(path.join(PROTO, 'compare', n, 'index.html'));
+          return n.indexOf('-vs-') > 0 && phonePairs[n] && fs.existsSync(path.join(PROTO, 'compare', n, 'index.html'));
         }).sort();
       } catch (e) { return []; }
     })()
