@@ -461,7 +461,7 @@ footer .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}
    פתיחת צד ומעבר בין כלים, ושינוי שם היה משתיק אותו בשקט.
    הצבעים לפי צד ולא לפי מותג: צד א׳ סגול, צד ב׳ כתום, והטורקיז של האתר לכפתורים ולקישורים בלבד.
    סגול וכתום נבדלים גם בעיוורון צבעים אדום-ירוק, והם לא נקראים כמו הכחול של סמסונג. */
-.cv-app{--cv-a:#5b3fc4;--cv-a-t:#5b3fc4;--cv-a-track:#efecfa;--cv-a-edge:#7c63d8;--cv-b:#b45309;--cv-b-t:#8a3f06;--cv-b-track:#f6eee6;--cv-b-edge:#e8892b;--cv-dark:#0f3b4c;--cv-edge:#8f8b96}
+.cv-app{--cv-a:#5b3fc4;--cv-a-t:#5b3fc4;--cv-a-track:#efecfa;--cv-a-edge:#7c63d8;--cv-b:#b45309;--cv-b-t:#8a3f06;--cv-b-track:#f6eee6;--cv-b-edge:#e8892b;--cv-c:#0072b2;--cv-c-t:#005a8c;--cv-c-track:#e6f1f8;--cv-c-edge:#3a93cc;--cv-dark:#0f3b4c;--cv-edge:#8f8b96}
 /* ההדר הכהה של ו׳, שאופק בחר. */
 .cv-top{background:var(--cv-dark);color:#fff;padding-block:clamp(22px,3vw,34px) clamp(20px,2.6vw,30px)}
 .cv-top .cv-row1{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap}
@@ -658,6 +658,37 @@ span.cv-flip{cursor:default}
 .cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
 /* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
 @media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
+/* הצד השלישי. כחול מפלטת Okabe-Ito, שנבנתה כדי להיבדל בכל סוגי עיוורון הצבעים, מול הסגול והכתום.
+   הצבע אינו הסימן היחיד: שם הדגם מופיע ליד כל ערך. */
+.cv-card[data-slot="2"]{box-shadow:inset 0 -5px 0 var(--cv-c-edge)}
+.cv-card[data-slot="2"] .cv-act{color:var(--cv-c-t)}
+.cv-c .cv-dot,.cv-card[data-slot="2"] .cv-dot{background:var(--cv-c)}
+.cv-card[data-slot="2"].empty .cv-dot{background:none}
+.cv-c .cv-track{background:var(--cv-c-track)}
+.cv-c .cv-fill{background:var(--cv-c)}
+.cv-tv .cv-c .cv-big{color:var(--cv-c-t)}
+.cv-legend .cv-c i{background:var(--cv-c)}
+.cv-size .cv-c .cv-ol{border-color:var(--cv-c);background:#f0f7fb}
+.dchip.side2{border-inline-start:4px solid var(--cv-c)}
+.cv-cards.three{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr) 44px minmax(0,1fr)}
+.cv-cards.three .cv-nm{font-size:clamp(1.1rem,1.7vw,1.35rem)}
+.cv-cards.three .cv-card{padding-inline:14px;gap:10px}
+.cv-vs3{justify-self:center;font-weight:800;color:rgba(255,255,255,.8)}
+.cv-vs3[hidden],.cv-c3[hidden],.cv-add[hidden]{display:none}
+.cv-c3{position:relative}
+/* בפינה של תחילת השורה: בפינה השנייה יושב בטלפון סרגל הרשתות הצף של האתר, והוא היה מכסה את הכפתור */
+.cv-drop{position:absolute;inset-block-start:-12px;inset-inline-start:-8px;inline-size:44px;block-size:44px;border-radius:50%;border:2px solid var(--cv-dark);background:#fff;color:var(--ink-strong);font:inherit;font-size:1.4rem;line-height:1;cursor:pointer;display:grid;place-items:center}
+.cv-drop:hover{background:#eef5f7;color:var(--teal-d)}
+.cv-drop:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-add{margin-block-start:.9rem;min-height:44px;padding:0 16px;border-radius:4px;border:1px dashed rgba(255,255,255,.55);background:none;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.cv-add:hover{border-style:solid;border-color:#fff;background:rgba(255,255,255,.08)}
+.cv-add:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.cv-r.n3{grid-template-columns:150px repeat(3,minmax(0,1fr));gap:8px 18px}
+.cv-r.n3 .cv-note{grid-column:2/5}
+.cv-tv.n3{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.cv-tv.n3 .cv-big{font-size:1.5rem}
+@media(max-width:900px){.cv-cards.three{grid-template-columns:1fr;gap:10px}.cv-cards.three .cv-flip{inline-size:48px;block-size:48px}}
+@media(max-width:820px){.cv-r.n3{grid-template-columns:minmax(0,1fr)}.cv-r.n3 .cv-note{grid-column:auto}}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -1927,7 +1958,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="dopen cv-card empty" data-slot="0" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד א׳</span></span><span class="cv-act">בחירה</span></button>
         <button type="button" class="cv-flip" id="cvflip" aria-label="החלפת צדדים" disabled>מול</button>
         <button type="button" class="dopen cv-card empty" data-slot="1" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ב׳</span></span><span class="cv-act">בחירה</span></button>
+        <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>
+        <div class="cv-c3" id="cvc3" hidden>
+        <button type="button" class="dopen cv-card empty" data-slot="2" aria-expanded="false" aria-controls="cvpick"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ג׳</span></span><span class="cv-act">בחירה</span></button>
+          <button type="button" class="cv-drop" id="cvdrop" aria-label="הסרת הדגם השלישי מההשוואה">&times;</button>
+        </div>
     </div>
+    <button type="button" class="cv-add" id="cvadd" hidden>+ הוספת דגם שלישי</button>
     <p class="cv-sug" id="cvsug" hidden></p>
   </div>
 </section>
@@ -2038,15 +2075,22 @@ var CFG={"pub":"/watches-public.json","specLinks":false,"outline":false,"bars":f
      שזהה ב-100 עמודים, מזהה לפיהם את הצד ואת בחירת הדגם.
    - הבחירה ב-?d= בכתובת, ב-replaceState. גם compare_start נקרא משם.
    - bigGaps, כולל הכלל שמוריד mAh כשהוא סותר את שעות הווידאו.
-   מה השתנה: שני צדדים בלבד (מנהל המוצר: "+" מחליף ולא מוסיף עמודה), בורר שנפתח רק כשבוחרים צד,
+   מה השתנה: שני צדדים כברירת מחדל ושלישי כשמבקשים, "משווים גם" שמחליף צד, בורר שנפתח רק כשבוחרים צד,
    "מה חשוב לכם" שמסדר ולא מסנן, והסבר קבוע מתחת לכל שדה במקום חלונית. */
 /* פונקציה ולא קוד חופשי, כדי שהשומר בשורה הראשונה יוכל לצאת בלי שגיאה, ושהקובץ ייקרא גם לבד */
 function pgCompareMain() {
-var SIDE = ["א׳", "ב׳"];
-var sel = [null, null], DB = null, pickFor = null, on = {}, restOpen = false, lastPair = "";
+var SIDE = ["א׳", "ב׳", "ג׳"], SC = ["cv-a", "cv-b", "cv-c"];
+/* slots הוא כמה צדדים על המסך: שניים כברירת מחדל, ושלושה כשמבקשים. עד 24.9.2026 בערב הכלי החדש ידע
+   רק שניים, ואופק ביקש להשאיר את האפשרות לשלושה. */
+var slots = 2;
+var sel = [null, null, null], DB = null, pickFor = null, on = {}, restOpen = false, lastPair = "";
 var cur = null;                       /* הזוג שעל המסך: {ds, diff, cats} */
 function $(id) { return document.getElementById(id); }
-var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip");
+var out = $("dout"), pick = $("cvpick"), list = $("dpick"), bar = $("cvbar"), sug = $("cvsug"), flip = $("cvflip"),
+    addBtn = $("cvadd"), c3 = $("cvc3"), vs3 = $("cvvs3"), cardsBox = document.querySelector(".cv-cards");
+function onScreen() { return sel.slice(0, slots); }
+function complete() { return onScreen().every(function (x) { return !!dev(x); }); }
+function namesTxt(ds) { return ds.length === 2 ? "בין " + ds[0].name + " לבין " + ds[1].name : "בין שלושה דגמים: " + ds.map(function (d) { return d.name; }).join(", "); }
 if (!out || !pick || !list) return;
 
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -2132,16 +2176,16 @@ var BAR = CFG.bars ? { screen_size: "screen_size", weight: "weight", storage_off
 function tdefOf(k) { for (var i = 0; i < TDEF.length; i++) if (TDEF[i].key === k) return TDEF[i]; return null; }
 function nums(field, ds) {
   var k = BAR[field]; if (!k) return null;
-  var a = (TRAITS[ds[0].slug] || {})[k], b = (TRAITS[ds[1].slug] || {})[k];
-  if (typeof a !== "number" || typeof b !== "number" || Math.max(a, b) <= 0) return null;
-  return { a: a, b: b, t: tdefOf(k) };
+  var v = ds.map(function (d) { return (TRAITS[d.slug] || {})[k]; });
+  if (v.some(function (x) { return typeof x !== "number"; }) || Math.max.apply(null, v) <= 0) return null;
+  return { v: v, max: Math.max.apply(null, v), min: Math.min.apply(null, v), t: tdefOf(k) };
 }
 /* גובה ורוחב מתוך "150.0 x 71.9 x 8.75 מ״מ". רק בצורה הזאת בדיוק, אחרת אין שרטוט. */
 function dims(d) { var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(val(d.spec.dimensions || "")); return m ? { h: +m[1], w: +m[2] } : null; }
 
 /* ---------------- הכרטיסים בהדר */
 function renderCards() {
-  [0, 1].forEach(function (i) {
+  [0, 1, 2].forEach(function (i) {
     var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (!b) return;
     var d = dev(sel[i]);
     b.classList.toggle("empty", !d);
@@ -2152,13 +2196,18 @@ function renderCards() {
       '</span><span class="cv-act">' + (d ? "החלפה" : "בחירה") + "</span>";
   });
   if (flip) flip.disabled = !(sel[0] || sel[1]);
-  var topSec = document.querySelector(".cv-top"); if (topSec) topSec.classList.toggle("has-pair", !!(dev(sel[0]) && dev(sel[1])));
+  if (c3) c3.hidden = slots < 3;
+  if (vs3) vs3.hidden = slots < 3;
+  if (cardsBox) cardsBox.classList.toggle("three", slots === 3);
+  /* הכפתור מופיע רק כשיש זוג: שלישי לפני שיש שניים הוא צעד שאין לו משמעות */
+  if (addBtn) addBtn.hidden = !(slots < 3 && dev(sel[0]) && dev(sel[1]));
+  var topSec = document.querySelector(".cv-top"); if (topSec) topSec.classList.toggle("has-pair", complete());
   renderSug();
 }
 /* "משווים גם": השוואות מוכנות שחולקות דגם אחד עם הזוג שעל המסך. הלחיצה מחליפה את הצד השני, ולא מוסיפה עמודה. */
 function renderSug() {
   if (!sug) return;
-  if (!(sel[0] && sel[1]) || !READY.length) { sug.hidden = true; return; }
+  if (slots > 2 || !(sel[0] && sel[1]) || !READY.length) { sug.hidden = true; return; }
   var got = [], sig = [sel[0], sel[1]].sort().join("|");
   READY.forEach(function (p) {
     if (got.length >= 2 || [p[0], p[1]].sort().join("|") === sig) return;
@@ -2182,7 +2231,7 @@ function openPick(i, focusIt) {
   pickFor = i;
   pick.hidden = false;
   var h = $("cvpick-h"), d = dev(sel[i]);
-  if (h) h.innerHTML = '<span class="cv-dot" aria-hidden="true" style="background:' + (i ? "var(--cv-b)" : "var(--cv-a)") + '"></span>' +
+  if (h) h.innerHTML = '<span class="cv-dot" aria-hidden="true" style="background:var(--' + SC[i] + ')"></span>' +
     (d ? "החלפת " + ltr(d.name) : "בחירת דגם לצד " + SIDE[i]);
   syncChips();
   renderCards();
@@ -2202,6 +2251,7 @@ function syncChips() {
     c.setAttribute("aria-pressed", pickFor !== null && sel[pickFor] === s ? "true" : "false");
     c.classList.toggle("side0", sel[0] === s);
     c.classList.toggle("side1", sel[1] === s);
+    c.classList.toggle("side2", slots > 2 && sel[2] === s);
   });
 }
 /* בלוק המדידה זוכר את הצד לפי הלחיצה האחרונה על button.dopen. כשהבורר עובר לצד ב׳ מעצמו, הלחיצה הזאת
@@ -2222,20 +2272,31 @@ document.addEventListener("click", function (e) {
   if (t.closest(".cv-x")) { closePick(true); return; }
   var chip = t.closest(".dchip");
   if (chip && pickFor !== null && DB) {
-    var i2 = pickFor, s = chip.getAttribute("data-slug"), o = 1 - i2, was = !!(sel[0] && sel[1]);
+    var i2 = pickFor, s = chip.getAttribute("data-slug"), was = complete(), at = onScreen().indexOf(s);
     if (sel[i2] === s) sel[i2] = null;
-    else if (sel[o] === s) { sel[o] = sel[i2]; sel[i2] = s; }
+    /* הדגם כבר בצד אחר: מחליפים מקומות, ולא מאבדים את מי שישב בצד שנבחר */
+    else if (at >= 0) { sel[at] = sel[i2]; sel[i2] = s; }
     else sel[i2] = s;
-    push("cmp_pick", { device: s, slot: i2, selected: (sel[0] ? 1 : 0) + (sel[1] ? 1 : 0) });
-    if (sel[i2] && !sel[o]) { tellSide(o); openPick(o, true); }
+    push("cmp_pick", { device: s, slot: i2, selected: onScreen().filter(Boolean).length });
+    var nxt = -1; for (var k = 0; k < slots; k++) if (!sel[k]) { nxt = k; break; }
+    if (sel[i2] && nxt >= 0) { tellSide(nxt); openPick(nxt, true); }
     else if (sel[i2]) closePick(false);
     else openPick(i2, false);
     render();
-    if (!was && sel[0] && sel[1]) toResults();
+    if (!was && complete()) toResults();
     return;
   }
+  if (addBtn && t.closest("#cvadd")) {
+    slots = 3; push("cmp_add_slot", {});
+    render(); tellSide(2); openPick(2, true); return;
+  }
+  if (t.closest("#cvdrop")) {
+    sel[2] = null; slots = 2; push("cmp_drop_slot", {});
+    if (pickFor === 2) closePick(false);
+    render(); if (addBtn) addBtn.focus(); return;
+  }
   if (flip && t.closest("#cvflip")) {
-    sel = [sel[1], sel[0]]; push("cmp_flip", {});
+    sel = [sel[1], sel[0], sel[2]]; push("cmp_flip", {});
     if (pickFor !== null) openPick(pickFor, false);
     render(); return;
   }
@@ -2243,10 +2304,10 @@ document.addEventListener("click", function (e) {
   if (sg) {
     e.preventDefault();
     var pr = sg.getAttribute("data-sug").split(",");
-    if (dev(pr[0]) && dev(pr[1])) { sel = [pr[0], pr[1]]; push("cmp_suggest", { pair: pr.join(",") }); closePick(false); render(); toResults(); }
+    if (dev(pr[0]) && dev(pr[1])) { sel = [pr[0], pr[1], null]; slots = 2; push("cmp_suggest", { pair: pr.join(",") }); closePick(false); render(); toResults(); }
     return;
   }
-  if (pickFor !== null && !t.closest("#cvpick") && !t.closest(".cv-card")) closePick(false);
+  if (pickFor !== null && !t.closest("#cvpick") && !t.closest(".cv-card") && !t.closest("#cvadd")) closePick(false);
 });
 document.addEventListener("keydown", function (e) { if (e.key === "Escape" && pickFor !== null) closePick(true); });
 
@@ -2270,11 +2331,11 @@ function applyFilter() {
 if (q) q.addEventListener("input", function () { if (!qUsed && q.value.trim()) { qUsed = true; push("cmp_filter", {}); } applyFilter(); });
 
 /* ---------------- הכתובת */
-function syncURL() { try { var L = sel.filter(Boolean); history.replaceState(null, "", L.length ? "?d=" + L.join(",") : location.pathname); } catch (e) {} }
+function syncURL() { try { var L = onScreen().filter(Boolean); history.replaceState(null, "", L.length ? "?d=" + L.join(",") : location.pathname); } catch (e) {} }
 function fromURL() {
   try { var m = /[?&]d=([^&]+)/.exec(location.search); if (!m) return [];
     return decodeURIComponent(m[1]).split(",").filter(function (s) { return !!dev(s); })
-      .filter(function (s, i, a) { return a.indexOf(s) === i; }).slice(0, 2);
+      .filter(function (s, i, a) { return a.indexOf(s) === i; }).slice(0, 3);
   } catch (e) { return []; }
 }
 
@@ -2304,27 +2365,36 @@ function toResults() {
 /* ---------------- התוצאה */
 function render() {
   renderCards(); syncURL();
-  var ds = [dev(sel[0]), dev(sel[1])];
-  if (!ds[0] || !ds[1]) {
+  var ds = onScreen().map(dev);
+  if (!complete()) {
     cur = null; if (bar) bar.hidden = true; stick();
-    out.innerHTML = '<p class="dempty">' + (ds[0] || ds[1] ? "בחרו עוד דגם, ותראו כאן את ההבדלים ביניהם." : "בחרו שני דגמים, ותראו כאן את ההבדלים ביניהם.") + "</p>";
+    var have = ds.filter(Boolean).length;
+    out.innerHTML = '<p class="dempty">' + (have ? (slots - have === 1 ? "בחרו עוד דגם" : "בחרו עוד שני דגמים") + ", ותראו כאן את ההבדלים ביניהם." : "בחרו שני דגמים, ותראו כאן את ההבדלים ביניהם.") + "</p>";
     return;
   }
-  var p = keysFor(ds[0].slug, ds[1].slug);
-  if (!p) { cur = null; if (bar) bar.hidden = true; out.innerHTML = '<p class="dempty">' + CFG.pairErr + "</p>"; return; }
-  var set = {}; p.k.forEach(function (ix) { set[ix] = 1; });
+  /* שדה שונה בין שלושה אם ורק אם הוא שונה באחד הזוגות. איחוד, לא חישוב חדש. */
+  var set = {}, missingPair = false, pairSame = null;
+  for (var i = 0; i < ds.length; i++) for (var j = i + 1; j < ds.length; j++) {
+    var p = keysFor(ds[i].slug, ds[j].slug);
+    if (!p) { missingPair = true; continue; }
+    p.k.forEach(function (ix) { set[ix] = 1; });
+    if (ds.length === 2) pairSame = p.s;
+  }
+  if (missingPair) { cur = null; if (bar) bar.hidden = true; out.innerHTML = '<p class="dempty">' + CFG.pairErr + "</p>"; return; }
   var diff = ORDER.filter(function (r, ix) { return set[ix]; });
   var cats = []; diff.forEach(function (r) { if (cats.indexOf(r[0]) < 0) cats.push(r[0]); });
   Object.keys(on).forEach(function (c) { if (cats.indexOf(c) < 0) delete on[c]; });
   /* מה שזהה: שדות שאינם בהבדלים ושיש להם ערך בשני הצדדים. רק כשהספירה מסכימה עם המחולל מוצגות התגיות. */
-  var same = ORDER.filter(function (r, ix) { return !set[ix] && !empty(ds[0].spec[r[2]]) && !empty(ds[1].spec[r[2]]); });
-  var sameN = p.s;
+  var same = ORDER.filter(function (r, ix) { return !set[ix] && ds.every(function (d) { return !empty(d.spec[r[2]]); }); });
+  /* בזוג המספר מגיע מהמחולל. בשלושה אין מספר כזה, והרשימה עצמה היא הספירה. */
+  var sameN = pairSame === null ? same.length : pairSame;
   cur = { ds: ds, diff: diff, cats: cats };
 
   if (bar) {
     bar.hidden = false;
-    bar.innerHTML = '<div class="wrap cv-bi"><span class="cv-bn cv-a"><span class="cv-dot" aria-hidden="true"></span>' + ltr(ds[0].name) + '</span><span class="cv-vs">מול</span>' +
-      '<span class="cv-bn cv-b"><span class="cv-dot" aria-hidden="true"></span>' + ltr(ds[1].name) + '</span><span class="cv-bc">' + diffTxt(diff.length) + "</span></div>";
+    bar.innerHTML = '<div class="wrap cv-bi">' + ds.map(function (d, i) {
+      return (i ? '<span class="cv-vs">מול</span>' : "") + '<span class="cv-bn ' + SC[i] + '"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>";
+    }).join("") + '<span class="cv-bc">' + diffTxt(diff.length) + "</span></div>";
   }
   stick();
 
@@ -2336,7 +2406,7 @@ function render() {
   if (same.length === sameN && same.length) {
     var tags = same.map(function (r) { var v = val(ds[0].spec[r[2]]); return v.length <= 22 ? r[1] + ": " + v : r[1]; });
     var shown = tags.slice(0, 5);
-    sameHtml = '<ul class="cv-same" aria-label="זהים בשניהם">' + shown.map(function (t) { return "<li>" + CHECK + ltrRuns(t) + "</li>"; }).join("") +
+    sameHtml = '<ul class="cv-same" aria-label="' + (ds.length === 2 ? "זהים בשניהם" : "זהים בשלושתם") + '">' + shown.map(function (t) { return "<li>" + CHECK + ltrRuns(t) + "</li>"; }).join("") +
       (tags.length > shown.length ? "<li>ועוד " + (tags.length - shown.length) + "</li>" : "") + "</ul>";
   }
   var head = '<p class="cv-count">' + diffTxt(diff.length) + sameTail(sameN) + "</p>" + sameHtml +
@@ -2347,10 +2417,12 @@ function render() {
     var gaps = bigGaps(ds).slice(0, 3);
     if (gaps.length) {
       top = '<h2 class="cv-h2">ההבדלים הגדולים במספרים</h2><ul class="cv-top3' + (gaps.length < 3 ? ' n' + gaps.length : '') + '">' + gaps.map(function (x) {
-        var t = x.t, va = (TRAITS[ds[0].slug] || {})[x.key], vb = (TRAITS[ds[1].slug] || {})[x.key], mx = Math.max(va, vb) || 1;
+        var t = x.t, vs = ds.map(function (d) { var v = (TRAITS[d.slug] || {})[x.key]; return typeof v === "number" ? v : null; });
+        var mx = Math.max.apply(null, vs.filter(function (v) { return v !== null; })) || 1;
         return '<li class="cv-t"><div class="cv-th"><b>' + esc(t.label) + '</b><span class="cv-gap">' + ltrRuns(gapChip(x)) + "</span></div>" +
-          '<div class="cv-tv"><div class="cv-a">' + bigNum(va, t) + fill(100 * va / mx) + '<span class="cv-tn">' + ltr(ds[0].name) + "</span></div>" +
-          '<div class="cv-b">' + bigNum(vb, t) + fill(100 * vb / mx) + '<span class="cv-tn">' + ltr(ds[1].name) + "</span></div></div>" +
+          '<div class="cv-tv' + (ds.length === 3 ? " n3" : "") + '">' + ds.map(function (d, i) {
+            return '<div class="' + SC[i] + '">' + (vs[i] === null ? '<span class="cv-na">לא מפורסם</span>' : bigNum(vs[i], t) + fill(100 * vs[i] / mx)) + '<span class="cv-tn">' + ltr(d.name) + "</span></div>";
+          }).join("") + "</div>" +
           '<p class="cv-lead">' + ltr(x.lead.name) + ": " + esc(x.more) + "</p></li>";
       }).join("") + "</ul>";
     }
@@ -2362,8 +2434,8 @@ function render() {
       var n = diff.filter(function (r) { return r[0] === c; }).length;
       return '<button type="button" class="cv-chip" data-cat="' + esc(c) + '" aria-pressed="' + (on[c] ? "true" : "false") + '">' + CHECK + esc(c) + " <span>" + n + "</span></button>";
     }).join("") + '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p></div>' +
-    (anyBar ? '<div class="cv-legend"><span class="cv-k cv-a"><i aria-hidden="true"></i>' + ltr(ds[0].name) + '</span><span class="cv-k cv-b"><i aria-hidden="true"></i>' + ltr(ds[1].name) +
-      "</span><span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>" : "");
+    (anyBar ? '<div class="cv-legend">' + ds.map(function (d, i) { return '<span class="cv-k ' + SC[i] + '"><i aria-hidden="true"></i>' + ltr(d.name) + "</span>"; }).join("") +
+      "<span>קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</span></div>" : "");
 
   var links = CFG.specLinks ? ds.filter(function (d) { return d.own !== false; }).map(function (d) {
     return '<a href="/phones/' + esc(d.slug) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
@@ -2371,35 +2443,34 @@ function render() {
 
   out.innerHTML = disc + head + top + prio + '<div id="cvlist"></div>' +
     (links ? '<p class="cv-more">' + links + "</p>" : "") +
-    '<div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הזוג ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span>' +
+    '<div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה, עם הדגמים ומה שסימנתם. אפשר לערוך אותה לפני השליחה.</span>' +
     '<span class="cv-bubble" id="cvwatext"></span></div><div class="cv-wb">' +
     '<a class="btn btn-wa" id="cvwa" href="#"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a>' +
     '<button type="button" class="btn btn-teal" id="dcopy">העתקת קישור להשוואה</button><span class="dok" id="dcopied" role="status"></span></div></div>';
   renderList(false);
-  var sig = [ds[0].slug, ds[1].slug].sort().join(",");
+  var sig = ds.map(function (d) { return d.slug; }).sort().join(",");
   if (sig !== lastPair) { lastPair = sig; restOpen = false; }
 }
 
 function rowHtml(r, ds) {
   var n = nums(r[2], ds), small = "";
-  if (n && n.t && Math.abs(n.a - n.b) < n.t.min) small = '<span class="cv-small">הבדל קטן</span>';
-  var mx = n ? Math.max(n.a, n.b) : 1;
+  if (n && n.t && n.max - n.min < n.t.min) small = '<span class="cv-small">הבדל קטן</span>';
   var cell = function (d, i) {
     var raw = d.spec[r[2]], v;
     if (empty(raw)) v = '<span class="cv-na">לא מפורסם אצל היצרן</span>';
     else if (Array.isArray(raw)) v = '<span class="cv-val">' + raw.map(function (x) { return '<span class="vch">' + ltrRuns(x) + "</span>"; }).join("") + "</span>";
     else v = '<span class="cv-val">' + ltrRuns(raw) + "</span>";
-    return '<div class="cv-v ' + (i ? "cv-b" : "cv-a") + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
-      (n ? fill(100 * (i ? n.b : n.a) / mx) : "") + "</div>";
+    return '<div class="cv-v ' + SC[i] + '"><span class="cv-who"><span class="cv-dot" aria-hidden="true"></span>' + ltr(d.name) + "</span>" + v +
+      (n ? fill(100 * n.v[i] / n.max) : "") + "</div>";
   };
-  return '<div class="cv-r"><div class="cv-rl">' + esc(r[1]) + (small ? "<br>" + small : "") + "</div>" + cell(ds[0], 0) + cell(ds[1], 1) +
+  return '<div class="cv-r' + (ds.length === 3 ? " n3" : "") + '"><div class="cv-rl">' + esc(r[1]) + (small ? "<br>" + small : "") + "</div>" + ds.map(cell).join("") +
     (MEANS[r[2]] ? '<p class="cv-note">' + esc(MEANS[r[2]]) + "</p>" : "") + "</div>";
 }
 function sizeHtml(ds) {
   if (!CFG.outline) return "";
-  var a = dims(ds[0]), b = dims(ds[1]); if (!a || !b) return "";
-  var fig = function (x, d, c) { return '<figure class="' + c + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + "px;height:" + x.h + 'px"></span><figcaption>' + ltr(x.h + " × " + x.w) + " מ״מ</figcaption></figure>"; };
-  return '<div class="cv-size">' + fig(a, ds[0], "cv-a") + fig(b, ds[1], "cv-b") + "<p>בקנה מידה אמיתי, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>";
+  var dd = ds.map(dims); if (dd.some(function (x) { return !x; })) return "";
+  var fig = function (x, i) { return '<figure class="' + SC[i] + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + "px;height:" + x.h + 'px"></span><figcaption>' + ltr(x.h + " × " + x.w) + " מ״מ</figcaption></figure>"; };
+  return '<div class="cv-size">' + dd.map(fig).join("") + "<p>בקנה מידה אמיתי, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>";
 }
 function renderList(fromChip) {
   if (!cur) return;
@@ -2419,7 +2490,7 @@ function renderList(fromChip) {
   var st = $("cvstatus");
   if (st) st.textContent = !picked.length ? (diff.length === 1 ? "מוצג ההבדל היחיד." : "מוצגים כל " + diff.length + " ההבדלים, לפי תחום.")
     : "בראש הרשימה: " + picked.join(", ") + "." + (restN ? " עוד " + diffTxt(restN) + " בתחומים האחרים." : " אלה כל ההבדלים.");
-  var msg = "היי, אשמח לעזרה בבחירה בין " + ds[0].name + " לבין " + ds[1].name + "." + (picked.length ? " חשוב לי: " + picked.join(", ") + "." : "");
+  var msg = "היי, אשמח לעזרה בבחירה " + namesTxt(ds) + "." + (picked.length ? " חשוב לי: " + picked.join(", ") + "." : "");
   var wt = $("cvwatext"), wa = $("cvwa");
   if (wt) wt.textContent = msg;
   if (wa) wa.setAttribute("href", "https://wa.me/97286812050?text=" + encodeURIComponent(msg));
@@ -2443,7 +2514,8 @@ out.addEventListener("click", function (e) {
 fetch(CFG.pub, { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
   DB = d;
   var pre = fromURL();
-  sel = [pre[0] || null, pre[1] || null];
+  sel = [pre[0] || null, pre[1] || null, pre[2] || null];
+  slots = pre.length > 2 ? 3 : 2;
   if (!sel[0]) openPick(0, false); else if (!sel[1]) openPick(1, false);
   render();
 }).catch(function () { out.innerHTML = '<p class="dempty">' + CFG.loadErr + "</p>"; });

@@ -860,7 +860,7 @@ function toolMain(openTag, index, order, pairCount) {
   var card = function (i) {
     return '        <button type="button" class="dopen cv-card empty" data-slot="' + i + '" aria-expanded="false" aria-controls="cvpick">' +
       '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span>' +
-      '<span class="cv-meta">צד ' + (i ? 'ב׳' : 'א׳') + '</span></span><span class="cv-act">בחירה</span></button>\n';
+      '<span class="cv-meta">צד ' + ['א׳', 'ב׳', 'ג׳'][i] + '</span></span><span class="cv-act">בחירה</span></button>\n';
   };
 
   return openTag + '\n\n<div class="cv-app">\n' +
@@ -869,7 +869,12 @@ function toolMain(openTag, index, order, pairCount) {
   '    <p class="cv-sub">' + esc(CAT ? CAT.asub : 'המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.') + '</p>\n' +
   '    <div class="cv-cards">\n' + card(0) +
   '        <button type="button" class="cv-flip" id="cvflip" aria-label="החלפת צדדים" disabled>מול</button>\n' + card(1) +
+  /* הצד השלישי, מוסתר עד שמבקשים אותו. ההסרה היא כפתור אח ולא בתוך הכרטיס, כי כפתור בתוך כפתור אינו HTML תקין. */
+  '        <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>\n' +
+  '        <div class="cv-c3" id="cvc3" hidden>\n' + card(2) +
+  '          <button type="button" class="cv-drop" id="cvdrop" aria-label="הסרת הדגם השלישי מההשוואה">&times;</button>\n        </div>\n' +
   '    </div>\n' +
+  '    <button type="button" class="cv-add" id="cvadd" hidden>+ הוספת דגם שלישי</button>\n' +
   '    <p class="cv-sug" id="cvsug" hidden></p>\n' +
   '  </div>\n</section>\n' +
   /* הפס הלבן עם שני השמות. hidden עד שיש זוג. */
