@@ -271,7 +271,7 @@ var SHOT = {
   'iphone-18-pro': 'בצבע בורדו, הגב של המכשיר',
   'iphone-18-pro-max': 'בצבע קרחון, הגב של המכשיר',
   'airpods-pro-3': 'הנרתיק פתוח והאוזניות לפניו',
-  'airpods-5': 'הנרתיק פתוח והאוזניות לידו',
+  'airpods-5': 'הנרתיק פתוח והאוזניות לפניו',
   /* בלי שם צבע: אין לנו מקור לשמות הצבעים של Series 12, ושם מומצא ב-alt הוא טענה על המוצר */
   'apple-watch-series-12': 'מארז אלומיניום עם רצועת ספורט'
 };
@@ -334,7 +334,10 @@ done.forEach(function (d) {
   console.log('  ' + d.slug.padEnd(20) + ' ← ' + d.src.padEnd(30) + ' רקע ' + d.bg + '  ' + Math.round(k / 1024) + 'KB');
 });
 console.log('\n' + done.length + ' מכשירים, ' + (done.length * WIDTHS.length) + ' קבצים ב-' +
-  path.relative(ROOT, OUT).replace(/\\/g, '/') + ', ו-devices.json עודכן.');
+  done.map(function (d) { return path.relative(ROOT, outDir(d.slug)).replace(/\\/g, '/'); })
+    .filter(function (v, i, a) { return a.indexOf(v) === i; }).join(', ') +
+  '. עודכנו: ' + (done.some(function (d) { return !ACC[d.slug]; }) ? ['devices.json'] : [])
+    .concat(Object.keys(accFiles).map(function (f) { return path.basename(f); })).join(', ') + '.');
 if (stale.length) console.log('נמחקו קבצים ממידה ישנה: ' + stale.length);
 if (skipped.length) console.log('לא מופו, ולכן לא הומרו: ' + skipped.join(', '));
 var without = db.devices.filter(function (d) { return d.status !== 'reference' && !d.media.hero; });

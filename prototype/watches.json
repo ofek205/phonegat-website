@@ -518,6 +518,13 @@
               "GPS, Wi-Fi, Bluetooth 5.3 ו-UWB. יש גם גרסה עם סלולר."
             ]
           ]
+        },
+        "media": {
+          "hero": "/watches/img/apple-watch-series-12-1152.webp",
+          "srcset": "/watches/img/apple-watch-series-12-288.webp 288w, /watches/img/apple-watch-series-12-576.webp 576w, /watches/img/apple-watch-series-12-1152.webp 1152w",
+          "width": 1152,
+          "height": 1536,
+          "alt": "Apple Watch Series 12, מארז אלומיניום עם רצועת ספורט"
         }
       }
     },
