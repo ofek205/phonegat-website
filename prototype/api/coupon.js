@@ -1,7 +1,7 @@
 /* PHONE GAT — sequential coupon numbers.
  *
  * POST /api/coupon  {"offer":"screen"}  ->  {"n":42,"seq":true}
- * GET  /api/coupon  -H "x-pg-stats: <PG_STATS_TOKEN>"
+ * GET  /api/coupon/ -H "x-pg-stats: <PG_STATS_TOKEN>"
  *                   ->  {"issued":{"screen":42,"kb":7,"idf":13},"total":62,"at":"…"}
  *   Reading the counters had no path at all: POST is the only way to reach them and POST is what
  *   consumes a number, so "how many were issued" could only be answered from the Upstash console.
