@@ -229,6 +229,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.phonegat.co.il/headphones/airpods-5/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/headphones/airpods-pro-3/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.phonegat.co.il/phones/find-my-phone/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -368,6 +380,12 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/phones/xiaomi-15/</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/watches/apple-watch-series-12/</loc>
     <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -49,6 +49,20 @@ if (!db._spec_groups || !db._spec_groups.groups) {
   process.exit(1);
 }
 var SPEC_GROUPS = db._spec_groups.groups;
+
+/* ההקשר של עמוד מכשיר: איזה מאגר, איזו כתובת ואיזה כלי השוואה.
+ *
+ * מ-25.9.2026 אותו מחולל בונה גם עמודים לאוזניות ולשעונים, מתוך headphones.json ו-watches.json.
+ * אופק ביקש אותם כי מחפשים את הדגמים האלה, ורק לדגמים שהוא מוכר: AirPods Pro 3, AirPods 5 ו-
+ * Apple Watch Series 12. דגם מקבל עמוד רק כשיש לו page במאגר שלו, ולכן שאר השעונים והאוזניות
+ * נשארים בכלי ההשוואה בלבד. אותו קוד ולא מחולל שני, כי עותק של buildMain היה נפרד מזה בשקט
+ * בתיקון הבא, בדיוק כמו .hub והטבלה שכבר נסחפו בפרויקט הזה. */
+var PHONE_K = { base: 'phones/', db: db, groups: SPEC_GROUPS, tool: '/phones/compare/', acc: false,
+  fitH: 'למי המכשיר הזה מתאים' };
+var ACC_CATS = [
+  { key: 'headphones', file: 'headphones.json', noun: 'אוזניות' },
+  { key: 'watches', file: 'watches.json', noun: 'שעון חכם' }
+];
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
 
@@ -99,8 +113,9 @@ function heroImg(d) {
     ' alt="' + esc(m.alt || d.name) + '" loading="lazy" decoding="async">\n';
 }
 
-function buildMain(d, openTag) {
-  var S = d.spec, C = d.commercial, E = d.editorial || {};
+function buildMain(d, openTag, K) {
+  K = K || PHONE_K;
+  var S = d.spec, C = d.commercial || {}, E = d.editorial || {};
   var srcDefault = (d.spec_source && d.spec_source.default) || {};
   var atDate = srcDefault.at ? srcDefault.at.split('-').reverse().join('/') : null;
   /* חודש ההכרזה, מ-"YYYY-MM" לעברית. חודש ולא יום, כי זה מה שיש במאגר: סדרה שלמה מוכרזת
@@ -124,18 +139,26 @@ function buildMain(d, openTag) {
 
   /* --- שורות המפרט, מקובצות. רק שדות שיש בהם ערך, וקטגוריה ריקה נשמטת כולה --- */
   var specCount = 0;
-  var groups = SPEC_GROUPS.map(function (g) {
+  /* דגם עם כמה גרסאות (AirPods 5 עם הנרתיק הבסיסי ועם האלחוטי) מקבל עמודה לכל גרסה. ערך זהה
+     בכל הגרסאות נכתב פעם אחת על פני כל העמודות, כדי שההבדלים יבלטו ולא ייבלעו בחזרות. */
+  var cols = d.variants && d.variants.length ? d.variants : [d];
+  var empty = function (v) { return v === null || v === undefined || v === ''; };
+  var groups = K.groups.map(function (g) {
     var rs = g[1].map(function (p) {
-      var v = val(S[p[0]]);
-      if (v === null || v === undefined || v === '') return null;
+      var vs = cols.map(function (x) { return val(x.spec[p[0]]); });
+      if (vs.every(empty)) return null;
       specCount++;
       /* ltrRuns ולא esc: ערך מפרט מערבב עברית ולטינית, ואלגוריתם ה-bidi סידר מחדש
        * את המספרים. "50MP, 12MP" הוצג "12MP 50MP", כלומר הראשית נראתה 12MP. */
-      return '          <tr><th scope="row">' + esc(p[1]) + '</th><td>' + BIDI.ltrRuns(v) + '</td></tr>';
+      var same = vs.every(function (v) { return v === vs[0]; });
+      var cells = same
+        ? '<td' + (cols.length > 1 ? ' colspan="' + cols.length + '"' : '') + '>' + BIDI.ltrRuns(vs[0]) + '</td>'
+        : vs.map(function (v) { return '<td>' + (empty(v) ? 'לא פורסם' : BIDI.ltrRuns(v)) + '</td>'; }).join('');
+      return '          <tr><th scope="row">' + esc(p[1]) + '</th>' + cells + '</tr>';
     }).filter(Boolean);
     if (!rs.length) return null;
     return '        <tbody>\n' +
-      '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(g[0]) + '</th></tr>\n' +
+      '          <tr class="grp"><th colspan="' + (cols.length + 1) + '" scope="rowgroup">' + esc(g[0]) + '</th></tr>\n' +
       rs.join('\n') + '\n        </tbody>';
   }).filter(Boolean);
 
@@ -143,7 +166,18 @@ function buildMain(d, openTag) {
   var AWAY = !!C.not_in_store;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
-  var facts = AWAY ? [
+  /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
+     טלפון חלופי בזמן תיקון והעברת נתונים הם שורות של טלפון, ולכן הן לא כאן. */
+  /* ⚠ המשתנה והסוגריים נוספו ב-25.9.2026. עד אז זה היה "AWAY ? [..] : [..].map(..).join()",
+     וה-map חל רק על הענף השני, כי גישה לחבר קושרת חזק מהטרנרי. לכן בשני עמודי iPhone 18
+     הטבלה יצאה כמערך גולמי: "מחיר,,המחיר בישראל..." בשורה אחת, בלי תאים. */
+  var factRows = K.acc ? [
+    ['מחיר', null, PH.price],
+    ['מלאי', null, PH.stock],
+    ['צבעים בחנות', null, PH.colors],
+    ['יבוא', null, 'לבדיקת מסלולי היבוא הזמינים'],
+    ['אחריות', null, PH.warranty]
+  ] : AWAY ? [
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
@@ -162,7 +196,8 @@ function buildMain(d, openTag) {
        אתר מתחרה לא כותב, ולכן הם שווים יותר מכל שורת מפרט. */
     ['בזמן תיקון באחריות', C.service_terms, 'לשאול מה קורה עם מכשיר חלופי'],
     ['העברת נתונים', C.data_transfer, 'לשאול על העברת נתונים מהמכשיר הישן']
-  ].map(function (f) {
+  ];
+  var facts = factRows.map(function (f) {
     var real = f[1] !== null && f[1] !== undefined && f[1] !== '';
     return '        <tr><th scope="row">' + esc(f[0]) + '</th><td>' +
       (real ? BIDI.ltrRuns(f[1]) : '<em>' + esc(f[2]) + '</em>') + '</td></tr>';
@@ -217,7 +252,10 @@ function buildMain(d, openTag) {
   '        </table>\n' +
   '      </div>\n' +
   '      <div class="lab">\n' +
-  '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n' +
+  /* מדריך האחריות כתוב על טלפונים, ולכן לא בעמוד של אוזניות או שעון */
+  (K.acc
+    ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
+    : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
   '        <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
@@ -228,7 +266,7 @@ function buildMain(d, openTag) {
   if (E.good_for || E.less_for) {
     out += '<section class="block" id="fit" aria-labelledby="h-fit">\n' +
     '  <div class="wrap box">\n' +
-    '    <h2 id="h-fit">למי המכשיר הזה מתאים</h2>\n' +
+    '    <h2 id="h-fit">' + esc(K.fitH) + '</h2>\n' +
     (E.good_for ? '    <ul class="checks">\n' + E.good_for.map(function (x) { return '      <li>' + esc(x) + '</li>'; }).join('\n') + '\n    </ul>\n' : '') +
     (E.less_for ? '    <h3>ולמי הוא פחות מתאים</h3>\n    <ul class="mistakes">\n' + E.less_for.map(function (x) { return '      <li>' + esc(x) + '</li>'; }).join('\n') + '\n    </ul>\n' : '') +
     '  </div>\n</section>\n\n';
@@ -261,8 +299,11 @@ function buildMain(d, openTag) {
   '    <h2 id="h-spec">מפרט טכני מלא</h2>\n' +
   '    <div class="cmp-wrap" role="region" aria-labelledby="h-spec" tabindex="0">\n' +
   '      <table class="cmp cmp-spec">\n' +
-  '        <caption>המפרט כפי שהיצרן מפרסם אותו, ' + specCount + ' שדות ב-' + groups.length + ' קטגוריות.</caption>\n' +
-  '        <thead><tr><th scope="col">שדה</th><th scope="col">' + esc(d.name) + '</th></tr></thead>\n' +
+  '        <caption>המפרט כפי שהיצרן מפרסם אותו, ' + specCount + ' שדות ב-' + groups.length + ' קטגוריות.' +
+    (cols.length > 1 ? ' שדה שזהה בכל הגרסאות מופיע פעם אחת, על פני כל העמודות.' : '') + '</caption>\n' +
+  '        <thead><tr><th scope="col">שדה</th>' + (cols.length > 1
+    ? cols.map(function (x, i) { return '<th scope="col">' + esc(d.variant_labels[i]) + '</th>'; }).join('')
+    : '<th scope="col">' + esc(d.name) + '</th>') + '</tr></thead>\n' +
   groups.join('\n') + '\n' +
   '      </table>\n' +
   '    </div>\n' +
@@ -278,12 +319,13 @@ function buildMain(d, openTag) {
    * שמונת עמודי ההשוואה היו מקושרים ממקום אחד בלבד, מרכז ההשוואות, ובדיקה 26 תפסה את זה.
    * עמוד מכשיר שאינו מקשר להשוואה שהוא עצמו צד בה הוא גם קישור חסר וגם שירות חסר לקורא:
    * מי שקורא על דגם מסוים הוא בדיוק מי שרוצה לדעת במה הוא שונה מהשכן שלו. */
-  var pairs = ((db._comparisons || {}).pairs || []).filter(function (p) {
-    return p.a === d.slug || p.b === d.slug;
+  var mine = cols.map(function (x) { return x.slug; });
+  var pairs = ((K.db._comparisons || {}).pairs || []).filter(function (p) {
+    return mine.indexOf(p.a) >= 0 || mine.indexOf(p.b) >= 0;
   });
   if (pairs.length) {
-    var bySlug = function (s) { return db.devices.filter(function (x) { return x.slug === s; })[0]; };
-    var other = function (p) { return bySlug(p.a === d.slug ? p.b : p.a); };
+    var bySlug = function (s) { return K.db.devices.filter(function (x) { return x.slug === s; })[0]; };
+    var other = function (p) { return bySlug(mine.indexOf(p.a) >= 0 ? p.b : p.a); };
     out += '<section class="block" id="vs" aria-labelledby="h-vs">\n' +
     '  <div class="wrap box">\n' +
     '    <h2 id="h-vs">מול מה שווה להשוות אותו</h2>\n' +
@@ -298,10 +340,11 @@ function buildMain(d, openTag) {
        אחד לפחות". זה חוסך לקורא לבחור מחדש את המכשיר שהוא כבר קורא עליו, וזה גם רגע
        ההתלבטות עצמו: מי שהגיע עד לכאן כבר יודע מה מעניין אותו ומתלבט מול מה.
        כפתור ולא הערת שוליים, כי כהערה זה היה כאן כל הזמן ואיש לא הגיע לכלי דרכו. */
-    '    <p class="vscta"><a class="btn btn-teal" href="/phones/compare/?d=' + esc(d.slug) + '">' +
+    '    <p class="vscta"><a class="btn btn-teal" href="' + K.tool + '?d=' + esc(d.slug) + '">' +
     'להשוות את ' + ltr(d.name) + ' לדגם אחר</a></p>\n' +
-    '    <p class="aside">הכלי מחזיק ' + db.devices.filter(function (x) { return x.status !== 'draft'; }).length +
-    ' דגמים, ואפשר להשוות שלושה יחד. <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>\n' +
+    '    <p class="aside">הכלי מחזיק ' + K.db.devices.filter(function (x) { return x.status !== 'draft'; }).length +
+    ' דגמים, ואפשר להשוות שלושה יחד.' +
+    (K.acc ? '' : ' <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.') + '</p>\n' +
     '  </div>\n</section>\n\n';
   }
 
@@ -327,6 +370,10 @@ function buildMain(d, openTag) {
   (C.not_in_store
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
       '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+    /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
+    : K.acc
+    ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
+      '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לשאול על מלאי וצבעים לפני שמגיעים, וכל שאלה אחרת לפני שמחליטים.</p>\n'
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
@@ -435,7 +482,42 @@ db.devices.forEach(function (d) {
   /* מכשיר ייחוס אינו מקבל עמוד. הוא קיים במאגר רק כדי להשוות אליו, ועמוד
      משלו היה אומר ללקוח שאנחנו מוכרים אותו. */
   if (d.status === 'reference' && !only) { skipped.push(d.slug + ' (ייחוס, לא נמכר)'); return; }
-  var url = PROD + 'phones/' + d.slug + '/';
+  writeDevicePage(d, PHONE_K);
+});
+
+/* ---------- אוזניות ושעונים: רק דגם שיש לו page ----------
+ * השדות של עמוד (seo, editorial, media) יושבים תחת page ולא ברמה העליונה כמו בטלפונים, כדי שדגם
+ * שאין לו עמוד לא ייראה כחסר שדות. כאן הם נפרשים לאותה צורה ש-buildMain מכיר. */
+var ACC_PAGES = [];
+ACC_CATS.forEach(function (cat) {
+  var cdb;
+  try { cdb = JSON.parse(fs.readFileSync(path.join(PROTO, cat.file), 'utf8')); } catch (e) { return; }
+  if (!cdb._spec_groups || !cdb._spec_groups.groups) { console.error('✗ אין _spec_groups ב-' + cat.file); process.exit(1); }
+  var K = { base: cat.key + '/', db: cdb, groups: cdb._spec_groups.groups, tool: '/' + cat.key + '/compare/',
+    acc: true, fitH: 'למי הדגם הזה מתאים', cat: cat };
+  cdb.devices.forEach(function (x) {
+    if (!x.page) return;
+    if (only && x.slug !== only) return;
+    var p = x.page;
+    var variants = (p.variants || []).map(function (s) {
+      var v = cdb.devices.filter(function (y) { return y.slug === s; })[0];
+      if (!v) { console.error('✗ ' + x.slug + ': הגרסה ' + s + ' אינה ב-' + cat.file); process.exit(1); }
+      return v;
+    });
+    if (variants.length && (!p.variant_labels || p.variant_labels.length !== variants.length)) {
+      console.error('✗ ' + x.slug + ': variant_labels חייב תווית לכל גרסה'); process.exit(1);
+    }
+    var view = { slug: x.slug, name: x.name, name_he: x.name_he, brand: x.brand, os: x.os, launch: x.launch,
+      status: x.status, spec: x.spec, spec_source: x.spec_source, commercial: {}, recommendation: {},
+      editorial: p.editorial || {}, seo: p.seo || {}, media: p.media || {},
+      variants: variants, variant_labels: p.variant_labels || [] };
+    writeDevicePage(view, K);
+    ACC_PAGES.push({ d: view, K: K, also: variants.map(function (v) { return v.slug; }) });
+  });
+});
+
+function writeDevicePage(d, K) {
+  var url = PROD + K.base + d.slug + '/';
   var title = (d.seo && d.seo.title) || (d.name + ' | פון גת');
   var desc = (d.seo && d.seo.description) || '';
   var h = src;
@@ -513,14 +595,14 @@ db.devices.forEach(function (d) {
 
   var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
-  h = h.slice(0, mS) + buildMain(d, openTag) + h.slice(mE);
+  h = h.slice(0, mS) + buildMain(d, openTag, K) + h.slice(mE);
 
-  var out = path.join(PROTO, 'phones', d.slug, 'index.html');
+  var out = path.join(PROTO, K.base, d.slug, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, h);
 
   /* מעטפת ה-sw: השוואה למחרוזת המצוטטת, אחרת עמוד אב נבלע בבן שלו */
-  var swPath = path.join(PROTO, 'sw.js'), entry = "'/phones/" + d.slug + "/'";
+  var swPath = path.join(PROTO, 'sw.js'), entry = "'/" + K.base + d.slug + "/'";
   var sw = fs.readFileSync(swPath, 'utf8');
   if (sw.indexOf(entry) < 0) {
     fs.writeFileSync(swPath, sw.replace('const SHELL = [', 'const SHELL = [' + entry + ', '));
@@ -535,7 +617,7 @@ db.devices.forEach(function (d) {
   try {
     var svc = JSON.parse(fs.readFileSync(svcPath, 'utf8'));
     svc.existing = svc.existing || [];
-    var pageUrl = '/phones/' + d.slug + '/';
+    var pageUrl = '/' + K.base + d.slug + '/';
     var row = svc.existing.filter(function (p) { return p.url === pageUrl; })[0];
     if (row) { row.name = d.name_he || d.name; row.status = d.status; }
     else { svc.existing.push({ url: pageUrl, name: d.name_he || d.name, status: d.status }); }
@@ -545,6 +627,7 @@ db.devices.forEach(function (d) {
   /* המחיר יצא מרשימת "חסר מאופק". הוא null בכוונה מ-6.8.2026, ולספור אותו כחוסר פירושו
    * שהדוח יבקש לנצח משהו שהוחלט שלא יגיע. במקום זה: התרעה אם מישהו כן מילא אותו, כי זה
    * מחזיר Offer עם מחיר לסכימה בסתירה להחלטה, ושולח לגוגל מספר שעלול להיות מיושן. */
+  if (K.acc) { console.log('✓ ' + K.base + d.slug + '/  ' + (d.variants.length ? '[' + d.variants.length + ' גרסאות]' : '')); made++; return; }
   if (d.commercial.price !== null && d.commercial.price !== undefined && d.commercial.price !== '') {
     console.error('⚠ ' + d.slug + ': commercial.price מולא (' + d.commercial.price + '), בסתירה להחלטה מ-6.8.2026 שאין מחירון באתר. ' +
       'זה מחזיר Offer עם מחיר לסכימה. אם ההחלטה שונתה, עדכן את _rules ב-devices.json.');
@@ -563,7 +646,7 @@ db.devices.forEach(function (d) {
   console.log('✓ phones/' + d.slug + '/  ' + (d.status === 'review' ? '[טסטים בלבד]' : '') );
   console.log('   מפרט: ' + Object.keys(d.spec).filter(function (k) { return d.spec[k] !== null; }).length + ' שדות · חסר מאופק: ' + missing.length + ' (' + missing.slice(0, 5).join(', ') + (missing.length > 5 ? '…' : '') + ')');
   made++;
-});
+}
 
 if (skipped.length) console.log('\nדולג: ' + skipped.join(', '));
 
@@ -633,6 +716,35 @@ if (!only) {
       console.log('✓ /phones/ עודכן: ' + live.length + ' מכשירים ברשימה וב-ItemList');
     }
   } catch (e) { console.error('⚠ לא ניתן לעדכן את /phones/ — ' + e.message); }
+}
+
+/* ---------- /phones/: מקטע האוזניות והשעון ----------
+ * עמוד בלי קישור אליו הוא עמוד שגוגל מגלה רק מהסייטמאפ, ופירור הלחם של העמודים האלה מצביע
+ * ל-/phones/, ולכן הם רשומים שם, במקטע משלהם אחרי רשימת הטלפונים. מקטע נפרד ולא עוד פריטים
+ * ברשימה: המונה שם אומר "23 דגמים" של טלפונים, ו-ItemList בסכימה נגזר מאותה רשימה.
+ * עטוף בסימנים, ולכן הרצה שנייה מחליפה ולא מוסיפה. */
+if (!only) {
+  var hubP = path.join(PROTO, 'phones', 'index.html');
+  var hb = fs.readFileSync(hubP, 'utf8');
+  hb = hb.replace(/\r?\n\r?\n<!-- gen-devices:more:start[\s\S]*?<!-- gen-devices:more:end -->/, '');
+  if (ACC_PAGES.length) {
+    var devSec = hb.match(/<section class="block" id="devices"[\s\S]*?<\/section>/);
+    if (!devSec) { console.error('✗ לא נמצא מקטע id="devices" ב-/phones/, ולכן אין איפה לרשום את האוזניות והשעון'); process.exit(1); }
+    var accItems = ACC_PAGES.map(function (a) {
+      return '        <li><a href="/' + a.K.base + a.d.slug + '/"><b><bdo dir="ltr">' + esc(a.d.name) +
+        '</bdo></b><span>' + esc(a.d.brand + ' · ' + a.K.cat.noun + (a.also.length ? ' · ' + a.also.length + ' גרסאות' : '')) + '</span></a></li>';
+    }).join('\n');
+    var more = '\n\n<!-- gen-devices:more:start  נוצר על ידי gen-devices.js מתוך headphones.json ו-watches.json. אל תערוך ידנית. -->\n' +
+      '<section class="block" id="more" aria-labelledby="h-more">\n  <div class="wrap box">\n' +
+      '    <h2 id="h-more">אוזניות ושעונים</h2>\n' +
+      '    <p class="lead">גם לאוזניות ולשעונים שאנחנו מוכרים יש עמוד עם המפרט המלא מאתר היצרן.</p>\n' +
+      '      <ul class="hub">\n' + accItems + '\n      </ul>\n' +
+      '    <p class="aside">להשוואה בין דגמים: <a href="/headphones/compare/">כלי האוזניות</a> ו<a href="/watches/compare/">כלי השעונים</a>.</p>\n' +
+      '  </div>\n</section>\n<!-- gen-devices:more:end -->';
+    hb = hb.replace(devSec[0], devSec[0] + more);
+  }
+  fs.writeFileSync(hubP, hb);
+  console.log('✓ /phones/: ' + ACC_PAGES.length + ' עמודי אוזניות ושעונים במקטע משלהם');
 }
 
 /* הכתובת נכנסה למעטפת, ועכשיו חייב לעלות גם שם המטמון. בלי זה מבקר חוזר נשאר עם המעטפת

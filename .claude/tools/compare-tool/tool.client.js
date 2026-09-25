@@ -390,9 +390,9 @@ function render() {
     }).join("") + '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p></div>' +
     (anyBar ? '<p class="cv-legend">קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</p>' : "");
 
-  var links = CFG.specLinks ? ds.filter(function (d) { return d.own !== false; }).map(function (d) {
-    return '<a href="/phones/' + esc(d.slug) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
-  }).join(" · ") : "";
+  var links = ds.filter(function (d) { return CFG.specLinks ? d.own !== false : !!d.page; }).map(function (d) {
+    return '<a href="/' + CFG.pageBase + esc(CFG.specLinks ? d.slug : d.page) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
+  }).join(" · ");
 
   out.innerHTML = disc + head + top + prio + '<div class="cv-table">' + colHead + '<div id="cvlist"></div></div>' +
     (links ? '<p class="cv-more">' + links + "</p>" : "") +
