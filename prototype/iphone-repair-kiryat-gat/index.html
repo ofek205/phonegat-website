@@ -2963,7 +2963,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     if(seqPending[k])return seqPending[k];
     var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
     var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
-    seqPending[k]=fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},
+    seqPending[k]=fetch('/api/coupon/',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({offer:k}),cache:'no-store',signal:ctl?ctl.signal:undefined})
       .then(function(r){
         /* an offer missing from the server allowlist would otherwise fail silently into the
