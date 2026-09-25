@@ -122,13 +122,20 @@ function nums(field, ds) {
 function dims(d) { var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(val(d.spec.dimensions || "")); return m ? { h: +m[1], w: +m[2] } : null; }
 
 /* ---------------- הכרטיסים בהדר */
+/* תמונה קטנה לדגם שיש לו img בקובץ הציבורי, כלומר דגם שאנחנו מוכרים ויש לו תמונה. הנתיב נבנה
+   כאן מה-slug של העמוד, ולכן הקובץ הציבורי נושא דגל ולא נתיב. alt ריק: השם כתוב לידה. */
+function thumb(d) {
+  if (!d || !d.img) return "";
+  return '<img class="cv-img" src="/' + CFG.pageBase + "img/" + esc(CFG.specLinks ? d.slug : d.page) +
+    '-288.webp" alt="" width="288" height="384" decoding="async">';
+}
 function renderCards() {
   [0, 1, 2].forEach(function (i) {
     var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (!b) return;
     var d = dev(sel[i]);
     b.classList.toggle("empty", !d);
     b.setAttribute("aria-expanded", pickFor === i ? "true" : "false");
-    b.innerHTML = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct">' +
+    b.innerHTML = thumb(d) + '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct">' +
       (d ? '<span class="cv-nm">' + ltr(d.name) + '</span><span class="cv-meta">' + esc(d.brand) + (year(d) ? " · הוכרז ב-" + esc(year(d)) : "") + "</span>"
          : '<span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ' + SIDE[i] + "</span>") +
       '</span><span class="cv-act">' + (d ? "החלפה" : "בחירה") + "</span>";

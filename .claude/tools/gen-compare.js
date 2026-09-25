@@ -99,6 +99,21 @@ if (CAT) db.devices.forEach(function (x) {
   PAGE_OF[x.slug] = x.slug;
   (x.page.variants || []).forEach(function (s) { PAGE_OF[s] = x.slug; });
 });
+/* התמונה הקטנה בכרטיס שבהדר, מ-25.9.2026 (אופק). רק דגם שאנחנו מוכרים ויש לו תמונה: טלפון
+   עם media.hero, או שעון ואוזניות שהעמוד שלהם נושא media. דגם ייחוס נשאר בלי תמונה, וזה גם
+   מבדיל בינו לבין מה שבחנות. alt ריק, כי שם הדגם כתוב מיד לידה. */
+function thumbSrc(x) {
+  if (!CAT) return photoSrc(x);
+  var pg = PAGE_OF[x.slug] && D(PAGE_OF[x.slug]);
+  if (!pg || !pg.page.media || !pg.page.media.hero) return null;
+  var src = '/' + CAT.key + '/img/' + pg.slug + '-288.webp';
+  if (!fs.existsSync(path.join(PROTO, src.slice(1)))) { console.error('✗ ' + x.slug + ': ' + src + ' חסר'); process.exit(1); }
+  return src;
+}
+function thumb(x) {
+  var s = thumbSrc(x);
+  return s ? '<img class="cv-img" src="' + s + '" alt="" width="288" height="384" decoding="async">' : '';
+}
 function pageHref(x) {
   if (!CAT) return x.status === 'reference' ? null : '/phones/' + x.slug + '/';
   return PAGE_OF[x.slug] ? '/' + CAT.key + '/' + PAGE_OF[x.slug] + '/' : null;
@@ -311,7 +326,7 @@ function buildMain(p, a, b, d, openTag) {
 
   /* ---------- ההדר הכהה: הכותרת, שני הכרטיסים, ומשווים גם */
   var card = function (x, i) {
-    var inner = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
+    var inner = thumb(x) + '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
       '<span class="cv-meta">' + esc(x.brand) + (year(x) ? ' · הוכרז ב-' + year(x) : '') + '</span></span>';
     /* מכשיר ייחוס: אין לו עמוד, ולכן אין קישור. הטקסט אומר במפורש שאיננו מוכרים אותו. */
     if (x.status === 'reference') return '        <div class="cv-card" data-slot="' + i + '">' + inner + '<span class="cv-act">לא נמכר אצלנו</span></div>\n';
@@ -1329,6 +1344,8 @@ function buildTool() {
         if (d.launch) o.launch = d.launch;
         /* ה-slug של העמוד, כדי שהכלי יקשר אליו. לא נתיב, כמו img בקובץ של הטלפונים. */
         if (PAGE_OF[d.slug]) o.page = PAGE_OF[d.slug];
+        /* דגל ולא נתיב, כמו בקובץ של הטלפונים. הכלי בונה את הנתיב מ-page. */
+        if (thumbSrc(d)) o.img = 1;
         return o;
       }) };
     fs.writeFileSync(path.join(PROTO, CAT.pub), JSON.stringify(pub) + '\n');
