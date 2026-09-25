@@ -780,6 +780,23 @@ p.cv-legend{display:block}
 .cv-flip .cv-swap{display:block}
 .cv-flip:disabled .cv-swap{opacity:.6}
 @media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
+/* התמונה הקטנה בכרטיס, מ-25.9.2026 (אופק). רק לדגם שאנחנו מוכרים ויש לו תמונה, ולכן חלק מהכרטיסים
+   בלעדיה. היא לפני הנקודה ב-HTML כדי שבמובייל אפשר יהיה להסתיר את הנקודה בלי :has, ו-order מחזיר
+   את הסדר במחשב: נקודה, תמונה, שם. */
+.cv-card .cv-dot{order:-2}
+.cv-card .cv-img{order:-1;inline-size:52px;block-size:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border-radius:4px}
+.cv-cards.three .cv-card .cv-img{inline-size:42px}
+/* במובייל התמונה תופסת את מקום הנקודה, כי הצבע של הצד כבר בפס שבתחתית הכרטיס, והכרטיס לא גדל */
+@media(max-width:720px){
+.cv-card .cv-img{grid-column:1;grid-row:1 / span 2;inline-size:34px;align-self:start}
+.cv-card .cv-img + .cv-dot{display:none}
+.cv-card .cv-img ~ .cv-ct{grid-column:2;grid-row:1}
+.cv-cards.three .cv-card .cv-img{grid-row:1;inline-size:28px}
+/* שני כרטיסים באותו גובה גם כששם אחד נשבר לשלוש שורות, ו"מול" נשאר באמצע */
+.cv-cards{align-items:stretch}
+.cv-card{align-content:space-between}
+.cv-cards>.cv-flip,.cv-cards>.cv-vs2{align-self:center}
+}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2048,7 +2065,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1 id="h1">Apple Watch או Galaxy Watch: איזה שעון מתאים לכם</h1>
     <p class="cv-sub">לפני כל השוואה של מסך או סוללה יש שאלה אחת שמכריעה: איזה טלפון יש לכם. לפי אפל, Apple Watch עובד רק עם אייפון, ולפי מדריך המשתמש של סמסונג, Galaxy Watch עובד רק עם טלפון אנדרואיד עם שירותי Google. בעמוד הזה משווים את הדגם המרכזי של כל אחת מהן: Apple Watch Series 12 ו-Galaxy Watch9.</p>
     <div class="cv-cards" data-pg-data>
-        <a class="cv-card" data-slot="0" href="/watches/apple-watch-series-12/"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Apple Watch Series 12</bdo></span><span class="cv-meta">Apple · הוכרז ב-2026</span></span><span class="cv-act">המפרט המלא</span></a>
+        <a class="cv-card" data-slot="0" href="/watches/apple-watch-series-12/"><img class="cv-img" src="/watches/img/apple-watch-series-12-288.webp" alt="" width="288" height="384" decoding="async"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Apple Watch Series 12</bdo></span><span class="cv-meta">Apple · הוכרז ב-2026</span></span><span class="cv-act">המפרט המלא</span></a>
         <span class="cv-vs2" aria-hidden="true">מול</span>
         <a class="cv-card" data-slot="1" href="/watches/compare/?d=apple-watch-series-12,galaxy-watch9"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy Watch9</bdo></span><span class="cv-meta">Samsung</span></span><span class="cv-act">כל השדות</span></a>
     </div>

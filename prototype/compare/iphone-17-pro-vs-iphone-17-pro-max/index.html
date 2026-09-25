@@ -780,6 +780,23 @@ p.cv-legend{display:block}
 .cv-flip .cv-swap{display:block}
 .cv-flip:disabled .cv-swap{opacity:.6}
 @media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
+/* התמונה הקטנה בכרטיס, מ-25.9.2026 (אופק). רק לדגם שאנחנו מוכרים ויש לו תמונה, ולכן חלק מהכרטיסים
+   בלעדיה. היא לפני הנקודה ב-HTML כדי שבמובייל אפשר יהיה להסתיר את הנקודה בלי :has, ו-order מחזיר
+   את הסדר במחשב: נקודה, תמונה, שם. */
+.cv-card .cv-dot{order:-2}
+.cv-card .cv-img{order:-1;inline-size:52px;block-size:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border-radius:4px}
+.cv-cards.three .cv-card .cv-img{inline-size:42px}
+/* במובייל התמונה תופסת את מקום הנקודה, כי הצבע של הצד כבר בפס שבתחתית הכרטיס, והכרטיס לא גדל */
+@media(max-width:720px){
+.cv-card .cv-img{grid-column:1;grid-row:1 / span 2;inline-size:34px;align-self:start}
+.cv-card .cv-img + .cv-dot{display:none}
+.cv-card .cv-img ~ .cv-ct{grid-column:2;grid-row:1}
+.cv-cards.three .cv-card .cv-img{grid-row:1;inline-size:28px}
+/* שני כרטיסים באותו גובה גם כששם אחד נשבר לשלוש שורות, ו"מול" נשאר באמצע */
+.cv-cards{align-items:stretch}
+.cv-card{align-content:space-between}
+.cv-cards>.cv-flip,.cv-cards>.cv-vs2{align-self:center}
+}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -2048,9 +2065,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h1 id="h1">אייפון 17 פרו או פרו מקס: רק גודל, או יותר מזה</h1>
     <p class="cv-sub">המצלמות, השבב, הטעינה והעמידות זהים לחלוטין בשני הדגמים. כל ההבדל הוא גודל ומה שנגרר ממנו: מסך גדול יותר, סוללה שמחזיקה שש שעות יותר, אפשרות של 2TB, ו-27 גרם נוספים.</p>
     <div class="cv-cards" data-pg-data>
-        <a class="cv-card" data-slot="0" href="/phones/iphone-17-pro/"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">iPhone 17 Pro</bdo></span><span class="cv-meta">Apple · הוכרז ב-2025</span></span><span class="cv-act">המפרט המלא</span></a>
+        <a class="cv-card" data-slot="0" href="/phones/iphone-17-pro/"><img class="cv-img" src="/phones/img/iphone-17-pro-288.webp" alt="" width="288" height="384" decoding="async"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">iPhone 17 Pro</bdo></span><span class="cv-meta">Apple · הוכרז ב-2025</span></span><span class="cv-act">המפרט המלא</span></a>
         <span class="cv-vs2" aria-hidden="true">מול</span>
-        <a class="cv-card" data-slot="1" href="/phones/iphone-17-pro-max/"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">iPhone 17 Pro Max</bdo></span><span class="cv-meta">Apple · הוכרז ב-2025</span></span><span class="cv-act">המפרט המלא</span></a>
+        <a class="cv-card" data-slot="1" href="/phones/iphone-17-pro-max/"><img class="cv-img" src="/phones/img/iphone-17-pro-max-288.webp" alt="" width="288" height="384" decoding="async"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">iPhone 17 Pro Max</bdo></span><span class="cv-meta">Apple · הוכרז ב-2025</span></span><span class="cv-act">המפרט המלא</span></a>
     </div>
     <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/iphone-17-pro-max-vs-iphone-18-pro-max/">אייפון 17 פרו מקס מול אייפון 18 פרו מקס</a><a class="cv-sa" href="/compare/iphone-17-pro-vs-iphone-18-pro/">אייפון 17 פרו מול אייפון 18 פרו</a><a class="cv-sa" href="/compare/iphone-17-vs-iphone-17-pro/">אייפון 17 מול אייפון 17 פרו</a><a class="cv-sa" href="/phones/compare/?d=iphone-17-pro,iphone-17-pro-max">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20iPhone%2017%20Pro%20%D7%9C%D7%91%D7%99%D7%9F%20iPhone%2017%20Pro%20Max."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>
   </div>
