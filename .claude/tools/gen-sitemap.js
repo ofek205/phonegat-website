@@ -22,6 +22,15 @@
  * והקישורים שבתוך <main>, בלי קרוסלת המבצעים (שהיא מסגרת שמחולל אחר כותב לתוך main),
  * בלי סקריפטים, בלי style ובלי הערות. שינוי מחלקה או עיצוב שלא הזיז אף מילה לא נחשב.
  * ההגדרה היא contentKey() למטה, ובמקום אחד בלבד.
+ *
+ * ב-25.9.2026 הרצה אחת כתבה 2026-09-25 על כל 104 הכתובות, כולל דפים שהתוכן שלהם לא זז.
+ * שתי דרכים מגיעות לאותה תוצאה, והשתיהן נחסמות כאן:
+ * 1. פלט git עם CR (צינור של Windows). שורת ה-raw נגמרת ב-\r, ה-$ של הרגקס לא תופס, אף
+ *    קובץ לא נכנס למפה, ו-`mods[rel] || today()` מדביק את היום על כולם.
+ * 2. קריאה שנכשלה של blob. `null !== hash` נראה כמו שינוי תוכן, והקומיט האחרון שנגע
+ *    בקובץ באותו יום היה עדכון תפריט לכל העמודים, אז כולם קיבלו את אותו תאריך.
+ * לכן שורות git מנורמלות ל-LF, blob שלא נקרא אינו נחשב שינוי, ואם הלוג לא נותח בכלל
+ * המחולל יוצא בלי לכתוב. עמוד שקיים בגיט ולא נמצא לו תאריך תוכן לא נופל להיום.
  */
 var fs = require('fs');
 var path = require('path');
@@ -96,7 +105,7 @@ function blobReader(cwd) {
     while (queue.length) {
       var nl = buf.indexOf(10);
       if (nl < 0) return;
-      var head = buf.slice(0, nl).toString();
+      var head = buf.slice(0, nl).toString().replace(/\r$/, '');
       var m = head.match(/^\S+ \S+ (\d+)$/);
       if (!m) { buf = buf.slice(nl + 1); queue.shift()(null); continue; }
       var size = Number(m[1]);
@@ -116,6 +125,9 @@ var ZERO = /^0+$/;
 /* --why=<rel> מדפיס איזה קומיט קבע את התאריך של עמוד אחד. לאבחון, לא משנה את הפלט. */
 var WHY = (process.argv.find(function (a) { return a.indexOf('--why=') === 0; }) || '').slice(6);
 
+/* git ל-pipe ב-Windows מחזיר CR LF. $ ברגקס לא בולע \r, ואז אף שורת diff לא נתפסת. */
+function lf(s) { return String(s).replace(/\r\n/g, '\n').replace(/\r/g, '\n'); }
+
 /* היום שבו כל קומיט נכנס לשרשרת הראשית של הענף, ולא היום שבו הוא נכתב.
  *
  * ההבדל נמצא ב-25.9.2026: ענף ריכוז החזיק קופי לעמודי השירות מ-18.8, והוא הגיע לאתר רק
@@ -129,10 +141,10 @@ function landingDates() {
   var land = {};
   try {
     var parents = {};
-    cp.execSync('git rev-list --parents HEAD', { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 })
+    lf(cp.execSync('git rev-list --parents HEAD', { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }))
       .split('\n').forEach(function (l) { var p = l.trim().split(' '); if (p[0]) parents[p[0]] = p.slice(1); });
-    var chain = cp.execSync('git log --first-parent --format=%H%x09%cs HEAD',
-      { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 })
+    var chain = lf(cp.execSync('git log --first-parent --format=%H%x09%cs HEAD',
+      { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }))
       .split('\n').filter(Boolean).map(function (l) { return l.split('\t'); }).reverse();
     chain.forEach(function (fc) {
       var stack = [fc[0]];
@@ -155,24 +167,32 @@ function landingDates() {
  * הגרסה שהקומיט באמת שינה, ולא מול הקומיט הקודם בזמן. ההבדל חשוב כשכמה ענפים נוגעים באותו
  * קובץ במקביל: הקודם בזמן יכול להיות מענף אחר, וההשוואה אליו הייתה ממציאה שינוי. */
 async function lastModMap() {
-  var map = {}, stats = { content: 0, created: 0, skippedChrome: 0 };
+  var map = {}, stats = { content: 0, created: 0, skippedChrome: 0, unreadable: 0, rawLines: 0, matched: 0, parseFailed: false };
   var log;
   try {
-    log = cp.execSync('git log --format=C%x09%H%x09%cs --raw --no-abbrev --no-renames --diff-filter=AM -- prototype',
-      { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    log = lf(cp.execSync('git log --format=C%x09%H%x09%cs --raw --no-abbrev --no-renames --diff-filter=AM -- prototype',
+      { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }));
   } catch (e) {
     console.error('⚠ לא ניתן לקרוא היסטוריית גיט: ' + e.message);
+    stats.parseFailed = true;
     return { map: map, stats: stats };
   }
   var landing = landingDates();
   /* rel -> [{land, date, old, neu}] */
   var changes = {}, sha = null, date = null;
   log.split('\n').forEach(function (line) {
-    if (line.indexOf('C\t') === 0) { var p = line.split('\t'); sha = p[1]; date = p[2].trim(); return; }
+    if (line.indexOf('C\t') === 0) { var p = line.split('\t'); sha = p[1]; date = (p[2] || '').trim(); return; }
+    if (line.charAt(0) === ':') stats.rawLines++;
     var m = line.match(/^:\d+ \d+ ([0-9a-f]+) ([0-9a-f]+) [AM]\tprototype\/(.+\.html)$/);
     if (!m || !date) return;
-    (changes[m[3]] = changes[m[3]] || []).push({ sha: sha, land: landing[sha] || date, date: date, old: m[1], neu: m[2] });
+    stats.matched++;
+    (changes[m[3]] = changes[m[3]] || []).push({ sha: sha, land: (landing[sha] || date).trim(), date: date, old: m[1], neu: m[2] });
   });
+  /* לוג שיש בו diffs ואף שורת HTML לא נתפסה: באג פענוח, לא "הכול השתנה היום". */
+  if (stats.rawLines && !stats.matched) {
+    stats.parseFailed = true;
+    return { map: map, stats: stats, seen: changes };
+  }
   /* החדש לפי תאריך הכניסה ראשון. הלוג ממוין לפי תאריך הקומיט, וקומיט ישן שנכנס מאוחר היה
      נבדק אחרי קומיטים שנכנסו לפניו, והמעבר היה עוצר על אחד מהם. */
   Object.keys(changes).forEach(function (rel) {
@@ -192,27 +212,35 @@ async function lastModMap() {
         var c = list[i];
         if (ZERO.test(c.old)) { map[rel] = c.land; stats.created++; break; }
         var ko = await keyOf(c.old), kn = await keyOf(c.neu);
+        /* null הוא כשל קריאה, לא תוכן שונה. ההשוואה הקודמת ספרה אותו כשינוי וקבעה את
+           הקומיט האחרון שנגע בקובץ, וביום של עדכון תפריט זה היום על כל העמודים. */
+        if (ko === null || kn === null) { stats.unreadable++; continue; }
         if (ko !== kn) { map[rel] = c.land; stats.content++; if (WHY && rel === WHY) console.log('  ' + rel + ': ' + c.sha.slice(0, 8) + ' נכתב ' + c.date + ', נכנס ' + c.land); break; }
         stats.skippedChrome++;
       }
     }
   } finally { reader.close(); }
 
-  /* שינוי שעוד לא קומט: אם התוכן בעותק העבודה שונה מזה שב-HEAD, התאריך הוא היום */
+  if (stats.unreadable) stats.parseFailed = true;
+
+  /* שינוי שעוד לא קומט: אם התוכן בעותק העבודה שונה מזה שב-HEAD, התאריך הוא היום.
+     כשל בקריאת HEAD אינו שינוי. בלי זה כל קובץ מלוכלך ביום של עדכון תפריט נופל להיום. */
   try {
-    var dirty = cp.execSync('git status --porcelain -- prototype', { cwd: ROOT, encoding: 'utf8' })
+    var dirty = lf(cp.execSync('git status --porcelain -- prototype', { cwd: ROOT, encoding: 'utf8' }))
       .split('\n').map(function (l) { return (l.match(/^.. prototype\/(.+\.html)$/) || [])[1]; }).filter(Boolean);
     for (var d of dirty) {
       var now = contentKey(fs.readFileSync(path.join(PROTO, d), 'utf8'));
-      var head = null;
+      var head = null, shown = false;
       try {
         head = contentKey(cp.execSync('git show HEAD:prototype/' + d,
           { cwd: ROOT, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }));
+        shown = true;
       } catch (e) {}
+      if (!shown && changes[d]) continue;
       if (now !== head) map[d] = today();
     }
   } catch (e) {}
-  return { map: map, stats: stats };
+  return { map: map, stats: stats, seen: changes };
 }
 
 /* עמוד חדש שעוד לא קומט אינו בהיסטוריה. הוא מקבל את התאריך של היום, וזה נכון:
@@ -244,7 +272,14 @@ function rank(rel) {
 
 (async function () {
 var lm = await lastModMap();
+if (lm.stats.parseFailed) {
+  console.error('✗ לא כותבים sitemap.xml: היסטוריית הגיט לא נקראה במלואה (' +
+    lm.stats.unreadable + ' blobs שלא נקראו, ' + lm.stats.matched + ' שורות HTML מתוך ' +
+    lm.stats.rawLines + ' שורות diff). כתיבה עכשיו הייתה שמה את היום על כל הכתובות.');
+  process.exit(1);
+}
 var mods = lm.map;
+var seen = lm.seen || {};
 var all = pages();
 var skipped = [];
 
@@ -266,6 +301,14 @@ live.sort(function (a, b) {
   if (ra.p !== rb.p) return parseFloat(rb.p) - parseFloat(ra.p);
   return url(a) < url(b) ? -1 : 1;
 });
+
+var undated = live.filter(function (rel) { return !mods[rel] && seen[rel]; });
+if (undated.length) {
+  console.error('✗ לא כותבים sitemap.xml: ' + undated.length +
+    ' עמודים קיימים בגיט ולא נמצא להם תאריך תוכן. הם לא מקבלים את היום במקום: ' +
+    undated.slice(0, 8).join(', '));
+  process.exit(1);
+}
 
 var body = live.map(function (rel) {
   var r = rank(rel);
