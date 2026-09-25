@@ -27,6 +27,26 @@
       "destination": "/:path+/",
       "permanent": true
     },
+    {
+      "source": "/compare/iphone-17-vs-galaxy-S26",
+      "destination": "/compare/iphone-17-vs-galaxy-s26/",
+      "permanent": true
+    },
+    {
+      "source": "/compare/iphone-17-vs-galaxy-S26/",
+      "destination": "/compare/iphone-17-vs-galaxy-s26/",
+      "permanent": true
+    },
+    {
+      "source": "/compare/galaxy-a56-vs-a36",
+      "destination": "/compare/galaxy-a56-vs-galaxy-a36/",
+      "permanent": true
+    },
+    {
+      "source": "/compare/galaxy-a56-vs-a36/",
+      "destination": "/compare/galaxy-a56-vs-galaxy-a36/",
+      "permanent": true
+    },
     { "source": "/watches", "destination": "/watches/compare/", "permanent": false },
     { "source": "/watches/", "destination": "/watches/compare/", "permanent": false },
     { "source": "/headphones", "destination": "/headphones/compare/", "permanent": false },

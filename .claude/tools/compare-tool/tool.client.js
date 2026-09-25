@@ -123,11 +123,12 @@ function dims(d) { var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9
 
 /* ---------------- הכרטיסים בהדר */
 /* תמונה קטנה לדגם שיש לו img בקובץ הציבורי, כלומר דגם שאנחנו מוכרים ויש לו תמונה. הנתיב נבנה
-   כאן מה-slug של העמוד, ולכן הקובץ הציבורי נושא דגל ולא נתיב. alt ריק: השם כתוב לידה. */
+   כאן מה-slug של העמוד, ולכן הקובץ הציבורי נושא דגל ולא נתיב. alt הוא השם העברי: השם
+   שמוצג ליד התמונה הוא הלטיני. */
 function thumb(d) {
   if (!d || !d.img) return "";
   return '<img class="cv-img" src="/' + CFG.pageBase + "img/" + esc(CFG.specLinks ? d.slug : d.page) +
-    '-288.webp" alt="" width="288" height="384" decoding="async">';
+    '-288.webp" alt="' + esc(d.name_he || d.name) + '" width="288" height="384" decoding="async">';
 }
 function renderCards() {
   [0, 1, 2].forEach(function (i) {

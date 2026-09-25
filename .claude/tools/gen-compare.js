@@ -101,7 +101,8 @@ if (CAT) db.devices.forEach(function (x) {
 });
 /* התמונה הקטנה בכרטיס שבהדר, מ-25.9.2026 (אופק). רק דגם שאנחנו מוכרים ויש לו תמונה: טלפון
    עם media.hero, או שעון ואוזניות שהעמוד שלהם נושא media. דגם ייחוס נשאר בלי תמונה, וזה גם
-   מבדיל בינו לבין מה שבחנות. alt ריק, כי שם הדגם כתוב מיד לידה. */
+   מבדיל בינו לבין מה שבחנות. alt הוא השם העברי (name_he), לא ריק: השם שליד התמונה הוא
+   הלטיני, והשם העברי הוא מה שמחפשים ומה שקורא מסך צריך לשמוע. */
 function thumbSrc(x) {
   if (!CAT) return photoSrc(x);
   var pg = PAGE_OF[x.slug] && D(PAGE_OF[x.slug]);
@@ -110,9 +111,10 @@ function thumbSrc(x) {
   if (!fs.existsSync(path.join(PROTO, src.slice(1)))) { console.error('✗ ' + x.slug + ': ' + src + ' חסר'); process.exit(1); }
   return src;
 }
+function thumbAlt(x) { return esc(x.name_he || x.name); }
 function thumb(x) {
   var s = thumbSrc(x);
-  return s ? '<img class="cv-img" src="' + s + '" alt="" width="288" height="384" decoding="async">' : '';
+  return s ? '<img class="cv-img" src="' + s + '" alt="' + thumbAlt(x) + '" width="288" height="384" decoding="async">' : '';
 }
 function pageHref(x) {
   if (!CAT) return x.status === 'reference' ? null : '/phones/' + x.slug + '/';
