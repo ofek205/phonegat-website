@@ -317,6 +317,31 @@ function dimsOf(x) {
 function diffCount(n) { return n === 1 ? 'הבדל אחד' : n + ' הבדלים'; }
 function sameTail(n) { return n === 0 ? ', ואין שדות זהים' : n === 1 ? ', ושדה אחד זהה' : n === 2 ? ', ושני שדות זהים' : ', ו-' + n + ' שדות זהים'; }
 
+/* hero_cta אופציונלי על הזוג. בלי השדה ההדר החדש נשאר כמו שהוא, כולל כפתור cv-hwa.
+   כשיש שדה, נוספת שורת הזמנה וכפתורי WhatsApp ושיחה בתוך .hcta, מעל הכרטיסים.
+   הקישור הוא waPick של העמוד, לא הנוסח הישן. המיקרו-טקסט אופציונלי. */
+function heroBlock(p, waPick) {
+  var c = p.hero_cta;
+  if (!c) return '';
+  var label = c.wa_label || 'עזרו לי לבחור';
+  var invite = c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
+  var call = c.call
+    ? '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>'
+    : '';
+  var micro = c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
+  return '    <div class="hcta">' + invite +
+    '<a class="btn btn-wa btn-hero" href="' + waPick + '">' +
+    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">' + esc(label) + '</a>' +
+    call + micro + '</div>\n';
+}
+
+/* רק בהדר הכהה, ורק בעמוד שיש לו hero_cta. לא נוגע ב-.ghero של שאר האתר. */
+var HERO_CTA_CSS = '.cv-top .hcta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1rem}\n' +
+  '.cv-top .hcta .cta-line{flex:1 0 100%;margin:0;max-width:40rem;color:rgba(255,255,255,.92);font-size:1.02rem;line-height:1.55}\n' +
+  '.cv-top .hcta .btn-call{background:transparent;color:#fff;border:1.5px solid var(--teal)}\n' +
+  '.cv-top .hcta .btn-call:hover{background:var(--teal);color:#fff}\n' +
+  '.cv-top .hcta>.meta{flex:1 0 100%;margin:0;color:rgba(255,255,255,.78)}';
+
 function buildMain(p, a, b, d, openTag) {
   var waMsg = 'היי, אשמח לעזרה בבחירה בין ' + a.name + ' לבין ' + b.name + '.';
   var waPick = wa(waMsg);
@@ -345,6 +370,7 @@ function buildMain(p, a, b, d, openTag) {
   var top = '<div class="cv-app">\n<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
     '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
     '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
+    heroBlock(p, waPick) +
     '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
     '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
@@ -933,14 +959,17 @@ db._comparisons.pairs.forEach(function (p) {
   var url = PROD + 'compare/' + p.slug + '/';
   var h = src;
 
+  /* meta_description, כשיש, מחליף רק את תגיות ה-meta. שדה description נשאר
+     ב-Article JSON-LD, כדי ששינוי CTR לא ישנה את הסכימה. */
+  var metaDesc = p.meta_description || p.description;
   h = swap(h, /<title>[\s\S]*?<\/title>/, '<title>' + esc(p.title) + '</title>', '<title>', p.slug);
-  h = swap(h, /(<meta name="description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'description', p.slug);
+  h = swap(h, /(<meta name="description" content=")[^"]*(">)/, '$1' + esc(metaDesc) + '$2', 'description', p.slug);
   h = swap(h, /(<link rel="canonical" href=")[^"]*(">)/, '$1' + url + '$2', 'canonical', p.slug);
   h = swap(h, /(<meta property="og:title" content=")[^"]*(">)/, '$1' + esc(p.title) + '$2', 'og:title', p.slug);
-  h = swap(h, /(<meta property="og:description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'og:description', p.slug);
+  h = swap(h, /(<meta property="og:description" content=")[^"]*(">)/, '$1' + esc(metaDesc) + '$2', 'og:description', p.slug);
   h = swap(h, /(<meta property="og:url" content=")[^"]*(">)/, '$1' + url + '$2', 'og:url', p.slug);
   h = swap(h, /(<meta name="twitter:title" content=")[^"]*(">)/, '$1' + esc(p.title) + '$2', 'twitter:title', p.slug);
-  h = swap(h, /(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(p.description) + '$2', 'twitter:desc', p.slug);
+  h = swap(h, /(<meta name="twitter:description" content=")[^"]*(">)/, '$1' + esc(metaDesc) + '$2', 'twitter:desc', p.slug);
 
   /* מוחקים קודם, מזריקים אחר כך. אותה מלכודת שהפילה את פירורי הלחם של עמודי המכשיר:
    * הבלוק החדש מוזרק במקום Product, שיושב לפני ה-BreadcrumbList של המקור, ולכן מחיקה
@@ -966,7 +995,7 @@ db._comparisons.pairs.forEach(function (p) {
   var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
   if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ ' + p.slug + ': לא נמצא עוגן ה-CSS'); process.exit(1); }
   /* אותו גיליון כמו הכלי, כדי ששני המקומות ייראו כמו מוצר אחד */
-  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS + '\n' + APP_CSS);
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS + '\n' + APP_CSS + (p.hero_cta ? '\n' + HERO_CTA_CSS : ''));
 
   var d = diffSpec(a, b, p.slug);
   if (!d.rows.length) { console.error('✗ ' + p.slug + ': אין אף שדה שונה. אין מה להשוות'); process.exit(1); }
