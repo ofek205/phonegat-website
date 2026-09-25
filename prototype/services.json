@@ -379,6 +379,21 @@
       "url": "/compare/venu-4-vs-instinct-3/",
       "name": "Garmin Venu 4 מול Garmin Instinct 3 AMOLED",
       "status": "review"
+    },
+    {
+      "url": "/headphones/airpods-5/",
+      "name": "AirPods 5",
+      "status": "listed"
+    },
+    {
+      "url": "/headphones/airpods-pro-3/",
+      "name": "AirPods Pro 3",
+      "status": "listed"
+    },
+    {
+      "url": "/watches/apple-watch-series-12/",
+      "name": "Apple Watch Series 12",
+      "status": "listed"
     }
   ]
 }

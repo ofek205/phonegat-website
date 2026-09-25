@@ -22,6 +22,45 @@
   /* Appended rather than edited: the page's own robots meta is parsed after this script, and
      Google honours the most restrictive directive when two are present. */
   if(!window.PG_PROD){var pgNI=document.createElement('meta');pgNI.name='robots';pgNI.content='noindex,nofollow';document.head.appendChild(pgNI);}
+  /* Sticky yellow bar across the top, so there is never a moment of doubt about which
+     environment a tab is showing. It reserves its own height on <body> and pushes the sticky
+     header down by the same amount — a bar that simply floats on top would hide the header
+     we usually came here to look at. pointer-events:none so it can never swallow a click;
+     only the escape hatch back to the live site opts back in. */
+  if(!window.PG_PROD){
+    document.documentElement.classList.add('pg-testenv');
+    var pgTS=document.createElement('style');
+    pgTS.textContent=
+      'html.pg-testenv{--pg-test-h:52px}'+
+      'html.pg-testenv body{padding-top:var(--pg-test-h)}'+
+      /* רק כשההדר sticky. מ-980px ומטה הוא position:relative, ואז top הוא הזזה יחסית
+         שמחליקה אותו למטה ומשאירה חור לבן בגובה הבאנר. עדכן יחד עם ה-@media בגיליון הראשי. */
+      '@media(min-width:981px){html.pg-testenv header.site{top:var(--pg-test-h)}}'+
+      '.pg-testbar{position:fixed;top:0;inset-inline:0;height:var(--pg-test-h);z-index:100001;'+
+        'pointer-events:none;display:flex;align-items:center;justify-content:center;gap:.6em;'+
+        'padding:0 12px 6px;white-space:nowrap;overflow:hidden;text-align:center;'+
+        'background:#ffd400;color:#151100;font:800 17px/1.1 system-ui,sans-serif;letter-spacing:.01em;'+
+        'box-shadow:0 3px 14px rgba(0,0,0,.32)}'+
+      /* פס אזהרה מפוספס בתחתית — קורא מיד כ"עצור, זה לא האתר" */
+      '.pg-testbar::after{content:"";position:absolute;inset-inline:0;bottom:0;height:6px;'+
+        'background:repeating-linear-gradient(45deg,#151100 0 8px,#ffd400 8px 16px)}'+
+      '.pg-testbar .pg-tb-ico{font-size:1.3em;line-height:1}'+
+      '.pg-testbar a{pointer-events:auto;color:#151100;text-decoration:underline;font-weight:800}'+
+      '.pg-testbar .pg-tb-env{opacity:.72;font-weight:700;font-size:.85em}'+
+      '@media(max-width:760px){html.pg-testenv{--pg-test-h:46px}.pg-testbar{font-size:14px;gap:.45em}}'+
+      '@media(max-width:520px){html.pg-testenv{--pg-test-h:42px}.pg-testbar{font-size:12.5px;gap:.35em}}'+
+      '@media(max-width:400px){.pg-testbar .pg-tb-env{display:none}}';
+    document.head.appendChild(pgTS);
+    var pgRev=document.createElement('script');pgRev.src='/_staging-nav.js';pgRev.defer=true;document.head.appendChild(pgRev);
+    document.addEventListener('DOMContentLoaded',function(){
+      var b=document.createElement('div');
+      b.className='pg-testbar';
+      b.innerHTML='<span aria-hidden="true">⚠</span> סביבת בדיקות, זה לא האתר החי'+
+        ' <span class="pg-tb-env">('+window.PG_ENV+')</span>'+
+        ' <a href="https://www.phonegat.co.il/">לאתר החי ↗</a>';
+      document.body.appendChild(b);
+    });
+  }
 </script>
 <!-- Assistant web font (same URL as the home page, so it loads from shared cache) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -261,6 +300,7 @@ nav.main .npanel a[aria-current="page"]{color:var(--teal);font-weight:800;text-d
 nav.main >a[aria-current="page"]{font-weight:800;text-decoration:underline;text-underline-offset:4px}
 nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
+@media(min-width:981px) and (max-width:1260px){nav.main #nd-devices .nrow{flex-wrap:wrap;gap:.9rem 1.9rem;inline-size:31rem}}
 nav.main a.ntool{font-weight:800}
 @media(max-width:980px){
   nav.main .ndrop{display:block}
@@ -316,6 +356,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-18-pro-max/">iPhone 18 Pro Max</a><a href="/phones/iphone-18-pro/">iPhone 18 Pro</a><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
+            <div class="ncol"><p class="nhead">אוזניות ושעונים</p><a href="/headphones/airpods-5/">AirPods 5</a><a href="/headphones/airpods-pro-3/">AirPods Pro 3</a><a href="/watches/apple-watch-series-12/">Apple Watch Series 12</a></div>
           </div>
           <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>

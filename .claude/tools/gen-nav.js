@@ -50,6 +50,20 @@ function deviceItems() {
     fail('דגמים שאינם בתפריט: ' + missing.join(', ') +
       '\n  הוסף אותם ל-DEVICE_ORDER. זה נכשל בכוונה, כדי שדגם חדש לא ייעלם מהניווט.');
   }
+  /* אוזניות ושעון, מ-25.9.2026: כל דגם שיש לו page ב-headphones.json או ב-watches.json, כלומר
+     בדיוק הדגמים ש-gen-devices.js בונה להם עמוד. נגזר ולא נכתב כאן, מאותה סיבה כמו הטלפונים. */
+  var acc = [];
+  [['headphones', 'headphones.json'], ['watches', 'watches.json']].forEach(function (c) {
+    var f = path.join(PROTO, c[1]);
+    if (!fs.existsSync(f)) return;
+    JSON.parse(fs.readFileSync(f, 'utf8')).devices.forEach(function (d) {
+      if (!d.page) return;
+      var href = '/' + c[0] + '/' + d.slug + '/';
+      if (!fs.existsSync(path.join(PROTO, c[0], d.slug, 'index.html'))) fail('ל-' + d.slug + ' יש page ואין עמוד. הרץ קודם את gen-devices.js');
+      acc.push({ href: href, label: d.name });
+    });
+  });
+  if (acc.length) cols.push({ head: 'אוזניות ושעונים', items: acc });
   return cols;
 }
 
@@ -270,6 +284,13 @@ function CSS(t) {
   'nav.main .nall{border-top:1px solid '+t.rule+';padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}',
   /* התפריט של המכשירים רחב, ולכן הוא נפתח לכיוון פנים המסך ולא החוצה */
   'nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}',
+  /* מ-25.9.2026 יש בתפריט המכשירים ארבע עמודות, עם האוזניות והשעון. ב-1024 הפאנל נמדד 687
+     פיקסל, והקצה שלו יצא 42 פיקסל מחוץ למסך וגרם לגלילה לרוחב. בטווח הזה העמודה הרביעית
+     יורדת לשורה שנייה, ומעל 1260 כולן בשורה אחת כמו קודם. ב-1200 נמדדה עוד גלישה של 20 פיקסל, ולכן 1260 ולא 1180.
+     inline-size ולא max-inline-size: לפאנל ממוקם אבסולוטית יש רוחב מתכווץ, ועם flex-wrap הוא
+     מתכווץ לרוחב של הכפתור, וכל עמודה ירדה לשורה משלה. נמדד, 1544 פיקסל גובה. 31rem הם שלוש
+     עמודות של 8.6rem ושני רווחים, עם מקום לתווית הארוכה ביותר. */
+  '@media(min-width:981px) and (max-width:1260px){nav.main #nd-devices .nrow{flex-wrap:wrap;gap:.9rem 1.9rem;inline-size:31rem}}',
 
   /* כלי ההשוואה: אותו פריט כמו כל השאר, ורק המשקל מבדיל. עבר דרך מסגרת ודרך רקע מלא,
      ואופק פסל את שניהם ב-16.8.2026. מה שנשאר עושה את העבודה הוא המיקום הראשון והתווית

@@ -797,6 +797,23 @@ p.cv-legend{display:block}
 .cv-flip .cv-swap{display:block}
 .cv-flip:disabled .cv-swap{opacity:.6}
 @media(max-width:720px){.cv-vs2{font-size:.9rem}.cv-flip .cv-swap{width:13px;height:13px}}
+/* התמונה הקטנה בכרטיס, מ-25.9.2026 (אופק). רק לדגם שאנחנו מוכרים ויש לו תמונה, ולכן חלק מהכרטיסים
+   בלעדיה. היא לפני הנקודה ב-HTML כדי שבמובייל אפשר יהיה להסתיר את הנקודה בלי :has, ו-order מחזיר
+   את הסדר במחשב: נקודה, תמונה, שם. */
+.cv-card .cv-dot{order:-2}
+.cv-card .cv-img{order:-1;inline-size:52px;block-size:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border-radius:4px}
+.cv-cards.three .cv-card .cv-img{inline-size:42px}
+/* במובייל התמונה תופסת את מקום הנקודה, כי הצבע של הצד כבר בפס שבתחתית הכרטיס, והכרטיס לא גדל */
+@media(max-width:720px){
+.cv-card .cv-img{grid-column:1;grid-row:1 / span 2;inline-size:34px;align-self:start}
+.cv-card .cv-img + .cv-dot{display:none}
+.cv-card .cv-img ~ .cv-ct{grid-column:2;grid-row:1}
+.cv-cards.three .cv-card .cv-img{grid-row:1;inline-size:28px}
+/* שני כרטיסים באותו גובה גם כששם אחד נשבר לשלוש שורות, ו"מול" נשאר באמצע */
+.cv-cards{align-items:stretch}
+.cv-card{align-content:space-between}
+.cv-cards>.cv-flip,.cv-cards>.cv-vs2{align-self:center}
+}
 
 .fig img.devimg{border:1px solid var(--line);background:#fff}
 @media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}
@@ -981,6 +998,7 @@ nav.main .npanel a[aria-current="page"]{color:var(--teal);font-weight:800;text-d
 nav.main >a[aria-current="page"]{font-weight:800;text-decoration:underline;text-underline-offset:4px}
 nav.main .nall{border-top:1px solid var(--line);padding-block-start:.45rem;margin-block-start:.5rem;display:flex;gap:0 1.9rem;flex-wrap:wrap}
 nav.main .ndrop:last-of-type .npanel{inset-inline-start:auto;inset-inline-end:0}
+@media(min-width:981px) and (max-width:1260px){nav.main #nd-devices .nrow{flex-wrap:wrap;gap:.9rem 1.9rem;inline-size:31rem}}
 nav.main a.ntool{font-weight:800}
 @media(max-width:980px){
   nav.main .ndrop{display:block}
@@ -2001,6 +2019,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-18-pro-max/">iPhone 18 Pro Max</a><a href="/phones/iphone-18-pro/">iPhone 18 Pro</a><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
+            <div class="ncol"><p class="nhead">אוזניות ושעונים</p><a href="/headphones/airpods-5/">AirPods 5</a><a href="/headphones/airpods-pro-3/">AirPods Pro 3</a><a href="/watches/apple-watch-series-12/">Apple Watch Series 12</a></div>
           </div>
           <div class="nall"><a href="/phones/">כל המכשירים</a><a href="/compare/">מדריכי השוואה</a><a href="/phones/find-my-phone/">למצוא מכשיר שמתאים לי</a><a href="/upcoming-phones/">לחכות לדגם הבא?</a></div>
         </div>
@@ -2185,7 +2204,7 @@ var TRAITS={};
 var TDEF=[];
 var MEANS={"compatibility":"קודם כל בדקו את השורה הזאת. Apple Watch עובד רק עם אייפון, שעוני Galaxy רק עם טלפון אנדרואיד בגרסה שסמסונג מציינת, ושעוני גרמין עובדים עם שניהם. שעון שלא מתאים לטלפון שלכם לא יעבוד איתו, וחלק מתכונות הבריאות בשעוני Galaxy דורשות טלפון Galaxy.","case_sizes":"אפל מודדת את גובה המארז, המספר של סמסונג קרוב יותר לרוחב שלו, וגרמין נוקבת בקוטר של המארז העגול. לכן המספרים של שלושת היצרנים אינם בני השוואה ישירה. כדי להשוות גודל אמיתי, הסתכלו בשורת המידות.","display":"OLED ו-AMOLED מאירים כל פיקסל בנפרד, וזה מה שמאפשר להשאיר את השעה מוצגת כל הזמן. התצוגה התמידית עדיין צורכת סוללה, וסמסונג מפרסמת כמה בשורת הסוללה.","resolution":"מספר הפיקסלים במסך. בשעון ההבדל כמעט לא מורגש, כי מסתכלים עליו לשניות.","brightness":"הבהירות המרבית, בשמש. זה מה שקובע אם רואים את המסך בחוץ בצהריים.","dimensions":"העובי הוא מה שמורגש מתחת לשרוול. הגובה והרוחב קובעים איך השעון יושב על פרק היד.","weight":"בלי רצועה. הבדל של כ-10 גרם ומעלה מורגש בשינה ובאימון, פחות ביום רגיל.","materials":"אלומיניום קל יותר, וטיטניום וקרמיקה עמידים יותר בשריטות. הזכוכית שמעל המסך היא מה שנשרט ראשון.","water_resistance":"לפי היצרנים, 5 ATM ו-WR50 מתאימים לשחייה בבריכה ובים, ולא לצלילה או לספורט מים מהיר. גם 10 ATM אינו אישור לצלילה: על Galaxy Watch Ultra (2025) סמסונג כותבת שהוא אינו מתאים לצלילה. צוללים רק עם שעון שהיצרן מאשר לכך במפורש, לפי תקן EN13319. IP6X הוא עמידות לאבק, ו-IP68 הוא אבק ושיקוע קצר. כל הדירוגים נבדקו בתנאי מעבדה, והעמידות פוחתת עם הזמן.","chip":"המעבד קובע כמה חלקה התגובה של השעון. בין דגמים מאותו דור ההבדל קטן ביומיום.","ram":"אפל אינה מפרסמת את נפח הזיכרון, ולכן אין כאן מה להשוות מולה.","storage":"מקום לאפליקציות, למוזיקה ולפודקאסטים שמורידים לשעון. חשוב בעיקר למי שמתאמן בלי טלפון.","battery":"אפל מודדת בשעות של שימוש רגיל, סמסונג בשעות עם תצוגה תמידית כבויה או פועלת, וגרמין בימים במצב שעון חכם. לכן המספרים של היצרנים אינם ברי השוואה ישירה. בגרמין המספר יורד הרבה כשהתצוגה התמידית פועלת, וזה מופיע בשורה.","charging":"כמה מהר השעון חוזר לעבוד. שימושי למי שטוען אותו רק בבוקר.","health":"החיישנים והתכונות שהיצרן מונה. זמינות תכונות רפואיות, כמו ECG והתראות על יתר לחץ דם, משתנה לפי מדינה ולפי דגם. אפל מציינת שאפליקציית החמצן בדם מיועדת לרווחה ולא לשימוש רפואי. אפליקציית ה-ECG של גרמין קיימת רק בחלק מהדגמים, וזמינותה נקבעת לפי מדינה.","safety":"תכונות שמזעיקות עזרה בזמן חירום. חלקן דורשות גרסה עם סלולר או טלפון קרוב, ותקשורת לוויינית זמינה רק במדינות שאפל מונה, וישראל אינה ביניהן.","connectivity":"GPS מודד ריצה בלי טלפון. NFC, Apple Pay ו-Garmin Pay מאפשרים לשלם עם השעון, בתנאי שהכרטיס שלכם נתמך.","cellular":"גרסה עם סלולר עובדת בלי הטלפון בכיס: שיחות, הודעות ומפות. היא דורשת קו מתאים מהמפעיל.","security_updates":"עד מתי היצרן מתחייב לעדכוני אבטחה. סמסונג נוקבת בתאריך בחלק מהדגמים, ואפל וגרמין אינן נוקבות בתאריך."};
 var READY=[["apple-watch-series-12","galaxy-watch9"],["apple-watch-series-12","apple-watch-ultra-4"],["apple-watch-se-3","apple-watch-series-11"],["galaxy-watch8","galaxy-watch9"],["galaxy-watch9","galaxy-watch-ultra-2"],["apple-watch-series-12","garmin-venu-4"],["galaxy-watch9","garmin-venu-4"],["garmin-forerunner-170","garmin-forerunner-570"],["garmin-venu-4","garmin-instinct-3-amoled"]];
-var CFG={"pub":"/watches-public.json","specLinks":false,"outline":false,"bars":false,"pairErr":"לא הצלחנו לחשב את ההשוואה הזאת. נסו לבחור שוב.","loadErr":"לא ניתן לטעון את נתוני השעונים. נסו לרענן את העמוד.","src":"המפרט לקוח מאתרי היצרנים."};
+var CFG={"pub":"/watches-public.json","specLinks":false,"pageBase":"watches/","outline":false,"bars":false,"pairErr":"לא הצלחנו לחשב את ההשוואה הזאת. נסו לבחור שוב.","loadErr":"לא ניתן לטעון את נתוני השעונים. נסו לרענן את העמוד.","src":"המפרט לקוח מאתרי היצרנים."};
 /* כלי ההשוואה, גרסה ח׳ (24.9.2026). הקוד הזה רץ בדפדפן. gen-compare.js עוטף אותו בפונקציה ומזריק לפניו
    את הנתונים: PAIRS, ORDER, TRAITS, TDEF, MEANS, READY ו-CFG. אין כאן חישוב הבדלים: PAIRS מחזיק את התוצאה
    של diffSpec מהמחולל, ולכן הכלי והעמודים הכתובים לא יכולים לומר שני דברים שונים על אותו זוג.
@@ -2310,13 +2329,20 @@ function nums(field, ds) {
 function dims(d) { var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(val(d.spec.dimensions || "")); return m ? { h: +m[1], w: +m[2] } : null; }
 
 /* ---------------- הכרטיסים בהדר */
+/* תמונה קטנה לדגם שיש לו img בקובץ הציבורי, כלומר דגם שאנחנו מוכרים ויש לו תמונה. הנתיב נבנה
+   כאן מה-slug של העמוד, ולכן הקובץ הציבורי נושא דגל ולא נתיב. alt ריק: השם כתוב לידה. */
+function thumb(d) {
+  if (!d || !d.img) return "";
+  return '<img class="cv-img" src="/' + CFG.pageBase + "img/" + esc(CFG.specLinks ? d.slug : d.page) +
+    '-288.webp" alt="" width="288" height="384" decoding="async">';
+}
 function renderCards() {
   [0, 1, 2].forEach(function (i) {
     var b = document.querySelector('.cv-card[data-slot="' + i + '"]'); if (!b) return;
     var d = dev(sel[i]);
     b.classList.toggle("empty", !d);
     b.setAttribute("aria-expanded", pickFor === i ? "true" : "false");
-    b.innerHTML = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct">' +
+    b.innerHTML = thumb(d) + '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct">' +
       (d ? '<span class="cv-nm">' + ltr(d.name) + '</span><span class="cv-meta">' + esc(d.brand) + (year(d) ? " · הוכרז ב-" + esc(year(d)) : "") + "</span>"
          : '<span class="cv-nm">בחרו דגם</span><span class="cv-meta">צד ' + SIDE[i] + "</span>") +
       '</span><span class="cv-act">' + (d ? "החלפה" : "בחירה") + "</span>";
@@ -2578,9 +2604,9 @@ function render() {
     }).join("") + '</div><p class="cv-status" id="cvstatus" role="status" aria-live="polite"></p></div>' +
     (anyBar ? '<p class="cv-legend">קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</p>' : "");
 
-  var links = CFG.specLinks ? ds.filter(function (d) { return d.own !== false; }).map(function (d) {
-    return '<a href="/phones/' + esc(d.slug) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
-  }).join(" · ") : "";
+  var links = ds.filter(function (d) { return CFG.specLinks ? d.own !== false : !!d.page; }).map(function (d) {
+    return '<a href="/' + CFG.pageBase + esc(CFG.specLinks ? d.slug : d.page) + '/">המפרט המלא של ' + esc(d.name_he || d.name) + "</a>";
+  }).join(" · ");
 
   out.innerHTML = disc + head + top + prio + '<div class="cv-table">' + colHead + '<div id="cvlist"></div></div>' +
     (links ? '<p class="cv-more">' + links + "</p>" : "") +
@@ -3287,7 +3313,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     if(seqPending[k])return seqPending[k];
     var ctl=(typeof AbortController!=='undefined')?new AbortController():null;
     var timer=setTimeout(function(){if(ctl)ctl.abort();},SEQ_TIMEOUT);
-    seqPending[k]=fetch('/api/coupon',{method:'POST',headers:{'Content-Type':'application/json'},
+    seqPending[k]=fetch('/api/coupon/',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({offer:k}),cache:'no-store',signal:ctl?ctl.signal:undefined})
       .then(function(r){
         /* an offer missing from the server allowlist would otherwise fail silently into the

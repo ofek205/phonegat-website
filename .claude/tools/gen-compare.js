@@ -90,6 +90,34 @@ function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 function sameTxt(n){ return n === 0 ? 'אין שדות זהים' : n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
 function sameMoreTxt(n){ return n === 1 ? 'שדה אחד נוסף זהה' : (n === 2 ? 'שני שדות נוספים זהים' : n + ' שדות נוספים זהים'); }
 function D(slug) { return db.devices.filter(function (d) { return d.slug === slug; })[0]; }
+/* עמוד המכשיר של דגם, או null כשאין לו. טלפון שאינו ייחוס: /phones/<slug>/. אוזניות ושעון, מאז
+   25.9.2026: רק דגם שיש לו page במאגר, או גרסה שמופיעה ב-page.variants של דגם אחר, כי AirPods 5
+   עם הנרתיק האלחוטי מתואר בעמוד של AirPods 5. gen-devices.js בונה את העמודים האלה. */
+var PAGE_OF = {};
+if (CAT) db.devices.forEach(function (x) {
+  if (!x.page) return;
+  PAGE_OF[x.slug] = x.slug;
+  (x.page.variants || []).forEach(function (s) { PAGE_OF[s] = x.slug; });
+});
+/* התמונה הקטנה בכרטיס שבהדר, מ-25.9.2026 (אופק). רק דגם שאנחנו מוכרים ויש לו תמונה: טלפון
+   עם media.hero, או שעון ואוזניות שהעמוד שלהם נושא media. דגם ייחוס נשאר בלי תמונה, וזה גם
+   מבדיל בינו לבין מה שבחנות. alt ריק, כי שם הדגם כתוב מיד לידה. */
+function thumbSrc(x) {
+  if (!CAT) return photoSrc(x);
+  var pg = PAGE_OF[x.slug] && D(PAGE_OF[x.slug]);
+  if (!pg || !pg.page.media || !pg.page.media.hero) return null;
+  var src = '/' + CAT.key + '/img/' + pg.slug + '-288.webp';
+  if (!fs.existsSync(path.join(PROTO, src.slice(1)))) { console.error('✗ ' + x.slug + ': ' + src + ' חסר'); process.exit(1); }
+  return src;
+}
+function thumb(x) {
+  var s = thumbSrc(x);
+  return s ? '<img class="cv-img" src="' + s + '" alt="" width="288" height="384" decoding="async">' : '';
+}
+function pageHref(x) {
+  if (!CAT) return x.status === 'reference' ? null : '/phones/' + x.slug + '/';
+  return PAGE_OF[x.slug] ? '/' + CAT.key + '/' + PAGE_OF[x.slug] + '/' : null;
+}
 
 /* התמונה של הדגם ברשימת "שני המכשירים". נגזרת מ-media שב-devices.json, בדיוק כמו בעמוד
  * המכשיר, ולא מנוסחת כאן מחדש: שתי נוסחאות לאותו נתיב נפרדות זו מזו בשקט ברגע שמידה משתנה.
@@ -323,13 +351,14 @@ function buildMain(p, a, b, d, openTag) {
 
   /* ---------- ההדר הכהה: הכותרת, שני הכרטיסים, ומשווים גם */
   var card = function (x, i) {
-    var inner = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
+    var inner = thumb(x) + '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
       '<span class="cv-meta">' + esc(x.brand) + (year(x) ? ' · הוכרז ב-' + year(x) : '') + '</span></span>';
     /* מכשיר ייחוס: אין לו עמוד, ולכן אין קישור. הטקסט אומר במפורש שאיננו מוכרים אותו. */
     if (x.status === 'reference') return '        <div class="cv-card" data-slot="' + i + '">' + inner + '<span class="cv-act">לא נמכר אצלנו</span></div>\n';
-    /* לשעונים ולאוזניות אין עמוד מכשיר. הכרטיס מוביל לכלי, עם הזוג כבר בחור. */
-    if (CAT) return '        <a class="cv-card" data-slot="' + i + '" href="' + toolHref + '">' + inner + '<span class="cv-act">כל השדות</span></a>\n';
-    return '        <a class="cv-card" data-slot="' + i + '" href="/phones/' + x.slug + '/">' + inner + '<span class="cv-act">המפרט המלא</span></a>\n';
+    var ph = pageHref(x);
+    if (ph) return '        <a class="cv-card" data-slot="' + i + '" href="' + ph + '">' + inner + '<span class="cv-act">המפרט המלא</span></a>\n';
+    /* שעון או אוזניות בלי עמוד מכשיר: הכרטיס מוביל לכלי, עם הזוג כבר בחור. */
+    return '        <a class="cv-card" data-slot="' + i + '" href="' + toolHref + '">' + inner + '<span class="cv-act">כל השדות</span></a>\n';
   };
   /* השוואות שחולקות דגם עם הזוג הזה. השם העברי בקישור, כי כך מחפשים בגוגל. */
   var near = nearPairs(p).slice(0, 4);
@@ -446,8 +475,8 @@ function buildMain(p, a, b, d, openTag) {
       return '      <div class="col cv-' + pair[2] + '">\n' +
         '        <h3><span class="cv-dot" aria-hidden="true"></span>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
         pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') + '\n        </ul>\n' +
-        (pair[0].status === 'reference' || CAT ? ''
-          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' + esc(nmHe(pair[0])) + '</a></p>') + '\n      </div>';
+        (!pageHref(pair[0]) ? ''
+          : '        <p class="aside"><a href="' + pageHref(pair[0]) + '">המפרט המלא של ' + esc(nmHe(pair[0])) + '</a></p>') + '\n      </div>';
     }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n';
   var angle = p.angle && p.angle_h
     ? '<section class="block" id="angle" aria-labelledby="h-angle">\n  <div class="wrap">\n' +
@@ -787,8 +816,10 @@ function toolMain(openTag, index, order, pairCount) {
   var READY = (db._comparisons.pairs || []).map(function (p) { return [p.a, p.b]; });
   var CFG = {
     pub: '/' + (CAT ? CAT.pub : 'devices-public.json'),
-    /* לשעונים ולאוזניות אין עמודי מכשיר, וקישור ל-/phones/<slug>/ שם הוא 404 */
+    /* טלפון: כל דגם שאינו ייחוס. שעון ואוזניות: רק דגם שיש לו page בקובץ הציבורי, כי לשאר אין עמוד. */
     specLinks: !CAT,
+    /* בלי לוכסן בהתחלה: הקליינט כותב href="/' + pageBase, כדי שבדיקת הנתיבים היחסיים תראה נתיב שורשי */
+    pageBase: (CAT ? CAT.key : 'phones') + '/',
     /* השרטוט בקנה מידה והקווים נשענים על שדות של טלפון */
     outline: !CAT,
     bars: !CAT,
@@ -1340,6 +1371,10 @@ function buildTool() {
       devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(T.newestFirst).map(function (d) {
         var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
         if (d.launch) o.launch = d.launch;
+        /* ה-slug של העמוד, כדי שהכלי יקשר אליו. לא נתיב, כמו img בקובץ של הטלפונים. */
+        if (PAGE_OF[d.slug]) o.page = PAGE_OF[d.slug];
+        /* דגל ולא נתיב, כמו בקובץ של הטלפונים. הכלי בונה את הנתיב מ-page. */
+        if (thumbSrc(d)) o.img = 1;
         return o;
       }) };
     fs.writeFileSync(path.join(PROTO, CAT.pub), JSON.stringify(pub) + '\n');

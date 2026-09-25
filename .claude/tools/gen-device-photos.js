@@ -164,13 +164,26 @@ var db = JSON.parse(rawDb);
 var known = {};
 db.devices.forEach(function (d) { known[d.slug] = 1; });
 
+/* אוזניות ושעון, מ-25.9.2026: דגם שיש לו page ב-headphones.json או ב-watches.json מקבל תמונה
+ * כמו טלפון. הקבצים נכתבים ל-prototype/<קטגוריה>/img/, וה-media נשמר תחת page באותו קובץ, כי
+ * שם gen-devices.js קורא אותו. אין כאן מיפוי שמות: שם הקובץ חייב להיות ה-slug. */
+var ACC = {};
+[['headphones', 'headphones.json'], ['watches', 'watches.json']].forEach(function (c) {
+  var f = path.join(PROTO, c[1]);
+  if (!fs.existsSync(f)) return;
+  var raw = fs.readFileSync(f, 'utf8'), j = JSON.parse(raw);
+  j.devices.forEach(function (d) { if (d.page) ACC[d.slug] = { cat: c[0], file: f, raw: raw, db: j }; });
+});
+function outDir(slug) { return ACC[slug] ? path.join(PROTO, ACC[slug].cat, 'img') : OUT; }
+function webBase(slug) { return ACC[slug] ? '/' + ACC[slug].cat + '/img/' : '/phones/img/'; }
+
 var files = fs.readdirSync(SRC).filter(function (f) { return /\.png$/i.test(f); });
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
 var done = [], skipped = [];
 files.forEach(function (f) {
   var key = path.basename(f, path.extname(f)).toLowerCase();
-  var slug = MAP[key] || (known[key] ? key : null);
+  var slug = MAP[key] || (known[key] || ACC[key] ? key : null);
   if (!slug) { skipped.push(f); return; }
 
   var file = path.join(SRC, f);
@@ -228,8 +241,9 @@ files.forEach(function (f) {
     if (H - ch - py > 0) bord.push('bottom=' + (H - ch - py));
   }
 
+  if (!fs.existsSync(outDir(slug))) fs.mkdirSync(outDir(slug), { recursive: true });
   WIDTHS.forEach(function (w) {
-    var out = path.join(OUT, slug + '-' + w + '.webp');
+    var out = path.join(outDir(slug), slug + '-' + w + '.webp');
     run(['-v', 'error', '-y', '-i', file,
       '-vf', pre + 'crop=' + cw + ':' + ch + ':' + cx + ':' + cy +
              ',pad=' + W + ':' + H + ':' + px + ':' + py + ':' + a.bg +
@@ -255,7 +269,11 @@ var SHOT = {
   'iphone-17-pro-max': 'שלושה צבעים, הגב של המכשירים',
   /* תמונה לכל דגם, בשני צבעים של אפל, כדי שלא ייראו כאותו מכשיר (אופק, 25.9.2026) */
   'iphone-18-pro': 'בצבע בורדו, הגב של המכשיר',
-  'iphone-18-pro-max': 'בצבע קרחון, הגב של המכשיר'
+  'iphone-18-pro-max': 'בצבע קרחון, הגב של המכשיר',
+  'airpods-pro-3': 'הנרתיק פתוח והאוזניות לפניו',
+  'airpods-5': 'הנרתיק פתוח והאוזניות לפניו',
+  /* בלי שם צבע: אין לנו מקור לשמות הצבעים של Series 12, ושם מומצא ב-alt הוא טענה על המוצר */
+  'apple-watch-series-12': 'מארז אלומיניום עם רצועת ספורט'
 };
 
 var bySlug = {};
@@ -274,26 +292,52 @@ db.devices.forEach(function (d) {
 });
 /* אותה הזחה שהייתה, אחרת כל הקובץ נראה כשינוי אחד גדול ב-diff */
 var indent = /\n(\s+)"_"/.test(rawDb) ? RegExp.$1.length : 2;
-fs.writeFileSync(dbFile, JSON.stringify(db, null, indent) + '\n');
+if (done.some(function (d) { return !ACC[d.slug]; })) fs.writeFileSync(dbFile, JSON.stringify(db, null, indent) + '\n');
+
+/* אוזניות ושעון: אותו media, תחת page בקובץ של הקטגוריה */
+var accFiles = {};
+done.forEach(function (x) {
+  var a = ACC[x.slug];
+  if (!a) return;
+  var d = a.db.devices.filter(function (y) { return y.slug === x.slug; })[0];
+  var big = WIDTHS[WIDTHS.length - 1], base = webBase(x.slug);
+  d.page.media = {
+    hero: base + x.slug + '-' + big + '.webp',
+    srcset: WIDTHS.map(function (w) { return base + x.slug + '-' + w + '.webp ' + w + 'w'; }).join(', '),
+    width: big, height: Math.round(big / RATIO),
+    alt: d.name + ', ' + (SHOT[x.slug] || 'המכשיר')
+  };
+  accFiles[a.file] = a;
+});
+Object.keys(accFiles).forEach(function (f) {
+  var a = accFiles[f], crlf = a.raw.indexOf('\r\n') >= 0;
+  var s = JSON.stringify(a.db, null, 2) + '\n';
+  fs.writeFileSync(f, crlf ? s.replace(/\n/g, '\r\n') : s);
+});
 
 /* קבצים של מידה שכבר לא בשימוש נשארים אחרת בתיקייה ובגיט לנצח.
  * רק של הדגמים שהומרו בהרצה הזאת. עד 25.9.2026 הניקוי מחק כל webp שלא הופק עכשיו, ולכן הרצה על
  * תיקייה עם תמונה אחת מחקה את התמונות של כל שאר הדגמים: 63 קבצים, שוחזרו מגיט. */
 var keep = {}, mine = {};
 done.forEach(function (d) { mine[d.slug] = 1; WIDTHS.forEach(function (w) { keep[d.slug + '-' + w + '.webp'] = 1; }); });
-var stale = fs.readdirSync(OUT).filter(function (f) {
-  var m = /^(.+)-\d+\.webp$/.exec(f);
-  return m && mine[m[1]] && !keep[f];
+var stale = [];
+done.map(function (d) { return outDir(d.slug); }).filter(function (v, i, a) { return a.indexOf(v) === i; }).forEach(function (dir) {
+  fs.readdirSync(dir).forEach(function (f) {
+    var m = /^(.+)-\d+\.webp$/.exec(f);
+    if (m && mine[m[1]] && !keep[f]) { fs.unlinkSync(path.join(dir, f)); stale.push(f); }
+  });
 });
-stale.forEach(function (f) { fs.unlinkSync(path.join(OUT, f)); });
 
 done.sort(function (a, b) { return a.slug < b.slug ? -1 : 1; });
 done.forEach(function (d) {
-  var k = WIDTHS.reduce(function (s, w) { return s + fs.statSync(path.join(OUT, d.slug + '-' + w + '.webp')).size; }, 0);
+  var k = WIDTHS.reduce(function (s, w) { return s + fs.statSync(path.join(outDir(d.slug), d.slug + '-' + w + '.webp')).size; }, 0);
   console.log('  ' + d.slug.padEnd(20) + ' ← ' + d.src.padEnd(30) + ' רקע ' + d.bg + '  ' + Math.round(k / 1024) + 'KB');
 });
 console.log('\n' + done.length + ' מכשירים, ' + (done.length * WIDTHS.length) + ' קבצים ב-' +
-  path.relative(ROOT, OUT).replace(/\\/g, '/') + ', ו-devices.json עודכן.');
+  done.map(function (d) { return path.relative(ROOT, outDir(d.slug)).replace(/\\/g, '/'); })
+    .filter(function (v, i, a) { return a.indexOf(v) === i; }).join(', ') +
+  '. עודכנו: ' + (done.some(function (d) { return !ACC[d.slug]; }) ? ['devices.json'] : [])
+    .concat(Object.keys(accFiles).map(function (f) { return path.basename(f); })).join(', ') + '.');
 if (stale.length) console.log('נמחקו קבצים ממידה ישנה: ' + stale.length);
 if (skipped.length) console.log('לא מופו, ולכן לא הומרו: ' + skipped.join(', '));
 var without = db.devices.filter(function (d) { return d.status !== 'reference' && !d.media.hero; });
