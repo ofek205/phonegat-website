@@ -1315,12 +1315,12 @@
     ]
    },
    "media": {
-    "hero": null,
+    "hero": "/phones/img/iphone-18-pro-max-1152.webp",
     "gallery": [],
-    "alt": null,
-    "srcset": null,
-    "width": null,
-    "height": null
+    "alt": "iPhone 18 Pro Max, בצבע בורדו, הגב של המכשיר",
+    "srcset": "/phones/img/iphone-18-pro-max-288.webp 288w, /phones/img/iphone-18-pro-max-576.webp 576w, /phones/img/iphone-18-pro-max-1152.webp 1152w",
+    "width": 1152,
+    "height": 1536
    },
    "dates": {
     "published": null,
@@ -1550,12 +1550,12 @@
     ]
    },
    "media": {
-    "hero": null,
+    "hero": "/phones/img/iphone-18-pro-1152.webp",
     "gallery": [],
-    "alt": null,
-    "srcset": null,
-    "width": null,
-    "height": null
+    "alt": "iPhone 18 Pro, בצבע בורדו, הגב של המכשיר",
+    "srcset": "/phones/img/iphone-18-pro-288.webp 288w, /phones/img/iphone-18-pro-576.webp 576w, /phones/img/iphone-18-pro-1152.webp 1152w",
+    "width": 1152,
+    "height": 1536
    },
    "dates": {
     "published": null,

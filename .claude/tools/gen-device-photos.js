@@ -252,7 +252,10 @@ files.forEach(function (f) {
 var SHOT = {
   'iphone-17': 'הגב של המכשיר',
   'iphone-17-pro': 'שלושה צבעים, הגב של המכשירים',
-  'iphone-17-pro-max': 'שלושה צבעים, הגב של המכשירים'
+  'iphone-17-pro-max': 'שלושה צבעים, הגב של המכשירים',
+  /* שני הדגמים חולקים תמונה אחת, כמו ב-17: מבחוץ ההבדל הוא רק בגודל */
+  'iphone-18-pro': 'בצבע בורדו, הגב של המכשיר',
+  'iphone-18-pro-max': 'בצבע בורדו, הגב של המכשיר'
 };
 
 var bySlug = {};
@@ -273,10 +276,15 @@ db.devices.forEach(function (d) {
 var indent = /\n(\s+)"_"/.test(rawDb) ? RegExp.$1.length : 2;
 fs.writeFileSync(dbFile, JSON.stringify(db, null, indent) + '\n');
 
-/* קבצים של מידה שכבר לא בשימוש נשארים אחרת בתיקייה ובגיט לנצח */
-var keep = {};
-done.forEach(function (d) { WIDTHS.forEach(function (w) { keep[d.slug + '-' + w + '.webp'] = 1; }); });
-var stale = fs.readdirSync(OUT).filter(function (f) { return /\.webp$/.test(f) && !keep[f]; });
+/* קבצים של מידה שכבר לא בשימוש נשארים אחרת בתיקייה ובגיט לנצח.
+ * רק של הדגמים שהומרו בהרצה הזאת. עד 25.9.2026 הניקוי מחק כל webp שלא הופק עכשיו, ולכן הרצה על
+ * תיקייה עם תמונה אחת מחקה את התמונות של כל שאר הדגמים: 63 קבצים, שוחזרו מגיט. */
+var keep = {}, mine = {};
+done.forEach(function (d) { mine[d.slug] = 1; WIDTHS.forEach(function (w) { keep[d.slug + '-' + w + '.webp'] = 1; }); });
+var stale = fs.readdirSync(OUT).filter(function (f) {
+  var m = /^(.+)-\d+\.webp$/.exec(f);
+  return m && mine[m[1]] && !keep[f];
+});
 stale.forEach(function (f) { fs.unlinkSync(path.join(OUT, f)); });
 
 done.sort(function (a, b) { return a.slug < b.slug ? -1 : 1; });
