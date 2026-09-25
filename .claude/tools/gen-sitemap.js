@@ -235,6 +235,8 @@ function rank(rel) {
   if (rel === 'contact/index.html') return { p: '0.9', f: 'monthly' };
   if (/^(phones|guides|compare)\/index\.html$/.test(rel)) return { p: '0.8', f: 'weekly' };
   if (/^phones\/[^/]+\/index\.html$/.test(rel)) return { p: '0.7', f: 'monthly' };
+  /* עמודי המכשיר של אוזניות ושעון, כמו של טלפון. הכלים שבאותה תיקייה נשארים כמו שהיו. */
+  if (/^(headphones|watches)\/(?!compare\/)[^/]+\/index\.html$/.test(rel)) return { p: '0.7', f: 'monthly' };
   if (/^compare\//.test(rel)) return { p: '0.6', f: 'monthly' };
   if (/^guides\//.test(rel)) return { p: '0.7', f: 'monthly' };
   return { p: '0.8', f: 'monthly' };
