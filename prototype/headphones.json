@@ -651,6 +651,13 @@
               "יש בו רמקול שעוזר למצוא אותו דרך Find My, ולולאה לרצועה."
             ]
           ]
+        },
+        "media": {
+          "hero": "/headphones/img/airpods-pro-3-1152.webp",
+          "srcset": "/headphones/img/airpods-pro-3-288.webp 288w, /headphones/img/airpods-pro-3-576.webp 576w, /headphones/img/airpods-pro-3-1152.webp 1152w",
+          "width": 1152,
+          "height": 1536,
+          "alt": "AirPods Pro 3, הנרתיק פתוח והאוזניות לפניו"
         }
       }
     },
