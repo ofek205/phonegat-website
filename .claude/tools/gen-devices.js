@@ -145,10 +145,7 @@ function buildMain(d, openTag) {
      היה כאן כפתור אחד, ומי שהעדיף לדבר היה צריך לגלול עד הפוטר.
      ⚠ שני המספרים אינם מתחלפים: ה-WhatsApp העסקי הוא 08-6812050, והחיוג הוא
      052-5893366. הם מגיעים לשני מקומות שונים, והחלפה ביניהם שולחת לקוח לאף אחד. */
-  '      <div class="hcta">' +
-  '<a class="btn btn-wa btn-hero" href="' + wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a>' +
-  '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>' +
-  '</div>\n' +
+  heroBlock(d) +
   '      <p class="meta">\n' +
   '        <span>' + esc(d.brand) + (d.os ? ', ' + esc(d.os) : '') + '</span>\n' +
   (atDate ? '        <span>מפרט נבדק ב' + esc(atDate) + '</span>\n' : '') +
@@ -282,6 +279,35 @@ function buildMain(d, openTag) {
   '</section>\n\n';
   return out;
 }
+
+/* בלוק ה-CTA בהירו. seo.hero_cta הוא אופציונלי ולעמוד אחד.
+   בלי השדה המוצא זהה לבלוק שהיה כאן, כדי ששאר עמודי הדגם לא ישתנו.
+   הקישור נשאר wa.me/97286812050 והחיוג tel:+972525893366. לא מחליפים ביניהם. */
+function heroBlock(d) {
+  var href = wa('היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
+  var call = '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
+  var c = d.seo && d.seo.hero_cta;
+  if (!c) {
+    return '      <div class="hcta">' +
+      '<a class="btn btn-wa btn-hero" href="' + href + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a>' +
+      call +
+      '</div>\n';
+  }
+  var label = c.wa_label || 'בדיקת מחיר ומלאי';
+  var invite = c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
+  var micro = c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
+  return '      <div class="hcta">' + invite +
+    '<a class="btn btn-wa btn-hero" href="' + href + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">' + esc(label) + '</a>' +
+    call + micro +
+    '</div>\n';
+}
+
+/* שורת ההזמנה משתמשת ב-.cta-line שקיים במדריכים ולא בעמוד המכשיר.
+   מוזרק רק לעמוד שיש לו hero_cta, לא לכל הדגמים. */
+var HERO_CTA_CSS = '.cta-line{margin-top:1.1rem;font-size:clamp(1rem,1.5vw,1.15rem)}\n' +
+  '.ghero .hcta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.7rem}\n' +
+  '.ghero .hcta .cta-line{flex:1 0 100%;margin:0 auto;max-width:40rem}\n' +
+  '.ghero .hcta>.meta{flex:1 0 100%;min-width:0;margin-top:.35rem;padding-top:0;border-top:0}';
 
 /* ---------- schema ---------- */
 function buildSchema(d, url) {
@@ -453,6 +479,15 @@ db.devices.forEach(function (d) {
        וחיתוך ל-4:3 מוריד ממנה את בליטת המצלמה למעלה ואת תחתית המכשיר. לכן היא נשארת 3:4
        ומוגבלת ברוחב במקום להיחתך: 280px נותנים 373px גובה במקום ה-468 שהכלל המשותף חשש מהם. */
     '@media(max-width:900px){.fig img.devimg{aspect-ratio:3/4;object-fit:contain;max-width:280px;margin-inline:auto}}');
+
+  if (d.seo && d.seo.hero_cta) {
+    if (h.indexOf('.ghero .hcta{margin-top:2.2rem}') < 0) {
+      console.error('✗ ' + d.slug + ': לא נמצא עוגן CSS של .hcta'); process.exit(1);
+    }
+    if (h.indexOf('.cta-line{') < 0) {
+      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS);
+    }
+  }
 
   var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
