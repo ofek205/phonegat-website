@@ -25,7 +25,7 @@ var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
  * מדורג מלמעלה למטה בתוך כל מותג. הרשימה מפורשת ולא נגזרת ממחיר, כי מחיר
  * אינו במאגר בכוונה. דגם שאינו כאן עוצר את המחולל. */
 var DEVICE_ORDER = {
-  'אייפון': ['iphone-17-pro-max', 'iphone-17-pro', 'iphone-17', 'iphone-17e', 'iphone-16'],
+  'אייפון': ['iphone-18-pro-max', 'iphone-18-pro', 'iphone-17-pro-max', 'iphone-17-pro', 'iphone-17', 'iphone-17e', 'iphone-16'],
   'גלקסי': ['galaxy-s26-ultra', 'galaxy-s26-plus', 'galaxy-s26', 'galaxy-s25-fe', 'galaxy-a57', 'galaxy-a56', 'galaxy-a37', 'galaxy-a36', 'galaxy-a27', 'galaxy-a17', 'galaxy-a07'],
   'שיאומי': ['xiaomi-15', 'redmi-note-15-pro', 'redmi-note-15', 'redmi-note-14-pro', 'redmi-note-14']
 };
@@ -80,6 +80,9 @@ function structure() {
            הלחצן העליון נולד מפני שהפריט הזה היה נסתר מדי, ולכן משהשגנו את המיקום הטוב
            הפריט המקורי הפך לכפילות. זה בדיוק הכשל ש-CLAUDE.md מתעד מ-c5b1fa3. */
         { href: '/phones/find-my-phone/', label: 'למצוא מכשיר שמתאים לי' },
+        /* כלי השעונים והאוזניות נוספו כאן ב-24.9.2026 והוסרו באותו יום, לפי המלצת מנהל המוצר:
+           ארבעה פריטי השוואה בתפריט אחד היו מבלבלים, ומתג הקטגוריות שבראש כל כלי עושה את המעבר.
+           "כלי השוואה בין הדגמים" מוביל לכלי הטלפונים, ומשם רואים את שלוש הקטגוריות. */
         { href: '/upcoming-phones/', label: 'לחכות לדגם הבא?' }
       ]
     },

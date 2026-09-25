@@ -61,15 +61,32 @@ function mainHtml(html) {
  * אחד מהם מציע 256GB, כלומר בדיוק מה שצריך לקרות. לספור את זה כחזרה זה להפוך את הבדיקה
  * לרעש בעמוד היחיד שבו היא לא רלוונטית. .checks ‏.mistakes ו-.ticks כן נספרים, כי אלה
  * רשימות שנכתבו ביד. */
+/* אזור נתונים שאינו <table>. עמודי ההשוואה בעיצוב ח׳ (24.9.2026) מציגים את המפרט בתחומים ובכרטיסים
+ * ולא בטבלה, והבדיקה על נתון שחוזר שלוש פעמים ספרה אותו כגוף, כלומר דיווחה "48MP×7" על הערכים
+ * עצמם. האלמנט מסומן במפורש ב-data-pg-data, ונחתך עם כל מה שבתוכו, כמו טבלה. */
+function stripData(h) {
+  var re = /<(div|ul|section)\b[^>]*\sdata-pg-data\b[^>]*>/g, m;
+  while ((m = re.exec(h))) {
+    var tag = m[1], depth = 0, t = new RegExp('<' + tag + '\\b|</' + tag + '>', 'g'), x;
+    t.lastIndex = m.index;
+    while ((x = t.exec(h))) {
+      depth += x[0].charAt(1) === '/' ? -1 : 1;
+      if (!depth) { h = h.slice(0, m.index) + ' ' + h.slice(x.index + x[0].length); break; }
+    }
+    if (depth) break;
+    re.lastIndex = m.index;
+  }
+  return h;
+}
 function writtenText(html) {
-  return mainHtml(html).replace(/<table[\s\S]*?<\/table>/g, ' ')
+  return stripData(mainHtml(html)).replace(/<table[\s\S]*?<\/table>/g, ' ')
     .replace(/<ul class="hub"[\s\S]*?<\/ul>/g, ' ')
     .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
     .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&[a-z]+;/g, ' ')
     .replace(/\s+/g, ' ').trim();
 }
 function proseText(html) {
-  var m = mainHtml(html).replace(/<table[\s\S]*?<\/table>/g, ' ')
+  var m = stripData(mainHtml(html)).replace(/<table[\s\S]*?<\/table>/g, ' ')
                         .replace(/<(ul|ol)[\s\S]*?<\/\1>/g, ' ');
   return m.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
           .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&[a-z]+;/g, ' ')
@@ -110,12 +127,17 @@ var TICS = {
   'חשוב לציין': /חשוב לציין|יש לציין|ראוי לציין/g,
   'הייפ (מושלם/מהפכני/מדהים/הטוב ביותר)': /מושלם|מהפכני|מדהים|הטוב ביותר|פורץ דרך/g,
   'בסופו של דבר': /בסופו של דבר|בשורה התחתונה/g,
-  'לא X אלא Y': /\bלא [^.,;]{1,28} אלא\b/g,
+  /* גבול שמאלי מפורש ולא \b: גבול מילה ב-JS מוגדר על [A-Za-z0-9_] ולכן אינו עובד ליד
+     עברית, והתבנית הזאת לא נתפסה אף פעם. הגבול נחוץ כאן כי "ללא" מכיל "לא". */
+  'לא X אלא Y': /(?:^|[^\u0590-\u05FF])לא [^.,;]{1,28} אלא(?![\u0590-\u05FF])/g,
   'כלומר': /כלומר/g,
   'למעשה': /למעשה|בפועל/g
 };
 /* מודאליות: חזרה על אותה צורת המלצה היא מה שמייצר את התחושה של תבנית */
-var MODALS = { 'כדאי': /\bכדאי\b/g, 'שווה': /\bשווה\b/g, 'חשוב': /\bחשוב\b/g, 'אפשר': /\bאפשר\b/g, 'צריך': /\bצריך\b/g, 'יש ל': /\bיש ל/g };
+/* בלי \b, ובכוונה. גבול מילה ב-JS אינו עובד ליד עברית, ולכן ששת אלה לא נתפסו אף פעם.
+   ובעברית גם לא רוצים גבול שמאלי: התחיליות נדבקות למילה, ו"שכדאי" ו"וכדאי" הן אותה
+   מודאליות בדיוק, שזה מה שהבדיקה באה לספור. */
+var MODALS = { 'כדאי': /כדאי/g, 'שווה': /שווה/g, 'חשוב': /חשוב/g, 'אפשר': /אפשר/g, 'צריך': /צריך/g, 'יש ל': /יש ל/g };
 
 var C = { r: '[31m', y: '[33m', g: '[32m', d: '[2m', b: '[1m', x: '[0m' };
 var flagCount = 0;

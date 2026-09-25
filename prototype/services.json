@@ -269,6 +269,116 @@
       "url": "/compare/iphone-17-vs-pixel-10/",
       "name": "אייפון 17 מול גוגל פיקסל 10",
       "status": "review"
+    },
+    {
+      "url": "/phones/iphone-18-pro-max/",
+      "name": "אייפון 18 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/phones/iphone-18-pro/",
+      "name": "אייפון 18 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-pro-max-vs-iphone-18-pro-max/",
+      "name": "אייפון 17 פרו מקס מול אייפון 18 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-17-pro-vs-iphone-18-pro/",
+      "name": "אייפון 17 פרו מול אייפון 18 פרו",
+      "status": "review"
+    },
+    {
+      "url": "/compare/iphone-18-pro-vs-iphone-18-pro-max/",
+      "name": "אייפון 18 פרו מול אייפון 18 פרו מקס",
+      "status": "review"
+    },
+    {
+      "url": "/watches/compare/",
+      "name": "השוואת שעונים",
+      "status": "review"
+    },
+    {
+      "url": "/compare/apple-watch-vs-galaxy-watch/",
+      "name": "Apple Watch Series 12 מול Galaxy Watch9",
+      "status": "review"
+    },
+    {
+      "url": "/compare/apple-watch-series-12-vs-ultra-4/",
+      "name": "Apple Watch Series 12 מול Apple Watch Ultra 4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/apple-watch-se-3-vs-series-11/",
+      "name": "Apple Watch SE 3 מול Apple Watch Series 11",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-watch8-vs-galaxy-watch9/",
+      "name": "Galaxy Watch8 מול Galaxy Watch9",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-watch9-vs-galaxy-watch-ultra-2/",
+      "name": "Galaxy Watch9 מול Galaxy Watch Ultra 2",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-pro-3-vs-galaxy-buds4-pro/",
+      "name": "AirPods Pro 3 מול Galaxy Buds4 Pro",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-5-vs-airpods-pro-3/",
+      "name": "AirPods 5 מול AirPods Pro 3",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-buds4-vs-galaxy-buds4-pro/",
+      "name": "Galaxy Buds4 מול Galaxy Buds4 Pro",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-buds3-vs-galaxy-buds4/",
+      "name": "Galaxy Buds3 מול Galaxy Buds4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-pro-3-vs-airpods-max-2/",
+      "name": "AirPods Pro 3 מול AirPods Max 2",
+      "status": "review"
+    },
+    {
+      "url": "/compare/airpods-5-vs-galaxy-buds4/",
+      "name": "AirPods 5 מול Galaxy Buds4",
+      "status": "review"
+    },
+    {
+      "url": "/headphones/compare/",
+      "name": "השוואת אוזניות",
+      "status": "review"
+    },
+    {
+      "url": "/compare/apple-watch-vs-garmin/",
+      "name": "Apple Watch Series 12 מול Garmin Venu 4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-watch-vs-garmin/",
+      "name": "Galaxy Watch9 מול Garmin Venu 4",
+      "status": "review"
+    },
+    {
+      "url": "/compare/forerunner-170-vs-forerunner-570/",
+      "name": "Garmin Forerunner 170 מול Garmin Forerunner 570",
+      "status": "review"
+    },
+    {
+      "url": "/compare/venu-4-vs-instinct-3/",
+      "name": "Garmin Venu 4 מול Garmin Instinct 3 AMOLED",
+      "status": "review"
     }
   ]
 }
