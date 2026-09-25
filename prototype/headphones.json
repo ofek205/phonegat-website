@@ -455,6 +455,13 @@
               "כבל USB-C אינו ברשימת האריזה של אפל, בשתי הגרסאות."
             ]
           ]
+        },
+        "media": {
+          "hero": "/headphones/img/airpods-5-1152.webp",
+          "srcset": "/headphones/img/airpods-5-288.webp 288w, /headphones/img/airpods-5-576.webp 576w, /headphones/img/airpods-5-1152.webp 1152w",
+          "width": 1152,
+          "height": 1536,
+          "alt": "AirPods 5, הנרתיק פתוח והאוזניות לפניו"
         }
       }
     },
