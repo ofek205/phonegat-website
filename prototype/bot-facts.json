@@ -733,7 +733,7 @@
         "camera_extra": "רחבה במיוחד 12MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות",
         "zoom": "זום אופטי 2x פנימה ו-2x החוצה, טווח אופטי 4x",
         "camera_front": "12MP בצמצם ƒ/1.9",
-        "video": "4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה",
+        "video": "4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה. הילוך אט ב-1080p ב-120 או 240",
         "battery": "עד 22 שעות הפעלת וידאו",
         "charging_wired": "עד 50 אחוז בכ-30 דקות עם מתאם 20W",
         "charging_wireless": "MagSafe ו-Qi2 עד 25W",
@@ -752,7 +752,7 @@
         "box_contents": "מכשיר עם iOS 26, כבל טעינה USB-C באורך מטר, ותיעוד",
         "model_numbers": "A3287, A3290",
         "storage_expandable": "אין חריץ לכרטיס זיכרון",
-        "connectivity": "Wi-Fi 7, Bluetooth 5.3",
+        "connectivity": "5G sub-6GHz עם 4x4 MIMO, Wi-Fi 7, Bluetooth 5.3",
         "security_updates": null
       }
     },

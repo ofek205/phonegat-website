@@ -394,6 +394,16 @@
       "url": "/watches/apple-watch-series-12/",
       "name": "Apple Watch Series 12",
       "status": "listed"
+    },
+    {
+      "url": "/compare/iphone-16-vs-iphone-17/",
+      "name": "אייפון 16 מול אייפון 17",
+      "status": "review"
+    },
+    {
+      "url": "/compare/galaxy-s26-ultra-vs-iphone-17-pro-max/",
+      "name": "גלקסי S26 אולטרה מול אייפון 17 פרו מקס",
+      "status": "review"
     }
   ]
 }
