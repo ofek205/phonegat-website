@@ -32,20 +32,62 @@ var SOURCE = 'phones/iphone-17/index.html';
 
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
-var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
+/* מצב שעונים, נוסף ב-24.9.2026: node gen-compare.js --watches בונה את /watches/compare/ מתוך
+   prototype/watches.json, באותו קוד ובאותו עיצוב כמו כלי הטלפונים. השעונים בקובץ נפרד ולא ב-
+   devices.json בכוונה: כל צרכן של devices.json, השאלון, טבלאות המדריכים, הבוט והניווט, מניח
+   טלפון, ושעון שהיה נכנס לשם היה מופיע בטבלת עמידות למים של טלפונים לילדים. במצב הזה לא נבנים
+   עמודי השוואה קבועים ולא מרכז השוואות, רק הכלי. */
+/* מ-24.9.2026 יש שתי קטגוריות כאלה, שעונים ואוזניות, ולכן המצב הפך לטבלה: כל מה שנבדל בין
+   הקטגוריות הוא טקסט, והוא כתוב כאן פעם אחת. הקוד למטה שואל "האם זו קטגוריה" (CAT) ולוקח
+   ממנה את המילים. קטגוריה שלישית היא רשומה נוספת כאן, ולא עוד ענף if בכל מקום. */
+var CATS = {
+  watches: {
+    flag: '--watches', file: 'watches.json', pub: 'watches-public.json', path: 'watches/compare/',
+    title: 'השוואת שעונים חכמים: אפל, סמסונג וגרמין | פון גת',
+    desc: 'כלי להשוואה בין שעונים חכמים של אפל, סמסונג וגרמין, עם המפרט מאתרי היצרנים. רק השדות שבהם הם באמת שונים.',
+    h1: 'השוואת שעונים חכמים',
+    asub: 'שעוני Apple Watch, Galaxy Watch וגרמין, והמפרט של כל אחד מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": Apple Watch עובד רק עם אייפון, שעוני Galaxy רק עם אנדרואיד, ושעוני גרמין עם שניהם.',
+    crumb: 'השוואת שעונים', link: 'לכלי השעונים', ask: 'להשוות שעונים חכמים',
+    slot: 'שעון', third: 'הוסיפו שעון שלישי', plural: 'השעונים', them: 'שני השעונים',
+    waPick: 'היי, אני מתלבט בין כמה שעונים חכמים ואשמח לעזרה בבחירה',
+    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל, סמסונג וגרמין מודדות סוללה בדרכים שונות, ולכן בשורה הזאת מופיע מה שכל יצרן כתב, כפי שהוא.',
+    loadErr: 'לא ניתן לטעון את נתוני השעונים. נסו לרענן את העמוד.',
+    tab: 'שעונים חכמים', card: 'בין Apple Watch, Galaxy Watch וגרמין', noun: 'שעונים חכמים', own: 'משלהם', any: 'כל שני שעונים', hubH: 'השוואות שעונים חכמים', hubLead: 'Apple Watch, Galaxy Watch וגרמין, עם המפרט מאתרי היצרנים.'
+  },
+  headphones: {
+    flag: '--headphones', file: 'headphones.json', pub: 'headphones-public.json', path: 'headphones/compare/',
+    title: 'השוואת אוזניות: AirPods ו-Galaxy Buds | פון גת',
+    desc: 'כלי להשוואה בין אוזניות AirPods של אפל ו-Galaxy Buds של סמסונג, עם המפרט מאתרי היצרנים. רק השדות שבהם הן באמת שונות.',
+    h1: 'השוואת אוזניות',
+    asub: 'אוזניות AirPods ו-Galaxy Buds, והמפרט של כל דגם מאתר היצרן. לפני הכול בדקו את השורה "עובד עם": חלק מהתכונות עובדות רק עם טלפון של אותו יצרן.',
+    crumb: 'השוואת אוזניות', link: 'לכלי האוזניות', ask: 'להשוות אוזניות',
+    slot: 'דגם', third: 'הוסיפו דגם שלישי', plural: 'האוזניות', them: 'שני הדגמים',
+    waPick: 'היי, אני מתלבט בין כמה אוזניות ואשמח לעזרה בבחירה',
+    how: 'רשימת השדות השונים בכל זוג מחושבת מראש, מתוך המפרט שפרסם היצרן. אפל וסמסונג מודדות זמן האזנה בתנאים שונים, ולכן בשורה הזאת מופיע מה שכל יצרן כתב, כפי שהוא.',
+    loadErr: 'לא ניתן לטעון את נתוני האוזניות. נסו לרענן את העמוד.',
+    tab: 'אוזניות', card: 'בין AirPods ל-Galaxy Buds', noun: 'אוזניות', own: 'משלהן', any: 'כל שני דגמים', hubH: 'השוואות אוזניות', hubLead: 'AirPods ו-Galaxy Buds, עם המפרט מאתרי היצרנים.'
+  }
+};
+var CAT = null;
+Object.keys(CATS).forEach(function (k) { CATS[k].key = k; if (process.argv.indexOf(CATS[k].flag) >= 0) CAT = CATS[k]; });
+/* קטגוריות שהקובץ שלהן כבר קיים. כלי הטלפונים ומרכז ההשוואות מקשרים רק אליהן. */
+var CAT_LIVE = Object.keys(CATS).map(function (k) { return CATS[k]; })
+  .filter(function (c) { return fs.existsSync(path.join(PROTO, c.file)); });
+var db = JSON.parse(fs.readFileSync(path.join(PROTO, CAT ? CAT.file : 'devices.json'), 'utf8'));
 if (!db._comparisons || !db._comparisons.pairs) { console.error('✗ אין _comparisons ב-devices.json'); process.exit(1); }
 if (!db._spec_groups || !db._spec_groups.groups) { console.error('✗ אין _spec_groups ב-devices.json'); process.exit(1); }
 var GROUPS = db._spec_groups.groups;
-var only = process.argv[2];
+var only = CAT ? null : process.argv[2];
 var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 
-function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+/* גם מירכאות: esc נכנס גם לתוך מאפיינים (data-cat, data-q, alt), ושם " סוגר את הערך */
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 /* עברית מבחינה בין יחיד, זוגי ורבים, והמחולל הדפיס "1 שדות זהים".
  * שלושה מקומות מרנדרים את אותו מספר, ולכן פונקציה אחת ולא שלוש מחרוזות. */
-function sameTxt(n){ return n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
+function sameTxt(n){ return n === 0 ? 'אין שדות זהים' : n === 1 ? 'שדה אחד זהה' : (n === 2 ? 'שני שדות זהים' : n + ' שדות זהים'); }
 function sameMoreTxt(n){ return n === 1 ? 'שדה אחד נוסף זהה' : (n === 2 ? 'שני שדות נוספים זהים' : n + ' שדות נוספים זהים'); }
 function D(slug) { return db.devices.filter(function (d) { return d.slug === slug; })[0]; }
 
@@ -122,55 +164,51 @@ function diffSpec(a, b, pairSlug) {
   return { rows: rows, same: same, missing: missing };
 }
 
-function buildTable(a, b, d) {
-  var byGroup = {}, order = [];
-  d.rows.forEach(function (r) {
-    if (!byGroup[r.group]) { byGroup[r.group] = []; order.push(r.group); }
-    byGroup[r.group].push(r);
+var MONTHS_HE = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+function dayHe(iso) { var p = String(iso).split('-'); return p.length === 3 ? (+p[2]) + ' ב' + MONTHS_HE[+p[1] - 1] + ' ' + p[0] : String(iso); }
+/* לכל אחד משני הדגמים: המקורות של השדות שבטבלה, מקובצים לפי כתובת. שדה שמקורו מאגר ולא היצרן
+   נושא kind שאומר את זה, ולכן הקורא רואה את זה כאן ולא רק מי שפותח את הקובץ. */
+function sourcesLine(a, b, d) {
+  /* מקובץ לפי תאריך הבדיקה, וכל תאריך נאמר פעם אחת. תאריך ליד כל מקור היה חוזר ארבע עד שש
+     פעמים באותה שורה, וה-copy-audit סימן את זה בכל עמודי ההשוואה. כשכל התאריכים באותה שנה,
+     השנה נכתבת רק בתאריך האחרון, כמו שכותבים בעברית "ב-9, ב-10 וב-16 באוגוסט 2026". */
+  var byDate = {}, dates = [];
+  [a, b].forEach(function (x) {
+    var S = x.spec_source || {}, seen = {};
+    d.rows.forEach(function (r) {
+      var v = x.spec[r.key];
+      if (v === null || v === undefined) return;
+      var src = S[r.key] && S[r.key].src ? S[r.key] : S['default'];
+      if (!src || !src.src || !/^https:\/\//.test(src.src) || seen[src.src]) return;
+      seen[src.src] = 1;
+      var at = src.at || '';
+      if (!byDate[at]) { byDate[at] = []; dates.push(at); }
+      var g = byDate[at], last = g[g.length - 1];
+      if (!last || last.x !== x) g.push(last = { x: x, links: [] });
+      last.links.push({ src: src.src, kind: src.kind || 'אתר היצרן' });
+    });
   });
-  /* "לא מפורסם" ולא מקף ולא רווח: שדה שהיצרן לא מפרסם אינו אפס, וקורא צריך לדעת
-   * שההיעדר הוא של המידע ולא של התכונה. */
-  function cell(v) {
-    return v === null
-      ? '<td><i>לא מפורסם אצל היצרן</i></td>'
-      /* ltrRuns ולא esc, מאותה סיבה שבעמודי המכשיר: bidi הפך את סדר המספרים בתא. */
-      : '<td>' + BIDI.ltrRuns(v) + '</td>';
+  if (!dates.length) return '';
+  dates.sort();
+  var years = {}; dates.forEach(function (at) { years[at.slice(0, 4)] = 1; });
+  var oneYear = Object.keys(years).length === 1;
+  /* שני מקורות מאותו סוג לאותו דגם: התווית פעם אחת, עם שני קישורים */
+  function linksOf(list) {
+    var kinds = [], by = {};
+    list.forEach(function (l) { if (!by[l.kind]) { by[l.kind] = []; kinds.push(l.kind); } by[l.kind].push(l.src); });
+    return kinds.map(function (k) {
+      var u = by[k];
+      if (u.length === 1) return '<a href="' + esc(u[0]) + '" rel="noopener">' + esc(k) + '</a>';
+      return esc(k) + ' (' + u.map(function (x, i) { return '<a href="' + esc(x) + '" rel="noopener">עמוד ' + (i + 1) + '</a>'; }).join(', ') + ')';
+    }).join(', ');
   }
-  /* קו יחסי לשורה שיש בה מספר בשני הצדדים.
-   *
-   * זה מה שהופך את הטבלה מרשימה לקריאה: 167 גרם מול 214 גרם הם שני מספרים שצריך להחסיר,
-   * ושני קווים באורך שונה הם הבדל שרואים. הקו הוא 2px, בלי רקע ובלי מסגרת, כלומר בדיוק
-   * מה שמערכת העיצוב קוראת לו "קו שערה ורווח במקום קופסה".
-   *
-   * הרוחב יושב במשתנה CSS ולא ב-inline style של width, כדי שאפשר יהיה לכבות אותו ב-media
-   * אחד אם יתברר שהוא מפריע, בלי לגעת ב-HTML המחולל. */
-  /* ratioField ולא ratioPair: היא בודקת שהיחידות זהות לפני שהיא מחזירה יחס. ראו את ההערה
-   * ליד NUMERIC_BY_FIELD ב-traits.js — כאן הקו הציג 1% מול 100% כי הוא השווה שעות ל-mAh. */
-  function bars(fieldKey, a, b) {
-    return T.ratioField(fieldKey, a.spec, b.spec);
-  }
-  var bodies = order.map(function (gname) {
-    return '        <tbody>\n' +
-      '          <tr class="grp"><th colspan="2" scope="rowgroup">' + esc(gname) + '</th></tr>\n' +
-      byGroup[gname].map(function (r) {
-        var bar = bars(r.key, a, b);
-        /* aria-hidden על הקו: הוא חזרה חזותית על המספר שכבר נמצא בתא, וקורא מסך שיקרא
-         * אותו פעמיים לא יקבל שום מידע נוסף. */
-        function withBar(td, side) {
-          if (!bar) return td;
-          return td.replace('</td>', '<span class="dbar" style="--w:' + bar[side] + '%" aria-hidden="true"></span></td>');
-        }
-        return '          <tr class="fld"><th colspan="2" scope="rowgroup">' + esc(r.label) + '</th></tr>\n' +
-          '          <tr><th scope="row">' + ltr(a.name) + '</th>' + withBar(cell(r.a), 'a') + '</tr>\n' +
-          '          <tr><th scope="row">' + ltr(b.name) + '</th>' + withBar(cell(r.b), 'b') + '</tr>';
-      }).join('\n') + '\n        </tbody>';
-  }).join('\n');
-
-  return '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="cmp-h">\n' +
-    '      <table class="cmp cmp-spec cmp-vs">\n' +
-    '        <caption>' + d.rows.length + ' שדות שבהם יש הבדל, מתוך המפרט שהיצרנים מפרסמים. ' +
-    sameMoreTxt(d.same) + ' בשני הדגמים ואינם מופיעים כאן.</caption>\n' +
-    bodies + '\n      </table>\n    </div>\n';
+  var parts = dates.map(function (at, i) {
+    var day = at ? at.split('-').reverse().map(function (x) { return String(+x); }).join('.') : '';
+    return (at ? 'נבדקו ב-' + day + ': ' : '') + byDate[at].map(function (o) {
+      return '<b>' + ltr(o.x.name) + '</b>, ' + linksOf(o.links);
+    }).join('; ');
+  });
+  return '    <p class="aside">המקורות. ' + parts.join('. ') + '.</p>\n';
 }
 
 /* ── השוואות קרובות ──────────────────────────────────────────────
@@ -199,168 +237,248 @@ function nearPairs(p) {
   return near.slice(0, 4);
 }
 
-function nearSection(p) {
-  var near = nearPairs(p);
-  if (!near.length) return '';
-  var mine = [p.a, p.b];
-  /* הכיתוב חייב לתאר את מה שבאמת קרה. בעמוד היחיד שנפל למותג אין דגם משותף לאף אחת
-     מהשורות, ומשפט שאומר "חולקות מכשיר עם זו" היה שם ההסבר על משהו אחר. */
-  var byDevice = near.some(function (q) { return [q.a, q.b].some(function (x) { return mine.indexOf(x) >= 0; }); });
-  return '<section class="block" id="near" aria-labelledby="near-h">\n  <div class="wrap box">\n' +
-    '    <h2 id="near-h">השוואות קרובות</h2>\n' +
-    '    <p class="lead">מי שמשווה שני דגמים בדרך כלל שוקל עוד אחד. ' +
-    (byDevice ? 'אלה ההשוואות שחולקות מכשיר עם זו.' : 'לזוג הזה אין השוואה נוספת עם אותו דגם, ולכן אלה השוואות אחרות של אותו מותג.') +
-    '</p>\n' +
-    '    <ul class="hub near">\n' +
-    near.map(function (q) {
-      /* הכיתוב אומר *למה* ההשוואה הזאת כאן: איזה מכשיר משותף, ומול מה הוא מושווה שם.
-         בלי זה זו רשימה של קישורים, ואי אפשר לדעת מאיזה מהם להתחיל. */
-      var sharedSlug = [q.a, q.b].filter(function (x) { return mine.indexOf(x) >= 0; })[0];
-      var other = (q.a === sharedSlug ? q.b : q.a);
-      var sd = sharedSlug ? D(sharedSlug) : null, od = other ? D(other) : null;
-      var why;
-      if (sd && od) {
-        why = 'אותו ' + (sd.name_he || sd.name) + ', מול ' + (od.name_he || od.name);
-      } else {
-        /* נפילת המותג. "אותו מותג" בארבע השורות הוא כיתוב שאינו מבדיל ביניהן, כלומר אינו
-           עוזר לבחור מאיזו להתחיל. אותו מדד שהשער מציג, ספירת השדות, כן מבדיל. */
-        var qa = D(q.a), qb = D(q.b);
-        var qd = (qa && qb) ? diffSpec(qa, qb, q.slug) : null;
-        why = qd ? qd.rows.length + ' שדות שונים · ' + qd.same + ' זהים' : '';
-      }
-      return '      <li><a href="/compare/' + q.slug + '/"><b>' + esc(q.h1) + '</b>' +
-        '<span>' + esc(why) + '</span></a></li>';
-    }).join('\n') +
-    '\n    </ul>\n  </div>\n</section>\n\n';
+/* עמוד השוואה קבוע בעיצוב ח׳ (24.9.2026), אותה שפה כמו הכלי. שני הבדלים מהכלי, בכוונה:
+   1. כל התוכן ב-HTML. גוגל קורא את העמוד בלי JavaScript, ולכן התחומים, הקווים והטקסט הכתוב נבנים כאן.
+      "מה חשוב לכם" מתווסף מעל זה ב-page.client.js, ועמוד בלי JS מציג פשוט את כל התחומים.
+   2. בלי משפט ההסבר מתחת לכל שדה. הוא זהה בכל העמודים, ו-33 עמודים עם אותן 29 פסקאות נראים לגוגל
+      כמו עמוד אחד עם שמות מוחלפים. הטקסט הייחודי של כל זוג (lede, למי עדיף, angle, השורה התחתונה) נשאר. */
+var PAGE_CLIENT = fs.readFileSync(path.join(__dirname, 'compare-tool', 'page.client.js'), 'utf8').replace(/\r/g, '');
+/* שדות שיש להם מספר באותה יחידה בשני הצדדים, ואיזה DELTAS מודד אותם. זהה למפה שבכלי. */
+var BAR_DELTA = { screen_size: 'screen_size', weight: 'weight', storage_offered: 'storage_offered', battery: 'battery_hours', zoom: 'zoom' };
+function tdefOf(k) { return TDEF.filter(function (t) { return t.key === k; })[0] || null; }
+function fmtN(v, f) {
+  if (f === 'gb') return v >= 1024 ? (v / 1024) + 'TB' : v + 'GB';
+  if (f === 'dec') return String(Math.round(v * 100) / 100);
+  return String(Math.round(v));
 }
+function gapChip(x, t) {
+  var hi = Math.max(x.a, x.b), lo = Math.min(x.a, x.b);
+  if (lo === 0 && t.zero) return t.zero + ' באחד מהם';
+  if (lo > 0 && (hi / lo >= 2 || t.each)) { var r = hi / lo; return 'פי ' + (r < 10 ? Math.round(r * 10) / 10 : Math.round(r)); }
+  return 'הפרש ' + fmtN(x.gap, t.fmt) + (t.fmt === 'gb' ? '' : t.unit);
+}
+/* ההבדלים הגדולים לעמוד קבוע, באותם כללים כמו bigGaps בכלי: לכל קבוצה כרטיס אחד (שעות וידאו לפני mAh),
+   ו-mAh יורד כשהוא מצביע הפוך משעות הווידאו של אותו יצרן. עד התיקון העמוד הציג את שניהם. */
+function pickGaps(a, b) {
+  var all = T.deltas(a.spec, b.spec), best = {};
+  all.forEach(function (x) {
+    var t = tdefOf(x.key); x.grp = t ? t.group : x.key; x.pri = t ? t.pri : 0;
+    var c = best[x.grp]; if (!c || x.pri < c.pri || (x.pri === c.pri && x.strength > c.strength)) best[x.grp] = x;
+  });
+  var H = T.DELTAS.filter(function (d) { return d.key === 'battery_hours'; })[0];
+  return all.filter(function (x) {
+    if (best[x.grp] !== x) return false;
+    if (x.key !== 'battery_mah' || !H) return true;
+    var ha = H.get(a.spec), hb = H.get(b.spec);
+    if (typeof ha !== 'number' || typeof hb !== 'number' || ha === hb) return true;
+    return (ha > hb ? 'a' : 'b') === x.lead;
+  }).sort(function (p, q) { return q.strength - p.strength; }).slice(0, 3);
+}
+function bigNum(v, t) {
+  if (v === 0 && t.zero) return '<span class="cv-big cv-big-w">' + esc(t.zero) + '</span>';
+  var u = t.fmt === 'gb' ? '' : t.unit.trim();
+  return '<span class="cv-big">' + ltr(fmtN(v, t.fmt)) + (u ? '<small>' + esc(u) + '</small>' : '') + '</span>';
+}
+function fillBar(w) {
+  return '<span class="cv-track" aria-hidden="true"><span class="cv-fill" style="width:' + Math.max(0, Math.min(100, Math.round(w))) + '%"></span></span>';
+}
+function dimsOf(x) {
+  var m = /^\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*([0-9]+(?:\.[0-9]+)?)\s*[x×]\s*[0-9]/.exec(String(val(x.spec.dimensions || '')));
+  return m ? { h: +m[1], w: +m[2] } : null;
+}
+function diffCount(n) { return n === 1 ? 'הבדל אחד' : n + ' הבדלים'; }
+function sameTail(n) { return n === 0 ? ', ואין שדות זהים' : n === 1 ? ', ושדה אחד זהה' : n === 2 ? ', ושני שדות זהים' : ', ו-' + n + ' שדות זהים'; }
 
-/* hero_cta אופציונלי על הזוג. בלי השדה המוצא זהה לבלוק שהיה כאן.
-   כפתור השיחה נוסף רק כש-call הוא true, ובאותו markup של עמודי המכשיר.
-   המיקרו-טקסט אופציונלי: לא לכתוב "אפשר לראות בחנות" בלי נתון מלאי. */
+/* hero_cta אופציונלי על הזוג. בלי השדה ההדר החדש נשאר כמו שהוא, כולל כפתור cv-hwa.
+   כשיש שדה, נוספת שורת הזמנה וכפתורי WhatsApp ושיחה בתוך .hcta, מעל הכרטיסים.
+   הקישור הוא waPick של העמוד, לא הנוסח הישן. המיקרו-טקסט אופציונלי. */
 function heroBlock(p, waPick) {
   var c = p.hero_cta;
-  if (!c) {
-    return '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + waPick + '">' +
-      '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n';
-  }
+  if (!c) return '';
   var label = c.wa_label || 'עזרו לי לבחור';
   var invite = c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
   var call = c.call
     ? '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>'
     : '';
   var micro = c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
-  return '      <div class="hcta">' + invite +
+  return '    <div class="hcta">' + invite +
     '<a class="btn btn-wa btn-hero" href="' + waPick + '">' +
     '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">' + esc(label) + '</a>' +
     call + micro + '</div>\n';
 }
 
-var HERO_CTA_CSS = '.cta-line{margin-top:1.1rem;font-size:clamp(1rem,1.5vw,1.15rem)}\n' +
-  '.ghero .hcta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.7rem}\n' +
-  '.ghero .hcta .cta-line{flex:1 0 100%;margin:0 auto;max-width:40rem}\n' +
-  '.ghero .hcta>.meta{flex:1 0 100%;min-width:0;margin-top:.35rem;padding-top:0;border-top:0}';
+/* רק בהדר הכהה, ורק בעמוד שיש לו hero_cta. לא נוגע ב-.ghero של שאר האתר. */
+var HERO_CTA_CSS = '.cv-top .hcta{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:1rem}\n' +
+  '.cv-top .hcta .cta-line{flex:1 0 100%;margin:0;max-width:40rem;color:rgba(255,255,255,.92);font-size:1.02rem;line-height:1.55}\n' +
+  '.cv-top .hcta .btn-call{background:transparent;color:#fff;border:1.5px solid var(--teal)}\n' +
+  '.cv-top .hcta .btn-call:hover{background:var(--teal);color:#fff}\n' +
+  '.cv-top .hcta>.meta{flex:1 0 100%;margin:0;color:rgba(255,255,255,.78)}';
 
 function buildMain(p, a, b, d, openTag) {
-  var url = PROD + 'compare/' + p.slug + '/';
-  var waPick = wa('היי, אני מתלבט בין ' + a.name + ' ל-' + b.name + '. אשמח לעזרה בבחירה');
+  var waMsg = 'היי, אשמח לעזרה בבחירה בין ' + a.name + ' לבין ' + b.name + '.';
+  var waPick = wa(waMsg);
+  var nmHe = function (x) { return x.name_he || x.name; };
+  var year = function (x) { return x.launch ? String(x.launch).slice(0, 4) : ''; };
+  var toolHref = '/' + (CAT ? CAT.path : 'phones/compare/') + '?d=' + a.slug + ',' + b.slug;
 
-  var s = openTag + '\n\n' +
-    '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
-    '      <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
-    '      <p class="sub">' + esc(p.lede) + '</p>\n' +
+  /* ---------- ההדר הכהה: הכותרת, שני הכרטיסים, ומשווים גם */
+  var card = function (x, i) {
+    var inner = '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">' + ltr(x.name) + '</span>' +
+      '<span class="cv-meta">' + esc(x.brand) + (year(x) ? ' · הוכרז ב-' + year(x) : '') + '</span></span>';
+    /* מכשיר ייחוס: אין לו עמוד, ולכן אין קישור. הטקסט אומר במפורש שאיננו מוכרים אותו. */
+    if (x.status === 'reference') return '        <div class="cv-card" data-slot="' + i + '">' + inner + '<span class="cv-act">לא נמכר אצלנו</span></div>\n';
+    /* לשעונים ולאוזניות אין עמוד מכשיר. הכרטיס מוביל לכלי, עם הזוג כבר בחור. */
+    if (CAT) return '        <a class="cv-card" data-slot="' + i + '" href="' + toolHref + '">' + inner + '<span class="cv-act">כל השדות</span></a>\n';
+    return '        <a class="cv-card" data-slot="' + i + '" href="/phones/' + x.slug + '/">' + inner + '<span class="cv-act">המפרט המלא</span></a>\n';
+  };
+  /* השוואות שחולקות דגם עם הזוג הזה. השם העברי בקישור, כי כך מחפשים בגוגל. */
+  var near = nearPairs(p).slice(0, 4);
+  var nearHtml = near.map(function (q) {
+    var qa = D(q.a), qb = D(q.b);
+    if (!qa || !qb) return '';
+    return '<a class="cv-sa" href="/compare/' + q.slug + '/">' + BIDI.ltrRuns(nmHe(qa)) + ' מול ' + BIDI.ltrRuns(nmHe(qb)) + '</a>';
+  }).join('');
+  var top = '<div class="cv-app">\n<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
+    '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
+    '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
     heroBlock(p, waPick) +
-    '      <p class="meta">\n' +
-    '        <span>' + d.rows.length + ' שדות שונים</span>\n' +
-    '        <span>' + sameTxt(d.same) + '</span>\n' +
-    '        <span>המפרטים מאתרי היצרנים</span>\n' +
-    '        <span>בלי הכרזת מנצח</span>\n' +
-    '      </p>\n    </div>\n  </div>\n</section>\n\n' +
+    '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
+    '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
+    '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
+    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
+    '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '  </div>\n</section>\n';
 
-    /* שני המכשירים, קישור לעמוד המלא של כל אחד. הרכיב .hub, אותו רכיב של מרכז המכשירים. */
-    '<section class="block" id="devices" aria-labelledby="h-dev">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-dev">שני המכשירים</h2>\n' +
-    '    <p class="lead">בעמוד הזה רק ההבדלים. המפרט המלא של כל דגם, ומה שכתבנו עליו, נמצאים בעמוד שלו.</p>\n' +
-    '      <ul class="hub' + ([a, b].some(hasPhoto) ? ' pics' : '') + '">\n' +
-    /* כאן לא חוזרים על המפרט. הטבלה נמצאת מיד למטה, וכשמשווים שני דגמים באותו גודל מסך
-     * התוצאה הייתה "מסך 6.3 אינץ׳" פעמיים זה מתחת לזה, ועוד פעם בפסקה הפותחת. */
-    [a, b].map(function (x) {
-      /* מכשיר ייחוס אין לו עמוד, ולכן אין למה לקשר. פריט ולא קישור, והטקסט
-         אומר במפורש שאיננו מוכרים אותו. */
-      if (x.status === 'reference') {
-        return '        <li><span class="noown"><b>' + ltr(x.name) + '</b>' +
-          '<span>' + esc(x.brand) + ' · לא נמכר אצלנו, מופיע כאן להשוואה</span></span></li>';
-      }
-      return '        <li><a href="/phones/' + x.slug + '/">' + photo(x) + '<b>' + ltr(x.name) + '</b>' +
-        '<span>' + esc(x.brand) + ' · המפרט המלא, ומה שכתבנו על הדגם</span></a></li>';
-    }).join('\n') + '\n      </ul>\n' +
-    '  </div>\n</section>\n\n' +
+  /* ---------- מה זהה */
+  var changed = {}; d.rows.forEach(function (r) { changed[r.key] = 1; });
+  var same = [];
+  GROUPS.forEach(function (g) { g[1].forEach(function (f) {
+    var va = a.spec[f[0]], vb = b.spec[f[0]];
+    if (changed[f[0]] || va === null || va === undefined || vb === null || vb === undefined) return;
+    var v = String(val(va));
+    same.push(v.length <= 22 ? f[1] + ': ' + v : f[1]);
+  }); });
+  var CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>';
+  /* התגיות רק כשהן מסכימות עם הספירה של diffSpec, אחרת המספר והתגיות אומרים שני דברים */
+  var sameHtml = same.length === d.same && same.length
+    ? '    <ul class="cv-same" data-pg-data aria-label="זהים בשניהם">' + same.slice(0, 5).map(function (t) { return '<li>' + CHECK + BIDI.ltrRuns(t) + '</li>'; }).join('') +
+      (same.length > 5 ? '<li>ועוד ' + (same.length - 5) + '</li>' : '') + '</ul>\n'
+    : '';
+  var refs = [a, b].filter(function (x) { return x.status === 'reference'; });
+  var disc = refs.length
+    ? '    <p class="dnote">את ' + refs.map(function (x) { return esc(nmHe(x)); }).join(' ואת ') + ' איננו מוכרים, ' +
+      (refs.length === 1 ? 'והוא כאן כדי שאפשר יהיה להשוות אליו' : 'והם כאן כדי שאפשר יהיה להשוות אליהם') + '. המקור של כל שדה מופיע בסוף הרשימה.</p>\n'
+    : '';
 
-    /* "ההבדלים הגדולים" — הבלוק שהופך את העמוד מטבלה למשהו שקרא את הטבלה.
-     *
-     * מחושב מ-traits.js: לכל שדה שאפשר להשוות במספרים יש רף, וההפרשים מדורגים לפי כמה הם
-     * עוברים אותו. הניסוח אומר מי גדול יותר ולא מי טוב יותר, ולכן משקל מופיע כ"כבד יותר".
-     *
-     * ואם אין אף הפרש מעל הרף, הבלוק אומר את זה במקום להיעלם. שני דגמים שנבדלים רק בזיכרון
-     * ובמעבד הם מקרה אמיתי (A56 מול A36), וזו תשובה שימושית יותר מרשימה ריקה. */
-    (function () {
-      var ds = T.deltas(a.spec, b.spec).slice(0, 4);
-      var nm = function (side) { return side === 'a' ? (a.name_he || a.name) : (b.name_he || b.name); };
-      if (!ds.length) {
-        return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
-          '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
-          /* "גדול" ולא "אין בכלל": בין A56 ל-A36 יש הפרש של 3 גרם, כלומר קיים ומתחת לרף.
-           * ניסוח שאומר "אין הבדל מדיד" בזמן שבטבלה מתחתיו מצוירים קווים הוא ניסוח שקורא
-           * ישים עליו את האצבע. */
-          '    <p class="lead">בין שני הדגמים האלה <b>אין הבדל מדיד גדול</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים, וזה מה שהקווים בטבלה למטה מראים. מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.</p>\n' +
-          '  </div>\n</section>\n\n';
-      }
-      return '<section class="block" id="gaps" aria-labelledby="gaps-h">\n  <div class="wrap box">\n' +
-        '    <h2 id="gaps-h">ההבדלים הגדולים</h2>\n' +
-        '    <p class="lead">' + (ds.length === 1
-          ? 'מתוך ' + d.rows.length + ' השדות השונים, יש <b>הבדל אחד</b> שאפשר למדוד במספרים.'
-          : 'מתוך ' + d.rows.length + ' השדות השונים, אלה <b>' + ds.length + ' ההבדלים הגדולים</b> שאפשר למדוד במספרים.') +
-        ' השאר מופיעים בטבלה.</p>\n' +
-        '    <ul class="gaps">\n' +
-        ds.map(function (x) {
-          /* lead ולא higher: הקוטביות מגיעה מ-DELTAS, וכך העמוד הזה והכלי נוקבים באותו
-             דגם על אותו הפרש. במשקל זה הדגם הקל. */
-          return '      <li><b>' + esc(x.label) + '</b><span>' + esc(x.phrase) + '</span>' +
-            '<em>' + esc(nm(x.lead)) + ': ' + esc(x.leadMore) + '</em></li>';
+  /* ---------- ההבדלים הגדולים במספרים. מחושב מ-traits.js, אותם רפים כמו בכלי. */
+  var bigs = '';
+  if (!CAT) {
+    var ds = pickGaps(a, b);
+    if (ds.length) {
+      bigs = '    <h2 class="cv-h2" id="gaps-h">ההבדלים הגדולים במספרים</h2>\n' +
+        '    <ul data-pg-data class="cv-top3' + (ds.length < 3 ? ' n' + ds.length : '') + '">\n' + ds.map(function (x) {
+          var t = tdefOf(x.key), mx = Math.max(x.a, x.b) || 1, lead = x.lead === 'a' ? a : b;
+          return '      <li class="cv-t"><div class="cv-th"><b>' + esc(x.label) + '</b><span class="cv-gap">' + BIDI.ltrRuns(gapChip(x, t)) + '</span></div>' +
+            '<div class="cv-tv"><div class="cv-a">' + bigNum(x.a, t) + fillBar(100 * x.a / mx) + '<span class="cv-tn">' + ltr(a.name) + '</span></div>' +
+            '<div class="cv-b">' + bigNum(x.b, t) + fillBar(100 * x.b / mx) + '<span class="cv-tn">' + ltr(b.name) + '</span></div></div>' +
+            '<p class="cv-lead">' + esc(nmHe(lead)) + ': ' + esc(x.leadMore) + '</p></li>';
         }).join('\n') + '\n    </ul>\n' +
-        '    <p class="aside">"גדול יותר" אינו "טוב יותר". מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח. מה מכריע אצלכם? זה בדיוק מה שנעבור עליו יחד.</p>\n' +
-        '  </div>\n</section>\n\n';
-    })() +
+        '    <p class="aside">"גדול יותר" אינו "טוב יותר". ' +
+        (ds.some(function (x) { return /^(screen_size|weight|battery_hours|battery_mah)$/.test(x.key); }) ? 'מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.' : 'מספר גבוה יותר במפרט לא תמיד מורגש ביום-יום.') + '</p>\n';
+    }
+  }
 
-    '<section class="block" id="table" aria-labelledby="cmp-h">\n  <div class="wrap box">\n' +
-    '    <h2 id="cmp-h">מה שונה ביניהם</h2>\n' +
-    '    <p class="lead">רק השדות שבהם שני הדגמים לא זהים. ' + sameMoreTxt(d.same) +
-    ' בשניהם, ולכן אין טעם להציג אותם.</p>\n' +
-    buildTable(a, b, d) +
-    '  </div>\n</section>\n\n' +
+  /* ---------- התחומים */
+  var byGroup = {}, order = [];
+  d.rows.forEach(function (r) { if (!byGroup[r.group]) { byGroup[r.group] = []; order.push(r.group); } byGroup[r.group].push(r); });
+  /* בקטגוריה, קו רק לשדה שהכלי מאשר (_numok), כדי שהעמוד והכלי יציירו אותו דבר */
+  var barsOf = function (k) { if (CAT && !(db._numok || {})[k]) return null; return T.ratioField(k, a.spec, b.spec); };
+  var anyBar = d.rows.some(function (r) { return !!barsOf(r.key); });
+  var small = function (k) {
+    var dk = BAR_DELTA[k]; if (CAT || !dk) return false;
+    var def = T.DELTAS.filter(function (x) { return x.key === dk; })[0]; if (!def) return false;
+    var va = def.get(a.spec), vb = def.get(b.spec);
+    var gap = typeof va === 'number' && typeof vb === 'number' ? Math.abs(va - vb) : -1;
+    return gap > 0 && gap < def.min;
+  };
+  var cell = function (x, v, side, bar) {
+    return '<div class="cv-v cv-' + side + '"><span class="a11y-sr">' + esc(x.name) + ': </span>' +
+      (v === null ? '<span class="cv-na">לא מפורסם אצל היצרן</span>' : '<span class="cv-val">' + BIDI.ltrRuns(v) + '</span>') +
+      (bar ? fillBar(bar[side]) : '') + '</div>';
+  };
+  var sizeHtml = function () {
+    if (CAT) return '';
+    var da = dimsOf(a), db2 = dimsOf(b); if (!da || !db2) return '';
+    var fig = function (x, side) { return '<figure class="cv-' + side + '"><span class="cv-ol" aria-hidden="true" style="width:' + x.w + 'px;height:' + x.h + 'px"></span><figcaption>' + ltr(x.h + ' × ' + x.w) + ' מ״מ</figcaption></figure>'; };
+    return '<div class="cv-size">' + fig(da, 'a') + fig(db2, 'b') + '<p>שניהם באותו קנה מידה, גובה ורוחב בלי עובי. מה שמורגש ביד הוא בעיקר המשקל והעובי.</p></div>';
+  };
+  var groups = order.map(function (g, gi) {
+    var rows = byGroup[g];
+    return '      <section class="cv-grp" data-cat="' + esc(g) + '" data-n="' + rows.length + '" aria-labelledby="g-' + gi + '"><div class="cv-gh"><h3 id="g-' + gi + '">' + esc(g) + '</h3><span>' + diffCount(rows.length) + '</span></div>' +
+      (rows.some(function (r) { return r.key === 'dimensions'; }) ? sizeHtml() : '') +
+      rows.map(function (r) {
+        var bar = barsOf(r.key);
+        return '<div class="cv-r"><div class="cv-rl"><span>' + esc(r.label) + '</span>' + (small(r.key) ? '<span class="cv-small">הבדל קטן</span>' : '') + '</div>' +
+          cell(a, r.a, 'a', bar) + cell(b, r.b, 'b', bar) + '</div>';
+      }).join('') + '</section>\n';
+  }).join('');
 
-    '<section class="block" id="who" aria-labelledby="h-who">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-who">למי עדיף כל אחד</h2>\n' +
+  var res = '<section class="block cv-res" id="table" aria-labelledby="cmp-h">\n  <div class="wrap">\n' + disc +
+    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs +
+    '    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>\n' +
+    '    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>\n' +
+    /* ריק ומוסתר עד ש-page.client.js בונה בו את הכפתורים. בלי JS אין כפתור שלא עושה כלום. */
+    '    <div class="cv-prio" id="cvprio" hidden></div>\n' +
+    (anyBar ? '    <p class="cv-legend">קו ארוך יותר הוא מספר גדול יותר, לא בהכרח טוב יותר.</p>\n' : '') +
+    /* כותרת העמודות, דביקה מעל התחומים. aria-hidden: קורא מסך מקבל את שם הדגם בתוך כל תא. */
+    '    <div class="cv-table">\n' +
+    '    <div class="cv-bar" id="cvbar" aria-hidden="true" data-pg-data><div class="cv-bi"><span class="cv-bc">' + diffCount(d.rows.length) + '</span>' +
+    '<span class="cv-bn cv-a"><span class="cv-dot"></span>' + ltr(a.name) + '</span><span class="cv-bn cv-b"><span class="cv-dot"></span>' + ltr(b.name) + '</span></div></div>\n' +
+    '    <div id="cvgroups" data-pg-data>\n' + groups + '    </div>\n    </div>\n' +
+    sourcesLine(a, b, d) +
+    '  </div>\n</section>\n\n';
+
+  /* ---------- הטקסט הכתוב של הזוג: למי עדיף, הזווית הייחודית, השורה התחתונה */
+  var who = '<section class="block" id="who" aria-labelledby="h-who">\n  <div class="wrap">\n' +
+    '    <h2 id="h-who" class="cv-h2">למי עדיף כל אחד</h2>\n' +
     '    <div class="two">\n' +
-    [[a, p.for_a], [b, p.for_b]].map(function (pair) {
-      return '      <div class="col">\n' +
-        '        <h3>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
-        pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') +
-        '\n        </ul>\n' +
-        (pair[0].status === 'reference' ? ''
-          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' +
-            esc(pair[0].name_he || pair[0].name) + '</a></p>') + '\n      </div>';
-    }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n' +
+    [[a, p.for_a, 'a'], [b, p.for_b, 'b']].map(function (pair) {
+      return '      <div class="col cv-' + pair[2] + '">\n' +
+        '        <h3><span class="cv-dot" aria-hidden="true"></span>' + ltr(pair[0].name) + '</h3>\n        <ul class="ticks">\n' +
+        pair[1].map(function (t) { return '          <li>' + esc(t) + '</li>'; }).join('\n') + '\n        </ul>\n' +
+        (pair[0].status === 'reference' || CAT ? ''
+          : '        <p class="aside"><a href="/phones/' + pair[0].slug + '/">המפרט המלא של ' + esc(nmHe(pair[0])) + '</a></p>') + '\n      </div>';
+    }).join('\n') + '\n    </div>\n  </div>\n</section>\n\n';
+  var angle = p.angle && p.angle_h
+    ? '<section class="block" id="angle" aria-labelledby="h-angle">\n  <div class="wrap">\n' +
+      '    <h2 id="h-angle" class="cv-h2">' + esc(p.angle_h) + '</h2>\n' +
+      p.angle.map(function (t) { return '    <p class="cv-prose">' + esc(t) + '</p>\n'; }).join('') + '  </div>\n</section>\n\n'
+    : '';
+  var bottom = '<section class="block" id="bottom" aria-labelledby="h-bl">\n  <div class="wrap">\n' +
+    '    <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>\n' +
+    '    <p class="cv-prose">' + esc(p.bottom_line) + '</p>\n' +
+    '    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם שני הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span>' +
+    '<span class="cv-bubble" id="cvwatext">' + esc(waMsg) + '</span></div><div class="cv-wb">' +
+    '<a class="btn btn-wa" id="cvwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>\n' +
+    '  </div>\n</section>\n</div>\n\n';
 
-    '<section class="rules" aria-labelledby="h-bl">\n  <div class="wrap">\n    <div class="box">\n' +
-    '      <h2 id="h-bl">השורה התחתונה</h2>\n' +
-    '      <div class="prose"><p>' + esc(p.bottom_line) + '</p></div>\n' +
-    '    </div>\n  </div>\n</section>\n\n' +
-
-    nearSection(p) +
-
-    '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
+  var cta = '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">עדיין מתלבטים?</h2>\n' +
-    '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+    (function () {
+      /* not_in_store ומכשיר ייחוס: בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות" גם על דגם שעוד לא
+         הגיע, וגם על דגם שאיננו מוכרים בכלל */
+      var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+      var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+      var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
+      var nmOf = function (x) { return esc(nmHe(x)); };
+      var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
+        : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
+        : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
+        : !away.length ? 'שני המכשירים אצלנו בחנות.'
+        : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
+        : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
+      return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
+    })() +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
     '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
@@ -368,7 +486,11 @@ function buildMain(p, a, b, d, openTag) {
     '    </div>\n' +
     '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
     '  </div>\n</section>\n\n';
-  return s;
+
+  var script = '<script>\n(function(){\n"use strict";\nvar PG={a:' + JSON.stringify(a.name).replace(/</g, '\\u003c') + ',b:' + JSON.stringify(b.name).replace(/</g, '\\u003c') +
+    ',slug:' + JSON.stringify(p.slug) + '};\n' + PAGE_CLIENT + '\npgComparePage();\n})();\n</scr' + 'ipt>\n\n';
+
+  return openTag + '\n\n' + top + res + who + angle + bottom + cta + script;
 }
 
 function schema(p, a, b, url) {
@@ -395,7 +517,7 @@ function schema(p, a, b, url) {
        * עמוד, בדיוק כמו ה-.noown ברשימה. */
       about: [a, b].map(function (x) {
         var o = { '@type': 'Thing', name: x.name };
-        if (x.status !== 'reference') o.url = PROD + 'phones/' + x.slug + '/';
+        if (x.status !== 'reference' && !CAT) o.url = PROD + 'phones/' + x.slug + '/';
         return o;
       }),
       publisher: { '@id': PROD + '#business' } },
@@ -528,198 +650,9 @@ function detailsCss() {
  * ההשלמה .chip{color:var(--ink)…}, ולכן העותק המאוחר החזיר את הצ׳יפים לאפור בלי קו תחתון,
  * כלומר לרשימת טקסט בלי סימן שאפשר ללחוץ עליה. אף בדיקה לא תפסה זאת.)
  */
-var APP_CSS = [
-  /* ריפוד נמוך בכוונה. אצל hero עריכותי הרווח הוא חלק מהמסר, וכאן הוא רק דוחף את הכפתור
-     הראשון מתחת לקו הקיפול. המדידה: התא הריק הראשון נראה בתוך המסך הראשון ב-1280 וב-390. */
-  '.apph{background:linear-gradient(180deg,#f6f8fa,#fff);border-block-end:1px solid var(--line);padding-block:clamp(24px,3.4vw,38px) clamp(16px,2.2vw,24px)}',
-  '.apph h1{font-size:clamp(1.95rem,4.2vw,2.9rem)}',
-  '.apph .asub{margin:.7rem 0 0;max-inline-size:56ch;color:var(--ink-soft);font-weight:300;font-size:clamp(1.05rem,1.5vw,1.2rem);line-height:1.7}',
-  '.apph .ahelp{margin:.9rem 0 0;color:var(--ink-soft);font-size:1rem}',
-  '.apph .ahelp a{color:var(--teal-d);font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-block;padding-block:.55rem}',
-  /* בלוק שלוש האמירות (.dfacts) נמחק ב-16.8.2026 לבקשת אופק. הוא עבר גלגול שלם, משלושה
-     צעדים ממוספרים לשלוש אמירות אחרי מעבר קופירייטר, ובסוף נפסל כולו. מה שנשאר מעל הכלי
-     הוא כותרת, משפט אחד על מה יש ברשימה ושורת עזרה, והכלי עצמו מתחיל מיד אחריהם. */
-  /* הקו העליון של .block היה קו שני מיד אחרי הקו של כותרת הכלי */
-  '#pick{border-top:0;padding-block-start:clamp(16px,2.2vw,24px)}',
-  /* הקונסולה: כרטיס אחד שמחזיק את המצב ואת הבחירה, ומופרד מהתוצאה שמתחתיו */
-  /* --edge הוא הקו של פקד, ולא הקו של קישוט. --line נמדד ב-1.31:1 מול לבן, וזה מספיק
-     למפריד בין פסקאות אבל לא לגבול של פקד: תקן 1.4.11 דורש 3:1, ובפועל צ׳יפ לא נבחר עם
-     קו כזה נראה כמו טקסט ולא כמו כפתור. 3.33:1, וזה גם מה שהופך את הרשימה לרשת נראית. */
-  '.dapp{--edge:#8f8b96;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);padding:1.05rem 1.15rem 1.3rem}',
-  /* .dhead ולא .dbar: .dbar כבר תפוס בגיליון המשותף כפס ההשוואה בטבלה, גובה שני פיקסלים.
-     ההתנגשות הזאת שרדה את החילול ואת הפריפלייט, ולכן יש עכשיו שער בסוף buildTool. */
-  '.dapp .dhead{display:flex;align-items:center;gap:.7rem 1rem;flex-wrap:wrap}',
-  '.dapp .dhead h2{margin:0;max-width:none;font-family:var(--mono);font-size:.98rem;font-weight:700;letter-spacing:.08em;color:var(--ink-strong)}',
-  '.dapp .dlbl{font-family:var(--mono);font-size:.98rem;font-weight:700;letter-spacing:.08em;color:var(--ink-strong)}',
-  '.dapp .dsep{border-block-start:1px solid var(--line);margin-block:1.3rem}',
-  '.dapp .dslots{margin-block-start:1rem}',
-  /* .dstate מוגדר display:flex, ולכן התכונה hidden לבדה לא מסתירה אותו */
-  '.dstate[hidden]{display:none}',
-  /* ================= ההיצמדות, אחרי המדידה
-     שני הכללים האלה גוברים על המספרים הקבועים שבגוש ה-CSS של הכלי ועל כללי המדיה שלהם,
-     כי הם באים אחריהם באותה סגוליות. ערכי הגיבוי הם המספרים הישנים, כדי שגם אם ה-JS
-     לא רץ ההתנהגות תהיה זו שהייתה ולא היצמדות לראש המסך. */
-  '.dstate{inset-block-start:var(--pg-stick-1,66px)}',
-  '.cmp-grid thead th{inset-block-start:var(--pg-stick-2,146px)}',
-  /* מתחת ל-900 הטבלה נגללת אופקית, ומיכל עם overflow שובר sticky. שם ראש הטבלה סטטי
-     בכוונה, ורק פס המצב נשאר דביק. */
-  '@media(max-width:900px){.cmp-grid thead th{position:static}}',
-  /* התאים נערמים בטלפון. הכלל הקיים ביקש זאת, אבל .dslots.two גובר עליו בסגוליות, ולכן
-     שני תאים ישבו זה לצד זה ב-159 פיקסלים ו"Galaxy S26 Ultra" נשבר לשתי שורות, בעוד
-     שלושה תאים דווקא נערמו. אותה פריסה לשניים ולשלושה. */
-  '@media(max-width:720px){.dapp .dslots.two{grid-template-columns:1fr}}',
-  /* התא הריק הוא ההסבר החזותי של הכלי: הוא אומר "כאן ייכנס מכשיר". בקו של 1.31:1 הוא
-     כמעט לא נראה, ואז הקונסולה נפתחת ריקה. התא המלא נושא ממילא קו צבע בצד. */
-  '.dapp .dslot.empty{border-color:var(--edge);background:#fafcfd}',
-  '.dapp .dslot{padding:0}',
-  /* הכפתור ממלא את התא, ולכן שטח הלחיצה הוא כל הכרטיס ולא שורת טקסט */
-  '.dapp .dopen{flex:1;display:flex;align-items:center;gap:.7rem;font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:start;padding:.65rem .9rem;min-height:44px;border-radius:6px}',
-  '.dapp .dopen .dtxt{display:flex;flex-direction:column;min-width:0}',
-  '.dapp .dslot.empty .nm{color:var(--teal-d);font-weight:700}',
-  '.dapp .dplus{flex:none;display:grid;place-items:center;inline-size:2rem;block-size:2rem;border-radius:50%;border:1px dashed var(--edge);color:var(--teal-d);font-size:1.35rem;line-height:1}',
-  '.dapp .dslot.empty:hover{border-color:var(--teal);background:#f2f8fb}',
-  '.dapp .dslot.empty:hover .dplus{border-style:solid;border-color:var(--teal);background:var(--teal);color:#fff}',
-  '.dapp .dopen .swap{margin-inline-start:auto;font-size:.92rem;color:var(--ink-soft);flex:none}',
-  '.dapp .dopen:hover .swap{color:var(--teal-d)}',
-  /* ================= הבורר: יצרן ואז דגם */
-  '.dmenu{margin-block-start:.9rem;border:1px solid var(--edge);border-radius:10px;background:#fff;box-shadow:var(--shadow-sm);overflow:hidden}',
-  '.dmenu[hidden]{display:none}',
-  '.dmenu .dmhead{display:flex;align-items:center;gap:.5rem;padding:.2rem .5rem;border-block-end:1px solid var(--line);background:#f6f8fa}',
-  '.dmenu .dmtitle{font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.06em;color:var(--ink-strong);padding-inline:.4rem}',
-  '.dmenu .dmx{font:inherit;background:none;border:0;color:var(--ink-soft);cursor:pointer;min-height:44px;border-radius:6px;margin-inline-start:auto;font-size:1.4rem;line-height:1;min-inline-size:44px}',
-  '.dmenu .dmx:hover{color:var(--teal-d);background:#eaf1f5}',
-  '.dmenu .dmlist{list-style:none;margin:0;padding:0;max-block-size:min(52vh,400px);overflow-y:auto}',
-  /* רק הענפים העליונים מופרדים בקו. הדגמים שבתוך ענף שייכים לו, ולא לרשימה. */
-  '.dmenu .dmlist>li+li{border-block-start:1px solid var(--line)}',
-  '.dmenu .dmlist button{inline-size:100%;display:flex;align-items:center;gap:.7rem;font:inherit;color:var(--ink);background:none;border:0;cursor:pointer;text-align:start;padding:.8rem .9rem;min-height:48px}',
-  '.dmenu .dmlist button:hover{background:#f2f8fb;color:var(--teal-d)}',
-  '.dmenu .dmlist .bn{font-weight:600}',
-  '.dmenu .dmlist .cnt{margin-inline-start:auto;font-family:var(--mono);font-size:.9rem;color:var(--ink-soft)}',
-  '.dmenu .dmlist .nologo{inline-size:34px;flex:none}',
-  '.dmenu .dmlist .blogo{flex:none;inline-size:auto}',
-  '.dmenu .dmlist .blogo-apple{block-size:18px}',
-  '.dmenu .dmlist .blogo-samsung{block-size:13px}',
-  '.dmenu .dmlist .blogo-xiaomi{block-size:18px}',
-  '.dmenu .dmlist .blogo-google{block-size:18px}',
-  '.dmenu .dmlist .blogo-oneplus{block-size:18px}',
-  '.dmenu .dmlist .blogo-nothing{block-size:14px}',
-  /* ראש הטבלה. שלושת הראשונים מוגדרים בגוש ה-CSS של הכלי, ואלה ממשיכים אותם. */
-  /* ששת הכללים של ראש הטבלה מרוכזים כאן. שלושה מהם, apple, samsung ו-xiaomi, ישבו עד
-     17.8.2026 בתוך המחרוזת הארוכה שהועברה מהעמוד שנבנה ביד, ושלושה כאן, כלומר אותו דבר
-     בשני מקומות. הגבהים תואמים למאפיינים ב-BRAND_LOGO_CELL, כדי שלא ייווצר קיפוץ פריסה. */
-  '.cmp-grid thead .blogo-apple{height:17px}',
-  '.cmp-grid thead .blogo-samsung{height:13px}',
-  '.cmp-grid thead .blogo-xiaomi{height:17px}',
-  '.cmp-grid thead .blogo-google{height:17px}',
-  '.cmp-grid thead .blogo-oneplus{height:17px}',
-  '.cmp-grid thead .blogo-nothing{height:13px}',
-  '.dmenu .dmlist button[aria-current="true"] .bn{color:var(--teal-d)}',
-  /* ================= העץ
-     הדגמים נפתחים *בתוך* היצרן ולא במקומו. שני מסכים שמתחלפים היו מוחקים את ההקשר: אתה
-     רואה רשימת דגמים ולא רואה של מי היא, ואין תחושה של פתיחה אלא של ניווט. כאן היצרן נשאר
-     על המסך מעל הדגמים שלו, אפשר להשאיר כמה ענפים פתוחים, וסגירה היא אותה לחיצה.
-     + ו-– הם אותו סימן שהשאלות הנפוצות משתמשות בו, כדי שלא יהיו באתר שני ניבים לאותה פעולה. */
-  '.dmenu .dmbrand[aria-expanded="true"]{background:#f2f8fb}',
-  '.dmenu .dmtog{flex:none;display:inline-grid;place-items:center;inline-size:1.35rem;block-size:1.35rem;color:var(--teal);font-size:1.3rem;line-height:1}',
-  '.dmenu .dmtog::before{content:"+"}',
-  '.dmenu [aria-expanded="true"] .dmtog::before{content:"–"}',
-  '.dmenu .dmsub{list-style:none;margin:0;padding:0;background:#fafcfd}',
-  /* קו האב: זה מה שמזהה תת-רשימה כתת-רשימה, בעץ תיקיות וגם כאן */
-  /* --edge ולא --line: הקו הזה *הוא* הסימן שהשורה שייכת ליצרן שמעליה, ו-1.31:1 כמעט
-     בלתי נראה. ההזחה לבדה עמומה מדי כשהרשימה נגללת. */
-  '.dmenu .dmsub>li{border-inline-start:2px solid var(--edge);margin-inline-start:1.7rem}',
-  '.dmenu .dmsub>li+li{border-block-start:1px solid var(--line)}',
-  '.dmenu .dmsub>li:hover{border-inline-start-color:var(--teal)}',
-  '.dmenu .dmsub button{padding-inline-start:1.1rem;min-height:46px}',
-  '.dapp .dclr{margin-inline-start:auto;font-family:inherit;font-size:.96rem;font-weight:600;color:var(--ink-soft);background:none;border:1px solid var(--edge);border-radius:999px;padding:.55rem 1.05rem;min-height:44px;cursor:pointer;transition:color .18s,border-color .18s}',
-  '.dapp .dclr:hover{color:var(--teal-d);border-color:var(--teal-d)}',
-  /* הסינון. 24 דגמים עוד נסרקים בעין, אבל מי שיודע מה הוא מחפש לא צריך לסרוק. */
-  '.dapp .dfind{position:relative;margin-inline-start:auto}',
-  '.dapp .dfind input{font-family:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--edge);border-radius:999px;padding-block:.6rem;padding-inline:2.5rem 1rem;min-height:44px;inline-size:min(17rem,58vw)}',
-  '.dapp .dfind input::placeholder{color:var(--ink-soft);opacity:1}',
-  '.dapp .dfico{position:absolute;inset-inline-start:.9rem;inset-block-start:50%;transform:translateY(-50%);color:var(--ink-soft);pointer-events:none}',
-  '.dapp .dnone{margin-block-start:1.3rem;color:var(--ink-soft)}',
-  '.dapp .dbrand{margin-block:1.5rem .75rem}',
-  '.dpick{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}',
-  '.dpick li[hidden],.dgrp[hidden]{display:none}',
-  '.dchip{font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--edge);border-radius:999px;padding:.6rem 1.05rem;min-height:44px;display:inline-flex;align-items:center;cursor:pointer;transition:border-color .18s,background .18s,color .18s}',
-  '.dchip:hover{border-color:var(--teal-d);color:var(--teal-d)}',
-  /* שש שורות של סימון "לא אצלנו" הוסרו ב-17.8.2026 יחד עם התג עצמו, לבקשת אופק: זה
-     כלי השוואה כללי ולא קטלוג של מה שנמכר. היו כאן הקו המקווקו של הצ׳יפ, שלוש שורות
-     הצבע של התג על שלושת רקעי הבחירה, השורה שלו בבורר, ו-.dnoown שאיבד את המפיק שלו
-     כשמכשיר ייחוס הפסיק להופיע ברשימת "המפרט המלא של". אין יותר אלמנט שנושא אותן. */
-  /* ================= גבולות פקדים, המשך
-     --edge הוחל על הצ׳יפים ולא על שאר הפקדים, ונשארו ארבעה ב-1.31:1. הכואב מכולם
-     הוא .fxi: העיגול *הוא* הסימן שאומר "יש כאן הסבר", והוא היה מצויר בקו שאי אפשר
-     לראות. תקן 1.4.11 דורש 3:1 לגבול של פקד. */
-  '.dfocus button{border-color:var(--edge)}',
-  '.cmp-grid .fxi{border-color:var(--edge)}',
-  '.dadd{border-color:var(--edge)}',
-  /* ================= שני רכיבים שרונדרו בלי שום CSS
-     .dshare נפלט עם שני כפתורים בלי רווח ביניהם במחרוזת, ו-.btn הוא inline-flex,
-     ולכן הם נגעו זה בזה באפס פיקסלים. ו-.noown היה מעוצב רק בתוך .hub, שאינו קיים
-     בעמוד הזה כלל, כלומר המחלקה לא עשתה כלום. */
-  '.dshare{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-block-start:1.6rem}',
-  '.dshare .dok{color:var(--teal-d);font-size:.96rem;font-weight:600}',
-  /* ================= הטבלה נכנסת למסך בטלפון, בלי גלילה אופקית
-     עד 16.8.2026 היה כאן overflow-x:auto יחד עם min-width של 6.5rem לכל עמודת ערך,
-     ולכן בטלפון הטבלה נגררה הצידה ואופק ראה רק חלק ממנה בכל רגע. השוואה שצריך לגלול
-     אותה כדי לראות את הצד השני היא לא השוואה.
-     table-layout:fixed מחלק את הרוחב לפי העמודות שיש, ולכן שניים ושלושה מכשירים נכנסים
-     שניהם. עמודת שם השדה מקבלת 27 אחוז וזה מותיר 24 לכל דגם בשלושה, ו-36 בשניים.
-     הערכים נשברים בתוך התא במקום לדחוף אותו, ולכן השורות מתארכות והרוחב נשמר.
-     ומכיוון שמיכל הגלילה נעלם, ראש הטבלה יכול לחזור להיות דביק גם בטלפון: sticky נשבר
-     בתוך אב עם overflow, וזו הייתה הסיבה היחידה שהוא הושבת שם. */
-  '@media(max-width:900px){',
-  '  .cmp-wrap{overflow-x:visible}',
-  '  .cmp-grid{table-layout:fixed;width:100%}',
-  '  .cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:0}',
-  /* הרוחב נקבע על תא הכותרת ולא על תא השורה: ב-table-layout:fixed העמודות נגזרות מהשורה
-     הראשונה, שהיא ה-thead, ולכן width על th שבתוך tbody פשוט לא נקרא. 24 אחוז לשם השדה
-     כי הוא מחזיק תוויות קצרות, וכל מה שנחסך שם עובר לעמודות הערכים שבהן הטקסט ארוך. */
-  '  .cmp-grid thead th:first-child{width:24%}',
-  '  .cmp-grid tbody th[scope="row"]{min-width:0;max-inline-size:none;position:static}',
-  '  .cmp-grid thead th{white-space:normal;position:sticky;inset-block-start:var(--pg-stick-2,146px)}',
-  '  .cmp-grid th,.cmp-grid td{overflow-wrap:anywhere;padding:.7rem .4rem}',
-  '  .cmp-grid .vch{white-space:normal}',
-  '  .cmp-grid .nv{font-size:1.1rem}',
-  '}',
-  /* אותם שלושה צבעים שהתא נושא ושהעמודה בטבלה נושאת. הצבע הוא מה שקושר בין הבחירה לתוצאה. */
-  '.dchip.sc0{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:700}',
-  '.dchip.sc1{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:700}',
-  '.dchip.sc2{background:var(--orange);border-color:#c07a2e;color:#241a08;font-weight:700}',
-  '.dchip.sc0:hover,.dchip.sc1:hover{color:#fff}',
-  '.dchip.sc2:hover{color:#241a08}',
-  /* המקטע "איך זה עובד" מתקפל. ההסבר זמין, אבל הוא לא מה שפוגשים בדרך לכלי. */
-  '.dhow details{margin-bottom:.6rem}',
-  '.dhow summary{font-size:1.05rem}',
-  '.dhow details p+p{padding-block-start:0}',
-  /* התמונה בראש העמודה. block ולא inline, כדי שלא תתחרה על הרוחב מול הלוגו והשם:
-     ‎.cmp-grid thead th הוא white-space:nowrap בדסקטופ, ותמונה באותה שורה הייתה דוחפת את
-     השם מחוץ לתא. 44 פיקסל ברוחב הם 59 בגובה ביחס 3:4, וזה נכנס גם בטלפון: שם
-     table-layout:fixed נותן 24 אחוז לעמודת השדה, כלומר כ-123 פיקסל לכל עמודת דגם.
-     נשארת גלויה בטלפון, בשונה מהתמונונת שבתא הבחירה: כאן היא בשורה משל עצמה ואינה גוזלת
-     מרוחב השם, וזו הייתה כל הסיבה להסתיר את זו שבתא מתחת ל-640. */
-  '.dhpic{display:block;inline-size:2.75rem;block-size:auto;aspect-ratio:3/4;object-fit:contain;background:#fff;border:1px solid var(--line);margin-block-end:.45rem}',
-  '@media(max-width:900px){.dhpic{inline-size:2.25rem;margin-block-end:.35rem}}',
-  /* שני בלוקי הפרשנות. אין כאן רכיב חדש: .gaps, .ticks, .lead ו-.aside מגיעים מהגיליון
-     של עמודי ההשוואה, שכבר מוזרק לעמוד הזה, וכך שני המקומות נראים אותו דבר בלי עותק שני
-     של כלל עיצוב. מה שנוסף כאן הוא המיכל בלבד, ורשת שיודעת גם שלוש עמודות. */
-  '.dsum{margin-block-start:2.2rem;border-block-start:1px solid var(--line);padding-block-start:1.7rem}',
-  /* var(--serif) אינו מוגדר בשום גיליון באתר, ולכן הצהרת ה-font-family הזאת נפסלת בזמן
-     חישוב הערך והכותרת יורשת את --font. זה לא באג שנוצר כאן: 46 שימושים ב-var(--serif)
-     יושבים ב-19 עמודי ההשוואה הכתובים, גם ב-.gaps b וגם ב-.two .col h3, וכולם נופלים
-     באותה צורה. השארתי את הכתיבה זהה להם בכוונה, כדי ששני המקומות ייראו אותו דבר גם היום
-     וגם ביום שבו ייקבע מהו הסריף העריכותי. הקביעה עצמה היא החלטת עיצוב של אופק. */
-  '.dsum h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.32rem,2.5vw,1.7rem)}',
-  '.dwho{display:grid;gap:2.4rem;margin-block-start:1.7rem;grid-template-columns:1fr 1fr}',
-  '.dwho.n3{grid-template-columns:repeat(3,minmax(0,1fr))}',
-  /* שלוש עמודות של משפטים שלמים נשברות מוקדם מטבלה, ולכן הן יורדות לשתיים לפני שהרשת
-     כולה יורדת לאחת. הגבול נמדד: ב-1100 עמודה שלישית יורדת מתחת ל-15 תווים לשורה. */
-  '@media(max-width:1100px){.dwho.n3{grid-template-columns:1fr 1fr}}',
-  '@media(max-width:820px){.dwho,.dwho.n3{grid-template-columns:1fr;gap:1.9rem}}',
-  '.dwho h4{font-family:var(--serif);font-weight:400;font-size:clamp(1.16rem,2.1vw,1.4rem);margin:0 0 .2rem;padding-block-end:.7rem;border-block-end:2px solid var(--ink-strong)}'
-].join('\n');
+/* ה-CSS של הכלי יושב בקובץ משלו מאז גרסה ח׳ (24.9.2026). השער בסוף buildTool ממשיך לבדוק
+   שאף שם שמוגדר בו אינו מוגדר כבר בגיליון המשותף. */
+var APP_CSS = fs.readFileSync(path.join(__dirname, 'compare-tool', 'tool.css'), 'utf8').replace(/\r/g, '');
 
 
 /* המותגים בסדר קבוע, וכל מותג עם הלוגו שלו במידות שנמדדו. הלוגואים נמחקו ב-eb07517 כשהכלי
@@ -815,93 +748,92 @@ function traitsOf(x) {
   return t;
 }
 
-var TOOL_CSS = [
-  /* הכלי המתקדם: בורר תאים, מיקוד קטגוריה, טבלה מוקפאת בשני צירים והסבר לכל שדה.
-     הועבר לכאן ב-15.8.2026 אחרי שנבנה ביד בתוך העמוד המיוצר ונמחק בהרצת מחולל.
-     כל עוד הוא חי כאן, הרצה חוזרת משחזרת אותו במקום למחוק אותו. */
-  /* הכללים של .picker, .cmp-spec ו-.cmp-vs הוסרו ב-17.8.2026. הם הועברו לכאן יחד עם כל
-     המחרוזת כשהכלי נבנה ביד, והם מעצבים אלמנטים שאינם קיימים בעמוד הזה כלל: אומת בדפדפן
-     ששלושתם מחזירים null ב-querySelector. ה-.picker גם היה עותק שני של כללים שכבר יושבים
-     בעמוד המקור, כלומר בדיוק סוג הכפילות שהשער של APP_CSS נבנה כדי לתפוס, אלא שהשער אינו
-     בודק את המחרוזת המועתקת הזאת. שלוש שורות ה-a11y-contrast נשארו: הן מזכירות את .picker
-     בתוך :is() אבל מטרתן היא header.site, main ו-footer.site.
+/* האקורדיון של "איך זה עובד" נשלף מ-index.html, והשאר ב-tool.css */
+var TOOL_CSS = [fs.readFileSync(path.join(__dirname, 'compare-tool', 'frame.css'), 'utf8').replace(/\r/g, ''), detailsCss(), APP_CSS].join('\n');
 
-     מה שלא נוגעים בו: שאר ה-CSS שאינו בשימוש בעמוד הזה, כמו .hub, .prob, .toc ו-.two, אינו
-     עותק אלא ירושה. הוא מגיע מהזרקת הגיליון של עמודי ההשוואה ושל עמוד המקור בשלמותם, ולכן
-     הסרתו דורשת הזרקה סלקטיבית, שמסכנת 19 עמודים שכן משתמשים בו. */
-  ".cmp-wrap{margin-top:1.8rem;overflow-x:auto;-webkit-overflow-scrolling:touch}\n.cmp-wrap:focus-visible{outline:2px solid var(--teal);outline-offset:4px}\n.cmp-wrap{max-width:100%}\n.dstate{position:sticky;inset-block-start:66px;z-index:70;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block-end:1px solid var(--line);padding-block:.9rem;margin-block-start:1.8rem;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}\n@media(max-width:980px){\n.qcount,.dstate{inset-block-start:0}\n}\n.dstate p{margin:0;color:var(--ink-soft);font-size:1rem}\n.dstate b{color:var(--ink-strong);font-weight:700}\n.dstate button{margin-inline-start:auto}\n.dstate .btn-sm{padding-block:.78rem}\n.dstate .btn-teal{background:none;color:var(--teal-d);border:1px solid var(--line)}\n.dstate .btn-teal:hover{background:#f2f6f8;border-color:var(--teal-d)}\n.dempty{margin-top:1.8rem;border-block-start:1px solid var(--line);padding-block-start:1.4rem;color:var(--ink-soft);line-height:1.8}\n.dslots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin-block-start:1.5rem;list-style:none;padding:0}\n.dslot{border:1px solid var(--line);border-radius:6px;min-height:66px;display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem}\n.dslot .lbl{font-family:var(--mono);font-size:.86rem;letter-spacing:.06em;color:var(--ink-soft);display:block}\n.dslot .nm{font-weight:700;color:var(--ink-strong);font-size:1.02rem;line-height:1.35;display:block}\n.dslot .dpic{width:2.6rem;height:auto;aspect-ratio:3/4;object-fit:contain;flex:none;border:1px solid var(--line);background:#fff;border-radius:0}\n/* מתחת ל-640 התא עצמו רק 178 פיקסל, ושתי התמונות יושבות זו לצד זו. מדדתי בספארי\r\n   במובייל: התמונה גוזלת 42 מתוך 95 הפיקסלים של עמודת השם, \"Galaxy S26 Ultra\" נשבר\r\n   משתי שורות לשלוש, והתא גדל מ-88 ל-133 פיקסל. תמונונת של 34 פיקסל אינה שווה את\r\n   המחיר הזה, וזה בדיוק השיקול שבגללו הרשימה ב-/phones/ נשארה בלי תמונות. */\n@media(max-width:640px){\n.dslot .dpic{display:none}\n}\n.dslot.empty{border-style:dashed}\n.dslot.empty .nm{font-weight:500;color:var(--ink-soft)}\n.dslot .drop{margin-inline-start:auto;background:none;border:0;cursor:pointer;color:var(--ink-soft);font-size:1.25rem;line-height:1;padding:.8rem;border-radius:6px;min-inline-size:44px}\n.dslot .drop:hover{color:var(--teal-d);background:#f2f6f8}\n@media(max-width:720px){\n.dslots{grid-template-columns:1fr}\n.dslot{min-height:58px}\n}\n.dbrand{font-family:var(--mono);font-size:.98rem;letter-spacing:.08em;color:var(--ink-strong);margin-block:1.7rem .1rem;padding-block-end:.45rem;border-block-end:1px solid var(--ink-strong)}\n.dbrand{display:flex;align-items:center;gap:.55rem}\n.blogo{display:inline-block;width:auto;flex:none}\n.cmp-grid thead th{white-space:nowrap}\n.cmp-grid thead th .blogo{display:inline-block;vertical-align:-.12em;margin-inline-end:.4rem}\n.dfocus{display:flex;flex-wrap:wrap;gap:.5rem;margin-block-start:1.5rem;align-items:center}\n.dfocus .fl{font-size:.98rem;color:var(--ink-soft);margin-inline-end:.15rem}\n.dfocus button{font-family:inherit;font-size:.98rem;font-weight:600;color:var(--ink);background:none;border:1px solid var(--line);border-radius:999px;padding:.75rem 1.05rem;cursor:pointer;transition:border-color .2s,color .2s,background .2s}\n.dfocus button:hover{border-color:var(--teal-d);color:var(--teal-d)}\n.dfocus button[aria-pressed=\"true\"]{background:var(--teal);border-color:var(--teal);color:#fff}\n.cmp-grid{width:100%;min-width:0;border-collapse:collapse;text-align:start}\n.cmp-grid th,.cmp-grid td{border-block-start:1px solid var(--line);padding:.9rem 1.05rem;vertical-align:top;line-height:1.7;text-align:start}\n.cmp-grid thead th{border-block-start:0;border-block-end:2px solid var(--ink-strong);font-family:var(--font);font-weight:700;font-size:1.02rem;padding-block:0 .7rem}\n.cmp-grid tbody th[scope=\"row\"]{font-family:var(--font);font-weight:700;color:var(--ink-strong);position:sticky;inset-inline-start:0;background:#fff;z-index:1;min-width:9rem}\n.cmp-grid td{color:var(--ink-soft)}\n.cmp-grid .grp th{border-block-start:2px solid var(--ink-strong);padding-block:1.5rem .5rem;font-family:var(--mono);font-size:.98rem;letter-spacing:.08em;color:var(--ink-strong);background:#fff}\n.cmp-grid tbody:first-of-type .grp th{border-block-start:0;padding-block-start:.9rem}\n.cmp-grid td i{font-style:italic}\n@media(max-width:720px){\n.cmp-grid th,.cmp-grid td{padding:.8rem .5rem}\n.cmp-grid tbody th[scope=\"row\"]{min-width:5.5rem;max-inline-size:5.5rem}\n}\n.cmp-wrap{overflow-x:visible}\n.cmp-grid thead th{position:sticky;inset-block-start:146px;z-index:2;background:#fff}\n@media(max-width:980px){\n.cmp-grid thead th{inset-block-start:80px}\n}\n@media(max-width:900px){\n.cmp-wrap{overflow-x:auto}\n.cmp-grid thead th{position:static}\n.cmp-grid thead th:not(:first-child),.cmp-grid td{min-width:6.5rem}\n}\n.cmp-grid .mean td{border-block-start:0;padding-block:0 1rem;color:var(--ink-soft);font-size:.98rem;line-height:1.7}\n.cmp-grid .mean b{color:var(--teal-d);font-weight:700}\n.cmp-grid .mean span{display:inline-block;max-inline-size:78ch}\n.cmp-grid tr.mean{display:none}\n.cmp-grid tr.mean.open{display:table-row}\n@media(hover:hover) and (pointer:fine){\n.cmp-grid tr.vrow:hover>*{background:#f6fafb}\n}\n.cmp-grid .fx{font:inherit;color:inherit;background:none;border:0;padding:0;text-align:start;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;min-height:44px}\n.cmp-grid .fx::after{content:\"?\";display:inline-grid;place-items:center;inline-size:1.2rem;block-size:1.2rem;border:1px solid var(--line);border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--ink-soft);flex:none;transition:background .15s,border-color .15s,color .15s}\n.cmp-grid .fx:hover::after,.cmp-grid .fx[aria-expanded=\"true\"]::after{background:var(--teal);border-color:var(--teal);color:#fff}\n.cmp-grid .fx:focus-visible{outline:2px solid var(--teal);outline-offset:3px}\n.cmp-grid td.na{color:var(--ink-soft)}\n.cmp-grid td.na span[aria-hidden]{font-family:var(--mono);font-size:1.1rem;opacity:.55}\n.dslot.sc0{border-inline-start:3px solid var(--teal)}\n.dslot.sc1{border-inline-start:3px solid var(--purple)}\n.dslot.sc2{border-inline-start:3px solid var(--orange)}\n.cmp-grid thead th.sc0,.cmp-grid thead th.sc1,.cmp-grid thead th.sc2{border-block-end-width:3px}\n.cmp-grid thead th.sc0{border-block-end-color:var(--teal)}\n.cmp-grid thead th.sc1{border-block-end-color:var(--purple)}\n.cmp-grid thead th.sc2{border-block-end-color:var(--orange)}\n.cmp-grid .vch{display:inline-block;border:1px solid var(--line);border-radius:4px;padding:.1rem .5rem;margin:0 0 .3rem .35rem;font-size:.98rem;line-height:1.6;white-space:nowrap}\n.cmp-grid .nv{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--ink-strong);line-height:1.25}\n.cmp-grid .fx::after{content:none}\n.cmp-grid .fxi{display:inline-grid;place-items:center;inline-size:1.2rem;block-size:1.2rem;border:1px solid var(--line);border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:700;font-style:normal;color:var(--ink-soft);flex:none;transition:background .15s,border-color .15s,color .15s}\n.cmp-grid .fxi:hover,.cmp-grid .fx:focus-visible .fxi{background:var(--teal);border-color:var(--teal);color:#fff}\n.minfo{position:absolute;z-index:80;max-inline-size:min(34rem,88vw);background:#fff;border:1px solid var(--ink-strong);border-radius:8px;box-shadow:var(--shadow-sm);padding:.85rem 1rem;color:var(--ink);font-size:.98rem;line-height:1.7}\n.minfo b{color:var(--teal-d);font-weight:700}\n.minfo::before{content:\"\";position:absolute;left:var(--ax,16px);inset-block-start:-6px;inline-size:10px;block-size:10px;background:#fff;border-inline-start:1px solid var(--ink-strong);border-block-start:1px solid var(--ink-strong);transform:rotate(45deg)}\n.cmp-wrap{background:#fcfcfd;border:1px solid var(--line);border-radius:10px;padding:.2rem 1.1rem 1.1rem}\n.cmp-grid thead th,.cmp-grid tbody th[scope=\"row\"],.cmp-grid .grp th{background:#fcfcfd}\n@media(max-width:900px){\n.cmp-wrap{padding:.2rem .55rem .55rem;border-radius:8px}\n}\n.dslots.two{grid-template-columns:repeat(2,minmax(0,1fr))}\n.dadd{grid-column:1/-1;justify-self:start;font-family:inherit;font-size:.98rem;font-weight:600;color:var(--teal-d);background:none;border:1px dashed var(--line);border-radius:6px;padding:.7rem 1.1rem;cursor:pointer;min-height:44px}\n.dadd:hover{border-color:var(--teal-d);background:#f2f6f8}\n.dfocus .sep{margin-inline-start:.35rem}\n.dfocus .sep::before{content:\"\";display:inline-block;inline-size:.85rem;block-size:.85rem;border:1px solid var(--ink-soft);border-radius:3px;margin-inline-end:.5rem;vertical-align:-.04em;transition:background .2s,border-color .2s}\n.dfocus .sep[aria-pressed=\"true\"]{background:none;color:var(--ink);border-color:var(--line)}\n.dfocus .sep[aria-pressed=\"true\"]::before{background:var(--teal);border-color:var(--teal)}\n.dfocus .sep:hover{border-color:var(--teal-d);color:var(--teal-d)}\nfooter .fl{list-style:none;padding:0;margin:0;display:grid;gap:.45rem}\n@media(max-width:820px){\nfooter .fl a{display:inline-flex;align-items:center;min-height:44px}\nfooter .fl a bdo{font-size:1.3rem;font-weight:700;letter-spacing:.02em}\n}\nhtml.a11y-contrast-high :is(header.site,.picker,main,footer.site){filter:contrast(1.35)}\nhtml.a11y-contrast-invert :is(header.site,.picker,main,footer.site){filter:invert(1) hue-rotate(180deg)}\nhtml.a11y-contrast-mono :is(header.site,.picker,main,footer.site){filter:grayscale(1) contrast(1.08)}"
-  ,
-  /* גילוי נאות על מכשיר שאיננו מוכרים. קו בצד ולא משטח צבוע, כמו כל הערה במערכת הזאת:
-     המילים נושאות את המשקל ולא רקע. .noown כבר מעוצב ומגיע מעמודי ההשוואה הכתובים. */
-  '.dnote{margin:1.4rem 0 0;border-inline-start:3px solid var(--orange);padding-inline-start:1.1rem;color:var(--ink-soft);line-height:1.75}',
-  detailsCss(),
-  APP_CSS
-].join('\n');
+/* ההסברים לשדות של טלפון. עד 24.9.2026 הם ישבו בתוך מחרוזת ה-JS של הכלי, והועברו לקובץ נתונים
+   בלי שינוי במילה. לשעונים ולאוזניות ההסברים ב-_means של קובץ הנתונים שלהם. */
+var PHONE_MEANS = JSON.parse(fs.readFileSync(path.join(__dirname, 'compare-tool', 'means-phones.json'), 'utf8'));
+var TOOL_CLIENT = fs.readFileSync(path.join(__dirname, 'compare-tool', 'tool.client.js'), 'utf8').replace(/\r/g, '');
 
 function toolMain(openTag, index, order, pairCount) {
-  /* כולל מכשירי ייחוס: דגמים שאיננו מוכרים, שקיימים כדי שאפשר יהיה להשוות אליהם. הם מסומנים
-     בבורר ונושאים גילוי נאות, כי לקוח שרואה דגם ברשימה שלנו מניח שאנחנו מוכרים אותו, וזו בדיוק
-     הטעות שקרתה פעם ב-galaxy-a56 וב-xiaomi-15. */
-  /* מקובץ לפי מותג, ובתוך כל מותג מהחדש לישן. עד 17.8.2026 הסדר בתוך המותג היה סדר
-     ההוספה ל-devices.json, כלומר שרירותי: אופק ראה "iPhone 14, 17e, 16, 17 Pro Max"
-     בשורה אחת. הסדר בין המותגים נקבע ב-BRAND_LOGO ולא כאן. */
+  /* כולל מכשירי ייחוס: דגמים שאיננו מוכרים, שקיימים כדי שאפשר יהיה להשוות אליהם. הם נושאים גילוי נאות
+     בתוצאה, כי לקוח שרואה דגם ברשימה שלנו מניח שאנחנו מוכרים אותו. */
+  /* מקובץ לפי מותג, ובתוך כל מותג מהחדש לישן. הסדר בין המותגים נקבע ב-BRAND_LOGO ולא כאן. */
   var live = db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(function (a, b) {
     if (a.brand !== b.brand) return a.brand < b.brand ? -1 : 1;
     return T.newestFirst(a, b);
   });
-  var sellable = live.filter(function (d) { return d.status !== 'reference'; });
-  /* מקובצים לפי מותג, כמו בכלי המקורי. הסדר נקבע ב-BRAND_LOGO ולא לפי א-ב, כדי שאפל תהיה
-     ראשונה ושהוספת מותג רביעי תהיה החלטה מפורשת ולא תוצאה של מיון. מותג בלי לוגו עדיין מופיע,
-     אחרת דגם שנוסף למאגר היה נעלם מהבורר בשקט. */
   var brands = Object.keys(BRAND_LOGO).map(function (b) {
     return { brand: b, items: live.filter(function (d) { return d.brand === b; }) };
   }).filter(function (g) { return g.items.length; });
+  /* מותג בלי לוגו עדיין מופיע, אחרת דגם שנוסף למאגר היה נעלם מהבורר בשקט */
   live.forEach(function (d) {
     if (!BRAND_LOGO[d.brand] && !brands.some(function (g) { return g.brand === d.brand; })) {
       brands.push({ brand: d.brand, items: live.filter(function (x) { return x.brand === d.brand; }) });
     }
   });
 
-  /* המספרים לכל דגם שבבורר. הדפדפן מקבל אותם ולא את הפרסר, כי פרסר של מפרט עברי הוא
-     הדבר השביר כאן: עותק שני שלו בדפדפן היה חוזר בדיוק לכשל שהמודול נבנה למנוע. */
+  /* המספרים לכל דגם. הדפדפן מקבל אותם ולא את הפרסר, כי פרסר של מפרט עברי הוא הדבר השביר כאן.
+     ההבדלים המספריים מוגדרים ב-traits.js על שדות של טלפון, ולכן בקטגוריה הם ריקים. */
   var TRAITS = {};
-  live.forEach(function (d) { TRAITS[d.slug] = traitsOf(d); });
-  var waPick = wa('היי, אני מתלבט בין כמה דגמים ואשמח לעזרה בבחירה');
-  /* \\u003c ולא <: מחרוזת שמכילה סוגר סקריפט בתוך <script> סוגרת אותו, וזו תקלה שמפילה
-   * את כל ה-JS בעמוד בשקט. אין כאן סוגרים כאלה, וזו חגורה. */
+  if (!CAT) live.forEach(function (d) { TRAITS[d.slug] = traitsOf(d); });
+  var MEANS = CAT ? db._means : PHONE_MEANS;
+  if (!MEANS) { console.error('✗ ' + (CAT ? CAT.key : 'phones') + ': אין הסברים לשדות'); process.exit(1); }
+  /* שדה בהשוואה בלי הסבר אינו תקלה, אבל שדה שמוסבר ואינו קיים הוא שם ששונה בצד אחד בלבד */
+  var orderKeys = order.map(function (r) { return r[2]; });
+  var orphan = Object.keys(MEANS).filter(function (k) { return orderKeys.indexOf(k) < 0; });
+  if (orphan.length) { console.error('✗ tool: הסבר לשדה שאינו קיים: ' + orphan.join(', ')); process.exit(1); }
+  var READY = (db._comparisons.pairs || []).map(function (p) { return [p.a, p.b]; });
+  var CFG = {
+    pub: '/' + (CAT ? CAT.pub : 'devices-public.json'),
+    /* לשעונים ולאוזניות אין עמודי מכשיר, וקישור ל-/phones/<slug>/ שם הוא 404 */
+    specLinks: !CAT,
+    /* השרטוט בקנה מידה והקווים נשענים על שדות של טלפון */
+    outline: !CAT,
+    bars: !CAT,
+    pairErr: CAT ? 'לא הצלחנו לחשב את ההשוואה הזאת. נסו לבחור שוב.'
+      : 'לא הצלחנו לחשב את ההשוואה הזאת. <a href="/compare/">ההשוואות המוכנות</a> זמינות תמיד.',
+    loadErr: CAT ? CAT.loadErr
+      : 'לא ניתן לטעון את נתוני המכשירים. <a href="/compare/">ההשוואות המוכנות</a> עובדות בלי הכלי.',
+    /* "רוב" בטלפונים: חלק מהשדות מגיעים ממאגרי מפרט, ועמודי ההשוואה אומרים את אותו הדבר */
+    src: CAT ? 'המפרט לקוח מאתרי היצרנים.' : 'רוב המפרטים לקוחים מאתרי היצרנים.'
+  };
+  var waPick = wa(CAT ? CAT.waPick : 'היי, אני מתלבט בין כמה דגמים ואשמח לעזרה בבחירה');
+  /* מתג הקטגוריות. nav ולא tablist: אלה שלושה עמודים, לא פאנלים באותו עמוד. המחלקה catsw נשארת,
+     כי בלוק המדידה מסמן לפיה entry_point=switch. */
+  var catSwitch = '<nav class="catsw" aria-label="מעבר בין כלי השוואה">' +
+    [{ path: 'phones/compare/', tab: 'טלפונים' }].concat(CAT_LIVE).map(function (c) {
+      var here = CAT ? c.path === CAT.path : c.path === 'phones/compare/';
+      return '<a href="/' + c.path + '"' + (here ? ' aria-current="page"' : '') + '>' + esc(c.tab) + '</a>';
+    }).join('') + '</nav>';
+  /* < ולא <: מחרוזת שמכילה סוגר סקריפט בתוך <script> סוגרת אותו */
   var json = function (o) { return JSON.stringify(o).replace(/</g, '\\u003c'); };
+  /* הכרטיס נכתב גם כאן ולא רק ב-JS, כדי שהמסגרת תיראה לפני שהנתונים נטענים. renderCards מחליף אותו. */
+  var card = function (i) {
+    return '        <button type="button" class="dopen cv-card empty" data-slot="' + i + '" aria-expanded="false" aria-controls="cvpick">' +
+      '<span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm">בחרו דגם</span>' +
+      '<span class="cv-meta">צד ' + ['א׳', 'ב׳', 'ג׳'][i] + '</span></span><span class="cv-act">בחירה</span></button>\n';
+  };
 
-  return openTag + '\n\n' +
-  /* כותרת נמוכה ושלושה צעדים. הכותרת אומרת מה זה, הצעדים אומרים מה לעשות, ואף אחד מהם
-     לא חוזר על השני. עד 16.8.2026 אותו הסבר הופיע פעמיים, פעם ב-hero ופעם מעל הבורר. */
-  '<section class="apph" aria-labelledby="h1">\n  <div class="wrap">\n' +
-  '    <h1 id="h1">השוואת מכשירים</h1>\n' +
-  '    <p class="asub">המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.</p>\n' +
-  '    <p class="ahelp">מעדיפים שנעבור על זה יחד? <a href="' + waPick + '">כתבו לנו ב-WhatsApp</a>.</p>\n' +
-  '  </div>\n</section>\n\n' +
-
-  '<section class="block" id="pick" aria-labelledby="pick-h">\n  <div class="wrap box">\n' +
-  '    <div class="dapp">\n' +
-  '      <div class="dhead">\n' +
-  '        <h2 id="pick-h">הבחירה שלכם</h2>\n' +
-  '        <button type="button" class="dclr" id="dclear" hidden>נקו את הבחירה</button>\n' +
-  '      </div>\n' +
-  /* התאים נכתבים כאן ולא רק ב-JS: הם המסגרת שמסבירה את הכלי, וצריך לראות אותם לפני
-     שהנתונים נטענים. render() מחליף את אותו HTML בדיוק ברגע שיש בחירה. */
-  '      <ul class="dslots two" id="dslots">\n' +
-  ['א׳', 'ב׳'].map(function (s, i) {
-    return '        <li class="dslot empty"><button type="button" class="dopen" data-slot="' + i +
-      '" aria-expanded="false" aria-controls="dmenu">' +
-      '<span class="dplus" aria-hidden="true">+</span><span class="dtxt">' +
-      '<span class="lbl">מכשיר ' + s + '</span><span class="nm">בחרו דגם</span></span></button></li>';
-  }).join('\n') + '\n' +
-  '        <li><button type="button" class="dadd" data-add="1">הוסיפו מכשיר שלישי</button></li>\n' +
-  '      </ul>\n' +
-  /* הבורר נפתח כאן, מתחת לתאים ולא כחלונית מרחפת מעליהם */
-  '      <div class="dmenu" id="dmenu" hidden></div>\n' +
-  '      <div class="dsep"></div>\n' +
-  '      <div class="dhead">\n' +
-  '        <p class="dlbl" id="dpick-h">כל הדגמים</p>\n' +
+  return openTag + '\n\n<div class="cv-app">\n' +
+  '<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
+  '    <div class="cv-row1">\n      <h1 id="h1">' + esc(CAT ? CAT.h1 : 'השוואת מכשירים') + '</h1>\n      ' + catSwitch + '\n    </div>\n' +
+  '    <p class="cv-sub">' + esc(CAT ? CAT.asub : 'המכשירים שיש לנו בחנות, וגם כמה שאיננו מוכרים והם כאן רק כדי שיהיה מול מה להשוות. המפרט לקוח מאתרי היצרנים.') + '</p>\n' +
+  '    <div class="cv-cards">\n' + card(0) +
+  '        <button type="button" class="cv-flip" id="cvflip" aria-label="מול, החלפת צדדים" title="החלפת צדדים" disabled>מול<svg class="cv-swap" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h11l-3-3M17 17H6l3 3"></path></svg></button>\n' + card(1) +
+  /* הצד השלישי, מוסתר עד שמבקשים אותו. ההסרה היא כפתור אח ולא בתוך הכרטיס, כי כפתור בתוך כפתור אינו HTML תקין. */
+  '        <span class="cv-vs3" id="cvvs3" aria-hidden="true" hidden>מול</span>\n' +
+  '        <div class="cv-c3" id="cvc3" hidden>\n' + card(2) +
+  '          <button type="button" class="cv-drop" id="cvdrop" aria-label="הסרת הדגם השלישי מההשוואה">&times;</button>\n        </div>\n' +
+  '    </div>\n' +
+  '    <button type="button" class="cv-add" id="cvadd" hidden>+ הוספת דגם שלישי</button>\n' +
+  '    <p class="cv-sug" id="cvsug" hidden></p>\n' +
+  '  </div>\n</section>\n' +
+  /* הפס הלבן עם שני השמות. hidden עד שיש זוג. */
+  '<section class="block" id="pick" aria-label="ההשוואה">\n  <div class="wrap">\n' +
+  '    <div class="cv-pick" id="cvpick" role="region" aria-labelledby="cvpick-h" hidden>\n' +
+  '      <div class="cv-ph">\n        <h2 id="cvpick-h">בחירת דגם</h2>\n' +
   '        <div class="dfind">\n' +
   '          <svg class="dfico" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false">' +
   '<circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle>' +
@@ -910,8 +842,9 @@ function toolMain(openTag, index, order, pairCount) {
   '          <input id="dq" type="search" autocomplete="off" placeholder="סינון לפי שם" aria-describedby="dqh">\n' +
   '          <span class="a11y-sr" id="dqh" role="status"></span>\n' +
   '        </div>\n' +
+  '        <button type="button" class="cv-x" aria-label="סגירת הבורר">&times;</button>\n' +
   '      </div>\n' +
-  '      <div id="dpick" role="group" aria-labelledby="dpick-h">\n' +
+  '      <div class="cv-list" id="dpick" role="group" aria-labelledby="cvpick-h">\n' +
   brands.map(function (b) {
     var L = BRAND_LOGO[b.brand] || null;
     return '        <div class="dgrp">\n          <p class="dbrand">' + (L ? '<img class="blogo blogo-' + L[0] + '" src="/logos/' + L[0] +
@@ -919,10 +852,6 @@ function toolMain(openTag, index, order, pairCount) {
       esc(b.brand) + '</p>\n          <ul class="dpick">\n' +
       b.items.map(function (d) {
         /* data-q מחזיק שם לועזי, שם עברי ומותג יחד, ולכן גם "אייפון" וגם iphone מסננים */
-        /* התג "לא אצלנו" הוסר ב-17.8.2026 לבקשת אופק: זה כלי השוואה כללי ולא קטלוג של מה
-           שנמכר אצלנו. עם 34 מכשירי ייחוס מתוך 55 הוא הופיע על רוב הרשימה, והפך את הבורר
-           למשהו שנראה כמו קטלוג עם הערות שלילה. הגילוי הנאות נשאר בתוצאה עצמה, שם הוא
-           מופיע רק כשדגם כזה נבחר בפועל, וזו ההחלטה שכתובה ב-CLAUDE.md. */
         return '            <li><button type="button" class="dchip" data-slug="' + esc(d.slug) +
           '" data-q="' + esc(d.name + ' ' + (d.name_he || '') + ' ' + d.brand + ' ' + (BRAND_HE[d.brand] || '')) +
           '" aria-pressed="false">' + ltr(d.name) + '</button></li>';
@@ -930,38 +859,46 @@ function toolMain(openTag, index, order, pairCount) {
   }).join('\n') + '\n      </div>\n' +
   '      <p class="dnone" id="dnone" hidden>אין דגם בשם הזה. נקו את הסינון כדי לראות את כל הרשימה.</p>\n' +
   '    </div>\n' +
-  /* hidden בטעינה: אין בחירה, ולכן אין מצב לדווח עליו */
-  '    <div class="dstate" id="dstatebar" hidden>\n' +
-  '      <p id="dstate" role="status"></p>\n' +
-  '    </div>\n' +
-  /* פאנל אחד שכל סימני השדות חולקים, ומחוץ ל-#dout כדי שרינדור מחדש לא ימחק אותו. */
-  '    <div class="minfo" id="minfo" hidden></div>\n' +
-  /* לא aria-live: render() מחליף את כל תת-העץ, ואזור חי כאן היה מקריא את הטבלה כולה
-   * בכל לחיצה. #dstate מכריז את הסיכום במקום. */
+  /* לא aria-live: render מחליף את כל תת-העץ. ההכרזה על "מה חשוב לכם" יושבת ב-#cvstatus. */
   '    <div id="dout">\n' +
-  /* המשפט על JavaScript קיים רק בגרסה הסטטית, כי היא היחידה שנשארת על המסך כשהוא כבוי.
-     ברגע ש-render רץ הוא מוחלף בשורה קצרה, שאין טעם לספר בה על מצב שאינו קיים. */
-  '      <p class="dempty">כאן תופיע טבלת ההבדלים. אם JavaScript כבוי, ' +
-  '<a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>\n' +
-'    </div>\n  </div>\n</section>\n\n' +
+  (CAT
+    ? '      <p class="dempty">כאן יופיעו ההבדלים. הכלי צריך JavaScript כדי לעבוד.</p>\n'
+    : '      <p class="dempty">כאן יופיעו ההבדלים. אם JavaScript כבוי, ' +
+      '<a href="/compare/">מרכז ההשוואות</a> מכיל את ההשוואות המוכנות בלי צורך בכלי.</p>\n') +
+  '    </div>\n  </div>\n</section>\n</div>\n\n' +
 
-  /* מתקפל. ההסבר נשאר זמין במלואו, אבל הוא כבר לא פסקאות שקוראים בדרך לכלי:
-     מי שרוצה לדעת איך זה מחושב פותח, ומי שבא להשוות לא עובר דרכו. */
+  /* השוואות מוכנות בקטגוריה, כקישורים סטטיים. הכלי noindex,follow, ולכן גוגל עוקב אחריהם. */
+  (CAT && (db._comparisons.pairs || []).length
+    ? '<section class="block" id="ready" aria-labelledby="ready-h">\n  <div class="wrap box">\n' +
+      '    <h2 id="ready-h">השוואות מוכנות</h2>\n' +
+      '    <ul class="hub">\n' + db._comparisons.pairs.map(function (p) {
+        return '      <li><a href="/compare/' + p.slug + '/"><b>' + esc(p.h1) + '</b></a></li>';
+      }).join('\n') + '\n    </ul>\n' +
+      '  </div>\n</section>\n\n'
+    : '') +
+
   '<section class="block" id="how" aria-labelledby="how-h">\n  <div class="wrap box dhow">\n' +
   '    <h2 id="how-h" class="a11y-sr">איך הכלי עובד</h2>\n' +
   '    <details>\n      <summary>איך הכלי מחשב את ההבדלים</summary>\n' +
-  '      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>\n' +
-  '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם ולא כאפס.</p>\n' +
+  (CAT
+    ? '      <p>' + esc(CAT.how) + '</p>\n'
+    : '      <p>רשימת השדות השונים בכל זוג מחושבת מראש, מאותו קוד שבונה את עמודי ההשוואה הקבועים. לכן הכלי והעמודים לא יכולים להגיד שני דברים שונים על אותם שני דגמים.</p>\n') +
+  '      <p>שדה שאף אחד מהיצרנים אינו מפרסם אינו נחשב הבדל ואינו מוצג. שדה שרק יצרן אחד מפרסם כן מוצג, והצד השני מסומן כלא מפורסם.</p>\n' +
+  '      <p>"מה חשוב לכם" מסדר את התחומים ואינו מסתיר אף הבדל: מה שלא בחרתם מתקפל תחת כפתור אחד.</p>\n' +
   '    </details>\n' +
   '    <details>\n      <summary>למה אין כאן מחיר, ואין הכרזה מי טוב יותר</summary>\n' +
-  '      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו ולא מטבלה. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים ולא מכריז על מנצח. על ההחלטה נעבור איתכם.</p>\n' +
+  '      <p>המחיר משתנה, ולכן תקבלו אותו מאיתנו. וההחלטה מה עדיף תלויה במה שחשוב לכם, ולכן הכלי מראה את ההבדלים בלי להכריז על מנצח. על ההחלטה נעבור איתכם.</p>\n' +
   '    </details>\n' +
-  '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. <a href="/phones/">כל המכשירים</a> עם המפרט המלא.</p>\n' +
+  '    <p class="aside"><a href="/compare/">ההשוואות המוכנות</a> כוללות גם פסקה על מה שונה ולמי עדיף כל אחד. ' + (CAT ? '' : '<a href="/phones/">כל המכשירים</a> עם המפרט המלא.') + '</p>\n' +
   '  </div>\n</section>\n\n' +
 
   '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
-  '    <h2 id="cta-h">רוצים לראות אותם ביד?</h2>\n' +
-  '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+  /* בכלי קטגוריה איננו יודעים אילו דגמים בחנות. שאלה, לא הבטחה. */
+  (CAT
+    ? '    <h2 id="cta-h">רוצים לדעת מה יש אצלנו?</h2>\n' +
+      '    <p>שאלו אותנו אילו מ' + CAT.plural + ' האלה יש בחנות, ונעבור איתכם על מה שחשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+    : '    <h2 id="cta-h">רוצים לראות אותם ביד?</h2>\n' +
+      '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n') +
   '    <div class="row">\n' +
   '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
   '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
@@ -970,17 +907,16 @@ function toolMain(openTag, index, order, pairCount) {
   '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
   '  </div>\n</section>\n\n' +
 
-  '<script>\n' +
-  "/* כלי ההשוואה. אין כאן חישוב הבדלים: PAIRS מכיל את התוצאה של diffSpec מהמחולל, כלומר\n   שמות השדות שנמצאו שונים בכל זוג. הערכים נשלפים מ-devices.json בזמן ריצה. כך ההחלטה\n   \"מה שונה\" חיה במקום אחד בלבד, ואי אפשר שהכלי והעמוד הקבוע יגידו דברים שונים. */\n(function(){\n  \"use strict\";\n  \n  \n  var PAIRS=" + json(index) + 
-  ";\n  var ORDER=" + json(order) +
-  /* סדר היצרנים בבורר זהה לסדר שלהם ברשימה למטה, ומגיע מאותו מקור: BRAND_LOGO קובע, ומותג
-     בלי לוגו נספח בסוף. שני סדרים שונים לאותה רשימה היו נראים כמו תקלה. */
-  ";\n  var BRANDS=" + json(brands.map(function (b) {
-    return { brand: b.brand, logo: BRAND_LOGO[b.brand] || null };
-  })) +
-  ";\n  var TRAITS=" + json(TRAITS) +
-  ";\n  var TDEF=" + json(TDEF) +
-  ";\n  /* MAX is the ceiling; slots is what is actually on screen. Three at once muddled the\n     comparison, so two is the default and the third is asked for. */\n  var MAX=3, slots=2, sel=[], DB=null, focus=null, means=false, menuFor=null, menuOpen={};\n  /* One sentence per field, keyed by the spec key. Written once and reused across all 136 pairs.\n     It says what the difference MEANS, never who wins: the page declares no winner, and several of\n     these exist precisely to stop a bigger number reading as a better one. */\n  /* Fields where the leading figure may be set in display size. Deliberately short: cpu, gpu, ram,\n     the camera megapixels and the battery hours are all excluded, because each of those carries an\n     explanation saying the number is not comparable, and typesetting it large would argue the\n     opposite of the sentence beneath it. */\n  var NUMOK={screen_size:1,weight:1,brightness:1,security_updates:1};\n  var MEANS={\"screen_size\":\"ההפרש נמדד באלכסון. מסך גדול יותר נוח לקריאה ולסרטונים, וקטן יותר נכנס לכיס ומאפשר שימוש ביד אחת.\",\"screen_type\":\"ב-OLED כל פיקסל מאיר בעצמו, ולכן השחור עמוק והניגודיות גבוהה. LCD עובד בתאורה אחורית אחידה, והחלפה שלו זולה יותר אם המסך נשבר.\",\"resolution\":\"מספר הפיקסלים, וה-ppi הוא הצפיפות שלהם. מעל כ-400 קשה להבחין בפיקסל בודד במרחק שימוש רגיל.\",\"refresh_rate\":\"כמה פעמים בשנייה המסך מתרענן. 120Hz נראה חלק יותר בגלילה וגם צורך יותר סוללה, ולכן רוב המכשירים מורידים אותו לבד כשאין תנועה.\",\"brightness\":\"ניט הוא מדד בהירות, והמספר הזה הוא שיא לרגעים קצרים בשמש. הוא לא הבהירות שתראו בשימוש רגיל בבית.\",\"chip\":\"המעבד קובע בעיקר כמה המכשיר ירגיש מהיר בעוד שלוש שנים. כמעט כל שבב חדש מריץ היום בלי בעיה את מה שרוב האנשים עושים.\",\"cpu\":\"מספר הליבות אינו בר השוואה בין יצרנים. שש ליבות של אפל ועשר של אנדרואיד הן ארכיטקטורות שונות, ולא אותו דבר בכמות אחרת.\",\"gpu\":\"רלוונטי בעיקר למשחקים כבדים ולעריכת וידאו. בגלילה, במצלמה וברשתות חברתיות זה לא מורגש.\",\"ram\":\"זיכרון העבודה קובע כמה אפליקציות נשארות פתוחות ברקע בלי להיטען מחדש. אפל מסתדרת עם פחות בגלל האופן שבו iOS מנהל אותו, ולכן אין טעם להשוות את המספר מול אנדרואיד.\",\"storage_offered\":\"ברוב המכשירים הנפח אינו ניתן לשינוי אחרי הקנייה, ולכן זו ההחלטה שהכי כדאי לא לחסוך בה.\",\"storage_expandable\":\"האם אפשר להוסיף כרטיס זיכרון. ברוב המכשירים החדשים כבר לא.\",\"camera_main\":\"מגה-פיקסל הוא כמות ולא איכות. גודל החיישן, הצמצם ועיבוד התמונה משפיעים על התוצאה יותר מהמספר הזה.\",\"camera_extra\":\"עדשות נוספות, לרוב רחבה במיוחד לנופים או מקרו לצילום מקרוב.\",\"zoom\":\"זום אופטי מקרב בעדשה עצמה ושומר על האיכות. זום דיגיטלי חותך את התמונה ומגדיל אותה, ולכן האיכות יורדת.\",\"camera_front\":\"המצלמה הקדמית, לסלפי ולשיחות וידאו.\",\"video\":\"רזולוציית הצילום וקצב הפריימים. 60 פריימים נראה חלק יותר, ותופס בערך פי שניים מקום.\",\"battery\":\"היצרנים מודדים אחרת: אפל בשעות וידאו ואנדרואיד ב-mAh, ולכן אי אפשר להשוות ביניהם ישירות. בפועל התוצאה תלויה בעיקר בבהירות המסך ובאיכות הקליטה.\",\"charging_wired\":\"מהירות הטעינה בכבל. שווה לבדוק אם המטען שנדרש למהירות הזאת מגיע באריזה.\",\"charging_wireless\":\"טעינה על משטח בלי כבל. איטית יותר מטעינה בכבל, וגם מחממת יותר.\",\"dimensions\":\"הרוחב הוא מה שקובע אם המכשיר נוח ביד, יותר מהגובה.\",\"weight\":\"הבדל של כ-20 גרם ומעלה מורגש אחרי כמה שעות של החזקה ביד.\",\"water_resistance\":\"IP68 נמדד בטבילה בתנאי מעבדה, ולא בים או בבריכה. האחריות של היצרן אינה מכסה נזקי נוזלים, וגם אצלנו זה התיקון היחיד שאין עליו אחריות.\",\"colors_manufacturer\":\"הצבעים שהיצרן מייצר. לא כולם מגיעים לארץ, ולא כולם זמינים בכל נפח.\",\"sim\":\"eSIM הוא קו דיגיטלי בלי כרטיס פיזי. במכשיר שיש בו eSIM בלבד שווה לוודא מול המפעיל שלכם שהוא תומך, לפני הקנייה.\",\"esim\":\"כמה קווים דיגיטליים אפשר להחזיק במכשיר במקביל.\",\"connectivity\":\"5G, Wi-Fi ובלוטות׳. ההבדלים כאן מורגשים בעיקר למי שמעביר קבצים גדולים או משתמש באביזרים חדשים.\",\"box_contents\":\"מה מגיע באריזה. בחלק מהמכשירים כבר אין מטען, אלא כבל בלבד.\",\"security_updates\":\"כמה שנים היצרן מתחייב לעדכוני אבטחה. זה מה שקובע כמה זמן בטוח להשתמש במכשיר, ולא מתי הוא מפסיק לעבוד.\",\"model_numbers\":\"מספר הדגם מזהה את הגרסה. גרסאות שונות של אותו דגם מגיעות לפעמים עם מפרט שונה בשווקים שונים.\"};\n  var wrap=document.getElementById(\"dpick\"), out=document.getElementById(\"dout\"),\n      state=document.getElementById(\"dstate\"), bar=document.getElementById(\"dstatebar\"),\n      clear=document.getElementById(\"dclear\");\n  if(!wrap||!out) return;\n  function esc(s){return String(s).replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\");}\n  function ltr(s){return '<bdo dir=\"ltr\">'+esc(s)+\"</bdo>\";}\n  var RUN=/[A-Za-z0-9][A-Za-z0-9.,:%\\/+–\\-]*(?:[ ]+[A-Za-z0-9][A-Za-z0-9.,:%\\/+–\\-]*)*/g;\n  function ltrRuns(raw) {\n    if (raw === null || raw === undefined) return '';\n    var s = String(raw), out = '', last = 0, m;\n    RUN.lastIndex = 0;\n    while ((m = RUN.exec(s)) !== null) {\n      var run = m[0];\n      /* פיסוק בסוף הריצה הוא של המשפט העברי ולא של הריצה, ולכן הוא נשאר בחוץ */\n      var core = run.replace(/[.,:\\s]+$/, '');\n      var tail = run.slice(core.length);\n      out += esc(s.slice(last, m.index));\n      if (/[A-Za-z]/.test(core)) out += '<bdo dir=\"ltr\">' + esc(core) + '</bdo>' + esc(tail);\n      else out += esc(run);\n      last = m.index + run.length;\n    }\n    return out + esc(s.slice(last));\n  }\n  \n  function dev(sl){for(var i=0;i<DB.devices.length;i++){if(DB.devices[i].slug===sl)return DB.devices[i];}return null;}\n  /* k הוא רשימת אינדקסים לתוך ORDER, מופרדים בנקודה. עד 17.8.2026 היו שם התוויות עצמן,\n     וזה תפח עם מספר הדגמים. */\n  function keysFor(a,b){var p=PAIRS[a+\"|\"+b]||PAIRS[b+\"|\"+a];return p?{k:p.k?p.k.split(\".\").map(Number):[],s:p.s}:null;}\n  function val(v){return Array.isArray(v)?v.join(\", \"):v;}\n\n  /* מדידה. הכלי לא מדד כלום עד 15.8.2026, ולכן לא היה אפשר לומר אם מישהו משתמש בו.\n     דוחף ל-dataLayer ישירות ולא דרך track(): track מוגדר בדפי תוכן אחרים ולא כאן, ועותק שלו\n     כאן היה מקור אמת שני. GTM לא נטען מחוץ לפרודקשן, אבל ה-dataLayer כן, ולכן החיווט בדיק. */\n  function push(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev};for(var k in d)o[k]=d[k];window.dataLayer.push(o);}catch(e){}}\n  var SLOT=[\"א׳\",\"ב׳\",\"ג׳\"];\n  function d0(id){return id?document.getElementById(id):null;}\n  /* The panel: one element, placed under whichever marker asked for it. Document coordinates, so\n     it travels with the page and needs no repositioning on scroll. */\n  var panel=document.getElementById(\"minfo\"), infoFor=null;\n  var canHover=false; try{canHover=window.matchMedia(\"(hover:hover) and (pointer:fine)\").matches;}catch(e){}\n  function hideInfo(){ if(!panel) return; panel.hidden=true;\n    if(infoFor&&infoFor.setAttribute) infoFor.setAttribute(\"aria-expanded\",\"false\");\n    infoFor=null; }\n  function showInfo(btn,on){\n    if(!panel) return;\n    if(!on){ hideInfo(); return; }\n    var key=btn.getAttribute(\"data-mean\"); if(!MEANS[key]) return;\n    panel.innerHTML='<b>מה זה אומר</b> '+esc(MEANS[key]);\n    panel.hidden=false;\n    var r=(btn.querySelector(\".fxi\")||btn).getBoundingClientRect();\n    /* anchored to the marker, then pulled back inside the viewport if it would hang off the edge */\n    panel.style.insetInlineStart=\"auto\"; panel.style.insetInlineEnd=\"auto\";\n    panel.style.left=\"0px\"; panel.style.top=\"0px\";\n    var w=panel.offsetWidth;\n    /* הקואורדינטות נמדדות מול offsetParent, ולא מול המסמך.\n     *\n     * שלושת מצבי הניגודיות בתפריט הנגישות שמים filter על main, ו-filter הופך אלמנט\n     * למסגרת ההתייחסות של צאצאים ממוקמים. הפאנל הוא position:absolute בתוך main, ולכן\n     * top שנמדד מהמסמך הוסיף לו את המרחק של main מראש העמוד: 127 פיקסל במקום 8, שלוש\n     * שורות טבלה מתחת לשדה שהוא מסביר, והחץ הצביע על שורה אחרת. מרחק קליק אחד מכפתור\n     * הנגישות.\n     *\n     * ob נמדד באותן קואורדינטות מסך כמו r, ולכן ההפרש ביניהם הוא ההיסט בתוך המסגרת.\n     * הנוסחה נכונה גם כשהמסגרת היא body וגם כשהיא main, ואינה נוגעת ב-scrollY בכלל:\n     * כשהמסגרת היא body, ob.top הוא מינוס הגלילה, וההפרש חוזר בדיוק לערך הקודם. */\n    var op=panel.offsetParent||document.documentElement;\n    var ob=op.getBoundingClientRect();\n    var vw=document.documentElement.clientWidth;\n    var left=Math.min(Math.max(8,r.right-w),vw-w-8);\n    panel.style.left=(left-ob.left)+\"px\";\n    panel.style.top=(r.bottom-ob.top+8)+\"px\";\n    var arrow=Math.min(Math.max(10,r.left+r.width/2-left-5),w-20);\n    panel.style.setProperty(\"--ax\",arrow+\"px\");\n    if(infoFor&&infoFor!==btn&&infoFor.setAttribute) infoFor.setAttribute(\"aria-expanded\",\"false\");\n    btn.setAttribute(\"aria-expanded\",\"true\");\n    infoFor=btn;\n  }\n  /* Hover is scoped to the marker itself, not the whole label: hovering the label would open a\n     panel at every field the pointer crosses on its way down the column. And hover is only ever an\n     addition, never the only way in, since a phone has no hover and a keyboard has no pointer. */\n  if(canHover){\n    out.addEventListener(\"pointerover\",function(e){var i=e.target.closest&&e.target.closest(\".fxi\"); if(i) showInfo(i.closest(\".fx\"),true);});\n    out.addEventListener(\"pointerout\",function(e){var i=e.target.closest&&e.target.closest(\".fxi\"); if(i&&i.closest(\".fx\")===infoFor) hideInfo();});\n  }\n  /* מיקוד אינו פותח את ההסבר. הוא פתח, ואז ה-click שבא אחריו מצא מצב פתוח וסגר,\n     ולכן ההקשה הראשונה על סימן המידע לא עשתה כלום בכל דפדפן שממקד כפתור בלחיצה.\n     קורא מסך מקבל את הטקסט מ-aria-describedby ברגע המיקוד, בלי הפאנל, ו-Enter או\n     רווח יורים click ופותחים אותו כרגיל. */\n  out.addEventListener(\"focusout\",function(e){var b=e.target.closest&&e.target.closest(\".fx\"); if(b&&b===infoFor) hideInfo();});\n  document.addEventListener(\"keydown\",function(e){ if(e.key===\"Escape\") hideInfo(); });\n  document.addEventListener(\"click\",function(e){ if(infoFor&&!(e.target.closest&&(e.target.closest(\".fx\")||e.target.closest(\"#minfo\")))) hideInfo(); });\n\n  /* ------------ שכבת הפרשנות: ההבדל הגדול, ולמי מתאים כל אחד\n   *\n   * שלושה מכשירים עובדים כאן באותו קוד בלי מקרה מיוחד: לכל שדה נלקחים הגבוה והנמוך מבין\n   * הנבחרים, וההפרש ביניהם נמדד מול הרף. עם שני מכשירים זו בדיוק אותה תוצאה. */\n  function fmtN(v,f){\n    if(f===\"gb\") return v>=1024?(v/1024)+\"TB\":v+\"GB\";\n    if(f===\"dec\") return String(Math.round(v*100)/100);\n    return String(Math.round(v));\n  }\n  function bigGaps(ds){\n    var out=[],seen={};\n    TDEF.forEach(function(t){\n      var hi=null,lo=null;\n      ds.forEach(function(d){\n        if(!d) return;\n        var v=(TRAITS[d.slug]||{})[t.key];\n        if(v===null||v===undefined) return;\n        if(hi===null||v>hi.v) hi={v:v,d:d};\n        if(lo===null||v<lo.v) lo={v:v,d:d};\n      });\n      /* אותו מכשיר בשני הקצוות = כל מי שמפרסם את השדה מפרסם אותו מספר, כלומר אין הפרש */\n      if(hi===null||lo===null||hi.d===lo.d) return;\n      var gap=hi.v-lo.v;\n      if(gap<t.min) return;\n      var phrase=t.gap?(\"הפרש של \"+fmtN(gap,t.fmt)+t.unit)\n        :(lo.v===0&&t.zero)?(fmtN(hi.v,t.fmt)+t.unit+\" מול \"+t.zero)\n        :(t.each?(fmtN(hi.v,t.fmt)+t.unit+\" מול \"+fmtN(lo.v,t.fmt)+t.unit)\n                :(fmtN(hi.v,t.fmt)+\" מול \"+fmtN(lo.v,t.fmt)+t.unit));\n      /* leadMore הוא הניסוח מנקודת המבט של הדגם שהיתרון אצלו, וגם הבלוק העליון וגם\n         \"למי מתאים\" משתמשים בו. עד כאן הבלוק העליון נקב בשם הדגם הגבוה במספר, ובמשקל זה\n         הדגם הכבד: הרשימה אמרה \"גלקסי A17: כבד יותר\" ומתחתיה \"קל יותר, הפרש של 23 גרם\"\n         על ה-S26, אותם 23 גרם ושני שמות שונים. */\n      var leadMore=t.low?t.lowMore:t.more;\n      out.push({key:t.key,label:t.label,phrase:phrase,more:leadMore,hi:t.low?lo.d:hi.d,who:t.who,group:t.group,\n        pri:t.pri,lead:t.low?lo.d:hi.d,gain:leadMore+\", \"+phrase,strength:gap/t.min});\n    });\n    /* המיון הוא לפי עוצמה, וזה גם סדר התצוגה. הבחירה בתוך קבוצה היא לפי pri קודם:\n       שעות וידאו לפני mAh, כי הראשונה היא סיבולת והשנייה קיבולת. שוויון ב-pri נשבר\n       לפי עוצמה, כמו קודם. */\n    out.sort(function(a,b){return b.strength-a.strength;});\n    out.forEach(function(x){ var b=seen[x.group];\n      if(!b||x.pri<b.pri||(x.pri===b.pri&&x.strength>b.strength)) seen[x.group]=x; });\n    return out.filter(function(x){\n      if(seen[x.group]!==x) return false;\n      /* סתירה בין קיבולת לסיבולת אינה מוצגת בחצי.\n         העדיפות מטפלת במקרה שבו שתי המדידות עוברות את הרף, אבל ב-15 זוגות הפרש השעות\n         נמצא מתחת לרף ולכן אינו נכנס לרשימה כלל, ונשאר ה-mAh לבדו. בחלק מהם הוא מצביע\n         על הדגם ההפוך: galaxy-s26 מול galaxy-a56 הוא 30 שעות מול 29 לטובת הסמסונג\n         ו-4300 מול 5000 mAh לטובת ה-A56, ושתי המדידות מפורסמות על ידי אותו יצרן.\n         אמירה כזאת אי אפשר להגן עליה, ולכן השורה יורדת. */\n      if(x.key!==\"battery_mah\") return true;\n      var hi=null, lo=null;\n      ds.forEach(function(d){\n        if(!d) return;\n        var v=(TRAITS[d.slug]||{}).battery_hours;\n        if(v===null||v===undefined) return;\n        if(hi===null||v>hi.v) hi={v:v,d:d};\n        if(lo===null||v<lo.v) lo={v:v,d:d};\n      });\n      if(hi===null||lo===null||hi.d===lo.d) return true;   /* אין השוואת שעות */\n      return hi.d===x.lead;                                /* יורד רק כשהכיוונים מנוגדים */\n    });\n  }\n  /* התמונה נבנית מה-slug ומדגל img, ולא מנתיב שנשלח: gen-devices שולח דגל בלבד, וההערה\n     שם אומרת במפורש שהכלי בונה את הכתובת בעצמו. במכשיר ייחוס הדגל נעדר, כי אין לו תמונה\n     ואיננו מוכרים אותו.\n     alt ריק בכוונה: שם הדגם יושב מיד לידה בשני המקומות, וקורא מסך שיקרא את שניהם יקרא את\n     אותו דבר פעמיים. אותו שיקול שכבר חל על לוגו המותג בראש העמודה. */\n  function pic(d,cls){\n    if(!d||!d.img) return \"\";\n    return '<img class=\"'+cls+'\" src=\"/phones/img/'+d.slug+'-288.webp\"'+\n      ' width=\"288\" height=\"384\" alt=\"\" loading=\"lazy\" decoding=\"async\">';\n  }\n  /* עברית מבחינה בין אין, יחיד, זוגי ורבים, והכלי הדפיס \"0 זהים\" ב-46 מ-276 הזוגות.\n     אותה הבחנה שהעמודים הכתובים עושים ב-sameTxt, שקיים שם ולא היה כאן. */\n  function sameTxt(n){ return n===0?\"אין שדות זהים\":n===1?\"שדה אחד זהה\":n===2?\"שני שדות זהים\":n+\" זהים\"; }\n  function sameMoreTxt(n){ return n===1?\"שדה אחד נוסף זהה\":n===2?\"שני שדות נוספים זהים\":n+\" שדות נוספים זהים\"; }\n  function nameOf(d){ return esc(d.name_he||d.name); }\n  /* extras הוא מספר השורות ב\"למי מתאים\" שאינן נגזרות מהרשימה הזאת: חריץ זיכרון, עדשה\n     רחבה במיוחד ואורך העדכונים. בלעדיו המשפט הכריז \"אין הבדל מדיד גדול\" בזמן שמתחתיו\n     הופיעה שורה על עדכוני אבטחה עד 2032 מול 2031, שהוא הבדל מדיד בשנים. */\n  function gapsHtml(gaps,extras){\n    if(!gaps.length) return '<div class=\"dsum\"><h3>ההבדל הגדול</h3>'+\n      '<p class=\"lead\">בין הדגמים האלה <b>אין הבדל גדול שאפשר למתוח עליו קו</b>: המסך, המשקל, האחסון והסוללה קרובים או זהים. '+\n      (extras?'מה שכן מפריד ביניהם מופיע מתחת לטבלה.':'מה שכן שונה ביניהם, כמו זיכרון או מעבד, אינו דבר שאפשר למתוח עליו קו.')+'</p></div>';\n    /* בלי חיתוך. השורות של מי מתאים למי נגזרות מהרשימה הזאת, ולכן הבדל שנחתך ממנה\n       היה מייצר שורה שמצביעה על משהו שאינו על המסך. bigGaps מאחד את קבוצת הסוללה,\n       ולכן המקסימום בפועל הוא חמש שורות, בכל 276 הזוגות ובכל השלשות. */\n    var top=gaps;\n    return '<div class=\"dsum\"><h3>ההבדל הגדול</h3>'+\n      '<p class=\"lead\">'+(top.length===1?'יש <b>הבדל אחד</b> שאפשר למדוד במספרים.'\n        :'אלה <b>'+top.length+' ההבדלים הגדולים</b> שאפשר למדוד במספרים.')+\n      ' כל השאר בטבלה שמתחת.</p><ul class=\"gaps\">'+\n      top.map(function(x){\n        return '<li><b>'+esc(x.label)+'</b><span>'+esc(x.phrase)+'</span><em>'+\n          nameOf(x.hi)+': '+esc(x.more)+'</em></li>';\n      }).join(\"\")+'</ul>'+\n      '<p class=\"aside\">\"גדול יותר\" אינו \"טוב יותר\": מסך גדול שוקל יותר, וסוללה גדולה תופסת נפח.</p></div>';\n  }\n  /* כל שורה כאן תלויה בהפרש שנמדד ועבר את הרף שלו. שורה בלי הפרש מאחוריה הייתה הופכת את\n     הכלי מכלי מדידה לדעה, וזה בדיוק מה שהעמוד מבטיח שהוא לא עושה. */\n  function whoOf(gaps,ds,d){\n    var t=TRAITS[d.slug]||{},out=[];\n    gaps.forEach(function(g){ if(g.lead===d) out.push(g.who+\": \"+g.gain+\".\"); });\n    var others=ds.filter(function(x){return x&&x!==d;});\n    /* רק כשיצרן של דגם אחר בבחירה אומר במפורש שאין. null אינו 0, ואמירה על מה שאיננו\n       יודעים גרועה מהיעדר אמירה. */\n    var hasNo=function(k){return others.some(function(x){return (TRAITS[x.slug]||{})[k]===0;});};\n    if(t.sd===1&&hasNo(\"sd\")) out.push(\"אם אתם רוצים להוסיף זיכרון: יש חריץ לכרטיס זיכרון.\");\n    if(t.uw===1&&hasNo(\"uw\")) out.push(\"אם אתם מצלמים נופים או קבוצות: יש עדשה רחבה במיוחד.\");\n    /* רק סמסונג נוקבת בתאריך סיום עדכונים. כשהצד השני שותק אין השוואה, ולכן אין שורה:\n       אפל תומכת בפועל שנים רבות ואינה מתחייבת, ולהציג את השתיקה שלה כחיסרון יהיה שקר. */\n    if(t.upd){\n      var lo=null;\n      others.forEach(function(x){var v=(TRAITS[x.slug]||{}).upd; if(v&&(lo===null||v<lo)) lo=v;});\n      if(lo!==null&&t.upd-lo>=1) out.push(\"אם אתם מחזיקים מכשיר חמש שנים ויותר: עדכוני אבטחה עד \"+t.upd+\", מול \"+lo+\".\");\n    }\n    return out;\n  }\n  function whoHtml(cols,ds){\n    /* אף עמודה בלי שורה אחת = אין מה לפרש, וגם אין מה להציג. המשפט על היעדר הבדל מדיד\n       נאמר כבר למעלה, ואין טעם לומר אותו פעמיים בשתי כותרות. */\n    if(!cols.some(function(c){return c.li.length;})) return \"\";\n    return '<div class=\"dsum\"><h3>למי מתאים כל אחד</h3>'+\n      '<p class=\"lead\">מה שיש בכל אחד ואין '+(ds.length>2?'באחרים':'בשני')+', לפי המפרט. זו אינה המלצה: מה מכריע תלוי במה שחשוב לכם, ועל זה נעבור איתכם.</p>'+\n      '<div class=\"dwho n'+ds.length+'\">'+\n      cols.map(function(c){\n        return \"<div><h4>\"+ltr(c.d.name)+\"</h4>\"+(c.li.length\n          ? '<ul class=\"ticks\">'+c.li.map(function(x){return \"<li>\"+esc(x)+\"</li>\";}).join(\"\")+\"</ul>\"\n          : '<p class=\"aside\">בשדות שאפשר למדוד במספרים אין לדגם הזה יתרון כאן. מה שכן שונה בו מופיע בטבלה.</p>')+\"</div>\";\n      }).join(\"\")+\"</div></div>\";\n  }\n  function catsOf(rows){var out=[],m={};rows.forEach(function(r){if(!m[r[0]]){m[r[0]]=1;out.push(r[0]);}});return out;}\n  function syncChips(){Array.prototype.forEach.call(wrap.querySelectorAll(\".dchip\"),function(c){\n    var i=sel.indexOf(c.getAttribute(\"data-slug\"));\n    c.setAttribute(\"aria-pressed\", i>=0?\"true\":\"false\");\n    c.classList.remove(\"sc0\",\"sc1\",\"sc2\");\n    if(i>=0) c.classList.add(\"sc\"+i);});}\n  /* the selection is the whole state, so it belongs in the URL. replaceState and not pushState:\n     every chip press would otherwise become a back-button step. */\n  function syncURL(){try{history.replaceState(null,\"\",sel.length?\"?d=\"+sel.join(\",\"):location.pathname);}catch(e){}}\n  function fromURL(){try{var m=/[?&]d=([^&]+)/.exec(location.search);if(!m)return [];\n    /* גם ניפוי כפילויות. הקישור נערך ביד, ו-?d=iphone-17,iphone-17 מילא את שני התאים\n       באותו דגם. אין זוג כזה במדד, ולכן הכלי הציג \"לא הצלחנו לחשב את ההשוואה הזאת\",\n       כלומר האשים את עצמו בתקלה במקום להתמודד עם קלט. נמצא בבדיקת QA ב-16.8.2026. */\n    return decodeURIComponent(m[1]).split(\",\").filter(function(s){return !!dev(s);})\n      .filter(function(s,i,a){return a.indexOf(s)===i;}).slice(0,MAX);}catch(e){return [];}}\n\n  /* התא הוא כפתור. עד 16.8.2026 הוא היה li בלבד, כלומר טקסט אפור שנראה כמו שדה ריק ולא\n     היה אפשר להקיש עליו כלל: כלי הבדיקה של הדפדפן הראה \"Keyboard-focusable ✗\". עכשיו לחיצה\n     עליו פותחת בורר יצרן ואז דגם, וזה גם מה שהופך אותו לבולט: הוא מזמין פעולה. הכפתור\n     והמחיקה הם אחים ולא מקוננים, כי כפתור בתוך כפתור אינו HTML תקין ואינו נגיש. */\n  function renderSlots(){\n    var box=document.getElementById(\"dslots\"); if(!box) return;\n    box.hidden=false; box.className=\"dslots\"+(slots<3?\" two\":\"\"); var html=\"\";\n    for(var i=0;i<slots;i++){\n      var sl=sel[i], d=sl?dev(sl):null;\n      var open='<button type=\"button\" class=\"dopen\" data-slot=\"'+i+'\" aria-expanded=\"false\" aria-controls=\"dmenu\">';\n      html+=d\n        ? '<li class=\"dslot sc'+i+'\">'+open+pic(d,\"dpic\")+'<span class=\"dtxt\"><span class=\"lbl\">מכשיר '+SLOT[i]+'</span>'+\n          '<span class=\"nm\">'+ltr(d.name)+'</span></span><span class=\"swap\">החלפה</span></button>'+\n          '<button type=\"button\" class=\"drop\" data-drop=\"'+esc(sl)+'\" aria-label=\"הסרת '+esc(d.name_he||d.name)+' מההשוואה\">&times;</button></li>'\n        : '<li class=\"dslot empty\">'+open+'<span class=\"dplus\" aria-hidden=\"true\">+</span>'+\n          '<span class=\"dtxt\"><span class=\"lbl\">מכשיר '+SLOT[i]+'</span>'+\n          '<span class=\"nm\">'+(i<2?\"בחרו דגם\":\"אפשר גם שלישי\")+'</span></span></button></li>';\n    }\n    if(slots<MAX) html+='<li><button type=\"button\" class=\"dadd\" data-add=\"1\">הוסיפו מכשיר שלישי</button></li>';\n    box.innerHTML=html;\n    if(menuFor!==null && menuFor<slots){\n      var b=box.querySelector('.dopen[data-slot=\"'+menuFor+'\"]');\n      if(b) b.setAttribute(\"aria-expanded\",\"true\");\n    }\n  }\n\n  function render(){\n    var names=sel.map(function(s){var d=dev(s);return d?(d.name_he||d.name):s;});\n    renderSlots(); syncURL();\n    if(sel.length<2){\n      focus=null;\n      /* הפס הוא מחוון התקדמות ולא הוראה. כשאין בחירה אין מה לדווח, ולכן הוא נעלם: המשפט\n         שהיה כאן אמר \"בחרו שני דגמים\", וכך אמרו גם שני הצעדים בראש העמוד וגם השורה\n         שמתחתיו, שלוש פעמים זו מעל זו. אופק ראה את זה ב-16.8.2026. */\n      if(bar) bar.hidden=!sel.length;\n      if(sel.length) state.innerHTML=\"נבחר \"+esc(names[0])+\". בחרו עוד אחד.\";\n      /* אחרי שהטקסט נכתב ולא לפניו: גובה הפס נקבע על ידי הטקסט שבתוכו, ומדידה מוקדמת\n         נתנה 30 במקום 56. סינכרוני ולא ב-rAF, כי בלשונית ברקע rAF אינו נורה כלל. */\n      stick();\n      clear.hidden=!sel.length;\n      out.innerHTML='<p class=\"dempty\">כאן תופיע טבלת ההבדלים.</p>';\n      return;\n    }\n    if(bar) bar.hidden=false;\n    clear.hidden=false;\n    /* שדה שונה בין שלושה אם ורק אם הוא שונה באחד הזוגות. איחוד קבוצות, לא אלגוריתם חדש. */\n    var set={}, same=null, missingPair=false;\n    for(var i=0;i<sel.length;i++){for(var j=i+1;j<sel.length;j++){\n      var p=keysFor(sel[i],sel[j]);\n      if(!p){missingPair=true;continue;}\n      p.k.forEach(function(ix){set[ix]=1;});\n      if(sel.length===2) same=p.s;\n    }}\n    if(missingPair){ if(bar) bar.hidden=true;\n      out.innerHTML='<p class=\"dempty\">לא הצלחנו לחשב את ההשוואה הזאת. <a href=\"/compare/\">ההשוואות המוכנות</a> זמינות תמיד.</p>';return;}\n    var diff=ORDER.filter(function(r,ix){return set[ix];});\n    var cats=catsOf(diff);\n    /* a focus left over from the previous pair may not exist in this one */\n    if(focus && cats.indexOf(focus)<0) focus=null;\n    var shown=focus?diff.filter(function(r){return r[0]===focus;}):diff;\n    state.innerHTML=\"<b>\"+names.map(esc).join(\" מול \")+\"</b> · \"+diff.length+\" שדות שונים\"+\n      (same!==null?\" · \"+sameTxt(same):\"\");\n    /* אותה סיבה: שמות שנשברים לשתי שורות מגביהים את הפס, וראש הטבלה נדבק מתחתיו */\n    stick();\n\n    var fh='<div class=\"dfocus\"><span class=\"fl\">מה חשוב לכם:</span>'+\n      '<button type=\"button\" data-cat=\"\" aria-pressed=\"'+(focus?\"false\":\"true\")+'\">הכל ('+diff.length+')</button>';\n    cats.forEach(function(c){\n      var n=0; diff.forEach(function(r){if(r[0]===c)n++;});\n      fh+='<button type=\"button\" data-cat=\"'+esc(c)+'\" aria-pressed=\"'+(focus===c?\"true\":\"false\")+'\">'+esc(c)+' ('+n+')</button>';\n    });\n    fh+='<button type=\"button\" class=\"sep\" data-means=\"1\" aria-pressed=\"'+(means?\"true\":\"false\")+'\">כל ההסברים</button></div>';\n\n    var ds=sel.map(dev), cat=null, body=\"\", bodyOpen=false, span=ds.length+1;\n    var gaps=bigGaps(ds);\n    /* פעם אחת, ומוזן לשני הבלוקים: העליון צריך לדעת אם יש מתחתיו שורות שאינן ברשימה שלו */\n    var whoRows=ds.map(function(d){return {d:d,li:whoOf(gaps,ds,d)};});\n    var whoExtra=0;\n    whoRows.forEach(function(c){ whoExtra+=c.li.length; });\n    whoExtra=Math.max(0, whoExtra-gaps.length);\n    /* גילוי נאות. מי שקורא השוואה צריך לדעת שלכותב יש אינטרס בצד אחד, וזו בדיוק הסיבה\n       שדגם שאיננו מוכרים מסומן ולא מוסתר. אותו כלל שעמודי ההשוואה הכתובים כבר מקיימים. */\n    var refs=ds.filter(function(d){return d&&d.own===false;});\n    var disc=refs.length?'<p class=\"dnote\">'+\n      'את '+refs.map(function(d){return esc(d.name_he||d.name);}).join(' ואת ')+\n      ' איננו מוכרים, '+(refs.length===1?'והוא כאן כדי שאפשר יהיה להשוות אליו':'והם כאן כדי שאפשר יהיה להשוות אליהם')+'. את המפרט לקחנו מאתר היצרן.</p>':'';\n    shown.forEach(function(r){\n      if(r[0]!==cat){ if(bodyOpen) body+=\"</tbody>\"; cat=r[0];\n        body+='<tbody><tr class=\"grp\"><th colspan=\"'+span+'\" scope=\"rowgroup\">'+esc(cat)+\"</th></tr>\"; bodyOpen=true; }\n      var mid=\"m-\"+r[2];\n      body+='<tr class=\"vrow\"><th scope=\"row\">'+(MEANS[r[2]]\n        ? '<button type=\"button\" class=\"fx\" aria-expanded=\"false\" aria-describedby=\"'+mid+'d\" data-mean=\"'+esc(r[2])+'\">'+esc(r[1])+'<span class=\"fxi\" aria-hidden=\"true\">i</span></button>'+\n          '<span class=\"a11y-sr\" id=\"'+mid+'d\">'+esc(MEANS[r[2]])+'</span>'\n        : esc(r[1]))+\"</th>\";\n      ds.forEach(function(d){\n        var raw=d?d.spec[r[2]]:null;\n        var isEmpty=raw===null||raw===undefined||raw===\"\"||(Array.isArray(raw)&&!raw.length);\n        if(isEmpty){\n          body+='<td class=\"na\"><span aria-hidden=\"true\">\\u2013</span><span class=\"a11y-sr\">לא מפורסם אצל היצרן</span></td>';\n        } else if(Array.isArray(raw)){\n          body+=\"<td>\"+raw.map(function(x){return '<span class=\"vch\">'+ltrRuns(x)+\"</span>\";}).join(\"\")+\"</td>\";\n        } else {\n          /* the figure is given size only when whitespace follows it, so a value like 2622x1206 is\n             left as one run rather than being split at the first number */\n          var m=NUMOK[r[2]]?/^\\s*([0-9]+(?:[.,][0-9]+)?)(\\s+)([\\s\\S]+)$/.exec(String(raw)):null;\n          body+=m?'<td><b class=\"nv\">'+esc(m[1])+\"</b>\"+esc(m[2])+ltrRuns(m[3])+\"</td>\"\n                 :\"<td>\"+ltrRuns(raw)+\"</td>\";\n        }\n      });\n      body+=\"</tr>\";\n      if(means&&MEANS[r[2]]) body+='<tr class=\"mean open\" id=\"'+mid+'\"><td colspan=\"'+span+'\"><span><b>מה זה אומר</b> '+esc(MEANS[r[2]])+'</span></td></tr>';\n    });\n    if(bodyOpen) body+=\"</tbody>\";\n    /* the mark is decorative here: the device name sits right beside it, so alt stays empty */\n    var LOGO=" + json(BRAND_LOGO_CELL) + ";\n    var head='<thead><tr><th scope=\"col\">שדה</th>'+ds.map(function(d,i){\n      var b=LOGO[d.brand];\n      var mark=b?'<img class=\"blogo blogo-'+b[0]+'\" src=\"/logos/'+b[0]+'.png\" alt=\"\" width=\"'+b[1]+'\" height=\"'+b[2]+'\" loading=\"lazy\" decoding=\"async\">':\"\";\n      return '<th scope=\"col\" class=\"sc'+i+'\">'+pic(d,\"dhpic\")+mark+ltr(d.name)+\"</th>\";}).join(\"\")+\"</tr></thead>\";\n\n    var cap=focus\n      ? \"מציג את \"+esc(focus)+\" בלבד, \"+shown.length+\" שדות מתוך \"+diff.length+\" שבהם יש הבדל.\"\n      /* באפס אין מה להוסיף, ולכן המשפט נגמר. \"ו-0 שדות נוספים זהים\" נשמע כמו תקלה. */\n      : diff.length+\" שדות שבהם יש הבדל\"+(same?\", ו\"+sameMoreTxt(same)+\" ואינם מופיעים כאן\":\"\")+\".\";\n\n    var msg=\"היי, אני משווה בין \"+names.join(\" ל\")+\" ואשמח לעזרה בבחירה\";\n    var share='<div class=\"dshare\">'+\n      '<a class=\"btn btn-wa\" href=\"https://wa.me/97286812050?text='+encodeURIComponent(msg)+'\">'+\n      '<img class=\"wa-ico\" src=\"/whatsapp-logo.png\" alt=\"\" width=\"26\" height=\"26\" loading=\"lazy\" decoding=\"async\">שלחו לנו את ההשוואה</a>'+\n      '<button type=\"button\" class=\"btn btn-teal\" id=\"dcopy\">העתקת קישור להשוואה</button>'+\n      '<span class=\"dok\" id=\"dcopied\" role=\"status\"></span></div>';\n\n    /* גם ה-slug עובר esc. הוא מגיע מנתון שאנחנו מפיקים ולא מקלט משתמש, ולכן זה לא\n       מנוצל היום, אבל גרש כפול ב-slug היה שובר את המאפיין ומזריק HTML. */\n    /* הגילוי הנאות ראשון, אחריו הפרשנות, ואז הטבלה. ההבדל הגדול הוא התשובה לשאלה\n       שבשמה נכנסו, והטבלה היא הראיה שמתחתיה, בדיוק כמו בעמודי ההשוואה הכתובים. */\n    out.innerHTML=disc+gapsHtml(gaps,whoExtra)+fh+'<div class=\"cmp-wrap\" tabindex=\"0\" role=\"region\" aria-label=\"טבלת ההבדלים\">'+\n      '<table class=\"cmp cmp-grid\"><caption'+(focus?\"\":' class=\"a11y-sr\"')+\">\"+cap+\"</caption>\"+head+body+\"</table></div>\"+whoHtml(whoRows,ds)+share+\n      '<p class=\"aside\">'+ds.filter(function(d){\n        /* מכשיר ייחוס אינו מופיע כאן בכלל. אין לו עמוד ולכן אין לו קישור, ועד 17.8.2026 הוא\n           הופיע כטקסט \"איננו מוכרים אותו\" במקום קישור, כלומר אמירה על מה שאיננו מוכרים\n           בדיוק במקום שממנו אופק ביקש להוריד אותה. שמיטה אומרת פחות ומדויקת יותר. */\n        return d && d.own!==false;\n      }).map(function(d){\n        return '<a href=\"/phones/'+esc(d.slug)+'/\">המפרט המלא של '+esc(d.name_he||d.name)+\"</a>\";\n      }).join(\" · \")+\"</p>\";\n  }\n\n\n  /* ================= שלוש שכבות דביקות, ומדידה אחת שמחזיקה את כולן\n   *\n   * ההדר של האתר, פס המצב, וראש הטבלה נערמים זה מתחת לזה. עד 16.8.2026 כל אחד מהם קיבל\n   * מספר קבוע ב-CSS: 66 לפס ו-146 לראש הטבלה, ו-0 ו-80 מתחת ל-980. המספרים האלה לא\n   * הסתדרו עם המציאות באף רוחב. ב-1280 ההדר מסתיים ב-119 ולכן פס המצב שנדבק ב-66 נעלם\n   * מתחתיו, וראש הטבלה שנדבק ב-146 השאיר רצועה של 27 פיקסלים שדרכה נראו שורות הטבלה\n   * גולשות. ב-390 פס המצב נדבק ב-0, כלומר מוסתר לגמרי מאחורי ההדר.\n   *\n   * ומעבר לזה, המספרים לא היו יכולים להיות נכונים: ה-top של ההדר עצמו אינו קבוע. הוא 42,\n   * 46 או 52 לפי הרוחב ולפי הבאנר שמעליו, והבאנר הצהוב קיים בסביבת הבדיקות ולא בפרודקשן.\n   * כלומר גם אם היינו מכוונים את המספרים למסך אחד, הם היו שגויים באתר החי.\n   *\n   * לכן המדידה נעשית בזמן ריצה ונכתבת לשני משתני CSS. position:sticky חייב מספר, אבל\n   * המספר יכול לבוא ממדידה. */\n  function stick(){\n    try{\n      var root=document.documentElement, h=document.querySelector(\"header.site\"), base=0;\n      if(h){ var cs=getComputedStyle(h);\n        /* הדר שאינו דביק אינו תופס מקום בראש המסך, ואז הבסיס הוא אפס ולא הגובה שלו */\n        if(cs.position===\"sticky\"||cs.position===\"fixed\"){\n          /* הקצה התחתון בקואורדינטות המסך, ולא top+offsetHeight.\n           *\n           * ההדר נסגר בגלילה למטה עם translateY(-100%) ונשאר sticky, ולכן top ו-offsetHeight\n           * שלו אינם משתנים כלל כשהוא יורד מהמסך. הנוסחה הקודמת המשיכה לשמור לו 67 פיקסלים,\n           * ומכיוון שפס המצב נדבק מתחתם ולא מתחת להדר, נפתחה רצועה שקופה של 67 פיקסל שדרכה\n           * נראו שורות הטבלה גולשות מעל הפס. אופק צילם את זה בטלפון ב-17.8.2026.\n           *\n           * getBoundingClientRect().bottom נכון בכל שלושת המצבים: פתוח הוא top+גובה, סגור\n           * הוא הקצה של מה שמעליו (בסביבת הבדיקות הבאנר הצהוב, בפרודקשן אפס), ובאמצע המעבר\n           * הוא הערך הרגעי. max עם אפס, כי הדר שנגלל מעל ראש המסך מחזיר מספר שלילי. */\n          base=Math.max(0, h.getBoundingClientRect().bottom);\n        } }\n      var b=document.getElementById(\"dstatebar\");\n      var bh=(b&&!b.hidden)?b.offsetHeight:0;\n      root.style.setProperty(\"--pg-stick-1\", Math.round(base)+\"px\");\n      root.style.setProperty(\"--pg-stick-2\", Math.round(base+bh)+\"px\");\n    }catch(e){}\n  }\n  var stickQueued=false;\n  function stickSoon(){ if(stickQueued) return; stickQueued=true;\n    /* גם rAF וגם setTimeout, ומי שנורה ראשון מנקה את הדגל. rAF לבדו נועל: בלשונית ברקע\n       הוא אינו נורה, הדגל נשאר דלוק, וכל מדידה נוספת מדולגת לנצח. הכתיבה אידמפוטנטית\n       ולכן אין נזק אם שניהם נורים. */\n    var run=function(){ stickQueued=false; stick(); };\n    if(window.requestAnimationFrame) requestAnimationFrame(run);\n    setTimeout(run, 100); }\n  window.addEventListener(\"resize\", stickSoon);\n  /* המעבר של ההדר הוא 280ms, והגלילה יכולה להיפסק באמצעו. בלי זה הערך האחרון שנמדד הוא\n     של אמצע האנימציה, והרצועה נשארת פתוחה חלקית עד הגלילה הבאה. */\n  (function(){ var h=document.querySelector(\"header.site\");\n    if(h) h.addEventListener(\"transitionend\", function(e){ if(e.propertyName===\"transform\") stick(); }); })();\n  /* גם בגלילה: ה-top של ההדר נקבע לפי הבאנר שמעליו, והבאנר יכול להשתנות תוך כדי */\n  window.addEventListener(\"scroll\", stickSoon, {passive:true});\n  /* גם כשגובה של אחת השכבות משתנה בלי גלילה ובלי שינוי גודל חלון.\n     תפריט הנגישות מגדיל טקסט על ידי מחלקה על html, וזה אינו יורה אף אחד משני האירועים\n     שלמעלה: פס המצב גדל ל-107 ב-130 אחוז ול-163 ב-150 אחוז, וראש הטבלה נשאר נעוץ ב-191,\n     כלומר 81 פיקסל משמות הדגמים מוסתרים מאחורי הפס. זו הבקרה שהתקן מחייב, והיא זו ששברה\n     את הפריסה. אותו מנגנון מכסה גם את החלפת הגופן: אותו טקסט הוא 56 פיקסל בגופן האתר\n     ו-82 בגופן חלופי, ובטעינה קרה render יכול להקדים את הגופן. */\n  var hdr=document.querySelector(\"header.site\");\n  /* המחלקות של תפריט הנגישות. MutationObserver ולא ResizeObserver, כי RO נמסר במסגרת שלב\n     הרינדור ולכן הוא אינו נורה כשהדף אינו מרנדר, ואי אפשר לאמת אותו. MO הוא microtask.\n     stick נקרא ישירות ולא דרך stickSoon, כדי שהמדידה תקרה מיד ולא בפריים הבא. */\n  try{ if(window.MutationObserver){\n    new MutationObserver(function(){ stick(); })\n      .observe(document.documentElement,{attributes:true,attributeFilter:[\"class\"]});\n  } }catch(e){}\n  /* הגופן מגיע אחרי הצביעה הראשונה ומשנה את גובה הפס. אותו קישור שקרוסלת המבצעים\n     כבר מחזיקה, ומאותה סיבה. */\n  try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(stick).catch(function(){}); }catch(e){}\n  /* וכל שינוי גובה אחר: זום דפדפן, גלישת טקסט, תוכן שנכנס לפס. */\n  try{ if(window.ResizeObserver){\n    var ro=new ResizeObserver(stickSoon);\n    if(hdr) ro.observe(hdr);\n    if(bar) ro.observe(bar);\n  } }catch(e){}\n  stick();\n\n  /* אחרי הבחירה השנייה הטבלה יושבת מתחת לרשימה של 24 דגמים, כלומר מחוץ למסך, והמשתמש\n     היה צריך לגלול כדי לגלות שקרה משהו. behavior לא נמסר כאן בכוונה: ה-CSS כבר קובע\n     scroll-behavior:smooth ומכבה אותו תחת prefers-reduced-motion, ולכן ההעדפה נשמרת. */\n  function toResults(){try{var t=document.getElementById(\"dout\"); if(!t) return;\n    /* אותה מדידה ששתי השכבות הדביקות משתמשות בה, ועוד רווח נשימה */\n    var off=parseFloat(getComputedStyle(document.documentElement).getPropertyValue(\"--pg-stick-2\"))||146;\n    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-off-24});}catch(e){}}\n\n  wrap.addEventListener(\"click\",function(e){\n    var b=e.target.closest?e.target.closest(\".dchip\"):null;\n    if(!b||!DB) return;\n    var sl=b.getAttribute(\"data-slug\"), at=sel.indexOf(sl), was=sel.length;\n    if(at>=0) sel.splice(at,1);\n    else { if(sel.length>=slots) sel.shift(); sel.push(sl); }\n    push(\"cmp_pick\",{device:sl,action:at>=0?\"remove\":\"add\",selected:sel.length});\n    syncChips();\n    render();\n    if(was<2&&sel.length>=2) toResults();\n  });\n  /* ================= בורר היצרן והדגם\n   *\n   * דרך שנייה לבחור, לצד רשימת הצ׳יפים: לחיצה על תא פותחת רשימת יצרנים, ובחירת יצרן פותחת\n   * את הדגמים שלו. זו הדרך שמי שיודע איזה מותג הוא מחפש מצפה לה, והיא גם מה שנותן לתא\n   * הריק תפקיד. הפאנל נפתח מתחת לתאים ולא כחלונית מרחפת: אין חישוב מיקום, אין קצה מסך\n   * לטפל בו, ובטלפון זה מגירה ולא משהו שמכסה את מה שמתחתיו.\n   *\n   * הוא אינו מחליף את הרשימה למטה. לרשימה יש יתרון שלבורר אין, לראות הכול בבת אחת. */\n  var menu=document.getElementById(\"dmenu\");\n  function menuHtml(){\n    var body=\"\";\n    BRANDS.forEach(function(b){\n      var items=DB.devices.filter(function(d){return d.brand===b.brand;});\n      if(!items.length) return;\n      var open=!!menuOpen[b.brand], id=\"dmg-\"+b.brand.replace(/[^A-Za-z0-9]/g,\"\"), L=b.logo;\n      body+='<li class=\"dmnode\">'+\n        '<button type=\"button\" class=\"dmbrand\" data-brand=\"'+esc(b.brand)+'\" aria-expanded=\"'+(open?\"true\":\"false\")+'\" aria-controls=\"'+id+'\">'+\n        '<span class=\"dmtog\" aria-hidden=\"true\"></span>'+\n        (L?'<img class=\"blogo blogo-'+L[0]+'\" src=\"/logos/'+L[0]+'.png\" alt=\"\" width=\"'+L[1]+'\" height=\"'+L[2]+'\" loading=\"lazy\" decoding=\"async\">':'<span class=\"nologo\" aria-hidden=\"true\"></span>')+\n        '<span class=\"bn\">'+esc(b.brand)+'</span><span class=\"cnt\">'+(items.length===1?\"דגם אחד\":items.length+\" דגמים\")+'</span></button>'+\n        '<ul class=\"dmsub\" id=\"'+id+'\"'+(open?'':' hidden')+'>'+\n        items.map(function(d){\n          var on=sel.indexOf(d.slug)>=0;\n          /* \"כבר בהשוואה\" בלבד. התג \"לא אצלנו\" הוסר כאן יחד עם זה שברשימת הצ׳יפים. */\n          return '<li><button type=\"button\" data-pick=\"'+esc(d.slug)+'\"'+(on?' aria-current=\"true\"':'')+'>'+\n            '<span class=\"bn\">'+ltr(d.name)+'</span>'+\n            (on?'<span class=\"cnt\">כבר בהשוואה</span>':'')+'</button></li>';\n        }).join(\"\")+'</ul></li>';\n    });\n    return '<div class=\"dmhead\"><p class=\"dmtitle\">בחרו יצרן ודגם</p>'+\n      '<button type=\"button\" class=\"dmx\" aria-label=\"סגירת הבורר\">&times;</button></div>'+\n      '<ul class=\"dmlist\">'+body+'</ul>';\n  }\n  function openMenu(i){\n    if(!menu||!DB) return;\n    menuFor=i; menuOpen={};\n    /* הענף של הדגם שכבר יושב בתא נפתח מעצמו, כמו עץ תיקיות שחושף את הפריט הנוכחי */\n    var cur=sel[i]?dev(sel[i]):null; if(cur) menuOpen[cur.brand]=true;\n    menu.innerHTML=menuHtml(); menu.hidden=false;\n    renderSlots();\n    push(\"cmp_menu_open\",{slot:i});\n    var f=menu.querySelector('.dmbrand[aria-expanded=\"true\"]')||menu.querySelector(\".dmbrand\");\n    if(f) f.focus();\n  }\n  function closeMenu(back){\n    if(!menu||menuFor===null) return;\n    var i=menuFor; menuFor=null; menuOpen={};\n    menu.hidden=true; menu.innerHTML=\"\";\n    renderSlots();\n    if(back){ var b=document.querySelector('.dopen[data-slot=\"'+i+'\"]'); if(b) b.focus(); }\n  }\n  /* התא ה-i הוא הבקשה, לא הבטחה. sel נשאר רציף בכוונה: מערך עם חורים היה מגיע ל-keysFor\n     כ-undefined ומחזיר \"לא הצלחנו לחשב\", כלומר תקלה שנראית כמו באג. מי שבוחר לתא ג׳ כשיש\n     דגם אחד מקבל אותו בתא ב׳, וזה מה שהוא התכוון אליו. */\n  function setSlot(i, slug){\n    var at=sel.indexOf(slug);\n    /* הדגם כבר יושב בתא אחר: מחליפים מקומות. splice ואז השמה היו מוחקים את מי\n       שיושב בתא היעד, כלומר המשתמש ביקש להחליף דגם אחד ואיבד שניים. */\n    if(at>=0 && at!==i){\n      /* תא תפוס: מחליפים מקומות, וזו ההתנהגות שהמשתמש ביקש.\n         תא ריק שמעבר לאורך הבחירה: אין מה להעביר. הענף שהיה כאן עשה splice ואז push,\n         כלומר סידר מחדש את א׳ ו-ב׳, החליף להם צבעים ועמודות בטבלה, והשאיר את ג׳ ריקה.\n         המשתמש ביקש להוסיף ויצא עם אותם שני דגמים בסדר הפוך. הדגם כבר בהשוואה, הבורר\n         כבר מסמן אותו \"כבר בהשוואה\", ולכן התשובה הנכונה היא לא לגעת בכלום. */\n      if(i<sel.length){ sel[at]=sel[i]; sel[i]=slug; return true; }\n      return false;\n    }\n    if(at===i) return false;\n    if(i<sel.length) sel[i]=slug; else sel.push(slug);\n    if(sel.length>slots) sel.length=slots;\n    return true;\n  }\n  if(menu) menu.addEventListener(\"click\",function(e){\n    if(!e.target.closest) return;\n    /* סימון לפני כל טיפול. הבורר מחליף את ה-innerHTML של עצמו, ולכן עד שהאירוע מגיע\n       ל-document הכפתור שנלחץ כבר מנותק מהעץ ו-closest(\"#dmenu\") מחזיר null. בלי הסימון\n       הזה בחירה הייתה נחשבת ללחיצה מבחוץ וסוגרת את הבורר. */\n    e.pgInMenu=1;\n    if(e.target.closest(\".dmx\")){ closeMenu(true); return; }\n    var b=e.target.closest(\"[data-brand]\");\n    /* פתיחה וסגירה במקום, בלי לבנות את הבורר מחדש: כך הפוקוס נשאר על שורת היצרן שנלחצה,\n       מיקום הגלילה נשמר, ואפשר להחזיק כמה ענפים פתוחים יחד כמו בעץ תיקיות. */\n    if(b){ var name=b.getAttribute(\"data-brand\"), was=b.getAttribute(\"aria-expanded\")===\"true\";\n      menuOpen[name]=!was;\n      b.setAttribute(\"aria-expanded\", was?\"false\":\"true\");\n      var sub=document.getElementById(b.getAttribute(\"aria-controls\"));\n      if(sub) sub.hidden=was;\n      return; }\n    var p=e.target.closest(\"[data-pick]\");\n    if(p){ var i=menuFor, was=sel.length, sl=p.getAttribute(\"data-pick\");\n      /* בחירה שלא שינתה כלום משאירה את הבורר פתוח, כדי שלא ייראה כאילו קרה משהו.\n         זה קורה רק כשהדגם כבר בהשוואה והתא שנבחר ריק ומעבר לאורך הבחירה. */\n      if(!setSlot(i, sl)){ p.focus(); return; }\n      push(\"cmp_pick\",{device:sl,action:was>=sel.length?\"swap\":\"add\",selected:sel.length,via:\"menu\"});\n      menuFor=null; menuOpen={}; menu.hidden=true; menu.innerHTML=\"\";\n      syncChips(); render();\n      /* render בונה מחדש את התאים, ולכן מיקוד שנקבע לפניו הולך לאיבוד. כשההשוואה נפתחה\n         הפוקוס עובר אליה, כי היא התוצאה של הפעולה, ואחרת הוא חוזר לתא שממנו יצאנו. */\n      if(was<2&&sel.length>=2){\n        var reg=document.querySelector(\"#dout .cmp-wrap\");\n        if(reg&&reg.focus) try{reg.focus({preventScroll:true});}catch(err){}\n        toResults();\n      } else {\n        var back=document.querySelector('.dopen[data-slot=\"'+i+'\"]'); if(back) back.focus();\n      }\n    }\n  });\n  document.addEventListener(\"keydown\",function(e){ if(e.key===\"Escape\"&&menuFor!==null) closeMenu(true); });\n  document.addEventListener(\"click\",function(e){\n    if(menuFor===null||!e.target.closest||e.pgInMenu) return;\n    if(!e.target.closest(\".dopen\")) closeMenu(false);\n  });\n\n  /* the slot drops its own device, and the category chips and copy button live inside markup that\n     render() replaces, so both are delegated rather than bound per element */\n  var slotBox=document.getElementById(\"dslots\");\n  if(slotBox) slotBox.addEventListener(\"click\",function(e){\n    if(e.target.closest&&e.target.closest(\"[data-add]\")){slots=MAX;renderSlots();\n      push(\"cmp_add_slot\",{});\n      /* הכפתור שנלחץ נמחק ברינדור, ולכן הפוקוס עובר לתא החדש שנוצר בזכותו */\n      var na=document.querySelector('.dopen[data-slot=\"'+(MAX-1)+'\"]'); if(na) na.focus();\n      return;}\n    var o=e.target.closest?e.target.closest(\".dopen\"):null;\n    if(o){ var i=parseInt(o.getAttribute(\"data-slot\"),10);\n      if(menuFor===i) closeMenu(true); else openMenu(i); return; }\n    var b=e.target.closest?e.target.closest(\".drop\"):null; if(!b) return;\n    var at=sel.indexOf(b.getAttribute(\"data-drop\"));\n    if(at>=0){sel.splice(at,1);syncChips();render();\n      /* ה-× שנלחץ נמחק ברינדור. הפוקוס עובר לתא שממנו הוסר הדגם. */\n      var bk=document.querySelector('.dopen[data-slot=\"'+Math.min(at,slots-1)+'\"]'); if(bk) bk.focus();}\n  });\n  out.addEventListener(\"click\",function(e){\n    if(!e.target.closest) return;\n    var fx=e.target.closest(\".fx\");\n    if(fx){ /* המצב נקרא מהכפתור ולא ממשתנה משותף. focusin רץ לפני click בדפדפן\n           שממקד כפתור בלחיצה, ואז ההשוואה למשתנה הפכה את הלחיצה הראשונה לסגירה. */\n      var opening=fx.getAttribute(\"aria-expanded\")!==\"true\";\n      if(opening) push(\"cmp_explain\",{field:fx.getAttribute(\"data-mean\")||\"\"});\n      showInfo(fx,opening); return; }\n    var mb=e.target.closest(\"[data-means]\");\n    if(mb){means=!means;render();return;}\n    var f=e.target.closest(\".dfocus button\");\n    if(f){var c=f.getAttribute(\"data-cat\");focus=c||null;push(\"cmp_focus\",{category:focus||\"all\"});render();return;}\n    var waBtn=e.target.closest(\".dshare a[href*=\\\"wa.me\\\"]\");\n    if(waBtn){ push(\"cmp_share_whatsapp\",{devices:sel.join(\",\")}); return; }\n    if(e.target.closest(\"#dcopy\")){\n      push(\"cmp_copy_link\",{devices:sel.join(\",\")});\n      var note=document.getElementById(\"dcopied\");\n      var url=location.href;\n      var done=function(){if(note)note.textContent=\"הקישור הועתק\";};\n      var fail=function(){if(note)note.textContent=\"לא הצלחנו להעתיק. אפשר להעתיק מהכתובת למעלה.\";};\n      try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done,fail); else fail(); }catch(err){fail();}\n    }\n  });\n  clear.addEventListener(\"click\",function(){\n    sel=[]; slots=2;\n    Array.prototype.forEach.call(wrap.querySelectorAll(\".dchip\"),function(c){c.setAttribute(\"aria-pressed\",\"false\");});\n    if(q){q.value=\"\"; applyFilter();}\n    render();\n    /* אחרי איפוס הסינון כל הצ׳יפים גלויים שוב, ולכן הראשון תמיד קיים ובר-מיקוד */\n    var first=wrap.querySelector(\".dchip\"); if(first) first.focus();\n  });\n\n  /* סינון מהיר. 24 דגמים עוד נסרקים בעין, אבל הרשימה גדלה, ומי שיודע מה הוא מחפש לא צריך\n     לסרוק. הקבוצה כולה נעלמת כשאין בה התאמה, אחרת נשארות כותרות מותג מרחפות בלי תוכן. */\n  var q=document.getElementById(\"dq\"), noneEl=document.getElementById(\"dnone\"),\n      qh=document.getElementById(\"dqh\"), qUsed=false, qhT=0;\n  function applyFilter(){\n    if(!q) return;\n    var s=q.value.trim().toLowerCase(), shown=0;\n    Array.prototype.forEach.call(wrap.querySelectorAll(\".dgrp\"),function(g){\n      var vis=0;\n      Array.prototype.forEach.call(g.querySelectorAll(\"li\"),function(li){\n        var c=li.querySelector(\".dchip\"); if(!c) return;\n        var hit=!s||(c.getAttribute(\"data-q\")||\"\").toLowerCase().indexOf(s)>=0;\n        li.hidden=!hit; if(hit) vis++;\n      });\n      g.hidden=!vis; shown+=vis;\n    });\n    if(noneEl) noneEl.hidden=shown>0;\n    /* מודיע לקורא מסך כמה נשארו. בלי זה הקלדה בשדה משנה את הרשימה בלי שום חיווי. */\n    /* ההכרזה מושהית, הסינון עצמו לא. בלי זה הקלדת \"galaxy\" מייצרת שש הכרזות\n       בתור של קורא המסך, וכולן חוץ מהאחרונה חסרות ערך. */\n    if(qh){ clearTimeout(qhT); var msg=!s?\"\":(shown?shown+\" דגמים מוצגים\":\"אין דגם מתאים\");\n      qhT=setTimeout(function(){qh.textContent=msg;},500); }\n  }\n  /* בלי הטקסט עצמו ובלי הקשה-הקשה: השאלה היחידה שנמדדת כאן היא אם משתמשים בסינון בכלל */\n  if(q) q.addEventListener(\"input\",function(){ if(!qUsed&&q.value.trim()){qUsed=true;push(\"cmp_filter\",{});} applyFilter(); });\n\n  /* הקובץ הציבורי ולא devices.json. הפרטי מכיל _rules, _candidates_findings, spec_source,\n     commercial ו-recommendation: החלטות עסקיות עם תאריכים, מחקר מתחרים, ומקום לציטוטים של\n     ברוך וסיגל לפני אישור פרסום. הגידור של \"רק approved נכנס\" חי במחולל ה-HTML ולא בקובץ\n     ה-JSON, ולכן בקשת GET אחת הייתה מחזירה טיוטה. gen-devices.js גוזר קובץ ציבורי עם\n     ארבעת השדות שהקוד כאן באמת קורא, ולא יותר. */\n  fetch(\"/devices-public.json\",{cache:\"no-store\"}).then(function(r){return r.json();}).then(function(d){\n    DB=d;\n    /* a link like ?d=iphone-17,galaxy-s26 arrives before the data does, so the slugs can only\n       be resolved here, once dev() has something to resolve them against */\n    var pre=fromURL(); if(pre.length){sel=pre; if(sel.length>2) slots=MAX; syncChips();}\n    render();\n  }).catch(function(){\n    out.innerHTML='<p class=\"dempty\">לא ניתן לטעון את נתוני המכשירים. <a href=\"/compare/\">ההשוואות המוכנות</a> עובדות בלי הכלי.</p>';\n  });\n})();" +
+  /* הנתונים לפני הקוד. PAIRS נכתב כליטרל ולא כמחרוזת ל-JSON.parse, וזו בחירה שנמדדה ב-18.8.2026. */
+  '<script>\n(function(){\n"use strict";\n' +
+  'var PAIRS=' + json(index) + ';\n' +
+  'var ORDER=' + json(order) + ';\n' +
+  'var TRAITS=' + json(TRAITS) + ';\n' +
+  'var TDEF=' + json(CAT ? [] : TDEF) + ';\n' +
+  'var MEANS=' + json(MEANS) + ';\n' +
+  'var READY=' + json(READY) + ';\n' +
+  'var CFG=' + json(CFG) + ';\n' +
+  TOOL_CLIENT + '\npgCompareMain();\n})();\n' +
   '</scr' + 'ipt>\n\n';
 }
 
@@ -1027,13 +963,8 @@ db._comparisons.pairs.forEach(function (p) {
 
   var CSS_ANCHOR = '.ghero .btn-hero{white-space:normal;text-align:center}';
   if (h.indexOf(CSS_ANCHOR) < 0) { console.error('✗ ' + p.slug + ': לא נמצא עוגן ה-CSS'); process.exit(1); }
-  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS);
-  if (p.hero_cta && h.indexOf('.cta-line{') < 0) {
-    if (h.indexOf('.ghero .hcta{margin-top:2.2rem}') < 0) {
-      console.error('✗ ' + p.slug + ': לא נמצא עוגן CSS של .hcta'); process.exit(1);
-    }
-    h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS);
-  }
+  /* אותו גיליון כמו הכלי, כדי ששני המקומות ייראו כמו מוצר אחד */
+  h = h.replace(CSS_ANCHOR, CSS_ANCHOR + '\n' + CSS + '\n' + APP_CSS + (p.hero_cta ? '\n' + HERO_CTA_CSS : ''));
 
   var d = diffSpec(a, b, p.slug);
   if (!d.rows.length) { console.error('✗ ' + p.slug + ': אין אף שדה שונה. אין מה להשוות'); process.exit(1); }
@@ -1075,13 +1006,47 @@ if (softDiffs.length) {
 }
 
 /* ------------------------------------------------------- מרכז ההשוואות */
-if (!only) {
+if (!only && !CAT) {
   var hubDir = path.join(PROTO, 'compare');
   var hubPath = path.join(hubDir, 'index.html');
   var pairs = db._comparisons.pairs;
   var hubUrl = PROD + 'compare/';
-  var hubTitle = 'השוואות מכשירים: ' + pairs.length + ' השוואות אמיתיות בין דגמים | פון גת';
-  var hubDesc = 'השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים. רק מה שונה, בלי הכרזת מנצח, ובלי מפרט מומצא. פון גת קרית גת.';
+  /* כמה מההשוואות כוללות דגם שאיננו מוכרים. עד 18.8.2026 העמוד הצהיר "כולן בין דגמים שיש
+     לנו בחנות", וזה היה נכון עד שנוספו השוואות מול מכשירי ייחוס, ומאז זה היה לא נכון בשלוש
+     מתוך 19. הספירה נגזרת מהנתונים כדי שהמשפט יתקן את עצמו, ולא יישאר משפט קשיח ליד מספר
+     דינמי כמו שהיה. */
+  var refSlugs = {}, allSlugs = {};
+  db.devices.forEach(function (d) {
+    allSlugs[d.slug] = 1;
+    if (d.status === 'reference') refSlugs[d.slug] = 1;
+  });
+  /* שער: שני הצדדים של כל זוג חייבים להיות slug מוכר. בלעדיו טעות בשם השדה מחזירה אפס
+     בשקט, וזה קרה לי: ניגשתי ל-p[0] במקום ל-p.a, הספירה יצאה אפס, המשפט השגוי נשאר בעמוד,
+     וההרצה דיווחה הצלחה. ספירה שיכולה לצאת אפס בטעות חייבת שער, לא תיקון. */
+  pairs.forEach(function (p) {
+    if (!allSlugs[p.a] || !allSlugs[p.b]) {
+      console.error('✗ זוג השוואה עם צד שאינו slug מוכר: ' + JSON.stringify([p.a, p.b]) +
+        ' (' + (p.slug || 'בלי slug') + '). אם מבנה _comparisons.pairs השתנה, עדכן את הספירה כאן.');
+      process.exit(1);
+    }
+  });
+  var refPairs = pairs.filter(function (p) { return refSlugs[p.a] || refSlugs[p.b]; }).length;
+  /* נקבה, כי "השוואות" נקבה. מעל עשר נופל לספרות במקום להמציא מילים ארוכות. */
+  var FEM = ['אפס', 'אחת', 'שתיים', 'שלוש', 'ארבע', 'חמש', 'שש', 'שבע', 'שמונה', 'תשע', 'עשר'];
+  var refWord = refPairs <= 10 ? FEM[refPairs] : String(refPairs);
+  /* השוואות השעונים נבנות במצב --watches מ-watches.json, ומוצגות כאן במקטע משלהן כדי שיהיה
+     אליהן קישור מתוך תוכן ולא רק מהתפריט. נקרא מהקובץ ולא מועתק, כדי שלא ייפרד. הספירה בכותרת
+     כוללת אותן: עד 24.9.2026 הכותרת אמרה 22 כשהעמוד הציג 27. */
+  var catPairs = CAT_LIVE.map(function (c) {
+    var j = JSON.parse(fs.readFileSync(path.join(PROTO, c.file), 'utf8'));
+    return { cat: c, pairs: (j._comparisons && j._comparisons.pairs) || [] };
+  }).filter(function (x) { return x.pairs.length; });
+  var wp = [].concat.apply([], catPairs.map(function (x) { return x.pairs; }));
+  var hubTitle = (wp.length ? 'השוואות טלפונים, שעונים ואוזניות: ' : 'השוואות מכשירים: ') + (pairs.length + wp.length) + ' השוואות | פון גת';
+  var hubDesc = (refPairs
+    ? 'השוואות בין דגמים, לפי המפרט שהיצרנים מפרסמים. חלקן מול דגם שאיננו מוכרים, כדי שיהיה מול מה להשוות.'
+    : 'השוואות בין דגמים שנמכרים אצלנו, לפי המפרט שהיצרנים מפרסמים.') +
+    ' רק מה שונה, בלי הכרזת מנצח, ובלי מפרט מומצא. פון גת קרית גת.';
 
   /* המרכז נבנה מעמוד השוואה כדי לרשת ממנו את ה-CSS, כולל .hub */
   var hh = fs.readFileSync(path.join(PROTO, 'compare', pairs[0].slug, 'index.html'), 'utf8');
@@ -1102,7 +1067,7 @@ if (!only) {
       { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
       { '@type': 'ListItem', position: 2, name: 'השוואות', item: hubUrl }
     ] },
-    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: pairs.map(function (p, i) {
+    { '@context': 'https://schema.org', '@type': 'ItemList', itemListElement: pairs.concat(wp).map(function (p, i) {
       return { '@type': 'ListItem', position: i + 1, name: p.h1, url: PROD + 'compare/' + p.slug + '/' };
     }) }
   ];
@@ -1114,30 +1079,64 @@ if (!only) {
   var hubMain = openTag2 + '\n\n' +
     '<section class="ghero" aria-labelledby="h1">\n  <div class="wrap">\n    <div class="inner">\n' +
     '      <h1 id="h1">השוואות בין דגמים</h1>\n' +
-    '      <p class="sub">' + pairs.length + ' השוואות, כולן בין דגמים שיש לנו בחנות. בכל אחת רק השדות שבהם שני הדגמים באמת שונים, לפי המפרט שהיצרן מפרסם. אין כאן הכרזת מנצח, כי חנות שמכריזה מנצח מוכרת את המנצח.</p>\n' +
+    '      <p class="sub">' + (wp.length ? (function () {
+      /* "22 השוואות טלפונים, 5 של שעונים חכמים ו-6 של אוזניות" */
+      var parts = [pairs.length + ' השוואות טלפונים'].concat(catPairs.map(function (x) { return x.pairs.length + ' של ' + x.cat.noun; }));
+      return parts.slice(0, -1).join(', ') + ' ו-' + parts[parts.length - 1];
+    })() : pairs.length + ' השוואות') +
+    (refPairs
+      ? '. ב' + refWord + ' מ' + (wp.length ? 'השוואות הטלפונים' : 'הן') + ' אחד הדגמים אינו נמכר אצלנו, והוא שם רק כדי שיהיה מול מה להשוות'
+      : ', כולן בין ' + (wp.length ? 'טלפונים' : 'דגמים') + ' שיש לנו בחנות') +
+    '. בכל אחת רק השדות שבהם שני הדגמים באמת שונים, לפי המפרט שהיצרן מפרסם. אין כאן הכרזת מנצח, כי חנות שמכריזה מנצח מוכרת את המנצח.</p>\n' +
     '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '">' +
     '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
     '      <p class="meta">\n        <span>המפרטים מאתרי היצרנים</span>\n        <span>רק מה שונה</span>\n' +
     '        <span>בלי הכרזת מנצח</span>\n        <span>ייעוץ ללא עלות</span>\n      </p>\n    </div>\n  </div>\n</section>\n\n' +
 
+    /* כרטיסי הקטגוריות. קישורי עוגן לאותו עמוד, לא עמודים חדשים. רכיב .hub הקיים, בלי CSS חדש. */
+    '<section class="block" id="cats" aria-labelledby="h-cats">\n  <div class="wrap box">\n' +
+    '    <h2 id="h-cats">לפי קטגוריה</h2>\n' +
+    '      <ul class="hub">\n' +
+    '        <li><a href="#list"><b>השוואות טלפונים</b><span>' + pairs.length + ' השוואות בין הדגמים שבאתר</span></a></li>\n' +
+    catPairs.map(function (x) {
+      return '        <li><a href="#' + x.cat.key + '"><b>' + esc(x.cat.hubH) + '</b><span>' + x.pairs.length + ' השוואות ' + esc(x.cat.card) + '</span></a></li>\n';
+    }).join('') +
+    '      </ul>\n' +
+    '  </div>\n</section>\n\n' +
+
     '<section class="block" id="list" aria-labelledby="h-list">\n  <div class="wrap box">\n' +
-    '    <h2 id="h-list">ההשוואות</h2>\n' +
+    '    <h2 id="h-list">השוואות טלפונים</h2>\n' +
     '    <p class="lead">אם ההשוואה שאתם מחפשים אינה כאן, שלחו לנו את שני הדגמים ונעבור עליהם איתכם.</p>\n' +
     '      <ul class="hub">\n' +
     pairs.map(function (p) {
       var a = D(p.a), b = D(p.b);
       var d = diffSpec(a, b, p.slug);
       return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc((a.name_he || a.name) + ' מול ' + (b.name_he || b.name)) + '</b>' +
-        '<span>' + d.rows.length + ' שדות שונים · ' + d.same + ' זהים</span></a></li>';
+        '<span>' + d.rows.length + ' שדות שונים · ' + sameTxt(d.same) + '</span></a></li>';
     }).join('\n') + '\n      </ul>\n' +
-    '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מתוך השנים עשר, או שלושה.</p>\n' +
+    /* "מתוך השנים עשר" קפא כאן מאז שהיו 12 דגמים, והכלי מחזיק היום יותר מ-80. המספר הוסר ב-24.9.2026
+       ולא עודכן, כי מספר בפרוזה הוא עותק שני של נתון שחי במאגר. */
+    '    <p class="aside">הזוג שאתם מחפשים אינו כאן? <a href="/phones/compare/">בכלי ההשוואה</a> אפשר לבחור כל שני דגמים מהמאגר, או שלושה.</p>\n' +
     '    <p class="aside">ואם הדגם עצמו לא אצלנו באתר, <a href="' + wa('היי, אשמח להשוואה בין שני דגמים שלא מופיעים באתר') + '">שלחו לנו את שני הדגמים ב-WhatsApp</a>.</p>\n' +
     '  </div>\n</section>\n\n' +
+
+    /* מקטע לכל קטגוריה, מ-catPairs שנקרא למעלה. ה-id הוא מפתח הקטגוריה, ולכן לשעונים הוא נשאר watches */
+    catPairs.map(function (x) {
+      var c = x.cat;
+      return '<section class="block" id="' + c.key + '" aria-labelledby="h-' + c.key + '">\n  <div class="wrap box">\n' +
+        '    <h2 id="h-' + c.key + '">' + esc(c.hubH) + '</h2>\n' +
+        '    <p class="lead">' + esc(c.hubLead) + ' <a href="/' + c.path + '">' + c.link.replace(/^ל/, 'ב') + '</a> אפשר לבחור ' + c.any + '.</p>\n' +
+        '      <ul class="hub">\n' +
+        x.pairs.map(function (p) {
+          return '        <li><a href="/compare/' + p.slug + '/"><b>' + esc(p.h1) + '</b></a></li>';
+        }).join('\n') + '\n      </ul>\n' +
+        '  </div>\n</section>\n\n';
+    }).join('') +
 
     '<section class="block" id="how" aria-labelledby="h-how">\n  <div class="wrap box">\n' +
     '    <h2 id="h-how">איך בנויות ההשוואות כאן</h2>\n' +
     '    <div class="prose">\n' +
-    '      <p>כל הנתונים בטבלאות מגיעים מאתר היצרן, וליד כל טבלה כתוב מאיזה עמוד ומאיזה תאריך. שדה שהיצרן לא מפרסם מסומן כלא מפורסם, ולא מנוחש ולא נשלף מאתר אחר.</p>\n' +
+    '      <p>הנתונים בטבלאות מגיעים מאתר היצרן, ומתחת לכל טבלה כתוב מאיזה עמוד ומאיזה תאריך. כשהיצרן אינו מפרסם נתון פיזי קבוע, כמו משקל או בהירות, הוא נלקח לפעמים ממאגר מפרטים מוכר, וזה כתוב באותה שורה. שדה שאין לו מקור מסומן כלא מפורסם, ולא מנוחש.</p>\n' +
     '      <p>הטבלה מציגה רק שדות שבהם שני הדגמים שונים. אם עשרים שדות זהים בשניהם, אין טעם להציג אותם, וההצגה שלהם רק מסתירה את מה שכן שונה. מספר השדות הזהים מופיע בכל עמוד.</p>\n' +
     '      <p>בכל השוואה יש מקטע "למי עדיף כל אחד", ואין בשום עמוד קביעה מי המכשיר הטוב יותר. גם אין מחירים בטבלאות. את המחיר תקבלו מאיתנו, והוא משתנה.</p>\n' +
     '    </div>\n' +
@@ -1157,7 +1156,7 @@ if (!only) {
 
   hh = hh.slice(0, mS2) + hubMain + hh.slice(mE2);
   fs.writeFileSync(hubPath, hh);
-  console.log('✓ /compare/ נבנה: ' + pairs.length + ' השוואות ברשימה וב-ItemList');
+  console.log('✓ /compare/ נבנה: ' + pairs.length + ' השוואות טלפונים ו-' + wp.length + ' של שאר הקטגוריות, ברשימה וב-ItemList');
 
   var swPath2 = path.join(PROTO, 'sw.js'), sw2 = fs.readFileSync(swPath2, 'utf8');
   if (sw2.indexOf("'/compare/'") < 0) { fs.writeFileSync(swPath2, sw2.replace('const SHELL = [', "const SHELL = ['/compare/', ")); swGrew = true; }
@@ -1171,6 +1170,7 @@ if (!only) {
 
   buildTool();
 }
+if (CAT) buildTool();
 
 /* ============================================ D3.1 — הכלי ב-/phones/compare/
  *
@@ -1223,9 +1223,12 @@ function buildTool() {
   }
 
   var url = PROD + 'compare/';                       /* canonical לעמוד הסטטי, לא לעצמו */
-  var toolUrl = PROD + 'phones/compare/';
-  var title = 'השוואת מכשירים: בחרו שני דגמים | פון גת';
-  var desc = 'כלי להשוואה בין שני דגמים או שלושה, מתוך המכשירים שיש לנו. רק השדות שבהם הם באמת שונים.';
+  var TOOL_PATH = CAT ? CAT.path : 'phones/compare/';
+  var toolUrl = PROD + TOOL_PATH;
+  var title = CAT ? CAT.title : 'השוואת מכשירים: בחרו שני דגמים | פון גת';
+  var desc = CAT
+    ? CAT.desc
+    : 'כלי להשוואה בין שני דגמים או שלושה, מתוך המכשירים שיש לנו. רק השדות שבהם הם באמת שונים.';
   var h = src;
 
   h = swap(h, /<title>[\s\S]*?<\/title>/, '<title>' + esc(title) + '</title>', '<title>', 'tool');
@@ -1259,7 +1262,7 @@ function buildTool() {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'דף הבית', item: PROD },
       { '@type': 'ListItem', position: 2, name: 'מכשירים', item: PROD + 'phones/' },
-      { '@type': 'ListItem', position: 3, name: 'השוואת מכשירים', item: toolUrl }
+      { '@type': 'ListItem', position: 3, name: CAT ? CAT.crumb : 'השוואת מכשירים', item: toolUrl }
     ]
   }) + '\n</script>';
   h = h.replace(/<script type="application\/ld\+json">\s*\{"@context":"https:\/\/schema\.org","@type":"Product"[\s\S]*?<\/script>\s*/, '');
@@ -1329,17 +1332,30 @@ function buildTool() {
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
   h = h.slice(0, mS) + toolMain(openTag, index, order, n) + h.slice(mE);
 
-  var out = path.join(PROTO, 'phones', 'compare', 'index.html');
+  /* מצב קטגוריה: הקוד בדפדפן זהה לשלושת הכלים, וההבדלים עוברים כנתונים ב-CFG ולא כהחלפות טקסט.
+     עד 24.9.2026 היו כאן שמונה החלפות בתוך קוד מיוצר, וכל שינוי בכלי חייב לעדכן אותן. */
+  if (CAT) {
+    /* הקובץ הציבורי: רק מה שהכלי קורא, כמו devices-public.json */
+    var pub = { _: 'נגזר מ-' + CAT.file + ' על ידי gen-compare.js ' + CAT.flag + '. אל תערוך ביד.',
+      devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).sort(T.newestFirst).map(function (d) {
+        var o = { slug: d.slug, name: d.name, name_he: d.name_he || d.name, brand: d.brand, spec: d.spec };
+        if (d.launch) o.launch = d.launch;
+        return o;
+      }) };
+    fs.writeFileSync(path.join(PROTO, CAT.pub), JSON.stringify(pub) + '\n');
+  }
+
+  var out = path.join(PROTO, TOOL_PATH, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, h);
-  console.log('✓ phones/compare/ נבנה: ' + n + ' זוגות מחושבים מראש, ' + order.length + ' שדות');
+  console.log('✓ ' + TOOL_PATH + ' נבנה: ' + n + ' זוגות מחושבים מראש, ' + order.length + ' שדות');
 
   var swPath = path.join(PROTO, 'sw.js'), sw = fs.readFileSync(swPath, 'utf8');
-  if (sw.indexOf("'/phones/compare/'") < 0) { fs.writeFileSync(swPath, sw.replace('const SHELL = [', "const SHELL = ['/phones/compare/', ")); swGrew = true; }
+  if (sw.indexOf("'/" + TOOL_PATH + "'") < 0) { fs.writeFileSync(swPath, sw.replace('const SHELL = [', "const SHELL = ['/" + TOOL_PATH + "', ")); swGrew = true; }
   try {
     var sp = path.join(PROTO, 'services.json'), svc = JSON.parse(fs.readFileSync(sp, 'utf8'));
-    if (!svc.existing.filter(function (x) { return x.url === '/phones/compare/'; }).length) {
-      svc.existing.push({ url: '/phones/compare/', name: 'כלי ההשוואה', status: 'review' });
+    if (!svc.existing.filter(function (x) { return x.url === '/' + TOOL_PATH; }).length) {
+      svc.existing.push({ url: '/' + TOOL_PATH, name: CAT ? CAT.crumb : 'כלי ההשוואה', status: 'review' });
       fs.writeFileSync(sp, JSON.stringify(svc, null, 2) + '\n');
     }
   } catch (e) {}

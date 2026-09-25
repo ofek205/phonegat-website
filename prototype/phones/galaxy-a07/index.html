@@ -1583,7 +1583,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button type="button" class="ntrig" id="nd-devices-t" aria-expanded="false" aria-controls="nd-devices">מכשירים</button>
         <div class="npanel" id="nd-devices" role="group" aria-labelledby="nd-devices-t">
           <div class="nrow">
-            <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
+            <div class="ncol"><p class="nhead">אייפון</p><a href="/phones/iphone-18-pro-max/">iPhone 18 Pro Max</a><a href="/phones/iphone-18-pro/">iPhone 18 Pro</a><a href="/phones/iphone-17-pro-max/">iPhone 17 Pro Max</a><a href="/phones/iphone-17-pro/">iPhone 17 Pro</a><a href="/phones/iphone-17/">iPhone 17</a><a href="/phones/iphone-17e/">iPhone 17e</a><a href="/phones/iphone-16/">iPhone 16</a></div>
             <div class="ncol"><p class="nhead">גלקסי</p><a href="/phones/galaxy-s26-ultra/">Galaxy S26 Ultra</a><a href="/phones/galaxy-s26-plus/">Galaxy S26+</a><a href="/phones/galaxy-s26/">Galaxy S26</a><a href="/phones/galaxy-s25-fe/">Galaxy S25 FE</a><a href="/phones/galaxy-a57/">Galaxy A57</a><a href="/phones/galaxy-a56/">Galaxy A56</a><a href="/phones/galaxy-a37/">Galaxy A37</a><a href="/phones/galaxy-a36/">Galaxy A36</a><a href="/phones/galaxy-a27/">Galaxy A27</a><a href="/phones/galaxy-a17/">Galaxy A17</a><a href="/phones/galaxy-a07/" aria-current="page">Galaxy A07</a></div>
             <div class="ncol"><p class="nhead">שיאומי</p><a href="/phones/xiaomi-15/">Xiaomi 15</a><a href="/phones/redmi-note-15-pro/">Redmi Note 15 Pro</a><a href="/phones/redmi-note-15/">Redmi Note 15</a><a href="/phones/redmi-note-14-pro/">Redmi Note 14 Pro</a><a href="/phones/redmi-note-14/">Redmi Note 14</a></div>
           </div>
@@ -1647,7 +1647,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20Galaxy%20A07"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a><a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a></div>
       <p class="meta">
         <span>Samsung, Android</span>
-        <span>מפרט נבדק ב10/08/2026</span>
+        <span>הוכרז בספטמבר 2025</span>
+        <span>מפרט נבדק ב-10/08/2026</span>
         <span>מעבדה במקום, יותר מ-30 שנה</span>
         <span>ליווי לפני הקנייה ואחריה</span>
       </p>
@@ -2158,7 +2159,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><a href="/compare/galaxy-a17-vs-galaxy-a07/"><b><bdo dir="ltr">Galaxy A07</bdo> מול <bdo dir="ltr">Galaxy A17</bdo></b><span>שני המכשירים הם 4G, שניהם עם סוללה של 5000 mAh, ושניהם מקבלים שישה דורות שדרוג של מערכת ההפעלה.</span></a></li>
     </ul>
     <p class="vscta"><a class="btn btn-teal" href="/phones/compare/?d=galaxy-a07">להשוות את <bdo dir="ltr">Galaxy A07</bdo> לדגם אחר</a></p>
-    <p class="aside">הכלי מחזיק 78 דגמים, ואפשר להשוות שלושה יחד. <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>
+    <p class="aside">הכלי מחזיק 81 דגמים, ואפשר להשוות שלושה יחד. <a href="/phones/find-my-phone/">השאלון</a> מציע דגמים לפי מה שחשוב לכם.</p>
   </div>
 </section>
 
@@ -2550,7 +2551,9 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   function push(o){try{window.dataLayer=window.dataLayer||[];window.dataLayer.push(o);}catch(_){}}
   var P=location.pathname;
   var CMP=/^\/compare\/([a-z0-9-]+)-vs-([a-z0-9-]+)\/?$/;
-  var TOOL=/^\/phones\/compare\/?$/;
+  /* שלושה כלים באותו מבנה בדיוק (button.dchip, button.dopen, ?d=), ולכן אותה מדידה. מבדילים
+     ביניהם ב-page_path, שכבר עובר ל-GA4 בתגיות, כדי שלא יידרש פרמטר חדש ב-GTM. */
+  var TOOL=/^\/(phones|watches|headphones)\/compare\/?$/;
 
   /* בכל עמוד: לחיצה על קישור לכלי מסמנת מאיפה הגיעו. נקרא בעמוד הכלי ונמחק.
      sessionStorage ולא referrer לבדו, כי referrer אומר רק "מאיזה עמוד" ולא
@@ -2559,8 +2562,8 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
     try{
       var a=(e.target&&e.target.closest)?e.target.closest('a[href]'):null;
       if(!a)return;
-      if(!/\/phones\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
-      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':'other');
+      if(!/\/(phones|watches|headphones)\/compare\/?($|[?#])/.test(a.getAttribute('href')||''))return;
+      sessionStorage.setItem('pg_cmp_entry',a.closest('nav.main')?'nav':a.closest('nav.catsw')?'switch':'other');
     }catch(_){}
   },true);
 

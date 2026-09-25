@@ -245,11 +245,16 @@ function mergeNames(a, b) {
  * panels, which gen-nav also opens with `.open`. So a JS-derived name is only trusted when no target
  * page uses it. The component-scoped rules (`.pg-cpn-ov.t-olive .pg-cpn-hd`) arrive anyway through
  * the markup names, so nothing real is lost. */
+/* Refused by name, not by luck. Until 24.9.2026 `open` was dropped only because the old compare tool
+ * happened to carry `class="mean open"` inside its script, so the page scan above saw it. The tool's
+ * redesign removed that string, and the home page's `.tile.open`, `.pg-fab.open` and `.pg-panel.open`
+ * rules started landing on all 88 target pages. A generic state name is never a component. */
+const GENERIC_STATE = new Set(['open']);
 function filterJsNames(jsNames, markupNames, pageClasses) {
   const kept = new Set(), dropped = [];
   for (const c of jsNames.classes) {
     if (markupNames.classes.has(c)) continue;
-    if (pageClasses.has(c)) { dropped.push(c); continue; }
+    if (GENERIC_STATE.has(c) || pageClasses.has(c)) { dropped.push(c); continue; }
     kept.add(c);
   }
   return { names: { classes: kept, ids: new Set() }, dropped };

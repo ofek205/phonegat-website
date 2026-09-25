@@ -2,6 +2,151 @@
   "_": "נגזר אוטומטית מ-devices.json על ידי gen-devices.js. אל תערוך. מכיל רק את השדות שכלי ההשוואה קורא בזמן ריצה, וכולם מוצגים בעמודי המכשיר בכל מקרה.",
   "devices": [
     {
+      "slug": "iphone-18-pro-max",
+      "name": "iPhone 18 Pro Max",
+      "name_he": "אייפון 18 פרו מקס",
+      "brand": "Apple",
+      "spec": {
+        "screen_size": "6.9 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2868x1320 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "3000 ניט שיא בחוץ",
+        "chip": "שבב A20 Pro",
+        "cpu": "6 ליבות, 2 ליבות על ו-4 ליעילות",
+        "gpu": "7 ליבות עם מאיצים נוירונליים",
+        "ram": null,
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB",
+          "2TB"
+        ],
+        "camera_main": "ראשית 48MP Fusion ב-24 מ״מ, צמצם משתנה ƒ/1.48 עד ƒ/4.0",
+        "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות, וטלפוטו 48MP ב-100 מ״מ (4x) בצמצם ƒ/2.8",
+        "zoom": "זום אופטי 4x פנימה ו-2x החוצה, איכות אופטית עד 8x, טווח 16x",
+        "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
+        "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
+        "battery": "עד 43 שעות הפעלת וידאו לפי ההודעה של אפל בישראל. בעמוד האמריקאי, לדגם עם eSIM בלבד: עד 45",
+        "charging_wired": "עד 50 אחוז בכ-15 דקות, עם מתאם 60W ומעלה שתומך ב-Adjustable Voltage Supply",
+        "charging_wireless": "MagSafe ו-Qi2 עד 25W",
+        "dimensions": "163.4 x 78.0 x 8.75 מ״מ",
+        "weight": "249 גרם",
+        "sim": "בגרסה האמריקאית eSIM בלבד, בלי חריץ ל-SIM פיזי. הגרסה הישראלית טרם פורסמה",
+        "esim": "תמיכה בשני eSIM",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "כסוף",
+          "קרחון",
+          "בורדו"
+        ],
+        "box_contents": "מכשיר עם iOS 27 וכבל טעינה USB-C באורך מטר",
+        "model_numbers": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
+        "security_updates": null
+      },
+      "launch": "2026-09",
+      "img": 1
+    },
+    {
+      "slug": "iphone-18-pro",
+      "name": "iPhone 18 Pro",
+      "name_he": "אייפון 18 פרו",
+      "brand": "Apple",
+      "spec": {
+        "screen_size": "6.3 אינץ׳",
+        "screen_type": "Super Retina XDR OLED, כל המסך, עם Dynamic Island ותצוגה תמידית",
+        "resolution": "2622x1206 פיקסלים, 460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "3000 ניט שיא בחוץ",
+        "chip": "שבב A20 Pro",
+        "cpu": "6 ליבות, 2 ליבות על ו-4 ליעילות",
+        "gpu": "7 ליבות עם מאיצים נוירונליים",
+        "ram": null,
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB",
+          "2TB"
+        ],
+        "camera_main": "ראשית 48MP Fusion ב-24 מ״מ, צמצם משתנה ƒ/1.48 עד ƒ/4.0",
+        "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות, וטלפוטו 48MP ב-100 מ״מ (4x) בצמצם ƒ/2.8",
+        "zoom": "זום אופטי 4x פנימה ו-2x החוצה, איכות אופטית עד 8x, טווח 16x",
+        "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
+        "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
+        "battery": "עד 34 שעות הפעלת וידאו לפי ההודעה של אפל בישראל. בעמוד האמריקאי, לדגם עם eSIM בלבד: עד 36",
+        "charging_wired": "עד 50 אחוז בכ-15 דקות, עם מתאם 60W ומעלה שתומך ב-Adjustable Voltage Supply",
+        "charging_wireless": "MagSafe ו-Qi2 עד 25W",
+        "dimensions": "150.0 x 71.9 x 8.75 מ״מ",
+        "weight": "211 גרם",
+        "sim": "בגרסה האמריקאית eSIM בלבד, בלי חריץ ל-SIM פיזי. הגרסה הישראלית טרם פורסמה",
+        "esim": "תמיכה בשני eSIM",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "שחור",
+          "כסוף",
+          "קרחון",
+          "בורדו"
+        ],
+        "box_contents": "מכשיר עם iOS 27 וכבל טעינה USB-C באורך מטר",
+        "model_numbers": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
+        "security_updates": null
+      },
+      "launch": "2026-09",
+      "img": 1
+    },
+    {
+      "slug": "iphone-duo",
+      "name": "iPhone Duo",
+      "name_he": "iPhone Duo",
+      "brand": "Apple",
+      "spec": {
+        "screen_size": "7.6 אינץ׳ פתוח, 5.4 אינץ׳ סגור",
+        "screen_type": "OLED מתקפל בפנים ו-OLED בחוץ, עם תצוגה תמידית. ציפוי nano-texture על המסך הפנימי",
+        "resolution": "פנימי 1878x2670 פיקסלים ב-430 ppi, חיצוני 1398x2034 פיקסלים ב-460 ppi",
+        "refresh_rate": "ProMotion, קצב רענון משתנה עד 120Hz",
+        "brightness": "3000 ניט שיא בחוץ",
+        "chip": "שבב A20 Pro",
+        "cpu": "6 ליבות, 2 ליבות על ו-4 ליעילות",
+        "gpu": "7 ליבות עם מאיצים נוירונליים",
+        "ram": null,
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB",
+          "2TB"
+        ],
+        "camera_main": "ראשית 48MP Fusion ב-26 מ״מ, צמצם ƒ/1.6",
+        "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות. אין עדשת טלפוטו",
+        "zoom": "זום באיכות אופטית 2x פנימה ו-2x החוצה, זום דיגיטלי עד 10x",
+        "camera_front": "חיצונית 12MP Center Stage בצמצם ƒ/2.2, ופנימית מתחת למסך בצמצם ƒ/1.8",
+        "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
+        "battery": "עד 24 שעות שימוש כשמשתמשים בשני המסכים באותה מידה. עד 44 שעות הפעלת וידאו על המסך החיצוני, ועד 31 על הפנימי",
+        "charging_wired": "עד 50 אחוז בכ-20 דקות עם מתאם 60W ומעלה",
+        "charging_wireless": "MagSafe ו-Qi2 עד 25W",
+        "dimensions": "פתוח 164.6 x 117.8 x 5.2 מ״מ, סגור 84.1 x 117.8 x 11.3 מ״מ",
+        "weight": "254 גרם",
+        "sim": "eSIM בלבד, בלי חריץ ל-SIM פיזי",
+        "esim": "תמיכה בשני eSIM",
+        "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "Night Sky",
+          "Star White"
+        ],
+        "box_contents": "מכשיר עם iOS 27 וכבל טעינה USB-C באורך מטר",
+        "model_numbers": null,
+        "storage_expandable": "אין חריץ לכרטיס זיכרון",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
+        "security_updates": null
+      },
+      "launch": "2026-09",
+      "own": false
+    },
+    {
       "slug": "pixel-11-pro-xl",
       "name": "Google Pixel 11 Pro XL",
       "name_he": "גוגל פיקסל 11 פרו XL",
@@ -41,6 +186,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -83,6 +229,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -124,6 +271,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-08",
       "own": false
     },
     {
@@ -166,6 +314,7 @@
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A276B"
       },
+      "launch": "2026-06",
       "img": 1
     },
     {
@@ -212,6 +361,7 @@
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A576B"
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -257,6 +407,7 @@
         "security_updates": "עדכוני אבטחה עד 31 במרץ 2032, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A376B"
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -303,6 +454,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2026-03",
       "own": false
     },
     {
@@ -348,6 +500,7 @@
         "connectivity": "Wi-Fi 6, Bluetooth 5.3",
         "security_updates": null
       },
+      "launch": "2026-03",
       "img": 1
     },
     {
@@ -397,6 +550,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "storage_expandable": "אין חריץ לכרטיס זיכרון"
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -445,6 +599,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -493,6 +648,7 @@
         "security_updates": "עדכוני אבטחה עד 28 בפברואר 2033",
         "model_numbers": null
       },
+      "launch": "2026-02",
       "img": 1
     },
     {
@@ -539,6 +695,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2026-01",
       "img": 1
     },
     {
@@ -584,6 +741,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2026-01",
       "img": 1
     },
     {
@@ -628,6 +786,7 @@
         "security_updates": null,
         "model_numbers": "CPH2769"
       },
+      "launch": "2025-12",
       "own": false
     },
     {
@@ -673,6 +832,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-11",
       "own": false
     },
     {
@@ -698,7 +858,7 @@
         ],
         "camera_main": "מערכת 48MP Pro Fusion: ראשית 48MP ב-24 מ״מ בצמצם ƒ/1.78",
         "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות, וטלפוטו 48MP ב-100 מ״מ (4x) בצמצם ƒ/2.8",
-        "zoom": "זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x",
+        "zoom": "זום אופטי 4x פנימה ו-2x החוצה, איכות אופטית עד 8x, טווח 16x",
         "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
         "video": "4K Dolby Vision ב-24, 25, 30, 60, 100 או 120 פריימים לשנייה",
         "battery": "עד 37 שעות הפעלת וידאו",
@@ -720,6 +880,7 @@
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -744,7 +905,7 @@
         ],
         "camera_main": "מערכת 48MP Pro Fusion: ראשית 48MP ב-24 מ״מ בצמצם ƒ/1.78",
         "camera_extra": "רחבה במיוחד 48MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות, וטלפוטו 48MP ב-100 מ״מ (4x) בצמצם ƒ/2.8",
-        "zoom": "זום אופטי 4x פנימה ו-2x חוצה, איכות אופטית עד 8x, טווח 16x",
+        "zoom": "זום אופטי 4x פנימה ו-2x החוצה, איכות אופטית עד 8x, טווח 16x",
         "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
         "video": "4K Dolby Vision עד 120 פריימים לשנייה במצלמה הראשית",
         "battery": "עד 31 שעות הפעלת וידאו",
@@ -766,6 +927,7 @@
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -812,6 +974,7 @@
         "security_updates": "עדכון עד אנדרואיד 17 לפי העמוד",
         "model_numbers": null
       },
+      "launch": "2025-09",
       "own": false
     },
     {
@@ -835,7 +998,7 @@
         ],
         "camera_main": "48MP Dual Fusion, ראשית 48MP בצמצם ƒ/1.6",
         "camera_extra": "רחבה במיוחד 48MP בצמצם ƒ/2.2",
-        "zoom": "זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x",
+        "zoom": "זום אופטי 2x פנימה ו-2x החוצה, טווח אופטי 4x",
         "camera_front": "18MP Center Stage בצמצם ƒ/1.9",
         "video": "4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה. הילוך אט ב-1080p ב-120 או 240",
         "battery": "עד 30 שעות הפעלת וידאו",
@@ -859,6 +1022,7 @@
         "connectivity": "5G sub-6GHz עם 4x4 MIMO, Wi-Fi 7, Bluetooth 6",
         "security_updates": null
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -900,6 +1064,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-09",
       "own": false
     },
     {
@@ -945,6 +1110,7 @@
         "security_updates": "עדכוני אבטחה עד 31 באוגוסט 2031, ושישה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-A075F"
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -991,6 +1157,7 @@
         "security_updates": "עדכוני אבטחה עד 30 בספטמבר 2032, ועד שבעה דורות שדרוג של מערכת ההפעלה",
         "model_numbers": "SM-S731B"
       },
+      "launch": "2025-09",
       "img": 1
     },
     {
@@ -1038,6 +1205,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1090,6 +1258,7 @@
           "GN4F5"
         ]
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1134,6 +1303,7 @@
         "security_updates": "שישה דורות שדרוג של מערכת ההפעלה ושש שנים של עדכוני אבטחה מתאריך ההשקה העולמי. סמסונג אינה נוקבת בתאריך סיום מדויק בעמוד הזה, בשונה מ-A57 ומ-A37",
         "model_numbers": "SM-A175F, הדגם שסמסונג ישראל מוכרת. קיימת גם גרסת SM-A176B באותו שם מסחרי, והיא 5G"
       },
+      "launch": "2025-08",
       "img": 1
     },
     {
@@ -1180,6 +1350,7 @@
         "security_updates": "שבע שנים של עדכוני מערכת הפעלה, עדכוני אבטחה ועדכוני Pixel Drop",
         "model_numbers": null
       },
+      "launch": "2025-08",
       "own": false
     },
     {
@@ -1226,6 +1397,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1273,6 +1445,7 @@
         "security_updates": "שבע שנות עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1319,6 +1492,7 @@
           "A024"
         ]
       },
+      "launch": "2025-07",
       "own": false
     },
     {
@@ -1364,6 +1538,7 @@
         "security_updates": "עד שלושה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-04",
       "own": false
     },
     {
@@ -1409,6 +1584,7 @@
         "security_updates": "שלושה עדכוני מערכת הפעלה מובטחים",
         "model_numbers": null
       },
+      "launch": "2025-04",
       "own": false
     },
     {
@@ -1456,6 +1632,7 @@
         "security_updates": "עד ארבעה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1500,6 +1677,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1540,6 +1718,7 @@
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2032",
         "model_numbers": "SM-A566B"
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1585,6 +1764,7 @@
         "security_updates": "שישה דורות של שדרוגי אנדרואיד ושש שנים של עדכוני אבטחה. תקופת העדכונים בעמוד: עד 31 במרץ 2031",
         "model_numbers": "SM-A366B"
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1636,6 +1816,7 @@
           "SM-A266W"
         ]
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1682,6 +1863,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-03",
       "img": 1
     },
     {
@@ -1732,6 +1914,7 @@
           "G3Y12"
         ]
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1777,6 +1960,7 @@
         "security_updates": "עד שלושה עדכוני מערכת הפעלה",
         "model_numbers": null
       },
+      "launch": "2025-03",
       "own": false
     },
     {
@@ -1827,6 +2011,7 @@
           "A3410"
         ]
       },
+      "launch": "2025-02",
       "own": false
     },
     {
@@ -1869,6 +2054,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -1916,6 +2102,7 @@
         "storage_expandable": "ניתן להרחיב עד 1TB בכרטיס microSD",
         "security_updates": null
       },
+      "launch": "2025-01",
       "img": 1
     },
     {
@@ -1962,6 +2149,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2003,6 +2191,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2044,6 +2233,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "own": false
     },
     {
@@ -2091,6 +2281,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2025-01",
       "img": 1
     },
     {
@@ -2138,6 +2329,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-09",
       "own": false
     },
     {
@@ -2186,6 +2378,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-09",
       "own": false
     },
     {
@@ -2208,7 +2401,7 @@
         ],
         "camera_main": "48MP Fusion ראשית ב-26 מ״מ בצמצם ƒ/1.6",
         "camera_extra": "רחבה במיוחד 12MP ב-13 מ״מ בצמצם ƒ/2.2 בשדה ראייה 120 מעלות",
-        "zoom": "זום אופטי 2x פנימה ו-2x חוצה, טווח אופטי 4x",
+        "zoom": "זום אופטי 2x פנימה ו-2x החוצה, טווח אופטי 4x",
         "camera_front": "12MP בצמצם ƒ/1.9",
         "video": "4K Dolby Vision ב-24, 25, 30 או 60 פריימים לשנייה",
         "battery": "עד 22 שעות הפעלת וידאו",
@@ -2232,6 +2425,7 @@
         "connectivity": "Wi-Fi 7, Bluetooth 5.3",
         "security_updates": null
       },
+      "launch": "2024-09",
       "img": 1
     },
     {
@@ -2277,6 +2471,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-05",
       "own": false
     },
     {
@@ -2322,6 +2517,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-02",
       "own": false
     },
     {
@@ -2360,6 +2556,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2405,6 +2602,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2450,6 +2648,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2488,6 +2687,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2526,6 +2726,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2572,6 +2773,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2024-01",
       "own": false
     },
     {
@@ -2619,6 +2821,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2667,6 +2870,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2715,6 +2919,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2763,6 +2968,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-09",
       "own": false
     },
     {
@@ -2808,6 +3014,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-03",
       "own": false
     },
     {
@@ -2852,6 +3059,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2023-02",
       "own": false
     },
     {
@@ -2900,6 +3108,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -2948,6 +3157,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -2997,6 +3207,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -3046,6 +3257,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-09",
       "own": false
     },
     {
@@ -3092,6 +3304,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2022-03",
       "own": false
     },
     {
@@ -3141,6 +3354,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3190,6 +3404,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3239,6 +3454,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3288,6 +3504,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2021-09",
       "own": false
     },
     {
@@ -3335,6 +3552,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3382,6 +3600,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3431,6 +3650,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
@@ -3480,6 +3700,7 @@
         "security_updates": null,
         "model_numbers": null
       },
+      "launch": "2020-10",
       "own": false
     },
     {
