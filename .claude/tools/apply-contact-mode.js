@@ -10,9 +10,14 @@
  * controls back.
  *
  * PHONE_CALLS_ENABLED true: those markers become call controls again.
+ * Copy is restored only from the exact sentences this script rewrote.
+ * A bare "שלחו הודעה ב-WhatsApp" is also the label of WhatsApp buttons that
+ * were already WhatsApp, so it is never used as a reversible token.
  *
- * JSON-LD telephone stays +972-8-6812050 either way. The mobile number is not
- * put back into structured data.
+ * JSON-LD: while calls are off, the mobile +972-52-5893366 becomes the
+ * landline. Turning calls back on restores that mobile in the same places
+ * production had it (the store telephone and servicePhone). The contactPoint
+ * landline is left as it was.
  *
  * Titles, meta descriptions, H1s, canonicals, the sitemap and redirects are
  * not touched. The lead-tracking block is not touched.
@@ -21,13 +26,13 @@
 var fs = require('fs');
 var path = require('path');
 var ROOT = path.join(__dirname, '..', '..');
-var PROTO = path.join(ROOT, 'prototype');
-var FLAG = path.join(PROTO, 'contact-mode.js');
+var PROTO = process.env.PG_PROTO || path.join(ROOT, 'prototype');
+var FLAG = path.join(ROOT, 'prototype', 'contact-mode.js');
 
 var flagSrc = fs.readFileSync(FLAG, 'utf8');
 var flag = flagSrc.match(/window\.PG_PHONE_CALLS_ENABLED\s*=\s*(true|false)/);
 if (!flag) { console.error('missing window.PG_PHONE_CALLS_ENABLED'); process.exit(1); }
-var ON = flag[1] === 'true';
+var ON = process.env.PG_CALLS === '1' ? true : process.env.PG_CALLS === '0' ? false : flag[1] === 'true';
 
 var WA = 'https://wa.me/97286812050';
 var CALL = '<a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
@@ -42,7 +47,12 @@ var FORM_TEL = ' · <a href="tel:+972525893366"><span dir="ltr">052-5893366</spa
 var FOOT_ON = '<li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li>';
 var FOOT_OFF = '<li data-pg-was-phones="1"><a href="' + WA + '">WhatsApp</a></li>';
 var LEGAL_ON = '<span class="k">טלפון:</span> <span><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a> · <a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></span>';
-var LEGAL_OFF = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '">כתבו לנו ב-WhatsApp</a></span>';
+var LEGAL_OFF_OLD = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '">כתבו לנו ב-WhatsApp</a></span>';
+var LEGAL_OFF = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '"><bdo dir="ltr">08-6812050</bdo></a></span>';
+/* Privacy has no email line on production. While calls are off, the privacy
+   officer block keeps the address that already appears on the accessibility page. */
+var PRIV_FORM = '<li><span class="k">טופס באתר:</span> <span><a href="/contact/">טופס יצירת קשר</a></span></li>';
+var PRIV_MAIL = '<li><span class="k">דוא"ל:</span> <span><a href="mailto:sigalad2@gmail.com"><bdo dir="ltr">sigalad2@gmail.com</bdo></a></span></li>\n        ' + PRIV_FORM;
 var REV_ON = '<div class="rev-cta"><a class="btn btn-teal" href="tel:+972525893366">חייגו עכשיו</a></div>';
 var REV_OFF = '<div class="rev-cta"><a class="btn btn-wa" href="' + WA + '"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a></div>';
 var MAP_ON = '<b>טלפון:</b> <bdo dir="ltr">052-5893366</bdo> · <bdo dir="ltr">08-6812050</bdo>';
@@ -50,12 +60,25 @@ var MAP_OFF = '<b>WhatsApp:</b> <a href="' + WA + '">כתבו לנו ב-WhatsApp
 var GRID_ON = 'grid-template-columns:1fr 1fr 1fr;background:#fff';
 var GRID_OFF = 'grid-template-columns:1fr 1fr;background:#fff';
 
-/* Longer phrases first, so a shorter one cannot eat part of a longer one. */
+/* Each off-string is unique to text this script rewrote. The button label
+   "שלחו הודעה ב-WhatsApp" already existed on production, so it is not a pair. */
 var COPY = [
-  ['חייגו 052-5893366 או שלחו WhatsApp', 'שלחו הודעה ב-WhatsApp'],
-  ['או חייגו 052-5893366', 'או כתבו לנו ב-WhatsApp'],
+  ['המחיר משתנה לפי דגם המכשיר וסוג התקלה. חייגו 052-5893366 או שלחו WhatsApp ונשמח לתת הצעת מחיר מדויקת ומהירה, בלי התחייבות.',
+   'המחיר משתנה לפי דגם המכשיר וסוג התקלה. שלחו הודעה ב-WhatsApp ונשמח לתת הצעת מחיר מדויקת ומהירה, בלי התחייבות.'],
   ['בינתיים חייגו 052-5893366 או שלחו WhatsApp.', 'בינתיים שלחו הודעה ב-WhatsApp.'],
-  ['משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.', 'משהו השתבש בשליחה. שלחו הודעה ב-WhatsApp.']
+  ['משהו השתבש בשליחה. חייגו 052-5893366 או שלחו WhatsApp.', 'משהו השתבש בשליחה. שלחו הודעה ב-WhatsApp.'],
+  ['או חייגו 052-5893366', 'או כתבו לנו ב-WhatsApp'],
+  ['מי שמעדיף פשוט להתקשר או לשלוח הודעה, מוזמן', 'מי שמעדיף פשוט לשלוח הודעה ב-WhatsApp, מוזמן']
+];
+var SCHEMA_MOBILE = '+972-52-5893366';
+var SCHEMA_LAND = '+972-8-6812050';
+var SCHEMA_PAIRS = [
+  ['"logo":"https://www.phonegat.co.il/logo-mark.png","telephone":"' + SCHEMA_MOBILE + '"',
+   '"logo":"https://www.phonegat.co.il/logo-mark.png","telephone":"' + SCHEMA_LAND + '"'],
+  ['"description":"מעבדת הסלולר הוותיקה בקרית גת וכרמי גת: תיקון, מכירת מכשירים, סלקום וכל חברות הסלולר.","telephone":"' + SCHEMA_MOBILE + '"',
+   '"description":"מעבדת הסלולר הוותיקה בקרית גת וכרמי גת: תיקון, מכירת מכשירים, סלקום וכל חברות הסלולר.","telephone":"' + SCHEMA_LAND + '"'],
+  ['"servicePhone":{"@type":"ContactPoint","telephone":"' + SCHEMA_MOBILE + '"',
+   '"servicePhone":{"@type":"ContactPoint","telephone":"' + SCHEMA_LAND + '"']
 ];
 
 function walk(d, o) {
@@ -87,6 +110,8 @@ function towardOff(s, file) {
   s = swapRe(s, /<a href="tel:\+972525893366"><span class="mi"[\s\S]*?<\/a>/g, '<!--pg-call-mbar-->');
   s = swap(s, FOOT_ON, FOOT_OFF);
   s = swap(s, LEGAL_ON, LEGAL_OFF);
+  s = swap(s, LEGAL_OFF_OLD, LEGAL_OFF);
+  s = swap(s, fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_FORM), fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_MAIL));
   s = swapRe(s, /<a class="ch" data-pg-cta="phone"[\s\S]*?<\/a>/g, '<!--pg-call-ch-->');
   s = swap(s, FORM_TEL, '<!--pg-call-form-->');
   s = swap(s, MAP_ON, MAP_OFF);
@@ -105,7 +130,9 @@ function towardOn(s, file) {
   s = swap(s, '<!--pg-call-form-->', FORM_TEL);
   s = swap(s, REV_OFF, REV_ON);
   s = swap(s, FOOT_OFF, FOOT_ON);
+  s = swap(s, fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_MAIL), fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_FORM));
   s = swap(s, LEGAL_OFF, LEGAL_ON);
+  s = swap(s, LEGAL_OFF_OLD, LEGAL_ON);
   s = swap(s, MAP_OFF, MAP_ON);
   s = swap(s, GRID_OFF, GRID_ON);
   COPY.forEach(function (p) { s = swap(s, p[1], p[0]); });
@@ -116,8 +143,8 @@ var changed = 0, telLeft = [];
 walk(PROTO, []).forEach(function (f) {
   var orig = fs.readFileSync(f, 'utf8');
   var s = ON ? towardOn(orig, orig) : towardOff(orig, orig);
-  /* Structured data keeps the landline. The mobile is dropped and not restored. */
-  s = swap(s, '+972-52-5893366', '+972-8-6812050');
+  if (ON) SCHEMA_PAIRS.forEach(function (p) { s = swap(s, p[1], p[0]); });
+  else s = swap(s, SCHEMA_MOBILE, SCHEMA_LAND);
   if (s.indexOf('/contact-mode.js') < 0 && s.indexOf('</head>') >= 0) {
     var br = orig.indexOf('\r\n') >= 0 ? '\r\n' : '\n';
     s = s.replace('</head>', '<script src="/contact-mode.js"></script>' + br + '</head>');

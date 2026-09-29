@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:7be917795325bdf2 */
+/* sha1:7365b670614dbdab */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -50,12 +50,14 @@
     if(!callsOn()) return openNow()?'אנחנו פתוחים עכשיו, כתבו לנו ב-WhatsApp:':'אנחנו סגורים כרגע. השאירו פרטים ונחזור אליכם, או שלחו WhatsApp:';
     return openNow()?'אנחנו פתוחים עכשיו, אפשר לחייג ישירות:':'אנחנו סגורים כרגע. השאירו פרטים ונחזור אליכם, או שלחו WhatsApp:';
   }
-  function contactCta(){return openNow()?(callsOn()?['wa','tel']:['wa']):['wa','callback'];}
-  /* A tel action beside WhatsApp becomes WhatsApp, and the duplicate is dropped. */
+  function contactCta(){return openNow()?(callsOn()?['wa','tel']:['wa']):(callsOn()?['wa','callback']:['wa']);}
+  /* A tel action beside WhatsApp becomes WhatsApp, and the duplicate is dropped.
+     A callback chip is a phone call, so it is omitted while calls are off. */
   function ctaFor(list){
     if(!list||callsOn()) return list;
     var out=[], seen={};
     for(var i=0;i<list.length;i++){
+      if(list[i]==='callback') continue;
       var t=list[i]==='tel'?'wa':list[i];
       if(seen[t]) continue;
       seen[t]=1; out.push(t);
@@ -122,7 +124,10 @@
   function down(){msgs.scrollTop=msgs.scrollHeight;}
   function waHref(txt){return WA+'?text='+encodeURIComponent(txt||('היי, הגעתי דרך האתר של פון גת. '+(lastUser?('השאלה שלי: '+lastUser):'רציתי לשאול שאלה.')));}
   function ctaEl(type,waText){
-    if(type==='callback'){var btn=document.createElement('button');btn.type='button';btn.className='tel';btn.innerHTML=telSvg+'שיחה חוזרת';btn.addEventListener('click',function(){startLead(ctx.topic||'כללי');});return btn;}
+    if(type==='callback'){
+      if(!callsOn()) return null;
+      var btn=document.createElement('button');btn.type='button';btn.className='tel';btn.innerHTML=telSvg+'שיחה חוזרת';btn.addEventListener('click',function(){startLead(ctx.topic||'כללי');});return btn;
+    }
     var a=document.createElement('a');a.target='_blank';a.rel='noopener';
     if(type==='wa'){a.className='wa';a.href=waHref(waText);a.innerHTML=waSvg+'WhatsApp';a.addEventListener('click',function(){track('chat_whatsapp',{topic:ctx.topic||''});});}
     else if(type==='tel'){
@@ -141,7 +146,7 @@
     var d=dirOf(text);b.style.direction=d;b.style.textAlign=(d==='rtl'?'right':'left');
     var s=document.createElement('span');s.textContent=text;b.appendChild(s);
     cta=ctaFor(cta);
-    if(cta&&cta.length){var box=document.createElement('div');box.className='pg-cta';for(var i=0;i<cta.length;i++)box.appendChild(ctaEl(cta[i],waText));b.appendChild(box);}
+    if(cta&&cta.length){var box=document.createElement('div');box.className='pg-cta';for(var i=0;i<cta.length;i++){var el=ctaEl(cta[i],waText);if(el)box.appendChild(el);}if(box.children.length)b.appendChild(box);}
     var t=document.createElement('span');t.className='t';t.textContent=nowT();b.appendChild(t);
     msgs.appendChild(b);down();
   }
@@ -149,7 +154,7 @@
   function suggestChips(items){
     var barLabels=CHIPS.map(function(id){return LABELS[id]||id;});
     var list=[];
-    for(var i=0;i<items.length;i++){var itm=items[i],lbl=(typeof itm==='string')?(LABELS[itm]||itm):itm[0];if(barLabels.indexOf(lbl)<0)list.push(itm);}
+    for(var i=0;i<items.length;i++){var itm=items[i];if(!callsOn()&&itm==='callback')continue;var lbl=(typeof itm==='string')?(LABELS[itm]||itm):itm[0];if(barLabels.indexOf(lbl)<0)list.push(itm);}
     if(!list.length)return;
     /* **הצעות של תורות קודמים מושבתות ברגע שיש חדשות.**
      * נמדד בשיחה אחת: 32 צ'יפים פעילים מ-12 תורות, ו-46 פקדים ברי פוקוס בתוך הפאנל.
@@ -1049,7 +1054,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
        other copy went into localStorage.pg_leads, a key nothing in the project ever read.
        So the lead was lost while the customer was told it arrived. */
     var failed=function(){
-      botReply('רגע, השליחה לא עברה והפרטים לא הגיעו אלינו. הדרך הבטוחה עכשיו היא WhatsApp או טלפון:',
+      botReply(callsOn()?'רגע, השליחה לא עברה והפרטים לא הגיעו אלינו. הדרך הבטוחה עכשיו היא WhatsApp או טלפון:':'רגע, השליחה לא עברה והפרטים לא הגיעו אלינו. הדרך הבטוחה עכשיו היא WhatsApp:',
         {cta:['wa','tel'],waText:'שיחה חוזרת מהאתר\nשם: '+name+'\nטלפון: '+phone+'\nנושא: '+topic});
     };
     /* Same rule as the contact form: a chat lead from staging must not reach the inbox.
@@ -1216,7 +1221,7 @@ var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדב�
     fallback();
   }
 
-  var CHIPS=['repair','buy','celcom','hours','callback'];
+  var CHIPS=['repair','buy','celcom','hours','callback'].filter(function(id){return callsOn()||id!=='callback';});
   (function(){for(var i=0;i<CHIPS.length;i++){(function(id){
     var b=document.createElement('button');b.type='button';b.className='pg-chip';b.textContent=LABELS[id]||id;
     b.addEventListener('click',function(){flow=null;lastUser=LABELS[id];bubble(LABELS[id],'user');doTopic(id);focusInput();});
