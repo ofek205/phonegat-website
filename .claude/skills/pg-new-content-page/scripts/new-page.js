@@ -18,6 +18,7 @@
  */
 'use strict';
 var fs = require('fs'), path = require('path');
+var CM = require(path.join(__dirname, '..', '..', '..', 'tools', 'lib', 'contact-mode.js'));
 
 var ROOT = path.resolve(__dirname, '..', '..', '..', '..');   /* repo root */
 var PROTO = path.join(ROOT, 'prototype');
@@ -186,7 +187,7 @@ var skeleton = openTag + '\n\n' +
 '    <p>TODO. אנחנו כאן ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
 '    <div class="row">\n' +
 '      <a class="btn btn-wa" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>\n' +
-'      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+CM.callLine('      ') +
 '      <a class="btn btn-teal" href="/#services">כל השירותים שלנו</a>\n' +
 '    </div>\n' +
 '    <p class="fine">האבחון וההצעה אצלנו ללא עלות וללא התחייבות.</p>\n' +

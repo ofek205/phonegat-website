@@ -17,6 +17,7 @@
 'use strict';
 var fs = require('fs'), path = require('path');
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
+var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
 var ROOT = path.resolve(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 var SOURCE = 'guides/official-vs-parallel-import/index.html';  /* המסגרת + ה-CSS של הטבלה */
@@ -375,7 +376,7 @@ function buildMain(d, openTag, K) {
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
   '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>\n' +
-  '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+  CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
   '    <p class="fine">הייעוץ לפני קנייה ללא עלות וללא התחייבות.</p>\n' +
@@ -391,7 +392,7 @@ function heroBlock(d) {
   var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
   var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
-  var call = '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
+  var call = CM.callHeroInline();
   var c = d.seo && d.seo.hero_cta;
   var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי');
   var invite = c && c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';

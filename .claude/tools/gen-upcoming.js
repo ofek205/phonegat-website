@@ -24,6 +24,7 @@
  * ========================================================================== */
 'use strict';
 var fs = require('fs'), path = require('path');
+var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
 var ROOT = path.join(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 var DATA = path.join(ROOT, '.claude', 'data', 'upcoming.json');
@@ -259,7 +260,7 @@ function buildMain(pg) {
     '    <p>אפשר לשאול אותנו על כל דגם, גם על כאלה שעוד לא יצאו, ולהשוות מול מה שכבר יש. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + esc(wa(pg.wa)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>\n' +
-    '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+    CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
     '    </div>\n' +
     '    <p class="fine">' + esc(FINE) + '</p>\n' +
