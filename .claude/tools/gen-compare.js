@@ -31,6 +31,7 @@ var PROD = 'https://www.phonegat.co.il/';
 var SOURCE = 'phones/iphone-17/index.html';
 
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
+var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
 var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 /* מצב שעונים, נוסף ב-24.9.2026: node gen-compare.js --watches בונה את /watches/compare/ מתוך
    prototype/watches.json, באותו קוד ובאותו עיצוב כמו כלי הטלפונים. השעונים בקובץ נפרד ולא ב-
@@ -327,9 +328,7 @@ function heroBlock(p, waPick) {
   if (!c) return '';
   var label = c.wa_label || 'עזרו לי לבחור';
   var invite = c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
-  var call = c.call
-    ? '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>'
-    : '';
+  var call = c.call ? CM.callHeroInline() : '';
   var micro = c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
   return '    <div class="hcta">' + invite +
     '<a class="btn btn-wa btn-hero" href="' + waPick + '">' +
@@ -512,7 +511,7 @@ function buildMain(p, a, b, d, openTag) {
     })() +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
-    '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+    CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>\n' +
     '    </div>\n' +
     '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
@@ -934,7 +933,7 @@ function toolMain(openTag, index, order, pairCount) {
       '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n') +
   '    <div class="row">\n' +
   '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
-  '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+  CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/compare/">ההשוואות המוכנות</a>\n' +
   '    </div>\n' +
   '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +
@@ -1181,7 +1180,7 @@ if (!only && !CAT) {
     '    <p>תגידו לנו בין מה למה, ומה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
-    '      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+    CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
     '    </div>\n' +
     '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +

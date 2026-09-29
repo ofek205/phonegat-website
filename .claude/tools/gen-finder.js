@@ -35,6 +35,7 @@
  */
 'use strict';
 var fs = require('fs'), path = require('path');
+var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
 var ROOT = path.resolve(__dirname, '..', '..');
 var PROTO = path.join(ROOT, 'prototype');
 var PROD = 'https://www.phonegat.co.il/';
@@ -363,7 +364,7 @@ QUESTIONS.map(function (q) {
 '    <p>אפשר גם לדלג על השאלון ופשוט לספר לנו מה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
 '    <div class="row">\n' +
 '      <a class="btn btn-wa" href="' + waGeneric + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">דברו איתנו ב-WhatsApp</a>\n' +
-'      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>\n' +
+CM.callLine('      ') +
 '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
 '    </div>\n' +
 '    <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>\n' +

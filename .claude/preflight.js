@@ -2058,6 +2058,69 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 43. שיחות כבויות: אין tel: גלוי, והנייד לא ב-JSON-LD ----------
+ * prototype/contact-mode.js הוא המתג. כשהוא false, apply-contact-mode.js מוריד
+ * כל קישור חיוג גלוי. בלי הבדיקה אפשר להפוך את הדגל בלי להריץ את הסקריפט,
+ * והאתר ימשיך להציג חיוג. כשהדגל true חייבים להישאר כפתורי חיוג, והנייד חוזר
+ * ל-JSON-LD למקום שהיה בו בפרודקשן. בעמודי הפרטיות והנגישות המספר 08-6812050
+ * מוצג כטקסט של קישור WhatsApp, בלי tel:. */
+(function () {
+  var cm;
+  try { cm = read('prototype/contact-mode.js'); }
+  catch (e) { bad('חסר prototype/contact-mode.js'); return; }
+  var m = cm.match(/window\.PG_PHONE_CALLS_ENABLED\s*=\s*(true|false)/);
+  if (!m) { bad('contact-mode.js בלי window.PG_PHONE_CALLS_ENABLED'); return; }
+  var on = m[1] === 'true';
+  var telPages = [], missingTel = [], shown = [], schema = [], missing = [];
+  pageFiles.forEach(function (rel) {
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { return; }
+    var hasTel = /href\s*=\s*["']tel:/i.test(s);
+    if (hasTel) telPages.push(rel);
+    else missingTel.push(rel);
+    if (s.indexOf('+972-52-5893366') >= 0) schema.push(rel);
+    if (s.indexOf('/contact-mode.js') < 0) missing.push(rel);
+    var vis = s.replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<meta\b[^>]*>/gi, ' ')
+      .replace(/<title[\s\S]*?<\/title>/gi, ' ')
+      .replace(/<!--[\s\S]*?-->/g, ' ');
+    if (!on && vis.indexOf('052-5893366') >= 0) shown.push(rel);
+    if (!on && vis.indexOf('08-6812050') >= 0 && rel !== 'privacy.html' && rel !== 'accessibility.html') shown.push(rel);
+  });
+  var problems = false;
+  if (!on && telPages.length) {
+    problems = true;
+    bad('PHONE_CALLS_ENABLED=false אבל נשארו קישורי tel: ב-' + telPages.slice(0, 4).join(', ') +
+      (telPages.length > 4 ? ' ועוד' : '') + '. הרץ node .claude/tools/apply-contact-mode.js');
+  }
+  if (on && missingTel.length) {
+    problems = true;
+    bad('PHONE_CALLS_ENABLED=true אבל אין קישור חיוג ב-' + missingTel.slice(0, 4).join(', '));
+  }
+  if (!on && shown.length) {
+    problems = true;
+    bad('מספר טלפון מוצג נשאר בגוף העמוד: ' + shown.slice(0, 4).join(', '));
+  }
+  if (!on && schema.length) {
+    problems = true;
+    bad('הנייד נשאר בנתונים המובנים: ' + schema.slice(0, 4).join(', '));
+  }
+  if (on && !schema.length) {
+    problems = true;
+    bad('שיחות פעילות אבל הנייד לא חזר ל-JSON-LD. הרץ node .claude/tools/apply-contact-mode.js');
+  }
+  if (missing.length) {
+    problems = true;
+    bad('contact-mode.js לא נטען ב-' + missing.length + ' עמודים, למשל ' + missing.slice(0, 3).join(', '));
+  }
+  if (!problems) {
+    ok(on
+      ? 'שיחות פעילות, והנייד חזר ל-JSON-LD'
+      : pageFiles.length + ' עמודים בלי קישור tel: גלוי ובלי המספר הנייד ב-JSON-LD');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
