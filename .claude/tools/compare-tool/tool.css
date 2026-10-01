@@ -15,6 +15,17 @@
 .cv-top .catsw a[aria-current="page"]{background:#fff;color:var(--cv-dark);font-weight:800}
 .cv-top .catsw a:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .cv-top .cv-sub{margin:.7rem 0 0;color:rgba(255,255,255,.86);font-size:1.02rem;line-height:1.6;max-inline-size:70ch}
+.cv-trust{margin:.45rem 0 0;color:rgba(255,255,255,.9);font-size:.95rem;line-height:1.45}
+.cv-trust a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:.18em;padding-block:.55rem}
+.cv-trust a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cv-herocta{margin:1rem 0 0}
+.cv-lead{min-height:44px}
+.cv-ask{margin:1.6rem 0 .2rem;padding-block-start:1.2rem;border-block-start:1px solid var(--line);max-inline-size:42rem}
+.cv-ask p{margin:0 0 .85rem;font-size:1.05rem;line-height:1.7;color:var(--ink)}
+@media(max-width:720px){
+.cv-trust{font-size:.84rem}
+.cv-herocta .cv-lead,.cv-ask .cv-lead,.cta .cv-lead{box-sizing:border-box;width:100%;text-align:center}
+}
 .cv-cards{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;gap:14px;margin-block-start:1.3rem}
 .cv-card{min-height:88px;box-sizing:border-box;padding:14px 18px;border:0;border-radius:10px;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:start;font:inherit;color:var(--ink-strong);inline-size:100%}
 .cv-card[data-slot="0"]{box-shadow:inset 0 -5px 0 var(--cv-a-edge)}
@@ -209,8 +220,9 @@ a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .cv-app .two .cv-a h3{border-bottom-color:var(--cv-a)}
 .cv-app .two .cv-b h3{border-bottom-color:var(--cv-b)}
 .cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
-/* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
-@media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
+/* בטלפון ההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון.
+   כפתור ה-WhatsApp אינו בתוך השורה: תווית ארוכה הייתה נחתכת או נעלמת. */
+@media(max-width:720px){.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
 /* הצד השלישי. כחול מפלטת Okabe-Ito, שנבנתה כדי להיבדל בכל סוגי עיוורון הצבעים, מול הסגול והכתום.
    הצבע אינו הסימן היחיד: שם הדגם מופיע ליד כל ערך. */
 .cv-card[data-slot="2"]{box-shadow:inset 0 -5px 0 var(--cv-c-edge)}

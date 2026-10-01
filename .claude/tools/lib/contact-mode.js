@@ -17,12 +17,15 @@ var PHONE_CALLS_ENABLED = enabled();
 var CALL = '<a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 var CALL_HERO = '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 
+/* כשהשיחות כבויות המחולל כותב את אותו סימון ש-apply-contact-mode.js משאיר אחרי
+   שהסיר כפתור חיוג. בלי הסימון הרצה מחדש בזמן ש-PG_PHONE_CALLS_ENABLED=false
+   מוחקת את המקום שאליו הכפתור אמור לחזור, והשחזור כבר לא יכול להיות מדויק. */
 function callLine(indent) {
-  if (!PHONE_CALLS_ENABLED) return '';
+  if (!PHONE_CALLS_ENABLED) return (indent || '') + '<!--pg-call-->\n';
   return (indent || '') + CALL + '\n';
 }
 function callHeroInline() {
-  return PHONE_CALLS_ENABLED ? CALL_HERO : '';
+  return PHONE_CALLS_ENABLED ? CALL_HERO : '<!--pg-call-hero-->';
 }
 
 module.exports = {

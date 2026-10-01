@@ -2548,9 +2548,11 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
       var href=a.getAttribute('href')||'';
       var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
       if(!isTel&&!isWa)return;
-      var loc='content',i;
+      /* data-pg-loc על הקישור גובר על רשימת המקומות, כדי ששני כפתורי WhatsApp באותו עמוד ייספרו לחוד */
+      var loc=a.getAttribute('data-pg-loc')||'',i;
+      if(!loc){loc='content';
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
-      if(loc==='content'&&a.closest('footer'))loc='footer';
+      if(loc==='content'&&a.closest('footer'))loc='footer';}
       var method=isTel?'phone':'whatsapp';
       /* a.href ולא ה-attribute: הכתובת המלאה אחרי פתרון, כפי שהיא בפועל */
       var url=a.href||href, pagePath=location.pathname;
