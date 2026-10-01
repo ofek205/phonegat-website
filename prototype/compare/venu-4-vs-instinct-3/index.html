@@ -455,6 +455,17 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 .cv-top .catsw a[aria-current="page"]{background:#fff;color:var(--cv-dark);font-weight:800}
 .cv-top .catsw a:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .cv-top .cv-sub{margin:.7rem 0 0;color:rgba(255,255,255,.86);font-size:1.02rem;line-height:1.6;max-inline-size:70ch}
+.cv-trust{margin:.45rem 0 0;color:rgba(255,255,255,.9);font-size:.95rem;line-height:1.45}
+.cv-trust a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:.18em;padding-block:.55rem}
+.cv-trust a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cv-herocta{margin:1rem 0 0}
+.cv-lead{min-height:44px}
+.cv-ask{margin:1.6rem 0 .2rem;padding-block-start:1.2rem;border-block-start:1px solid var(--line);max-inline-size:42rem}
+.cv-ask p{margin:0 0 .85rem;font-size:1.05rem;line-height:1.7;color:var(--ink)}
+@media(max-width:720px){
+.cv-trust{font-size:.84rem}
+.cv-herocta .cv-lead,.cv-ask .cv-lead,.cta .cv-lead{box-sizing:border-box;width:100%;text-align:center}
+}
 .cv-cards{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;gap:14px;margin-block-start:1.3rem}
 .cv-card{min-height:88px;box-sizing:border-box;padding:14px 18px;border:0;border-radius:10px;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:start;font:inherit;color:var(--ink-strong);inline-size:100%}
 .cv-card[data-slot="0"]{box-shadow:inset 0 -5px 0 var(--cv-a-edge)}
@@ -649,8 +660,9 @@ a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .cv-app .two .cv-a h3{border-bottom-color:var(--cv-a)}
 .cv-app .two .cv-b h3{border-bottom-color:var(--cv-b)}
 .cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
-/* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
-@media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
+/* בטלפון ההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון.
+   כפתור ה-WhatsApp אינו בתוך השורה: תווית ארוכה הייתה נחתכת או נעלמת. */
+@media(max-width:720px){.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
 /* הצד השלישי. כחול מפלטת Okabe-Ito, שנבנתה כדי להיבדל בכל סוגי עיוורון הצבעים, מול הסגול והכתום.
    הצבע אינו הסימן היחיד: שם הדגם מופיע ליד כל ערך. */
 .cv-card[data-slot="2"]{box-shadow:inset 0 -5px 0 var(--cv-c-edge)}
@@ -1065,97 +1077,17 @@ html.a11y-stop-motion header.site{transition:none}
 .idf .btn-idf{position:relative;overflow:hidden;background:#D4BE7A;color:#20260f;font-weight:800;min-height:44px;padding:13px 26px;font-size:1rem;gap:.5rem;box-shadow:0 12px 28px -14px rgba(0,0,0,.8)}
 .idf .btn-idf:hover{background:#E3D5A8}
 .idf .btn-idf svg{width:15px;height:15px;flex:none}
-/* ~210px, not ~124px. This is the size the whole direction rests on: at 124px the figure was 62px
-   of actual drawing, where a face is 45px and a uniform button is 4px, and no amount of detail
-   survives that. At this size the illustration reads as an illustration. */
-/* ~188px. The earlier drawn pass rendered 62px wide, where a face is 45px and a button 4px, and
-   no amount of detail survives that. At this size the drawing can carry a beret and a belt. */
-.idf .troop{width:clamp(112px,12vw,146px);height:auto;overflow:visible;filter:drop-shadow(0 12px 20px rgba(0,0,0,.45))}
-.troop{stroke-linejoin:round;stroke-linecap:round}
-/* PASS 1: every body part drawn dark and fat, so the parts merge into a single silhouette and
-   the contour lands around their union instead of between them. PASS 2 paints colour on top. */
-/* RIM, and it is load-bearing. Measured against the card background #2C3719 the dark contour
-   scores 1.31, the beret 1.33, the belt 1.17, the boots 1.03 and the male hair 1.07 — the whole
-   outline of the figure is invisible against the panel it stands on, which left only the skin
-   reading and made the figures look like floating heads and hands. A light stroke drawn wider
-   than the dark one puts a bright edge around the silhouette. Do not remove it without giving the
-   figures a lighter ground to stand on. */
-.troop .rim-pass .ink{fill:#D8CDA4;stroke:#D8CDA4;stroke-width:9}
-.troop .rim-pass .ink-s{stroke:#D8CDA4;stroke-width:21}
-.troop .rim-pass .ink-f{stroke:#D8CDA4;stroke-width:18}
-.troop .ink-pass .ink{fill:#241E14;stroke:#241E14;stroke-width:5}
-.troop .ink-pass .ink-s{stroke:#241E14;stroke-width:22;fill:none}
-.troop .ink{fill:#241E14}
-.troop .ink-s{stroke:#241E14;stroke-width:17;fill:none}
-.troop .ink-f{stroke:#241E14;stroke-width:14;fill:none}
-.troop .uni{fill:#8B9A63}
-.troop .unid{fill:#414A27}
-.troop .sk{fill:#F5CFA6}
-.troop .uni-s{stroke:#8B9A63;stroke-width:12;fill:none}
-.troop .sk-f{stroke:#F5CFA6;stroke-width:9;fill:none}
-.troop .fing{stroke:#DFAF85;stroke-width:1.3;fill:none}
-.troop .blush{fill:#EE9E86;opacity:.4}
-.troop .limb{stroke-linecap:round}
-/* internal detail carries no outline of its own: an outline here would put the parts back */
-.troop .pocket{fill:#6A7845}
-.troop .btn{fill:#D4BE7A}
-.troop .belt{fill:#4E5828}
-.troop .trous{fill:#778551}
-.troop .boot{fill:#43492A}
-.troop .buckle{fill:#D4BE7A}
-.troop .epa{fill:#5A6740}
-.troop .stitch{stroke:#4E5732;stroke-width:1.5;fill:none}
-.troop .cuff{stroke:#3A4222;stroke-width:2;fill:none}
-.troop .beret{fill:#72844A}
-.troop .beretd{fill:#556434}
-.troop .badge{fill:#D4BE7A}
-.troop .ew{fill:#fff}
-.troop .pupil{fill:#241E14}
-.troop .spark{fill:#fff}
-.troop .sksh{fill:#E8BC8E}
-.troop .brow{stroke-width:2.2;fill:none}
-.troop .mouth{stroke:#A9603F;stroke-width:2;fill:none}
-.t-m .hair{fill:#6B4A2C}
-.t-m .brow{stroke:#4A3320}
-.t-f .hair{fill:#3A322B}
-.t-f .brow{stroke:#1E1A17}
-/* rotate about 0 0: the pivot is placed there by translate(), because a px transform-origin
-   resolves against the rendered box and drifts with viewport width. Zero has no scale. */
-.up-arm,.fore-arm{transform-box:view-box;transform-origin:0 0}
-/* resting state IS the salute, so reduced motion shows two figures saluting, not two arms down */
-.up-arm{transform:rotate(138deg)}
-.fore-arm{transform:rotate(69deg)}
-/* a small overlap so the two read as one group standing together, not two cut-outs in a row */
-.idf .t-f{margin-inline-start:clamp(-20px,-1.6vw,-10px)}
 .idf .idf-phone .scr-stage{--scr-w:clamp(74px,8vw,96px)}
 .idf .idf-phone .scr-halo{background:radial-gradient(circle,rgba(212,190,122,.42),rgba(212,190,122,.14) 55%,transparent 72%)}
 @media(max-width:720px){
 .s-idf .slide-art{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-top:.5rem;min-height:0}
-.s-idf .slide-troops .troop{width:clamp(62px,18vw,84px)}
 .s-idf .scr-stage{--scr-w:clamp(46px,13vw,60px)}
 }
 @media(max-width:820px){
 .idf .btn-idf{flex:1 1 auto;justify-content:center}
 .idf .idf-phone .scr-stage{--scr-w:clamp(48px,13vw,62px)}
-/* Not smaller than desktop. The whole reason these are illustrations rather than drawn shapes
-     is that the drawing needs room to read, and 24vw put them at 90px on a 390px screen, below
-     the size that was already rejected. 33vw with the phone alongside fills the line. */
-  .idf .troop{width:clamp(84px,24vw,108px)}
 }
 @media (prefers-reduced-motion:no-preference){
-/* One entrance, then still. They are already saluting in the drawing, so a looping bob would
-     only add motion the picture does not need, and a loop is exactly what read as "just a
-     floating image" before. The card animates what it honestly can: the glass landing on the
-     phone, and the light crossing the button. */
-  /* The salute. Timing is LINEAR on purpose: var(--ease) applies its accelerate-decelerate to
-     EVERY segment, so a six-keyframe sweep stops and restarts six times on the way up, which is
-     exactly what read as "not continuous". The shaping lives in the keyframe spacing instead.
-     The two figures are offset, because a synchronised pair reads as one looping graphic. */
-  .idf .troop{animation:idfEnter .7s var(--ease) both}
-.idf .t-f{animation-delay:.18s}
-.up-arm{animation:saluteUp 6.5s linear infinite}
-.fore-arm{animation:saluteFore 6.5s linear infinite}
-.t-f .up-arm,.t-f .fore-arm{animation-delay:.9s}
 /* one slow pass of light across the button, long gap between passes so it invites rather than nags */
   .idf .btn-idf::after{content:"";position:absolute;top:0;bottom:0;width:38%;
     background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
@@ -1357,9 +1289,6 @@ html.a11y-stop-motion .pg-cpn-ov.open,html.a11y-stop-motion .pg-cpn{animation:no
    against the slide. The figures keep the card's proportions; only the scale changes. */
 .s-idf .slide-art{gap:clamp(4px,1vw,14px)}
 .slide-troops{display:flex;align-items:flex-end;flex:0 0 auto}
-.slide-troops .troop{width:clamp(78px,8.5vw,108px);height:auto;overflow:visible;
-  filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
-.slide-troops .t-f{margin-inline-start:clamp(-14px,-1.1vw,-6px)}
 .s-idf h3 .free{display:block;color:#D4BE7A;font-size:1.22em;line-height:1.15;margin-top:.1em}
 .s-idf .idf-row{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.6rem}
 .s-idf .idf-cta{background:#C9BC8A;color:#20260f;font-weight:800;min-height:44px;padding:12px 26px;
@@ -1911,8 +1840,119 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
   .cookie .btn-sm{min-height:44px}
 }
 @keyframes idfEnter{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
-@keyframes saluteUp{0%,8%{transform:rotate(0)}14%{transform:rotate(20deg)}22%{transform:rotate(70deg)}30%{transform:rotate(113deg)}36%,74%{transform:rotate(138deg)}82%{transform:rotate(70deg)}90%,100%{transform:rotate(0)}}
-@keyframes saluteFore{0%,8%{transform:rotate(0)}14%{transform:rotate(102deg)}22%{transform:rotate(122deg)}30%{transform:rotate(92deg)}36%,74%{transform:rotate(69deg)}82%{transform:rotate(116deg)}90%,100%{transform:rotate(0)}}
+/* ===== the saluting group, in the IDF banner and the IDF slide ===== */
+/* three soldiers saluting beside a flag. Colour lives in custom properties and every part carries a
+   second, neutral pass of light and shadow on top (the url(#tq-*) gradients, defined once per page),
+   so one set of gradients models every colour. The two soldiers a step behind are a shade darker. */
+.troops{overflow:visible}
+.troops .tq-sd{--un:#737D48;--tr:#6D7843;--pk:#6E7944;--pf:#68733F;--cl:#7C874F;--sm:#4E572E;--bl:#5B6337;--tg:#5A6436}
+.troops .tq-sd.tq-back{--un:#626C3C;--tr:#5D6739;--pk:#5E6839;--pf:#586235;--cl:#6A7443;--sm:#434B27;--bl:#4E5630;--tg:#4D5630}
+.troops .tq-sk-a{--sn:#EBBE98;--snd:#C99474;--lp:#B97462;--hr:#4A3322}
+.troops .tq-sk-b{--sn:#C98F68;--snd:#A56E4C;--lp:#9A5A48;--hr:#231915}
+.troops .tq-sk-c{--sn:#98613F;--snd:#744529;--lp:#6E3D2D;--hr:#18120E}
+/* berets of three units recognised on sight */
+.troops .tq-br-para{--be:#86253A;--bed:#5A1424}
+.troops .tq-br-golani{--be:#6E4B2B;--bed:#46301A}
+.troops .tq-br-givati{--be:#633577;--bed:#3F2050}
+/* boots: black, and the red-brown leather the paratroopers are known by */
+.troops .tq-bo-black{--bt:#24211D}
+.troops .tq-bo-red{--bt:#7A4128}
+.troops .tq-un{fill:var(--un)}
+.troops .tq-tr{fill:var(--tr)}
+.troops .tq-pk{fill:var(--pk)}
+.troops .tq-pf,.troops .tq-ep{fill:var(--pf)}
+.troops .tq-cl{fill:var(--cl)}
+.troops .tq-cu{fill:var(--pf)}
+.troops .tg{fill:var(--tg)}
+.troops .tq-bl{fill:var(--bl)}
+.troops .tq-dk{fill:#10140A}
+.troops .tq-sm{stroke:var(--sm);stroke-width:.9;fill:none}
+.troops .tq-fd{stroke:#000;stroke-opacity:.2;stroke-width:.8;fill:none;stroke-linecap:round}
+.troops .tq-bn{fill:var(--sm)}
+.troops .tq-tp{fill:#2A3019}
+.troops .tq-tpt{stroke:#C9C08E;stroke-width:.7;stroke-linecap:round;opacity:.8}
+.troops .tq-bk{fill:#3A3D2C}
+.troops .tq-bt{fill:var(--bt)}
+.troops .tq-so{fill:#141210}
+.troops .tq-lc{stroke:#000;stroke-opacity:.4;stroke-width:.7}
+.troops .tq-sn{fill:var(--sn)}
+.troops .tq-snd{fill:var(--snd)}
+.troops .kn{stroke:var(--snd);stroke-width:.7;fill:none;stroke-linecap:round}
+.troops .tq-fg{stroke:var(--snd);stroke-width:.55;fill:none;stroke-linecap:round;opacity:.9}
+.troops .tq-bl2{fill:#D9776A;opacity:.14}
+.troops .tq-hr{fill:var(--hr)}
+.troops .tq-bw{stroke:var(--hr);stroke-width:1.15;fill:none;stroke-linecap:round}
+.troops .tq-ew{fill:#F3ECE4}
+.troops .tq-ir{fill:#2A1B12}
+.troops .tq-hl{fill:#fff}
+.troops .tq-lid{stroke:#2A1B12;stroke-width:.7;fill:none;stroke-linecap:round;opacity:.85}
+.troops .tq-ns{stroke:var(--snd);stroke-width:.6;fill:none;stroke-linecap:round}
+.troops .tq-lp{fill:var(--lp)}
+.troops .tq-be{fill:var(--be)}
+.troops .tq-bed{fill:var(--bed)}
+.troops .tq-bband{stroke:var(--bed);stroke-width:1.7;fill:none;stroke-linecap:round}
+.troops .tq-bdg{fill:#8E7436;opacity:.55}
+.troops .tq-gl{fill:#fff;opacity:0}
+.troops .tq-ts{fill:#4B5230}
+.troops .tq-ea{stroke:var(--snd);stroke-width:.7;fill:none;stroke-linecap:round}
+.troops .tq-fl-sh{fill:#000;opacity:var(--r,.1)}
+/* resting state IS the salute, so reduced motion and the accessibility menu's stop-motion both
+   show three soldiers saluting, never three with their arms down */
+.troops .tq-ua{transform:rotate(107.9deg)}
+.troops .tq-us{transform:scaleY(.7)}
+.troops .tq-elb{transform:translateY(27.96px)}
+.troops .tq-fa{transform:rotate(-222.8deg)}
+.troops .tq-hd{transform:rotate(-10.1deg)}
+.troops .tq-fist{opacity:0}
+.troops .tq-hg{transform-origin:48px 40px;transform:rotate(-2deg)}
+.troops .tq-br{transform-origin:50px 210px}
+.troops .tq-lids{transform-origin:0 24px;transform:scaleY(0)}
+/* only the copy on screen moves. The home page carries three (the banner, the slide and the
+   carousel's clone of it) and every animated element costs a style pass per frame, seen or not. The
+   small script beside the shared defs adds .tq-on while a copy is in view. Paused, not removed, so
+   a copy resumes where it stopped instead of jumping. */
+.troops:not(.tq-on) *{animation-play-state:paused!important}
+/* the stop-motion menu shortens every animation to .001ms and lets it end on its LAST frame, which
+   for the salute is the arm down. Taking the animation off instead leaves the resting pose above. */
+html.a11y-stop-motion .troops *{animation:none}
+@media (prefers-reduced-motion:no-preference){
+.troops .tq-ua{animation:trUa 8s var(--d,0s) infinite both}
+.troops .tq-us{animation:trUs 8s var(--d,0s) infinite both}
+.troops .tq-elb{animation:trEl 8s var(--d,0s) infinite both}
+.troops .tq-fa{animation:trFa 8s var(--d,0s) infinite both}
+.troops .tq-hd{animation:trHd 8s var(--d,0s) infinite both}
+.troops .tq-fist{animation:trFist 8s var(--d,0s) infinite both}
+.troops .tq-flat{animation:trFlat 8s var(--d,0s) infinite both}
+.troops .tq-cr{animation:trFlat 8s var(--d,0s) infinite both}
+.troops .tq-gl{animation:trGlint 8s var(--d,0s) infinite both}
+.troops .tq-body{animation:trStand 8s var(--d,0s) infinite both}
+.troops .tq-hg{animation:trHead 8s var(--d,0s) infinite both}
+.troops .tq-br{animation:trBreath 3.6s ease-in-out infinite alternate}
+.troops .tq-back .tq-br{animation-duration:4.1s}
+.troops .tq-lids{animation:trBlink var(--bl,5s) infinite both}
+}
+/* the flag in the wind: see flagSlices() in the builder for how the three movements add up */
+.troops .tq-fl-cl{transform-origin:281.4px 9px}
+@media (prefers-reduced-motion:no-preference){
+.troops .tq-fl-sl{animation:trWave 1.5s var(--dl,0s) ease-in-out infinite}
+.troops .tq-fl-sk{animation:trSkew 1.5s var(--dk,0s) ease-in-out infinite}
+.troops .tq-fl-sh{animation:trShade 1.5s var(--ds,0s) ease-in-out infinite}
+.troops .tq-fl-cl{animation:trGust 5.2s ease-in-out infinite}
+}
+/* sizes: the group takes the footprint of the two figures it replaced, so the banner and the slide
+   keep their layout to the pixel. The old figure was 120 x 168 and stood two to a row; the group is
+   300 x 232, which at 1.81 times one old figure's width gives the same height. */
+.idf .troops{width:clamp(203px,21.7vw,264px);height:auto;filter:drop-shadow(0 12px 20px rgba(0,0,0,.45))}
+.slide-troops .troops{width:clamp(176px,20vw,250px);height:auto;filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+@media(max-width:820px){
+.idf .troops{width:clamp(152px,43.4vw,195px)}
+}
+@media(max-width:720px){
+.s-idf .slide-troops .troops{width:clamp(140px,46vw,182px)}
+}
+@media (prefers-reduced-motion:no-preference){
+.idf .troops{animation:idfEnter .7s var(--ease) both}
+}
 @keyframes idfShine{0%{transform:translateX(-160%)}22%,100%{transform:translateX(330%)}}
 @keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes hglow{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:.85;transform:translateX(-50%) scale(1.06)}}
@@ -1972,18 +2012,96 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
 }
 @keyframes simFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--mx,6px),calc(var(--my,12px)*-1))}}
 /* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.
+@keyframes trUa{
+  0%,14%{transform:rotate(4deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+  16%{transform:rotate(22deg)}
+  18%{transform:rotate(70deg)}
+  20%{transform:rotate(113deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+  22%{transform:rotate(106deg)}
+  24%,62%{transform:rotate(107.9deg);animation-timing-function:cubic-bezier(.6,0,.9,.5)}
+  65%{transform:rotate(48deg)}
+  67.5%{transform:rotate(6deg);animation-timing-function:ease-out}
+  69%{transform:rotate(1.5deg)}
+  71%,100%{transform:rotate(4deg)}}
+@keyframes trUs{
+  0%,15%{transform:scaleY(1)}
+  20%{transform:scaleY(.72)}
+  24%,62%{transform:scaleY(.7)}
+  66.5%,100%{transform:scaleY(1)}}
+@keyframes trEl{
+  0%,15%{transform:translateY(40px)}
+  20%{transform:translateY(28.8px)}
+  24%,62%{transform:translateY(27.96px)}
+  66.5%,100%{transform:translateY(40px)}}
+@keyframes trFa{
+  0%,14%{transform:rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.3,1)}
+  16%{transform:rotate(-126deg)}
+  18%{transform:rotate(-182deg)}
+  20%{transform:rotate(-219deg)}
+  22%{transform:rotate(-226deg)}
+  24%,62%{transform:rotate(-222.8deg)}
+  65%{transform:rotate(-160deg);animation-timing-function:cubic-bezier(.5,0,.7,1)}
+  67.5%{transform:rotate(-30deg);animation-timing-function:ease-out}
+  69%{transform:rotate(1deg)}
+  71%,100%{transform:rotate(-3deg)}}
+@keyframes trHd{
+  0%,15%{transform:rotate(0)}
+  20%{transform:rotate(-16deg)}
+  24%,62%{transform:rotate(-10.1deg)}
+  67%,100%{transform:rotate(0)}}
+@keyframes trFist{
+  0%,15%{opacity:1}
+  16.5%,64%{opacity:0}
+  66%,100%{opacity:1}}
+@keyframes trFlat{
+  0%,15%{opacity:0}
+  16.5%,64%{opacity:1}
+  66%,100%{opacity:0}}
+@keyframes trGlint{
+  0%,21%{opacity:0}
+  24%{opacity:.8}
+  32%,100%{opacity:0}}
+@keyframes trStand{
+  0%,15%{transform:translateY(0)}
+  21%,62%{transform:translateY(-.8px)}
+  70%,100%{transform:translateY(0)}}
+@keyframes trHead{
+  0%,18%{transform:rotate(0)}
+  27%,60%{transform:rotate(-2deg)}
+  70%,100%{transform:rotate(0)}}
+@keyframes trBreath{
+  from{transform:scaleY(1)}
+  to{transform:scaleY(1.005)}}
+@keyframes trBlink{
+  0%,94%{transform:scaleY(0)}
+  96%{transform:scaleY(1)}
+  98%,100%{transform:scaleY(0)}}
+@keyframes trWave{
+  0%,100%{transform:translateY(calc(var(--a) * -1px))}
+  50%{transform:translateY(calc(var(--a) * 1px))}}
+@keyframes trShade{
+  0%,100%{opacity:.02}
+  50%{opacity:.3}}
+@keyframes trSkew{
+  0%,100%{transform:skewY(calc(var(--k) * -1deg))}
+  50%{transform:skewY(calc(var(--k) * 1deg))}}
+@keyframes trGust{
+  0%,100%{transform:rotate(0)}
+  28%{transform:rotate(-3deg)}
+  52%{transform:rotate(1.2deg)}
+  76%{transform:rotate(-1.6deg)}}
    הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */
 #deals .btn{white-space:nowrap}
 </style>
 <!-- pg-deals:css:end -->
+<script src="/contact-mode.js"></script>
+  <link rel="stylesheet" href="/chat.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Article","headline":"גרמין Venu 4 או Instinct 3: שעון יומיומי או שעון שטח","description":"Venu 4 לבריאות וליום יום, Instinct 3 לשטח: עמידות 10 ATM, תקן MIL-STD 810 וסוללה של שבועות. מה שונה ביניהם, מאתר גרמין. פון גת קרית גת.","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/compare/venu-4-vs-instinct-3/"},"about":[{"@type":"Thing","name":"Garmin Venu 4"},{"@type":"Thing","name":"Garmin Instinct 3 AMOLED"}],"publisher":{"@id":"https://www.phonegat.co.il/#business"}}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"דף הבית","item":"https://www.phonegat.co.il/"},{"@type":"ListItem","position":2,"name":"השוואות","item":"https://www.phonegat.co.il/compare/"},{"@type":"ListItem","position":3,"name":"גרמין Venu 4 או Instinct 3: שעון יומיומי או שעון שטח","item":"https://www.phonegat.co.il/compare/venu-4-vs-instinct-3/"}]}
 </script>
-<script src="/contact-mode.js"></script>
-  <link rel="stylesheet" href="/chat.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -2064,19 +2182,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="cv-top" aria-labelledby="h1">
   <div class="wrap">
     <h1 id="h1">גרמין Venu 4 או Instinct 3: שעון יומיומי או שעון שטח</h1>
+    <p class="cv-trust"><a href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener">★ 4.9 בגוגל · 537 ביקורות</a> · רחבת תשרי 2, קרית גת</p>
     <p class="cv-sub">שניהם של גרמין, שניהם עם מסך AMOLED, ושניהם עובדים עם אייפון ועם אנדרואיד. לפי שמות המוצרים באתר גרמין, Venu 4 הוא שעון לכושר ולבריאות, ואילו Instinct 3 הוא שעון חכם מחוספס. בעמוד הזה משווים את Venu 4 מול Instinct 3 בגרסת AMOLED.</p>
     <div class="cv-cards" data-pg-data>
         <a class="cv-card" data-slot="0" href="/watches/compare/?d=garmin-venu-4,garmin-instinct-3-amoled"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Garmin Venu 4</bdo></span><span class="cv-meta">Garmin · הוכרז ב-2025</span></span><span class="cv-act">כל השדות</span></a>
         <span class="cv-vs2" aria-hidden="true">מול</span>
         <a class="cv-card" data-slot="1" href="/watches/compare/?d=garmin-venu-4,garmin-instinct-3-amoled"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Garmin Instinct 3 AMOLED</bdo></span><span class="cv-meta">Garmin · הוכרז ב-2025</span></span><span class="cv-act">כל השדות</span></a>
     </div>
-    <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/apple-watch-vs-garmin/"><bdo dir="ltr">Apple Watch Series 12</bdo> מול <bdo dir="ltr">Garmin Venu 4</bdo></a><a class="cv-sa" href="/compare/galaxy-watch-vs-garmin/"><bdo dir="ltr">Galaxy Watch9</bdo> מול <bdo dir="ltr">Garmin Venu 4</bdo></a><a class="cv-sa" href="/compare/forerunner-170-vs-forerunner-570/"><bdo dir="ltr">Garmin Forerunner 170</bdo> מול <bdo dir="ltr">Garmin Forerunner 570</bdo></a><a class="cv-sa" href="/watches/compare/?d=garmin-venu-4,garmin-instinct-3-amoled">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Garmin%20Venu%204%20%D7%9C%D7%91%D7%99%D7%9F%20Garmin%20Instinct%203%20AMOLED."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>
+    <div class="cv-herocta"><a class="btn btn-wa cv-lead" data-pg-loc="compare_hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20Garmin%20Venu%204%20%D7%9C-Garmin%20Instinct%203%20AMOLED.%20%D7%9E%D7%94%20%D7%94%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%94%D7%9E%D7%9C%D7%90%D7%99%20%D7%94%D7%99%D7%95%D7%9D%3F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">מחיר ומלאי היום ב-WhatsApp</a></div>
+    <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/apple-watch-vs-garmin/"><bdo dir="ltr">Apple Watch Series 12</bdo> מול <bdo dir="ltr">Garmin Venu 4</bdo></a><a class="cv-sa" href="/compare/galaxy-watch-vs-garmin/"><bdo dir="ltr">Galaxy Watch9</bdo> מול <bdo dir="ltr">Garmin Venu 4</bdo></a><a class="cv-sa" href="/watches/compare/?d=garmin-venu-4,garmin-instinct-3-amoled">להחליף דגם בכלי ההשוואה</a></div>
   </div>
 </section>
 <section class="block cv-res" id="table" aria-labelledby="cmp-h">
   <div class="wrap">
     <p class="cv-count">12 הבדלים, ושדה אחד זהה</p>
     <ul class="cv-same" data-pg-data aria-label="זהים בשניהם"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>עובד עם: גם אייפון וגם אנדרואיד</li></ul>
+    <div class="cv-ask">
+      <p>מתלבטים בין <bdo dir="ltr">Garmin Venu 4</bdo> ל-<bdo dir="ltr">Garmin Instinct 3 AMOLED</bdo>? שלחו הודעה ונגיד לכם אם הם אצלנו, מה המחיר היום, ומה אנחנו רואים במעבדה. אנחנו ברחבת תשרי 2 בקרית גת.</p>
+      <a class="btn btn-wa cv-lead" data-pg-loc="compare_mid" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20Garmin%20Venu%204%20%D7%9C-Garmin%20Instinct%203%20AMOLED.%20%D7%9E%D7%94%20%D7%94%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%94%D7%9E%D7%9C%D7%90%D7%99%20%D7%94%D7%99%D7%95%D7%9D%3F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">מחיר ומלאי היום ב-WhatsApp</a>
+    </div>
     <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>
     <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>
     <div class="cv-prio" id="cvprio" hidden></div>
@@ -2145,7 +2269,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 id="cta-h">עדיין מתלבטים?</h2>
     <p>רוצים לדעת אם השעונים האלה אצלנו? תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>
     <div class="row">
-      <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Garmin%20Venu%204%20%D7%9C%D7%91%D7%99%D7%9F%20Garmin%20Instinct%203%20AMOLED."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>
+      <a class="btn btn-wa cv-lead" data-pg-loc="compare_end" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20Garmin%20Venu%204%20%D7%9C-Garmin%20Instinct%203%20AMOLED.%20%D7%9E%D7%94%20%D7%94%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%94%D7%9E%D7%9C%D7%90%D7%99%20%D7%94%D7%99%D7%95%D7%9D%3F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">מחיר ומלאי היום ב-WhatsApp</a>
       <!--pg-call-->
       <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>
     </div>
@@ -2577,9 +2701,11 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
       var href=a.getAttribute('href')||'';
       var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
       if(!isTel&&!isWa)return;
-      var loc='content',i;
+      /* data-pg-loc על הקישור גובר על רשימת המקומות, כדי ששני כפתורי WhatsApp באותו עמוד ייספרו לחוד */
+      var loc=a.getAttribute('data-pg-loc')||'',i;
+      if(!loc){loc='content';
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
-      if(loc==='content'&&a.closest('footer'))loc='footer';
+      if(loc==='content'&&a.closest('footer'))loc='footer';}
       var method=isTel?'phone':'whatsapp';
       /* a.href ולא ה-attribute: הכתובת המלאה אחרי פתרון, כפי שהיא בפועל */
       var url=a.href||href, pagePath=location.pathname;

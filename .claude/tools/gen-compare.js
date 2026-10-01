@@ -32,6 +32,7 @@ var SOURCE = 'phones/iphone-17/index.html';
 
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
+var GR = require(path.join(__dirname, 'lib', 'google-rating.js'));
 var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 /* מצב שעונים, נוסף ב-24.9.2026: node gen-compare.js --watches בונה את /watches/compare/ מתוך
    prototype/watches.json, באותו קוד ובאותו עיצוב כמו כלי הטלפונים. השעונים בקובץ נפרד ולא ב-
@@ -84,6 +85,36 @@ var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 /* גם מירכאות: esc נכנס גם לתוך מאפיינים (data-cat, data-q, alt), ושם " סוגר את הערך */
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
+var LEAD_LABEL = 'מחיר ומלאי היום ב-WhatsApp';
+function leadBtn(href, loc, lazy) {
+  return '<a class="btn btn-wa cv-lead" data-pg-loc="' + loc + '" href="' + href + '">' +
+    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26"' +
+    (lazy ? ' loading="lazy"' : '') + ' decoding="async">' + LEAD_LABEL + '</a>';
+}
+function leadMsg(a, b) {
+  var n = function (x) { return x.name_he || x.name; };
+  return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ל-' + n(b) + '. מה המחיר והמלאי היום?';
+}
+/* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") רק כששני הדגמים נמכרים ונמצאים בחנות.
+   מכשיר ייחוס, דגם ש-not_in_store, ושעון או אוזניות בלי עמוד: אותו כפתור, בלי הבטחה שאין לה כיסוי. */
+function leadBlurb(a, b) {
+  var he = function (x) { return BIDI.ltrRuns(x.name_he || x.name); };
+  var open = 'מתלבטים בין ' + he(a) + ' ל-' + he(b) + '? ';
+  var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+  var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+  var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
+  if (!ref.length && !away.length && !unsold.length) {
+    return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
+  }
+  if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
+  if (ref.length === 1) {
+    var mine = [a, b].filter(function (x) { return x.status !== 'reference'; })[0];
+    return open + 'את ' + he(mine) + ' אנחנו מוכרים, ואת ' + he(ref[0]) + ' לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים, ומה אנחנו רואים במעבדה.';
+  }
+  if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
+  if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
+  return open + 'שלחו הודעה ונגיד לכם אם הם אצלנו, מה המחיר היום, ומה אנחנו רואים במעבדה. אנחנו ברחבת תשרי 2 בקרית גת.';
+}
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 /* עברית מבחינה בין יחיד, זוגי ורבים, והמחולל הדפיס "1 שדות זהים".
@@ -368,15 +399,20 @@ function buildMain(p, a, b, d, openTag) {
     if (!qa || !qb) return '';
     return '<a class="cv-sa" href="/compare/' + q.slug + '/">' + BIDI.ltrRuns(nmHe(qa)) + ' מול ' + BIDI.ltrRuns(nmHe(qb)) + '</a>';
   }).join('');
+  var waLead = wa(leadMsg(a, b));
+  var trust = '    <p class="cv-trust"><a href="' + GR.reviewsUrl + '" target="_blank" rel="noopener">★ ' +
+    esc(String(GR.rating)) + ' בגוגל · ' + esc(String(GR.count)) +
+    ' ביקורות</a> · רחבת תשרי 2, קרית גת</p>\n';
   var top = '<div class="cv-app">\n<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
     '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
+    trust +
     '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
     heroBlock(p, waPick) +
     '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
     '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
+    '    <div class="cv-herocta">' + leadBtn(waLead, 'compare_hero', false) + '</div>\n' +
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
-    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
-    '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a></div>\n' +
     '  </div>\n</section>\n';
 
   /* ---------- מה זהה */
@@ -453,8 +489,10 @@ function buildMain(p, a, b, d, openTag) {
       }).join('') + '</section>\n';
   }).join('');
 
+  var ask = '    <div class="cv-ask">\n      <p>' + leadBlurb(a, b) + '</p>\n      ' +
+    leadBtn(waLead, 'compare_mid', true) + '\n    </div>\n';
   var res = '<section class="block cv-res" id="table" aria-labelledby="cmp-h">\n  <div class="wrap">\n' + disc +
-    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs +
+    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs + ask +
     '    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>\n' +
     '    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>\n' +
     /* ריק ומוסתר עד ש-page.client.js בונה בו את הכפתורים. בלי JS אין כפתור שלא עושה כלום. */
@@ -510,7 +548,7 @@ function buildMain(p, a, b, d, openTag) {
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
     })() +
     '    <div class="row">\n' +
-    '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
+    '      ' + leadBtn(waLead, 'compare_end', true) + '\n' +
     CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>\n' +
     '    </div>\n' +

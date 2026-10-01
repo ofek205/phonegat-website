@@ -2121,6 +2121,41 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- דירוג Google: מקור אחד, ופס האמון בעמודי ההשוואה ----------
+ * 4.9 / 537 מופיעים בדף הבית בכמה מקומות. המספר הקנוני הוא
+ * .claude/tools/lib/google-rating.js, ו-gen-compare גוזר ממנו את הפס שמתחת ל-H1.
+ * בלי הבדיקה עדכון במקום אחד משאיר את השני עם המספר הישן, ואין לזה סימן. */
+(function () {
+  var G;
+  try { G = require(path.join(__dirname, 'tools', 'lib', 'google-rating.js')); }
+  catch (e) { bad('חסר .claude/tools/lib/google-rating.js'); return; }
+  var ratingShown = html.indexOf('>' + G.rating + '</b>') >= 0 || html.indexOf('>' + G.rating + '</div>') >= 0;
+  var countShown = html.indexOf(String(G.count)) >= 0;
+  if (!ratingShown || !countShown) {
+    bad('דף הבית לא מציג את דירוג Google מהקובץ המשותף (' + G.rating + ' / ' + G.count + ')');
+  }
+  var trust = '<a href="' + G.reviewsUrl + '" target="_blank" rel="noopener">★ ' +
+    G.rating + ' בגוגל · ' + G.count + ' ביקורות</a> · רחבת תשרי 2, קרית גת';
+  if (!G.reviewsUrl || html.indexOf(G.reviewsUrl) < 0) {
+    bad('דף הבית לא מקשר לכתובת ביקורות Google שבקובץ המשותף');
+  }
+  var miss = [];
+  pageFiles.forEach(function (rel) {
+    if (!/^compare\/[^/]+\/index\.html$/.test(rel)) return;
+    var s;
+    try { s = read('prototype/' + rel); } catch (e) { miss.push(rel); return; }
+    if (s.indexOf(trust) < 0) miss.push(rel);
+    else if (s.indexOf('data-pg-loc="compare_hero"') < 0 || s.indexOf('data-pg-loc="compare_mid"') < 0) miss.push(rel);
+    else if (s.indexOf('%20(%D7%90%D7%AA%D7%A8%3A%20%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94)') >= 0) miss.push(rel);
+  });
+  if (miss.length) {
+    bad('עמודי השוואה בלי פס הדירוג או בלי כפתורי compare_hero ו-compare_mid: ' +
+      miss.slice(0, 4).join(', ') + (miss.length > 4 ? ' ועוד' : ''));
+  } else if (ratingShown && countShown) {
+    ok('דירוג Google ' + G.rating + ' / ' + G.count + ' משותף לדף הבית ולעמודי ההשוואה');
+  }
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
