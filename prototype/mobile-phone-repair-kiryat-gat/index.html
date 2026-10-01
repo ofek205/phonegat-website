@@ -1883,7 +1883,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="price-asof" id="pgPricesUpdated" hidden></p>
     <div class="todo" id="pg-repair-pending">
       <b>TODO</b>
-      <p>עדיין לא מולא: מחיר, זמן טיפוסי ואחריות לכל שורה (מלבד מחיר ואחריות של נזקי מים), החודש והשנה ב-PRICES_UPDATED, ושתיים או שלוש תמונות מעבדה. ברוך ממלא. השורה "לרוב בזמן שאתם מחכים" מחכה לאישור שלו. תא ריק כתוב "ברירה ב-WhatsApp" ואינו מחיר. אין ציטוטי ביקורות נבחרים, רק הדירוג הכולל מגוגל.</p>
+      <p>עדיין לא מולא: מחיר, זמן טיפוסי ואחריות לכל שורה (מלבד מחיר ואחריות של נזקי מים), החודש והשנה ב-PRICES_UPDATED, ושתיים או שלוש תמונות מעבדה. ברוך ממלא. השורה "לרוב בזמן שאתם מחכים" מחכה לאישור שלו. תא ריק כתוב "בירור ב-WhatsApp" ואינו מחיר. אין ציטוטי ביקורות נבחרים, רק הדירוג הכולל מגוגל.</p>
     </div>
     <table class="price-table">
       <caption class="a11y-sr">מחירים וזמני תיקון במעבדה</caption>
@@ -2008,7 +2008,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="intro">פון גת עובדת בקרית גת יותר משלושים שנה, באותה כתובת, בניהול ברוך וסיגל. אנחנו לא מרכז שירות שמעביר מכשירים הלאה: הבדיקה נעשית כאן, ואתם מדברים עם מי שמתקן.</p>
       <div class="lab-photos" id="labPhotos"></div>
       <div class="lab">
-        <p>רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי <span class="ltr">9:00–18:30</span>, שישי <span class="ltr">9:00–13:00</span>.</p>
+        <p>רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי <span class="ltr">9:00-18:30</span>, שישי <span class="ltr">9:00-13:00</span>.</p>
         <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5%20%D7%9C%D7%92%D7%91%D7%99%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>
         <a class="btn btn-teal" href="/phone-problems/">מדריך התקלות שלנו</a>
       </div>
@@ -2338,7 +2338,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 var REPAIR_PRICES = {
   "waitClaimConfirmed": false,
   "PRICES_UPDATED": null,
-  "ask": "ברירה ב-WhatsApp",
+  "ask": "בירור ב-WhatsApp",
   "rows": [
     {"repair": "החלפת סוללה", "models": "אייפון 13 עד 16", "price": null, "time": null, "warranty": null},
     {"repair": "החלפת מסך", "models": "גלקסי A (A15 עד A57)", "price": null, "time": null, "warranty": null},
@@ -2356,7 +2356,7 @@ var REPAIR_PRICES = {
 (function(){
   var data=REPAIR_PRICES;
   if(!data||!data.rows)return;
-  var ASK=data.ask||'ברירה ב-WhatsApp';
+  var ASK=data.ask||'בירור ב-WhatsApp';
   function shown(v){return v===null||v===undefined||v==='';}
   function cell(tr,label,value){
     var td=document.createElement('td');
