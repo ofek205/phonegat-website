@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:7365b670614dbdab */
+/* sha1:ed8ca990f707efdf */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -47,7 +47,11 @@
   function openNow(){var n=ilNow(),day=n.day,h=n.h;if(day>=0&&day<=4)return h>=9&&h<18.5;if(day===5)return h>=9&&h<13;return false;}
   function callsOn(){return window.PG_PHONE_CALLS_ENABLED===true;}
   function hoursLine(){
-    if(!callsOn()) return openNow()?'אנחנו פתוחים עכשיו, כתבו לנו ב-WhatsApp:':'אנחנו סגורים כרגע. השאירו פרטים ונחזור אליכם, או שלחו WhatsApp:';
+    /* "השאירו פרטים ונחזור אליכם" מבטיח שיחה חוזרת. בלי קו טלפון אין לאן לחזור,
+       אז כש-PG_PHONE_CALLS_ENABLED כבוי מוצגת בקשה לכתוב ב-WhatsApp. המחרוזות
+       האלה לא ברשימת ההחלפות של apply-contact-mode.js, והבחירה נשארת על הדגל
+       בזמן ריצה, גם אחרי שהסקריפט רץ. */
+    if(!callsOn()) return openNow()?'אנחנו פתוחים עכשיו, כתבו לנו ב-WhatsApp:':'אנחנו סגורים כרגע. כתבו לנו ב-WhatsApp ונענה בהקדם:';
     return openNow()?'אנחנו פתוחים עכשיו, אפשר לחייג ישירות:':'אנחנו סגורים כרגע. השאירו פרטים ונחזור אליכם, או שלחו WhatsApp:';
   }
   function contactCta(){return openNow()?(callsOn()?['wa','tel']:['wa']):(callsOn()?['wa','callback']:['wa']);}
@@ -1135,7 +1139,7 @@ if(pg){
     {cta:contactCta(),sug:[pageChip(pg),['לדבר עם ברוך',function(){startLead('שאלה מהצ׳אט');}]]});
   return;
 }
-var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'לא בטוח שהבנתי. אפשר לנסות שוב במילים אחרות, או לבחור נושא:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
+var txt=fails>=2?(callsOn()?'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל, או להשאיר פרטים ונחזור אליכם:':'עדיין לא הצלחתי להבין. הכי טוב לדבר ישירות עם ברוך וסיגל. כתבו לנו ב-WhatsApp ונענה בהקדם:'):'לא בטוח שהבנתי. אפשר לנסות שוב במילים אחרות, או לבחור נושא:';botReply(txt,{cta:contactCta(),sug:['repair','buy','callback']});}
   /* שאלה על דגם נבדקת לפני matchIntent, כי "אחריות על גלקסי A56" הייתה נתפסת על ידי
      הכוונה הגנרית warranty ומקבלת תשובה כללית, ולעולם לא מגיעה לנתון של הדגם.
      deviceAnswer מחזיר false כשאין גם דגם וגם שדה, ואז הזרימה הקיימת נמשכת כרגיל. */
@@ -1306,7 +1310,7 @@ var txt=fails>=2?'עדיין לא הצלחתי להבין. הכי טוב לדב�
     paintStatus();
     loadFacts();loadContent();
     panel.removeAttribute('inert');panel.classList.add('open');fab.classList.add('open');wrap.classList.add('chat-open');fab.setAttribute('aria-expanded','true');
-    if(!opened){opened=true;track('chat_open',{open:openNow()});var gm=greetWord()+'! אני העוזר של פון גת. '+(openNow()?'איך אפשר לעזור?':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.');botReply(gm,{sug:['repair','buy','callback']});}
+    if(!opened){opened=true;track('chat_open',{open:openNow()});var closed=callsOn()?'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00), אבל אפשר לשאול אותי או להשאיר פרטים ונחזור אליכם.':'אנחנו סגורים כרגע (א-ה 9:00-18:30, ו 9:00-13:00). אפשר לשאול אותי, או לכתוב לנו ב-WhatsApp ונענה בהקדם.';var gm=greetWord()+'! אני העוזר של פון גת. '+(openNow()?'איך אפשר לעזור?':closed);botReply(gm,{sug:['repair','buy','callback']});}
     setTimeout(function(){focusInput();focusDialog();},300);
   }
   function closeChat(){panel.classList.remove('open');fab.classList.remove('open');wrap.classList.remove('chat-open');fab.setAttribute('aria-expanded','false');panel.setAttribute('inert','');}
