@@ -2150,15 +2150,18 @@ if (classFails.length) {
   try { data = JSON.parse('{' + body + '}'); }
   catch (e) { bad('REPAIR_PRICES אינו JSON תקין: ' + e.message); return; }
   var holes = [];
+  if (page.indexOf('משך האחריות משתנה') >= 0) bad('מעבדת קרית גת: האחריות עדיין כתובה כמשתנה');
+  if (page.indexOf('pgReviewQuotes') >= 0 || data.reviews) bad('מעבדת קרית גת: אין ציטוטי ביקורות נבחרים');
+  if (page.indexOf('warrantyMonths') >= 0) bad('מעבדת קרית גת: אחריות רק בשדה warranty, לא בחודשים נפרדים');
+  if (page.indexOf('אין אחריות בשום מעבדה') >= 0) bad('מעבדת קרית גת: ניסוח אחריות ישן שאינו השדה warranty');
+  if (page.indexOf('מחיר החל מ, כולל מע"מ') < 0) bad('מעבדת קרית גת: עמודת המחיר בלי מע"מ');
   (data.rows || []).forEach(function (r) {
     var name = (r.repair || 'שורה') + ' / ' + (r.models || '');
     if (r.price == null) holes.push(name + ': מחיר');
     if (r.time == null) holes.push(name + ': זמן');
-    if ((r.warranty == null || r.warranty === '') && typeof r.warrantyMonths !== 'number') holes.push(name + ': אחריות');
+    if (r.warranty == null || r.warranty === '') holes.push(name + ': אחריות');
   });
-  (data.reviews || []).forEach(function (r, i) {
-    if (!r || r.name == null || r.date == null || r.text == null) holes.push('ביקורת ' + (i + 1));
-  });
+  if (data.PRICES_UPDATED == null || data.PRICES_UPDATED === '') holes.push('תאריך עדכון מחירים');
   (data.photos || []).forEach(function (p, i) {
     if (!p || p.src == null || typeof p.width !== 'number' || typeof p.height !== 'number' || p.alt == null) {
       holes.push('תמונת מעבדה ' + (i + 1));
