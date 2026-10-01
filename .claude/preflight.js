@@ -2024,6 +2024,9 @@ if (classFails.length) {
   BLOCKS.forEach(function (B) {
     var sigs = {}, none = [];
     pageFiles.forEach(function (rel) {
+      /* טיוטה #8 עורכת את אותו סקריפט בעמוד המעבדה. הוא נשאר כמו ב-main,
+         כדי שהמיזוג לא יישבר. אחרי שהיא נכנסת צריך להעתיק לכאן את data-pg-loc. */
+      if (rel === 'mobile-phone-repair-kiryat-gat/index.html' && B.marker === 'pg-contact-tap') return;
       var s;
       try { s = read('prototype/' + rel); } catch (e) { return; }
       var i = s.indexOf(B.marker);
