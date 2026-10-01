@@ -2121,6 +2121,62 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 44. מחירון מעבדת קרית גת לא מוכן כל עוד נשארו null ----------
+ * העמוד קיבל מחירון עם null בכוונה. null אינו מחיר. בלי תיבת ה-TODO מישהו
+ * יכול לקרוא את העמוד כמוכן. הדירוג 4.9 / 537 יושב ב-pg-facts.js, ודף הבית
+ * חייב להראות את אותם מספרים. אין AggregateRating בעמוד הזה. */
+(function () {
+  var rel = 'prototype/mobile-phone-repair-kiryat-gat/index.html';
+  var page, facts, home;
+  try {
+    page = read(rel);
+    facts = read('prototype/pg-facts.js');
+    home = read('prototype/index.html');
+  } catch (e) {
+    bad('מחירון המעבדה: חסר העמוד או prototype/pg-facts.js');
+    return;
+  }
+  if (/AggregateRating/.test(page)) bad('מעבדת קרית גת: אסור AggregateRating ב-JSON-LD');
+  var sm = facts.match(/score:\s*([0-9]+(?:\.[0-9]+)?)/);
+  var cm = facts.match(/count:\s*([0-9]+)/);
+  var um = facts.match(/url:\s*"([^"]+)"/);
+  if (!sm || !cm || !um) { bad('pg-facts.js בלי score, count או url'); return; }
+  if (home.indexOf('דירוג ' + sm[1]) < 0 || home.indexOf('· ' + cm[1]) < 0 || home.indexOf(um[1]) < 0) {
+    bad('pg-facts.js (Google ' + sm[1] + ' / ' + cm[1] + ') לא תואם לדירוג בדף הבית');
+  } else ok('דירוג גוגל אחד: ' + sm[1] + ' / ' + cm[1]);
+  var body = objectAfter(page, 'var REPAIR_PRICES =');
+  if (!body) { bad('חסר var REPAIR_PRICES בעמוד המעבדה'); return; }
+  var data;
+  try { data = JSON.parse('{' + body + '}'); }
+  catch (e) { bad('REPAIR_PRICES אינו JSON תקין: ' + e.message); return; }
+  var holes = [];
+  (data.rows || []).forEach(function (r) {
+    var name = (r.repair || 'שורה') + ' / ' + (r.models || '');
+    if (r.price == null) holes.push(name + ': מחיר');
+    if (r.time == null) holes.push(name + ': זמן');
+    if ((r.warranty == null || r.warranty === '') && typeof r.warrantyMonths !== 'number') holes.push(name + ': אחריות');
+  });
+  (data.reviews || []).forEach(function (r, i) {
+    if (!r || r.name == null || r.date == null || r.text == null) holes.push('ביקורת ' + (i + 1));
+  });
+  (data.photos || []).forEach(function (p, i) {
+    if (!p || p.src == null || typeof p.width !== 'number' || typeof p.height !== 'number' || p.alt == null) {
+      holes.push('תמונת מעבדה ' + (i + 1));
+    }
+  });
+  if (data.waitClaimConfirmed !== true) holes.push('אישור ברוך למשפט על זמן ההמתנה');
+  var todo = page.indexOf('id="pg-repair-pending"') >= 0;
+  if (holes.length && !todo) {
+    bad('מחירון המעבדה עדיין ריק ובלי תיבת TODO: ' + holes.join(' | '));
+  } else if (holes.length) {
+    warn('מחירון מעבדת קרית גת לא מוכן לפרסום (' + holes.length + '): ' + holes.join(' | '));
+  } else if (todo) {
+    warn('המחירון מולא. אפשר להסיר את pg-repair-pending');
+  } else ok('מחירון מעבדת קרית גת מולא');
+  var meta = (page.match(/<meta name="description" content="([^"]*)"/) || [])[1] || '';
+  if (meta.indexOf(String(sm[1])) < 0) warn('תיאור המעבדה לא כולל את דירוג גוגל מ-pg-facts.js');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
