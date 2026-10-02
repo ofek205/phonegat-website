@@ -2025,8 +2025,15 @@ if (classFails.length) {
     var sigs = {}, none = [];
     pageFiles.forEach(function (rel) {
       /* טיוטה #8 עורכת את אותו סקריפט בעמוד המעבדה. הוא נשאר כמו ב-main,
-         כדי שהמיזוג לא יישבר. אחרי שהיא נכנסת צריך להעתיק לכאן את data-pg-loc. */
-      if (rel === 'mobile-phone-repair-kiryat-gat/index.html' && B.marker === 'pg-contact-tap') return;
+         כדי שהמיזוג לא יישבר. אחרי שהיא נכנסת צריך להעתיק לכאן את data-pg-loc.
+         שני עמודי השוואה נעולים עד 9.10.2026 וזהים ל-main, ולכן גם הבלוק שלהם ישן.
+         להסיר את שניהם כשהעמודים עולים. החריג יושב בתוך הבדיקה הקיימת, לא כבלוק
+         חדש לפני הדוח, כי טיוטה #8 מוסיפה בדיקה באותו מקום. */
+      if (B.marker === 'pg-contact-tap' && (
+        rel === 'mobile-phone-repair-kiryat-gat/index.html' ||
+        rel === 'compare/galaxy-s26-plus-vs-galaxy-s26/index.html' ||
+        rel === 'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html'
+      )) return;
       var s;
       try { s = read('prototype/' + rel); } catch (e) { return; }
       var i = s.indexOf(B.marker);
@@ -2142,9 +2149,17 @@ if (classFails.length) {
   if (!G.reviewsUrl || html.indexOf(G.reviewsUrl) < 0) {
     bad('דף הבית לא מקשר לכתובת ביקורות Google שבקובץ המשותף');
   }
+  /* נעול עד 9.10.2026: שני העמודים זהים ל-main (ניסוי hero_cta), בלי פס דירוג
+     ובלי compare_hero / compare_mid. להסיר יחד עם LOCKED_UNTIL_OCT9 ב-gen-compare.js.
+     החריג בתוך הבדיקה הזאת, לא כבלוק נפרד לפני הדוח, כדי שטיוטה #8 תוכל להיכנס לידו. */
+  var defer = {
+    'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
+  };
   var miss = [];
   pageFiles.forEach(function (rel) {
     if (!/^compare\/[^/]+\/index\.html$/.test(rel)) return;
+    if (defer[rel]) return;
     var s;
     try { s = read('prototype/' + rel); } catch (e) { miss.push(rel); return; }
     if (s.indexOf(trust) < 0) miss.push(rel);

@@ -49,7 +49,8 @@ function pgComparePage() {
     var st = document.getElementById("cvstatus");
     if (st) st.textContent = !picked.length ? "מוצגים כל " + total + " ההבדלים, לפי תחום."
       : "בראש הרשימה: " + picked.map(function (c) { return c.name; }).join(", ") + "." + (restN ? " עוד " + diffTxt(restN) + " בתחומים האחרים." : " אלה כל ההבדלים.");
-    var msg = "היי, אשמח לעזרה בבחירה בין " + PG.a + " לבין " + PG.b + "." + (picked.length ? " חשוב לי: " + picked.map(function (c) { return c.name; }).join(", ") + "." : "");
+    /* אותו בסיס כמו כפתורי המחיר והמלאי (PG.lead). תחום שנבחר רק מתווסף, כדי שההודעה לא תתפצל לשני נוסחים. */
+    var msg = PG.lead + (picked.length ? " חשוב לי: " + picked.map(function (c) { return c.name; }).join(", ") + "." : "");
     var wt = document.getElementById("cvwatext"), w = document.getElementById("cvwa");
     if (wt) wt.textContent = msg;
     if (w) w.setAttribute("href", "https://wa.me/97286812050?text=" + encodeURIComponent(msg));
