@@ -86,10 +86,11 @@ var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
 var LEAD_LABEL = 'מחיר ומלאי היום ב-WhatsApp';
-function leadBtn(href, loc, lazy) {
+var LEAD_LABEL_ASK = 'בירור מחיר וזמינות ב-WhatsApp';
+function leadBtn(href, loc, lazy, label) {
   return '<a class="btn btn-wa cv-lead" data-pg-loc="' + loc + '" href="' + href + '">' +
     '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26"' +
-    (lazy ? ' loading="lazy"' : '') + ' decoding="async">' + LEAD_LABEL + '</a>';
+    (lazy ? ' loading="lazy"' : '') + ' decoding="async">' + label + '</a>';
 }
 /* ל' הדבקה: לפני מילה עברית בלי מקף (לגלקסי, לאייפון). לפני מילה לועזית המקף נשאר (ל-AirPods).
    displayed יכול להיות HTML מ-ltrRuns, ולכן הבדיקה היא על הטקסט בלי תגיות. */
@@ -97,12 +98,22 @@ function le(displayed) {
   var plain = String(displayed).replace(/<[^>]+>/g, '');
   return (/^[\u0590-\u05FF]/.test(plain) ? 'ל' : 'ל-') + displayed;
 }
+/* "מחיר ומלאי היום" רק כששני הדגמים נמכרים ונמצאים בחנות. מכשיר ייחוס, דגם
+   ש-not_in_store, ושעון או אוזניות בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
+function offeredHere(x) {
+  if (x.status === 'reference') return false;
+  if (x.commercial && x.commercial.not_in_store) return false;
+  if (CAT && !pageHref(x)) return false;
+  return true;
+}
+function leadAsk(a, b) { return !offeredHere(a) || !offeredHere(b); }
+function leadLabel(a, b) { return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL; }
 function leadMsg(a, b) {
   var n = function (x) { return x.name_he || x.name; };
-  return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ' + le(n(b)) + '. מה המחיר והמלאי היום?';
+  var tail = leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?';
+  return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ' + le(n(b)) + '. ' + tail;
 }
-/* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") רק כששני הדגמים נמכרים ונמצאים בחנות.
-   מכשיר ייחוס, דגם ש-not_in_store, ושעון או אוזניות בלי עמוד: אותו כפתור, בלי הבטחה שאין לה כיסוי. */
+/* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") באותו תנאי כמו הכפתור. */
 function leadBlurb(a, b) {
   var he = function (x) { return BIDI.ltrRuns(x.name_he || x.name); };
   var open = 'מתלבטים בין ' + he(a) + ' ' + le(he(b)) + '? ';
@@ -409,7 +420,8 @@ function buildMain(p, a, b, d, openTag) {
     if (!qa || !qb) return '';
     return '<a class="cv-sa" href="/compare/' + q.slug + '/">' + BIDI.ltrRuns(nmHe(qa)) + ' מול ' + BIDI.ltrRuns(nmHe(qb)) + '</a>';
   }).join('');
-  var waLead = wa(leadMsg(a, b));
+  var btnLabel = leadLabel(a, b);
+  var waLead = wa(lead);
   var trust = '    <p class="cv-trust"><a href="' + GR.reviewsUrl + '" target="_blank" rel="noopener">★ ' +
     esc(String(GR.rating)) + ' בגוגל · ' + esc(String(GR.count)) +
     ' ביקורות</a> · רחבת תשרי 2, קרית גת</p>\n';
@@ -420,7 +432,7 @@ function buildMain(p, a, b, d, openTag) {
     heroBlock(p, waPick) +
     '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
     '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
-    '    <div class="cv-herocta">' + leadBtn(waLead, 'compare_hero', false) + '</div>\n' +
+    '    <div class="cv-herocta">' + leadBtn(waLead, 'compare_hero', false, btnLabel) + '</div>\n' +
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
     '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a></div>\n' +
     '  </div>\n</section>\n';
@@ -500,7 +512,7 @@ function buildMain(p, a, b, d, openTag) {
   }).join('');
 
   var ask = '    <div class="cv-ask">\n      <p>' + leadBlurb(a, b) + '</p>\n      ' +
-    leadBtn(waLead, 'compare_mid', true) + '\n    </div>\n';
+    leadBtn(waLead, 'compare_mid', true, btnLabel) + '\n    </div>\n';
   var res = '<section class="block cv-res" id="table" aria-labelledby="cmp-h">\n  <div class="wrap">\n' + disc +
     '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs + ask +
     '    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>\n' +
@@ -558,7 +570,7 @@ function buildMain(p, a, b, d, openTag) {
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
     })() +
     '    <div class="row">\n' +
-    '      ' + leadBtn(waLead, 'compare_end', true) + '\n' +
+    '      ' + leadBtn(waLead, 'compare_end', true, btnLabel) + '\n' +
     CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>\n' +
     '    </div>\n' +

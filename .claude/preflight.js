@@ -2021,19 +2021,40 @@ if (classFails.length) {
       events: ['compare_tool_open', 'compare_view', 'compare_select_model', 'compare_start'] }
   ];
   var problems = [], counts = [];
+  /* טיוטה #8 עורכת את אותו סקריפט בעמוד המעבדה, והוא נשאר כמו ב-main כדי שהמיזוג
+     לא יישבר. שני עמודי השוואה נעולים עד 9.10.2026 וזהים ל-main. לא מדלגים עליהם:
+     הבלוק שלהם חייב להיות זהה לבלוק שב-origin/main. להסיר את שני עמודי ההשוואה
+     כשהם עולים. החריג יושב בתוך הבדיקה הקיימת, לא כבלוק חדש לפני הדוח, כי טיוטה #8
+     מוסיפה בדיקה באותו מקום. */
+  var KEEP_MAIN_LEAD = {
+    'mobile-phone-repair-kiryat-gat/index.html': 1,
+    'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
+  };
+  function leadBlock(s) {
+    var i = s.indexOf('pg-contact-tap');
+    if (i < 0) return null;
+    var a = s.lastIndexOf('<script', i), z = s.indexOf('</script>', i);
+    if (a < 0 || z < 0) return null;
+    return s.slice(a, z + 9).replace(/\r/g, '');
+  }
+  var keptMain = 0;
   BLOCKS.forEach(function (B) {
     var sigs = {}, none = [];
     pageFiles.forEach(function (rel) {
-      /* טיוטה #8 עורכת את אותו סקריפט בעמוד המעבדה. הוא נשאר כמו ב-main,
-         כדי שהמיזוג לא יישבר. אחרי שהיא נכנסת צריך להעתיק לכאן את data-pg-loc.
-         שני עמודי השוואה נעולים עד 9.10.2026 וזהים ל-main, ולכן גם הבלוק שלהם ישן.
-         להסיר את שניהם כשהעמודים עולים. החריג יושב בתוך הבדיקה הקיימת, לא כבלוק
-         חדש לפני הדוח, כי טיוטה #8 מוסיפה בדיקה באותו מקום. */
-      if (B.marker === 'pg-contact-tap' && (
-        rel === 'mobile-phone-repair-kiryat-gat/index.html' ||
-        rel === 'compare/galaxy-s26-plus-vs-galaxy-s26/index.html' ||
-        rel === 'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html'
-      )) return;
+      if (B.marker === 'pg-contact-tap' && KEEP_MAIN_LEAD[rel]) {
+        var cur, mainOut;
+        try { cur = read('prototype/' + rel); }
+        catch (e) { problems.push(B.what + ': חסר ' + rel); return; }
+        mainOut = require('child_process').spawnSync('git', ['show', 'origin/main:prototype/' + rel], {
+          encoding: 'utf8', cwd: ROOT, maxBuffer: 8 * 1024 * 1024
+        });
+        var mine = leadBlock(cur), theirs = mainOut.status === 0 ? leadBlock(mainOut.stdout || '') : null;
+        if (!mine || !theirs || mine !== theirs) {
+          problems.push(B.what + ': ' + rel + ' סוטה מהסקריפט שב-main');
+        } else keptMain++;
+        return;
+      }
       var s;
       try { s = read('prototype/' + rel); } catch (e) { return; }
       var i = s.indexOf(B.marker);
@@ -2064,7 +2085,8 @@ if (classFails.length) {
     bad('מדידה: ' + problems.join(' · ') +
       ' — העמוד ימשיך לעבוד והמדידה פשוט לא תישלח ממנו, כלומר בדוח הוא ייראה כמי שאינו ממיר');
   } else {
-    ok(counts.join(', ') + ' עמודים, זהה בכולם, עם כל שמות האירועים');
+    ok(counts.join(', ') + ' עמודים, זהה בכולם, עם כל שמות האירועים' +
+      (keptMain ? '. ' + keptMain + ' עמודים נעולים זהים לסקריפט שב-main' : ''));
   }
 })();
 
@@ -2139,10 +2161,17 @@ if (classFails.length) {
   var G;
   try { G = require(path.join(__dirname, 'tools', 'lib', 'google-rating.js')); }
   catch (e) { bad('חסר .claude/tools/lib/google-rating.js'); return; }
-  var ratingShown = html.indexOf('>' + G.rating + '</b>') >= 0 || html.indexOf('>' + G.rating + '</div>') >= 0;
-  var countShown = html.indexOf(String(G.count)) >= 0;
-  if (!ratingShown || !countShown) {
-    bad('דף הבית לא מציג את דירוג Google מהקובץ המשותף (' + G.rating + ' / ' + G.count + ')');
+  /* הפס עצמו, לא המספר לבד: "537" ב-meta או בהערה לא מספיק. */
+  var strips = [
+    '<b>Google</b> ' + G.rating + ' <span>· ' + G.count + '</span>',
+    'class="pg-gnum">' + G.rating + '</div>',
+    'class="pg-gcount">(\u200e' + G.count + ')</div>',
+    '<b>' + G.rating + '</b> ב\u2011Google (\u200e' + G.count + ')',
+    'דירוג ' + G.rating + ' מתוך 5 ב-Google על פי ' + G.count + ' ביקורות'
+  ];
+  var missingStrips = strips.filter(function (t) { return html.indexOf(t) < 0; });
+  if (missingStrips.length) {
+    bad('דף הבית לא מציג את פס דירוג Google מהקובץ המשותף (' + G.rating + ' / ' + G.count + ')');
   }
   var trust = '<a href="' + G.reviewsUrl + '" target="_blank" rel="noopener">★ ' +
     G.rating + ' בגוגל · ' + G.count + ' ביקורות</a> · רחבת תשרי 2, קרית גת';
@@ -2150,7 +2179,7 @@ if (classFails.length) {
     bad('דף הבית לא מקשר לכתובת ביקורות Google שבקובץ המשותף');
   }
   /* נעול עד 9.10.2026: שני העמודים זהים ל-main (ניסוי hero_cta), בלי פס דירוג
-     ובלי compare_hero / compare_mid. להסיר יחד עם LOCKED_UNTIL_OCT9 ב-gen-compare.js.
+     ובלי compare_hero / compare_mid / compare_end. להסיר יחד עם LOCKED_UNTIL_OCT9 ב-gen-compare.js.
      החריג בתוך הבדיקה הזאת, לא כבלוק נפרד לפני הדוח, כדי שטיוטה #8 תוכל להיכנס לידו. */
   var defer = {
     'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
@@ -2163,13 +2192,13 @@ if (classFails.length) {
     var s;
     try { s = read('prototype/' + rel); } catch (e) { miss.push(rel); return; }
     if (s.indexOf(trust) < 0) miss.push(rel);
-    else if (s.indexOf('data-pg-loc="compare_hero"') < 0 || s.indexOf('data-pg-loc="compare_mid"') < 0) miss.push(rel);
+    else if (s.indexOf('data-pg-loc="compare_hero"') < 0 || s.indexOf('data-pg-loc="compare_mid"') < 0 || s.indexOf('data-pg-loc="compare_end"') < 0) miss.push(rel);
     else if (s.indexOf('%20(%D7%90%D7%AA%D7%A8%3A%20%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94)') >= 0) miss.push(rel);
   });
   if (miss.length) {
-    bad('עמודי השוואה בלי פס הדירוג או בלי כפתורי compare_hero ו-compare_mid: ' +
+    bad('עמודי השוואה בלי פס הדירוג או בלי כפתורי compare_hero, compare_mid ו-compare_end: ' +
       miss.slice(0, 4).join(', ') + (miss.length > 4 ? ' ועוד' : ''));
-  } else if (ratingShown && countShown) {
+  } else if (!missingStrips.length) {
     ok('דירוג Google ' + G.rating + ' / ' + G.count + ' משותף לדף הבית ולעמודי ההשוואה');
   }
 })();
