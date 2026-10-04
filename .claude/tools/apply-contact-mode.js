@@ -35,6 +35,16 @@ if (!flag) { console.error('missing window.PG_PHONE_CALLS_ENABLED'); process.exi
 var ON = process.env.PG_CALLS === '1' ? true : process.env.PG_CALLS === '0' ? false : flag[1] === 'true';
 
 var WA = 'https://wa.me/97286812050';
+/* The home page prefills a short WhatsApp message on the reviews, map and
+   footer anchors this script owns. Other pages keep the bare URL, including
+   across a calls on/off round trip. Turning calls on restores the phone
+   controls from either form. */
+var WA_ASK = WA + '?text=' + encodeURIComponent('היי, הגעתי מהאתר. אשמח לעזרה עם שאלה');
+function withAsk(html) { return html.split(WA + '"').join(WA_ASK + '"'); }
+function offFor(file, prefilled, bare) {
+  var rel = path.relative(PROTO, file).split(path.sep).join('/');
+  return rel === 'index.html' ? prefilled : bare;
+}
 var CALL = '<a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 var CALL_HERO = '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 var CALL_HOME = '<a class="btn btn-call" href="tel:+972525893366" aria-label="חייגו 052-5893366"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg>חייגו <span class="num" dir="ltr">052-5893366</span></a>';
@@ -45,7 +55,8 @@ var CALL_CH = '<a class="ch" data-pg-cta="phone" data-pg-loc="channels" href="te
 var FORM_TEL = ' · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a>';
 
 var FOOT_ON = '<li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li>';
-var FOOT_OFF = '<li data-pg-was-phones="1"><a href="' + WA + '">WhatsApp</a></li>';
+var FOOT_OFF_BARE = '<li data-pg-was-phones="1"><a href="' + WA + '">WhatsApp</a></li>';
+var FOOT_OFF = withAsk(FOOT_OFF_BARE);
 var LEGAL_ON = '<span class="k">טלפון:</span> <span><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a> · <a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></span>';
 var LEGAL_OFF_OLD = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '">כתבו לנו ב-WhatsApp</a></span>';
 var LEGAL_OFF = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '"><bdo dir="ltr">08-6812050</bdo></a></span>';
@@ -54,9 +65,11 @@ var LEGAL_OFF = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="l
 var PRIV_FORM = '<li><span class="k">טופס באתר:</span> <span><a href="/contact/">טופס יצירת קשר</a></span></li>';
 var PRIV_MAIL = '<li><span class="k">דוא"ל:</span> <span><a href="mailto:sigalad2@gmail.com"><bdo dir="ltr">sigalad2@gmail.com</bdo></a></span></li>\n        ' + PRIV_FORM;
 var REV_ON = '<div class="rev-cta"><a class="btn btn-teal" href="tel:+972525893366">חייגו עכשיו</a></div>';
-var REV_OFF = '<div class="rev-cta"><a class="btn btn-wa" href="' + WA + '"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a></div>';
+var REV_OFF_BARE = '<div class="rev-cta"><a class="btn btn-wa" href="' + WA + '"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a></div>';
+var REV_OFF = withAsk(REV_OFF_BARE);
 var MAP_ON = '<b>טלפון:</b> <bdo dir="ltr">052-5893366</bdo> · <bdo dir="ltr">08-6812050</bdo>';
-var MAP_OFF = '<b>WhatsApp:</b> <a href="' + WA + '">כתבו לנו ב-WhatsApp</a>';
+var MAP_OFF_BARE = '<b>WhatsApp:</b> <a href="' + WA + '">כתבו לנו ב-WhatsApp</a>';
+var MAP_OFF = withAsk(MAP_OFF_BARE);
 var GRID_ON = 'grid-template-columns:1fr 1fr 1fr;background:#fff';
 var GRID_OFF = 'grid-template-columns:1fr 1fr;background:#fff';
 
@@ -100,21 +113,21 @@ function swapRe(s, re, to) {
   return s.replace(re, to);
 }
 
-function towardOff(s, file) {
+function towardOff(s, file, filePath) {
   s = swapRe(s, /<a class="btn btn-call" href="tel:\+972525893366" aria-label="חייגו 052-5893366">[\s\S]*?<\/a>/g, '<!--pg-call-home-->');
   s = swap(s, CALL_HERO, '<!--pg-call-hero-->');
   s = swap(s, CALL, '<!--pg-call-->');
-  s = swap(s, REV_ON, REV_OFF);
+  s = swap(s, REV_ON, offFor(filePath, REV_OFF, REV_OFF_BARE));
   s = swapRe(s, /<a class="ic" href="tel:\+972525893366" aria-label="טלפון">[\s\S]*?<\/a>/g, '<!--pg-call-ic-->');
   s = swapRe(s, /<a class="tel" href="tel:\+972525893366" aria-label="טלפון">[\s\S]*?<\/a>/g, '<!--pg-call-rail-->');
   s = swapRe(s, /<a href="tel:\+972525893366"><span class="mi"[\s\S]*?<\/a>/g, '<!--pg-call-mbar-->');
-  s = swap(s, FOOT_ON, FOOT_OFF);
+  s = swap(s, FOOT_ON, offFor(filePath, FOOT_OFF, FOOT_OFF_BARE));
   s = swap(s, LEGAL_ON, LEGAL_OFF);
   s = swap(s, LEGAL_OFF_OLD, LEGAL_OFF);
   s = swap(s, fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_FORM), fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_MAIL));
   s = swapRe(s, /<a class="ch" data-pg-cta="phone"[\s\S]*?<\/a>/g, '<!--pg-call-ch-->');
   s = swap(s, FORM_TEL, '<!--pg-call-form-->');
-  s = swap(s, MAP_ON, MAP_OFF);
+  s = swap(s, MAP_ON, offFor(filePath, MAP_OFF, MAP_OFF_BARE));
   s = swap(s, GRID_ON, GRID_OFF);
   COPY.forEach(function (p) { s = swap(s, p[0], p[1]); });
   return s;
@@ -129,11 +142,14 @@ function towardOn(s, file) {
   s = swap(s, '<!--pg-call-ch-->', fit(file, CALL_CH));
   s = swap(s, '<!--pg-call-form-->', FORM_TEL);
   s = swap(s, REV_OFF, REV_ON);
+  s = swap(s, REV_OFF_BARE, REV_ON);
   s = swap(s, FOOT_OFF, FOOT_ON);
+  s = swap(s, FOOT_OFF_BARE, FOOT_ON);
   s = swap(s, fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_MAIL), fit(file, LEGAL_OFF + '</li>\n        ' + PRIV_FORM));
   s = swap(s, LEGAL_OFF, LEGAL_ON);
   s = swap(s, LEGAL_OFF_OLD, LEGAL_ON);
   s = swap(s, MAP_OFF, MAP_ON);
+  s = swap(s, MAP_OFF_BARE, MAP_ON);
   s = swap(s, GRID_OFF, GRID_ON);
   COPY.forEach(function (p) { s = swap(s, p[1], p[0]); });
   return s;
@@ -142,7 +158,7 @@ function towardOn(s, file) {
 var changed = 0, telLeft = [];
 walk(PROTO, []).forEach(function (f) {
   var orig = fs.readFileSync(f, 'utf8');
-  var s = ON ? towardOn(orig, orig) : towardOff(orig, orig);
+  var s = ON ? towardOn(orig, orig) : towardOff(orig, orig, f);
   if (ON) SCHEMA_PAIRS.forEach(function (p) { s = swap(s, p[1], p[0]); });
   else s = swap(s, SCHEMA_MOBILE, SCHEMA_LAND);
   if (s.indexOf('/contact-mode.js') < 0 && s.indexOf('</head>') >= 0) {
