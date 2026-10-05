@@ -317,9 +317,10 @@
      "at": "2026-08-16"
     },
     "charging_wireless": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-16"
+     "src": "https://www.samsung.com/us/support/answer/ANS10010342/",
+     "kind": "אתר היצרן, עמוד תמיכה",
+     "at": "2026-10-05",
+     "note": "Super Fast Wireless Charging עד 25W. עמוד המפרט הישראלי אינו מפרסם הספק אלחוטי, ואין בו Qi2.2. נבדק ב-5.10.2026."
     },
     "storage_expandable": {
      "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
@@ -355,7 +356,7 @@
     "video": "8K ב-30 פריימים לשנייה. הילוך אט 240 ב-FHD ו-120 ב-4K",
     "battery": "5000 mAh טיפוסית (מדורג 4855 mAh), עד 31 שעות וידאו",
     "charging_wired": "60W, עד 75 אחוז ב-30 דקות",
-    "charging_wireless": "25W בתקן Qi2.2",
+    "charging_wireless": "עד 25W",
     "dimensions": "163.6 x 78.1 x 7.9 מ״מ",
     "weight": "214 גרם",
     "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM פיזי כפול, פיזי עם eSIM, או שני eSIM",
@@ -6834,10 +6835,10 @@
      "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
     },
     "charging_wireless": {
-     "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-17",
-     "note": "עמוד ההשוואה מציג את שלושת דגמי S25 זה לצד זה, והערך נלקח מהעמודה של הדגם הזה."
+     "src": "https://news.samsung.com/global/samsung-galaxy-s25-series-sets-the-standard-of-ai-phone-as-a-true-ai-companion",
+     "kind": "הודעת היצרן",
+     "at": "2026-10-05",
+     "note": "Newsroom כותב Fast Wireless Charging 2.0 ואינו נוקב בהספק. אין 15W במקור הרשמי. נבדק ב-5.10.2026."
     },
     "storage_expandable": {
      "src": "https://www.gsmarena.com/compare.php3?idPhone1=13610&idPhone2=13609&idPhone3=13322",
@@ -6895,7 +6896,7 @@
     "video": "עד 8K ב-30 פריימים לשנייה",
     "battery": "5000mAh",
     "charging_wired": "45W",
-    "charging_wireless": "15W",
+    "charging_wireless": "טעינה אלחוטית מהירה 2.0",
     "dimensions": "162.8x77.6x8.2 מ״מ",
     "weight": "218 גרם",
     "water_resistance": "IP68, עד 1.5 מטר ל-30 דקות",

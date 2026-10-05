@@ -642,7 +642,6 @@ html.a11y-stop-motion header.site{transition:none}
  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
 })();
 </script>
-<script src="/contact-mode.js"></script>
   <!-- pg-deals:css:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <style>
 /* font-family and line-height are NOT inherited by <button> — without these, every .btn that is a
@@ -1416,6 +1415,7 @@ html.a11y-links a:not(.btn):not(.chip):not(.pg-chip):not(.a11y-reset){text-decor
      saying again here or the two consent buttons stay at 38px */
   .cookie .btn-sm{min-height:44px}
 }
+@keyframes idfEnter{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
 /* ===== the saluting group, in the IDF banner and the IDF slide ===== */
 /* three soldiers saluting beside a flag. Colour lives in custom properties and every part carries a
    second, neutral pass of light and shadow on top (the url(#tq-*) gradients, defined once per page),
@@ -1529,7 +1529,6 @@ html.a11y-stop-motion .troops *{animation:none}
 @media (prefers-reduced-motion:no-preference){
 .idf .troops{animation:idfEnter .7s var(--ease) both}
 }
-@keyframes idfEnter{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes idfShine{0%{transform:translateX(-160%)}22%,100%{transform:translateX(330%)}}
 @keyframes heroIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes hglow{0%,100%{opacity:.5;transform:translateX(-50%) scale(1)}50%{opacity:.85;transform:translateX(-50%) scale(1.06)}}
@@ -1588,6 +1587,7 @@ html.a11y-stop-motion .troops *{animation:none}
   100%{left:17%;opacity:0;transform:translate(-50%,-50%) scale(.4) rotate(11deg)}
 }
 @keyframes simFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--mx,6px),calc(var(--my,12px)*-1))}}
+/* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.
 @keyframes trUa{
   0%,14%{transform:rotate(4deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
   16%{transform:rotate(22deg)}
@@ -1666,13 +1666,12 @@ html.a11y-stop-motion .troops *{animation:none}
   28%{transform:rotate(-3deg)}
   52%{transform:rotate(1.2deg)}
   76%{transform:rotate(-1.6deg)}}
-/* ב-/phones/compare/ יש main .btn{white-space:normal} במכוון, כדי שתוויות עבריות ישברו לשתי שורות.
    הכלל גובר על .btn של האתר, ולכן כפתורי הקרוסלה נשברו שם ולא בשאר העמודים. */
 #deals .btn{white-space:nowrap}
 </style>
 <!-- pg-deals:css:end -->
-
-<link rel="stylesheet" href="/chat.css">
+<script src="/contact-mode.js"></script>
+  <link rel="stylesheet" href="/chat.css">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1754,7 +1753,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="inner">
       <h1 id="gh"><bdo dir="ltr">Galaxy S26 Ultra</bdo></h1>
       <p class="sub">גלקסי S26 אולטרה הוא הדגם הגדול והמצויד של סמסונג. מסך 6.9 אינץ׳ ב-120Hz, מצלמה ראשית של 200MP, ארבע מצלמות אחוריות, ותמיכה בעט S שאין לאף דגם אחר בסדרה. סמסונג מתחייבת לעדכוני אבטחה עד פברואר 2033, שזה כמעט שבע שנים.</p>
-      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20Galaxy%20S26%20Ultra"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a></div>
+      <div class="hcta"><a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20Galaxy%20S26%20Ultra"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בדיקת מחיר ומלאי</a><!--pg-call-hero--></div>
       <p class="meta">
         <span>Samsung, Android</span>
         <span>הוכרז בפברואר 2026</span>
@@ -2107,7 +2106,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tr class="grp"><th colspan="2" scope="rowgroup">סוללה וטעינה</th></tr>
           <tr><th scope="row">סוללה</th><td><bdo dir="ltr">5000 mAh</bdo> טיפוסית (מדורג <bdo dir="ltr">4855 mAh</bdo>), עד 31 שעות וידאו</td></tr>
           <tr><th scope="row">טעינה חוטית</th><td><bdo dir="ltr">60W</bdo>, עד 75 אחוז ב-30 דקות</td></tr>
-          <tr><th scope="row">טעינה אלחוטית</th><td><bdo dir="ltr">25W</bdo> בתקן <bdo dir="ltr">Qi2.2</bdo></td></tr>
+          <tr><th scope="row">טעינה אלחוטית</th><td>עד <bdo dir="ltr">25W</bdo></td></tr>
         </tbody>
         <tbody>
           <tr class="grp"><th colspan="2" scope="rowgroup">גוף ועמידות</th></tr>
@@ -2152,6 +2151,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>
     <div class="row">
       <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%95%D7%A7%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%9E%D7%9C%D7%90%D7%99%20%D7%A9%D7%9C%20Galaxy%20S26%20Ultra"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">בדיקת מחיר ומלאי</a>
+      <!--pg-call-->
       <a class="btn btn-teal" href="/phones/">כל המכשירים</a>
     </div>
     <p class="fine">הייעוץ לפני קנייה ללא עלות וללא התחייבות.</p>
@@ -2347,7 +2347,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      visit would look like a fresh decision and the numbers would mean nothing. */
   chips.forEach(function(c){c.addEventListener('click',function(){
     var d=c.getAttribute('data-dev');
-    apply(d);
+    apply(d);
   });});
   var saved='all';try{saved=localStorage.getItem('pg_dev')||'all';}catch(e){}
   apply(saved);
@@ -2613,31 +2613,6 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
   },true);
 })();
 </script>
-<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
-<div class="pg-fab-wrap" id="pgFabWrap">
-  <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
-  <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
-    <span class="badge-dot" aria-hidden="true"></span>
-    <svg class="ic-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>
-    <svg class="ic-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-</div>
-<section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" tabindex="-1" inert>
-  <div class="pg-head">
-    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
-    <div class="ht"><b>העוזר של פון גת</b><span class="pg-status" id="pgStatus"><i class="pg-dot" aria-hidden="true"></i><span id="pgStatusTxt">זמין</span></span></div>
-    <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-  </div>
-  <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
-  <div class="pg-chips" id="pgChips" aria-label="נושאים מהירים"></div>
-  <div class="pg-input">
-    <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
-    <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
-  </div>
-  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
-</section>
-<!-- bot:html:end -->
-<script src="/chat.js" defer></script>
 <!-- pg-deals:js:start  נוצר על ידי .claude/tools/add-deals.js. אל תערוך ידנית. -->
 <div class="pg-cpn-ov" id="pgCpnOv">
   <div class="pg-cpn" role="dialog" aria-modal="true" aria-labelledby="pgCpnTitle">
@@ -3049,6 +3024,30 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
 })();
 </script>
 <!-- pg-deals:js:end -->
-
+<!-- bot:html:start — נגזר על ידי gen-bot.js ל-21 עמודי התוכן. אל תערוך בעמוד אחר. -->
+<div class="pg-fab-wrap" id="pgFabWrap">
+  <span class="pg-fab-label" id="pgFabLabel" aria-hidden="true">דברו איתנו</span>
+  <button class="pg-fab" id="pgFab" aria-label="פתיחת צ׳אט עם פון גת (אפשר לגרור כדי להזיז)" aria-expanded="false" aria-controls="pgPanel" aria-haspopup="dialog">
+    <span class="badge-dot" aria-hidden="true"></span>
+    <svg class="ic-chat" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.2 7.7L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 11h7M8.5 14h4.5"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+<section class="pg-panel" id="pgPanel" role="dialog" aria-label="צ׳אט עם פון גת" aria-modal="false" tabindex="-1" inert>
+  <div class="pg-head">
+    <span class="ava"><img src="/logo.jpg" alt="" aria-hidden="true" width="32" height="32"></span>
+    <div class="ht"><b>העוזר של פון גת</b><span class="pg-status" id="pgStatus"><i class="pg-dot" aria-hidden="true"></i><span id="pgStatusTxt">זמין</span></span></div>
+    <button class="x" id="pgClose" aria-label="סגירת הצ׳אט"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="pg-msgs" id="pgMsgs" role="log" aria-live="polite" aria-atomic="false"></div>
+  <div class="pg-chips" id="pgChips" aria-label="נושאים מהירים"></div>
+  <div class="pg-input">
+    <input id="pgInput" type="text" autocomplete="off" maxlength="200" placeholder="כתבו הודעה..." aria-label="הקלדת הודעה לצ׳אט">
+    <button class="pg-send" id="pgSend" aria-label="שליחה"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 11l18-8-8 18-2.5-7.5L3 11Z"/></svg></button>
+  </div>
+  <div class="pg-foot">הצ׳אט נותן מידע כללי. לפרטים מדויקים דברו עם ברוך וסיגל.<br>בשליחת פרטים אתם מאשרים את <a href="/privacy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a>.</div>
+</section>
+<!-- bot:html:end -->
+<script src="/chat.js" defer></script>
 </body>
 </html>
