@@ -455,6 +455,17 @@ html.a11y-contrast-high .dbar,html.a11y-contrast-invert .dbar,html.a11y-contrast
 .cv-top .catsw a[aria-current="page"]{background:#fff;color:var(--cv-dark);font-weight:800}
 .cv-top .catsw a:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .cv-top .cv-sub{margin:.7rem 0 0;color:rgba(255,255,255,.86);font-size:1.02rem;line-height:1.6;max-inline-size:70ch}
+.cv-trust{margin:.45rem 0 0;color:rgba(255,255,255,.9);font-size:.95rem;line-height:1.45}
+.cv-trust a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:.18em;padding-block:.55rem}
+.cv-trust a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.cv-herocta{margin:1rem 0 0}
+.cv-lead{min-height:44px}
+.cv-ask{margin:1.6rem 0 .2rem;padding-block-start:1.2rem;border-block-start:1px solid var(--line);max-inline-size:42rem}
+.cv-ask p{margin:0 0 .85rem;font-size:1.05rem;line-height:1.7;color:var(--ink)}
+@media(max-width:720px){
+.cv-trust{font-size:.84rem}
+.cv-herocta .cv-lead,.cv-ask .cv-lead,.cta .cv-lead{box-sizing:border-box;width:100%;text-align:center}
+}
 .cv-cards{display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:center;gap:14px;margin-block-start:1.3rem}
 .cv-card{min-height:88px;box-sizing:border-box;padding:14px 18px;border:0;border-radius:10px;background:#fff;display:flex;align-items:center;gap:14px;cursor:pointer;text-align:start;font:inherit;color:var(--ink-strong);inline-size:100%}
 .cv-card[data-slot="0"]{box-shadow:inset 0 -5px 0 var(--cv-a-edge)}
@@ -649,8 +660,9 @@ a.cv-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .cv-app .two .cv-a h3{border-bottom-color:var(--cv-a)}
 .cv-app .two .cv-b h3{border-bottom-color:var(--cv-b)}
 .cv-app .two .col h3 .cv-dot{inline-size:12px;block-size:12px}
-/* בטלפון: סרגל ה-WhatsApp התחתון כבר שם, וההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון */
-@media(max-width:720px){.cv-sug .cv-hwa{display:none}.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
+/* בטלפון ההצעות בשורה אחת שנגללת הצידה, כדי שההדר לא יבלע את המסך הראשון.
+   כפתור ה-WhatsApp אינו בתוך השורה: תווית ארוכה הייתה נחתכת או נעלמת. */
+@media(max-width:720px){.cv-sug{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-block-end:4px;scrollbar-width:none}.cv-sug::-webkit-scrollbar{display:none}.cv-sug .cv-sl{flex:none}}
 /* הצד השלישי. כחול מפלטת Okabe-Ito, שנבנתה כדי להיבדל בכל סוגי עיוורון הצבעים, מול הסגול והכתום.
    הצבע אינו הסימן היחיד: שם הדגם מופיע ליד כל ערך. */
 .cv-card[data-slot="2"]{box-shadow:inset 0 -5px 0 var(--cv-c-edge)}
@@ -2170,13 +2182,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="cv-top" aria-labelledby="h1">
   <div class="wrap">
     <h1 id="h1">גלקסי S26 אולטרה או S25 אולטרה: מה השתנה ולמי שווה לשדרג</h1>
+    <p class="cv-trust"><a href="https://www.google.com/maps?cid=12990938412192454327" target="_blank" rel="noopener">★ 4.9 בגוגל · 537 ביקורות</a> · רחבת תשרי 2, קרית גת</p>
     <p class="cv-sub">המסך, עט S, דירוג IP68 וסוללה טיפוסית של 5000 mAh נשארו באותו סדר גודל. המסך עצמו הוא 6.9 אינץ׳ QHD+ מסוג Dynamic AMOLED 2X, עד 120Hz. מה שהשתנה, לפי סמסונג: S26 אולטרה דק וקל יותר, 7.9 מ״מ ו-214 גרם מול 8.2 מ״מ ו-218 גרם. הצמצם הראשי F1.4 במקום F1.7, והטלפוטו 5x הוא F2.9 במקום F3.4. השבב הוא Snapdragon 8 Elite Gen 5 במקום Elite, וסמסונג מפרסמת מולו עד 19 אחוז בביצועי המעבד, 24 אחוז ב-GPU ו-39 אחוז ב-NPU. אלה מדידות מעבדה של סמסונג. בטעינה קווית עד כ-75 אחוז ב-30 דקות עם מתאם 60W, מול עד כ-65 אחוז ב-30 דקות עם מתאם 45W. Bluetooth עלה מ-5.4 ל-6.0, והטעינה האלחוטית מגיעה עד 25W מול Fast Wireless Charging 2.0.</p>
     <div class="cv-cards" data-pg-data>
         <a class="cv-card" data-slot="0" href="/phones/galaxy-s26-ultra/"><img class="cv-img" src="/phones/img/galaxy-s26-ultra-288.webp" alt="גלקסי S26 אולטרה" width="288" height="384" decoding="async"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy S26 Ultra</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2026</span></span><span class="cv-act">המפרט המלא</span></a>
         <span class="cv-vs2" aria-hidden="true">מול</span>
         <div class="cv-card" data-slot="1"><span class="cv-dot" aria-hidden="true"></span><span class="cv-ct"><span class="cv-nm"><bdo dir="ltr">Galaxy S25 Ultra</bdo></span><span class="cv-meta">Samsung · הוכרז ב-2025</span></span><span class="cv-act">לא נמכר אצלנו</span></div>
     </div>
-    <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/galaxy-s26-vs-galaxy-s26-ultra/">גלקסי <bdo dir="ltr">S26</bdo> מול גלקסי <bdo dir="ltr">S26</bdo> אולטרה</a><a class="cv-sa" href="/compare/galaxy-s26-ultra-vs-iphone-17-pro-max/">גלקסי <bdo dir="ltr">S26</bdo> אולטרה מול אייפון 17 פרו מקס</a><a class="cv-sa" href="/phones/compare/?d=galaxy-s26-ultra,galaxy-s25-ultra">להחליף דגם בכלי ההשוואה</a><a class="btn btn-wa cv-hwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20S26%20Ultra%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20S25%20Ultra."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>
+    <div class="cv-herocta"><a class="btn btn-wa cv-lead" data-pg-loc="compare_hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S26%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94%20%D7%9C%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S25%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A8%D7%A8%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">בירור מחיר וזמינות ב-WhatsApp</a></div>
+    <div class="cv-sug"><span class="cv-sl">משווים גם:</span><a class="cv-sa" href="/compare/galaxy-s26-vs-galaxy-s26-ultra/">גלקסי <bdo dir="ltr">S26</bdo> מול גלקסי <bdo dir="ltr">S26</bdo> אולטרה</a><a class="cv-sa" href="/compare/galaxy-s26-ultra-vs-iphone-17-pro-max/">גלקסי <bdo dir="ltr">S26</bdo> אולטרה מול אייפון 17 פרו מקס</a><a class="cv-sa" href="/phones/compare/?d=galaxy-s26-ultra,galaxy-s25-ultra">להחליף דגם בכלי ההשוואה</a></div>
   </div>
 </section>
 <section class="block cv-res" id="table" aria-labelledby="cmp-h">
@@ -2184,6 +2198,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="dnote">את גלקסי S25 אולטרה איננו מוכרים, והוא כאן כדי שאפשר יהיה להשוות אליו. המקור של כל שדה מופיע בסוף הרשימה.</p>
     <p class="cv-count">17 הבדלים, ו-10 שדות זהים</p>
     <ul class="cv-same" data-pg-data aria-label="זהים בשניהם"><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>סוג מסך</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>רזולוציה</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>קצב רענון: עד <bdo dir="ltr">120Hz</bdo></li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>בהירות: 2600 ניט שיא</li><li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12l5 5 9-10"></path></svg>נפחי אחסון: <bdo dir="ltr">256GB, 512GB, 1TB</bdo></li><li>ועוד 5</li></ul>
+    <div class="cv-ask">
+      <p>מתלבטים בין גלקסי <bdo dir="ltr">S26</bdo> אולטרה לגלקסי <bdo dir="ltr">S25</bdo> אולטרה? את גלקסי <bdo dir="ltr">S26</bdo> אולטרה אנחנו מוכרים, ואת גלקסי <bdo dir="ltr">S25</bdo> אולטרה לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים, ומה אנחנו רואים במעבדה.</p>
+      <a class="btn btn-wa cv-lead" data-pg-loc="compare_mid" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S26%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94%20%D7%9C%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S25%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A8%D7%A8%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">בירור מחיר וזמינות ב-WhatsApp</a>
+    </div>
     <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>
     <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>
     <div class="cv-prio" id="cvprio" hidden></div>
@@ -2234,7 +2252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>
     <p class="cv-prose">השדרוג הוא צמצם רחב יותר, שבב חדש, טעינה מהירה יותר ומכשיר דק וקל יותר. המסך, עט S וסוללת 5000 mAh נשארו באותו סדר גודל. מי שמחזיק S25 אולטרה ומרוצה ממנו יכול להישאר איתו. את S26 אולטרה אנחנו מוכרים, ואת S25 אולטרה לא.</p>
-    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם שני הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span><span class="cv-bubble" id="cvwatext">היי, אשמח לעזרה בבחירה בין Galaxy S26 Ultra לבין Galaxy S25 Ultra.</span></div><div class="cv-wb"><a class="btn btn-wa" id="cvwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20S26%20Ultra%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20S25%20Ultra."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>
+    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם שני הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span><span class="cv-bubble" id="cvwatext">היי, ראיתי באתר את ההשוואה בין גלקסי S26 אולטרה לגלקסי S25 אולטרה. אשמח לברר מחיר וזמינות.</span></div><div class="cv-wb"><a class="btn btn-wa" id="cvwa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S26%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94%20%D7%9C%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S25%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A8%D7%A8%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>
   </div>
 </section>
 </div>
@@ -2244,7 +2262,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 id="cta-h">עדיין מתלבטים?</h2>
     <p>את גלקסי S26 אולטרה אנחנו מוכרים, ואת גלקסי S25 אולטרה לא. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>
     <div class="row">
-      <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%91%D7%91%D7%97%D7%99%D7%A8%D7%94%20%D7%91%D7%99%D7%9F%20Galaxy%20S26%20Ultra%20%D7%9C%D7%91%D7%99%D7%9F%20Galaxy%20S25%20Ultra."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>
+      <a class="btn btn-wa cv-lead" data-pg-loc="compare_end" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%91%D7%90%D7%AA%D7%A8%20%D7%90%D7%AA%20%D7%94%D7%94%D7%A9%D7%95%D7%95%D7%90%D7%94%20%D7%91%D7%99%D7%9F%20%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S26%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94%20%D7%9C%D7%92%D7%9C%D7%A7%D7%A1%D7%99%20S25%20%D7%90%D7%95%D7%9C%D7%98%D7%A8%D7%94.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A8%D7%A8%20%D7%9E%D7%97%D7%99%D7%A8%20%D7%95%D7%96%D7%9E%D7%99%D7%A0%D7%95%D7%AA."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">בירור מחיר וזמינות ב-WhatsApp</a>
+      <!--pg-call-->
       <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>
     </div>
     <p class="fine">הייעוץ והליווי בבחירה ללא עלות וללא התחייבות.</p>
@@ -2254,7 +2273,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){
 "use strict";
-var PG={a:"Galaxy S26 Ultra",b:"Galaxy S25 Ultra",slug:"galaxy-s26-ultra-vs-galaxy-s25-ultra"};
+var PG={a:"Galaxy S26 Ultra",b:"Galaxy S25 Ultra",lead:"היי, ראיתי באתר את ההשוואה בין גלקסי S26 אולטרה לגלקסי S25 אולטרה. אשמח לברר מחיר וזמינות.",slug:"galaxy-s26-ultra-vs-galaxy-s25-ultra"};
 /* עמודי ההשוואה הקבועים, עיצוב ח׳. gen-compare.js עוטף את הקוד הזה ומזריק לפניו את PG: {a, b, slug}.
    כל התוכן כבר ב-HTML. הקוד מוסיף רק את "מה חשוב לכם": כפתור לכל תחום, שמעלה אותו לראש ומקפל את השאר
    תחת כפתור אחד. שום הבדל לא נעלם. עמוד בלי JavaScript מציג את כל התחומים, בלי כפתורים שלא עושים כלום. */
@@ -2306,7 +2325,8 @@ function pgComparePage() {
     var st = document.getElementById("cvstatus");
     if (st) st.textContent = !picked.length ? "מוצגים כל " + total + " ההבדלים, לפי תחום."
       : "בראש הרשימה: " + picked.map(function (c) { return c.name; }).join(", ") + "." + (restN ? " עוד " + diffTxt(restN) + " בתחומים האחרים." : " אלה כל ההבדלים.");
-    var msg = "היי, אשמח לעזרה בבחירה בין " + PG.a + " לבין " + PG.b + "." + (picked.length ? " חשוב לי: " + picked.map(function (c) { return c.name; }).join(", ") + "." : "");
+    /* אותו בסיס כמו כפתורי המחיר והמלאי (PG.lead). תחום שנבחר רק מתווסף, כדי שההודעה לא תתפצל לשני נוסחים. */
+    var msg = PG.lead + (picked.length ? " חשוב לי: " + picked.map(function (c) { return c.name; }).join(", ") + "." : "");
     var wt = document.getElementById("cvwatext"), w = document.getElementById("cvwa");
     if (wt) wt.textContent = msg;
     if (w) w.setAttribute("href", "https://wa.me/97286812050?text=" + encodeURIComponent(msg));
@@ -2675,9 +2695,14 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
       var href=a.getAttribute('href')||'';
       var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
       if(!isTel&&!isWa)return;
-      var loc='content',i;
+      /* רק data-pg-loc שמתחיל ב-compare_ גובר על המחלקה, כדי שכפתורי WhatsApp
+         בעמוד השוואה ייספרו לחוד. ערך אחר, כמו hero או channels בעמוד צור קשר,
+         שייך ל-contact_cta_click ולא משנה את link_location. */
+      var pgLoc=a.getAttribute('data-pg-loc')||'',i;
+      var loc=pgLoc.indexOf('compare_')===0?pgLoc:'';
+      if(!loc){loc='content';
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
-      if(loc==='content'&&a.closest('footer'))loc='footer';
+      if(loc==='content'&&a.closest('footer'))loc='footer';}
       var method=isTel?'phone':'whatsapp';
       /* a.href ולא ה-attribute: הכתובת המלאה אחרי פתרון, כפי שהיא בפועל */
       var url=a.href||href, pagePath=location.pathname;
