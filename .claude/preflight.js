@@ -2154,14 +2154,14 @@ if (classFails.length) {
 })();
 
 /* ---------- דירוג Google: מקור אחד, ופס האמון בעמודי ההשוואה ----------
- * 4.9 / 537 מופיעים בדף הבית בכמה מקומות. המספר הקנוני הוא
+ * 4.9 / 576 מופיעים בדף הבית בכמה מקומות. המספר הקנוני הוא
  * .claude/tools/lib/google-rating.js, ו-gen-compare גוזר ממנו את הפס שמתחת ל-H1.
  * בלי הבדיקה עדכון במקום אחד משאיר את השני עם המספר הישן, ואין לזה סימן. */
 (function () {
   var G;
   try { G = require(path.join(__dirname, 'tools', 'lib', 'google-rating.js')); }
   catch (e) { bad('חסר .claude/tools/lib/google-rating.js'); return; }
-  /* הפס עצמו, לא המספר לבד: "537" ב-meta או בהערה לא מספיק. */
+  /* הפס עצמו, לא המספר לבד: "576" ב-meta או בהערה לא מספיק. */
   var strips = [
     '<b>Google</b> ' + G.rating + ' <span>· ' + G.count + '</span>',
     'class="pg-gnum">' + G.rating + '</div>',
