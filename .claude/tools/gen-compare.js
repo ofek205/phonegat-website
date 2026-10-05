@@ -32,6 +32,7 @@ var SOURCE = 'phones/iphone-17/index.html';
 
 var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var CM = require(path.join(__dirname, 'lib', 'contact-mode.js'));
+var GR = require(path.join(__dirname, 'lib', 'google-rating.js'));
 var BIDI = require(path.join(__dirname, 'lib', 'bidi.js'));
 /* מצב שעונים, נוסף ב-24.9.2026: node gen-compare.js --watches בונה את /watches/compare/ מתוך
    prototype/watches.json, באותו קוד ובאותו עיצוב כמו כלי הטלפונים. השעונים בקובץ נפרד ולא ב-
@@ -84,6 +85,53 @@ var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 /* גם מירכאות: esc נכנס גם לתוך מאפיינים (data-cat, data-q, alt), ושם " סוגר את הערך */
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function wa(t) { return 'https://wa.me/97286812050?text=' + encodeURIComponent(t); }
+var LEAD_LABEL = 'מחיר ומלאי היום ב-WhatsApp';
+var LEAD_LABEL_ASK = 'בירור מחיר וזמינות ב-WhatsApp';
+function leadBtn(href, loc, lazy, label) {
+  return '<a class="btn btn-wa cv-lead" data-pg-loc="' + loc + '" href="' + href + '">' +
+    '<img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26"' +
+    (lazy ? ' loading="lazy"' : '') + ' decoding="async">' + label + '</a>';
+}
+/* ל' הדבקה: לפני מילה עברית בלי מקף (לגלקסי, לאייפון). לפני מילה לועזית המקף נשאר (ל-AirPods).
+   displayed יכול להיות HTML מ-ltrRuns, ולכן הבדיקה היא על הטקסט בלי תגיות. */
+function le(displayed) {
+  var plain = String(displayed).replace(/<[^>]+>/g, '');
+  return (/^[\u0590-\u05FF]/.test(plain) ? 'ל' : 'ל-') + displayed;
+}
+/* "מחיר ומלאי היום" רק כששני הדגמים נמכרים ונמצאים בחנות. מכשיר ייחוס, דגם
+   ש-not_in_store, ושעון או אוזניות בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
+function offeredHere(x) {
+  if (x.status === 'reference') return false;
+  if (x.commercial && x.commercial.not_in_store) return false;
+  if (CAT && !pageHref(x)) return false;
+  return true;
+}
+function leadAsk(a, b) { return !offeredHere(a) || !offeredHere(b); }
+function leadLabel(a, b) { return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL; }
+function leadMsg(a, b) {
+  var n = function (x) { return x.name_he || x.name; };
+  var tail = leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?';
+  return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ' + le(n(b)) + '. ' + tail;
+}
+/* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") באותו תנאי כמו הכפתור. */
+function leadBlurb(a, b) {
+  var he = function (x) { return BIDI.ltrRuns(x.name_he || x.name); };
+  var open = 'מתלבטים בין ' + he(a) + ' ' + le(he(b)) + '? ';
+  var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+  var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+  var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
+  if (!ref.length && !away.length && !unsold.length) {
+    return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
+  }
+  if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
+  if (ref.length === 1) {
+    var mine = [a, b].filter(function (x) { return x.status !== 'reference'; })[0];
+    return open + 'את ' + he(mine) + ' אנחנו מוכרים, ואת ' + he(ref[0]) + ' לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים, ומה אנחנו רואים במעבדה.';
+  }
+  if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
+  if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
+  return open + 'שלחו הודעה ונגיד לכם אם הם אצלנו, מה המחיר היום, ומה אנחנו רואים במעבדה. אנחנו ברחבת תשרי 2 בקרית גת.';
+}
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 function val(v) { return Array.isArray(v) ? v.join(', ') : v; }
 /* עברית מבחינה בין יחיד, זוגי ורבים, והמחולל הדפיס "1 שדות זהים".
@@ -344,8 +392,12 @@ var HERO_CTA_CSS = '.cv-top .hcta{display:flex;flex-wrap:wrap;align-items:center
   '.cv-top .hcta>.meta{flex:1 0 100%;margin:0;color:rgba(255,255,255,.78)}';
 
 function buildMain(p, a, b, d, openTag) {
+  /* hero_cta, כשיש, נשאר על נוסח הבחירה. כפתור "שליחה ב-WhatsApp" ובועת ההודעה
+     משתמשים באותו נוסח מחיר ומלאי כמו כפתורי compare_hero / compare_mid / compare_end.
+     page.client.js מוסיף "חשוב לי" כשמסמנים תחום, בלי להחליף את הבסיס. */
   var waMsg = 'היי, אשמח לעזרה בבחירה בין ' + a.name + ' לבין ' + b.name + '.';
   var waPick = wa(waMsg);
+  var lead = leadMsg(a, b);
   var nmHe = function (x) { return x.name_he || x.name; };
   var year = function (x) { return x.launch ? String(x.launch).slice(0, 4) : ''; };
   var toolHref = '/' + (CAT ? CAT.path : 'phones/compare/') + '?d=' + a.slug + ',' + b.slug;
@@ -368,15 +420,21 @@ function buildMain(p, a, b, d, openTag) {
     if (!qa || !qb) return '';
     return '<a class="cv-sa" href="/compare/' + q.slug + '/">' + BIDI.ltrRuns(nmHe(qa)) + ' מול ' + BIDI.ltrRuns(nmHe(qb)) + '</a>';
   }).join('');
+  var btnLabel = leadLabel(a, b);
+  var waLead = wa(lead);
+  var trust = '    <p class="cv-trust"><a href="' + GR.reviewsUrl + '" target="_blank" rel="noopener">★ ' +
+    esc(String(GR.rating)) + ' בגוגל · ' + esc(String(GR.count)) +
+    ' ביקורות</a> · רחבת תשרי 2, קרית גת</p>\n';
   var top = '<div class="cv-app">\n<section class="cv-top" aria-labelledby="h1">\n  <div class="wrap">\n' +
     '    <h1 id="h1">' + esc(p.h1) + '</h1>\n' +
+    trust +
     '    <p class="cv-sub">' + esc(p.lede) + '</p>\n' +
     heroBlock(p, waPick) +
     '    <div class="cv-cards" data-pg-data>\n' + card(a, 0) +
     '        <span class="cv-vs2" aria-hidden="true">מול</span>\n' + card(b, 1) + '    </div>\n' +
+    '    <div class="cv-herocta">' + leadBtn(waLead, 'compare_hero', false, btnLabel) + '</div>\n' +
     '    <div class="cv-sug">' + (nearHtml ? '<span class="cv-sl">משווים גם:</span>' + nearHtml : '') +
-    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a>' +
-    '<a class="btn btn-wa cv-hwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">עזרו לי לבחור</a></div>\n' +
+    '<a class="cv-sa" href="' + toolHref + '">להחליף דגם בכלי ההשוואה</a></div>\n' +
     '  </div>\n</section>\n';
 
   /* ---------- מה זהה */
@@ -453,8 +511,10 @@ function buildMain(p, a, b, d, openTag) {
       }).join('') + '</section>\n';
   }).join('');
 
+  var ask = '    <div class="cv-ask">\n      <p>' + leadBlurb(a, b) + '</p>\n      ' +
+    leadBtn(waLead, 'compare_mid', true, btnLabel) + '\n    </div>\n';
   var res = '<section class="block cv-res" id="table" aria-labelledby="cmp-h">\n  <div class="wrap">\n' + disc +
-    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs +
+    '    <p class="cv-count">' + diffCount(d.rows.length) + sameTail(d.same) + '</p>\n' + sameHtml + bigs + ask +
     '    <h2 class="cv-h2" id="cmp-h">מה שונה ביניהם</h2>\n' +
     '    <p class="cv-lead2">רק השדות שבהם שני הדגמים לא זהים, לפי תחום.</p>\n' +
     /* ריק ומוסתר עד ש-page.client.js בונה בו את הכפתורים. בלי JS אין כפתור שלא עושה כלום. */
@@ -488,8 +548,8 @@ function buildMain(p, a, b, d, openTag) {
     '    <h2 id="h-bl" class="cv-h2">השורה התחתונה</h2>\n' +
     '    <p class="cv-prose">' + esc(p.bottom_line) + '</p>\n' +
     '    <div class="cv-wa"><div class="cv-wt"><b>רוצים שנעבור על זה איתכם?</b><span>ההודעה כבר מוכנה עם שני הדגמים, ותחום שתסמנו ב"מה חשוב לכם" ייכנס אליה. אפשר לערוך אותה לפני השליחה.</span>' +
-    '<span class="cv-bubble" id="cvwatext">' + esc(waMsg) + '</span></div><div class="cv-wb">' +
-    '<a class="btn btn-wa" id="cvwa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>\n' +
+    '<span class="cv-bubble" id="cvwatext">' + esc(lead) + '</span></div><div class="cv-wb">' +
+    '<a class="btn btn-wa" id="cvwa" href="' + wa(lead) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שליחה ב-WhatsApp</a></div></div>\n' +
     '  </div>\n</section>\n</div>\n\n';
 
   var cta = '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
@@ -510,7 +570,7 @@ function buildMain(p, a, b, d, openTag) {
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
     })() +
     '    <div class="row">\n' +
-    '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
+    '      ' + leadBtn(waLead, 'compare_end', true, btnLabel) + '\n' +
     CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/compare/">כל ההשוואות</a>\n' +
     '    </div>\n' +
@@ -518,6 +578,7 @@ function buildMain(p, a, b, d, openTag) {
     '  </div>\n</section>\n\n';
 
   var script = '<script>\n(function(){\n"use strict";\nvar PG={a:' + JSON.stringify(a.name).replace(/</g, '\\u003c') + ',b:' + JSON.stringify(b.name).replace(/</g, '\\u003c') +
+    ',lead:' + JSON.stringify(lead).replace(/</g, '\\u003c') +
     ',slug:' + JSON.stringify(p.slug) + '};\n' + PAGE_CLIENT + '\npgComparePage();\n})();\n</scr' + 'ipt>\n\n';
 
   return openTag + '\n\n' + top + res + who + angle + bottom + cta + script;
@@ -952,9 +1013,19 @@ function toolMain(openTag, index, order, pairCount) {
   '</scr' + 'ipt>\n\n';
 }
 
+/* נעול עד 9.10.2026. ניסוי hero_cta נשאר כמו ב-main, והמחולל לא כותב את שני העמודים.
+   להסיר יחד עם החריג ב-preflight.js כשהם עולים. */
+var LOCKED_UNTIL_OCT9 = {
+  'galaxy-s26-plus-vs-galaxy-s26': 1,
+  'iphone-17-pro-vs-iphone-17-pro-max': 1
+};
 var made = 0, swGrew = false;
 db._comparisons.pairs.forEach(function (p) {
   if (only && p.slug !== only) return;
+  if (LOCKED_UNTIL_OCT9[p.slug]) {
+    console.log('· compare/' + p.slug + '/ נעול עד 9.10.2026, לא נכתב');
+    return;
+  }
   var a = D(p.a), b = D(p.b);
   if (!a || !b) { console.error('✗ ' + p.slug + ': דגם חסר'); process.exit(1); }
   var url = PROD + 'compare/' + p.slug + '/';
@@ -1005,6 +1076,9 @@ db._comparisons.pairs.forEach(function (p) {
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
   h = h.slice(0, mS) + buildMain(p, a, b, d, openTag) + h.slice(mE);
 
+  /* התבנית היא עמוד מכשיר, ו-aria-current שלו מצביע על העמוד ההוא ולא על ההשוואה.
+     gen-nav מתקן את זה רק אם רץ אחר כך. בלי ההסרה כאן הבדיקה נכשלת על כל עמוד שנכתב. */
+  h = h.replace(/ aria-current="page"/g, '');
   var out = path.join(PROTO, 'compare', p.slug, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, h);
