@@ -517,7 +517,7 @@
         "chip": "Snapdragon 8 Elite Gen 5",
         "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
         "gpu": "Adreno 840",
-        "ram": "12GB",
+        "ram": "12GB, ו-16GB בגרסת 1TB",
         "storage_offered": [
           "256GB",
           "512GB",
@@ -2022,7 +2022,7 @@
       "spec": {
         "screen_size": "6.9 אינץ׳",
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, תמיכה בעט S",
-        "resolution": "1440x3120 פיקסלים",
+        "resolution": "3120x1440 פיקסלים (Quad HD+)",
         "refresh_rate": "עד 120Hz",
         "brightness": "2600 ניט שיא",
         "chip": "Snapdragon 8 Elite",
