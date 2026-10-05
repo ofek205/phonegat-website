@@ -276,14 +276,16 @@
      "note": "לא מופיע בעמוד המפרט. לא ממציאים שנה."
     },
     "water_resistance": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-16"
+     "src": "https://news.samsung.com/us/samsung-unveils-galaxy-s26-series-most-intuitive-galaxy-ai-phone-yet",
+     "kind": "הודעת היצרן",
+     "at": "2026-10-05",
+     "note": "IP68, שיקוע עד 1.5 מטר ל-30 דקות. המספר מופיע בטבלת המפרט של Newsroom האמריקאי. נבדק ב-5.10.2026."
     },
     "charging_wired": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-16"
+     "src": "https://news.samsung.com/us/samsung-unveils-galaxy-s26-series-most-intuitive-galaxy-ai-phone-yet",
+     "kind": "הודעת היצרן",
+     "at": "2026-10-05",
+     "note": "Super Fast Charging 3.0 עד 60W, עד 75 אחוז בכ-30 דקות. המתאם נמכר בנפרד. נבדק ב-5.10.2026."
     },
     "box_contents": {
      "src": null,
@@ -296,9 +298,10 @@
      "at": "2026-08-16"
     },
     "chip": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "שם השבב מהמאגר, וזיהוי הגרסה לפי מספר הליבות ומהירויות השעון שסמסונג ישראל מפרסמת",
-     "at": "2026-08-16"
+     "src": "https://news.samsung.com/us/samsung-unveils-galaxy-s26-series-most-intuitive-galaxy-ai-phone-yet",
+     "kind": "הודעת היצרן",
+     "at": "2026-10-05",
+     "note": "Snapdragon 8 Elite Gen 5 for Galaxy. מהירויות השעון בעמוד המפרט הישראלי. נבדק ב-5.10.2026."
     },
     "ram": {
      "src": "https://www.samsung.com/il/smartphones/galaxy-s26-ultra/specs/",
@@ -307,14 +310,15 @@
      "note": "לשוניות 256GB ו-512GB: 12GB. לשונית 1TB: 16GB. נבדק בדפדפן מול עמוד המפרט הישראלי ב-5.10.2026."
     },
     "brightness": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-16"
+     "src": "https://news.samsung.com/us/samsung-unveils-galaxy-s26-series-most-intuitive-galaxy-ai-phone-yet",
+     "kind": "הודעת היצרן",
+     "at": "2026-10-05",
+     "note": "2600nits (Peak). ב-Newsroom הגלובלי השורה היא Vision booster בלי ניט, והמספר מופיע ב-Newsroom האמריקאי. נבדק ב-5.10.2026."
     },
     "gpu": {
-     "src": "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
-     "kind": "מאגר מפרטים, לא היצרן",
-     "at": "2026-08-16"
+     "src": null,
+     "at": null,
+     "note": "עמוד המפרט הישראלי של הדגם אינו כולל שם GPU, וגם הודעת היצרן אינה מפרסמת אותו. נבדק ב-5.10.2026."
     },
     "charging_wireless": {
      "src": "https://www.samsung.com/us/support/answer/ANS10010342/",
@@ -342,7 +346,7 @@
     "brightness": "2600 ניט שיא",
     "chip": "Snapdragon 8 Elite Gen 5",
     "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
-    "gpu": "Adreno 840",
+    "gpu": null,
     "ram": "12GB, ו-16GB בגרסת 1TB",
     "storage_offered": [
      "256GB",
@@ -13351,7 +13355,7 @@
     "slug": "galaxy-s26-ultra-vs-galaxy-s25-ultra",
     "h1": "גלקסי S26 אולטרה או S25 אולטרה: מה השתנה ולמי שווה לשדרג",
     "title": "גלקסי S26 אולטרה או S25 אולטרה: מה השתנה | פון גת",
-    "description": "מסך 6.9 אינץ׳, עט S וסוללת 5000 mAh נשארו. ב-S26 אולטרה צמצם F1.4, שבב Snapdragon 8 Elite Gen 5 וטעינה עד כ-75 אחוז ב-30 דקות. למי שווה לשדרג. פון גת קרית גת.",
+    "description": "מסך 6.9 אינץ׳, עט S וסוללת 5000 mAh נשארו. ב-S26 אולטרה צמצם F1.4, שבב Snapdragon 8 Elite Gen 5 וטעינה עד כ-75 אחוז ב-30 דקות. ייעוץ בפון גת, קרית גת.",
     "keywords": [
      "ס26 אולטרה או S25 אולטרה",
      "גלקסי S26 אולטרה או S25 אולטרה",

@@ -144,7 +144,7 @@
         "brightness": "2600 ניט שיא",
         "chip": "Snapdragon 8 Elite Gen 5",
         "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
-        "gpu": "Adreno 840",
+        "gpu": null,
         "ram": "12GB, ו-16GB בגרסת 1TB",
         "storage_offered": [
           "256GB",
