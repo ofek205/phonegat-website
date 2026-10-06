@@ -4,4 +4,4 @@
    true: phone calls come back.
    After changing this value, run: node .claude/tools/apply-contact-mode.js
    Do not edit the call buttons by hand. That script is what applies the flag. */
-window.PG_PHONE_CALLS_ENABLED = false;
+window.PG_PHONE_CALLS_ENABLED = true;
