@@ -95,8 +95,7 @@ const PLACE_AT = {
   'galaxy-a-battery-replacement-kiryat-gat': 'notbattery',
   'galaxy-a-screen-replacement-kiryat-gat': 'water',
   'iphone-repair-kiryat-gat': 'flow',
-  /* Repair CTAs sit above this carousel. It stays on the page, under the FAQ. */
-  'mobile-phone-repair-kiryat-gat': 'endcta',
+  'mobile-phone-repair-kiryat-gat': 'brands',
   'phone-back-glass-repair-kiryat-gat': 'how',
   'phone-battery-replacement-kiryat-gat': 'health',
   'phone-camera-repair-kiryat-gat': 'water',
