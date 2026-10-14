@@ -2021,13 +2021,10 @@ if (classFails.length) {
       events: ['compare_tool_open', 'compare_view', 'compare_select_model', 'compare_start'] }
   ];
   var problems = [], counts = [];
-  /* טיוטה #8 עורכת את אותו סקריפט בעמוד המעבדה, והוא נשאר כמו ב-main כדי שהמיזוג
-     לא יישבר. שני עמודי השוואה נעולים עד 9.10.2026 וזהים ל-main. לא מדלגים עליהם:
-     הבלוק שלהם חייב להיות זהה לבלוק שב-origin/main. להסיר את שני עמודי ההשוואה
-     כשהם עולים. החריג יושב בתוך הבדיקה הקיימת, לא כבלוק חדש לפני הדוח, כי טיוטה #8
-     מוסיפה בדיקה באותו מקום. */
+  /* שני עמודי השוואה נעולים עד 9.10.2026 וזהים ל-main. לא מדלגים עליהם:
+     הבלוק שלהם חייב להיות זהה לבלוק שב-origin/main. להסיר אותם כשהם עולים.
+     עמוד המעבדה אינו חריג: סקריפט המדידה שלו זהה לשאר העמודים. */
   var KEEP_MAIN_LEAD = {
-    'mobile-phone-repair-kiryat-gat/index.html': 1,
     'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
     'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
   };
@@ -2200,6 +2197,54 @@ if (classFails.length) {
       miss.slice(0, 4).join(', ') + (miss.length > 4 ? ' ועוד' : ''));
   } else if (!missingStrips.length) {
     ok('דירוג Google ' + G.rating + ' / ' + G.count + ' משותף לדף הבית ולעמודי ההשוואה');
+  }
+})();
+
+/* ---------- 44. עמוד המעבדה בלי מחירון ריק ----------
+ * הוחלט לפרסם את העמוד בלי מחירון. אין שדות מחיר ריקים, אין TBD,
+ * ואין משפט המתנה שלא אושר. מקטע ההצעה לא מוסיף טענות מסחריות.
+ * אין AggregateRating: הביקורות הן על העסק. */
+(function () {
+  var rel = 'prototype/mobile-phone-repair-kiryat-gat/index.html';
+  var page;
+  try { page = read(rel); }
+  catch (e) { bad('חסר עמוד מעבדת קרית גת'); return; }
+  try {
+    read('prototype/pg-facts.js');
+    bad('מעבדת קרית גת: pg-facts.js נשאר, והדירוג הקנוני הוא google-rating.js');
+  } catch (e) {}
+  if (/AggregateRating/.test(page)) bad('מעבדת קרית גת: אסור AggregateRating ב-JSON-LD');
+  var banned = [
+    'REPAIR_PRICES', 'pg-repair-pending', 'pg-facts.js', 'waitClaimConfirmed',
+    'PRICES_UPDATED', 'repairPriceBody', 'לרוב בזמן שאתם מחכים',
+    'TBD', 'price coming soon', 'מחיר בקרוב', 'בירור ב-WhatsApp',
+    'warrantyMonths', 'מחיר החל מ', 'repair_prices', 'stopImmediatePropagation',
+    'store.jpg', 'id="endcta"', '(אתר: מעבדה)',
+    '%D7%90%D7%AA%D7%A8%3A%20%D7%9E%D7%A2%D7%91%D7%93%D7%94'
+  ];
+  var left = banned.filter(function (s) { return page.indexOf(s) >= 0; });
+  if (left.length) bad('מעבדת קרית גת: נשאר טקסט של המחירון הריק: ' + left.join(' | '));
+  var dealsAt = page.indexOf('id="deals"'), brandsAt = page.indexOf('id="brands"');
+  if (dealsAt < 0 || brandsAt < 0 || dealsAt > brandsAt) {
+    bad('מעבדת קרית גת: קרוסלת המבצעים לא יושבת לפני מקטע המותגים');
+  }
+  var quote = (page.match(/<section class="cta" id="quote"[\s\S]*?<\/section>/) || [''])[0];
+  var quoteOk = false;
+  if (!quote) bad('מעבדת קרית גת: חסר מקטע הצעת המחיר');
+  else {
+    var claims = ['ללא עלות', 'אחריות', '4.9', 'בגוגל', 'לפני שמתחילים', 'המחיר נאמר', 'האבחון', '\u2014', '\u2013'];
+    var claimed = claims.filter(function (s) { return quote.indexOf(s) >= 0; });
+    if (claimed.length) bad('מעבדת קרית גת: מקטע ההצעה טוען טענה: ' + claimed.join(' | '));
+    if (quote.indexOf('data-pg-loc="quote_wa"') < 0 || quote.indexOf('btn-wa') < 0) {
+      bad('מעבדת קרית גת: כפתור ה-WhatsApp של הצעת המחיר חסר');
+    }
+    if (quote.indexOf('data-pg-loc="quote_call"') < 0 || quote.indexOf('href="tel:+972525893366"') < 0 || quote.indexOf('btn-call') < 0) {
+      bad('מעבדת קרית גת: כפתור החיוג של הצעת המחיר חסר');
+    }
+    quoteOk = !claimed.length && quote.indexOf('data-pg-loc="quote_wa"') >= 0 && quote.indexOf('btn-call') >= 0;
+  }
+  if (!left.length && dealsAt >= 0 && dealsAt < brandsAt && quoteOk) {
+    ok('עמוד המעבדה בלי מחירון, עם הצעת מחיר ב-WhatsApp ובטלפון');
   }
 })();
 
