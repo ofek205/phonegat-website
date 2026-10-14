@@ -342,6 +342,7 @@ main{counter-reset:prob}
 .cta .btn-call{background:transparent;color:#fff;border:1.5px solid var(--teal)}
 .cta .btn-call:hover{background:var(--teal)}
 .cta .fine{font-size:.88rem;color:rgba(255,255,255,.6);margin-top:1.2rem}
+.cta a.rating{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;display:inline-flex;align-items:center;min-height:44px;padding-block:.55rem}
 
 /* ===== footer + rails (identical to the home page) ===== */
 footer.site{background:#000;color:var(--on-dark-soft);padding:2.6rem 0 5.5rem}
@@ -581,13 +582,6 @@ html.a11y-stop-motion .prog{display:none}
 .does li{padding-block:.55rem;border-block-end:1px solid var(--line);color:var(--ink-strong);font-weight:600}
 .does li a{color:var(--teal-d);text-decoration:underline}
 
-/* a placeholder that is impossible to mistake for finished copy. It is meant to be seen on
-   staging and to be embarrassing enough that it never reaches production by accident. */
-.todo{border:2px dashed var(--orange);background:#fffaf3;border-radius:6px;padding:1rem 1.15rem;margin:1rem 0}
-.todo b{display:block;font-size:.86rem;letter-spacing:.06em;color:#a5641a;margin-bottom:.35rem;
-  font-family:ui-monospace,monospace}
-.todo p{color:var(--ink);font-size:.98rem;line-height:1.65}
-
 /* FAQ: copied verbatim from index.html. The same question row must not render differently
    depending on which page you are standing on. */
 .faq{padding:clamp(40px,6vw,72px) 0}
@@ -606,33 +600,8 @@ html.a11y-stop-motion .prog{display:none}
   .does{grid-template-columns:1fr}
 }
 
-/* price table. A real table on desktop. On a phone each row stacks, with the
-   column name inside the cell, so the page does not scroll sideways. */
-.repair-prices{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);overflow-x:clip}
-.repair-prices h2{font-size:clamp(1.5rem,3.4vw,2.1rem);margin-bottom:.45rem}
-.repair-prices .lead{color:var(--ink-soft);max-width:62ch;margin:0 0 1.1rem;font-size:1.05rem;line-height:1.7}
-.price-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:1.02rem}
-.price-table th,.price-table td{text-align:start;vertical-align:top;padding:.8rem .45rem;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
-.price-table th{font-weight:800;color:var(--ink-strong)}
-.price-table td.ask{color:var(--ink-soft)}
-.price-table .plab{display:none}
-.repair-prices .btn{white-space:normal;min-height:48px;margin-top:1.2rem;max-width:100%}
-.price-asof{margin:0 0 1rem;color:var(--ink-soft);font-size:1rem}
-.price-note{max-width:62ch;margin:1rem 0 0;line-height:1.7}
-.rev-strip{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem 1rem;margin-top:1.6rem;padding-top:1.1rem;border-top:1px solid var(--line);font-size:1.05rem}
-.rev-strip .score{font-weight:800;font-size:1.7rem;line-height:1}
-.rev-strip .stars{color:#e0a100;letter-spacing:.08em}
-.rev-strip a{color:var(--teal-d);font-weight:700;min-height:44px;display:inline-flex;align-items:center}
 .lab-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin-top:1.2rem}
 .lab-photos img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block}
-@media(max-width:700px){
-  .price-table,.price-table tbody,.price-table tr,.price-table td{display:block;width:100%}
-  .price-table thead{display:none}
-  .price-table tr{padding:.85rem 0;border-bottom:1px solid var(--line)}
-  .price-table td{border:0;padding:.2rem 0}
-  .price-table .plab{display:block;font-weight:800;color:var(--ink-strong);margin-top:.45rem}
-  .price-table tr td:first-child .plab{margin-top:0}
-}
 /* ==== gen-nav:css:start ==== */
 /* ניווט נפתח — נכתב ע"י .claude/tools/gen-nav.js. אל תערוך ידנית, ההרצה הבאה תדרוס. */
 nav.main .ndrop{position:relative}
@@ -672,8 +641,7 @@ nav.main a.ntool{font-weight:800}
 .btn-hero{white-space:normal}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","@id":"https://www.phonegat.co.il/mobile-phone-repair-kiryat-gat/#service","name":"מעבדת סלולר בקרית גת: תיקון טלפונים במקום","serviceType":"מעבדת תיקוני סלולר","description":"תיקון טלפונים בקרית גת, רחבת תשרי 2: מסך, סוללה, שקע טעינה ונזקי מים. אבחון והצעת מחיר ללא עלות, אחריות בכתב, 4.9 בגוגל. שלחו תמונה ב-WhatsApp.","provider":{"@id":"https://www.phonegat.co.il/#business"},"areaServed":[{"@type":"City","name":"קריית גת"},{"@type":"Place","name":"כרמי גת"},{"@type":"City","name":"קריית מלאכי"},{"@type":"AdministrativeArea","name":"מועצה אזורית יואב"},{"@type":"AdministrativeArea","name":"מועצה אזורית שפיר"},{"@type":"AdministrativeArea","name":"מועצה אזורית לכיש"},{"@type":"AdministrativeArea","name":"מועצה אזורית באר טוביה"},{"@type":"City","name":"שדרות"},{"@type":"City","name":"אופקים"},{"@type":"City","name":"נתיבות"}],"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://www.phonegat.co.il/mobile-phone-repair-kiryat-gat/","servicePhone":{"@type":"ContactPoint","telephone":"+972-52-5893366","contactType":"customer service"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.phonegat.co.il/mobile-phone-repair-kiryat-gat/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/mobile-phone-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"צריך לתאם מראש?","acceptedAnswer":{"@type":"Answer","text":"לא. אפשר פשוט להיכנס בשעות הפתיחה. אם אתם רוצים לחסוך זמן, שלחו לנו קודם את דגם המכשיר ותיאור קצר של התקלה, ונגיד לכם מה לצפות."}},{"@type":"Question","name":"אפשר לקבל הערכת מחיר לפני שמגיעים?","acceptedAnswer":{"@type":"Answer","text":"אפשר לקבל כיוון. מחיר מדויק ניתן רק אחרי שראינו את המכשיר, כי אותה תקלה יכולה לנבוע מכמה דברים ובעלות שונה. שלחו דגם ותיאור ב-WhatsApp, וזה מקצר את הדרך."}},{"@type":"Question","name":"הנתונים נמחקים בזמן התיקון?","acceptedAnswer":{"@type":"Answer","text":"ברוב תיקוני החומרה המידע נשאר במקומו. מומלץ לגבות לפני שמביאים מכשיר לתיקון, ואם המכשיר כבר שבור ואי אפשר לגבות ממנו, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות."}},{"@type":"Question","name":"כמה זמן לוקח תיקון?","acceptedAnswer":{"@type":"Answer","text":"תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות או לתיקון שתלוי בהזמנת חלק נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"מקבלים אחריות?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים. משך האחריות לכל סוג תיקון מופיע בטבלה, באותו ניסוח גם כאן."}},{"@type":"Question","name":"מתקנים גם מכשירים שלא נקנו אצלכם?","acceptedAnswer":{"@type":"Answer","text":"כן, ללא קשר למקום הרכישה. גם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם."}},{"@type":"Question","name":"אפשר לשלוח תמונה ב-WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"כן, וזה עוזר. תמונה של המסך או של השקע יחד עם הדגם מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית."}}]}</script>
->>>>>>> 6a6a03f0 (בלי ציטוטים נבחרים, ואחריות אחת לכל סוג תיקון)
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://www.phonegat.co.il/mobile-phone-repair-kiryat-gat/#faq","mainEntity":[{"@type":"Question","name":"צריך לתאם מראש?","acceptedAnswer":{"@type":"Answer","text":"לא. אפשר פשוט להיכנס בשעות הפתיחה. אם אתם רוצים לחסוך זמן, שלחו לנו קודם את דגם המכשיר ותיאור קצר של התקלה, ונגיד לכם מה לצפות."}},{"@type":"Question","name":"אפשר לקבל הערכת מחיר לפני שמגיעים?","acceptedAnswer":{"@type":"Answer","text":"אפשר לקבל כיוון. מחיר מדויק ניתן רק אחרי שראינו את המכשיר, כי אותה תקלה יכולה לנבוע מכמה דברים ובעלות שונה. שלחו דגם ותיאור ב-WhatsApp, וזה מקצר את הדרך."}},{"@type":"Question","name":"הנתונים נמחקים בזמן התיקון?","acceptedAnswer":{"@type":"Answer","text":"ברוב תיקוני החומרה המידע נשאר במקומו. מומלץ לגבות לפני שמביאים מכשיר לתיקון, ואם המכשיר כבר שבור ואי אפשר לגבות ממנו, ברוב המקרים אנחנו מצליחים לחלץ ולהעביר אנשי קשר ותמונות."}},{"@type":"Question","name":"כמה זמן לוקח תיקון?","acceptedAnswer":{"@type":"Answer","text":"תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות או לתיקון שתלוי בהזמנת חלק נעדכן אתכם מראש בזמן המשוער."}},{"@type":"Question","name":"מקבלים אחריות?","acceptedAnswer":{"@type":"Answer","text":"כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים. על נזקי נוזלים אין אחריות."}},{"@type":"Question","name":"מתקנים גם מכשירים שלא נקנו אצלכם?","acceptedAnswer":{"@type":"Answer","text":"כן, ללא קשר למקום הרכישה. גם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם."}},{"@type":"Question","name":"אפשר לשלוח תמונה ב-WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"כן, וזה עוזר. תמונה של המסך או של השקע יחד עם הדגם מאפשרת לנו לתת כיוון ראשוני עוד לפני שאתם יוצאים מהבית."}}]}</script>
 <style>/* pg-prose-links */
 /* Links inside running text were indistinguishable from the text around them: same colour as the body
    ink, no underline, and no hover cue either. That was 341 links across 65 pages, so every internal
@@ -1847,14 +1815,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="inner">
       <h1 id="gh">מעבדת סלולר בקרית גת: תיקון טלפונים במקום</h1>
-      <!-- Baruch, the lab technician, must confirm this sentence before the page is treated as ready: לרוב בזמן שאתם מחכים -->
-      <p class="sub">החלפת מסך וסוללה לרוב בזמן שאתם מחכים. מחיר ידוע לפני שמתחילים, אחריות בכתב.</p>
+      <p class="sub">המחיר נאמר לפני שמתחילים, ויש אחריות בכתב.</p>
       <div class="hcta">
         <p class="sub cta-line">תקלה בטלפון? ספרו לנו מה קרה, ונגיד לכם מה הבעיה וכמה זה עולה לפני שמתחילים.</p>
         <a class="btn btn-wa btn-hero" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%AA%D7%A7%D7%9C%D7%94%20%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%93%D7%99%D7%A7%D7%94"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">ספרו לנו על התקלה ב-WhatsApp</a>
         <a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
       </div>
-      <p class="where">רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי <span class="ltr">9:00–18:30</span>, שישי <span class="ltr">9:00–13:00</span>. <a href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes" target="_blank" rel="noopener">ניווט לחנות</a></p>
+      <p class="where">רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי <span class="ltr">9:00-18:30</span>, שישי <span class="ltr">9:00-13:00</span>. <a href="https://waze.com/ul?ll=31.60332,34.775553&amp;navigate=yes" target="_blank" rel="noopener">ניווט לחנות</a></p>
       <p class="meta perks">
         <span>אבחון לפני החלפת חלקים</span>
         <span>אחריות בכתב על תיקונים מתאימים</span>
@@ -1867,7 +1834,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <nav class="jump" aria-label="מקטעי העמוד">
   <div class="wrap">
-    <a href="#prices">מחירים וזמנים</a>
+    <a href="#quote">הצעת מחיר</a>
     <a href="#what">באיזו תקלה מדובר</a>
     <a href="#diagnosis">למה מתחילים באבחון</a>
     <a href="#brands">מה אנחנו מתקנים</a>
@@ -1877,31 +1844,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </nav>
 
-<section class="repair-prices" id="prices" aria-labelledby="prices-h">
+<section class="cta" id="quote" aria-labelledby="quote-h">
   <div class="wrap">
-    <h2 id="prices-h">מחירים וזמני תיקון</h2>
-    <p class="lead">השורה היא נקודת התחלה לדגמים שכתובים בה. לדגם אחר, שלחו תמונה.</p>
-    <p class="price-asof" id="pgPricesUpdated" hidden></p>
-    <div class="todo" id="pg-repair-pending">
-      <b>TODO</b>
-      <p>עדיין לא מולא: מחיר, זמן טיפוסי ואחריות לכל שורה (מלבד מחיר ואחריות של נזקי מים), החודש והשנה ב-PRICES_UPDATED, ושתיים או שלוש תמונות מעבדה. ברוך ממלא. השורה "לרוב בזמן שאתם מחכים" מחכה לאישור שלו. תא ריק כתוב "בירור ב-WhatsApp" ואינו מחיר. אין ציטוטי ביקורות נבחרים, רק הדירוג הכולל מגוגל.</p>
+    <h2 id="quote-h">הצעת מחיר לפני שמתחילים</h2>
+    <p>שלחו את הדגם ותמונה של התקלה, או חייגו. המחיר נקבע אחרי שרואים את המכשיר, והאבחון ללא עלות.</p>
+    <div class="row">
+      <a class="btn btn-wa" data-pg-loc="repair_prices" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%AA%D7%A7%D7%9C%D7%94%20%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8.%20(%D7%90%D7%AA%D7%A8%3A%20%D7%9E%D7%A2%D7%91%D7%93%D7%94)"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו תמונה ב-WhatsApp</a>
+      <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
     </div>
-    <table class="price-table">
-      <caption class="a11y-sr">מחירים וזמני תיקון במעבדה</caption>
-      <thead>
-        <tr>
-          <th scope="col">תיקון</th>
-          <th scope="col">דגמים</th>
-          <th scope="col">מחיר החל מ, כולל מע"מ</th>
-          <th scope="col">זמן טיפוסי</th>
-          <th scope="col">אחריות</th>
-        </tr>
-      </thead>
-      <tbody id="repairPriceBody"></tbody>
-    </table>
-    <p class="price-note">בחלק מהתיקונים, כמו נזקי מים או תקלות לוח, המחיר נקבע רק אחרי אבחון, והאבחון ללא עלות.</p>
-    <a class="btn btn-wa" data-pg-loc="repair_prices" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%AA%D7%A7%D7%9C%D7%94%20%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%A6%D7%A2%D7%AA%20%D7%9E%D7%97%D7%99%D7%A8.%20(%D7%90%D7%AA%D7%A8%3A%20%D7%9E%D7%A2%D7%91%D7%93%D7%94)"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו תמונה של התקלה ב-WhatsApp</a>
-    <div class="rev-strip" id="pgRatingStrip" hidden></div>
+    <p><a class="rating" href="https://www.google.com/maps?cid=12990938412192454327">4.9 בגוגל, 576 ביקורות</a></p>
   </div>
 </section>
 
@@ -1998,7 +1949,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><b>אייפד וטאבלטים</b>, באותם תיקונים כמו בטלפונים.</li>
       <li><b>Apple Watch ואוזניות AirPods</b>.</li>
     </ul>
-    <p>התיקונים עצמם: <a href="/phone-screen-replacement-kiryat-gat/">החלפת מסך</a>, <a href="/phone-battery-replacement-kiryat-gat/">סוללה</a>, <a href="/charging-port-repair-kiryat-gat/">שקע טעינה</a>, <a href="/phone-speaker-microphone-repair-kiryat-gat/">רמקול ומיקרופון</a>, <a href="/phone-camera-repair-kiryat-gat/">מצלמה</a>, <a href="/phone-back-glass-repair-kiryat-gat/">גב אחורי</a> ו-<a href="/face-id-repair-kiryat-gat/">Face ID</a>, וגם תקלות מורכבות יותר ברמת הלוח. אנחנו מטפלים גם בנזקי מים: <span id="pgWaterWarranty"></span>.</p><p>ולא רק תיקונים. אנחנו גם מוכרים <a href="/phones/">מכשירי סלולר חדשים</a>: אייפון, גלקסי, שיאומי ורדמי, עם העברת הנתונים מהישן. ואם נגיע למסקנה שלא שווה לתקן, נגיד לכם את זה ונראה לכם מה יש.</p>
+    <p>התיקונים עצמם: <a href="/phone-screen-replacement-kiryat-gat/">החלפת מסך</a>, <a href="/phone-battery-replacement-kiryat-gat/">סוללה</a>, <a href="/charging-port-repair-kiryat-gat/">שקע טעינה</a>, <a href="/phone-speaker-microphone-repair-kiryat-gat/">רמקול ומיקרופון</a>, <a href="/phone-camera-repair-kiryat-gat/">מצלמה</a>, <a href="/phone-back-glass-repair-kiryat-gat/">גב אחורי</a> ו-<a href="/face-id-repair-kiryat-gat/">Face ID</a>, וגם תקלות מורכבות יותר ברמת הלוח. אנחנו מטפלים גם בנזקי מים. על נזקי נוזלים אין אחריות.</p><p>ולא רק תיקונים. אנחנו גם מוכרים <a href="/phones/">מכשירי סלולר חדשים</a>: אייפון, גלקסי, שיאומי ורדמי, עם העברת הנתונים מהישן. ואם נגיע למסקנה שלא שווה לתקן, נגיד לכם את זה ונראה לכם מה יש.</p>
   </div>
 </section>
 
@@ -2007,7 +1958,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="txt">
       <h2 id="lab-h">הכירו את המעבדה</h2>
       <p class="intro">פון גת עובדת בקרית גת יותר משלושים שנה, באותה כתובת, בניהול ברוך וסיגל. אנחנו לא מרכז שירות שמעביר מכשירים הלאה: הבדיקה נעשית כאן, ואתם מדברים עם מי שמתקן.</p>
-      <div class="lab-photos" id="labPhotos"></div>
+      <div class="lab-photos">
+        <img src="/store.jpg" width="526" height="526" alt="חזית פון גת ברחבת תשרי 2, קרית גת" loading="lazy" decoding="async">
+      </div>
       <div class="lab">
         <p>רחבת תשרי 2, קרית גת, מול מכון מאר. ראשון עד חמישי <span class="ltr">9:00-18:30</span>, שישי <span class="ltr">9:00-13:00</span>.</p>
         <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5%20%D7%9C%D7%92%D7%91%D7%99%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>
@@ -2041,7 +1994,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <details data-q="duration"><summary>כמה זמן לוקח תיקון?</summary><p>תיקונים נפוצים כמו החלפת מסך או סוללה מבוצעים לרוב במקום ובזמן קצר. לתקלות מורכבות או לתיקון שתלוי בהזמנת חלק נעדכן אתכם מראש בזמן המשוער.</p></details>
 
-    <details data-q="warranty"><summary>מקבלים אחריות?</summary><p id="pgWarrantyAnswer">כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים. משך האחריות לכל סוג תיקון מופיע בטבלה, באותו ניסוח גם כאן.</p></details>
+    <details data-q="warranty"><summary>מקבלים אחריות?</summary><p>כן. אנחנו נותנים אחריות בכתב על התיקונים שאנחנו מבצעים. על נזקי נוזלים אין אחריות.</p></details>
 
     <details data-q="not-bought"><summary>מתקנים גם מכשירים שלא נקנו אצלכם?</summary><p>כן, ללא קשר למקום הרכישה. גם מכשירים שמעבדה אחרת כבר טיפלה בהם או ויתרה עליהם.</p></details>
 
@@ -2327,130 +2280,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<script src="/pg-facts.js"></script>
-<script>
-/* REPAIR_PRICES is the only place prices, times, warranty, PRICES_UPDATED
-   and lab photos are filled in. null is not a number. Do not invent one.
-   A null cell shows ask. Lab photos stay hidden until filled.
-   The storefront photo stays until the photo slots have src, width, height and alt.
-   waitClaimConfirmed stays false until Baruch confirms the hero line about waiting.
-   warranty is one string per repair. The table, the water line and the FAQ print it.
-   No hand-picked review quotes. The strip is the Google total from pg-facts.js. */
-var REPAIR_PRICES = {
-  "waitClaimConfirmed": false,
-  "PRICES_UPDATED": null,
-  "ask": "בירור ב-WhatsApp",
-  "rows": [
-    {"repair": "החלפת סוללה", "models": "אייפון 13 עד 16", "price": null, "time": null, "warranty": null},
-    {"repair": "החלפת מסך", "models": "גלקסי A (A15 עד A57)", "price": null, "time": null, "warranty": null},
-    {"repair": "החלפת מסך", "models": "אייפון 13 עד 16", "price": null, "time": null, "warranty": null},
-    {"repair": "תיקון שקע טעינה", "models": "אייפון וגלקסי", "price": null, "time": null, "warranty": null},
-    {"repair": "נזקי מים", "models": "כל הדגמים", "price": "אבחון ללא עלות", "time": null, "warranty": "אין אחריות על נזקי נוזלים"}
-  ],
-  "photos": [
-    {"src": null, "width": null, "height": null, "alt": null},
-    {"src": null, "width": null, "height": null, "alt": null},
-    {"src": null, "width": null, "height": null, "alt": null}
-  ],
-  "currentImage": {"src": "/store.jpg", "width": 526, "height": 526, "alt": "חזית פון גת ברחבת תשרי 2, קרית גת"}
-};
-(function(){
-  var data=REPAIR_PRICES;
-  if(!data||!data.rows)return;
-  var ASK=data.ask||'בירור ב-WhatsApp';
-  function shown(v){return v===null||v===undefined||v==='';}
-  function cell(tr,label,value){
-    var td=document.createElement('td');
-    td.setAttribute('data-label',label);
-    var lab=document.createElement('span');
-    lab.className='plab';
-    lab.textContent=label;
-    td.appendChild(lab);
-    var text=shown(value)?ASK:String(value);
-    if(shown(value))td.className='ask';
-    td.appendChild(document.createTextNode(text));
-    tr.appendChild(td);
-  }
-  function warrantyShown(row){return shown(row.warranty)?ASK:String(row.warranty);}
-  var PRICE_LABEL='מחיר החל מ, כולל מע"מ';
-  var body=document.getElementById('repairPriceBody');
-  if(body&&data.rows){
-    data.rows.forEach(function(row){
-      var tr=document.createElement('tr');
-      cell(tr,'תיקון',row.repair);
-      cell(tr,'דגמים',row.models);
-      cell(tr,PRICE_LABEL,row.price);
-      cell(tr,'זמן טיפוסי',row.time);
-      cell(tr,'אחריות',shown(row.warranty)?null:row.warranty);
-      body.appendChild(tr);
-    });
-  }
-  var asof=document.getElementById('pgPricesUpdated');
-  if(asof&&!shown(data.PRICES_UPDATED)){
-    asof.hidden=false;
-    asof.textContent='מחירים מעודכנים ל-'+data.PRICES_UPDATED;
-  }
-  var sentence='כן. אנחנו נותנים אחריות בכתב. '+(data.rows||[]).map(function(r){
-    return r.repair+' ל'+r.models+': '+warrantyShown(r);
-  }).join('. ')+'.';
-  var ans=document.getElementById('pgWarrantyAnswer');
-  if(ans)ans.textContent=sentence;
-  var water=(data.rows||[]).filter(function(r){return r.repair==='נזקי מים';})[0];
-  var wEl=document.getElementById('pgWaterWarranty');
-  if(wEl&&water)wEl.textContent=warrantyShown(water);
-  var blocks=document.querySelectorAll('script[type="application/ld+json"]');
-  for(var i=0;i<blocks.length;i++){
-    try{
-      var j=JSON.parse(blocks[i].textContent);
-      if(!j||j['@type']!=='FAQPage'||!j.mainEntity)continue;
-      j.mainEntity.forEach(function(q){
-        if(q&&q.name==='מקבלים אחריות?'&&q.acceptedAnswer)q.acceptedAnswer.text=sentence;
-      });
-      blocks[i].textContent=JSON.stringify(j);
-    }catch(e){}
-  }
-  var G=window.PG_GOOGLE;
-  var strip=document.getElementById('pgRatingStrip');
-  if(strip&&G&&typeof G.score==='number'&&typeof G.count==='number'&&G.url){
-    strip.hidden=false;
-    var stars=document.createElement('span');
-    stars.className='stars';
-    stars.setAttribute('aria-hidden','true');
-    stars.textContent='★★★★★';
-    var score=document.createElement('span');
-    score.className='score';
-    score.textContent=String(G.score);
-    var label=document.createElement('span');
-    label.textContent='בגוגל, '+G.count+' ביקורות';
-    var link=document.createElement('a');
-    link.href=G.url;
-    link.target='_blank';
-    link.rel='noopener nofollow';
-    link.textContent='כל הביקורות בגוגל';
-    strip.appendChild(stars);
-    strip.appendChild(score);
-    strip.appendChild(label);
-    strip.appendChild(link);
-  }
-  var photos=document.getElementById('labPhotos');
-  if(photos){
-    var ready=(data.photos||[]).filter(function(p){
-      return p&&!shown(p.src)&&typeof p.width==='number'&&typeof p.height==='number'&&!shown(p.alt);
-    });
-    var list=ready.length?ready:(data.currentImage&&data.currentImage.src?[data.currentImage]:[]);
-    list.forEach(function(p){
-      var img=document.createElement('img');
-      img.src=p.src;
-      img.width=p.width;
-      img.height=p.height;
-      img.alt=p.alt||'';
-      img.loading='lazy';
-      img.decoding='async';
-      photos.appendChild(img);
-    });
-  }
-})();
-</script>
+
 
 </main>
 
@@ -2760,7 +2590,7 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
 <script>
 /* The shared lead block is identical on every page and only names a fixed list
    of spots. This listener is registered first, in the capture phase, and reports
-   the price-table WhatsApp button with link_location repair_prices.
+   the quote WhatsApp button with link_location repair_prices.
    dataLayer.push, same events as that block. It does not call gtag. */
 (function(){
   document.addEventListener('click',function(e){

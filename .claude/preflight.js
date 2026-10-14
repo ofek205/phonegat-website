@@ -2203,63 +2203,47 @@ if (classFails.length) {
   }
 })();
 
-/* ---------- 44. מחירון מעבדת קרית גת לא מוכן כל עוד נשארו null ----------
- * העמוד קיבל מחירון עם null בכוונה. null אינו מחיר. בלי תיבת ה-TODO מישהו
- * יכול לקרוא את העמוד כמוכן. הדירוג 4.9 / 537 יושב ב-pg-facts.js, ודף הבית
- * חייב להראות את אותם מספרים. אין AggregateRating בעמוד הזה. */
+/* ---------- 44. עמוד המעבדה בלי מחירון ריק ----------
+ * הוחלט לפרסם את העמוד בלי מחירון. אין שדות מחיר ריקים, אין TBD,
+ * ואין משפט המתנה שלא אושר. הדירוג הגלוי מגיע מ-google-rating.js.
+ * אין AggregateRating: הביקורות הן על העסק. */
 (function () {
   var rel = 'prototype/mobile-phone-repair-kiryat-gat/index.html';
-  var page, facts, home;
+  var page, G;
+  try { page = read(rel); }
+  catch (e) { bad('חסר עמוד מעבדת קרית גת'); return; }
+  try { G = require(path.join(__dirname, 'tools', 'lib', 'google-rating.js')); }
+  catch (e) { bad('חסר .claude/tools/lib/google-rating.js'); return; }
   try {
-    page = read(rel);
-    facts = read('prototype/pg-facts.js');
-    home = read('prototype/index.html');
-  } catch (e) {
-    bad('מחירון המעבדה: חסר העמוד או prototype/pg-facts.js');
-    return;
-  }
+    read('prototype/pg-facts.js');
+    bad('מעבדת קרית גת: pg-facts.js נשאר, והדירוג הקנוני הוא google-rating.js');
+  } catch (e) {}
   if (/AggregateRating/.test(page)) bad('מעבדת קרית גת: אסור AggregateRating ב-JSON-LD');
-  var sm = facts.match(/score:\s*([0-9]+(?:\.[0-9]+)?)/);
-  var cm = facts.match(/count:\s*([0-9]+)/);
-  var um = facts.match(/url:\s*"([^"]+)"/);
-  if (!sm || !cm || !um) { bad('pg-facts.js בלי score, count או url'); return; }
-  if (home.indexOf('דירוג ' + sm[1]) < 0 || home.indexOf('· ' + cm[1]) < 0 || home.indexOf(um[1]) < 0) {
-    bad('pg-facts.js (Google ' + sm[1] + ' / ' + cm[1] + ') לא תואם לדירוג בדף הבית');
-  } else ok('דירוג גוגל אחד: ' + sm[1] + ' / ' + cm[1]);
-  var body = objectAfter(page, 'var REPAIR_PRICES =');
-  if (!body) { bad('חסר var REPAIR_PRICES בעמוד המעבדה'); return; }
-  var data;
-  try { data = JSON.parse('{' + body + '}'); }
-  catch (e) { bad('REPAIR_PRICES אינו JSON תקין: ' + e.message); return; }
-  var holes = [];
-  if (page.indexOf('משך האחריות משתנה') >= 0) bad('מעבדת קרית גת: האחריות עדיין כתובה כמשתנה');
-  if (page.indexOf('pgReviewQuotes') >= 0 || data.reviews) bad('מעבדת קרית גת: אין ציטוטי ביקורות נבחרים');
-  if (page.indexOf('warrantyMonths') >= 0) bad('מעבדת קרית גת: אחריות רק בשדה warranty, לא בחודשים נפרדים');
-  if (page.indexOf('אין אחריות בשום מעבדה') >= 0) bad('מעבדת קרית גת: ניסוח אחריות ישן שאינו השדה warranty');
-  if (page.indexOf('מחיר החל מ, כולל מע"מ') < 0) bad('מעבדת קרית גת: עמודת המחיר בלי מע"מ');
-  (data.rows || []).forEach(function (r) {
-    var name = (r.repair || 'שורה') + ' / ' + (r.models || '');
-    if (r.price == null) holes.push(name + ': מחיר');
-    if (r.time == null) holes.push(name + ': זמן');
-    if (r.warranty == null || r.warranty === '') holes.push(name + ': אחריות');
-  });
-  if (data.PRICES_UPDATED == null || data.PRICES_UPDATED === '') holes.push('תאריך עדכון מחירים');
-  (data.photos || []).forEach(function (p, i) {
-    if (!p || p.src == null || typeof p.width !== 'number' || typeof p.height !== 'number' || p.alt == null) {
-      holes.push('תמונת מעבדה ' + (i + 1));
+  var banned = [
+    'REPAIR_PRICES', 'pg-repair-pending', 'pg-facts.js', 'waitClaimConfirmed',
+    'PRICES_UPDATED', 'repairPriceBody', 'לרוב בזמן שאתם מחכים',
+    'TBD', 'price coming soon', 'מחיר בקרוב', 'בירור ב-WhatsApp',
+    'משך האחריות משתנה', 'warrantyMonths', 'אין אחריות בשום מעבדה',
+    'מחיר החל מ'
+  ];
+  var left = banned.filter(function (s) { return page.indexOf(s) >= 0; });
+  if (left.length) bad('מעבדת קרית גת: נשאר טקסט של המחירון הריק: ' + left.join(' | '));
+  var quote = (page.match(/<section class="cta" id="quote"[\s\S]*?<\/section>/) || [''])[0];
+  if (!quote) bad('מעבדת קרית גת: חסר מקטע הצעת המחיר');
+  else {
+    if (quote.indexOf('data-pg-loc="repair_prices"') < 0 || quote.indexOf('btn-wa') < 0) {
+      bad('מעבדת קרית גת: כפתור ה-WhatsApp של הצעת המחיר חסר');
     }
-  });
-  if (data.waitClaimConfirmed !== true) holes.push('אישור ברוך למשפט על זמן ההמתנה');
-  var todo = page.indexOf('id="pg-repair-pending"') >= 0;
-  if (holes.length && !todo) {
-    bad('מחירון המעבדה עדיין ריק ובלי תיבת TODO: ' + holes.join(' | '));
-  } else if (holes.length) {
-    warn('מחירון מעבדת קרית גת לא מוכן לפרסום (' + holes.length + '): ' + holes.join(' | '));
-  } else if (todo) {
-    warn('המחירון מולא. אפשר להסיר את pg-repair-pending');
-  } else ok('מחירון מעבדת קרית גת מולא');
-  var meta = (page.match(/<meta name="description" content="([^"]*)"/) || [])[1] || '';
-  if (meta.indexOf(String(sm[1])) < 0) warn('תיאור המעבדה לא כולל את דירוג גוגל מ-pg-facts.js');
+    if (quote.indexOf('href="tel:+972525893366"') < 0 || quote.indexOf('btn-call') < 0) {
+      bad('מעבדת קרית גת: כפתור החיוג של הצעת המחיר חסר');
+    }
+    if (quote.indexOf(G.rating) < 0 || quote.indexOf(String(G.count)) < 0 || quote.indexOf(G.reviewsUrl) < 0) {
+      bad('מעבדת קרית גת: פס הדירוג לא תואם ל-' + G.rating + ' / ' + G.count);
+    }
+  }
+  if (!left.length && quote && quote.indexOf('btn-wa') >= 0 && quote.indexOf('btn-call') >= 0) {
+    ok('עמוד המעבדה בלי מחירון, עם הצעת מחיר ב-WhatsApp ובטלפון');
+  }
 })();
 
 /* ---------- דוח ---------- */
