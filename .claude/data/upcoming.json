@@ -801,14 +801,14 @@
           }
         },
         {
-          "claim": "החשיפה צפויה לכל המוקדם סביב ינואר 2027.",
+          "claim": "סמסונג צפויה לחשוף את סדרת גלקסי S27 בתחילת השנה הבאה.",
           "status": "rumor",
           "note": "הערכה, לא רשמי. זה לא תאריך שסמסונג פרסמה.",
           "src": {
-            "who": "MK",
-            "outlet": "MK",
-            "url": "https://www.mk.co.kr/en/business/12173976",
-            "date": "2026-10-12"
+            "who": "Android Authority",
+            "outlet": "Android Authority",
+            "url": "https://www.androidauthority.com/galaxy-s27-ultra-fast-charging-optimization-3719282/",
+            "date": "2026-10-05"
           }
         }
       ],
