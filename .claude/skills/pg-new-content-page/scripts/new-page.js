@@ -184,7 +184,7 @@ var skeleton = openTag + '\n\n' +
 '<section class="cta" aria-labelledby="cta-h">\n' +
 '  <div class="wrap">\n' +
 '    <h2 id="cta-h">TODO שאלת סגירה</h2>\n' +
-'    <p>TODO. אנחנו כאן ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+'    <p>TODO. אנחנו כאן ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00 עד 18:30, שישי 9:00 עד 13:00.</p>\n' +
 '    <div class="row">\n' +
 '      <a class="btn btn-wa" href="https://wa.me/97286812050"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>\n' +
 CM.callLine('      ') +
