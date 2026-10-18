@@ -72,7 +72,7 @@ const HUBS = ['phone-problems', 'phones', 'compare', 'contact', 'phones/compare'
  * phone. Measured at screen 3.5 of 14.8. */
 const DEVICE_AT = 'fit';
 const DEVICE = ['galaxy-a07', 'galaxy-a17', 'galaxy-a27', 'galaxy-a36', 'galaxy-a37', 'galaxy-a56',
-  'galaxy-a57', 'galaxy-s25-fe', 'galaxy-s26', 'galaxy-s26-plus', 'galaxy-s26-ultra', 'iphone-16',
+  'galaxy-a57', 'galaxy-s25-fe', 'galaxy-s26', 'galaxy-s26-plus', 'galaxy-s26-ultra', 'galaxy-z-fold8', 'iphone-16',
   'iphone-17', 'iphone-17-pro', 'iphone-17-pro-max', 'iphone-17e', 'redmi-note-14',
   'redmi-note-14-pro', 'redmi-note-15', 'redmi-note-15-pro', 'xiaomi-15'].map(s => 'phones/' + s);
 

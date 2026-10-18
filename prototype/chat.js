@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:ed8ca990f707efdf */
+/* sha1:b7982e4261dbe5ea */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -272,7 +272,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
      Galaxy S26 Ultra ו-Galaxy S26+ יושבים תחת "Galaxy S", אבל Galaxy S26 תחת סדרה משלו.
      תפריט שנגזר ממנו ישירות היה מציג "Galaxy S" ו-"Galaxy S26" כשתי אפשרויות אחיות. */
   function buyCat(d){
-    if(d.brand==='Samsung')return /^Galaxy A/.test(d.name)?'Galaxy A':'Galaxy S';
+    if(d.brand==='Samsung')return /^Galaxy A/.test(d.name)?'Galaxy A':/^Galaxy Z/.test(d.name)?'Galaxy Z':'Galaxy S';
     if(d.brand==='Xiaomi')return /^Redmi/.test(d.name)?'רדמי נוט':'שיאומי';
     return /Pro/.test(d.name)?'פרו ופרו מקס':'רגיל';
   }

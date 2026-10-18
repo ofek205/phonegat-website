@@ -165,6 +165,9 @@ function buildMain(d, openTag, K) {
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var AWAY = !!C.not_in_store;
+  /* by_order: לא על המדף, אבל אפשר להזמין ללקוח. not_in_store נשאר "עוד לא הגיע".
+     בלי הדגל הענף זהה למה שהיה, כדי שעמודי הדגמים הקיימים לא יזוזו בבית. */
+  var ORDER = !!C.by_order && !AWAY;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
   /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
@@ -181,6 +184,10 @@ function buildMain(d, openTag, K) {
   ] : AWAY ? [
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
+    ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
+  ] : ORDER ? [
+    ['מחיר', C.price, C.price_note || 'המחיר נמסר ב-WhatsApp, יחד עם זמן האספקה.'],
+    ['זמינות', 'זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
   ] : [
     /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
@@ -237,8 +244,10 @@ function buildMain(d, openTag, K) {
   heroImg(d) +
   '    </figure>\n' +
   '    <div class="txt">\n' +
-  '      <h2 id="h-buy">מחיר, מלאי ואחריות</h2>\n' +
-  '      <p class="intro">הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.</p>\n' +
+  '      <h2 id="h-buy">' + (ORDER ? 'מחיר וזמן אספקה' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
+  '      <p class="intro">' + (ORDER
+    ? 'הדגם זמין בהזמנה. המחיר וזמן האספקה לא מופיעים כאן, כי הם משתנים. שלחו הודעה ב-WhatsApp ונבדוק אותם.'
+    : 'הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.') + '</p>\n' +
   '      <div class="cmp-wrap" role="region" aria-labelledby="h-buy" tabindex="0">\n' +
   '        <table class="cmp">\n' +
   /* הכיתוב הזה אמר "עדיין לא עודכן" על כל שדה בהדגשה. לגבי המחיר זה הפסיק להיות נכון
@@ -254,7 +263,7 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  '        <a class="btn btn-wa" href="' + wa(ORDER ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -279,6 +288,22 @@ function buildMain(d, openTag, K) {
     '    <ul class="checks">\n' +
     E.daily_benefits.map(function (p) { return '      <li><b>' + esc(p[0]) + '.</b> ' + esc(p[1]) + '</li>'; }).join('\n') +
     '\n    </ul>\n  </div>\n</section>\n\n';
+  }
+
+  /* מקטע אופציונלי לדגם קרוב, למשל Fold8 Ultra על עמוד Fold8. בלי השדה אין פלט,
+     ולכן עמוד שאין לו editorial.also יוצא זהה. */
+  if (E.also && E.also.title && E.also.paragraphs && E.also.paragraphs.length) {
+    out += '<section class="block" id="also" aria-labelledby="h-also">\n' +
+    '  <div class="wrap box">\n' +
+    '    <h2 id="h-also">' + esc(E.also.title) + '</h2>\n' +
+    '    <div class="prose">\n' +
+    E.also.paragraphs.map(function (p) { return '      <p>' + esc(p) + '</p>'; }).join('\n') +
+    '\n    </div>\n' +
+    (E.also.src
+      ? '    <p class="sources">המקור: <a href="' + esc(E.also.src) + '" rel="nofollow noopener" target="_blank">עמוד המפרט הרשמי</a>' +
+        (E.also.src_note ? '. ' + esc(E.also.src_note) : '') + '</p>\n'
+      : '') +
+    '  </div>\n</section>\n\n';
   }
 
   /* --- המלצה אישית: אך ורק כשאושרה --- */
@@ -368,6 +393,9 @@ function buildMain(d, openTag, K) {
   (C.not_in_store
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
       '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+    : C.by_order
+    ? '    <h2 id="cta-h">רוצים להזמין אותו?</h2>\n' +
+      '    <p>הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
     /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
     : K.acc
     ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
@@ -375,7 +403,7 @@ function buildMain(d, openTag, K) {
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
-  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>\n' +
+  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : C.by_order ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : C.by_order ? 'בירור מחיר וזמן אספקה' : 'בדיקת מחיר ומלאי') + '</a>\n' +
   CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
@@ -391,10 +419,10 @@ function buildMain(d, openTag, K) {
 function heroBlock(d) {
   var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
-  var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
+  var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : C.by_order ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
   var call = CM.callHeroInline();
   var c = d.seo && d.seo.hero_cta;
-  var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי');
+  var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : C.by_order ? 'בירור מחיר וזמן אספקה' : 'בדיקת מחיר ומלאי');
   var invite = c && c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
   var micro = c && c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
   return '      <div class="hcta">' + invite +
