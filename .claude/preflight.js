@@ -2248,6 +2248,54 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 45. מפת קודי SM באשף תואמת ל-devices.json ----------
+ * האשף ממפה קוד SM לשם ידידותי. קוד שגוי גרוע מתא ריק: S26 ו-S26+ חולקים
+ * עמוד מפרט שאינו אומר איזה קוד של מי, ודגם ייחוס אינו נמכר. לכן המפה היא
+ * בדיוק קודי SM שמופיעים ב-spec.model_numbers של דגם אחד שאינו reference. */
+(function () {
+  var guide, raw;
+  try { guide = read('prototype/guides/which-phone-do-i-have/index.html'); }
+  catch (e) { bad('חסר מדריך איזה טלפון יש לי'); return; }
+  try { raw = JSON.parse(read('prototype/devices.json')); }
+  catch (e) { bad('devices.json שבור, אי אפשר לבדוק את מפת ה-SM'); return; }
+  var body = objectAfter(guide, 'var SM=');
+  if (!body) { bad('אשף הדגם: חסרה מפת SM'); return; }
+  var map = {}, rm = /'(SM-[A-Z0-9]+)'\s*:\s*'([^']*)'/g, mm;
+  while ((mm = rm.exec(body))) map[mm[1]] = mm[2];
+  function smFrom(v) {
+    var s = '';
+    if (v == null) return [];
+    if (typeof v === 'string') s = v;
+    else if (Array.isArray(v)) s = v.join(' ');
+    else return [];
+    var out = [], re = /SM-[A-Z0-9]+/g, m;
+    var up = s.toUpperCase();
+    while ((m = re.exec(up))) out.push(m[0]);
+    return out;
+  }
+  var owners = {};
+  (raw.devices || []).forEach(function (dev) {
+    if (!dev || dev.status === 'reference') return;
+    smFrom(dev.spec && dev.spec.model_numbers).forEach(function (code) {
+      (owners[code] = owners[code] || []).push(dev.name);
+    });
+  });
+  var expected = {};
+  Object.keys(owners).forEach(function (code) {
+    var names = owners[code].filter(function (n, i) { return owners[code].indexOf(n) === i; });
+    if (names.length === 1) expected[code] = names[0];
+  });
+  var problems = [];
+  Object.keys(expected).forEach(function (code) {
+    if (map[code] !== expected[code]) problems.push(code + ' צריך להיות ' + expected[code] + (map[code] ? ' (באשף: ' + map[code] + ')' : ' (חסר באשף)'));
+  });
+  Object.keys(map).forEach(function (code) {
+    if (!expected[code]) problems.push(code + ' באשף בלי שיוך יחיד ב-devices.json');
+  });
+  if (problems.length) bad('מפת SM באשף לא תואמת ל-devices.json: ' + problems.slice(0, 6).join(' | '));
+  else ok('מפת SM באשף תואמת ל-devices.json (' + Object.keys(expected).length + ' קודים)');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
