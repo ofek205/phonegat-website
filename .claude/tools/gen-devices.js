@@ -86,9 +86,15 @@ function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 var SENTENCE_ABBR = { 'e.g': 1, 'i.e': 1, 'etc': 1, 'vs': 1, 'mr': 1, 'mrs': 1, 'ms': 1,
   'dr': 1, 'prof': 1, 'sr': 1, 'jr': 1, 'st': 1, 'no': 1, 'fig': 1, 'vol': 1,
   'inc': 1, 'ltd': 1, 'co': 1 };
+/* אמת כשהנקודה ב-i היא קיצור, לא סוף משפט: מילה מ-SENTENCE_ABBR, או אות בודדת
+ * שלא לפניה ספרה או מקף (U.S., לא 5G / 4K / USB-C). */
+function abbrevBefore(s, i) {
+  var word = (s.slice(0, i).match(/[A-Za-z]+$/) || [''])[0];
+  return (word.length === 1 && !/[\d-]/.test(s.charAt(i - 2))) || !!SENTENCE_ABBR[word.toLowerCase()];
+}
 function firstSentence(s) {
   s = String(s).replace(/\s+$/, '');
-  var i, next, prev, word;
+  var i, next, prev;
   for (i = 0; i < s.length; i++) {
     if (s.charAt(i) !== '.') continue;
     next = i + 1 < s.length ? s.charAt(i + 1) : '';
@@ -97,11 +103,7 @@ function firstSentence(s) {
     if (/\d/.test(prev) && /\d/.test(next)) continue;
     /* רק נקודה שאחריה רווח, או שהיא בסוף המחרוזת. */
     if (next !== '' && !/\s/.test(next)) continue;
-    if (next !== '') {
-      word = (s.slice(0, i).match(/[A-Za-z]+$/) || [''])[0];
-      /* אות בודדת אחרי ספרה או מקף היא יחידה (5G, 4K, USB-C), לא קיצור כמו U.S. */
-      if ((word.length === 1 && !/[\d-]/.test(s.charAt(i - 2))) || SENTENCE_ABBR[word.toLowerCase()]) continue;
-    }
+    if (next !== '' && abbrevBefore(s, i)) continue;
     return s.slice(0, i + 1);
   }
   return /\.$/.test(s) ? s : s + '.';
@@ -125,7 +127,8 @@ function assertSentenceSplitter() {
     ['זום שמגיע ל-5x. השני', 'זום שמגיע ל-5x.'],
     ['הקלטה ב-4K. אחר כך', 'הקלטה ב-4K.'],
     ['דירוג IP69K. השני', 'דירוג IP69K.'],
-    ['חיבור USB-C. אבל', 'חיבור USB-C.']
+    ['חיבור USB-C. אבל', 'חיבור USB-C.'],
+    ['אייפון 17 vs. גלקסי S26 דומים. סוף', 'אייפון 17 vs. גלקסי S26 דומים.']
   ];
   cases.forEach(function (c) {
     var got = firstSentence(c[0]);
@@ -160,9 +163,10 @@ function assertSentenceSplitter() {
         console.error('✗ ' + (p.slug || file) + ': החיתוך נפל על נקודה עשרונית: ' + got);
         process.exit(1);
       }
-      /* כרטיס שממשיך מעבר לנקודה אל אות עברית הוא המשפט הבא, לא המשפט הראשון.
-         "5G. ההבדל" היה עובר כאן כשהאות הבודדת נחשבה קיצור. */
-      if (/\. [\u05D0-\u05EA]/.test(got)) {
+      /* רק נקודה שהמפצל עצמו היה סוגר עליה. "vs. גלקסי" ו-"Dr. כהן" נשארים,
+         "5G. ההבדל" נופל כי האות אחרי ספרה אינה קיצור. */
+      var re = /\. (?=[\u05D0-\u05EA])/g, m;
+      while ((m = re.exec(got))) if (!abbrevBefore(got, m.index)) {
         console.error('✗ ' + (p.slug || file) + ': הכרטיס ממשיך אחרי נקודה ורווח לאות עברית: ' + got);
         process.exit(1);
       }
