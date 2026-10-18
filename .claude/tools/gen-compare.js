@@ -99,10 +99,12 @@ function le(displayed) {
   return (/^[\u0590-\u05FF]/.test(plain) ? 'ל' : 'ל-') + displayed;
 }
 /* "מחיר ומלאי היום" רק כששני הדגמים נמכרים ונמצאים בחנות. מכשיר ייחוס, דגם
-   ש-not_in_store, ושעון או אוזניות בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
+   ש-not_in_store, דגם שיצא מהמכירה (commercial.discontinued), ושעון או אוזניות
+   בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
 function offeredHere(x) {
   if (x.status === 'reference') return false;
   if (x.commercial && x.commercial.not_in_store) return false;
+  if (x.commercial && x.commercial.discontinued) return false;
   if (CAT && !pageHref(x)) return false;
   return true;
 }
@@ -119,14 +121,26 @@ function leadBlurb(a, b) {
   var open = 'מתלבטים בין ' + he(a) + ' ' + le(he(b)) + '? ';
   var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
   var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+  var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
   var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
-  if (!ref.length && !away.length && !unsold.length) {
+  if (!ref.length && !away.length && !unsold.length && !gone.length) {
     return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
   }
   if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
   if (ref.length === 1) {
     var mine = [a, b].filter(function (x) { return x.status !== 'reference'; })[0];
     return open + 'את ' + he(mine) + ' אנחנו מוכרים, ואת ' + he(ref[0]) + ' לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים, ומה אנחנו רואים במעבדה.';
+  }
+  /* דגם שיצא מהמכירה: המחיר והמלאי נאמרים רק על הדגם שעוד נמכר, כמו במכשיר ייחוס. */
+  if (gone.length === 1) {
+    var still = [a, b].filter(function (x) { return !(x.commercial && x.commercial.discontinued); })[0];
+    if (still && still.status !== 'reference') {
+      return open + 'את ' + he(still) + ' אנחנו מוכרים, ואת ' + he(gone[0]) + ' כבר לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים.';
+    }
+  }
+  if (gone.length) {
+    var whoGone = gone.length === 1 ? he(gone[0]) : 'שני הדגמים האלה';
+    return open + 'את ' + whoGone + ' כבר לא מוכרים אצלנו. שלחו הודעה ונמליץ על דגם שיש במלאי.';
   }
   if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
   if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
@@ -559,8 +573,16 @@ function buildMain(p, a, b, d, openTag) {
          הגיע, וגם על דגם שאיננו מוכרים בכלל */
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+      var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
       var nmOf = function (x) { return esc(nmHe(x)); };
+      /* דגם שיצא מהמכירה: בלי "אצלנו בחנות" ובלי שעות הפתיחה כהבטחה שאפשר לבוא להחזיק. */
+      if (gone.length && !CAT && !ref.length) {
+        var whoGone = gone.length === 1
+          ? 'את ' + nmOf(gone[0]) + ' כבר לא מוכרים אצלנו. '
+          : 'את שני הדגמים האלה כבר לא מוכרים אצלנו. ';
+        return '    <p>' + whoGone + 'תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n';
+      }
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
         : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
         : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'

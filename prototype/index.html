@@ -3827,9 +3827,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
      ולא מצב שנשמר בשיחה. */
   function refNote(d){
-    return d.kind==='reference'
-      ? 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.'
-      : '';
+    if(d.kind==='reference')
+      return 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.';
+    if(d.kind==='discontinued')
+      return 'שימו לב: את '+d.name_he+' כבר לא מוכרים אצלנו.';
+    return '';
   }
   function devLink(d){
     return d.kind==='reference'?null:{label:'לעמוד של '+d.name_he,href:'/phones/'+d.slug+'/'};
@@ -3862,16 +3864,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
+      /* תשלומים והעברת נתונים הם תנאי מכירה. אחריות וטלפון חלופי נשארים למי שכבר קנה. */
+      if(d.kind==='discontinued'&&(field==='payments'||field==='data_transfer'))
+        return {text:note+'\nאפשר לשאול על דגם דומה שיש במלאי.',human:true};
+      var owned=d.kind==='discontinued'?('את '+d.name_he+' כבר לא מוכרים אצלנו. למי שקנה אצלנו: '):pre;
       if(field==='warranty'){
-        if(!d.warranty_by)return {text:pre+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
+        if(!d.warranty_by)return {text:owned+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
         var t='האחריות על '+d.name_he+': '+d.warranty_by;
         if(typeof d.warranty_months==='number')t+='\nלמשך '+d.warranty_months+' חודשים.';
         if(d.service_terms)t+='\n'+d.service_terms;
-        return {text:pre+t};
+        return {text:owned+t};
       }
       var v=d[field];
-      if(!v)return {text:pre+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
-      return {text:pre+v};
+      if(!v)return {text:owned+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
+      return {text:owned+v};
     }
     /* שדה מפרט. null אינו "בערך", הוא "היצרן לא מפרסם". */
     var sv=d.spec?d.spec[field]:null;
@@ -4323,8 +4329,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(m&&!slug){
       var hits=findDevices(m);
       if(hits.length===1){
-        if(hits[0].kind==='reference'){
-          track('chat_ref_declined',{slug:hits[0].slug});
+        if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
+          track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
           botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
                  ['להמשיך בלי דגם',function(){buyModel('','');}]]});

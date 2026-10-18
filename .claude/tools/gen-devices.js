@@ -269,6 +269,7 @@ function buildMain(d, openTag, K) {
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var AWAY = !!C.not_in_store;
+  var GONE = !!C.discontinued;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
   /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
@@ -286,6 +287,9 @@ function buildMain(d, openTag, K) {
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
+  ] : GONE ? [
+    /* יצא מהמכירה: שורה אחת. אין מחיר, מלאי, צבע, נפח, יבוא או אחריות על מכירה. */
+    ['זמינות', 'את הדגם הזה כבר לא מוכרים אצלנו.', '']
   ] : [
     /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
        שאין מחירון באתר עומדת. נוסף ב-24.9.2026 לאייפון 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. */
@@ -341,14 +345,16 @@ function buildMain(d, openTag, K) {
   heroImg(d) +
   '    </figure>\n' +
   '    <div class="txt">\n' +
-  '      <h2 id="h-buy">מחיר, מלאי ואחריות</h2>\n' +
+  '      <h2 id="h-buy">' + (GONE ? 'זמינות' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
   '      <p class="intro">הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.</p>\n' +
   '      <div class="cmp-wrap" role="region" aria-labelledby="h-buy" tabindex="0">\n' +
   '        <table class="cmp">\n' +
   /* הכיתוב הזה אמר "עדיין לא עודכן" על כל שדה בהדגשה. לגבי המחיר זה הפסיק להיות נכון
    * ב-6.8.2026, כשהוחלט שאין מחירון באתר: הוא לא ממתין לעדכון, הוא לא יופיע. עמוד שמרמז
    * שמחיר בדרך מטעה. שאר השדות כן ימולאו, ולכן הכיתוב מפריד בין השניים. */
-  '          <caption>מה שצריך לברר לפני קנייה. שדה בהדגשה נטויה נמסר בשיחה ולא באתר, והמחיר לא יופיע כאן בכלל מפני שהוא משתנה.</caption>\n' +
+  (GONE
+    ? '          <caption>אין כאן מחיר או מלאי, כי את הדגם הזה כבר לא מוכרים אצלנו.</caption>\n'
+    : '          <caption>מה שצריך לברר לפני קנייה. שדה בהדגשה נטויה נמסר בשיחה ולא באתר, והמחיר לא יופיע כאן בכלל מפני שהוא משתנה.</caption>\n') +
   '          <thead><tr><th scope="col">מה</th><th scope="col">' + esc(d.name) + '</th></tr></thead>\n' +
   '          <tbody>\n' + facts + '\n          </tbody>\n' +
   '        </table>\n' +
@@ -358,7 +364,7 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  '        <a class="btn btn-wa" href="' + wa(GONE ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -468,10 +474,15 @@ function buildMain(d, openTag, K) {
   '  <div class="wrap">\n' +
   /* not_in_store: דגם שהוכרז ועוד לא בחנות. "אפשר לבוא להחזיק את המכשיר" הוא הבטחה שהלקוח
      בודק בעצמו כשהוא מגיע, ולכן היא תלויה בדגל. והנוסח החלופי אינו מבטיח דבר: לא מועד, לא
-     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026. */
+     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026.
+     discontinued: יצא מהמכירה. בלי הזמנה להחזיק, ובלי שעות פתיחה כהבטחה שאפשר לבוא.
+     אותו משפט סיום כמו בזוג השוואה שכולל דגם כזה. */
   (C.not_in_store
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
       '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+    : C.discontinued
+    ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
+      '    <p>את הדגם הזה כבר לא מוכרים אצלנו. תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n'
     /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
     : K.acc
     ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
@@ -479,7 +490,7 @@ function buildMain(d, openTag, K) {
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
-  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>\n' +
+  '      <a class="btn btn-wa" href="' + wa(stockAsk(d).msg) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + stockAsk(d).label + '</a>\n' +
   CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
@@ -489,16 +500,25 @@ function buildMain(d, openTag, K) {
   return out;
 }
 
+function stockAsk(d) {
+  var C = d.commercial || {};
+  if (C.not_in_store) return { msg: 'היי, יש לי שאלה על ' + d.name, label: 'שאלו אותנו על הדגם' };
+  /* יצא מהמכירה: בירור, בלי "בדיקת מחיר ומלאי" ובלי הזמנה להחזיק. אותו נוסח כמו בעמוד השוואה. */
+  if (C.discontinued) return { msg: 'היי, ראיתי את ' + d.name + ' באתר ואשמח להמלצה על דגם דומה שיש במלאי.', label: 'המלצה על דגם דומה ב-WhatsApp' };
+  return { msg: 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name, label: 'בדיקת מחיר ומלאי' };
+}
+
 /* בלוק ה-CTA בהירו. seo.hero_cta הוא אופציונלי ולעמוד אחד.
    בלי השדה המוצא זהה לבלוק שהיה כאן, כדי ששאר עמודי הדגם לא ישתנו.
    הקישור נשאר wa.me/97286812050 והחיוג tel:+972525893366. לא מחליפים ביניהם. */
 function heroBlock(d) {
   var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
-  var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
+  var ask = stockAsk(d);
+  var href = wa(ask.msg);
   var call = CM.callHeroInline();
   var c = d.seo && d.seo.hero_cta;
-  var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי');
+  var label = (c && c.wa_label) || ask.label;
   var invite = c && c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
   var micro = c && c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
   return '      <div class="hcta">' + invite +
@@ -981,7 +1001,7 @@ if (swGrew) {
         name: d.name,
         name_he: d.name_he || d.name,
         brand: d.brand,
-        kind: ref ? 'reference' : 'sold',
+        kind: ref ? 'reference' : (c.discontinued ? 'discontinued' : 'sold'),
         /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
            ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
         warranty_by: ref ? null : (c.warranty_by || null),
