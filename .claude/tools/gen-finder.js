@@ -63,9 +63,11 @@ function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
  * התיקון היה צריך לקרות פעמיים ואיש לא היה יודע שהשני קיים. זה בדיוק מה ש-traits.js נוצר למנוע. */
 var T = require('./lib/traits.js');
 
-/* not_in_store ו-discontinued מוחרגים: השאלון ממליץ מה לקנות. דגם שעוד לא בחנות, או דגם
-   שיצא מהמכירה, אינו המלצה שאפשר לממש אצלנו. עד 24.9.2026 אייפון 18 פרו הופיע בו. */
-var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !(d.commercial && d.commercial.not_in_store) && !(d.commercial && d.commercial.discontinued); });
+/* not_in_store, discontinued ו-by_order מוחרגים: השאלון ממליץ מה לקנות מהמדף.
+   דגם שעוד לא בחנות, דגם שיצא מהמכירה, או דגם שמזמינים ללקוח, אינו המלצה שאפשר לממש
+   מהחנות. עד 24.9.2026 אייפון 18 פרו הופיע בו. */
+function offShelf(d) { return d.commercial && (d.commercial.not_in_store || d.commercial.discontinued || d.commercial.by_order); }
+var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !offShelf(d); });
 var fail = [];
 var TRAITS = live.map(function (d) {
   var S = d.spec;

@@ -275,6 +275,53 @@
       "own": false
     },
     {
+      "slug": "galaxy-z-fold8",
+      "name": "Galaxy Z Fold8",
+      "name_he": "גלקסי Z Fold8",
+      "brand": "Samsung",
+      "spec": {
+        "screen_size": "7.6 אינץ׳ פנימי, ומסך כיסוי 5.5 אינץ׳",
+        "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, בשני המסכים",
+        "resolution": "1848x2448 במסך הראשי, ו-1972x1248 במסך הכיסוי",
+        "refresh_rate": "עד 120Hz בשני המסכים",
+        "brightness": "3000 ניט בשני המסכים",
+        "chip": "Snapdragon 8 Elite Gen 5",
+        "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
+        "gpu": null,
+        "ram": "12GB, ו-16GB בגרסת 1TB",
+        "storage_offered": [
+          "256GB",
+          "512GB",
+          "1TB"
+        ],
+        "storage_expandable": null,
+        "camera_main": "50MP רחבה בצמצם F1.8, עם ייצוב אופטי",
+        "camera_extra": "50MP רחבה במיוחד בצמצם F1.9",
+        "zoom": "זום באיכות אופטית 2x, דיגיטלי עד 10x",
+        "camera_front": "10MP בצמצם F2.2 במסך הראשי ובמסך הכיסוי",
+        "video": "8K ב-30 פריימים לשנייה. הילוך אט 240 ו-120 ב-FHD ו-120 ב-UHD",
+        "battery": "4800 mAh טיפוסית, עד 26 שעות וידאו",
+        "charging_wired": "45W, עד 63 אחוז בכ-30 דקות",
+        "charging_wireless": "עד 20W",
+        "dimensions": "פתוח 123.9 x 161.4 x 4.5 מ״מ, סגור 123.9 x 81.9 x 9.7 מ״מ",
+        "weight": "201 גרם",
+        "sim": "SIM כפול: nano-SIM ו-eSIM. אפשר SIM עם eSIM, או שני eSIM",
+        "esim": "תמיכה בשני eSIM",
+        "water_resistance": "IP48, עד 1.5 מטר ל-30 דקות",
+        "colors_manufacturer": [
+          "סגול",
+          "שחור",
+          "קרם",
+          "ירוק"
+        ],
+        "box_contents": null,
+        "model_numbers": "SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
+        "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
+        "security_updates": "עדכוני אבטחה עד 31 ביולי 2033"
+      },
+      "launch": "2026-07"
+    },
+    {
       "slug": "galaxy-a27",
       "name": "Galaxy A27 5G",
       "name_he": "גלקסי A27",
