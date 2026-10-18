@@ -2613,8 +2613,13 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
   function fitModel(){
     var modelBdi=askText.querySelector('bdi');
     if(!modelBdi||ask.hidden)return;
+    var codeEl=modelBdi.querySelector('.wiz-code');
     modelBdi.style.whiteSpace='nowrap';
     modelBdi.style.overflowWrap='normal';
+    if(codeEl){
+      codeEl.style.whiteSpace='nowrap';
+      codeEl.style.overflowWrap='normal';
+    }
     modelBdi.style.maxWidth='none';
     var full=modelBdi.getBoundingClientRect().width;
     modelBdi.style.maxWidth='';
@@ -2622,6 +2627,10 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     if(full>box+1){
       modelBdi.style.whiteSpace='normal';
       modelBdi.style.overflowWrap='anywhere';
+      if(codeEl){
+        codeEl.style.whiteSpace='normal';
+        codeEl.style.overflowWrap='anywhere';
+      }
     }
   }
   function render(opts){
@@ -2818,7 +2827,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     openBrand('iphone',{silent:true,focus:false,announce:true});
   }else if(apple==='ipad'){
     fireDetect(true);
-    state.hint='זיהינו אייפד. בחרו אייפון או iPad בכפתורים, או בדקו את שם הדגם בהגדרות.';
+    state.hint='זיהינו אייפד. את שם הדגם רואים בהגדרות, כללי, מידע. אפשר גם לבחור אייפון למטה ולעקוב אחרי אותם שלבים.';
     showBrands({announce:true,keepHint:true});
   }else if(apple==='iphone'){
     state.locked=true;
