@@ -269,6 +269,7 @@ function buildMain(d, openTag, K) {
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var AWAY = !!C.not_in_store;
+  var GONE = !!C.discontinued;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
   /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
@@ -286,6 +287,9 @@ function buildMain(d, openTag, K) {
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
+  ] : GONE ? [
+    /* יצא מהמכירה: שורה אחת. אין מחיר, מלאי, צבע, נפח, יבוא או אחריות על מכירה. */
+    ['זמינות', 'את הדגם הזה כבר לא מוכרים אצלנו.', '']
   ] : [
     /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
        שאין מחירון באתר עומדת. נוסף ב-24.9.2026 לאייפון 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. */
@@ -358,7 +362,7 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa('היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  '        <a class="btn btn-wa" href="' + wa(GONE ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -498,7 +502,7 @@ function stockAsk(d) {
   var C = d.commercial || {};
   if (C.not_in_store) return { msg: 'היי, יש לי שאלה על ' + d.name, label: 'שאלו אותנו על הדגם' };
   /* יצא מהמכירה: בירור, בלי "בדיקת מחיר ומלאי" ובלי הזמנה להחזיק. אותו נוסח כמו בעמוד השוואה. */
-  if (C.discontinued) return { msg: 'היי, אשמח לברר מחיר וזמינות של ' + d.name + '.', label: 'בירור מחיר וזמינות ב-WhatsApp' };
+  if (C.discontinued) return { msg: 'היי, ראיתי את ' + d.name + ' באתר ואשמח להמלצה על דגם דומה שיש במלאי.', label: 'המלצה על דגם דומה ב-WhatsApp' };
   return { msg: 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name, label: 'בדיקת מחיר ומלאי' };
 }
 
@@ -995,7 +999,7 @@ if (swGrew) {
         name: d.name,
         name_he: d.name_he || d.name,
         brand: d.brand,
-        kind: ref ? 'reference' : 'sold',
+        kind: ref ? 'reference' : (c.discontinued ? 'discontinued' : 'sold'),
         /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
            ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
         warranty_by: ref ? null : (c.warranty_by || null),

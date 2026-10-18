@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:ed8ca990f707efdf */
+/* sha1:5d16840d9a016429 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -480,9 +480,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
      ולא מצב שנשמר בשיחה. */
   function refNote(d){
-    return d.kind==='reference'
-      ? 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.'
-      : '';
+    if(d.kind==='reference')
+      return 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.';
+    if(d.kind==='discontinued')
+      return 'שימו לב: את '+d.name_he+' כבר לא מוכרים אצלנו.';
+    return '';
   }
   function devLink(d){
     return d.kind==='reference'?null:{label:'לעמוד של '+d.name_he,href:'/phones/'+d.slug+'/'};
@@ -515,6 +517,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
+      if(d.kind==='discontinued')return {text:note+'\nאפשר לשאול על דגם דומה שיש במלאי.',human:true};
       if(field==='warranty'){
         if(!d.warranty_by)return {text:pre+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
         var t='האחריות על '+d.name_he+': '+d.warranty_by;
@@ -976,8 +979,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(m&&!slug){
       var hits=findDevices(m);
       if(hits.length===1){
-        if(hits[0].kind==='reference'){
-          track('chat_ref_declined',{slug:hits[0].slug});
+        if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
+          track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
           botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
                  ['להמשיך בלי דגם',function(){buyModel('','');}]]});
