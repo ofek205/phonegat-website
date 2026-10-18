@@ -361,7 +361,7 @@ QUESTIONS.map(function (q) {
 
 '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
 '    <h2 id="cta-h">לא בטוחים? זה בסדר</h2>\n' +
-'    <p>אפשר גם לדלג על השאלון ופשוט לספר לנו מה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00 עד 18:30, שישי 9:00 עד 13:00.</p>\n' +
+'    <p>אפשר גם לדלג על השאלון ופשוט לספר לנו מה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n' +
 '    <div class="row">\n' +
 '      <a class="btn btn-wa" href="' + waGeneric + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">דברו איתנו ב-WhatsApp</a>\n' +
 CM.callLine('      ') +

@@ -257,7 +257,7 @@ function buildMain(pg) {
   /* CTA והצהרה סוגרת */
   o += '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">יש לכם שאלה?</h2>\n' +
-    '    <p>אפשר לשאול אותנו על כל דגם, גם על כאלה שעוד לא יצאו, ולהשוות מול מה שכבר יש. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00 עד 18:30, שישי 9:00 עד 13:00.</p>\n' +
+    '    <p>אפשר לשאול אותנו על כל דגם, גם על כאלה שעוד לא יצאו, ולהשוות מול מה שכבר יש. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n' +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + esc(wa(pg.wa)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">שלחו הודעה ב-WhatsApp</a>\n' +
     CM.callLine('      ') +
