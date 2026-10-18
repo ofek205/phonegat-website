@@ -102,7 +102,7 @@ function le(displayed) {
    ש-not_in_store, ושעון או אוזניות בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
 function offeredHere(x) {
   if (x.status === 'reference') return false;
-  if (x.commercial && x.commercial.not_in_store) return false;
+  if (x.commercial && (x.commercial.not_in_store || x.commercial.by_order)) return false;
   if (CAT && !pageHref(x)) return false;
   return true;
 }
@@ -119,8 +119,9 @@ function leadBlurb(a, b) {
   var open = 'מתלבטים בין ' + he(a) + ' ' + le(he(b)) + '? ';
   var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
   var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+  var order = [a, b].filter(function (x) { return x.commercial && x.commercial.by_order; });
   var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
-  if (!ref.length && !away.length && !unsold.length) {
+  if (!ref.length && !away.length && !unsold.length && !order.length) {
     return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
   }
   if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
@@ -130,6 +131,11 @@ function leadBlurb(a, b) {
   }
   if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
   if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
+  if (order.length && !ref.length && !away.length && !unsold.length) {
+    return open + (order.length === 2
+      ? 'שני הדגמים זמינים בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.'
+      : he(order[0]) + ' זמין בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.');
+  }
   return open + 'שלחו הודעה ונגיד לכם אם הם אצלנו, מה המחיר היום, ומה אנחנו רואים במעבדה. אנחנו ברחבת תשרי 2 בקרית גת.';
 }
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
@@ -558,13 +564,15 @@ function buildMain(p, a, b, d, openTag) {
       /* not_in_store ומכשיר ייחוס: בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות" גם על דגם שעוד לא
          הגיע, וגם על דגם שאיננו מוכרים בכלל */
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+      var order = [a, b].filter(function (x) { return x.commercial && x.commercial.by_order; });
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
       var nmOf = function (x) { return esc(nmHe(x)); };
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
         : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
         : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
-        : !away.length ? 'שני המכשירים אצלנו בחנות.'
+        : !away.length && !order.length ? 'שני המכשירים אצלנו בחנות.'
+        : !away.length ? (order.length === 2 ? 'שני הדגמים זמינים בהזמנה.' : nmOf(order[0]) + ' זמין בהזמנה.')
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';

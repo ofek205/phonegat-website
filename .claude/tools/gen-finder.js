@@ -64,8 +64,10 @@ function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
 var T = require('./lib/traits.js');
 
 /* not_in_store מוחרג: השאלון ממליץ מה לקנות, והמלצה על דגם שעוד לא בחנות היא המלצה שאי אפשר
-   לממש אצלנו. עד 24.9.2026 אייפון 18 פרו הופיע בו. */
-var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !(d.commercial && d.commercial.not_in_store); });
+   לממש אצלנו. עד 24.9.2026 אייפון 18 פרו הופיע בו.
+   by_order מוחרג מאותה סיבה: השאלון שואל מה יש על המדף, ודגם שרק מזמינים אינו שם. */
+function offShelf(d) { return d.commercial && (d.commercial.not_in_store || d.commercial.by_order); }
+var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !offShelf(d); });
 var fail = [];
 var TRAITS = live.map(function (d) {
   var S = d.spec;
