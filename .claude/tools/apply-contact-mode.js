@@ -46,6 +46,12 @@ function offFor(file, prefilled, bare) {
   return rel === 'index.html' ? prefilled : bare;
 }
 var CALL = '<a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
+/* The which-phone wizard adds id and data-pg-loc, so the exact CALL string
+   misses it and PG_CALLS=0 exits on a leftover tel:. Same removal as CALL:
+   the row already has WhatsApp, so the phone control becomes a marker. */
+var CALL_WIZ = '<a class="btn btn-call" id="wizCall" data-pg-loc="guide_call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
+/* The lab quote button carries data-pg-loc, so the exact CALL string misses it too. */
+var CALL_QUOTE = '<a class="btn btn-call" data-pg-loc="quote_call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 var CALL_HERO = '<a class="btn btn-call btn-hero" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>';
 var CALL_HOME = '<a class="btn btn-call" href="tel:+972525893366" aria-label="חייגו 052-5893366"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg>חייגו <span class="num" dir="ltr">052-5893366</span></a>';
 var CALL_IC = '<a class="ic" href="tel:+972525893366" aria-label="טלפון"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></a>';
@@ -116,6 +122,8 @@ function swapRe(s, re, to) {
 function towardOff(s, file, filePath) {
   s = swapRe(s, /<a class="btn btn-call" href="tel:\+972525893366" aria-label="חייגו 052-5893366">[\s\S]*?<\/a>/g, '<!--pg-call-home-->');
   s = swap(s, CALL_HERO, '<!--pg-call-hero-->');
+  s = swap(s, CALL_WIZ, '<!--pg-call-wiz-->');
+  s = swap(s, CALL_QUOTE, '<!--pg-call-quote-->');
   s = swap(s, CALL, '<!--pg-call-->');
   s = swap(s, REV_ON, offFor(filePath, REV_OFF, REV_OFF_BARE));
   s = swapRe(s, /<a class="ic" href="tel:\+972525893366" aria-label="טלפון">[\s\S]*?<\/a>/g, '<!--pg-call-ic-->');
@@ -135,6 +143,8 @@ function towardOff(s, file, filePath) {
 function towardOn(s, file) {
   s = swap(s, '<!--pg-call-home-->', CALL_HOME);
   s = swap(s, '<!--pg-call-hero-->', CALL_HERO);
+  s = swap(s, '<!--pg-call-wiz-->', CALL_WIZ);
+  s = swap(s, '<!--pg-call-quote-->', CALL_QUOTE);
   s = swap(s, '<!--pg-call-->', CALL);
   s = swap(s, '<!--pg-call-ic-->', CALL_IC);
   s = swap(s, '<!--pg-call-rail-->', CALL_RAIL);

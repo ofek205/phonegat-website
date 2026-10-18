@@ -1689,6 +1689,7 @@ html.a11y-stop-motion .troops *{animation:none}
 .wiz-field{display:block;margin-top:1rem;font-weight:700;font-size:1.05rem}
 .wiz-field input{display:block;width:100%;margin-top:.45rem;font:inherit;font-weight:400;font-size:1.15rem;line-height:1.4;padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:4px;min-height:48px;background:#fff;color:var(--ink-strong)}
 .wiz h2 bdi,.wiz-ask bdi,.wiz-body bdi{unicode-bidi:isolate}
+.wiz-code{white-space:nowrap}
 .steps a,.wiz-body a{color:var(--teal-d);text-decoration:underline;text-underline-offset:.15em;font-weight:600}
 html.pg-wiz .pathpick,html.pg-wiz .inner > .pathhint,html.pg-wiz #iphone,html.pg-wiz #android,html.pg-wiz #ask,html.pg-wiz #shot{display:none}
 html.pg-wiz #wiz #shot{display:block;border-top:0;padding:1.3rem 0 0}
@@ -1814,7 +1815,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <button type="button" class="btn btn-teal" data-brand="samsung">סמסונג</button>
             <button type="button" class="btn btn-teal" data-brand="xiaomi">שיאומי / רדמי</button>
             <button type="button" class="btn btn-teal" data-brand="android">אנדרואיד אחר</button>
-            <button type="button" class="btn btn-teal" data-brand="unknown">לא יודע/ת</button>
+            <button type="button" class="btn btn-teal" data-brand="unknown">לא יודעים</button>
           </div>
           <div class="wiz-nav" id="wizBrandNav" hidden>
             <button type="button" class="btn btn-back" id="wizBrandBack">חזרה</button>
@@ -1870,7 +1871,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ol class="steps" id="pgStepsAndroid">
       <li>פתחו בטלפון את "הגדרות", הסמל של גלגל השיניים.</li>
       <li>גללו ולחצו על השורה עם פרטי הטלפון. בסמסונג היא נקראת "אודות הטלפון". אם היא לא נראית מיד, גללו למטה עד שהיא מופיעה.</li>
-      <li data-pg-model>בשורה "שם הדגם" כתוב הדגם, למשל <bdi dir="ltr">Galaxy A56 5G.</bdi> השם שבראש המסך ניתן לשינוי.</li>
+      <li data-pg-model>בשורה "שם הדגם" כתוב הדגם, למשל <bdi dir="ltr">Galaxy A56 5G</bdi>. השם שבראש המסך ניתן לשינוי.</li>
       <li data-pg-final>כתבו לנו את השם, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
     <p class="enline">בטלפון סמסונג ישן לוחצים גם על "סטאטוס". בשיאומי, ברדמי ובפוקו פותחים את ההגדרות ומחפשים את השורה עם פרטי הטלפון. במכשיר באנגלית היא נקראת <bdi dir="ltr">About phone</bdi>.</p>
@@ -2490,6 +2491,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
   var lead=document.getElementById('wizFinalLead');
   var finalInput=document.getElementById('wizFinalInput');
   var wa=document.getElementById('wizWa');
+  var callBtn=document.getElementById('wizCall');
   var pos=document.getElementById('wizPos');
   var bar=document.getElementById('wizBar');
   var fill=document.getElementById('wizBarFill');
@@ -2570,11 +2572,17 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     return {walk:walk,fin:fin,note:en?en.innerHTML:''};
   }
   var packs={iphone:readPack('pgStepsIphone'),android:readPack('pgStepsAndroid')};
-  function setWa(model){
+  /* הקישור נשאר בלי ?text=. המדידה קוראת את a.href בשלב הלכידה, ואם הדגם
+     כבר יושב בכתובת הוא נכנס ל-dataLayer. הטקסט מתווסף רק בלחיצה, אחריה. */
+  function waText(model){
     var m=clean(model);
-    var msg=m?('היי, הדגם שלי הוא '+m+'. מצרף/ת צילום מסך מההגדרות.'):'היי, לא מצאתי את שם הדגם. מצרף/ת צילום מסך מההגדרות.';
-    var base=(wa.getAttribute('href')||'').split('?')[0];
-    wa.href=base+'?text='+encodeURIComponent(msg);
+    return m?('היי, הדגם שלי הוא '+m+'.'):'היי, לא מצאתי את שם הדגם. מצרף/ת צילום מסך מההגדרות.';
+  }
+  function setWa(model){
+    state.waMsg=waText(model);
+    var href=wa.getAttribute('href')||'';
+    var q=href.indexOf('?');
+    if(q>=0) wa.setAttribute('href', href.slice(0,q));
   }
   function mountShot(on){
     if(!shot)return;
@@ -2586,9 +2594,14 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     askText.appendChild(document.createTextNode('נראה שהטלפון שלכם הוא '));
     var bdi=document.createElement('bdi');
     bdi.dir='ltr';
-    bdi.textContent=labelFor(code)+'.';
+    var name=SM[code];
+    if(name) bdi.appendChild(document.createTextNode(name+' '));
+    var codeEl=document.createElement('span');
+    codeEl.className='wiz-code';
+    codeEl.textContent=name?('('+code+')'):code;
+    bdi.appendChild(codeEl);
     askText.appendChild(bdi);
-    askText.appendChild(document.createTextNode(' נכון?'));
+    askText.appendChild(document.createTextNode('. נכון?'));
   }
   function render(opts){
     opts=opts||{};
@@ -2638,13 +2651,21 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
       mountShot(true);
     }
     if(mode!=='final')mountShot(false);
-    if(mode!=='step')hint.hidden=true;
+    if(mode==='brands'){
+      hint.hidden=!state.hint;
+      if(!hint.hidden)hint.textContent=state.hint;
+    }else if(mode!=='step')hint.hidden=true;
+    /* פוקוס על הכותרת כבר מקריא אותה. העתקה ל-aria-live מקריאה פעם שנייה. */
     if(opts.focus)head.focus();
-    if(opts.announce)live.textContent=(pos.hidden?'':pos.textContent+', ')+head.textContent;
+    else if(opts.announce){
+      var leadIn=(!hint.hidden&&hint.textContent)?(hint.textContent+' '):'';
+      live.textContent=leadIn+(pos.hidden?'':pos.textContent+', ')+head.textContent;
+    }
   }
   function showBrands(opts){
+    opts=opts||{};
     state.mode='brands';
-    state.hint='';
+    if(!opts.keepHint)state.hint='';
     render(opts);
   }
   function showDetect(code){
@@ -2753,6 +2774,15 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     state.model=clean(finalInput.value);
     setWa(state.model);
   });
+  wa.addEventListener('click',function(e){
+    e.preventDefault();
+    var base=(wa.getAttribute('href')||'').split('?')[0];
+    location.assign(base+'?text='+encodeURIComponent(state.waMsg||waText('')));
+  });
+  if(callBtn&&window.PG_PHONE_CALLS_ENABLED!==true){
+    callBtn.removeAttribute('href');
+    callBtn.hidden=true;
+  }
   document.documentElement.classList.add('pg-wiz');
   wiz.hidden=false;
   setWa('');
@@ -2762,14 +2792,14 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     state.locked=true;
     fireDetect(false);
     openBrand('iphone',{silent:true,focus:false,announce:true});
-  }else if(hash==='#android'){
-    state.locked=true;
-    fireDetect(false);
-    showBrands({announce:true});
-  }else if(apple){
+  }else if(apple==='ipad'){
+    fireDetect(true);
+    state.hint='זיהינו אייפד. את שם הדגם רואים בהגדרות.';
+    showBrands({announce:true,keepHint:true});
+  }else if(apple==='iphone'){
     state.locked=true;
     fireDetect(true);
-    openBrand('iphone',{silent:true,announce:true,hint:apple==='ipad'?'זיהינו אייפד. את הדגם המדויק רואים רק בהגדרות.':'זיהינו אייפון. את הדגם המדויק רואים רק בהגדרות.'});
+    openBrand('iphone',{silent:true,announce:true,hint:'זיהינו אייפון. את הדגם המדויק רואים רק בהגדרות.'});
   }else{
     showBrands();
     var uad=navigator.userAgentData;
