@@ -5595,7 +5595,8 @@
         "model_numbers": "SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2033"
-      }
+      },
+      "by_order": true
     }
   ],
   "comparePages": [

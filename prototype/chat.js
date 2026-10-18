@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:b7982e4261dbe5ea */
+/* sha1:8111d9d7de29ed1c */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -1018,7 +1018,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var p=buyParts(),sum=p.length?('רשמתי לפניי:\n• '+p.join('\n• ')+'\n'):'';
     track('chat_buy',{device:safeVal(ctx.brand||'המלצה',['אייפון','סמסונג','שיאומי','המלצה']),model:ctx.model?catalogName(ctx.model):'',storage:safeVal(ctx.storage||'',STORAGE_SEEN),imp:safeVal(ctx.imp||'',IMPORT_VALS)});
     /* "הכול בתשלומים, כולל העברת נתונים ואבזור" נקרא כהבטחה שהאבזור כלול במחיר, וזה לא
-       מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו. */
+       מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו.
+       דגם by_order אינו על המדף. בבועה שלו אין תשלומים ואין העברת נתונים, ואין את הצ'יפים. */
+    var d=factsBySlug(ctx.slug);
+    if(d&&d.by_order){
+      /* בלי צ'יפים חדשים suggestChips לא רץ, והצ'יפים של שלב היבוא נשארים לחיצים. */
+      if(lastSugBox&&lastSugBox.children){
+        for(var si=0;si<lastSugBox.children.length;si++){
+          lastSugBox.children[si].disabled=true;
+          lastSugBox.children[si].setAttribute('tabindex','-1');
+        }
+      }
+      botReply(sum+'הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.\n'+hoursLine(),{cta:contactCta(),waText:buyWa()});
+      return;
+    }
     botReply(sum+'אפשר בתשלומים, ואנחנו מעבירים את הנתונים מהמכשיר הישן. דברו איתנו ונגיד לכם מחיר.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}]]});
   }
 
