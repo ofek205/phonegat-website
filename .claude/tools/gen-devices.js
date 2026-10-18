@@ -80,6 +80,8 @@ function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
  * כך "6.7", "5.3" ו-"iOS 26.1" נשארים שלמים. בסוף משפט ("iOS 26.1.") הנקודה הסוגרת
  * היא זו שאחרי הספרה האחרונה, לא זו שבתוך הגרסה.
  * קיצור לטיני (e.g., Dr., U.S.) גם הוא לא סוגר: אחריו בא רווח בלי שהמשפט נגמר.
+ * אות בודדת היא קיצור רק כשלפניה אין ספרה או מקף. "5G.", "45W.", "5x.", "4K.",
+ * "USB-C." ו-"IP69K." כן סוגרים משפט, כי האות היא יחידה ולא ראשי תיבות.
  * בסוף המחרוזת הנקודה כן סוגרת, גם אחרי קיצור, כדי שלא נדביק נקודה שנייה. */
 var SENTENCE_ABBR = { 'e.g': 1, 'i.e': 1, 'etc': 1, 'vs': 1, 'mr': 1, 'mrs': 1, 'ms': 1,
   'dr': 1, 'prof': 1, 'sr': 1, 'jr': 1, 'st': 1, 'no': 1, 'fig': 1, 'vol': 1,
@@ -97,7 +99,8 @@ function firstSentence(s) {
     if (next !== '' && !/\s/.test(next)) continue;
     if (next !== '') {
       word = (s.slice(0, i).match(/[A-Za-z]+$/) || [''])[0];
-      if (word.length === 1 || SENTENCE_ABBR[word.toLowerCase()]) continue;
+      /* אות בודדת אחרי ספרה או מקף היא יחידה (5G, 4K, USB-C), לא קיצור כמו U.S. */
+      if ((word.length === 1 && !/[\d-]/.test(s.charAt(i - 2))) || SENTENCE_ABBR[word.toLowerCase()]) continue;
     }
     return s.slice(0, i + 1);
   }
@@ -116,7 +119,13 @@ function assertSentenceSplitter() {
     ['משפט רגיל. משפט שני.', 'משפט רגיל.'],
     ['Dr. Smith said hello. Then he left.', 'Dr. Smith said hello.'],
     ['U.S. model only. Next sentence.', 'U.S. model only.'],
-    ['see etc.', 'see etc.']
+    ['see etc.', 'see etc.'],
+    ['תומכים ב-5G. ההבדל', 'תומכים ב-5G.'],
+    ['טעינה של 45W. השני', 'טעינה של 45W.'],
+    ['זום שמגיע ל-5x. השני', 'זום שמגיע ל-5x.'],
+    ['הקלטה ב-4K. אחר כך', 'הקלטה ב-4K.'],
+    ['דירוג IP69K. השני', 'דירוג IP69K.'],
+    ['חיבור USB-C. אבל', 'חיבור USB-C.']
   ];
   cases.forEach(function (c) {
     var got = firstSentence(c[0]);
@@ -126,9 +135,18 @@ function assertSentenceSplitter() {
     }
   });
   ['devices.json', 'headphones.json', 'watches.json'].forEach(function (file) {
+    var pth = path.join(PROTO, file), raw;
+    try { raw = fs.readFileSync(pth, 'utf8'); }
+    catch (e) {
+      console.error('✗ ' + file + ': הקובץ חסר, ובדיקת המשפט הראשון לא מדלגת: ' + e.message);
+      process.exit(1);
+    }
     var j;
-    try { j = JSON.parse(fs.readFileSync(path.join(PROTO, file), 'utf8')); }
-    catch (e) { return; }
+    try { j = JSON.parse(raw); }
+    catch (e) {
+      console.error('✗ ' + file + ': JSON לא תקין, ובדיקת המשפט הראשון לא מדלגת: ' + e.message);
+      process.exit(1);
+    }
     ((j._comparisons || {}).pairs || []).forEach(function (p) {
       if (!p.lede) return;
       var got = firstSentence(p.lede);
@@ -140,6 +158,12 @@ function assertSentenceSplitter() {
       var at = bare.length;
       if (p.lede.charAt(at) === '.' && /\d/.test(p.lede.charAt(at - 1)) && /\d/.test(p.lede.charAt(at + 1))) {
         console.error('✗ ' + (p.slug || file) + ': החיתוך נפל על נקודה עשרונית: ' + got);
+        process.exit(1);
+      }
+      /* כרטיס שממשיך מעבר לנקודה אל אות עברית הוא המשפט הבא, לא המשפט הראשון.
+         "5G. ההבדל" היה עובר כאן כשהאות הבודדת נחשבה קיצור. */
+      if (/\. [\u05D0-\u05EA]/.test(got)) {
+        console.error('✗ ' + (p.slug || file) + ': הכרטיס ממשיך אחרי נקודה ורווח לאות עברית: ' + got);
         process.exit(1);
       }
     });
