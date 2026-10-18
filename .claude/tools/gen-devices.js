@@ -781,6 +781,16 @@ function writeDevicePage(d, K) {
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
   h = h.slice(0, mS) + buildMain(d, openTag, K) + h.slice(mE);
 
+  /* המסגרת נלקחת ממדריך שנושא את קרוסלת המבצעים מחוץ ל-<main>. בדגם by_order
+     הקרוסלה לא עולה: היא מדברת על תשלומים והעברת נתונים בקנייה מהחנות.
+     בלי ההסרה כאן, ה-CSS וה-JS שלה נשארים בעמוד אחרי שה-<main> הוחלף.
+     דגם על המדף לא נוגעים בו. add-deals.js מחזיר לו את הקרוסלה אחרי החילול. */
+  if (d.commercial && d.commercial.by_order && !d.commercial.not_in_store) {
+    ['css', 'section', 'js'].forEach(function (name) {
+      h = h.replace(new RegExp('[ \\t]*<!-- pg-deals:' + name + ':start[\\s\\S]*?pg-deals:' + name + ':end -->[ \\t]*(?:\\r?\\n){0,2}', 'g'), '');
+    });
+  }
+
   var out = path.join(PROTO, K.base, d.slug, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, h);
