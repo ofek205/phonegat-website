@@ -1665,6 +1665,43 @@ html.a11y-stop-motion .troops *{animation:none}
 .fold li{margin:.4rem 0;line-height:1.75}
 .fold p{margin:0 0 1rem;line-height:1.8;max-width:64ch}
 .cta .row .btn{white-space:normal;text-align:center}
+/* Which-phone wizard. Hidden until JS adds html.pg-wiz. Without JS the static
+   guide below stays as it is. [hidden] must win over display:grid. */
+.wiz[hidden],.wiz [hidden]{display:none !important}
+.wiz{width:100%;max-width:40rem;margin:1.8rem auto 0;text-align:start}
+.wiz h2{font-size:clamp(1.28rem,3.2vw,1.7rem);line-height:1.4;font-weight:800;text-align:start;max-width:none;scroll-margin-top:calc(var(--pg-test-h,0px) + 4.75rem)}
+.wiz-pos{margin:.7rem 0 0;font-family:var(--mono);font-size:1rem;color:var(--teal)}
+.wiz-bar{height:4px;background:var(--line);margin-top:.45rem}
+.wiz-bar > span{display:block;height:100%;background:var(--teal);width:0}
+.wiz-ask{margin-top:1rem;padding:1.05rem 0;border-block:1px solid var(--ink-strong);border-block-start-width:3px;font-size:1.15rem;line-height:1.7}
+.wiz-body{margin-top:.9rem;font-size:1.12rem;line-height:1.75}
+.wiz .enline{margin-top:.9rem}
+.wiz .pathhint{text-align:start;margin:.85rem 0 0}
+.wiz-brands{display:grid;gap:.7rem;margin-top:1.15rem}
+.wiz .btn{white-space:normal;text-align:center;min-height:48px}
+.wiz-brands .btn{font-size:1.12rem;padding:14px 16px;min-height:56px}
+.wiz-nav,.wiz-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.15rem}
+.wiz-nav .btn,.wiz-actions .btn{flex:1 1 12rem}
+.wiz .btn-back{background:transparent;color:var(--ink-strong);border:1.5px solid var(--line)}
+.wiz .btn-back:hover{border-color:var(--ink-strong)}
+.wiz .btn-call{background:transparent;color:var(--teal-d);border:1.5px solid var(--teal)}
+.wiz .btn-call:hover{background:var(--teal);color:#fff}
+.wiz-field{display:block;margin-top:1rem;font-weight:700;font-size:1.05rem}
+.wiz-field input{display:block;width:100%;margin-top:.45rem;font:inherit;font-weight:400;font-size:1.15rem;line-height:1.4;padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:4px;min-height:48px;background:#fff;color:var(--ink-strong)}
+.wiz h2 bdi,.wiz-ask bdi,.wiz-body bdi{unicode-bidi:isolate}
+.steps a,.wiz-body a{color:var(--teal-d);text-decoration:underline;text-underline-offset:.15em;font-weight:600}
+html.pg-wiz .pathpick,html.pg-wiz .inner > .pathhint,html.pg-wiz #iphone,html.pg-wiz #android,html.pg-wiz #ask,html.pg-wiz #shot{display:none}
+html.pg-wiz #wiz #shot{display:block;border-top:0;padding:1.3rem 0 0}
+html.pg-wiz #wiz #shot .box{max-width:none}
+html.pg-wiz #wiz #shot h2{font-size:clamp(1.28rem,3.2vw,1.7rem);max-width:none}
+@media(min-width:800px){
+  .wiz-brands{grid-template-columns:1fr 1fr}
+  .wiz-brands .btn:last-child{grid-column:1 / -1}
+}
+@media (prefers-reduced-motion:reduce){
+  .wiz .btn{transition:none}
+}
+html.a11y-stop-motion .wiz .btn{transition:none}
 </style>
 </head>
 <body>
@@ -1746,7 +1783,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="inner">
       <h1 id="gh">איזה טלפון יש לי? בודקים בדקה, בטלפון עצמו</h1>
-      <p class="sub">את שם הטלפון רואים בהגדרות של הטלפון שלכם. <b>לא צריך לצלם את העמוד הזה.</b> פותחים את ההגדרות בטלפון, מוצאים את השורה עם שם הדגם, וכותבים לנו אותו, או שולחים צילום של מסך ההגדרות שבו הוא כתוב.</p>
+      <p class="sub">את שם הדגם רואים בהגדרות של הטלפון שלכם. <b>לא צריך לצלם את העמוד הזה.</b> פותחים את ההגדרות בטלפון, מוצאים את השורה עם שם הדגם, וכותבים לנו אותו, או שולחים צילום של מסך ההגדרות שבו הוא כתוב.</p>
       <div class="pathpick" role="group" aria-label="איזה טלפון יש לכם">
         <a class="btn btn-teal" href="#iphone">יש לי אייפון</a>
         <a class="btn btn-teal" href="#android">יש לי סמסונג, שיאומי או אנדרואיד אחר</a>
@@ -1758,6 +1795,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span>הנתיבים לפי היצרן</span>
         <span>אבחון ללא עלות</span>
       </p>
+<div class="wiz" id="wiz" hidden>
+        <p class="pathhint" id="wizHint" hidden></p>
+        <p class="wiz-pos" id="wizPos" hidden></p>
+        <div class="wiz-bar" id="wizBar" hidden><span id="wizBarFill"></span></div>
+        <h2 id="wizHead" tabindex="-1">בחרו את סוג הטלפון</h2>
+        <div id="wizLive" class="a11y-sr" aria-live="polite" aria-atomic="true"></div>
+        <div class="wiz-ask" id="wizAsk" hidden>
+          <p id="wizAskText"></p>
+          <div class="wiz-nav">
+            <button type="button" class="btn btn-teal" id="wizYes">כן, זה הדגם</button>
+            <button type="button" class="btn btn-back" id="wizNo">לא, זה לא הוא</button>
+          </div>
+        </div>
+        <div id="wizBrands" hidden>
+          <div class="wiz-brands" role="group" aria-label="סוג הטלפון">
+            <button type="button" class="btn btn-teal" data-brand="iphone">אייפון</button>
+            <button type="button" class="btn btn-teal" data-brand="samsung">סמסונג</button>
+            <button type="button" class="btn btn-teal" data-brand="xiaomi">שיאומי / רדמי</button>
+            <button type="button" class="btn btn-teal" data-brand="android">אנדרואיד אחר</button>
+            <button type="button" class="btn btn-teal" data-brand="unknown">לא יודע/ת</button>
+          </div>
+          <div class="wiz-nav" id="wizBrandNav" hidden>
+            <button type="button" class="btn btn-back" id="wizBrandBack">חזרה</button>
+          </div>
+        </div>
+        <div id="wizStep" hidden>
+          <p class="enline" id="wizNote" hidden></p>
+          <label class="wiz-field" id="wizStepField" hidden>השם שכתוב אצלכם
+            <input id="wizStepInput" type="text" dir="auto" maxlength="80" autocomplete="off" spellcheck="false" enterkeyhint="done">
+          </label>
+          <div class="wiz-nav">
+            <button type="button" class="btn btn-back" id="wizBack">חזרה</button>
+            <button type="button" class="btn btn-teal" id="wizFound" hidden>מצאתי את הדגם</button>
+            <button type="button" class="btn btn-teal" id="wizNext">השלב הבא</button>
+          </div>
+        </div>
+        <div id="wizFinal" hidden>
+          <div class="wiz-body" id="wizFinalLead" hidden></div>
+          <label class="wiz-field">הדגם שיופיע בהודעה
+            <input id="wizFinalInput" type="text" dir="auto" maxlength="80" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="wiz-actions">
+            <a class="btn btn-wa" id="wizWa" data-pg-loc="guide_wa" href="https://wa.me/97286812050"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שליחה ב-WhatsApp</a>
+            <a class="btn btn-call" id="wizCall" data-pg-loc="guide_call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
+          </div>
+          <div class="wiz-nav">
+            <button type="button" class="btn btn-back" id="wizFinalBack">חזרה</button>
+          </div>
+          <div id="wizShotSlot"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1765,12 +1853,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" id="iphone" aria-labelledby="h-iphone">
   <div class="wrap box">
     <h2 id="h-iphone">יש לי אייפון</h2>
-    <ol class="steps">
+    <ol class="steps" id="pgStepsIphone">
       <li>צאו מהאתר ופתחו בטלפון את "הגדרות". זה הסמל האפור עם גלגל השיניים.</li>
       <li>גללו קצת למטה ולחצו על "כללי".</li>
       <li>לחצו על "מידע". זו השורה הראשונה.</li>
-      <li>בשורה של שם הדגם כתוב איזה אייפון יש לכם, למשל <bdi dir="ltr">iPhone 15</bdi>.</li>
-      <li>כתבו לנו את השם הזה ב-WhatsApp, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
+      <li data-pg-model>בשורה של שם הדגם כתוב איזה אייפון יש לכם, למשל <bdi dir="ltr">iPhone 15</bdi>.</li>
+      <li data-pg-final>כתבו לנו את השם הזה ב-WhatsApp, או <a href="#shot">צלמו את מסך ההגדרות</a> שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
     <p class="enline">אם הטלפון שלכם באנגלית: <bdi dir="ltr">Settings</bdi>, ואז <bdi dir="ltr">General</bdi>, ואז <bdi dir="ltr">About</bdi>.</p>
   </div>
@@ -1779,18 +1867,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="block" id="android" aria-labelledby="h-android">
   <div class="wrap box">
     <h2 id="h-android">יש לי סמסונג, שיאומי או אנדרואיד אחר</h2>
-    <ol class="steps">
+    <ol class="steps" id="pgStepsAndroid">
       <li>פתחו בטלפון את "הגדרות", הסמל של גלגל השיניים.</li>
       <li>גללו ולחצו על השורה עם פרטי הטלפון. בסמסונג היא נקראת "אודות הטלפון". אם היא לא נראית מיד, גללו למטה עד שהיא מופיעה.</li>
-      <li>בראש המסך כתוב שם הטלפון, למשל <bdi dir="ltr">Galaxy A56 5G</bdi>.</li>
-      <li>כתבו לנו את השם, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
+      <li data-pg-model>בשורה "שם הדגם" כתוב הדגם, למשל <bdi dir="ltr">Galaxy A56 5G.</bdi> השם שבראש המסך ניתן לשינוי.</li>
+      <li data-pg-final>כתבו לנו את השם, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
     <p class="enline">בטלפון סמסונג ישן לוחצים גם על "סטאטוס". בשיאומי, ברדמי ובפוקו פותחים את ההגדרות ומחפשים את השורה עם פרטי הטלפון. במכשיר באנגלית היא נקראת <bdi dir="ltr">About phone</bdi>.</p>
   </div>
 </section>
 
-<section class="block" id="shot" aria-label="צילום מסך ההגדרות">
+<section class="block" id="shot" aria-labelledby="h-shot">
   <div class="wrap box">
+    <h2 id="h-shot">צילום מסך ההגדרות</h2>
     <p class="warn"><b>שימו לב:</b> אנחנו צריכים צילום של מסך ההגדרות בטלפון שלכם, לא צילום של האתר.</p>
     <!-- pg-model-shots: מקום לצילום נכון מול צילום שגוי.
          ימין, כיתוב נכון: מסך מידע באייפון בעברית, עם עיגול סביב שם הדגם.
@@ -1805,7 +1894,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li>סמסונג: לוחצים לחיצה קצרה יחד על הכפתור בצד ועל כפתור הנמכת הקול.</li>
       </ul>
     </details>
-    <p class="enline">לא מסתדרים? אין בעיה. כתבו לנו 'יש לי אייפון' או 'יש לי סמסונג' ואת צבע הטלפון, או קפצו לחנות ונבדוק לכם.</p>
+    <p class="enline">לא מסתדרים? אין בעיה. כתבו לנו "יש לי אייפון", "יש לי סמסונג", "יש לי שיאומי" או "יש לי אנדרואיד אחר", ואת צבע הטלפון, או קפצו לחנות ונבדוק לכם.</p>
   </div>
 </section>
 
@@ -2375,6 +2464,334 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     probs.forEach(function(p){io.observe(p);});
   }
 
+})();
+</script>
+<script>
+/* Which-phone wizard. Progressive enhancement: html.pg-wiz hides the static
+   paths, and with JS off those paths stay on the page. Detection stays in the
+   browser. The model string is written only into this visitor's WhatsApp
+   prefill, never into dataLayer. */
+(function(){
+  var wiz=document.getElementById('wiz');
+  if(!wiz)return;
+  var head=document.getElementById('wizHead');
+  var live=document.getElementById('wizLive');
+  var ask=document.getElementById('wizAsk');
+  var askText=document.getElementById('wizAskText');
+  var brands=document.getElementById('wizBrands');
+  var brandNav=document.getElementById('wizBrandNav');
+  var stepEl=document.getElementById('wizStep');
+  var hint=document.getElementById('wizHint');
+  var note=document.getElementById('wizNote');
+  var field=document.getElementById('wizStepField');
+  var stepInput=document.getElementById('wizStepInput');
+  var foundBtn=document.getElementById('wizFound');
+  var fin=document.getElementById('wizFinal');
+  var lead=document.getElementById('wizFinalLead');
+  var finalInput=document.getElementById('wizFinalInput');
+  var wa=document.getElementById('wizWa');
+  var pos=document.getElementById('wizPos');
+  var bar=document.getElementById('wizBar');
+  var fill=document.getElementById('wizBarFill');
+  var slot=document.getElementById('wizShotSlot');
+  var shot=document.getElementById('shot');
+  var shotParent=shot.parentNode, shotNext=shot.nextSibling;
+  /* Friendly names only where devices.json assigns one SM- code to one model.
+     S26 and S26+ share a spec page that does not say which code is which, so
+     those codes stay as codes. */
+  var SM={
+    'SM-S948B':'Galaxy S26 Ultra',
+    'SM-A566B':'Galaxy A56 5G',
+    'SM-A366B':'Galaxy A36 5G',
+    'SM-A576B':'Galaxy A57 5G',
+    'SM-A376B':'Galaxy A37 5G',
+    'SM-A175F':'Galaxy A17',
+    'SM-A176B':'Galaxy A17',
+    'SM-S731B':'Galaxy S25 FE',
+    'SM-A276B':'Galaxy A27 5G',
+    'SM-A075F':'Galaxy A07'
+  };
+  var state={mode:'brands',brand:'',step:0,pack:null,model:'',code:'',from:'',hint:'',hadDetect:false,locked:false,detectFired:false};
+  function track(ev,extra){
+    var o={event_category:'engagement',page_path:location.pathname};
+    if(extra)for(var k in extra)o[k]=extra[k];
+    if(typeof pgTrack==='function')pgTrack(ev,o);
+  }
+  function fireDetect(yes){
+    if(state.detectFired)return;
+    state.detectFired=true;
+    track('guide_detect',{detected:yes?'yes':'no'});
+  }
+  function clean(s){
+    return String(s||'').replace(/[\u0000-\u001f]/g,' ').replace(/\s+/g,' ').trim().slice(0,80);
+  }
+  function isCode(s){
+    return /^SM-[A-Z0-9]{4,}$/.test(s)||/^\d{4}[A-Z][A-Z0-9]{3,}$/i.test(s);
+  }
+  function normCode(s){
+    s=String(s||'').trim().replace(/\/(DS|DSN)$/i,'');
+    if(/^sm-/i.test(s))s=s.toUpperCase();
+    return s;
+  }
+  function extractCode(raw){
+    var s=String(raw||'').trim();
+    if(!s)return '';
+    var n=normCode(s);
+    if(isCode(n))return n;
+    var m=s.match(/SM-[A-Z0-9]+/i);
+    if(m&&isCode(normCode(m[0])))return normCode(m[0]);
+    m=s.match(/\d{4}[A-Z][A-Z0-9]{3,}/i);
+    if(m&&isCode(m[0]))return m[0];
+    return '';
+  }
+  function codeFromUA(ua){
+    return extractCode(ua);
+  }
+  function labelFor(code){
+    var name=SM[code];
+    return name?(name+' ('+code+')'):code;
+  }
+  function appleKind(){
+    var ua=navigator.userAgent||'', plat='';
+    try{plat=(navigator.userAgentData&&navigator.userAgentData.platform)||'';}catch(e){}
+    if(/iPad/.test(ua))return 'ipad';
+    if(/iPhone|iPod/.test(ua))return 'iphone';
+    if(plat==='iOS')return /Macintosh|iPad/.test(ua)?'ipad':'iphone';
+    if(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)return 'ipad';
+    return '';
+  }
+  function readPack(id){
+    var ol=document.getElementById(id), walk=[], fin='';
+    [].forEach.call(ol.children,function(li){
+      if(li.hasAttribute('data-pg-final'))fin=li.innerHTML;
+      else walk.push({html:li.innerHTML,model:li.hasAttribute('data-pg-model')});
+    });
+    var en=ol.parentNode.querySelector('.enline');
+    return {walk:walk,fin:fin,note:en?en.innerHTML:''};
+  }
+  var packs={iphone:readPack('pgStepsIphone'),android:readPack('pgStepsAndroid')};
+  function setWa(model){
+    var m=clean(model);
+    var msg=m?('היי, הדגם שלי הוא '+m+'. מצרף/ת צילום מסך מההגדרות.'):'היי, לא מצאתי את שם הדגם. מצרף/ת צילום מסך מההגדרות.';
+    var base=(wa.getAttribute('href')||'').split('?')[0];
+    wa.href=base+'?text='+encodeURIComponent(msg);
+  }
+  function mountShot(on){
+    if(!shot)return;
+    if(on){if(shot.parentNode!==slot)slot.appendChild(shot);}
+    else if(shot.parentNode!==shotParent)shotParent.insertBefore(shot,shotNext);
+  }
+  function fillAsk(code){
+    askText.textContent='';
+    askText.appendChild(document.createTextNode('נראה שהטלפון שלכם הוא '));
+    var bdi=document.createElement('bdi');
+    bdi.dir='ltr';
+    bdi.textContent=labelFor(code)+'.';
+    askText.appendChild(bdi);
+    askText.appendChild(document.createTextNode(' נכון?'));
+  }
+  function render(opts){
+    opts=opts||{};
+    var mode=state.mode;
+    ask.hidden=mode!=='detect';
+    brands.hidden=mode!=='brands';
+    stepEl.hidden=mode!=='step';
+    fin.hidden=mode!=='final';
+    brandNav.hidden=!(mode==='brands'&&state.hadDetect);
+    var showBar=mode==='step'||(mode==='final'&&state.pack);
+    pos.hidden=!showBar;
+    bar.hidden=!showBar;
+    if(showBar){
+      var total=state.pack.walk.length+1;
+      var at=mode==='final'?total:(state.step+1);
+      var label='שלב '+at+' מתוך '+total;
+      pos.textContent=label;
+      fill.style.width=Math.round(100*at/total)+'%';
+      bar.setAttribute('role','progressbar');
+      bar.setAttribute('aria-valuemin','1');
+      bar.setAttribute('aria-valuemax',String(total));
+      bar.setAttribute('aria-valuenow',String(at));
+      bar.setAttribute('aria-valuetext',label);
+    }
+    if(mode==='detect')head.textContent='זיהוי הטלפון';
+    else if(mode==='brands')head.textContent='בחרו את סוג הטלפון';
+    else if(mode==='step'){
+      var st=state.pack.walk[state.step];
+      head.innerHTML=st.html;
+      var noteAt=state.brand==='iphone'?0:1;
+      var showNote=state.step===noteAt&&!!state.pack.note;
+      note.hidden=!showNote;
+      if(showNote)note.innerHTML=state.pack.note;
+      hint.hidden=!(state.step===0&&state.hint);
+      if(!hint.hidden)hint.textContent=state.hint;
+      field.hidden=!st.model;
+      foundBtn.hidden=!st.model;
+      if(st.model&&state.model&&!clean(stepInput.value))stepInput.value=state.model;
+      if(opts.trackStep)track('guide_step',{step_index:state.step+1,brand:state.brand});
+    }else if(mode==='final'){
+      head.textContent=state.brand==='unknown'?'לא מצאתם את שם הדגם':'שולחים את שם הדגם';
+      var showLead=state.brand!=='unknown'&&state.pack&&state.pack.fin;
+      lead.hidden=!showLead;
+      if(showLead)lead.innerHTML=state.pack.fin;
+      if(!clean(finalInput.value)&&state.model)finalInput.value=state.model;
+      setWa(finalInput.value);
+      mountShot(true);
+    }
+    if(mode!=='final')mountShot(false);
+    if(mode!=='step')hint.hidden=true;
+    if(opts.focus)head.focus();
+    if(opts.announce)live.textContent=(pos.hidden?'':pos.textContent+', ')+head.textContent;
+  }
+  function showBrands(opts){
+    state.mode='brands';
+    state.hint='';
+    render(opts);
+  }
+  function showDetect(code){
+    if(state.locked)return;
+    state.hadDetect=true;
+    state.code=code;
+    state.mode='detect';
+    fillAsk(code);
+    fireDetect(true);
+    render({announce:true});
+  }
+  function goFinal(opts){
+    state.mode='final';
+    state.locked=true;
+    render({focus:!(opts&&opts.nofocus),announce:true});
+  }
+  function openBrand(brand,opts){
+    opts=opts||{};
+    state.locked=true;
+    state.brand=brand;
+    if(!opts.silent)track('guide_brand',{brand:brand});
+    if(brand==='unknown'){
+      state.pack=null;
+      state.model='';
+      state.from='unknown';
+      finalInput.value='';
+      goFinal(opts);
+      return;
+    }
+    state.pack=brand==='iphone'?packs.iphone:packs.android;
+    state.step=0;
+    state.from='steps';
+    state.hint=opts.hint||'';
+    state.mode='step';
+    render({focus:!!opts.focus,announce:opts.announce!==false,trackStep:true});
+  }
+  function keepTyped(){
+    var typed=clean(stepInput.value);
+    if(typed)state.model=typed;
+  }
+  document.getElementById('wizYes').addEventListener('click',function(){
+    state.locked=true;
+    state.model=labelFor(state.code);
+    state.brand=/^SM-/.test(state.code)?'samsung':'android';
+    state.pack=packs.android;
+    state.from='detect';
+    finalInput.value=state.model;
+    track('guide_found',{brand:state.brand,source:'detect'});
+    goFinal();
+  });
+  document.getElementById('wizNo').addEventListener('click',function(){
+    state.locked=true;
+    state.model='';
+    showBrands({focus:true,announce:true});
+  });
+  brands.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-brand]');
+    if(!b)return;
+    openBrand(b.getAttribute('data-brand'),{focus:true});
+  });
+  document.getElementById('wizBrandBack').addEventListener('click',function(){
+    if(!state.code)return;
+    state.mode='detect';
+    fillAsk(state.code);
+    render({focus:true,announce:true});
+  });
+  document.getElementById('wizBack').addEventListener('click',function(){
+    if(state.step>0){state.step--;render({focus:true,announce:true,trackStep:true});}
+    else showBrands({focus:true,announce:true});
+  });
+  document.getElementById('wizNext').addEventListener('click',function(){
+    keepTyped();
+    if(state.step<state.pack.walk.length-1){
+      state.step++;
+      render({focus:true,announce:true,trackStep:true});
+    }else{
+      state.from='steps';
+      finalInput.value=state.model||'';
+      goFinal();
+    }
+  });
+  foundBtn.addEventListener('click',function(){
+    keepTyped();
+    track('guide_found',{brand:state.brand,source:'step'});
+    state.from='steps';
+    finalInput.value=state.model||'';
+    goFinal();
+  });
+  document.getElementById('wizFinalBack').addEventListener('click',function(){
+    if(state.from==='detect'&&state.code){
+      state.mode='detect';
+      fillAsk(state.code);
+      render({focus:true,announce:true});
+    }else if(state.from==='steps'&&state.pack){
+      state.mode='step';
+      state.step=state.pack.walk.length-1;
+      render({focus:true,announce:true,trackStep:true});
+    }else showBrands({focus:true,announce:true});
+  });
+  stepInput.addEventListener('keydown',function(e){
+    if(e.key!=='Enter')return;
+    e.preventDefault();
+    if(!foundBtn.hidden)foundBtn.click();
+  });
+  finalInput.addEventListener('input',function(){
+    state.model=clean(finalInput.value);
+    setWa(state.model);
+  });
+  document.documentElement.classList.add('pg-wiz');
+  wiz.hidden=false;
+  setWa('');
+  var hash=location.hash;
+  var apple=appleKind();
+  if(hash==='#iphone'){
+    state.locked=true;
+    fireDetect(false);
+    openBrand('iphone',{silent:true,focus:false,announce:true});
+  }else if(hash==='#android'){
+    state.locked=true;
+    fireDetect(false);
+    showBrands({announce:true});
+  }else if(apple){
+    state.locked=true;
+    fireDetect(true);
+    openBrand('iphone',{silent:true,announce:true,hint:apple==='ipad'?'זיהינו אייפד. את הדגם המדויק רואים רק בהגדרות.':'זיהינו אייפון. את הדגם המדויק רואים רק בהגדרות.'});
+  }else{
+    showBrands();
+    var uad=navigator.userAgentData;
+    var settled=false;
+    function settle(code){
+      if(settled)return;
+      settled=true;
+      if(state.locked){fireDetect(!!code);return;}
+      if(code)showDetect(code);
+      else fireDetect(false);
+    }
+    if(uad&&typeof uad.getHighEntropyValues==='function'){
+      var timer=setTimeout(function(){settle(codeFromUA(navigator.userAgent));},1500);
+      uad.getHighEntropyValues(['model','platform','platformVersion']).then(function(v){
+        clearTimeout(timer);
+        settle(extractCode(v&&v.model)||codeFromUA(navigator.userAgent));
+      },function(){
+        clearTimeout(timer);
+        settle(codeFromUA(navigator.userAgent));
+      });
+    }else settle(codeFromUA(navigator.userAgent));
+  }
 })();
 </script>
 <script>
