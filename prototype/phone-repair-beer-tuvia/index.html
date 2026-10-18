@@ -2247,7 +2247,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      visit would look like a fresh decision and the numbers would mean nothing. */
   chips.forEach(function(c){c.addEventListener('click',function(){
     var d=c.getAttribute('data-dev');
-    apply(d);
+    apply(d);
   });});
   var saved='all';try{saved=localStorage.getItem('pg_dev')||'all';}catch(e){}
   apply(saved);
