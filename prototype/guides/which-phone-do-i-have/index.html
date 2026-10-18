@@ -1689,7 +1689,11 @@ html.a11y-stop-motion .troops *{animation:none}
 .wiz-field{display:block;margin-top:1rem;font-weight:700;font-size:1.05rem}
 .wiz-field input{display:block;width:100%;margin-top:.45rem;font:inherit;font-weight:400;font-size:1.15rem;line-height:1.4;padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:4px;min-height:48px;background:#fff;color:var(--ink-strong)}
 .wiz h2 bdi,.wiz-ask bdi,.wiz-body bdi{unicode-bidi:isolate}
+/* The model phrase stays on one line, so the question breaks after "הוא".
+   max-width lets a longer name wrap inside the box instead of overflowing. */
+.wiz-ask bdi{display:inline-block;max-width:100%;vertical-align:bottom;white-space:nowrap}
 .wiz-code{white-space:nowrap}
+bdi.pg-model{white-space:nowrap}
 .steps a,.wiz-body a{color:var(--teal-d);text-decoration:underline;text-underline-offset:.15em;font-weight:600}
 html.pg-wiz .pathpick,html.pg-wiz .inner > .pathhint,html.pg-wiz #iphone,html.pg-wiz #android,html.pg-wiz #ask,html.pg-wiz #shot{display:none}
 html.pg-wiz #wiz #shot{display:block;border-top:0;padding:1.3rem 0 0}
@@ -1871,7 +1875,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ol class="steps" id="pgStepsAndroid">
       <li>פתחו בטלפון את "הגדרות", הסמל של גלגל השיניים.</li>
       <li>גללו ולחצו על השורה עם פרטי הטלפון. בסמסונג היא נקראת "אודות הטלפון". אם היא לא נראית מיד, גללו למטה עד שהיא מופיעה.</li>
-      <li data-pg-model>בשורה "שם הדגם" כתוב הדגם, למשל <bdi dir="ltr">Galaxy A56 5G</bdi>. השם שבראש המסך ניתן לשינוי.</li>
+      <li data-pg-model>בשורה "שם הדגם" כתוב הדגם, למשל <bdi class="pg-model" dir="ltr">Galaxy A56 5G</bdi>. השם שבראש המסך ניתן לשינוי.</li>
       <li data-pg-final>כתבו לנו את השם, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
     <p class="enline">בטלפון סמסונג ישן לוחצים גם על "סטאטוס". בשיאומי, ברדמי ובפוקו פותחים את ההגדרות ומחפשים את השורה עם פרטי הטלפון. במכשיר באנגלית היא נקראת <bdi dir="ltr">About phone</bdi>.</p>
@@ -2576,7 +2580,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
      כבר יושב בכתובת הוא נכנס ל-dataLayer. הטקסט מתווסף רק בלחיצה, אחריה. */
   function waText(model){
     var m=clean(model);
-    return m?('היי, הדגם שלי הוא '+m+'.'):'היי, לא מצאתי את שם הדגם. מצרף/ת צילום מסך מההגדרות.';
+    return m?('היי, הדגם שלי הוא '+m+'.'):'היי, לא מצאתי את שם הדגם. מצרפים צילום מסך מההגדרות.';
   }
   function setWa(model){
     state.waMsg=waText(model);
@@ -2602,6 +2606,23 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     bdi.appendChild(codeEl);
     askText.appendChild(bdi);
     askText.appendChild(document.createTextNode('. נכון?'));
+  }
+  /* nowrap keeps the phrase together, so the question breaks before it.
+     Measure only once the line is visible: a hidden box reports width 0.
+     A phrase wider than the line may wrap inside the box. */
+  function fitModel(){
+    var modelBdi=askText.querySelector('bdi');
+    if(!modelBdi||ask.hidden)return;
+    modelBdi.style.whiteSpace='nowrap';
+    modelBdi.style.overflowWrap='normal';
+    modelBdi.style.maxWidth='none';
+    var full=modelBdi.getBoundingClientRect().width;
+    modelBdi.style.maxWidth='';
+    var box=askText.getBoundingClientRect().width;
+    if(full>box+1){
+      modelBdi.style.whiteSpace='normal';
+      modelBdi.style.overflowWrap='anywhere';
+    }
   }
   function render(opts){
     opts=opts||{};
@@ -2661,6 +2682,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
       var leadIn=(!hint.hidden&&hint.textContent)?(hint.textContent+' '):'';
       live.textContent=leadIn+(pos.hidden?'':pos.textContent+', ')+head.textContent;
     }
+    if(mode==='detect')fitModel();
   }
   function showBrands(opts){
     opts=opts||{};
@@ -2785,6 +2807,8 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
   }
   document.documentElement.classList.add('pg-wiz');
   wiz.hidden=false;
+  window.addEventListener('resize',function(){if(state.mode==='detect')fitModel();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(state.mode==='detect')fitModel();});
   setWa('');
   var hash=location.hash;
   var apple=appleKind();
@@ -2794,7 +2818,7 @@ function pgTrack(ev,d){try{window.dataLayer=window.dataLayer||[];var o={event:ev
     openBrand('iphone',{silent:true,focus:false,announce:true});
   }else if(apple==='ipad'){
     fireDetect(true);
-    state.hint='זיהינו אייפד. את שם הדגם רואים בהגדרות.';
+    state.hint='זיהינו אייפד. בחרו אייפון או iPad בכפתורים, או בדקו את שם הדגם בהגדרות.';
     showBrands({announce:true,keepHint:true});
   }else if(apple==='iphone'){
     state.locked=true;
