@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:5d16840d9a016429 */
+/* sha1:fca4c092e38f885f */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -517,17 +517,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
-      if(d.kind==='discontinued')return {text:note+'\nאפשר לשאול על דגם דומה שיש במלאי.',human:true};
+      /* תשלומים והעברת נתונים הם תנאי מכירה. אחריות וטלפון חלופי נשארים למי שכבר קנה. */
+      if(d.kind==='discontinued'&&(field==='payments'||field==='data_transfer'))
+        return {text:note+'\nאפשר לשאול על דגם דומה שיש במלאי.',human:true};
+      var owned=d.kind==='discontinued'?('את '+d.name_he+' כבר לא מוכרים אצלנו. למי שקנה אצלנו: '):pre;
       if(field==='warranty'){
-        if(!d.warranty_by)return {text:pre+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
+        if(!d.warranty_by)return {text:owned+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
         var t='האחריות על '+d.name_he+': '+d.warranty_by;
         if(typeof d.warranty_months==='number')t+='\nלמשך '+d.warranty_months+' חודשים.';
         if(d.service_terms)t+='\n'+d.service_terms;
-        return {text:pre+t};
+        return {text:owned+t};
       }
       var v=d[field];
-      if(!v)return {text:pre+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
-      return {text:pre+v};
+      if(!v)return {text:owned+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
+      return {text:owned+v};
     }
     /* שדה מפרט. null אינו "בערך", הוא "היצרן לא מפרסם". */
     var sv=d.spec?d.spec[field]:null;

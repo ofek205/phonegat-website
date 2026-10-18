@@ -26,8 +26,11 @@ var facts = JSON.parse(fs.readFileSync(path.join(ROOT, 'prototype', 'bot-facts.j
 /* ---------- חילוץ האזור ---------- */
 var a = html.indexOf('/* bot:facts:start');
 var b = html.indexOf('/* bot:answers:end');
-if (a < 0 || b < 0) { console.error('✗ סימני האזור לא נמצאו ב-index.html'); process.exit(1); }
-var code = html.slice(a, b) + '\n';
+/* buyModel יושב אחרי אזור התשובות, ושם נורה chat_disc_declined. החיתוך נעצר לפני
+   askStorage, כדי שהקריאה לדגם שיצא מהמכירה תחזור בלי להמשיך לשלב הנפח. */
+var buyEnd = html.indexOf('function askStorage()', b);
+if (a < 0 || b < 0 || buyEnd < 0) { console.error('✗ סימני האזור לא נמצאו ב-index.html'); process.exit(1); }
+var code = html.slice(a, buyEnd) + '\n';
 
 /* ---------- דמויות ---------- */
 var replies = [], tracked = [];
@@ -294,6 +297,38 @@ expectField('איזו מצלמה קדמית', 'camera_front');
 expectField('למי מתאים', '__good');
 expectField('שלום', null);
 
+/* ---------- דגם שיצא מהמכירה ----------
+ * אחריות וטלפון חלופי נשארים למי שכבר קנה. תשלומים והעברת נתונים הם תנאי מכירה
+ * ולכן נעצרים. הקלדת השם בזרימת הקנייה נעצרת ב-chat_disc_declined. */
+var discFails = [];
+(function () {
+  var pro = null, i;
+  for (i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === 'iphone-17-pro') pro = facts.devices[i];
+  if (!pro || pro.kind !== 'discontinued') { discFails.push('iphone-17-pro אינו discontinued'); return; }
+  var wa = fieldAnswer(pro, 'warranty');
+  var wt = wa && wa.text || '';
+  if (wt.indexOf('את ' + pro.name_he + ' כבר לא מוכרים אצלנו. למי שקנה אצלנו: ') !== 0)
+    discFails.push('אחריות לא נפתחת בהערה למי שקנה: ' + wt.slice(0, 80));
+  if (wt.indexOf('פון גת') < 0 || wt.indexOf('12') < 0)
+    discFails.push('אחריות בלי 12 חודשים או בלי פון גת');
+  if (pro.service_terms && wt.indexOf(pro.service_terms) < 0)
+    discFails.push('אחריות בלי תנאי הטלפון החלופי');
+  var st = fieldAnswer(pro, 'service_terms');
+  if (!st || st.text.indexOf('למי שקנה אצלנו: ') < 0 || st.text.indexOf(pro.service_terms) < 0)
+    discFails.push('service_terms בלי ההערה או בלי התשובה הקיימת');
+  ['payments', 'data_transfer'].forEach(function (f) {
+    var t = fieldAnswer(pro, f).text;
+    if (t.indexOf('לא מוכרים') < 0) discFails.push(f + ': חסר גילוי');
+    if (pro[f] && t.indexOf(String(pro[f]).slice(0, 16)) >= 0) discFails.push(f + ': תנאי המכירה צוטט');
+  });
+  replies.length = 0; tracked.length = 0;
+  if (!sandbox.buyModel) { discFails.push('buyModel לא נטען'); return; }
+  sandbox.buyModel('אייפון 17 פרו', '');
+  var ev = tracked.filter(function (t) { return t.event === 'chat_disc_declined'; })[0];
+  if (!ev || !ev.data || ev.data.slug !== 'iphone-17-pro')
+    discFails.push('chat_disc_declined לא נורה על אייפון 17 פרו');
+})();
+
 /* ---------- דוח ---------- */
 console.log('');
 console.log('  נבדקו ' + checked + ' צירופים של דגם כפול שדה (' + facts.devices.length +
@@ -312,6 +347,7 @@ console.log('  אורך תשובת השוואה: חציון ' + cmpLens.sort(fun
 n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
+n += report(discFails, 'דגם שיצא מהמכירה: אחריות למי שקנה, בלי תשלומים, ו-chat_disc_declined');
 n += report(contentFails, 'שכבת התוכן: תשובה לשאלה אמיתית, עמוד קיים, בלי מחיר, וברכה לא מקבלת תשובה');
 n += report(privFails, 'פרטיות: הרמז ב-chat_device_unmatched נקי משם ומטלפון ועדיין נושא את הדגם');
 console.log('');
