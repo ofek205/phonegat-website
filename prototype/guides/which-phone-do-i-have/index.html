@@ -1658,7 +1658,7 @@ html.a11y-stop-motion .troops *{animation:none}
 .ghero .sub b{font-weight:800;color:var(--ink-strong)}
 #iphone h2,#android h2{max-width:24ch}
 .enline{margin-top:1.15rem;font-size:1.05rem;line-height:1.7;max-width:62ch}
-.block .warn{font-size:1.15rem;font-weight:700;color:var(--ink-strong);margin-top:1.8rem}
+.block .warn{font-size:1.15rem;font-weight:700;color:var(--ink-strong);margin:0 0 1.2rem;background:color-mix(in srgb, var(--line) 70%, var(--on-dark));border:1px solid var(--line);border-inline-start:4px solid var(--orange);padding:1rem 1.15rem;line-height:1.7}
 .fold{margin-top:1.4rem;border-top:1px solid var(--line)}
 .fold summary{cursor:pointer;font-weight:700;font-size:1.05rem;line-height:1.45;padding-block:.9rem;min-height:44px}
 .fold ul,.fold ol{margin:.15rem 0 1rem;padding-inline-start:1.35rem}
@@ -1746,7 +1746,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap">
     <div class="inner">
       <h1 id="gh">איזה טלפון יש לי? בודקים בדקה, בטלפון עצמו</h1>
-      <p class="sub">את שם הטלפון רואים בהגדרות של הטלפון שלכם. <b>לא צריך לצלם את העמוד הזה.</b> פותחים את ההגדרות בטלפון, מוצאים את השורה עם שם הדגם, וכותבים לנו אותו או שולחים צילום של המסך הזה מתוך ההגדרות.</p>
+      <p class="sub">את שם הטלפון רואים בהגדרות של הטלפון שלכם. <b>לא צריך לצלם את העמוד הזה.</b> פותחים את ההגדרות בטלפון, מוצאים את השורה עם שם הדגם, וכותבים לנו אותו, או שולחים צילום של מסך ההגדרות שבו הוא כתוב.</p>
       <div class="pathpick" role="group" aria-label="איזה טלפון יש לכם">
         <a class="btn btn-teal" href="#iphone">יש לי אייפון</a>
         <a class="btn btn-teal" href="#android">יש לי סמסונג, שיאומי או אנדרואיד אחר</a>
@@ -1770,7 +1770,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li>גללו קצת למטה ולחצו על "כללי".</li>
       <li>לחצו על "מידע". זו השורה הראשונה.</li>
       <li>בשורה של שם הדגם כתוב איזה אייפון יש לכם, למשל <bdi dir="ltr">iPhone 15</bdi>.</li>
-      <li>כתבו לנו את השם הזה ב-WhatsApp, או צלמו את המסך הזה ושלחו לנו.</li>
+      <li>כתבו לנו את השם הזה ב-WhatsApp, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
     <p class="enline">אם הטלפון שלכם באנגלית: <bdi dir="ltr">Settings</bdi>, ואז <bdi dir="ltr">General</bdi>, ואז <bdi dir="ltr">About</bdi>.</p>
   </div>
@@ -1781,11 +1781,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2 id="h-android">יש לי סמסונג, שיאומי או אנדרואיד אחר</h2>
     <ol class="steps">
       <li>פתחו בטלפון את "הגדרות", הסמל של גלגל השיניים.</li>
-      <li>לחצו על "אודות הטלפון". אם השורה לא נראית מיד, גוללים ברשימה עד שמופיעה.</li>
+      <li>גללו ולחצו על השורה עם פרטי הטלפון. בסמסונג היא נקראת "אודות הטלפון". אם היא לא נראית מיד, גללו למטה עד שהיא מופיעה.</li>
       <li>בראש המסך כתוב שם הטלפון, למשל <bdi dir="ltr">Galaxy A56 5G</bdi>.</li>
-      <li>כתבו לנו את השם, או צלמו את המסך הזה ושלחו לנו.</li>
+      <li>כתבו לנו את השם, או צלמו את מסך ההגדרות שבו כתוב שם הדגם ושלחו לנו.</li>
     </ol>
-    <p class="enline">בטלפון סמסונג ישן לוחצים גם על 'סטאטוס'. בשיאומי ובפוקו פותחים את ההגדרות ומחפשים את השורה על פרטי הטלפון. במכשיר באנגלית היא נקראת <bdi dir="ltr">About phone</bdi>.</p>
+    <p class="enline">בטלפון סמסונג ישן לוחצים גם על "סטאטוס". בשיאומי, ברדמי ובפוקו פותחים את ההגדרות ומחפשים את השורה עם פרטי הטלפון. במכשיר באנגלית היא נקראת <bdi dir="ltr">About phone</bdi>.</p>
+  </div>
+</section>
+
+<section class="block" id="shot" aria-label="צילום מסך ההגדרות">
+  <div class="wrap box">
     <p class="warn"><b>שימו לב:</b> אנחנו צריכים צילום של מסך ההגדרות בטלפון שלכם, לא צילום של האתר.</p>
     <!-- pg-model-shots: מקום לצילום נכון מול צילום שגוי.
          ימין, כיתוב נכון: מסך מידע באייפון בעברית, עם עיגול סביב שם הדגם.
@@ -1795,12 +1800,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <details class="fold">
       <summary>איך מצלמים מסך</summary>
       <ul>
-        <li>אייפון בלי כפתור בית: לוחצים יחד על הכפתור בצד ועל כפתור הגברת הקול.</li>
-        <li>אייפון עם כפתור בית: לוחצים יחד על כפתור הבית ועל הכפתור בצד.</li>
-        <li>סמסונג: לוחצים יחד על הכפתור בצד ועל כפתור הנמכת הקול.</li>
+        <li>אייפון בלי כפתור בית: לוחצים יחד על הכפתור בצד ועל כפתור הגברת הקול, ומשחררים מיד.</li>
+        <li>אייפון עם כפתור בית: לוחצים יחד על כפתור הבית ועל הכפתור בצד (בדגמים ישנים: הכפתור העליון), ומשחררים מיד.</li>
+        <li>סמסונג: לוחצים לחיצה קצרה יחד על הכפתור בצד ועל כפתור הנמכת הקול.</li>
       </ul>
     </details>
-    <p class="enline">לא מסתדרים? אין בעיה. כתבו לנו 'יש לי אייפון' או 'יש לי סמסונג' ואת צבע הטלפון, או קפצו לחנות ונבדוק לכם תוך דקה.</p>
+    <p class="enline">לא מסתדרים? אין בעיה. כתבו לנו 'יש לי אייפון' או 'יש לי סמסונג' ואת צבע הטלפון, או קפצו לחנות ונבדוק לכם.</p>
   </div>
 </section>
 
@@ -1810,7 +1815,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p>שולחים את מה שראיתם במסך ההגדרות של הטלפון.</p>
     <div class="row">
       <a class="btn btn-wa" data-pg-loc="guide_model_text" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%A9%D7%9D%20%D7%94%D7%93%D7%92%D7%9D%20%D7%A9%D7%9C%20%D7%94%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%20%D7%94%D7%95%D7%90%3A%20"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">כתבו לנו את שם הדגם</a>
-      <a class="btn btn-wa" data-pg-loc="guide_model_shot" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A6%D7%A8%D7%A3%20%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%A9%D7%9C%20%D7%9E%D7%A1%D7%9A%20%D7%94%D7%94%D7%92%D7%93%D7%A8%D7%95%D7%AA%20%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%2C%20%D7%A9%D7%91%D7%95%20%D7%9B%D7%AA%D7%95%D7%91%20%D7%A9%D7%9D%20%D7%94%D7%93%D7%92%D7%9D."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו צילום מתוך ההגדרות</a>
+      <a class="btn btn-wa" data-pg-loc="guide_model_shot" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%A6%D7%A8%D7%A3%2F%D7%AA%20%D7%A6%D7%99%D7%9C%D7%95%D7%9D%20%D7%A9%D7%9C%20%D7%9E%D7%A1%D7%9A%20%D7%94%D7%94%D7%92%D7%93%D7%A8%D7%95%D7%AA%20%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F%20%D7%A9%D7%9C%D7%99%2C%20%D7%A9%D7%91%D7%95%20%D7%9B%D7%AA%D7%95%D7%91%20%D7%A9%D7%9D%20%D7%94%D7%93%D7%92%D7%9D."><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו צילום מתוך ההגדרות</a>
       <a class="btn btn-call" href="tel:+972525893366">חייגו <bdo dir="ltr">052-5893366</bdo></a>
       <a class="btn btn-teal" href="/guides/">כל המדריכים</a>
     </div>
@@ -2104,7 +2109,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <details class="fold" id="advanced">
       <summary>למתקדמים: מספר דגם ו-IMEI</summary>
       <p>ליד מספר הדגם באייפון מופיע מספר החלק. הקשה על מספר החלק מחליפה אותו במספר הדגם, והמספר הזה מתחיל באות A. את המספר משווים לרשימה של אפל כדי לדעת איזה <bdi dir="ltr">iPhone</bdi> זה. שם הדגם הוא מה שאומרים כשפונים אלינו, ומספר הדגם הוא מה שמפריד בין שתי גרסאות עם אותו שם.</p>
-      <p>בדרך כלל מספר הדגם של גלקסי מתחיל ב-<bdi dir="ltr">SM</bdi>.</p>
+      <p>בדרך כלל מספר הדגם של גלקסי מתחיל ב-<bdi dir="ltr">SM</bdi>. סמסונג כותבת את זה ב<a href="https://www.samsung.com/ph/support/how-to-find-model-and-serial-number-of-samsung-product/" target="_blank" rel="noopener">עמוד מציאת מספר הדגם</a>, עם דוגמה של <bdi dir="ltr">Galaxy S24</bdi>.</p>
       <p>חיוג <bdi dir="ltr">*#06#</bdi> מציג את מספר ה-IMEI. זה המזהה של המכשיר מול חברת הסלולר, והוא לא שם הדגם ולא מספר הדגם. סמסונג כותבת שאותו קוד מציג את ה-IMEI ואת המספר הסידורי, ועדיין לא את מספר הדגם.</p>
     </details>
     <details class="fold" id="sources">
