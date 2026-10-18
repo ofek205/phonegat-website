@@ -774,7 +774,7 @@
         "charging_wireless": "אין",
         "dimensions": "163.41 x 77.04 x 8.30 מ״מ",
         "weight": "214 גרם בשחור פחם, 215 גרם בירוק מנטה",
-        "water_resistance": "IP68 ו-IP69K. עד 1.5 מטר ל-30 דקות, וגם סילוני מים בלחץ",
+        "water_resistance": "IP66, IP68, IP69 ו-IP69K לפי OnePlus",
         "colors_manufacturer": [
           "שחור פחם",
           "ירוק מנטה"
@@ -783,7 +783,7 @@
         "esim": "תמיכה ב-eSIM",
         "connectivity": "5G, LTE עם 4x4 MIMO, USB-C בגרסת USB 2.0 עם תמיכה באוזניות Type-C",
         "box_contents": "המכשיר, כבל USB, כלי הוצאת SIM, מדריך מהיר ומדריך בטיחות. מטען אינו כלול",
-        "security_updates": null,
+        "security_updates": "עדכוני אבטחה עד 31 בדצמבר 2031",
         "model_numbers": "CPH2769"
       },
       "launch": "2025-12",
