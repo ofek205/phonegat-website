@@ -158,31 +158,37 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/upcoming-phones/galaxy-s27-ultra/</loc>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-18/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-18e/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-air-2/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-duo/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -302,7 +308,7 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/phones/galaxy-s26-ultra/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
