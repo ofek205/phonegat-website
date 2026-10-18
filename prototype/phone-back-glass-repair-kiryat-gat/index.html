@@ -1675,7 +1675,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="npanel" id="nd-guides" role="group" aria-labelledby="nd-guides-t">
           <div class="nrow">
             <div class="ncol"><a href="/guides/esim-israel/">eSIM בישראל</a><a href="/guides/how-much-storage/">כמה אחסון צריך</a><a href="/guides/official-vs-parallel-import/">יבוא מקביל או רשמי</a></div>
-            <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a></div>
+            <div class="ncol"><a href="/guides/phone-warranty-israel/">אחריות על טלפון</a><a href="/guides/new-or-previous-generation/">הדגם החדש או הקודם</a><a href="/guides/first-phone-for-kid/">טלפון ראשון לילד</a><a href="/guides/which-phone-do-i-have/">איזה טלפון יש לי</a></div>
           </div>
           <div class="nall"><a href="/guides/">כל המדריכים</a></div>
         </div>
@@ -2405,11 +2405,11 @@ nav.addEventListener("focusout",function(e){if(!nav.contains(e.relatedTarget))sh
       var href=a.getAttribute('href')||'';
       var isTel=TEL.test(href), isWa=WA.test(href)||WAAPP.test(href);
       if(!isTel&&!isWa)return;
-      /* רק data-pg-loc שמתחיל ב-compare_ גובר על המחלקה, כדי שכפתורי WhatsApp
-         בעמוד השוואה ייספרו לחוד. ערך אחר, כמו hero או channels בעמוד צור קשר,
-         שייך ל-contact_cta_click ולא משנה את link_location. */
+      /* רק data-pg-loc שמתחיל ב-compare_ או ב-quote_ גובר על המחלקה, כדי שכפתורי
+         WhatsApp בעמוד השוואה ובבלוק הצעת המחיר ייספרו לחוד. ערך אחר, כמו hero או
+         channels בעמוד צור קשר, שייך ל-contact_cta_click ולא משנה את link_location. */
       var pgLoc=a.getAttribute('data-pg-loc')||'',i;
-      var loc=pgLoc.indexOf('compare_')===0?pgLoc:'';
+      var loc=(pgLoc.indexOf('compare_')===0||pgLoc.indexOf('quote_')===0)?pgLoc:'';
       if(!loc){loc='content';
       for(i=0;i<SPOTS.length;i++){if(a.closest('.'+SPOTS[i])){loc=SPOTS[i];break;}}
       if(loc==='content'&&a.closest('footer'))loc='footer';}
