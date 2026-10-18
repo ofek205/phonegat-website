@@ -120,7 +120,10 @@ const PLACE_AT = {
   'guides/how-much-storage': 'real',
   'guides/new-or-previous-generation': 'stock',
   'guides/official-vs-parallel-import': 'approval',
-  'guides/phone-warranty-israel': 'not'
+  'guides/phone-warranty-israel': 'not',
+  /* which-phone: the carousel sits above #off, after the WhatsApp buttons,
+     so a later add-deals run does not put it between the steps and the send. */
+  'guides/which-phone-do-i-have': 'off'
 };
 const GUIDE = Object.keys(PLACE_AT).filter(k => k.startsWith('guides/'));
 
