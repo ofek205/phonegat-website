@@ -71,6 +71,82 @@ function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
  * ל-Pro Max iPhone 17, ומידה הופכת סדר ספרות. אין רגקס שתופס את זה, ולכן העטיפה כאן. */
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 
+/* המשפט הראשון של ליד ההשוואה, לכרטיס בעמוד המכשיר.
+ *
+ * עד 18.10.2026 זה היה lede.split('.')[0]. הנקודה הראשונה ב"מסך 6.7" היא הנקודה
+ * העשרונית, והכרטיס יצא "חולקים מסך 6." בשמונה עמודי מכשיר.
+ *
+ * נקודה סוגרת משפט רק כשאחריה רווח או סוף המחרוזת, ולא כשהיא יושבת בין שתי ספרות.
+ * כך "6.7", "5.3" ו-"iOS 26.1" נשארים שלמים. בסוף משפט ("iOS 26.1.") הנקודה הסוגרת
+ * היא זו שאחרי הספרה האחרונה, לא זו שבתוך הגרסה.
+ * קיצור לטיני (e.g., Dr., U.S.) גם הוא לא סוגר: אחריו בא רווח בלי שהמשפט נגמר.
+ * בסוף המחרוזת הנקודה כן סוגרת, גם אחרי קיצור, כדי שלא נדביק נקודה שנייה. */
+var SENTENCE_ABBR = { 'e.g': 1, 'i.e': 1, 'etc': 1, 'vs': 1, 'mr': 1, 'mrs': 1, 'ms': 1,
+  'dr': 1, 'prof': 1, 'sr': 1, 'jr': 1, 'st': 1, 'no': 1, 'fig': 1, 'vol': 1,
+  'inc': 1, 'ltd': 1, 'co': 1 };
+function firstSentence(s) {
+  s = String(s).replace(/\s+$/, '');
+  var i, next, prev, word;
+  for (i = 0; i < s.length; i++) {
+    if (s.charAt(i) !== '.') continue;
+    next = i + 1 < s.length ? s.charAt(i + 1) : '';
+    prev = i > 0 ? s.charAt(i - 1) : '';
+    /* בין שתי ספרות: 6.7, 5.3, iOS 26.1. לא סוף משפט. */
+    if (/\d/.test(prev) && /\d/.test(next)) continue;
+    /* רק נקודה שאחריה רווח, או שהיא בסוף המחרוזת. */
+    if (next !== '' && !/\s/.test(next)) continue;
+    if (next !== '') {
+      word = (s.slice(0, i).match(/[A-Za-z]+$/) || [''])[0];
+      if (word.length === 1 || SENTENCE_ABBR[word.toLowerCase()]) continue;
+    }
+    return s.slice(0, i + 1);
+  }
+  return /\.$/.test(s) ? s : s + '.';
+}
+function assertSentenceSplitter() {
+  var cases = [
+    ['שני המכשירים חולקים מסך 6.7 אינץ׳ ב-120Hz, 5G, הקלטת וידאו ב-4K וסוללה של 5000 mAh. ההכרעה',
+     'שני המכשירים חולקים מסך 6.7 אינץ׳ ב-120Hz, 5G, הקלטת וידאו ב-4K וסוללה של 5000 mAh.'],
+    ['שני הדגמים חולקים מסך של 6.3 אינץ׳ באותה רזולוציה. ההבדל',
+     'שני הדגמים חולקים מסך של 6.3 אינץ׳ באותה רזולוציה.'],
+    ['גרסה 5.3 בלבד. אחר כך עוד', 'גרסה 5.3 בלבד.'],
+    ['עודכן ל-iOS 26.1 אתמול. היום לא', 'עודכן ל-iOS 26.1 אתמול.'],
+    ['iOS 26.1', 'iOS 26.1.'],
+    ['5.3', '5.3.'],
+    ['משפט רגיל. משפט שני.', 'משפט רגיל.'],
+    ['Dr. Smith said hello. Then he left.', 'Dr. Smith said hello.'],
+    ['U.S. model only. Next sentence.', 'U.S. model only.'],
+    ['see etc.', 'see etc.']
+  ];
+  cases.forEach(function (c) {
+    var got = firstSentence(c[0]);
+    if (got !== c[1]) {
+      console.error('✗ firstSentence\n  in:  ' + c[0] + '\n  got: ' + got + '\n  exp: ' + c[1]);
+      process.exit(1);
+    }
+  });
+  ['devices.json', 'headphones.json', 'watches.json'].forEach(function (file) {
+    var j;
+    try { j = JSON.parse(fs.readFileSync(path.join(PROTO, file), 'utf8')); }
+    catch (e) { return; }
+    ((j._comparisons || {}).pairs || []).forEach(function (p) {
+      if (!p.lede) return;
+      var got = firstSentence(p.lede);
+      var bare = got.charAt(got.length - 1) === '.' ? got.slice(0, -1) : got;
+      if (p.lede.indexOf(bare) !== 0) {
+        console.error('✗ ' + (p.slug || file) + ': המשפט הראשון אינו תחילת הליד: ' + got);
+        process.exit(1);
+      }
+      var at = bare.length;
+      if (p.lede.charAt(at) === '.' && /\d/.test(p.lede.charAt(at - 1)) && /\d/.test(p.lede.charAt(at + 1))) {
+        console.error('✗ ' + (p.slug || file) + ': החיתוך נפל על נקודה עשרונית: ' + got);
+        process.exit(1);
+      }
+    });
+  });
+}
+assertSentenceSplitter();
+
 /* .hub נולד ב-guides/index.html, ונשלף משם בזמן החילול במקום להיכתב כאן שוב.
  * זה אותו דפוס שכבר קיים ב-gen-compare וב-gen-finder, והוא התשובה לכשל שחזר בפרויקט
  * חמש פעמים: רכיב שמועתק לעמוד חדש בלי הכלל שלו נראה שבור בלי להיכשל בשום דבר. */
@@ -331,7 +407,7 @@ function buildMain(d, openTag, K) {
     pairs.map(function (p) {
       var o = other(p);
       return '      <li><a href="/compare/' + esc(p.slug) + '/"><b>' + ltr(d.name) + ' מול ' + ltr(o ? o.name : '') +
-             '</b><span>' + esc(p.lede ? p.lede.split('.')[0] + '.' : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
+             '</b><span>' + esc(p.lede ? firstSentence(p.lede) : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
     }).join('\n') + '\n' +
     '    </ul>\n' +
     /* הכלי עם הדגם כבר בפנים. ?d= נתמך בכלי, והוא נפתח עם התא הראשון מלא ואומר "בחרו עוד
