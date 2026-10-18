@@ -1025,7 +1025,9 @@ if (swGrew) {
  *   stock, storage_stocked  מלאים ב-12 ו-2 מ-24. בוט שעונה "יש במלאי" מנתון חלקי גרוע
  *                           מבוט שמנתב לאדם, כי טעות כאן היא הבטחה בשם המותג.
  *   importer_name           מלא ב-1 מ-24.
- *   recommendation          48 מ-48 ב-missing. ציטוט אישי מוצג רק ב-approved בדיוק. */
+ *   recommendation          48 מ-48 ב-missing. ציטוט אישי מוצג רק ב-approved בדיוק.
+ *   by_order                כן נכנס, כבוליאני ורק כשהוא true. זה לא מחיר ולא מלאי,
+ *                           והבוט מסתעף עליו בשלב הסיום של הקנייה. */
 (function buildBotFacts() {
   var FORBIDDEN = ['price', 'colors_stocked', 'stock', 'storage_stocked',
                    'importer_name', 'recommendation', 'commercial', 'editorial'];
@@ -1034,7 +1036,7 @@ if (swGrew) {
     devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
       var c = d.commercial || {}, e = d.editorial || {};
       var ref = d.status === 'reference';
-      return {
+      var row = {
         slug: d.slug,
         name: d.name,
         name_he: d.name_he || d.name,
@@ -1063,6 +1065,9 @@ if (swGrew) {
           .map(function (p) { return Array.isArray(p) ? p.join(': ') : String(p); }),
         spec: d.spec || {}
       };
+      /* אחרי spec, ורק כשהדגל דולק. שאר הרשומות נשארות בלי המפתח, ולכן זהות בית. */
+      if (!ref && c.by_order && !c.not_in_store) row.by_order = true;
+      return row;
     }),
     /* רשימת עמודי ההשוואה נגזרת מהדיסק ולא מ-editorial.comparisons, שריק ב-24 מ-24.
        כך הבוט מקשר רק לעמוד שבאמת קיים, ולא מייצר 404 בשיחה. */
