@@ -569,7 +569,10 @@ function buildMain(p, a, b, d, openTag) {
       var nmOf = function (x) { return esc(nmHe(x)); };
       /* דגם שיצא מהמכירה: בלי "אצלנו בחנות" ובלי שעות הפתיחה כהבטחה שאפשר לבוא להחזיק. */
       if (gone.length && !CAT && !ref.length) {
-        return '    <p>תגידו לנו מה חשוב לכם, ונבדוק יחד מה יש במלאי היום.</p>\n';
+        var whoGone = gone.length === 1
+          ? 'את ' + nmOf(gone[0]) + ' כבר לא מוכרים אצלנו. '
+          : 'את שני הדגמים האלה כבר לא מוכרים אצלנו. ';
+        return '    <p>' + whoGone + 'תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n';
       }
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
         : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
