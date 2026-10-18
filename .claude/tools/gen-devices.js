@@ -468,10 +468,15 @@ function buildMain(d, openTag, K) {
   '  <div class="wrap">\n' +
   /* not_in_store: דגם שהוכרז ועוד לא בחנות. "אפשר לבוא להחזיק את המכשיר" הוא הבטחה שהלקוח
      בודק בעצמו כשהוא מגיע, ולכן היא תלויה בדגל. והנוסח החלופי אינו מבטיח דבר: לא מועד, לא
-     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026. */
+     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026.
+     discontinued: יצא מהמכירה. בלי הזמנה להחזיק, ובלי שעות פתיחה כהבטחה שאפשר לבוא.
+     אותו משפט סיום כמו בזוג השוואה שכולל דגם כזה. */
   (C.not_in_store
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
       '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+    : C.discontinued
+    ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
+      '    <p>תגידו לנו מה חשוב לכם, ונבדוק יחד מה יש במלאי היום.</p>\n'
     /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
     : K.acc
     ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
@@ -479,7 +484,7 @@ function buildMain(d, openTag, K) {
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
       '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
-  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי') + '</a>\n' +
+  '      <a class="btn btn-wa" href="' + wa(stockAsk(d).msg) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + stockAsk(d).label + '</a>\n' +
   CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
@@ -489,16 +494,25 @@ function buildMain(d, openTag, K) {
   return out;
 }
 
+function stockAsk(d) {
+  var C = d.commercial || {};
+  if (C.not_in_store) return { msg: 'היי, יש לי שאלה על ' + d.name, label: 'שאלו אותנו על הדגם' };
+  /* יצא מהמכירה: בירור, בלי "בדיקת מחיר ומלאי" ובלי הזמנה להחזיק. אותו נוסח כמו בעמוד השוואה. */
+  if (C.discontinued) return { msg: 'היי, אשמח לברר מחיר וזמינות של ' + d.name + '.', label: 'בירור מחיר וזמינות ב-WhatsApp' };
+  return { msg: 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name, label: 'בדיקת מחיר ומלאי' };
+}
+
 /* בלוק ה-CTA בהירו. seo.hero_cta הוא אופציונלי ולעמוד אחד.
    בלי השדה המוצא זהה לבלוק שהיה כאן, כדי ששאר עמודי הדגם לא ישתנו.
    הקישור נשאר wa.me/97286812050 והחיוג tel:+972525893366. לא מחליפים ביניהם. */
 function heroBlock(d) {
   var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
-  var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
+  var ask = stockAsk(d);
+  var href = wa(ask.msg);
   var call = CM.callHeroInline();
   var c = d.seo && d.seo.hero_cta;
-  var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : 'בדיקת מחיר ומלאי');
+  var label = (c && c.wa_label) || ask.label;
   var invite = c && c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
   var micro = c && c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
   return '      <div class="hcta">' + invite +
