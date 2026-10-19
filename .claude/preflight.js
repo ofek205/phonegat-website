@@ -2296,6 +2296,61 @@ if (classFails.length) {
   else ok('מפת SM באשף תואמת ל-devices.json (' + Object.keys(expected).length + ' קודים)');
 })();
 
+/* ---------- 46. עמודי השוואה נעולים: הגוף נשאר זהה ל-main ----------
+ * שני העמודים נעולים ב-gen-compare.js (LOCKED_UNTIL_OCT9) כדי שניסוי ה-hero_cta
+ * לא יידרס. galaxy-s26-plus-vs-galaxy-s26 חייב להישאר זהה ביית ל-origin/main.
+ * iphone-17-pro-vs-iphone-17-pro-max מותר לו לשנות רק את שש תגיות הראש
+ * (title, description, og:title, og:description, twitter:title, twitter:description),
+ * כי הן ניסוי CTR. כל שורה אחרת שזזה היא כישלון. */
+(function () {
+  var cp = require('child_process');
+  var LOCK = {
+    'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 'exact',
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 'head'
+  };
+  function headKind(line) {
+    if (/^<title>[\s\S]*<\/title>$/.test(line)) return 'title';
+    var m = line.match(/^<meta (?:name|property)="([^"]+)" content="[^"]*">$/);
+    if (!m) return null;
+    if (m[1] === 'description' || m[1] === 'og:title' || m[1] === 'og:description' ||
+        m[1] === 'twitter:title' || m[1] === 'twitter:description') return m[1];
+    return null;
+  }
+  var problems = [], checked = 0;
+  Object.keys(LOCK).forEach(function (rel) {
+    var cur;
+    try { cur = read('prototype/' + rel); }
+    catch (e) { problems.push(rel + ': חסר'); return; }
+    var mainOut = cp.spawnSync('git', ['show', 'origin/main:prototype/' + rel], {
+      encoding: 'utf8', cwd: ROOT, maxBuffer: 8 * 1024 * 1024
+    });
+    if (mainOut.status !== 0) { problems.push(rel + ': אין עותק ב-origin/main'); return; }
+    var a = cur.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    var b = String(mainOut.stdout || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    if (a.length && a[a.length - 1] === '') a.pop();
+    if (b.length && b[b.length - 1] === '') b.pop();
+    if (a.length !== b.length) {
+      problems.push(rel + ': מספר השורות השתנה (' + b.length + ' מול ' + a.length + ')');
+      return;
+    }
+    var drifted = [];
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] === b[i]) continue;
+      if (LOCK[rel] !== 'head' || headKind(a[i]) === null || headKind(a[i]) !== headKind(b[i])) {
+        drifted.push(i + 1);
+      }
+    }
+    if (drifted.length) {
+      problems.push(rel + (LOCK[rel] === 'exact'
+        ? ': אינו זהה ל-main'
+        : ': השתנו שורות שאינן תגיות הראש') + ' (' + drifted.slice(0, 6).join(', ') +
+        (drifted.length > 6 ? '…' : '') + ')');
+    } else checked++;
+  });
+  if (problems.length) bad('עמוד נעול: ' + problems.join(' · '));
+  else ok(checked + ' עמודי השוואה נעולים: אחד זהה ל-main, ובאחד רק תגיות הראש זזו');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });
