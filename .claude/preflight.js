@@ -2301,7 +2301,7 @@ if (classFails.length) {
  * לא יידרס. galaxy-s26-plus-vs-galaxy-s26 חייב להישאר זהה ביית ל-origin/main.
  * iphone-17-pro-vs-iphone-17-pro-max מותר לו לשנות רק את שש תגיות הראש
  * (title, description, og:title, og:description, twitter:title, twitter:description),
- * כי הן ניסוי CTR, ואת השורות שב-APPROVED_17: אופק אישר ב-26.10.2026 לתקן
+ * כי הן ניסוי CTR, ואת השורות שב-APPROVED_17. תיקון משפטי החנות בעמוד הנעול, 26.10.2026:
  * רק את משפטי "אצלנו בחנות" / "שווה להחזיק" ואת שעות הפתיחה לניסוח
  * "א׳ עד ה׳" / "ו׳". כל שורה אחרת שזזה היא כישלון. */
 (function () {
@@ -2315,7 +2315,7 @@ if (classFails.length) {
     '    <p class="cv-prose">זו החלטה שנופלת ביד ולא בטבלה. שני המכשירים בחנות, ושווה להחזיק את שניהם דקה לפני שמחליטים.</p>':
       '    <p class="cv-prose">זו החלטה שנופלת ביד ולא בטבלה. את אייפון 17 פרו ואת אייפון 17 פרו מקס כבר לא מוכרים אצלנו, והעמוד נשאר כהשוואה ביניהם.</p>',
     '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>':
-      '    <p>במקום שני אלה נמכרים עכשיו <a href="/phones/iphone-18-pro/">אייפון 18 פרו</a> וגם <a href="/phones/iphone-18-pro-max/">אייפון 18 פרו מקס</a>. תגידו לנו מה חשוב לכם, ונעבור על זה יחד, או תפתחו את <a href="/compare/iphone-18-pro-vs-iphone-18-pro-max/">אייפון 18 פרו מול אייפון 18 פרו מקס</a>. אנחנו ברחבת תשרי 2 בקרית גת, א׳ עד ה׳: 9:00&nbsp;עד&nbsp;18:30, ו׳: 9:00&nbsp;עד&nbsp;13:00.</p>',
+      '    <p>במקום שני אלה נמכרים עכשיו <a href="/phones/iphone-18-pro/">אייפון 18 פרו</a> וגם <a href="/phones/iphone-18-pro-max/">אייפון 18 פרו מקס</a>. תגידו לנו מה חשוב לכם, ונעבור על זה יחד, או תפתחו את <a href="/compare/iphone-18-pro-vs-iphone-18-pro-max/">אייפון 18 פרו מול אייפון 18 פרו מקס</a>. אנחנו ברחבת תשרי 2 בקרית גת, א׳&nbsp;עד&nbsp;ה׳:&nbsp;9:00&nbsp;עד&nbsp;18:30, ו׳:&nbsp;9:00&nbsp;עד&nbsp;13:00.</p>',
     '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳–ה׳: <span class="ltr">9:00–18:30</span></li><li>ו׳: <span class="ltr">9:00–13:00</span></li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>':
       '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳ עד ה׳: 9:00&nbsp;עד&nbsp;18:30</li><li>ו׳: 9:00&nbsp;עד&nbsp;13:00</li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>'
   };
