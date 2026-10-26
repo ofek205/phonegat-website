@@ -175,13 +175,18 @@ function buildMain(d, openTag, K) {
   /* ⚠ המשתנה והסוגריים נוספו ב-25.9.2026. עד אז זה היה "AWAY ? [..] : [..].map(..).join()",
      וה-map חל רק על הענף השני, כי גישה לחבר קושרת חזק מהטרנרי. לכן בשני עמודי iPhone 18
      הטבלה יצאה כמערך גולמי: "מחיר,,המחיר בישראל..." בשורה אחת, בלי תאים. */
-  var factRows = K.acc ? [
+  /* אוזניות ושעון עם by_order: אותן שתי שורות כמו בטלפון. בלי מלאי, בלי צבעים בחנות
+     ובלי נפחים, כי אין במאגר שלהם שדות כאלה, והנוסח החלופי שלהם אומר "מלאי". */
+  var factRows = K.acc ? (ORDER ? [
+    ['מחיר', C.price, C.price_note || 'המחיר נמסר ב-WhatsApp, יחד עם זמן האספקה.'],
+    ['זמינות', 'זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.', '']
+  ] : [
     ['מחיר', null, PH.price],
     ['מלאי', null, PH.stock],
     ['צבעים בחנות', null, PH.colors],
     ['יבוא', null, 'לבדיקת מסלולי היבוא הזמינים'],
     ['אחריות', null, PH.warranty]
-  ] : AWAY ? [
+  ]) : AWAY ? [
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
@@ -334,7 +339,7 @@ function buildMain(d, openTag, K) {
     (srcDefault.src ? ', מתוך <a href="' + esc(srcDefault.src) + '" rel="nofollow noopener" target="_blank">עמוד המפרט הרשמי</a>' : '') +
     (atDate ? ', ונבדק לאחרונה בתאריך ' + esc(atDate) : '') +
   '. זמינות גרסאות, צבעים, נפחים ותכולת האריזה עשויה להשתנות, וגם בין מסלולי יבוא. ' +
-  (S.model_numbers ? '' : 'מספר הדגם המדויק תלוי בגרסה שהגיעה לחנות, ואפשר לבקש לראות אותו לפני הקנייה.') +
+  (S.model_numbers || ORDER ? '' : 'מספר הדגם המדויק תלוי בגרסה שהגיעה לחנות, ואפשר לבקש לראות אותו לפני הקנייה.') +
   '</p>\n  </div>\n</section>\n\n';
 
   /* --- ההשוואות שהדגם הזה משתתף בהן ---
@@ -359,6 +364,12 @@ function buildMain(d, openTag, K) {
              '</b><span>' + esc(p.lede ? p.lede.split('.')[0] + '.' : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
     }).join('\n') + '\n' +
     '    </ul>\n' +
+    /* אוזניות ושעון: הצד השני שיש לו עמוד מקבל קישור למפרט. לטלפון אין שדה page, ולכן אין שורה. */
+    pairs.map(function (p) {
+      var o = other(p);
+      if (!o || !o.page) return '';
+      return '    <p class="aside"><a href="/' + K.base + esc(o.slug) + '/">המפרט המלא של ' + ltr(o.name) + '</a></p>';
+    }).filter(Boolean).join('\n') + (pairs.some(function (p) { var o = other(p); return o && o.page; }) ? '\n' : '') +
     /* הכלי עם הדגם כבר בפנים. ?d= נתמך בכלי, והוא נפתח עם התא הראשון מלא ואומר "בחרו עוד
        אחד לפחות". זה חוסך לקורא לבחור מחדש את המכשיר שהוא כבר קורא עליו, וזה גם רגע
        ההתלבטות עצמו: מי שהגיע עד לכאן כבר יודע מה מעניין אותו ומתלבט מול מה.
@@ -416,6 +427,17 @@ function buildMain(d, openTag, K) {
 /* בלוק ה-CTA בהירו. seo.hero_cta הוא אופציונלי ולעמוד אחד.
    בלי השדה המוצא זהה לבלוק שהיה כאן, כדי ששאר עמודי הדגם לא ישתנו.
    הקישור נשאר wa.me/97286812050 והחיוג tel:+972525893366. לא מחליפים ביניהם. */
+/* מעבירים ל-buildMain רק את הדגלים שהעמוד יודע להציג. שאר השדות המסחריים של טלפון
+   אינם קיימים באוזניות, והעברתם כ-null הייתה נראית כחוסר. */
+function accCommercial(x) {
+  var c = x.commercial || {};
+  var out = {};
+  if (c.by_order === true && !c.not_in_store) out.by_order = true;
+  if (c.not_in_store) out.not_in_store = true;
+  if (c.price_note) out.price_note = c.price_note;
+  return out;
+}
+
 function heroBlock(d) {
   var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
@@ -548,7 +570,6 @@ ACC_CATS.forEach(function (cat) {
     acc: true, fitH: 'למי הדגם הזה מתאים', cat: cat };
   cdb.devices.forEach(function (x) {
     if (!x.page) return;
-    if (only && x.slug !== only) return;
     var p = x.page;
     var variants = (p.variants || []).map(function (s) {
       var v = cdb.devices.filter(function (y) { return y.slug === s; })[0];
@@ -559,11 +580,13 @@ ACC_CATS.forEach(function (cat) {
       console.error('✗ ' + x.slug + ': variant_labels חייב תווית לכל גרסה'); process.exit(1);
     }
     var view = { slug: x.slug, name: x.name, name_he: x.name_he, brand: x.brand, os: x.os, launch: x.launch,
-      status: x.status, spec: x.spec, spec_source: x.spec_source, commercial: {}, recommendation: {},
+      status: x.status, spec: x.spec, spec_source: x.spec_source, commercial: accCommercial(x), recommendation: {},
       editorial: p.editorial || {}, seo: p.seo || {}, media: p.media || {},
       variants: variants, variant_labels: p.variant_labels || [] };
-    writeDevicePage(view, K);
+    /* הרשימה ב-/phones/ נבנית מכל עמוד, גם כשמחוללים slug אחד. הכתיבה עצמה נשארת על ה-slug. */
     ACC_PAGES.push({ d: view, K: K, also: variants.map(function (v) { return v.slug; }) });
+    if (only && x.slug !== only) return;
+    writeDevicePage(view, K);
   });
 });
 
@@ -793,8 +816,7 @@ if (!only) {
  * ל-/phones/, ולכן הם רשומים שם, במקטע משלהם אחרי רשימת הטלפונים. מקטע נפרד ולא עוד פריטים
  * ברשימה: המונה שם אומר "23 דגמים" של טלפונים, ו-ItemList בסכימה נגזר מאותה רשימה.
  * עטוף בסימנים, ולכן הרצה שנייה מחליפה ולא מוסיפה. */
-if (!only) {
-  var hubP = path.join(PROTO, 'phones', 'index.html');
+var hubP = path.join(PROTO, 'phones', 'index.html');
   var hb = fs.readFileSync(hubP, 'utf8');
   hb = hb.replace(/\r?\n\r?\n<!-- gen-devices:more:start[\s\S]*?<!-- gen-devices:more:end -->/, '');
   if (ACC_PAGES.length) {
@@ -813,9 +835,8 @@ if (!only) {
       '  </div>\n</section>\n<!-- gen-devices:more:end -->';
     hb = hb.replace(devSec[0], devSec[0] + more);
   }
-  fs.writeFileSync(hubP, hb);
-  console.log('✓ /phones/: ' + ACC_PAGES.length + ' עמודי אוזניות ושעונים במקטע משלהם');
-}
+fs.writeFileSync(hubP, hb);
+console.log('✓ /phones/: ' + ACC_PAGES.length + ' עמודי אוזניות ושעונים במקטע משלהם');
 
 /* הכתובת נכנסה למעטפת, ועכשיו חייב לעלות גם שם המטמון. בלי זה מבקר חוזר נשאר עם המעטפת
  * הישנה שלו לנצח, כי activate מוחק רק מטמונים בשם אחר. זה היה צעד ידני, נשכח בהרצה של
