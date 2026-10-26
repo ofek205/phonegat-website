@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:fca4c092e38f885f */
+/* sha1:04392b2ba13b6d6e */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -768,7 +768,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var df=0,i,v=variants(tok);
     for(i=0;i<CONTENT.sections.length;i++){
       var s=CONTENT.sections[i],j;
-      for(j=0;j<v.length;j++)if(s.h.indexOf(v[j])>=0||s.t.indexOf(v[j])>=0){df++;break;}
+      for(j=0;j<v.length;j++)if(s.h.indexOf(v[j])>=0||s.t.indexOf(v[j])>=0||(s.a&&s.a.indexOf(v[j])>=0)){df++;break;}
     }
     /* +1 כדי שמילה שאינה בשום מקטע לא תיתן חלוקה באפס, ורצפה כדי שמילה נפוצה מאוד
        עדיין תתרום משהו */
@@ -818,7 +818,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var best=null,sec,score,hit;
     for(i=0;i<CONTENT.sections.length;i++){
       sec=CONTENT.sections[i];
-      var h=' '+sec.h.toLowerCase()+' ',b=' '+sec.t.toLowerCase()+' ';
+      /* a הוא כינוי חיפוש מהמחולל, לא חלק מהכותרת שמוקראת. */
+      var h=' '+sec.h.toLowerCase()+' '+(sec.a?sec.a.toLowerCase()+' ':''),b=' '+sec.t.toLowerCase()+' ';
       score=0;hit=0;
       for(j=0;j<toks.length;j++){
         var inH=re[j].test(h),inB=inH?false:re[j].test(b);
