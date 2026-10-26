@@ -2207,7 +2207,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap grid pg-has-phone">
     <div class="htext">
       <p class="eyebrow">שירות אישי כבר יותר מ-30 שנה</p>
-      <h1 id="hero-h"><span class="h1-brand">פון גת. </span>חנות טלפונים ומעבדה בקרית גת</h1>
+      <h1 id="hero-h"><span class="h1-brand">פון גת. </span>חנות טלפונים ומעבדה בקרית&nbsp;גת</h1>
       <p class="sub">מקום אחד למכשירים ולתיקונים. חנות סלולר עם שירות אישי, מהאנשים שמכירים אתכם כבר שנים.</p>
       <div class="hcta">
         <a class="btn btn-wa" href="https://wa.me/97286812050?text=%D7%94%D7%99%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8.%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%96%D7%A8%D7%94%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%94"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שלחו הודעה ב-WhatsApp</a>
@@ -4111,7 +4111,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var df=0,i,v=variants(tok);
     for(i=0;i<CONTENT.sections.length;i++){
       var s=CONTENT.sections[i],j;
-      for(j=0;j<v.length;j++)if(s.h.indexOf(v[j])>=0||s.t.indexOf(v[j])>=0){df++;break;}
+      for(j=0;j<v.length;j++)if(s.h.indexOf(v[j])>=0||s.t.indexOf(v[j])>=0||(s.a&&s.a.indexOf(v[j])>=0)){df++;break;}
     }
     /* +1 כדי שמילה שאינה בשום מקטע לא תיתן חלוקה באפס, ורצפה כדי שמילה נפוצה מאוד
        עדיין תתרום משהו */
@@ -4161,7 +4161,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var best=null,sec,score,hit;
     for(i=0;i<CONTENT.sections.length;i++){
       sec=CONTENT.sections[i];
-      var h=' '+sec.h.toLowerCase()+' ',b=' '+sec.t.toLowerCase()+' ';
+      /* a הוא כינוי חיפוש מהמחולל, לא חלק מהכותרת שמוקראת. */
+      var h=' '+sec.h.toLowerCase()+' '+(sec.a?sec.a.toLowerCase()+' ':''),b=' '+sec.t.toLowerCase()+' ';
       score=0;hit=0;
       for(j=0;j<toks.length;j++){
         var inH=re[j].test(h),inB=inH?false:re[j].test(b);
