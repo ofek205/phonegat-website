@@ -79,7 +79,13 @@ var db = JSON.parse(fs.readFileSync(path.join(PROTO, CAT ? CAT.file : 'devices.j
 if (!db._comparisons || !db._comparisons.pairs) { console.error('✗ אין _comparisons ב-devices.json'); process.exit(1); }
 if (!db._spec_groups || !db._spec_groups.groups) { console.error('✗ אין _spec_groups ב-devices.json'); process.exit(1); }
 var GROUPS = db._spec_groups.groups;
-var only = CAT ? null : process.argv[2];
+/* slug אחרי הדגלים, כדי ש--headphones airpods-pro-3-vs-airpods-max-2 יכתוב זוג אחד
+   ולא את כל עמודי האוזניות. בלי slug נכתבים כולם, כמו קודם. */
+var only = null;
+process.argv.slice(2).forEach(function (a) {
+  if (!a || a.charAt(0) === '-') return;
+  only = a;
+});
 var src = fs.readFileSync(path.join(PROTO, SOURCE), 'utf8');
 
 /* גם מירכאות: esc נכנס גם לתוך מאפיינים (data-cat, data-q, alt), ושם " סוגר את הערך */
@@ -568,10 +574,12 @@ function buildMain(p, a, b, d, openTag) {
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
       var nmOf = function (x) { return esc(nmHe(x)); };
-      var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
-        : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
+      /* אוזניות ושעון בלי by_order נשארים בשאלה, כי אין נתון מלאי. עם by_order, ובלי
+         ייחוס ובלי "עוד לא הגיע", אותו משפט כמו בטלפון. */
+      var stocked = !away.length && !order.length;
+      var lead = ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
         : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
-        : !away.length && !order.length ? 'שני המכשירים אצלנו בחנות.'
+        : stocked ? (CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?' : 'שני המכשירים אצלנו בחנות.')
         : !away.length ? (order.length === 2 ? 'שני הדגמים זמינים בהזמנה.' : nmOf(order[0]) + ' זמין בהזמנה.')
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';

@@ -414,6 +414,11 @@
       "url": "/phones/galaxy-z-fold8/",
       "name": "גלקסי Z Fold8",
       "status": "review"
+    },
+    {
+      "url": "/headphones/airpods-max-2/",
+      "name": "AirPods Max 2",
+      "status": "listed"
     }
   ]
 }
