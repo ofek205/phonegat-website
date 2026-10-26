@@ -1036,7 +1036,12 @@ function toolMain(openTag, index, order, pairCount) {
 }
 
 /* נעול עד 9.10.2026. ניסוי hero_cta נשאר כמו ב-main, והמחולל לא כותב את שני העמודים.
-   להסיר יחד עם החריג ב-preflight.js כשהם עולים. */
+   להסיר יחד עם החריג ב-preflight.js כשהם עולים.
+   26.10.2026: אופק אישר לתקן בעמוד אייפון 17 פרו מול פרו מקס רק את משפטי המלאי
+   ואת שעות הפתיחה. התיקון יושב ב-HTML, ו-bottom_line של הזוג ב-devices.json
+   תואם את פסקת השורה התחתונה. המחולל עדיין לא כותב את העמוד, כדי לא לדרוס
+   את תגיות הראש ואת ניסוי ה-hero_cta. השער ב-preflight (APPROVED_17) מתיר
+   רק את השורות האלה. גלקסי S26 פלוס מול S26 נשאר זהה ל-main. */
 var LOCKED_UNTIL_OCT9 = {
   'galaxy-s26-plus-vs-galaxy-s26': 1,
   'iphone-17-pro-vs-iphone-17-pro-max': 1
