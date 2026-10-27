@@ -50,6 +50,13 @@ var STATUS = {
   weak: 'שמועה חלשה',
   unknown: 'לא ידוע'
 };
+/* בלי brand בדאטה היצרן הוא אפל, כדי שעמודי האייפון הקיימים יישארו זהים תו בתו. */
+var MAKER_HE = { Apple: 'אפל', Samsung: 'סמסונג' };
+function makerHe(pg) {
+  var b = pg.brand || 'Apple';
+  if (!MAKER_HE[b]) fail((pg.slug || '?') + ': brand לא מוכר, ' + b);
+  return MAKER_HE[b] || 'אפל';
+}
 
 /* ---------------------------------------------------------------- אימות */
 var ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -68,6 +75,7 @@ data.pages.forEach(function (pg) {
     if (!pg[k]) fail(W + ': חסר ' + k);
   });
   if (pg.kind !== 'rumor' && pg.kind !== 'announced') fail(W + ': kind לא מוכר, ' + pg.kind);
+  if (pg.brand && !MAKER_HE[pg.brand]) fail(W + ': brand לא מוכר, ' + pg.brand);
   if (pg.checked && (!ISO.test(pg.checked) || pg.checked > today)) fail(W + ': checked לא תקין או עתידי');
   if (pg.title && pg.title.length > 60) fail(W + ': title של ' + pg.title.length + ' תווים, מעל 60');
   (pg.official || []).forEach(function (o, i) { checkSrc(W + '.official[' + i + ']', o.src, true); });
@@ -110,7 +118,7 @@ function srcHtml(s) {
 
 var DISCLAIM_RUMOR = function (pg) {
   return [
-    'כל מה שכתוב בעמוד הזה על ' + pg.name_he + ' הוא שמועה: דיווחים של אנליסטים, של כלי תקשורת ושל מדליפים, שאפל לא אישרה. חלק מהן יתבררו כנכונות וחלק לא, וכבר קרה ששמועה נפוצה לא התממשה. ליד כל שמועה כתוב מי אמר אותה ומתי, כדי שתוכלו לשפוט בעצמכם.',
+    'כל מה שכתוב בעמוד הזה על ' + pg.name_he + ' הוא שמועה: דיווחים של אנליסטים, של כלי תקשורת ושל מדליפים, ש' + makerHe(pg) + ' לא אישרה. חלק מהן יתבררו כנכונות וחלק לא, וכבר קרה ששמועה נפוצה לא התממשה. ליד כל שמועה כתוב מי אמר אותה ומתי, כדי שתוכלו לשפוט בעצמכם.',
     'אנחנו לא מתחייבים לשום דבר לגבי הדגם הזה: לא למועד, לא למפרט, לא למחיר ולא לזמינות אצלנו. העמוד הזה אינו הצעה למכירה ואינו הזמנה מוקדמת.'
   ];
 };
@@ -120,7 +128,9 @@ var DISCLAIM_ANNOUNCED = function (pg) {
     'אנחנו לא מתחייבים לשום דבר לגבי הדגם הזה: לא למועד, לא למחיר ולא לזמינות אצלנו. העמוד הזה אינו הצעה למכירה ואינו הזמנה מוקדמת.'
   ];
 };
-var FINE = 'המידע בעמוד נאסף מפרסומים פומביים ומוצג כפי שפורסם במקור. מה שמסומן כשמועה אינו מאומת ואינו מידע רשמי של אפל, וכל פרט עשוי להשתנות. אין בעמוד התחייבות מכל סוג, וההחלטה אם לקנות עכשיו או לחכות היא שלכם.';
+function fine(pg) {
+  return 'המידע בעמוד נאסף מפרסומים פומביים ומוצג כפי שפורסם במקור. מה שמסומן כשמועה אינו מאומת ואינו מידע רשמי של ' + makerHe(pg) + ', וכל פרט עשוי להשתנות. אין בעמוד התחייבות מכל סוג, וההחלטה אם לקנות עכשיו או לחכות היא שלכם.';
+}
 
 function section(id, h, inner) {
   return '<section class="block" id="' + id + '" aria-labelledby="h-' + id + '">\n  <div class="wrap box">\n' +
@@ -133,6 +143,7 @@ function linksHtml(ls) {
 
 function buildMain(pg) {
   var rumor = pg.kind === 'rumor';
+  var mk = makerHe(pg);
   var o = '<main id="main" role="main" tabindex="-1">\n' +
     '<!-- gen-upcoming: נכתב מ-.claude/data/upcoming.json. אל תערוך כאן, ההרצה הבאה תדרוס. -->\n\n';
 
@@ -151,7 +162,7 @@ function buildMain(pg) {
     '      <h2 id="rules-h">לפני שקוראים</h2>\n' +
     (rumor ? DISCLAIM_RUMOR(pg) : DISCLAIM_ANNOUNCED(pg)).map(function (p) { return '      <p>' + esc(p) + '</p>\n'; }).join('') +
     (rumor ? '      <ol>\n' +
-      '        <li><b>רשמי, לפי אפל:</b> אפל פרסמה את זה.</li>\n' +
+      '        <li><b>רשמי, לפי ' + mk + ':</b> ' + mk + ' פרסמה את זה.</li>\n' +
       '        <li><b>שמועה:</b> דיווח של אנליסט, כלי תקשורת או מדליף, שלא אושר.</li>\n' +
       '        <li><b>שמועות סותרות:</b> שני מקורות טוענים דברים שונים על אותו נושא.</li>\n' +
       '        <li><b>שמועה חלשה:</b> מקור בלי היסטוריה מבוססת, לפי כלי התקשורת שציטט אותו.</li>\n' +
@@ -207,7 +218,7 @@ function buildMain(pg) {
       (pg.rumors_lead ? '    <p class="lead">' + esc(pg.rumors_lead) + '</p>\n' : '') +
       '    <div class="cmp-wrap" tabindex="0" role="region" aria-labelledby="h-rumors">\n' +
       '      <table class="cmp">\n' +
-      '        <caption>שמועות על ' + esc(pg.name) + ', עם המקור של כל אחת. אף אחת מהן לא אושרה על ידי אפל.</caption>\n' +
+      '        <caption>שמועות על ' + esc(pg.name) + ', עם המקור של כל אחת. אף אחת מהן לא אושרה על ידי ' + esc(mk) + '.</caption>\n' +
       '        <thead><tr><th scope="col">נושא</th><th scope="col">מה נטען</th><th scope="col">מי אמר ומתי</th><th scope="col">מצב</th></tr></thead>\n        <tbody>\n' +
       pg.rumors.map(function (r) {
         return '          <tr><th scope="row">' + esc(r.topic) + '</th><td>' + esc(r.claim) + (r.note ? ' ' + esc(r.note) : '') +
@@ -263,7 +274,7 @@ function buildMain(pg) {
     CM.callLine('      ') +
     '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
     '    </div>\n' +
-    '    <p class="fine">' + esc(FINE) + '</p>\n' +
+    '    <p class="fine">' + esc(fine(pg)) + '</p>\n' +
     '  </div>\n</section>\n\n</main>';
   return o;
 }
@@ -378,7 +389,7 @@ data.pages.forEach(function (pg) {
     '<section class="block" id="coming" aria-labelledby="h-coming">',
     '  <div class="wrap box">',
     '    <h2 id="h-coming">הדגמים שבדרך</h2>',
-    '    <p class="lead">לכל דגם של אפל שהוכרז או שמדברים עליו, ועוד לא בחנויות, יש עמוד נפרד. בעמודי השמועות כל טענה מופיעה עם המקור והתאריך שלה ובסימון ברור שאינה מאומתת. אף אחד מהעמודים האלה אינו התחייבות מצדנו.</p>',
+    '    <p class="lead">לכל דגם שהוכרז או שמדברים עליו, ועוד לא בחנויות, יש עמוד נפרד. בעמודי השמועות כל טענה מופיעה עם המקור והתאריך שלה ובסימון ברור שאינה מאומתת. אף אחד מהעמודים האלה אינו התחייבות מצדנו.</p>',
     '    <ul>'
   ].concat(data.pages.map(function (pg) {
     return '      <li><a href="/upcoming-phones/' + pg.slug + '/">' + esc(pg.name_he) + '</a>: ' + LABEL[pg.kind] + '</li>';
