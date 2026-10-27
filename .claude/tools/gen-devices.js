@@ -776,7 +776,22 @@ function writeDevicePage(d, K) {
       console.error('✗ ' + d.slug + ': לא נמצא עוגן CSS של .hcta'); process.exit(1);
     }
     if (h.indexOf('.cta-line{') < 0) {
-      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS);
+      var orderLayout = '';
+      /* רק by_order. הקרוסלה נושאת כלל .btn מאוחר שדורס את .btn-sm ואת .btn-hero,
+         ולכן בעמודי המדף כפתור ההדר הוא 139 על 44. אחרי שהקרוסלה יורדת נשאר
+         .btn-sm, 124 על 36. מחזירים את כפתור ההדר ואת כפתורי ההירו לגודל של
+         עמוד מדף, בלי להחזיר את הקרוסלה ובלי לגעת בעמוד שיש לו hero_cta ואינו
+         by_order. max-width של .sub משאיר את משפט ההזמנה ליד הכפתור הירוק
+         והחיוג יורד לשורה לבד. שורה מלאה מחזירה את שניהם למרכז. */
+      if (d.commercial && d.commercial.by_order && !d.commercial.not_in_store && !d.commercial.discontinued) {
+        /* אותו סוף שורה כמו התבנית. \n לבד הופך את שורת ה-.meta מ-CRLF ל-LF,
+           וזו שורה שלא השתנתה בתוכן. */
+        var nl = h.indexOf('\r\n') >= 0 ? '\r\n' : '\n';
+        orderLayout = nl + 'header.site .hicons .btn.btn-sm{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .btn.btn-hero{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .cta-line{flex-basis:100%;width:100%;max-width:none}';
+      }
+      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS + orderLayout);
     }
   }
 

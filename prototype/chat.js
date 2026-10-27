@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:96f02a3f9895d7ca */
+/* sha1:f67f66abd201c489 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -690,7 +690,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
       return true;
     }
-    var field=findField(text);if(!field)return false;
+    var field=findField(text);
+    /* דגם by_order בלי שדה מפרט. עונים שהוא זמין בהזמנה, בלי מחיר ובלי מלאי.
+       בקשת קנייה נשארת בזרימה: גם "אני רוצה לקנות אייפון 17", וגם Fold8,
+       שהזרימה שלו כבר נסגרת במשפט ההזמנה. */
+    if(!field&&devs.length===1&&devs[0].by_order&&!/לקנות|לרכוש|קונה/.test(text)){
+      var od=devs[0];
+      fails=0;ctx.device=od.name_he;ctx.slug=od.slug;
+      track('chat_device_spec',{slug:od.slug,field:'by_order'});
+      var olink=devLink(od),osug=[];
+      if(olink)osug.push([olink.label,function(){location.href=olink.href;}]);
+      botReply(od.name_he+' זמין בהזמנה. שלחו הודעה ב-WhatsApp.',{sug:osug});
+      return true;
+    }
+    if(!field)return false;
     if(!devs.length){
       /* יש שאלה על שדה אבל אין דגם מזוהה. מכריזים "לא זיהיתי דגם" **רק** כשבאמת היה
          בטקסט משהו בצורת דגם. אחרת זו שאלת תוכן ולא שאלת דגם, ושכבת התוכן תענה עליה.
