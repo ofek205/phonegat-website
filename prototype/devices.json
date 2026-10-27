@@ -12514,7 +12514,7 @@
      "src": "https://www.samsung.com/il/smartphones/galaxy-z-fold8/specs/",
      "kind": "אתר היצרן, גרסה ישראלית",
      "at": "2026-10-18",
-     "note": "טבלת המפרט נטענת ב-JavaScript מ-searchapi.samsung.com, siteCode=il, דגמים SM-F971BLVBMEC ו-SM-F971BLVCMEC ו-SM-F971BLVNMEC. SM-F971B ו-SM-F971B/DS הם קוד המשפחה שמכשיר עשוי להציג בהגדרות. הצבעים ומספרי הדגם גם ב-HTML הסטטי של העמוד."
+     "note": "טבלת המפרט נטענת ב-JavaScript מ-searchapi.samsung.com, siteCode=il, דגמים SM-F971BLVBMEC ו-SM-F971BLVCMEC ו-SM-F971BLVNMEC. SM-F971B הוא קוד המשפחה שמכשיר עשוי להציג בהגדרות. צורה עם סיומת DS מגיעה לאותו קוד אחרי שהאשף מוריד אותה. הצבעים ומספרי הדגם גם ב-HTML הסטטי של העמוד."
     },
     "launch_year": {
      "src": null,
@@ -12615,7 +12615,7 @@
      "ירוק"
     ],
     "box_contents": null,
-    "model_numbers": "SM-F971B, SM-F971B/DS, SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
+    "model_numbers": "SM-F971B, SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
     "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
     "security_updates": "עדכוני אבטחה עד 31 ביולי 2033"
    },

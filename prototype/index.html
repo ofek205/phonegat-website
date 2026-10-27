@@ -3716,6 +3716,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi|google|oneplus|nothing phone)\s+/,'');
     if(me!==en&&ok(me))t.push(me);
+    /* כינויים קצרים רק ל-Fold8. "fold8" אינו "fold7" ואינו "flip", ו"פולד 8" אינו פליפ.
+       אולטרה שאחריהם נפסל ב-findDevices, כי Ultra הוא דגם אחר. */
+    if(d.slug==='galaxy-z-fold8'){
+      ['fold8','fold 8','פולד 8'].forEach(function(a){if(ok(a)&&t.indexOf(a)<0)t.push(a);});
+    }
     return t.filter(function(x,j,a){return x&&a.indexOf(x)===j;});
   }
   /* chat_device_unmatched קיים כדי למדוד ביקוש לדגמים שאיננו מחזיקים, ולכן הוא חייב לדעת
@@ -3749,6 +3754,15 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     return new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'([^'+WORDCH+']|$)').test(hay);
   }
   function countSub(hay,tok){var n=0,i=0;while((i=hay.indexOf(tok,i))>=0){n++;i+=tok.length;}return n;}
+  /* Fold8 Ultra אינו Fold8. הטוקן של Fold8 הוא תחילית של השם הארוך, ובלעדי
+     הספירה הזאת "Galaxy Z Fold8 Ultra" ו"גלקסי Z Fold8 אולטרה" נענים כ-Fold8.
+     אחרי הנרמול הרווח יכול להיות אפס או יותר, והמילה באנגלית או בעברית. */
+  function ultraTail(hay,tok){
+    var esc=tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    var re=new RegExp('(?:^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'\\s*(?:[ולבמהשכ])?(?:ultra|אולטרה)(?=[^'+WORDCH+']|$)','g');
+    var n=0;while(re.exec(hay))n++;
+    return n;
+  }
   /* מחזיר את הדגמים שהוזכרו, בסדר ההופעה במשפט.
      ההכלה נפתרת בספירה ולא בפסילה: "אחריות על אייפון 17 פרו" מזכיר את הטוקן "אייפון 17"
      פעם אחת, וכולה מוסברת על ידי "אייפון 17 פרו", ולכן אייפון 17 אינו אזכור נפרד.
@@ -3768,6 +3782,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     hits.forEach(function(h){
       var left=countSub(hay,h.tok),i;
       for(i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)left-=countSub(hay,used[i]);
+      if(h.d.slug==='galaxy-z-fold8')left-=ultraTail(hay,h.tok);
       if(left<=0)return;
       used.push(h.tok);out.push(h);
     });
@@ -4039,8 +4054,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     var field=findField(text);
     /* דגם by_order בלי שדה מפרט. עונים שהוא זמין בהזמנה, בלי מחיר ובלי מלאי.
-       בקשת קנייה נשארת בזרימה: גם "אני רוצה לקנות אייפון 17", וגם Fold8,
-       שהזרימה שלו כבר נסגרת במשפט ההזמנה. */
+       בקשת קנייה נשארת בזרימה: "אני רוצה לקנות אייפון 17", וגם Fold8 בשם המלא
+       או בכינוי הקצר. Ultra שאחרי Fold8 לא מגיע לכאן, כי findDevices מוריד אותו. */
     if(!field&&devs.length===1&&devs[0].by_order&&!/לקנות|לרכוש|קונה/.test(text)){
       var od=devs[0];
       fails=0;ctx.device=od.name_he;ctx.slug=od.slug;

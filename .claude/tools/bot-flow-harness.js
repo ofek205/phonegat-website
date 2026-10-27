@@ -73,7 +73,15 @@ function D(){
  * שנשלחת מיד אחרי פתיחת הצ'אט מגיעה בזמן ש-factsState עדיין 'loading'. זה בדיוק המצב
  * שנמדד בדפדפן על עמוד השוואה והחזיר "לא בטוח שהבנתי" לשאלה שיש לה תשובה.
  */
-function boot(slowTicks, pathname, DateImpl) {
+function boot(slowTicks, pathname, DateImpl, pack) {
+  var useFacts = pack && pack.facts ? pack.facts : facts;
+  var useContent = pack && pack.content ? pack.content : content;
+  var useCode = code;
+  if (pack && pack.html) {
+    var hs = pack.html, ha = hs.indexOf('/* bot:js:start'), hb = hs.indexOf('/* bot:js:end */');
+    if (ha < 0 || hb < 0) { console.error('✗ bot:js חסר בעותק ההשוואה'); process.exit(1); }
+    useCode = hs.slice(ha, hb);
+  }
 var pending = [], ticksLeft = slowTicks || 0, armed = false, sent = [];
 var els = {};
 ['pgFab', 'pgPanel', 'pgMsgs', 'pgChips', 'pgInput', 'pgSend', 'pgClose', 'pgFabWrap', 'pgFabLabel', 'pgRefresh', 'pgStatus', 'pgStatusTxt'].forEach(function (id) { els[id] = El(id); });
@@ -110,7 +118,7 @@ var sandbox = {
       try { sent.push(JSON.parse(opt.body)); } catch (e) { sent.push({ _parse: 'נכשל' }); }
       return P({ ok: true, json: function () { return P({ success: true }); } });
     }
-    var data = /bot-facts/.test(url) ? facts : (/bot-content/.test(url) ? content : null);
+    var data = /bot-facts/.test(url) ? useFacts : (/bot-content/.test(url) ? useContent : null);
     var res = { ok: !!data, json: function () { return P(data); } };
     if (!slowTicks) return P(res);
     var d = D(); pending.push(function () { d.resolve(res); }); return d.promise;
@@ -123,7 +131,7 @@ var sandbox = {
 };
 sandbox.window = sandbox;
 var ctx = vm.createContext(sandbox);
-try { new vm.Script(code, { filename: 'index.html:bot-js' }).runInContext(ctx); }
+try { new vm.Script(useCode, { filename: 'index.html:bot-js' }).runInContext(ctx); }
 catch (e) { console.error('✗ אזור bot:js לא נטען: ' + e.message); process.exit(1); }
 
 /* פתיחת הפאנל היא מה שמפעיל את loadFacts ואת loadContent, ועם fetch סינכרוני
@@ -248,7 +256,19 @@ var CASES = [
   ['כמה הסוללה של אַיְיפוֹן 17', 'chat_device_spec'],
   ['כמה הסוללה של איפון 17', 'chat_device_spec'],
   /* שם שנכתב בקטלוג עם גרש, "נאת׳ינג פון 3a פרו", ונשאל בלעדיו. נמצא דרך טוקן הדגם. */
-  ['כמה הסוללה של נאתינג פון 3a פרו', 'chat_device_spec']
+  ['כמה הסוללה של נאתינג פון 3a פרו', 'chat_device_spec'],
+  /* Fold8 בלי שדה. Ultra נשאר לא מזוהה, כמו ב-main. קנייה בכינוי קצר נשארת זרימה. */
+  ['Galaxy Z Fold8', 'chat_device_spec:by_order'],
+  ['גלקסי Z Fold8', 'chat_device_spec:by_order'],
+  ['Fold8', 'chat_device_spec:by_order'],
+  ['fold 8', 'chat_device_spec:by_order'],
+  ['פולד 8', 'chat_device_spec:by_order'],
+  ['Galaxy Z Fold8 Ultra', 'chat_device_unmatched'],
+  ['גלקסי Z Fold8 אולטרה', 'chat_device_unmatched'],
+  ['Galaxy Z Fold8Ultra', 'chat_device_unmatched'],
+  ['fold8 ultra', 'chat_device_unmatched'],
+  ['אני רוצה לקנות Fold8', 'chat_flow:buy'],
+  ['אני רוצה לקנות גלקסי Z Fold8', 'chat_flow:buy']
 ];
 /* רצף רב-שלבי, כי הבאגים כאן לא נראים בשאלה בודדת. שלושתם נמצאו כך:
    יצרן שהוקלד ביד לא נפתר לשם האנגלי ולכן שלב הדגם נדלג בשקט, הקלדה בשלב הסדרה חזרה
@@ -561,6 +581,66 @@ if (orderFlowFails.length) {
   console.log('  ✗ זרימת הזמנה של Fold8:');
   orderFlowFails.forEach(function (m) { console.log('     ' + m); });
 } else console.log('  ✓ זרימת הזמנה של Fold8: בלי תשלומים ובלי העברת נתונים');
+
+/* תשובות שלא אמורות לזוז מול origin/main: Ultra, ושאר הדגמים.
+   כינויי Fold8 עצמם כן משתנים, והם נבדקים למעלה מול האירוע הצפוי. */
+var mainParityFails = [];
+(function () {
+  var cp = require('child_process');
+  function gitFile(p) {
+    return cp.execSync('git show origin/main:' + p, { encoding: 'utf8', cwd: ROOT, maxBuffer: 20 * 1024 * 1024 });
+  }
+  var mainPack;
+  try {
+    mainPack = {
+      html: gitFile('prototype/index.html'),
+      facts: JSON.parse(gitFile('prototype/bot-facts.json')),
+      content: JSON.parse(gitFile('prototype/bot-content.json'))
+    };
+  } catch (e) {
+    mainParityFails.push('לא נטען העותק מ-main: ' + e.message);
+    return;
+  }
+  function squeeze(s) { return String(s || '').replace(/\s+/g, ' ').trim(); }
+  function snap(pack, q) {
+    var S = boot(0, '/', null, pack);
+    return { ev: S.ask(q), bot: squeeze(S.lastBot()) };
+  }
+  var changed = {
+    'Galaxy Z Fold8': 1, 'גלקסי Z Fold8': 1, 'Fold8': 1, 'fold 8': 1, 'פולד 8': 1,
+    'אני רוצה לקנות Fold8': 1, 'אני רוצה לקנות גלקסי Z Fold8': 1
+  };
+  var seen = {}, qs = [];
+  function addQ(q) { if (!seen[q] && !changed[q]) { seen[q] = 1; qs.push(q); } }
+  CASES.forEach(function (c) { addQ(c[0]); });
+  ['Fold7', 'Fold', 'Flip', 'Flip8', 'Galaxy Z Fold7', 'Galaxy Z Flip7', 'Galaxy Z Flip8',
+   'Galaxy S26 Ultra', 'Galaxy S26', 'iPhone 17', 'אני רוצה לקנות אייפון 17',
+   'מה הסוללה של גלקסי S26 אולטרה', 'מה הסוללה של אייפון 17', 'יש לכם Galaxy S26',
+   'Z Fold8 Ultra', 'galaxy z fold8  ultra'].forEach(addQ);
+  qs.forEach(function (q) {
+    var a = snap(null, q), b = snap(mainPack, q);
+    if (a.ev !== b.ev || a.bot !== b.bot)
+      mainParityFails.push('"' + q + '"\n       עכשיו: ' + a.ev + ' | ' + a.bot.slice(0, 90) + '\n       main:  ' + b.ev + ' | ' + b.bot.slice(0, 90));
+  });
+  /* הכינויים החדשים: טקסט הבועה, לא רק שם האירוע. */
+  [['Fold8', 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.'],
+   ['fold 8', 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.'],
+   ['פולד 8', 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.'],
+   ['Galaxy Z Fold8', 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.'],
+   ['גלקסי Z Fold8', 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.']
+  ].forEach(function (c) {
+    var a = snap(null, c[0]);
+    if (a.bot !== c[1]) mainParityFails.push('בועת "' + c[0] + '": ' + a.bot.slice(0, 120));
+    if (/מחיר|מלאי|במבצע/.test(a.bot)) mainParityFails.push('"' + c[0] + '" נושא מחיר או מלאי');
+  });
+  var buy = snap(null, 'אני רוצה לקנות Fold8');
+  if (buy.ev.indexOf('chat_flow:buy') < 0) mainParityFails.push('קניית Fold8 לא נכנסה לזרימה: ' + buy.ev);
+  if (buy.bot.indexOf('זמין בהזמנה') >= 0) mainParityFails.push('קניית Fold8 נענתה במשפט ההזמנה');
+})();
+if (mainParityFails.length) {
+  console.log('  ✗ תשובות מול main:');
+  mainParityFails.slice(0, 8).forEach(function (m) { console.log('     ' + m); });
+} else console.log('  ✓ Ultra ושאר הדגמים זהים ל-main, וכינויי Fold8 עונים הזמנה בלי מחיר');
 console.log('');
 if (raceFail) { console.log('  ✗ ' + raceFail); } else { console.log('  ✓ שאלה שנשלחת לפני שהנתונים נטענו ממתינה ונענית'); }
 console.log('');
@@ -573,7 +653,7 @@ console.log('');
 ruleRows.forEach(function (r) { console.log('  ' + (r.ok ? '✓' : '✗') + ' ' + r.n); });
 if (ruleFails.length) ruleFails.forEach(function (m) { console.log('      ' + m); });
 console.log('');
-if (fails.length || seqFails.length || orderFlowFails.length || raceFail || implFails.length || clockFail || ruleFails.length) {
+if (fails.length || seqFails.length || orderFlowFails.length || mainParityFails.length || raceFail || implFails.length || clockFail || ruleFails.length) {
   console.log('  ' + (fails.length + implFails.length + ruleFails.length + (raceFail ? 1 : 0) + (clockFail ? 1 : 0)) + ' כשלים\n');
   process.exit(1);
 }

@@ -2260,9 +2260,7 @@ if (classFails.length) {
   catch (e) { bad('devices.json שבור, אי אפשר לבדוק את מפת ה-SM'); return; }
   var body = objectAfter(guide, 'var SM=');
   if (!body) { bad('אשף הדגם: חסרה מפת SM'); return; }
-  /* SM-F971B/DS הוא קוד שהמכשיר מציג. הרגקס הישן נעצר לפני הלוכסן,
-     אז המפתח במפה לא נתפס והקוד ב-devices.json נספר כ-SM-F971B. */
-  var map = {}, rm = /'(SM-[A-Z0-9]+(?:\/[A-Z0-9]+)?)'\s*:\s*'([^']*)'/g, mm;
+  var map = {}, rm = /'(SM-[A-Z0-9]+)'\s*:\s*'([^']*)'/g, mm;
   while ((mm = rm.exec(body))) map[mm[1]] = mm[2];
   function smFrom(v) {
     var s = '';
@@ -2270,7 +2268,7 @@ if (classFails.length) {
     if (typeof v === 'string') s = v;
     else if (Array.isArray(v)) s = v.join(' ');
     else return [];
-    var out = [], re = /SM-[A-Z0-9]+(?:\/[A-Z0-9]+)?/g, m;
+    var out = [], re = /SM-[A-Z0-9]+/g, m;
     var up = s.toUpperCase();
     while ((m = re.exec(up))) out.push(m[0]);
     return out;

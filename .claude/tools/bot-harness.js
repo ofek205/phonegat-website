@@ -286,6 +286,25 @@ expectOne('אחריות על גלקסי A56', 'galaxy-a56');
 expectOne('מה הסוללה של אייפון 17 פרו מקס', 'iphone-17-pro-max');
 expectOne('galaxy-a07 אחריות', 'galaxy-a07');
 expectOne('כמה שוקל pixel 10', 'pixel-10');
+/* Fold8 בכינוי קצר, ו-Ultra שאחריו אינו Fold8. Fold7 ו-Flip נשארים כמו שהיו. */
+expectOne('Galaxy Z Fold8', 'galaxy-z-fold8');
+expectOne('גלקסי Z Fold8', 'galaxy-z-fold8');
+expectOne('Fold8', 'galaxy-z-fold8');
+expectOne('fold 8', 'galaxy-z-fold8');
+expectOne('פולד 8', 'galaxy-z-fold8');
+expectNone('Galaxy Z Fold8 Ultra');
+expectNone('גלקסי Z Fold8 אולטרה');
+expectNone('Galaxy Z Fold8Ultra');
+expectNone('fold8 ultra');
+expectNone('Fold7');
+expectNone('Fold');
+expectNone('Flip');
+expectNone('Flip8');
+expectOne('Galaxy Z Fold7', 'galaxy-z-fold7');
+expectOne('Galaxy Z Flip7', 'galaxy-z-flip7');
+expectOne('Galaxy S26 Ultra', 'galaxy-s26-ultra');
+expectOne('Galaxy S26', 'galaxy-s26');
+expectOne('iPhone 17', 'iphone-17');
 
 /* ---------- זיהוי שדה ---------- */
 var fFails = [];
@@ -357,6 +376,32 @@ var orderFails = [];
   if (!sandbox._orderStorage) orderFails.push('הזרימה לא המשיכה לשלב הנפח');
   var step = tracked.filter(function (t) { return t.event === 'chat_buy_step' && t.data && t.data.step === 'model'; })[0];
   if (!step) orderFails.push('chat_buy_step model לא נורה');
+  /* שם מלא בלי שדה: תשובת הזמנה, בלי מחיר ובלי מלאי. Ultra לא נענה כ-Fold8.
+     בקשת קנייה, גם בכינוי קצר, לא נתפסת כאן וממשיכה לזרימה. */
+  if (!sandbox.deviceAnswer) { orderFails.push('deviceAnswer לא נטען'); return; }
+  function orderReply(q) {
+    replies.length = 0;
+    var hit = sandbox.deviceAnswer(q);
+    return { hit: hit, text: replies.length ? replies[0].text : '' };
+  }
+  var bare = orderReply('Galaxy Z Fold8');
+  if (!bare.hit || bare.text !== 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.')
+    orderFails.push('שם מלא: ' + JSON.stringify(bare));
+  ['Fold8', 'fold 8', 'פולד 8', 'גלקסי Z Fold8'].forEach(function (q) {
+    var r = orderReply(q);
+    if (!r.hit || r.text !== 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.')
+      orderFails.push('"' + q + '": ' + JSON.stringify(r));
+  });
+  ['Galaxy Z Fold8 Ultra', 'גלקסי Z Fold8 אולטרה', 'Z Fold8 Ultra', 'fold8 ultra', 'Galaxy Z Fold8Ultra'].forEach(function (q) {
+    var r = orderReply(q);
+    if (r.hit || r.text) orderFails.push('Ultra נענה כ-Fold8 "' + q + '": ' + r.text.slice(0, 80));
+  });
+  ['אני רוצה לקנות Fold8', 'אני רוצה לקנות גלקסי Z Fold8', 'אני רוצה לקנות אייפון 17'].forEach(function (q) {
+    var r = orderReply(q);
+    if (r.hit || r.text) orderFails.push('קנייה נתפסה "' + q + '": ' + r.text.slice(0, 80));
+  });
+  var shelf = orderReply('Galaxy S26 Ultra');
+  if (shelf.hit || shelf.text) orderFails.push('S26 Ultra קיבל תשובת הזמנה: ' + shelf.text.slice(0, 80));
 })();
 
 /* ---------- דוח ---------- */
