@@ -33,9 +33,10 @@ var T = require(path.join(__dirname, 'lib', 'traits.js'));
 var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
 
 /* רק מה שאנחנו מוכרים. מכשיר ייחוס אינו בקטלוג, ואין לו עמוד לקשר אליו. */
-/* not_in_store ו-discontinued מוחרגים: הטבלאות אומרות "הדגמים שאנחנו מוכרים". דגם שהוכרז
-   ועוד לא הגיע, או דגם שיצא מהמכירה, אינו כזה. עד 24.9.2026 אייפון 18 פרו נספר בהן. */
-var SOLD = db.devices.filter(function (d) { return d.status !== 'reference' && d.status !== 'draft' && !(d.commercial && d.commercial.not_in_store) && !(d.commercial && d.commercial.discontinued); })
+/* not_in_store, discontinued ו-by_order מוחרגים: הטבלאות אומרות "הדגמים שאנחנו מוכרים".
+   דגם שהוכרז ועוד לא הגיע, דגם שיצא מהמכירה, או דגם שמזמינים ללקוח, אינו כזה.
+   עד 24.9.2026 אייפון 18 פרו נספר בהן. */
+var SOLD = db.devices.filter(function (d) { return d.status !== 'reference' && d.status !== 'draft' && !(d.commercial && (d.commercial.not_in_store || d.commercial.discontinued || d.commercial.by_order)); })
   .sort(T.newestFirst);
 
 var esc = function (s) {

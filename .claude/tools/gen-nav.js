@@ -26,7 +26,7 @@ var db = JSON.parse(fs.readFileSync(path.join(PROTO, 'devices.json'), 'utf8'));
  * אינו במאגר בכוונה. דגם שאינו כאן עוצר את המחולל. */
 var DEVICE_ORDER = {
   'אייפון': ['iphone-18-pro-max', 'iphone-18-pro', 'iphone-17-pro-max', 'iphone-17-pro', 'iphone-17', 'iphone-17e', 'iphone-16'],
-  'גלקסי': ['galaxy-s26-ultra', 'galaxy-s26-plus', 'galaxy-s26', 'galaxy-s25-fe', 'galaxy-a57', 'galaxy-a56', 'galaxy-a37', 'galaxy-a36', 'galaxy-a27', 'galaxy-a17', 'galaxy-a07'],
+  'גלקסי': ['galaxy-s26-ultra', 'galaxy-s26-plus', 'galaxy-s26', 'galaxy-z-fold8', 'galaxy-s25-fe', 'galaxy-a57', 'galaxy-a56', 'galaxy-a37', 'galaxy-a36', 'galaxy-a27', 'galaxy-a17', 'galaxy-a07'],
   'שיאומי': ['xiaomi-15', 'redmi-note-15-pro', 'redmi-note-15', 'redmi-note-14-pro', 'redmi-note-14']
 };
 
@@ -426,26 +426,48 @@ function put(h, blockRe, block, anchor, rel, what) {
   return { h: h.slice(0, at) + block.split('\n').join(eol) + eol + ind + h.slice(at), added: 1 };
 }
 
+/* שני עמודי ההשוואה נעולים מול origin/main, כולל הניווט. קישור Fold8 שם
+   שובר את השער. אותו זוג כמו LOCKED_UNTIL_OCT9 ב-gen-compare.js. */
+var LOCKED = {
+  'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
+  'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
+};
+
+function eolOf(chunk) { return chunk.indexOf('\r\n') >= 0 ? '\r\n' : '\n'; }
+/* הבלוק החדש ב-LF. מחזירים את סוף השורה של הבלוק שכבר בעמוד, ואת המקף
+   שכבר כתוב בהערת המחולל. בלי זה הרצה מחליפה CRLF ב-LF ומחליפה מקף רגיל
+   במקף ארוך בעמוד שההערה שלו נשארה עם מקף, וזה דיף בלי שינוי ניווט. */
+function fitBlock(old, block) {
+  var eol = eolOf(old);
+  var next = block.split('\n').join(eol);
+  if (old.indexOf('נפתח - ') >= 0) next = next.replace(/נפתח — /g, 'נפתח - ');
+  else if (old.indexOf('נפתח — ') >= 0) next = next.replace(/נפתח - /g, 'נפתח — ');
+  return next;
+}
+
 var stats = { nav: 0, css: 0, js: 0, skipped: [] };
 var themes = {};
 
 pages().forEach(function (rel) {
   var f = path.join(PROTO, rel);
-  var h = fs.readFileSync(f, 'utf8');
+  if (LOCKED[rel]) { stats.skipped.push(rel + ' (נעול)'); return; }
+  var original = fs.readFileSync(f, 'utf8');
+  var h = original;
   if (!NAV_RE.test(h)) { stats.skipped.push(rel); return; }
 
   var selfHref = '/' + rel.replace(/index\.html$/, '');
-  h = h.replace(NAV_RE, function () { return buildNav(selfHref); });
-  stats.nav++;
+  var oldNav = h.match(NAV_RE)[0];
+  var nav = fitBlock(oldNav, buildNav(selfHref));
+  if (nav !== oldNav) { h = h.replace(NAV_RE, function () { return nav; }); stats.nav++; }
 
   /* הערכה נקראת מהעמוד עצמו לפני שנוגעים בו, כי הבלוק הקודם של המחולל
      עלול להכיל צבע מהרצה קודמת ולזהם את הזיהוי. */
   var t = theme(h.replace(CSS_BLOCK_RE, ''));
   themes[t.panelBg] = (themes[t.panelBg] || 0) + 1;
-  var r1 = put(h, CSS_BLOCK_RE, CSS(t), '</style>', rel, 'CSS'); h = r1.h; stats.css += r1.added;
-  var r2 = put(h, JS_BLOCK_RE, JS, '</body>', rel, 'JS'); h = r2.h; stats.js += r2.added;
+  var r1 = put(h, CSS_BLOCK_RE, fitBlock((h.match(CSS_BLOCK_RE) || [''])[0] || '\n', CSS(t)), '</style>', rel, 'CSS'); h = r1.h; stats.css += r1.added;
+  var r2 = put(h, JS_BLOCK_RE, fitBlock((h.match(JS_BLOCK_RE) || [''])[0] || '\n', JS), '</body>', rel, 'JS'); h = r2.h; stats.js += r2.added;
 
-  fs.writeFileSync(f, Buffer.from(h, 'utf8'));
+  if (h !== original) fs.writeFileSync(f, Buffer.from(h, 'utf8'));
 });
 
 var s = structure();
@@ -461,5 +483,5 @@ console.log('  ' + s.filter(function (n) { return n.type === 'drop'; }).length +
   s.filter(function (n) { return n.type === 'link'; }).length + ' קישורים ישירים, ' + links + ' יעדים בסך הכול');
 console.log('  CSS נוסף ל-' + stats.css + ' עמודים, JS ל-' + stats.js);
 console.log('  ערכות צבע לפי העמוד: ' + Object.keys(themes).map(function(k){return k+' × '+themes[k];}).join(' · '));
-if (stats.skipped.length) console.log('  דילג (אין nav.main): ' + stats.skipped.join(', '));
+if (stats.skipped.length) console.log('  דילג: ' + stats.skipped.join(', '));
 console.log('\nהרצה: node .claude/preflight.js');

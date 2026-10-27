@@ -105,14 +105,23 @@ function offeredHere(x) {
   if (x.status === 'reference') return false;
   if (x.commercial && x.commercial.not_in_store) return false;
   if (x.commercial && x.commercial.discontinued) return false;
+  /* by_order נשאר מוצע: עמוד השוואה לא יגיד שאיננו מוכרים אותו. */
   if (CAT && !pageHref(x)) return false;
   return true;
 }
+function isOrder(x) {
+  return !!(x.commercial && x.commercial.by_order && !x.commercial.not_in_store && !x.commercial.discontinued);
+}
 function leadAsk(a, b) { return !offeredHere(a) || !offeredHere(b); }
-function leadLabel(a, b) { return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL; }
+function leadLabel(a, b) {
+  if (!leadAsk(a, b) && [a, b].some(isOrder)) return 'בירור מחיר וזמן אספקה ב-WhatsApp';
+  return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL;
+}
 function leadMsg(a, b) {
   var n = function (x) { return x.name_he || x.name; };
-  var tail = leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?';
+  var tail = !leadAsk(a, b) && [a, b].some(isOrder)
+    ? 'אשמח לבדוק מחיר וזמן אספקה.'
+    : (leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?');
   return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ' + le(n(b)) + '. ' + tail;
 }
 /* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") באותו תנאי כמו הכפתור. */
@@ -122,8 +131,9 @@ function leadBlurb(a, b) {
   var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
   var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
   var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
+  var order = [a, b].filter(isOrder);
   var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
-  if (!ref.length && !away.length && !unsold.length && !gone.length) {
+  if (!ref.length && !away.length && !unsold.length && !gone.length && !order.length) {
     return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
   }
   if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
@@ -144,6 +154,11 @@ function leadBlurb(a, b) {
   }
   if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
   if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
+  if (order.length && !ref.length && !away.length && !gone.length && !unsold.length) {
+    return open + (order.length === 2
+      ? 'שני הדגמים זמינים בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.'
+      : he(order[0]) + ' זמין בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.');
+  }
   return open + 'שלחו הודעה ונגיד לכם אם הם אצלנו, מה המחיר היום, ומה אנחנו רואים במעבדה. אנחנו ברחבת תשרי 2 בקרית גת.';
 }
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
@@ -572,6 +587,7 @@ function buildMain(p, a, b, d, openTag) {
       /* not_in_store ומכשיר ייחוס: בלי זה התבנית הבטיחה "שני המכשירים אצלנו בחנות" גם על דגם שעוד לא
          הגיע, וגם על דגם שאיננו מוכרים בכלל */
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
+      var order = [a, b].filter(function (x) { return x.commercial && x.commercial.by_order; });
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
       var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
@@ -586,7 +602,8 @@ function buildMain(p, a, b, d, openTag) {
       var lead = CAT ? 'רוצים לדעת אם ' + CAT.plural + ' האלה אצלנו?'
         : ref.length === 2 ? 'שני הדגמים האלה אינם נמכרים אצלנו.'
         : ref.length === 1 ? 'את ' + nmOf(mine[0]) + ' אנחנו מוכרים, ואת ' + nmOf(ref[0]) + ' לא.'
-        : !away.length ? 'שני המכשירים אצלנו בחנות.'
+        : !away.length && !order.length ? 'שני המכשירים אצלנו בחנות.'
+        : !away.length ? (order.length === 2 ? 'שני הדגמים זמינים בהזמנה.' : nmOf(order[0]) + ' זמין בהזמנה.')
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
       return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n';

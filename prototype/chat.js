@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:fca4c092e38f885f */
+/* sha1:3c9e2afc5840fc10 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -272,7 +272,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
      Galaxy S26 Ultra ו-Galaxy S26+ יושבים תחת "Galaxy S", אבל Galaxy S26 תחת סדרה משלו.
      תפריט שנגזר ממנו ישירות היה מציג "Galaxy S" ו-"Galaxy S26" כשתי אפשרויות אחיות. */
   function buyCat(d){
-    if(d.brand==='Samsung')return /^Galaxy A/.test(d.name)?'Galaxy A':'Galaxy S';
+    if(d.brand==='Samsung')return /^Galaxy A/.test(d.name)?'Galaxy A':/^Galaxy Z/.test(d.name)?'Galaxy Z':'Galaxy S';
     if(d.brand==='Xiaomi')return /^Redmi/.test(d.name)?'רדמי נוט':'שיאומי';
     return /Pro/.test(d.name)?'פרו ופרו מקס':'רגיל';
   }
@@ -369,6 +369,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi|google|oneplus|nothing phone)\s+/,'');
     if(me!==en&&ok(me))t.push(me);
+    /* כינויים קצרים רק ל-Fold8. "fold8" אינו "fold7" ואינו "flip", ו"פולד 8" אינו פליפ.
+       אולטרה שאחריהם נפסל ב-findDevices, כי Ultra הוא דגם אחר. */
+    if(d.slug==='galaxy-z-fold8'){
+      ['fold8','fold 8','פולד 8'].forEach(function(a){if(ok(a)&&t.indexOf(a)<0)t.push(a);});
+    }
     return t.filter(function(x,j,a){return x&&a.indexOf(x)===j;});
   }
   /* chat_device_unmatched קיים כדי למדוד ביקוש לדגמים שאיננו מחזיקים, ולכן הוא חייב לדעת
@@ -402,6 +407,15 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     return new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'([^'+WORDCH+']|$)').test(hay);
   }
   function countSub(hay,tok){var n=0,i=0;while((i=hay.indexOf(tok,i))>=0){n++;i+=tok.length;}return n;}
+  /* Fold8 Ultra אינו Fold8. הטוקן של Fold8 הוא תחילית של השם הארוך, ובלעדי
+     הספירה הזאת "Galaxy Z Fold8 Ultra" ו"גלקסי Z Fold8 אולטרה" נענים כ-Fold8.
+     אחרי הנרמול הרווח יכול להיות אפס או יותר, והמילה באנגלית או בעברית. */
+  function ultraTail(hay,tok){
+    var esc=tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    var re=new RegExp('(?:^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'\\s*(?:[ולבמהשכ])?(?:ultra|אולטרה)(?=[^'+WORDCH+']|$)','g');
+    var n=0;while(re.exec(hay))n++;
+    return n;
+  }
   /* מחזיר את הדגמים שהוזכרו, בסדר ההופעה במשפט.
      ההכלה נפתרת בספירה ולא בפסילה: "אחריות על אייפון 17 פרו" מזכיר את הטוקן "אייפון 17"
      פעם אחת, וכולה מוסברת על ידי "אייפון 17 פרו", ולכן אייפון 17 אינו אזכור נפרד.
@@ -421,6 +435,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     hits.forEach(function(h){
       var left=countSub(hay,h.tok),i;
       for(i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)left-=countSub(hay,used[i]);
+      if(h.d.slug==='galaxy-z-fold8')left-=ultraTail(hay,h.tok);
       if(left<=0)return;
       used.push(h.tok);out.push(h);
     });
@@ -690,7 +705,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
       return true;
     }
-    var field=findField(text);if(!field)return false;
+    var field=findField(text);
+    /* דגם by_order בלי שדה מפרט. עונים שהוא זמין בהזמנה, בלי מחיר ובלי מלאי.
+       בקשת קנייה נשארת בזרימה: "אני רוצה לקנות אייפון 17", וגם Fold8 בשם המלא
+       או בכינוי הקצר. Ultra שאחרי Fold8 לא מגיע לכאן, כי findDevices מוריד אותו. */
+    if(!field&&devs.length===1&&devs[0].by_order&&!/לקנות|לרכוש|קונה/.test(text)){
+      var od=devs[0];
+      fails=0;ctx.device=od.name_he;ctx.slug=od.slug;
+      track('chat_device_spec',{slug:od.slug,field:'by_order'});
+      var olink=devLink(od),osug=[];
+      if(olink)osug.push([olink.label,function(){location.href=olink.href;}]);
+      botReply(od.name_he+' זמין בהזמנה. שלחו הודעה ב-WhatsApp.',{sug:osug});
+      return true;
+    }
+    if(!field)return false;
     if(!devs.length){
       /* יש שאלה על שדה אבל אין דגם מזוהה. מכריזים "לא זיהיתי דגם" **רק** כשבאמת היה
          בטקסט משהו בצורת דגם. אחרת זו שאלת תוכן ולא שאלת דגם, ושכבת התוכן תענה עליה.
@@ -1024,7 +1052,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     var p=buyParts(),sum=p.length?('רשמתי לפניי:\n• '+p.join('\n• ')+'\n'):'';
     track('chat_buy',{device:safeVal(ctx.brand||'המלצה',['אייפון','סמסונג','שיאומי','המלצה']),model:ctx.model?catalogName(ctx.model):'',storage:safeVal(ctx.storage||'',STORAGE_SEEN),imp:safeVal(ctx.imp||'',IMPORT_VALS)});
     /* "הכול בתשלומים, כולל העברת נתונים ואבזור" נקרא כהבטחה שהאבזור כלול במחיר, וזה לא
-       מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו. */
+       מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו.
+       דגם by_order אינו על המדף. בבועה שלו אין תשלומים ואין העברת נתונים, ואין את הצ'יפים. */
+    var d=factsBySlug(ctx.slug);
+    if(d&&d.by_order){
+      /* בלי צ'יפים חדשים suggestChips לא רץ, והצ'יפים של שלב היבוא נשארים לחיצים. */
+      if(lastSugBox&&lastSugBox.children){
+        for(var si=0;si<lastSugBox.children.length;si++){
+          lastSugBox.children[si].disabled=true;
+          lastSugBox.children[si].setAttribute('tabindex','-1');
+        }
+      }
+      botReply(sum+'הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.\n'+hoursLine(),{cta:contactCta(),waText:buyWa()});
+      return;
+    }
     botReply(sum+'אפשר בתשלומים, ואנחנו מעבירים את הנתונים מהמכשיר הישן. דברו איתנו ונגיד לכם מחיר.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}]]});
   }
 

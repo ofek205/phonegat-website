@@ -270,6 +270,9 @@ function buildMain(d, openTag, K) {
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var AWAY = !!C.not_in_store;
   var GONE = !!C.discontinued;
+  /* by_order: לא על המדף, אבל אפשר להזמין ללקוח. not_in_store נשאר "עוד לא הגיע".
+     בלי הדגל הענף זהה למה שהיה, כדי שעמודי הדגמים הקיימים לא יזוזו בבית. */
+  var ORDER = !!C.by_order && !AWAY && !GONE;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
   /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
@@ -290,6 +293,10 @@ function buildMain(d, openTag, K) {
   ] : GONE ? [
     /* יצא מהמכירה: שורה אחת. אין מחיר, מלאי, צבע, נפח, יבוא או אחריות על מכירה. */
     ['זמינות', 'את הדגם הזה כבר לא מוכרים אצלנו.', '']
+  ] : ORDER ? [
+    ['מחיר', C.price, C.price_note || 'המחיר נמסר ב-WhatsApp, יחד עם זמן האספקה.'],
+    ['זמינות', 'זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.', ''],
+    ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
   ] : [
     /* price_note: נוסח לדגם מסוים, כשהנוסח הכללי אינו מתאים. לא מחיר ולא מספר, ההחלטה
        שאין מחירון באתר עומדת. נוסף ב-24.9.2026 לאייפון 18 פרו, שהמחיר שלו בישראל עוד לא נקבע. */
@@ -345,8 +352,10 @@ function buildMain(d, openTag, K) {
   heroImg(d) +
   '    </figure>\n' +
   '    <div class="txt">\n' +
-  '      <h2 id="h-buy">' + (GONE ? 'זמינות' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
-  '      <p class="intro">הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.</p>\n' +
+  '      <h2 id="h-buy">' + (GONE ? 'זמינות' : ORDER ? 'מחיר וזמן אספקה' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
+  '      <p class="intro">' + (ORDER
+    ? 'הדגם זמין בהזמנה. המחיר וזמן האספקה לא מופיעים כאן, כי הם משתנים. שלחו הודעה ב-WhatsApp ונבדוק אותם.'
+    : 'הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.') + '</p>\n' +
   '      <div class="cmp-wrap" role="region" aria-labelledby="h-buy" tabindex="0">\n' +
   '        <table class="cmp">\n' +
   /* הכיתוב הזה אמר "עדיין לא עודכן" על כל שדה בהדגשה. לגבי המחיר זה הפסיק להיות נכון
@@ -364,7 +373,10 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa(GONE ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  /* הכפתור השני ("שלחו הודעה") נשאר "אשמח לבדוק זמינות" לכל דגם שאינו by_order ואינו
+     discontinued, כמו ב-main. stockAsk משמש את הירו ואת ה-CTA הסוגר. שימוש בו גם כאן
+     החליף את הזמינות ב"מחיר ומלאי" בעשרות עמודים שלא הזמינו. */
+  '        <a class="btn btn-wa" href="' + wa((ORDER || GONE) ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -389,6 +401,22 @@ function buildMain(d, openTag, K) {
     '    <ul class="checks">\n' +
     E.daily_benefits.map(function (p) { return '      <li><b>' + esc(p[0]) + '.</b> ' + esc(p[1]) + '</li>'; }).join('\n') +
     '\n    </ul>\n  </div>\n</section>\n\n';
+  }
+
+  /* מקטע אופציונלי לדגם קרוב, למשל Fold8 Ultra על עמוד Fold8. בלי השדה אין פלט,
+     ולכן עמוד שאין לו editorial.also יוצא זהה. */
+  if (E.also && E.also.title && E.also.paragraphs && E.also.paragraphs.length) {
+    out += '<section class="block" id="also" aria-labelledby="h-also">\n' +
+    '  <div class="wrap box">\n' +
+    '    <h2 id="h-also">' + esc(E.also.title) + '</h2>\n' +
+    '    <div class="prose">\n' +
+    E.also.paragraphs.map(function (p) { return '      <p>' + esc(p) + '</p>'; }).join('\n') +
+    '\n    </div>\n' +
+    (E.also.src
+      ? '    <p class="sources">המקור: <a href="' + esc(E.also.src) + '" rel="nofollow noopener" target="_blank">עמוד המפרט הרשמי</a>' +
+        (E.also.src_note ? '. ' + esc(E.also.src_note) : '') + '</p>\n'
+      : '') +
+    '  </div>\n</section>\n\n';
   }
 
   /* --- המלצה אישית: אך ורק כשאושרה --- */
@@ -483,6 +511,9 @@ function buildMain(d, openTag, K) {
     : C.discontinued
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
       '    <p>את הדגם הזה כבר לא מוכרים אצלנו. תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n'
+    : C.by_order
+    ? '    <h2 id="cta-h">רוצים להזמין אותו?</h2>\n' +
+      '    <p>הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n'
     /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
     : K.acc
     ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
@@ -503,6 +534,7 @@ function buildMain(d, openTag, K) {
 function stockAsk(d) {
   var C = d.commercial || {};
   if (C.not_in_store) return { msg: 'היי, יש לי שאלה על ' + d.name, label: 'שאלו אותנו על הדגם' };
+  if (C.by_order) return { msg: 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name, label: 'בירור מחיר וזמן אספקה' };
   /* יצא מהמכירה: בירור, בלי "בדיקת מחיר ומלאי" ובלי הזמנה להחזיק. אותו נוסח כמו בעמוד השוואה. */
   if (C.discontinued) return { msg: 'היי, ראיתי את ' + d.name + ' באתר ואשמח להמלצה על דגם דומה שיש במלאי.', label: 'המלצה על דגם דומה ב-WhatsApp' };
   return { msg: 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name, label: 'בדיקת מחיר ומלאי' };
@@ -512,7 +544,6 @@ function stockAsk(d) {
    בלי השדה המוצא זהה לבלוק שהיה כאן, כדי ששאר עמודי הדגם לא ישתנו.
    הקישור נשאר wa.me/97286812050 והחיוג tel:+972525893366. לא מחליפים ביניהם. */
 function heroBlock(d) {
-  var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
   var ask = stockAsk(d);
   var href = wa(ask.msg);
@@ -745,13 +776,38 @@ function writeDevicePage(d, K) {
       console.error('✗ ' + d.slug + ': לא נמצא עוגן CSS של .hcta'); process.exit(1);
     }
     if (h.indexOf('.cta-line{') < 0) {
-      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS);
+      var orderLayout = '';
+      /* רק by_order. הקרוסלה נושאת כלל .btn מאוחר שדורס את .btn-sm ואת .btn-hero,
+         ולכן בעמודי המדף כפתור ההדר הוא 139 על 44. אחרי שהקרוסלה יורדת נשאר
+         .btn-sm, 124 על 36. מחזירים את כפתור ההדר ואת כפתורי ההירו לגודל של
+         עמוד מדף, בלי להחזיר את הקרוסלה ובלי לגעת בעמוד שיש לו hero_cta ואינו
+         by_order. max-width של .sub משאיר את משפט ההזמנה ליד הכפתור הירוק
+         והחיוג יורד לשורה לבד. שורה מלאה מחזירה את שניהם למרכז. */
+      if (d.commercial && d.commercial.by_order && !d.commercial.not_in_store && !d.commercial.discontinued) {
+        /* אותו סוף שורה כמו התבנית. \n לבד הופך את שורת ה-.meta מ-CRLF ל-LF,
+           וזו שורה שלא השתנתה בתוכן. */
+        var nl = h.indexOf('\r\n') >= 0 ? '\r\n' : '\n';
+        orderLayout = nl + 'header.site .hicons .btn.btn-sm{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .btn.btn-hero{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .cta-line{flex-basis:100%;width:100%;max-width:none}';
+      }
+      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS + orderLayout);
     }
   }
 
   var mS = h.indexOf('<main id="main"'), mE = h.indexOf('</main>');
   var openTag = h.slice(mS, h.indexOf('>', mS) + 1);
   h = h.slice(0, mS) + buildMain(d, openTag, K) + h.slice(mE);
+
+  /* המסגרת נלקחת ממדריך שנושא את קרוסלת המבצעים מחוץ ל-<main>. בדגם by_order
+     הקרוסלה לא עולה: היא מדברת על תשלומים והעברת נתונים בקנייה מהחנות.
+     בלי ההסרה כאן, ה-CSS וה-JS שלה נשארים בעמוד אחרי שה-<main> הוחלף.
+     דגם על המדף לא נוגעים בו. add-deals.js מחזיר לו את הקרוסלה אחרי החילול. */
+  if (d.commercial && d.commercial.by_order && !d.commercial.not_in_store) {
+    ['css', 'section', 'js'].forEach(function (name) {
+      h = h.replace(new RegExp('[ \\t]*<!-- pg-deals:' + name + ':start[\\s\\S]*?pg-deals:' + name + ':end -->[ \\t]*(?:\\r?\\n){0,2}', 'g'), '');
+    });
+  }
 
   var out = path.join(PROTO, K.base, d.slug, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -987,7 +1043,9 @@ if (swGrew) {
  *   stock, storage_stocked  מלאים ב-12 ו-2 מ-24. בוט שעונה "יש במלאי" מנתון חלקי גרוע
  *                           מבוט שמנתב לאדם, כי טעות כאן היא הבטחה בשם המותג.
  *   importer_name           מלא ב-1 מ-24.
- *   recommendation          48 מ-48 ב-missing. ציטוט אישי מוצג רק ב-approved בדיוק. */
+ *   recommendation          48 מ-48 ב-missing. ציטוט אישי מוצג רק ב-approved בדיוק.
+ *   by_order                כן נכנס, כבוליאני ורק כשהוא true. זה לא מחיר ולא מלאי,
+ *                           והבוט מסתעף עליו בשלב הסיום של הקנייה. */
 (function buildBotFacts() {
   var FORBIDDEN = ['price', 'colors_stocked', 'stock', 'storage_stocked',
                    'importer_name', 'recommendation', 'commercial', 'editorial'];
@@ -996,7 +1054,7 @@ if (swGrew) {
     devices: db.devices.filter(function (d) { return d.status !== 'draft'; }).map(function (d) {
       var c = d.commercial || {}, e = d.editorial || {};
       var ref = d.status === 'reference';
-      return {
+      var row = {
         slug: d.slug,
         name: d.name,
         name_he: d.name_he || d.name,
@@ -1025,6 +1083,9 @@ if (swGrew) {
           .map(function (p) { return Array.isArray(p) ? p.join(': ') : String(p); }),
         spec: d.spec || {}
       };
+      /* אחרי spec, ורק כשהדגל דולק. שאר הרשומות נשארות בלי המפתח, ולכן זהות בית. */
+      if (!ref && c.by_order && !c.not_in_store) row.by_order = true;
+      return row;
     }),
     /* רשימת עמודי ההשוואה נגזרת מהדיסק ולא מ-editorial.comparisons, שריק ב-24 מ-24.
        כך הבוט מקשר רק לעמוד שבאמת קיים, ולא מייצר 404 בשיחה. */

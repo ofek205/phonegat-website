@@ -143,25 +143,90 @@ function walk(d, o) {
 }
 var LINK = '<link rel="stylesheet" href="/chat.css">';
 var SCRIPT = '<script src="/chat.js" defer></script>';
-var done = 0, skipped = 0;
+var CM_TAG = '<script src="/contact-mode.js"></script>';
+var DEALS_CSS_END = '<!-- pg-deals:css:end -->';
+var DEALS_JS_END = '<!-- pg-deals:js:end -->';
+/* הקישור נשאר בשורה שאחרי contact-mode, לפני ה-JSON-LD. הדבקה לפני </head>
+   הזיזה אותו אחרי הסכימה ב-37 עמודי השוואה, ודיף בלי שינוי תוכן. */
+function nextIsLink(s, idx) {
+  return /^\r?\n[ \t]*<link rel="stylesheet" href="\/chat\.css">/.test(s.slice(idx));
+}
+/* במקום אם הוא כבר אחרי contact-mode או אחרי סוף ה-CSS של הקרוסלה.
+   בשערי ההשוואה הקישור יושב אחרי הקרוסלה, ויש contact-mode מוקדם יותר בעמוד.
+   העדפת contact-mode הזיזה אותו לשם. */
+function linkInPlace(s) {
+  var i = s.indexOf(CM_TAG);
+  if (i >= 0 && nextIsLink(s, i + CM_TAG.length)) return true;
+  var j = s.lastIndexOf(DEALS_CSS_END);
+  if (j >= 0 && nextIsLink(s, j + DEALS_CSS_END.length)) return true;
+  if (i < 0 && j < 0) {
+    return new RegExp('[ \\t]*' + LINK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\r?\\n</head>').test(s);
+  }
+  return false;
+}
+function toEol(s, eol) { return s.replace(/\r\n/g, '\n').replace(/\n/g, eol); }
+/* סוף השורה שכבר יושב אחרי העוגן. רוב הקובץ יכול להיות CRLF בזמן שהאזור הזה LF,
+   והחלפה לפי הרוב הופכת 90 בלוקים תקינים לדיף. */
+function followingEol(s, idx) {
+  if (s.slice(idx, idx + 2) === '\r\n') return '\r\n';
+  return '\n';
+}
+/* שני עמודי ההשוואה הנעולים זהים ביית ל-main, כולל מיקום הצ'אט. */
+var LOCKED = {
+  'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
+  'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
+};
+/* שני שערי ההשוואה נכתבו עם שורה ריקה בין סוף הקרוסלה לבלוק הצ'אט.
+   הרצה שמחקה אותה נראית כדיף בלי שינוי. שאר העמודים צמודים, ולא מוסיפים רווח. */
+function hubGap(rel) { return rel === 'compare/index.html' || rel === 'phones/compare/index.html'; }
+var done = 0, skipped = 0, held = 0;
 walk(PROTO, []).forEach(function (f) {
   var rel = path.relative(PROTO, f).split(path.sep).join('/');
-  if (!inIndex(urlOf(rel))) { skipped++; return; }
-  var s = fs.readFileSync(f, 'utf8');
-
-  /* הסרת גרסה קודמת, כדי שהרצה חוזרת תחליף ולא תוסיף עותק */
-  s = s.replace(/<!-- bot:html:start[\s\S]*?<!-- bot:html:end -->\s*/g, '')
-       .replace(new RegExp('\\s*' + LINK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '')
-       .replace(new RegExp('\\s*' + SCRIPT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '');
-
+  if (!inIndex(urlOf(rel)) || LOCKED[rel]) { skipped++; return; }
+  var original = fs.readFileSync(f, 'utf8');
+  var s = original;
   if (s.indexOf('</head>') < 0 || s.indexOf('</body>') < 0) {
     console.error('✗ ' + rel + ': אין head או body'); process.exit(1);
   }
-  s = s.replace('</head>', '  ' + LINK + '\n</head>');
-  /* המרקאפ לפני </body>, והסקריפט אחריו ב-defer, כדי שלא יחסום ציור */
-  s = s.replace('</body>', htmlBlock + '\n' + SCRIPT + '\n</body>');
-  fs.writeFileSync(f, s);
-  done++;
+  if (!linkInPlace(s)) {
+    /* מוחקים את שורת הקישור בלי לבלוע את סוף השורה שלפניה. ^ אחרי מעבר שורה
+       משאיר את ה-CRLF של </script>, ושורת הקישור עצמה יורדת עם הסוף שלה.
+       הביטוי הקודם אכל את ה-CRLF והשאיר LF לפני </head> בשני עמודי השוואה. */
+    s = s.replace(/^[ \t]*<link rel="stylesheet" href="\/chat\.css">[ \t]*(?:\r?\n)?/gm, '');
+    var anchor = s.indexOf(CM_TAG) >= 0 ? CM_TAG : (s.indexOf(DEALS_CSS_END) >= 0 ? DEALS_CSS_END : '');
+    if (anchor) {
+      var at = s.indexOf(anchor);
+      var eol = followingEol(s, at + anchor.length);
+      s = s.replace(anchor, anchor + eol + '  ' + LINK);
+    } else {
+      s = s.replace('</head>', '  ' + LINK + '\n</head>');
+    }
+  }
+  /* בלוק שכבר LF נשאר LF. מחזירים CRLF רק כשהשורה שלפני הבלוק היא CRLF והבלוק עצמו
+     נכתב ב-LF, כי זה הדיף הריק של שני עמודי ההשוואה. */
+  var botRe = /[ \t]*<!-- bot:html:start[\s\S]*?<!-- bot:html:end -->/;
+  var bot = s.match(botRe);
+  if (bot) {
+    var atB = s.indexOf(bot[0]);
+    var before = s.slice(Math.max(0, atB - 2), atB);
+    var want = before === '\r\n' ? '\r\n' : '\n';
+    var hasCR = bot[0].indexOf('\r\n') >= 0;
+    if (want === '\r\n' && !hasCR) {
+      s = s.replace(botRe, toEol(htmlBlock, '\r\n'));
+      /* סוף ההערה וה-chat.js יושבים מחוץ לביטוי. בלי זה הם נשארים LF אחרי שהבלוק חזר ל-CRLF. */
+      s = s.replace(/(<!-- bot:html:end -->)\n(<script src="\/chat\.js" defer><\/script>)\n/, '$1\r\n$2\r\n');
+    } else if (want === '\n' && hasCR) s = s.replace(botRe, toEol(htmlBlock, '\n'));
+  } else {
+    var eolB = followingEol(s, s.indexOf('</body>'));
+    s = s.replace('</body>', toEol(htmlBlock, eolB) + eolB + SCRIPT + eolB + '</body>');
+  }
+  if (hubGap(rel)) {
+    var tight = DEALS_JS_END + '\n<!-- bot:html:start';
+    var loose = DEALS_JS_END + '\n\n<!-- bot:html:start';
+    if (s.indexOf(loose) < 0 && s.indexOf(tight) >= 0) s = s.replace(tight, loose);
+  }
+  if (s !== original) { fs.writeFileSync(f, s); done++; }
+  else held++;
 });
 
 console.log('✓ chat.css: ' + Math.round(cssBlock.length / 1024) + ' KB · chat.js: ' +
