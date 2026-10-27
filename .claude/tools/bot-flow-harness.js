@@ -524,6 +524,43 @@ rows.forEach(function (r) {
   if (!r.ok) console.log('       קיבל: ' + r.got + '   צפוי: ' + r.want);
 });
 if(seqFails.length){console.log('  ✗ רצף זרימת הקנייה:');seqFails.forEach(function(m){console.log('     '+m);});}else{console.log('  ✓ רצף זרימת הקנייה: יצרן בהקלדה, דגם ייחוס נדחה, דגם נמכר מתקדם');}
+
+/* דגם by_order. הבועה הסופית אומרת הזמנה ומחיר ב-WhatsApp, בלי תשלומים ובלי העברת נתונים. */
+var orderFlowFails = [];
+(function () {
+  var S = boot(0, '/');
+  var steps = [
+    ['אני רוצה לקנות מכשיר', 'chat_flow'],
+    ['סמסונג', 'chat_buy_step:brand'],
+    ['גלקסי Z Fold8', 'chat_buy_step:model'],
+    ['256GB', 'chat_buy_step:storage'],
+    ['לא בטוח', 'chat_buy']
+  ];
+  steps.forEach(function (s) {
+    var got = S.ask(s[0]);
+    if (got.indexOf(s[1]) < 0) orderFlowFails.push('"' + s[0] + '" → ' + got + '   (צפוי ' + s[1] + ')');
+  });
+  var bubble = S.lastBot();
+  if (bubble.indexOf('הדגם זמין בהזמנה') < 0) orderFlowFails.push('הבועה בלי משפט ההזמנה: ' + bubble.slice(0, 140));
+  if (bubble.indexOf('מחיר וזמן אספקה') < 0) orderFlowFails.push('הבועה בלי מחיר וזמן אספקה');
+  if (bubble.indexOf('אפשר בתשלומים') >= 0) orderFlowFails.push('הבועה מצטטת תשלומים');
+  if (bubble.indexOf('מעבירים את הנתונים') >= 0) orderFlowFails.push('הבועה מצטטת העברת נתונים');
+  var livePay = [];
+  (function walk(n) {
+    if (!n || !n.children) return;
+    n.children.forEach(function (c) {
+      var label = String(c.textContent || '');
+      if (c.tagName === 'BUTTON' && !c.disabled && (label.indexOf('תשלומים') >= 0 || label.indexOf('העברת נתונים') >= 0))
+        livePay.push(label.trim());
+      walk(c);
+    });
+  })(S.els.pgMsgs);
+  if (livePay.length) orderFlowFails.push('צ׳יפ תשלומים או העברת נתונים נשאר פעיל: ' + livePay.join(' | '));
+})();
+if (orderFlowFails.length) {
+  console.log('  ✗ זרימת הזמנה של Fold8:');
+  orderFlowFails.forEach(function (m) { console.log('     ' + m); });
+} else console.log('  ✓ זרימת הזמנה של Fold8: בלי תשלומים ובלי העברת נתונים');
 console.log('');
 if (raceFail) { console.log('  ✗ ' + raceFail); } else { console.log('  ✓ שאלה שנשלחת לפני שהנתונים נטענו ממתינה ונענית'); }
 console.log('');
@@ -536,7 +573,7 @@ console.log('');
 ruleRows.forEach(function (r) { console.log('  ' + (r.ok ? '✓' : '✗') + ' ' + r.n); });
 if (ruleFails.length) ruleFails.forEach(function (m) { console.log('      ' + m); });
 console.log('');
-if (fails.length || seqFails.length || raceFail || implFails.length || clockFail || ruleFails.length) {
+if (fails.length || seqFails.length || orderFlowFails.length || raceFail || implFails.length || clockFail || ruleFails.length) {
   console.log('  ' + (fails.length + implFails.length + ruleFails.length + (raceFail ? 1 : 0) + (clockFail ? 1 : 0)) + ' כשלים\n');
   process.exit(1);
 }

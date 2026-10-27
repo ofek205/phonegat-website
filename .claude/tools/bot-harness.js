@@ -329,6 +329,36 @@ var discFails = [];
     discFails.push('chat_disc_declined לא נורה על אייפון 17 פרו');
 })();
 
+/* ---------- דגם בהזמנה ----------
+ * Galaxy Z Fold8 הוא by_order: נמכר, לא discontinued ולא ייחוס.
+ * אין לו תנאי מדף, ולכן תשלומים והעברת נתונים לא מצוטטים.
+ * הקלדת השם בזרימת הקנייה ממשיכה לשלב הנפח ולא נעצרת בסירוב. */
+var orderFails = [];
+(function () {
+  var fold = null, i;
+  for (i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === 'galaxy-z-fold8') fold = facts.devices[i];
+  if (!fold) { orderFails.push('galaxy-z-fold8 חסר ב-bot-facts'); return; }
+  if (fold.kind !== 'sold') orderFails.push('kind אינו sold: ' + fold.kind);
+  if (fold.by_order !== true) orderFails.push('by_order אינו true');
+  ['payments', 'data_transfer', 'warranty'].forEach(function (f) {
+    var t = fieldAnswer(fold, f).text;
+    if (t.indexOf('אפשר בתשלומים') >= 0) orderFails.push(f + ': ציטוט תשלומים');
+    if (t.indexOf('מעבירים את הנתונים') >= 0) orderFails.push(f + ': ציטוט העברת נתונים');
+    if (t.indexOf('חודשים') >= 0) orderFails.push(f + ': מספר חודשי אחריות בלי מקור');
+  });
+  if (!sandbox.buyModel) { orderFails.push('buyModel לא נטען'); return; }
+  sandbox.askStorage = function () { sandbox._orderStorage = true; };
+  replies.length = 0; tracked.length = 0;
+  sandbox.buyModel('גלקסי Z Fold8', '');
+  var declined = tracked.filter(function (t) {
+    return t.event === 'chat_disc_declined' || t.event === 'chat_ref_declined';
+  })[0];
+  if (declined) orderFails.push('הזמנה נעצרה כסירוב: ' + declined.event);
+  if (!sandbox._orderStorage) orderFails.push('הזרימה לא המשיכה לשלב הנפח');
+  var step = tracked.filter(function (t) { return t.event === 'chat_buy_step' && t.data && t.data.step === 'model'; })[0];
+  if (!step) orderFails.push('chat_buy_step model לא נורה');
+})();
+
 /* ---------- דוח ---------- */
 console.log('');
 console.log('  נבדקו ' + checked + ' צירופים של דגם כפול שדה (' + facts.devices.length +
@@ -348,6 +378,7 @@ n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלו
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
 n += report(discFails, 'דגם שיצא מהמכירה: אחריות למי שקנה, בלי תשלומים, ו-chat_disc_declined');
+n += report(orderFails, 'דגם בהזמנה: Fold8 נמכר בלי תנאי מדף, והזרימה לא נעצרת');
 n += report(contentFails, 'שכבת התוכן: תשובה לשאלה אמיתית, עמוד קיים, בלי מחיר, וברכה לא מקבלת תשובה');
 n += report(privFails, 'פרטיות: הרמז ב-chat_device_unmatched נקי משם ומטלפון ועדיין נושא את הדגם');
 console.log('');

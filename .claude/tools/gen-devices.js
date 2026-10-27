@@ -373,7 +373,10 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa(stockAsk(d).msg) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  /* הכפתור השני ("שלחו הודעה") נשאר "אשמח לבדוק זמינות" לכל דגם שאינו by_order ואינו
+     discontinued, כמו ב-main. stockAsk משמש את הירו ואת ה-CTA הסוגר. שימוש בו גם כאן
+     החליף את הזמינות ב"מחיר ומלאי" בעשרות עמודים שלא הזמינו. */
+  '        <a class="btn btn-wa" href="' + wa((ORDER || GONE) ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +

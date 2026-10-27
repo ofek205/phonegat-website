@@ -5555,7 +5555,7 @@
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, בשני המסכים",
         "resolution": "1848x2448 במסך הראשי, ו-1972x1248 במסך הכיסוי",
         "refresh_rate": "עד 120Hz בשני המסכים",
-        "brightness": "3000 ניט בשני המסכים",
+        "brightness": "עד 3000 ניט",
         "chip": "Snapdragon 8 Elite Gen 5",
         "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
         "gpu": null,
