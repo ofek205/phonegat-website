@@ -8,7 +8,7 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/contact/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -158,31 +158,37 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/upcoming-phones/galaxy-s27-ultra/</loc>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-18/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-18e/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-air-2/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/upcoming-phones/iphone-duo/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -225,6 +231,12 @@
   <url>
     <loc>https://www.phonegat.co.il/guides/phone-warranty-israel/</loc>
     <lastmod>2026-10-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.phonegat.co.il/guides/which-phone-do-i-have/</loc>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -302,7 +314,7 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/phones/galaxy-s26-ultra/</loc>
-    <lastmod>2026-10-26</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -506,7 +518,7 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/galaxy-s26-plus-vs-galaxy-s26/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -566,19 +578,19 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/iphone-17-pro-max-vs-iphone-18-pro-max/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/iphone-17-pro-vs-iphone-17-pro-max/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/compare/iphone-17-pro-vs-iphone-18-pro/</loc>
-    <lastmod>2026-10-18</lastmod>
+    <lastmod>2026-10-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -632,20 +644,14 @@
   </url>
   <url>
     <loc>https://www.phonegat.co.il/accessibility.html</loc>
-    <lastmod>2026-08-24</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.phonegat.co.il/privacy.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.phonegat.co.il/guides/which-phone-do-i-have/</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
