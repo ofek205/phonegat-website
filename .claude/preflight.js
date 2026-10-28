@@ -330,8 +330,8 @@ CONTENT_PAGES.forEach(function (f) {
   try { src = fs.readFileSync(path.join(pagesDir, f), 'utf8'); } catch (e) { return; }
   /* תפריט ההתאמות הוא דרישה רגולטורית, לא נוחות */
   if (src.indexOf('id="a11yTrigger"') < 0 || src.indexOf("var KEY='pg_a11y_v1'") < 0) missingA11y.push(f);
-  /* בלי באנר, מי שנוחת מגוגל נשאר ב-denied ואין לו איך לאשר — הדף עיוור ב-GA4 */
-  if (src.indexOf('id="cookieOk"') < 0) missingCookie.push(f);
+  /* בלי באנר אין דרך לבחור "רק הכרחי", והמדידה נשארת פעילה בלי יציאה */
+  if (src.indexOf('id="cookieOk"') < 0 || src.indexOf('id="cookieNo"') < 0) missingCookie.push(f);
   /* דף נחיתה הוא לעיתים הדף הראשון והיחיד שנפתח; בלי רישום כאן אין PWA בכלל */
   /* עמוד עומק חייב לרשום בנתיב שורשי (ראו בדיקה 14), ולכן שתי הצורות תקינות */
   if (!/register\((['"])\/?sw\.js\1/.test(src)) missingSW.push(f);
@@ -342,7 +342,7 @@ if (missingA11y.length) {
 } else ok('תפריט הנגישות קיים בכל דפי התוכן');
 if (missingCookie.length) {
   bad('אין באנר קוקיז בדפים: ' + missingCookie.join(', ') +
-      ' — מי שנוחת שם מחיפוש נשאר ב-analytics_storage denied ואין לו דרך לאשר, כלומר התנועה לא נמדדת');
+      ' — מי שנוחת שם מחיפוש לא יכול לבחור רק הכרחי, והמדידה נשארת פעילה בלי יציאה');
 } else ok('באנר הקוקיז קיים בכל דפי התוכן');
 if (missingSW.length) {
   warn('אין רישום service worker בדפים: ' + missingSW.join(', ') + ' — מבקר שנוחת שם לא יקבל את האפליקציה');
@@ -2361,6 +2361,39 @@ if (classFails.length) {
   });
   if (problems.length) bad('עמוד נעול: ' + problems.join(' · '));
   else ok(checked + ' עמודי השוואה נעולים: גלקסי S26 פלוס זהה ל-main, ובאייפון 17 פרו רק תגיות הראש והשורות שאושרו ב-26.10.2026');
+})();
+
+/* ---------- 47. מדידה כברירת מחדל, דחייה נשמרת לפני GTM ----------
+ * אופק, 28.10.2026: analytics_storage מותר כברירת מחדל. ad_storage, ad_user_data
+ * ו-ad_personalization נשארים denied עד לחיצה על אישור הכול, ואותה לחיצה ממשיכה
+ * לאשר את ארבעתם כמו קודם. רק הכרחי דוחף consent update של analytics_storage denied
+ * ושומר את הבחירה, והעמוד הבא קורא אותה לפני ש-GTM נטען.
+ * שני עמודי ההשוואה הנעולים לא נכללים: אסור לשנות בהם בית, והם נשארים על הדגם הישן.
+ * הבדיקה נכשלת אם עמוד נשאר מאחור, כי אז מבקר שדחה בעמוד אחד נמדד שוב בעמוד אחר. */
+(function () {
+  var LOCK = {
+    'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
+  };
+  var GRANT = "gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'})";
+  var DENY = "gtag('consent','update',{analytics_storage:'denied'})";
+  var problems = [];
+  pageFiles.forEach(function (f) {
+    if (LOCK[f]) return;
+    var s = readPage(f);
+    if (!s || s.indexOf('GTM-WZSVD7Z5') < 0) return;
+    if (s.indexOf("var pgAd='denied',pgAn='granted'") < 0) problems.push(f + ': אין ברירת מחדל granted למדידה');
+    if (s.indexOf("if(pgPrev==='denied')pgAn='denied'") < 0) problems.push(f + ': דחייה שמורה לא נקראת לפני ברירת המחדל');
+    if (s.indexOf(DENY) < 0) problems.push(f + ': רק הכרחי לא מעדכן את analytics_storage');
+    if (s.indexOf(GRANT) < 0) problems.push(f + ': אישור הכול כבר לא מאשר את אותם ארבעה שדות');
+    if (/setTimeout\(reveal(?:Ck)?,3500\)/.test(s)) problems.push(f + ': הבאנר עדיין מחכה 3.5 שניות');
+    var cPos = s.indexOf("gtag('consent','default'");
+    var gPos = s.indexOf('GTM-WZSVD7Z5');
+    if (cPos < 0 || cPos > gPos) problems.push(f + ': ברירת המחדל נטענת אחרי GTM');
+    if (s.indexOf('>רק הכרחי</button>') < 0) problems.push(f + ': חסר כפתור רק הכרחי');
+  });
+  if (problems.length) bad('הסכמת מדידה: ' + problems.slice(0, 4).join(' · ') + (problems.length > 4 ? ' ועוד' : ''));
+  else ok('המדידה מותרת כברירת מחדל, דחייה נשמרת לפני GTM, ושני העמודים הנעולים מחוץ לבדיקה');
 })();
 
 /* ---------- דוח ---------- */
