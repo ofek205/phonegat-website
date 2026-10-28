@@ -3,7 +3,8 @@
  * gen-upcoming.js — עמודי הדגמים שעוד לא יצאו, מתוך .claude/data/upcoming.json
  *
  * נוצר ב-24.9.2026 לבקשת אופק: עמודים לדגמים שעוד לא בחנויות, כדי להופיע בחיפושים
- * עליהם. שלושה מהם הם שמועות בלבד, ואחד הוכרז רשמית ועוד לא נמכר.
+ * עליהם. ארבעה הם שמועות, ואחד הוכרז רשמית. ברשימות הסטטוס מגיע מ-list_label כשיש,
+ * כדי שלא יישאר "עוד לא בחנויות" אחרי שאפל פרסמה שהדגם הגיע לחנויות.
  *
  * שני כללים מכתיבים את כל המבנה כאן, ושניהם נאכפים בקוד ולא בזיכרון:
  *
@@ -124,7 +125,7 @@ var DISCLAIM_RUMOR = function (pg) {
 };
 var DISCLAIM_ANNOUNCED = function (pg) {
   return [
-    'הנתונים בעמוד הזה מעמוד המפרט הרשמי של אפל, בגרסה הבינלאומית. אפל ישראל עוד לא פרסמה את ' + pg.name_he + ', והגרסה שתימכר בישראל, אם תימכר, עשויה להיות שונה. התאריכים בעמוד הם מה שאפל פרסמה לגבי מדינות אחרות, ולא התחייבות לגבי ישראל.',
+    'הנתונים בעמוד הזה מעמוד המפרט הרשמי של אפל, בגרסה הבינלאומית. התאריכים בעמוד הם מה שאפל פרסמה לגבי המדינות שהיא מנתה, ולא התחייבות שלנו.',
     'אנחנו לא מתחייבים לשום דבר לגבי הדגם הזה: לא למועד, לא למחיר ולא לזמינות אצלנו. העמוד הזה אינו הצעה למכירה ואינו הזמנה מוקדמת.'
   ];
 };
@@ -135,6 +136,17 @@ function fine(pg) {
 function section(id, h, inner) {
   return '<section class="block" id="' + id + '" aria-labelledby="h-' + id + '">\n  <div class="wrap box">\n' +
     '    <h2 id="h-' + id + '">' + esc(h) + '</h2>\n' + inner + '  </div>\n</section>\n\n';
+}
+/* list_label גובר על ברירת המחדל של דגם שהוכרז. בלי זה הרשימה נשארת "עוד לא בחנויות"
+   גם אחרי שאפל פרסמה הגעה, והרכזת סותרת את העמוד. */
+function listLabel(pg) {
+  if (pg.list_label) return pg.list_label;
+  return pg.kind === 'rumor' ? 'שמועות, לא מאומת' : 'הוכרז רשמית, עוד לא בחנויות';
+}
+/* "iPhone Duo" באמצע משפט עברי נשבר בשורה ב-390, והפסיק נדבק ל-Duo בשורה הבאה.
+   bdo עם nowrap שומר את השם כיחידה אחת. רק בתצוגה, לא ב-title ולא ב-JSON-LD. */
+function h1Html(s) {
+  return esc(s).replace(/iPhone Duo/g, '<bdo dir="ltr" style="white-space:nowrap">iPhone Duo</bdo>');
 }
 function linksHtml(ls) {
   if (!ls || !ls.length) return '';
@@ -149,7 +161,7 @@ function buildMain(pg) {
 
   /* hero */
   o += '<section class="ghero" aria-labelledby="gh">\n  <div class="wrap">\n    <div class="inner">\n' +
-    '      <h1 id="gh">' + esc(pg.h1) + '</h1>\n' +
+    '      <h1 id="gh">' + h1Html(pg.h1) + '</h1>\n' +
     '      <p class="sub">' + esc(pg.sub) + '</p>\n' +
     '      <div class="hcta"><a class="btn btn-wa btn-hero" href="' + esc(wa(pg.wa)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" decoding="async">שאלו אותנו ב-WhatsApp</a></div>\n' +
     '      <p class="meta">\n' +
@@ -247,7 +259,7 @@ function buildMain(pg) {
   if (sibs.length) {
     o += section('more', 'עוד דגמים שבדרך', '    <ul>\n' + sibs.map(function (x) {
       return '      <li><a href="/upcoming-phones/' + x.slug + '/">' + esc(x.name_he) + '</a>: ' +
-        (x.kind === 'rumor' ? 'שמועות, לא מאומת' : 'הוכרז רשמית, עוד לא בחנויות') + '</li>';
+        listLabel(x) + '</li>';
     }).join('\n') + '\n    </ul>\n');
   }
 
@@ -385,14 +397,15 @@ data.pages.forEach(function (pg) {
   var i = s.indexOf(START), j = s.indexOf(END);
   if (i < 0 || j < 0) { console.error('✗ upcoming-phones/index.html: סימני gen-upcoming:hub חסרים'); process.exit(1); }
   var LABEL = { rumor: 'שמועות, לא מאומת', announced: 'הוכרז רשמית, עוד לא בחנויות' };
+  function hubLabel(pg) { return pg.list_label || LABEL[pg.kind]; }
   var body = [
     '<section class="block" id="coming" aria-labelledby="h-coming">',
     '  <div class="wrap box">',
     '    <h2 id="h-coming">הדגמים שבדרך</h2>',
-    '    <p class="lead">לכל דגם שהוכרז או שמדברים עליו, ועוד לא בחנויות, יש עמוד נפרד. בעמודי השמועות כל טענה מופיעה עם המקור והתאריך שלה ובסימון ברור שאינה מאומתת. אף אחד מהעמודים האלה אינו התחייבות מצדנו.</p>',
+    '    <p class="lead">לכל דגם שהוכרז או שמדברים עליו יש עמוד נפרד. בעמודי השמועות כל טענה מופיעה עם המקור והתאריך שלה ובסימון ברור שאינה מאומתת. אף אחד מהעמודים האלה אינו התחייבות מצדנו.</p>',
     '    <ul>'
   ].concat(data.pages.map(function (pg) {
-    return '      <li><a href="/upcoming-phones/' + pg.slug + '/">' + esc(pg.name_he) + '</a>: ' + LABEL[pg.kind] + '</li>';
+    return '      <li><a href="/upcoming-phones/' + pg.slug + '/">' + esc(pg.name_he) + '</a>: ' + esc(hubLabel(pg)) + '</li>';
   })).concat(['    </ul>', '  </div>', '</section>']).join(nl);
   s = s.slice(0, i + START.length) + nl + body + nl + s.slice(j);
   fs.writeFileSync(file, s);
