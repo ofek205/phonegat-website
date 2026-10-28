@@ -145,8 +145,9 @@ function listLabel(pg) {
 }
 /* "iPhone Duo" באמצע משפט עברי נשבר בשורה ב-390, והפסיק נדבק ל-Duo בשורה הבאה.
    bdo עם nowrap שומר את השם כיחידה אחת. רק בתצוגה, לא ב-title ולא ב-JSON-LD. */
+/* הפסיק נשאר בתוך ה-bdo. בלי זה gen-bot-content מחליף את התגית ברווח, ויוצא "Duo ," לפני הפסיק. */
 function h1Html(s) {
-  return esc(s).replace(/iPhone Duo/g, '<bdo dir="ltr" style="white-space:nowrap">iPhone Duo</bdo>');
+  return esc(s).replace(/iPhone Duo,/g, '<bdo dir="ltr" style="white-space:nowrap">iPhone Duo,</bdo>');
 }
 function linksHtml(ls) {
   if (!ls || !ls.length) return '';
