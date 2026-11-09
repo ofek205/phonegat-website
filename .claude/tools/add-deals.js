@@ -498,9 +498,10 @@ function main() {
     });
     const keep = [], conflicts = [];
     /* .cookie is each page's own consent banner, not part of the carousel. Since PR 30 (28.10.2026)
-     * the home page and most pages carry the new banner CSS, while the locked which-phone guide and
-     * the two locked compare pages keep the old one by design. A .cookie rule that differs is the
-     * page's own decision, so it is neither a conflict nor re-emitted over the page's banner. */
+     * the home page and the other pages, the which-phone guide included (approved 9.11.2026), carry
+     * the new banner CSS, while the two locked compare pages keep the old one by design. A .cookie
+     * rule that differs is the page's own decision, so it is neither a conflict nor re-emitted over
+     * the page's banner. */
     const ownChrome = r => /^\.cookie(?:[\s.:#\[,]|$)/.test(norm(r.sel));
     cl.picked.forEach(i => {
       const r = homeRules[i], k = ruleKey(r);
