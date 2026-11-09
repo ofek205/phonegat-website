@@ -445,6 +445,29 @@ function rule(name, ok, detail) {
     var W = boot(0, '/');
     var wev = W.ask('מתי יוצא ' + oo.name_he);
     rule('"מתי יוצא" על דגם בהזמנה בלבד עונה על זמינות', wev.indexOf(':availability') >= 0 && W.lastBot().indexOf('בהזמנה בלבד') >= 0, wev + ' / ' + W.lastBot().slice(0, 60));
+    var W2 = boot(0, '/'), wev2 = W2.ask(oo.name_he + ' כבר בחנויות?');
+    rule('"כבר בחנויות?" על דגם בהזמנה בלבד עונה על זמינות', wev2.indexOf(':availability') >= 0, wev2);
+    /* ושאלות שאינן על זמינות ממשיכות כמו ב-main, גם כשיש בהן "יש לכם" או "מגיע" */
+    var NEG = [
+      ['יש לכם כיסוי ל-' + oo.name_he, 'chat_intent:accessories'],
+      ['יש לכם מגן מסך ל-' + oo.name_he, 'chat_intent:offer'],
+      ['המסך של ' + oo.name_he + ' נשבר, יש לכם תיקון', 'chat_flow:repair'],
+      ['מתי מגיע ' + oo.name_he + ' לתיקון', 'chat_flow:repair'],
+      [oo.name_he + ' מגיע עם מטען?', 'chat_intent:accessories']
+    ];
+    NEG.forEach(function (c) {
+      var N = boot(0, '/'), got = N.ask(c[0]);
+      rule('"' + c[0] + '" לא נתפס כשאלת זמינות', got.indexOf(':availability') < 0 && got.indexOf(c[1]) === 0, got + '   צפוי: ' + c[1]);
+    });
+    /* בדגם בהזמנה בלבד אין שאלת יבוא, וניסוח הנפח הוא "ל-" לפני שם לועזי */
+    var I = boot(0, '/');
+    I.ask('אני רוצה לקנות מכשיר'); I.ask('אייפון'); I.ask(oo.name_he);
+    var stTxt = I.lastBot();
+    I.sandbox.dataLayer.length = 0;
+    var sug = I.lastSug(); I.ask(sug[0] || '256GB');
+    var after = I.sandbox.dataLayer.map(function (e) { return e.event + ':' + (e.step || ''); }).join(' ');
+    rule('בדגם בהזמנה בלבד אין שאלת יבוא', after.indexOf('chat_buy:') >= 0 && I.lastBot().indexOf('יבוא') < 0, after + ' / ' + I.lastBot().slice(0, 60));
+    rule('ניסוח הנפח: "ל-" לפני שם לועזי', /^[A-Za-z]/.test(oo.name_he) ? stTxt.indexOf('שיש ל-' + oo.name_he) >= 0 : true, stTxt.slice(0, 80));
   }
 })();
 

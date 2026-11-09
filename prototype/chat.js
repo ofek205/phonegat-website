@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:59eaa4892fcd802e */
+/* sha1:b0563322ca5a6be6 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -696,8 +696,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     /* דגם בהזמנה בלבד ושאלת זמינות ("מתי יוצא iPhone Duo"). בלי זה "מתי" תפס את כוונת
        שעות הפתיחה. התשובה היא order_note מ-devices.json, בלי מחיר ובלי טענת מלאי. */
-    if(devs.length===1&&devs[0].order_only&&devs[0].order_note&&
-       /מתי|יוצא|ייצא|יגיע|מגיע|הגיע|זמין|זמינות|להשיג|להזמין|נמכר|בישראל|מלאי|יש לכם|אפשר לקנות/.test(text)){
+    /* רק כשאין כוונה אחרת: "יש לכם כיסוי ל-iPhone Duo" הוא אבזור, "מגן מסך" הוא הצעה,
+       ו"מתי מגיע iPhone Duo לתיקון" הוא תיקון. אלה ממשיכים בניתוב הרגיל. */
+    var otherIt=matchIntent(text),OTHER={repair:1,accessories:1,offer:1,warranty:1,data:1,tradein:1,gaming:1,payments:1,celcom:1,business:1,callback:1,human:1};
+    if(devs.length===1&&devs[0].order_only&&devs[0].order_note&&!(otherIt&&OTHER[otherIt.id])&&
+       /מתי|יוצא|ייצא|יגיע|מגיע|הגיע|זמין|זמינות|להשיג|להזמין|נמכר|בישראל|מלאי|בחנויות|בחנות|יש לכם|אפשר לקנות/.test(text)){
       var od=devs[0];fails=0;ctx.topic='זמינות '+od.name_he;
       track('chat_device_spec',{slug:od.slug,field:'availability'});
       botReply(od.order_note,{cta:contactCta(),waText:'היי, הגעתי דרך האתר של פון גת. אשמח לבדוק מחיר וזמן אספקה ל-'+od.name_he+'.'});
@@ -1034,9 +1037,9 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     else{['128GB','256GB','512GB ומעלה'].forEach(function(s){STORAGE_SEEN.push(s);sug.push([s,function(){buyStorage(s);}]);});}
     sug.push(['לא בטוח',function(){buyStorage('');}]);
     /* "זיכרון" הוא RAM. השאלה כאן על אחסון, וזה שני דברים שונים שלקוח באמת מבלבל ביניהם. */
-    botReply(opts?('איזה נפח? אלה הנפחים שיש ל'+(ctx.model||'דגם הזה')+'.'):'איזה נפח אחסון צריך?',{sug:sug});
+    botReply(opts?('איזה נפח? אלה הנפחים שיש '+(ctx.model?((/^[A-Za-z0-9]/.test(ctx.model)?'ל-':'ל')+ctx.model):'לדגם הזה')+'.'):'איזה נפח אחסון צריך?',{sug:sug});
   }
-  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:safeVal(s||'לא בטוח',STORAGE_SEEN)});flow={type:'buy',step:'import'};askImport();}
+  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:safeVal(s||'לא בטוח',STORAGE_SEEN)});if(ctx.orderOnly){buyDone();return;}flow={type:'buy',step:'import'};askImport();}
   function askImport(){botReply('ואיזה יבוא מעדיפים?',{sug:[['יבוא רשמי',function(){buyImport('רשמי');}],['יבוא מקביל',function(){buyImport('מקביל');}],['לא בטוח, שתסבירו לי',function(){buyImport('');}]]});}
   function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:safeVal(v||'לא בטוח',IMPORT_VALS)});buyDone();}
   function buyDone(){
