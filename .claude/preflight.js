@@ -2368,15 +2368,13 @@ if (classFails.length) {
  * ו-ad_personalization נשארים denied עד לחיצה על אישור הכול, ואותה לחיצה ממשיכה
  * לאשר את ארבעתם כמו קודם. רק הכרחי דוחף consent update של analytics_storage denied
  * ושומר את הבחירה, והעמוד הבא קורא אותה לפני ש-GTM נטען.
- * שני עמודי ההשוואה הנעולים והאשף לא נכללים: אסור לשנות בהם בית, והם נשארים על הדגם הישן.
+ * שני עמודי ההשוואה הנעולים לא נכללים: אסור לשנות בהם בית, והם נשארים על הדגם הישן.
  * הבדיקה נכשלת אם עמוד נשאר מאחור, כי אז מבקר שדחה בעמוד אחד נמדד שוב בעמוד אחר. */
 (function () {
-  /* האשף guides/which-phone-do-i-have נשאר זהה ביית ל-main לפי הכלל של אופק, ולכן גם הוא
-     על הדגם הישן ומחוץ לבדיקה, עד שאופק יאשר במילים שלו לשנות אותו. */
+  /* האשף guides/which-phone-do-i-have בתוך הבדיקה: אופק אישר ב-9.11.2026 לשנות אותו. */
   var LOCK = {
     'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 1,
-    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1,
-    'guides/which-phone-do-i-have/index.html': 1
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 1
   };
   var GRANT = "gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'})";
   var DENY = "gtag('consent','update',{analytics_storage:'denied'})";
@@ -2396,7 +2394,7 @@ if (classFails.length) {
     if (s.indexOf('>רק הכרחי</button>') < 0) problems.push(f + ': חסר כפתור רק הכרחי');
   });
   if (problems.length) bad('הסכמת מדידה: ' + problems.slice(0, 4).join(' · ') + (problems.length > 4 ? ' ועוד' : ''));
-  else ok('המדידה מותרת כברירת מחדל, דחייה נשמרת לפני GTM, ושלושת העמודים הנעולים מחוץ לבדיקה');
+  else ok('המדידה מותרת כברירת מחדל, דחייה נשמרת לפני GTM, ושני העמודים הנעולים מחוץ לבדיקה');
 })();
 
 /* ---------- דוח ---------- */
