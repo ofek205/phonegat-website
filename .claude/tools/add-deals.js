@@ -497,10 +497,16 @@ function main() {
       theirs.get(k).add(norm(r.body));
     });
     const keep = [], conflicts = [];
+    /* .cookie is each page's own consent banner, not part of the carousel. Since PR 30 (28.10.2026)
+     * the home page and the other pages, the which-phone guide included (approved 9.11.2026), carry
+     * the new banner CSS, while the two locked compare pages keep the old one by design. A .cookie
+     * rule that differs is the page's own decision, so it is neither a conflict nor re-emitted over
+     * the page's banner. */
+    const ownChrome = r => /^\.cookie(?:[\s.:#\[,]|$)/.test(norm(r.sel));
     cl.picked.forEach(i => {
       const r = homeRules[i], k = ruleKey(r);
       if (!theirs.has(k)) { keep.push(i); return; }
-      if (!theirs.get(k).has(norm(r.body))) conflicts.push(k);
+      if (!theirs.get(k).has(norm(r.body))) { if (!ownChrome(r)) conflicts.push(k); }
     });
     if (conflicts.length) throw new Error(rel + ': page disagrees with index.html on ' +
       conflicts.length + ' rule(s), first is ' + conflicts[0] + '. Reconcile before porting.');
