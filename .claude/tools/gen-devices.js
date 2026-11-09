@@ -1014,6 +1014,7 @@ if (swGrew) {
         /* אופק, 9.11.2026: מכשיר ייחוס שאפשר להזמין אצלנו, בהזמנה בלבד. אין עמוד, אין מחיר
            ואין טענת מלאי, והבוט מזמין לשאול ב-WhatsApp על מחיר וזמן אספקה. */
         order_only: (ref && c.order_only === true) || undefined,
+        order_note: (ref && c.order_only === true && c.order_note) || undefined,
         /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
            ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
         warranty_by: ref ? null : (c.warranty_by || null),

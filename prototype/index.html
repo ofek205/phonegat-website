@@ -4041,6 +4041,15 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
       return true;
     }
+    /* דגם בהזמנה בלבד ושאלת זמינות ("מתי יוצא iPhone Duo"). בלי זה "מתי" תפס את כוונת
+       שעות הפתיחה. התשובה היא order_note מ-devices.json, בלי מחיר ובלי טענת מלאי. */
+    if(devs.length===1&&devs[0].order_only&&devs[0].order_note&&
+       /מתי|יוצא|ייצא|יגיע|מגיע|הגיע|זמין|זמינות|להשיג|להזמין|נמכר|בישראל|מלאי|יש לכם|אפשר לקנות/.test(text)){
+      var od=devs[0];fails=0;ctx.topic='זמינות '+od.name_he;
+      track('chat_device_spec',{slug:od.slug,field:'availability'});
+      botReply(od.order_note,{cta:contactCta(),waText:'היי, הגעתי דרך האתר של פון גת. אשמח לבדוק מחיר וזמן אספקה ל-'+od.name_he+'.'});
+      return true;
+    }
     var field=findField(text);if(!field)return false;
     if(!devs.length){
       /* יש שאלה על שדה אבל אין דגם מזוהה. מכריזים "לא זיהיתי דגם" **רק** כשבאמת היה
@@ -4265,7 +4274,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
 
   function startBuy(extra){
-    flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;
+    flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;ctx.orderOnly=false;
     track('chat_flow',{flow:'buy'});
     var sug=[],i;
     /* "לא בטוחים? שנמליץ" ראשון ובניסוח של פתרון, כי הוא **קיצור הדרך** של הזרימה:
@@ -4333,15 +4342,22 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(m&&!slug){
       var hits=findDevices(m);
       if(hits.length===1){
-        if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
+        /* אופק, 9.11.2026: דגם בהזמנה בלבד ממשיך בזרימה כמו דגם נמכר. הדגם נשאר בליד,
+           הבועה מציגה את כפתורי הקשר, והמדידה היא chat_buy_step רגיל ולא chat_ref_declined. */
+        if(hits[0].kind==='reference'&&hits[0].order_only){
+          m=hits[0].name_he;slug=hits[0].slug;ctx.orderOnly=true;
+          ctx.model=m;ctx.slug=slug;
+          botReply(refNote(hits[0]),{cta:contactCta(),waText:buyWa()});
+        }
+        else if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
           track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
-          botReply(refNote(hits[0])+(hits[0].order_only?'\nאפשר גם להמשיך כאן בלי דגם ולהשאיר פרטים.':'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.'),{
+          botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
                  ['להמשיך בלי דגם',function(){buyModel('','');}]]});
           return;
         }
         /* דגם נמכר שזוהה: משלימים את השם המלא ואת ה-slug, וכך גם שלב הנפח מדויק */
-        m=hits[0].name_he;slug=hits[0].slug;
+        else{m=hits[0].name_he;slug=hits[0].slug;}
       }
     }
     ctx.model=m||ctx.model||'';ctx.slug=slug||'';
@@ -4376,6 +4392,12 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     track('chat_buy',{device:safeVal(ctx.brand||'המלצה',['אייפון','סמסונג','שיאומי','המלצה']),model:ctx.model?catalogName(ctx.model):'',storage:safeVal(ctx.storage||'',STORAGE_SEEN),imp:safeVal(ctx.imp||'',IMPORT_VALS)});
     /* "הכול בתשלומים, כולל העברת נתונים ואבזור" נקרא כהבטחה שהאבזור כלול במחיר, וזה לא
        מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו. */
+    /* דגם בהזמנה בלבד: אין הבטחה על תשלומים, ומחיר וזמן אספקה נבדקים ב-WhatsApp */
+    var od=ctx.orderOnly?factsBySlug(ctx.slug):null;
+    if(od&&od.order_only){
+      botReply(sum+refNote(od)+'\n'+hoursLine(),{cta:contactCta(),waText:buyWa()});
+      return;
+    }
     botReply(sum+'אפשר בתשלומים, ואנחנו מעבירים את הנתונים מהמכשיר הישן. דברו איתנו ונגיד לכם מחיר.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}]]});
   }
 
