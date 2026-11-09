@@ -92,6 +92,22 @@ function inIndex(url) {
   return false;
 }
 
+/* מוציא אלמנט לפי id, כולל div מקונן. האשף יושב עם hidden ב-HTML. */
+function stripEl(html, id) {
+  var re = new RegExp('<div\\b[^>]*\\bid=["\']' + id + '["\'][^>]*>', 'i');
+  var m = re.exec(html);
+  if (!m) return html;
+  var i = m.index + m[0].length, depth = 1, tag = /<\/?div\b[^>]*>/gi;
+  tag.lastIndex = i;
+  var t;
+  while ((t = tag.exec(html))) {
+    if (t[0].charAt(1) === '/') depth--;
+    else depth++;
+    if (depth === 0) return html.slice(0, m.index) + html.slice(t.index + t[0].length);
+  }
+  return html;
+}
+
 var files = walk(PROTO, []).filter(function (f) {
   var b = path.basename(f);
   /* שני העמודים המשפטיים אינם תוכן שנשאלים עליו, וקידומת _ היא טיוטה מקומית */
@@ -130,8 +146,12 @@ files.forEach(function (f) {
   srcHash[url] = crypto.createHash('sha1')
     .update(mm[0].replace(/\r\n/g, '\n')).digest('hex').slice(0, 16);
 
+  /* האשף ב-#wiz הוא ממשק, לא תשובה. הכפתורים ("אייפון", "לא יודעים") היו
+     הופכים למקטע כי ה-h2 שלו יושב בתוך main. הטביעת אצבע נשארת על main המלא. */
+  var sectionHtml = stripEl(mm[0], 'wiz');
+
   /* פיצול לפי h2/h3, ושמירת הכותרת עצמה יחד עם הטקסט שאחריה */
-  var chunks = mm[0].split(/(<h[23][^>]*>[\s\S]*?<\/h[23]>)/i);
+  var chunks = sectionHtml.split(/(<h[23][^>]*>[\s\S]*?<\/h[23]>)/i);
   var heading = '';
   chunks.forEach(function (c) {
     if (/^<h[23]/i.test(c)) { heading = strip(c); return; }

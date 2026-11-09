@@ -2248,6 +2248,121 @@ if (classFails.length) {
   }
 })();
 
+/* ---------- 45. מפת קודי SM באשף תואמת ל-devices.json ----------
+ * האשף ממפה קוד SM לשם ידידותי. קוד שגוי גרוע מתא ריק: S26 ו-S26+ חולקים
+ * עמוד מפרט שאינו אומר איזה קוד של מי, ודגם ייחוס אינו נמכר. לכן המפה היא
+ * בדיוק קודי SM שמופיעים ב-spec.model_numbers של דגם אחד שאינו reference. */
+(function () {
+  var guide, raw;
+  try { guide = read('prototype/guides/which-phone-do-i-have/index.html'); }
+  catch (e) { bad('חסר מדריך איזה טלפון יש לי'); return; }
+  try { raw = JSON.parse(read('prototype/devices.json')); }
+  catch (e) { bad('devices.json שבור, אי אפשר לבדוק את מפת ה-SM'); return; }
+  var body = objectAfter(guide, 'var SM=');
+  if (!body) { bad('אשף הדגם: חסרה מפת SM'); return; }
+  var map = {}, rm = /'(SM-[A-Z0-9]+)'\s*:\s*'([^']*)'/g, mm;
+  while ((mm = rm.exec(body))) map[mm[1]] = mm[2];
+  function smFrom(v) {
+    var s = '';
+    if (v == null) return [];
+    if (typeof v === 'string') s = v;
+    else if (Array.isArray(v)) s = v.join(' ');
+    else return [];
+    var out = [], re = /SM-[A-Z0-9]+/g, m;
+    var up = s.toUpperCase();
+    while ((m = re.exec(up))) out.push(m[0]);
+    return out;
+  }
+  var owners = {};
+  (raw.devices || []).forEach(function (dev) {
+    if (!dev || dev.status === 'reference') return;
+    smFrom(dev.spec && dev.spec.model_numbers).forEach(function (code) {
+      (owners[code] = owners[code] || []).push(dev.name);
+    });
+  });
+  var expected = {};
+  Object.keys(owners).forEach(function (code) {
+    var names = owners[code].filter(function (n, i) { return owners[code].indexOf(n) === i; });
+    if (names.length === 1) expected[code] = names[0];
+  });
+  var problems = [];
+  Object.keys(expected).forEach(function (code) {
+    if (map[code] !== expected[code]) problems.push(code + ' צריך להיות ' + expected[code] + (map[code] ? ' (באשף: ' + map[code] + ')' : ' (חסר באשף)'));
+  });
+  Object.keys(map).forEach(function (code) {
+    if (!expected[code]) problems.push(code + ' באשף בלי שיוך יחיד ב-devices.json');
+  });
+  if (problems.length) bad('מפת SM באשף לא תואמת ל-devices.json: ' + problems.slice(0, 6).join(' | '));
+  else ok('מפת SM באשף תואמת ל-devices.json (' + Object.keys(expected).length + ' קודים)');
+})();
+
+/* ---------- 46. עמודי השוואה נעולים: הגוף נשאר זהה ל-main ----------
+ * שני העמודים נעולים ב-gen-compare.js (LOCKED_UNTIL_OCT9) כדי שניסוי ה-hero_cta
+ * לא יידרס. galaxy-s26-plus-vs-galaxy-s26 חייב להישאר זהה ביית ל-origin/main.
+ * iphone-17-pro-vs-iphone-17-pro-max מותר לו לשנות רק את שש תגיות הראש
+ * (title, description, og:title, og:description, twitter:title, twitter:description),
+ * כי הן ניסוי CTR, ואת השורות שב-APPROVED_17. תיקון משפטי החנות בעמוד הנעול, 26.10.2026:
+ * רק את משפטי "אצלנו בחנות" / "שווה להחזיק" ואת שעות הפתיחה לניסוח
+ * "א׳ עד ה׳" / "ו׳". כל שורה אחרת שזזה היא כישלון. */
+(function () {
+  var cp = require('child_process');
+  var LOCK = {
+    'compare/galaxy-s26-plus-vs-galaxy-s26/index.html': 'exact',
+    'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html': 'head'
+  };
+  /* מפתח = השורה ב-origin/main, ערך = השורה המותרת אחרי התיקון. לא דפוס. */
+  var APPROVED_17 = {
+    '    <p class="cv-prose">זו החלטה שנופלת ביד ולא בטבלה. שני המכשירים בחנות, ושווה להחזיק את שניהם דקה לפני שמחליטים.</p>':
+      '    <p class="cv-prose">זו החלטה שנופלת ביד ולא בטבלה. את אייפון 17 פרו ואת אייפון 17 פרו מקס כבר לא מוכרים אצלנו, והעמוד נשאר כהשוואה ביניהם.</p>',
+    '    <p>שני המכשירים אצלנו בחנות. תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>':
+      '    <p>במקום שני אלה נמכרים עכשיו <a href="/phones/iphone-18-pro/">אייפון 18 פרו</a> וגם <a href="/phones/iphone-18-pro-max/">אייפון 18 פרו מקס</a>. תגידו לנו מה חשוב לכם, ונעבור על זה יחד, או תפתחו את <a href="/compare/iphone-18-pro-vs-iphone-18-pro-max/">אייפון 18 פרו מול אייפון 18 פרו מקס</a>. אנחנו ברחבת תשרי 2 בקרית גת, א׳&nbsp;עד&nbsp;ה׳:&nbsp;9:00&nbsp;עד&nbsp;18:30, ו׳:&nbsp;9:00&nbsp;עד&nbsp;13:00.</p>',
+    '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳–ה׳: <span class="ltr">9:00–18:30</span></li><li>ו׳: <span class="ltr">9:00–13:00</span></li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>':
+      '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳ עד ה׳: 9:00&nbsp;עד&nbsp;18:30</li><li>ו׳: 9:00&nbsp;עד&nbsp;13:00</li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>'
+  };
+  function headKind(line) {
+    if (/^<title>[\s\S]*<\/title>$/.test(line)) return 'title';
+    var m = line.match(/^<meta (?:name|property)="([^"]+)" content="[^"]*">$/);
+    if (!m) return null;
+    if (m[1] === 'description' || m[1] === 'og:title' || m[1] === 'og:description' ||
+        m[1] === 'twitter:title' || m[1] === 'twitter:description') return m[1];
+    return null;
+  }
+  var problems = [], checked = 0;
+  Object.keys(LOCK).forEach(function (rel) {
+    var cur;
+    try { cur = read('prototype/' + rel); }
+    catch (e) { problems.push(rel + ': חסר'); return; }
+    var mainOut = cp.spawnSync('git', ['show', 'origin/main:prototype/' + rel], {
+      encoding: 'utf8', cwd: ROOT, maxBuffer: 8 * 1024 * 1024
+    });
+    if (mainOut.status !== 0) { problems.push(rel + ': אין עותק ב-origin/main'); return; }
+    var a = cur.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    var b = String(mainOut.stdout || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    if (a.length && a[a.length - 1] === '') a.pop();
+    if (b.length && b[b.length - 1] === '') b.pop();
+    if (a.length !== b.length) {
+      problems.push(rel + ': מספר השורות השתנה (' + b.length + ' מול ' + a.length + ')');
+      return;
+    }
+    var drifted = [];
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] === b[i]) continue;
+      if (rel === 'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html' && APPROVED_17[b[i]] === a[i]) continue;
+      if (LOCK[rel] !== 'head' || headKind(a[i]) === null || headKind(a[i]) !== headKind(b[i])) {
+        drifted.push(i + 1);
+      }
+    }
+    if (drifted.length) {
+      problems.push(rel + (LOCK[rel] === 'exact'
+        ? ': אינו זהה ל-main'
+        : ': השתנו שורות שאינן תגיות הראש') + ' (' + drifted.slice(0, 6).join(', ') +
+        (drifted.length > 6 ? '…' : '') + ')');
+    } else checked++;
+  });
+  if (problems.length) bad('עמוד נעול: ' + problems.join(' · '));
+  else ok(checked + ' עמודי השוואה נעולים: גלקסי S26 פלוס זהה ל-main, ובאייפון 17 פרו רק תגיות הראש והשורות שאושרו ב-26.10.2026');
+})();
+
 /* ---------- דוח ---------- */
 console.log('\n[1mבדיקות טרום-העלאה — PHONE GAT[0m\n');
 passes.forEach(function (m) { console.log('  [32m✓[0m ' + m); });

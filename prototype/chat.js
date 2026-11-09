@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:8111d9d7de29ed1c */
+/* sha1:3c9e2afc5840fc10 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -369,6 +369,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     var me=en.replace(/^(galaxy|iphone|redmi note|redmi|xiaomi|google|oneplus|nothing phone)\s+/,'');
     if(me!==en&&ok(me))t.push(me);
+    /* כינויים קצרים רק ל-Fold8. "fold8" אינו "fold7" ואינו "flip", ו"פולד 8" אינו פליפ.
+       אולטרה שאחריהם נפסל ב-findDevices, כי Ultra הוא דגם אחר. */
+    if(d.slug==='galaxy-z-fold8'){
+      ['fold8','fold 8','פולד 8'].forEach(function(a){if(ok(a)&&t.indexOf(a)<0)t.push(a);});
+    }
     return t.filter(function(x,j,a){return x&&a.indexOf(x)===j;});
   }
   /* chat_device_unmatched קיים כדי למדוד ביקוש לדגמים שאיננו מחזיקים, ולכן הוא חייב לדעת
@@ -402,6 +407,15 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     return new RegExp('(^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'([^'+WORDCH+']|$)').test(hay);
   }
   function countSub(hay,tok){var n=0,i=0;while((i=hay.indexOf(tok,i))>=0){n++;i+=tok.length;}return n;}
+  /* Fold8 Ultra אינו Fold8. הטוקן של Fold8 הוא תחילית של השם הארוך, ובלעדי
+     הספירה הזאת "Galaxy Z Fold8 Ultra" ו"גלקסי Z Fold8 אולטרה" נענים כ-Fold8.
+     אחרי הנרמול הרווח יכול להיות אפס או יותר, והמילה באנגלית או בעברית. */
+  function ultraTail(hay,tok){
+    var esc=tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    var re=new RegExp('(?:^|[^'+WORDCH+'][ולבמהשכ]?)'+esc+'\\s*(?:[ולבמהשכ])?(?:ultra|אולטרה)(?=[^'+WORDCH+']|$)','g');
+    var n=0;while(re.exec(hay))n++;
+    return n;
+  }
   /* מחזיר את הדגמים שהוזכרו, בסדר ההופעה במשפט.
      ההכלה נפתרת בספירה ולא בפסילה: "אחריות על אייפון 17 פרו" מזכיר את הטוקן "אייפון 17"
      פעם אחת, וכולה מוסברת על ידי "אייפון 17 פרו", ולכן אייפון 17 אינו אזכור נפרד.
@@ -421,6 +435,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     hits.forEach(function(h){
       var left=countSub(hay,h.tok),i;
       for(i=0;i<used.length;i++)if(used[i].indexOf(h.tok)>=0)left-=countSub(hay,used[i]);
+      if(h.d.slug==='galaxy-z-fold8')left-=ultraTail(hay,h.tok);
       if(left<=0)return;
       used.push(h.tok);out.push(h);
     });
@@ -480,9 +495,11 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
      ולא מצב שנשמר בשיחה. */
   function refNote(d){
-    return d.kind==='reference'
-      ? 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.'
-      : '';
+    if(d.kind==='reference')
+      return 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.';
+    if(d.kind==='discontinued')
+      return 'שימו לב: את '+d.name_he+' כבר לא מוכרים אצלנו.';
+    return '';
   }
   function devLink(d){
     return d.kind==='reference'?null:{label:'לעמוד של '+d.name_he,href:'/phones/'+d.slug+'/'};
@@ -515,16 +532,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
+      /* תשלומים והעברת נתונים הם תנאי מכירה. אחריות וטלפון חלופי נשארים למי שכבר קנה. */
+      if(d.kind==='discontinued'&&(field==='payments'||field==='data_transfer'))
+        return {text:note+'\nאפשר לשאול על דגם דומה שיש במלאי.',human:true};
+      var owned=d.kind==='discontinued'?('את '+d.name_he+' כבר לא מוכרים אצלנו. למי שקנה אצלנו: '):pre;
       if(field==='warranty'){
-        if(!d.warranty_by)return {text:pre+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
+        if(!d.warranty_by)return {text:owned+'על האחריות של '+d.name_he+' עדיף שתשמעו מברוך או מסיגל, כדי שלא אתן לכם מספר לא מדויק.',human:true,deferred:'warranty'};
         var t='האחריות על '+d.name_he+': '+d.warranty_by;
         if(typeof d.warranty_months==='number')t+='\nלמשך '+d.warranty_months+' חודשים.';
         if(d.service_terms)t+='\n'+d.service_terms;
-        return {text:pre+t};
+        return {text:owned+t};
       }
       var v=d[field];
-      if(!v)return {text:pre+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
-      return {text:pre+v};
+      if(!v)return {text:owned+'את זה לגבי '+d.name_he+' עדיף לשמוע מברוך או מסיגל.',human:true,deferred:field};
+      return {text:owned+v};
     }
     /* שדה מפרט. null אינו "בערך", הוא "היצרן לא מפרסם". */
     var sv=d.spec?d.spec[field]:null;
@@ -684,7 +705,20 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
       return true;
     }
-    var field=findField(text);if(!field)return false;
+    var field=findField(text);
+    /* דגם by_order בלי שדה מפרט. עונים שהוא זמין בהזמנה, בלי מחיר ובלי מלאי.
+       בקשת קנייה נשארת בזרימה: "אני רוצה לקנות אייפון 17", וגם Fold8 בשם המלא
+       או בכינוי הקצר. Ultra שאחרי Fold8 לא מגיע לכאן, כי findDevices מוריד אותו. */
+    if(!field&&devs.length===1&&devs[0].by_order&&!/לקנות|לרכוש|קונה/.test(text)){
+      var od=devs[0];
+      fails=0;ctx.device=od.name_he;ctx.slug=od.slug;
+      track('chat_device_spec',{slug:od.slug,field:'by_order'});
+      var olink=devLink(od),osug=[];
+      if(olink)osug.push([olink.label,function(){location.href=olink.href;}]);
+      botReply(od.name_he+' זמין בהזמנה. שלחו הודעה ב-WhatsApp.',{sug:osug});
+      return true;
+    }
+    if(!field)return false;
     if(!devs.length){
       /* יש שאלה על שדה אבל אין דגם מזוהה. מכריזים "לא זיהיתי דגם" **רק** כשבאמת היה
          בטקסט משהו בצורת דגם. אחרת זו שאלת תוכן ולא שאלת דגם, ושכבת התוכן תענה עליה.
@@ -976,8 +1010,8 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(m&&!slug){
       var hits=findDevices(m);
       if(hits.length===1){
-        if(hits[0].kind==='reference'){
-          track('chat_ref_declined',{slug:hits[0].slug});
+        if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
+          track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
           botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
                  ['להמשיך בלי דגם',function(){buyModel('','');}]]});

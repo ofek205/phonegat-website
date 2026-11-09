@@ -71,6 +71,110 @@ function E_BODY(d) { return JSON.stringify(d.editorial || {}); }
  * ל-Pro Max iPhone 17, ומידה הופכת סדר ספרות. אין רגקס שתופס את זה, ולכן העטיפה כאן. */
 function ltr(s) { return '<bdo dir="ltr">' + esc(s) + '</bdo>'; }
 
+/* המשפט הראשון של ליד ההשוואה, לכרטיס בעמוד המכשיר.
+ *
+ * עד 18.10.2026 זה היה lede.split('.')[0]. הנקודה הראשונה ב"מסך 6.7" היא הנקודה
+ * העשרונית, והכרטיס יצא "חולקים מסך 6." בשמונה עמודי מכשיר.
+ *
+ * נקודה סוגרת משפט רק כשאחריה רווח או סוף המחרוזת, ולא כשהיא יושבת בין שתי ספרות.
+ * כך "6.7", "5.3" ו-"iOS 26.1" נשארים שלמים. בסוף משפט ("iOS 26.1.") הנקודה הסוגרת
+ * היא זו שאחרי הספרה האחרונה, לא זו שבתוך הגרסה.
+ * קיצור לטיני (e.g., Dr., U.S.) גם הוא לא סוגר: אחריו בא רווח בלי שהמשפט נגמר.
+ * אות בודדת היא קיצור רק כשלפניה אין ספרה או מקף. "5G.", "45W.", "5x.", "4K.",
+ * "USB-C." ו-"IP69K." כן סוגרים משפט, כי האות היא יחידה ולא ראשי תיבות.
+ * בסוף המחרוזת הנקודה כן סוגרת, גם אחרי קיצור, כדי שלא נדביק נקודה שנייה. */
+var SENTENCE_ABBR = { 'e.g': 1, 'i.e': 1, 'etc': 1, 'vs': 1, 'mr': 1, 'mrs': 1, 'ms': 1,
+  'dr': 1, 'prof': 1, 'sr': 1, 'jr': 1, 'st': 1, 'no': 1, 'fig': 1, 'vol': 1,
+  'inc': 1, 'ltd': 1, 'co': 1 };
+/* אמת כשהנקודה ב-i היא קיצור, לא סוף משפט: מילה מ-SENTENCE_ABBR, או אות בודדת
+ * שלא לפניה ספרה או מקף (U.S., לא 5G / 4K / USB-C). */
+function abbrevBefore(s, i) {
+  var word = (s.slice(0, i).match(/[A-Za-z]+$/) || [''])[0];
+  return (word.length === 1 && !/[\d-]/.test(s.charAt(i - 2))) || !!SENTENCE_ABBR[word.toLowerCase()];
+}
+function firstSentence(s) {
+  s = String(s).replace(/\s+$/, '');
+  var i, next, prev;
+  for (i = 0; i < s.length; i++) {
+    if (s.charAt(i) !== '.') continue;
+    next = i + 1 < s.length ? s.charAt(i + 1) : '';
+    prev = i > 0 ? s.charAt(i - 1) : '';
+    /* בין שתי ספרות: 6.7, 5.3, iOS 26.1. לא סוף משפט. */
+    if (/\d/.test(prev) && /\d/.test(next)) continue;
+    /* רק נקודה שאחריה רווח, או שהיא בסוף המחרוזת. */
+    if (next !== '' && !/\s/.test(next)) continue;
+    if (next !== '' && abbrevBefore(s, i)) continue;
+    return s.slice(0, i + 1);
+  }
+  return /\.$/.test(s) ? s : s + '.';
+}
+function assertSentenceSplitter() {
+  var cases = [
+    ['שני המכשירים חולקים מסך 6.7 אינץ׳ ב-120Hz, 5G, הקלטת וידאו ב-4K וסוללה של 5000 mAh. ההכרעה',
+     'שני המכשירים חולקים מסך 6.7 אינץ׳ ב-120Hz, 5G, הקלטת וידאו ב-4K וסוללה של 5000 mAh.'],
+    ['שני הדגמים חולקים מסך של 6.3 אינץ׳ באותה רזולוציה. ההבדל',
+     'שני הדגמים חולקים מסך של 6.3 אינץ׳ באותה רזולוציה.'],
+    ['גרסה 5.3 בלבד. אחר כך עוד', 'גרסה 5.3 בלבד.'],
+    ['עודכן ל-iOS 26.1 אתמול. היום לא', 'עודכן ל-iOS 26.1 אתמול.'],
+    ['iOS 26.1', 'iOS 26.1.'],
+    ['5.3', '5.3.'],
+    ['משפט רגיל. משפט שני.', 'משפט רגיל.'],
+    ['Dr. Smith said hello. Then he left.', 'Dr. Smith said hello.'],
+    ['U.S. model only. Next sentence.', 'U.S. model only.'],
+    ['see etc.', 'see etc.'],
+    ['תומכים ב-5G. ההבדל', 'תומכים ב-5G.'],
+    ['טעינה של 45W. השני', 'טעינה של 45W.'],
+    ['זום שמגיע ל-5x. השני', 'זום שמגיע ל-5x.'],
+    ['הקלטה ב-4K. אחר כך', 'הקלטה ב-4K.'],
+    ['דירוג IP69K. השני', 'דירוג IP69K.'],
+    ['חיבור USB-C. אבל', 'חיבור USB-C.'],
+    ['אייפון 17 vs. גלקסי S26 דומים. סוף', 'אייפון 17 vs. גלקסי S26 דומים.']
+  ];
+  cases.forEach(function (c) {
+    var got = firstSentence(c[0]);
+    if (got !== c[1]) {
+      console.error('✗ firstSentence\n  in:  ' + c[0] + '\n  got: ' + got + '\n  exp: ' + c[1]);
+      process.exit(1);
+    }
+  });
+  ['devices.json', 'headphones.json', 'watches.json'].forEach(function (file) {
+    var pth = path.join(PROTO, file), raw;
+    try { raw = fs.readFileSync(pth, 'utf8'); }
+    catch (e) {
+      console.error('✗ ' + file + ': הקובץ חסר, ובדיקת המשפט הראשון לא מדלגת: ' + e.message);
+      process.exit(1);
+    }
+    var j;
+    try { j = JSON.parse(raw); }
+    catch (e) {
+      console.error('✗ ' + file + ': JSON לא תקין, ובדיקת המשפט הראשון לא מדלגת: ' + e.message);
+      process.exit(1);
+    }
+    ((j._comparisons || {}).pairs || []).forEach(function (p) {
+      if (!p.lede) return;
+      var got = firstSentence(p.lede);
+      var bare = got.charAt(got.length - 1) === '.' ? got.slice(0, -1) : got;
+      if (p.lede.indexOf(bare) !== 0) {
+        console.error('✗ ' + (p.slug || file) + ': המשפט הראשון אינו תחילת הליד: ' + got);
+        process.exit(1);
+      }
+      var at = bare.length;
+      if (p.lede.charAt(at) === '.' && /\d/.test(p.lede.charAt(at - 1)) && /\d/.test(p.lede.charAt(at + 1))) {
+        console.error('✗ ' + (p.slug || file) + ': החיתוך נפל על נקודה עשרונית: ' + got);
+        process.exit(1);
+      }
+      /* רק נקודה שהמפצל עצמו היה סוגר עליה. "vs. גלקסי" ו-"Dr. כהן" נשארים,
+         "5G. ההבדל" נופל כי האות אחרי ספרה אינה קיצור. */
+      var re = /\. (?=[\u05D0-\u05EA])/g, m;
+      while ((m = re.exec(got))) if (!abbrevBefore(got, m.index)) {
+        console.error('✗ ' + (p.slug || file) + ': הכרטיס ממשיך אחרי נקודה ורווח לאות עברית: ' + got);
+        process.exit(1);
+      }
+    });
+  });
+}
+assertSentenceSplitter();
+
 /* .hub נולד ב-guides/index.html, ונשלף משם בזמן החילול במקום להיכתב כאן שוב.
  * זה אותו דפוס שכבר קיים ב-gen-compare וב-gen-finder, והוא התשובה לכשל שחזר בפרויקט
  * חמש פעמים: רכיב שמועתק לעמוד חדש בלי הכלל שלו נראה שבור בלי להיכשל בשום דבר. */
@@ -165,9 +269,10 @@ function buildMain(d, openTag, K) {
 
   /* --- עובדות מסחריות: ערך אמיתי או הנוסח החלופי, לעולם לא ריק --- */
   var AWAY = !!C.not_in_store;
+  var GONE = !!C.discontinued;
   /* by_order: לא על המדף, אבל אפשר להזמין ללקוח. not_in_store נשאר "עוד לא הגיע".
      בלי הדגל הענף זהה למה שהיה, כדי שעמודי הדגמים הקיימים לא יזוזו בבית. */
-  var ORDER = !!C.by_order && !AWAY;
+  var ORDER = !!C.by_order && !AWAY && !GONE;
   /* דגם שעוד לא בחנות: אין מלאי, אין צבעים בחנות, ואין תנאי מכירה. אחריות, טלפון חלופי
      ותשלומים הם התחייבות על מכירה שעוד לא קיימת, ולכן הם לא מוצגים. נוסף ב-24.9.2026. */
   /* אוזניות ושעון: אין במאגר שלהם שדות מסחריים בכלל, ולכן כל שורה היא הנוסח החלופי. נפחים,
@@ -190,6 +295,9 @@ function buildMain(d, openTag, K) {
     ['מחיר', C.price, C.price_note || PH.price],
     ['זמינות', 'הדגם עוד לא בחנות, ואין לנו מועד הגעה. לכן אין כאן מלאי, צבעים או תנאי אחריות.', ''],
     ['נפחים', val(S.storage_offered) ? 'אצל היצרן: ' + val(S.storage_offered) : null, 'לא פורסם']
+  ] : GONE ? [
+    /* יצא מהמכירה: שורה אחת. אין מחיר, מלאי, צבע, נפח, יבוא או אחריות על מכירה. */
+    ['זמינות', 'את הדגם הזה כבר לא מוכרים אצלנו.', '']
   ] : ORDER ? [
     ['מחיר', C.price, C.price_note || 'המחיר נמסר ב-WhatsApp, יחד עם זמן האספקה.'],
     ['זמינות', 'זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה.', ''],
@@ -249,7 +357,7 @@ function buildMain(d, openTag, K) {
   heroImg(d) +
   '    </figure>\n' +
   '    <div class="txt">\n' +
-  '      <h2 id="h-buy">' + (ORDER ? 'מחיר וזמן אספקה' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
+  '      <h2 id="h-buy">' + (GONE ? 'זמינות' : ORDER ? 'מחיר וזמן אספקה' : 'מחיר, מלאי ואחריות') + '</h2>\n' +
   '      <p class="intro">' + (ORDER
     ? 'הדגם זמין בהזמנה. המחיר וזמן האספקה לא מופיעים כאן, כי הם משתנים. שלחו הודעה ב-WhatsApp ונבדוק אותם.'
     : 'הנתונים המסחריים משתנים לפי מלאי ולפי מסלול היבוא, ולכן אנחנו לא מציגים כאן מספר שעלול להיות לא מעודכן. שלחו הודעה ונענה עם המצב האמיתי באותו רגע.') + '</p>\n' +
@@ -258,7 +366,9 @@ function buildMain(d, openTag, K) {
   /* הכיתוב הזה אמר "עדיין לא עודכן" על כל שדה בהדגשה. לגבי המחיר זה הפסיק להיות נכון
    * ב-6.8.2026, כשהוחלט שאין מחירון באתר: הוא לא ממתין לעדכון, הוא לא יופיע. עמוד שמרמז
    * שמחיר בדרך מטעה. שאר השדות כן ימולאו, ולכן הכיתוב מפריד בין השניים. */
-  '          <caption>מה שצריך לברר לפני קנייה. שדה בהדגשה נטויה נמסר בשיחה ולא באתר, והמחיר לא יופיע כאן בכלל מפני שהוא משתנה.</caption>\n' +
+  (GONE
+    ? '          <caption>אין כאן מחיר או מלאי, כי את הדגם הזה כבר לא מוכרים אצלנו.</caption>\n'
+    : '          <caption>מה שצריך לברר לפני קנייה. שדה בהדגשה נטויה נמסר בשיחה ולא באתר, והמחיר לא יופיע כאן בכלל מפני שהוא משתנה.</caption>\n') +
   '          <thead><tr><th scope="col">מה</th><th scope="col">' + esc(d.name) + '</th></tr></thead>\n' +
   '          <tbody>\n' + facts + '\n          </tbody>\n' +
   '        </table>\n' +
@@ -268,7 +378,10 @@ function buildMain(d, openTag, K) {
   (K.acc
     ? '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>.</p>\n'
     : '        <p>מה ההבדל בין יבוא רשמי למקביל: <a href="/guides/official-vs-parallel-import/">המדריך המלא</a>. ומה האחריות מכסה ומה לא: <a href="/guides/phone-warranty-israel/">מדריך האחריות</a>.</p>\n') +
-  '        <a class="btn btn-wa" href="' + wa(ORDER ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק זמינות של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
+  /* הכפתור השני ("שלחו הודעה") נשאר "אשמח לבדוק זמינות" לכל דגם שאינו by_order ואינו
+     discontinued, כמו ב-main. stockAsk משמש את הירו ואת ה-CTA הסוגר. שימוש בו גם כאן
+     החליף את הזמינות ב"מחיר ומלאי" בעשרות עמודים שלא הזמינו. */
+  '        <a class="btn btn-wa" href="' + wa((ORDER || GONE) ? stockAsk(d).msg : ('היי, אשמח לבדוק זמינות של ' + d.name)) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="24" height="24" loading="lazy" decoding="async">שלחו הודעה</a>\n' +
   '      </div>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -361,7 +474,7 @@ function buildMain(d, openTag, K) {
     pairs.map(function (p) {
       var o = other(p);
       return '      <li><a href="/compare/' + esc(p.slug) + '/"><b>' + ltr(d.name) + ' מול ' + ltr(o ? o.name : '') +
-             '</b><span>' + esc(p.lede ? p.lede.split('.')[0] + '.' : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
+             '</b><span>' + esc(p.lede ? firstSentence(p.lede) : 'טבלה מלאה של ההבדלים, מתוך המפרט שהיצרנים מפרסמים.') + '</span></a></li>';
     }).join('\n') + '\n' +
     '    </ul>\n' +
     /* אוזניות ושעון: הצד השני שיש לו עמוד מקבל קישור למפרט. לטלפון אין שדה page, ולכן אין שורה. */
@@ -400,21 +513,26 @@ function buildMain(d, openTag, K) {
   '  <div class="wrap">\n' +
   /* not_in_store: דגם שהוכרז ועוד לא בחנות. "אפשר לבוא להחזיק את המכשיר" הוא הבטחה שהלקוח
      בודק בעצמו כשהוא מגיע, ולכן היא תלויה בדגל. והנוסח החלופי אינו מבטיח דבר: לא מועד, לא
-     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026. */
+     מחיר ולא עדכון יזום, כי כל אחד מהם הוא התחייבות. הוחלט עם אופק ב-24.9.2026.
+     discontinued: יצא מהמכירה. בלי הזמנה להחזיק, ובלי שעות פתיחה כהבטחה שאפשר לבוא.
+     אותו משפט סיום כמו בזוג השוואה שכולל דגם כזה. */
   (C.not_in_store
     ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
-      '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+      '    <p>הדגם עוד לא בחנות, ואין לנו מועד הגעה או מחיר. אפשר לשאול אותנו כל שאלה, גם עכשיו. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n'
+    : C.discontinued
+    ? '    <h2 id="cta-h">יש לכם שאלה על הדגם הזה?</h2>\n' +
+      '    <p>את הדגם הזה כבר לא מוכרים אצלנו. תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n'
     : C.by_order
     ? '    <h2 id="cta-h">רוצים להזמין אותו?</h2>\n' +
-      '    <p>הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+      '    <p>הדגם זמין בהזמנה. שלחו הודעה ב-WhatsApp לבדיקת מחיר וזמן אספקה. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n'
     /* אוזניות ושעון: מוכרים אותם, אבל אין במאגר נתון מלאי, ולכן לא "בואו להחזיק". */
     : K.acc
     ? '    <h2 id="cta-h">יש לכם שאלה לפני שקונים?</h2>\n' +
-      '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לשאול על מלאי וצבעים לפני שמגיעים, וכל שאלה אחרת לפני שמחליטים.</p>\n'
+      '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00. אפשר לשאול על מלאי וצבעים לפני שמגיעים, וכל שאלה אחרת לפני שמחליטים.</p>\n'
     : '    <h2 id="cta-h">רוצים לראות אותו ביד?</h2>\n' +
-      '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
+      '    <p>אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00. אפשר לבוא להחזיק את המכשיר, ולשאול כל שאלה לפני שמחליטים.</p>\n') +
   '    <div class="row">\n' +
-  '      <a class="btn btn-wa" href="' + wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : C.by_order ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + (C.not_in_store ? 'שאלו אותנו על הדגם' : C.by_order ? 'בירור מחיר וזמן אספקה' : 'בדיקת מחיר ומלאי') + '</a>\n' +
+  '      <a class="btn btn-wa" href="' + wa(stockAsk(d).msg) + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">' + stockAsk(d).label + '</a>\n' +
   CM.callLine('      ') +
   '      <a class="btn btn-teal" href="/phones/">כל המכשירים</a>\n' +
   '    </div>\n' +
@@ -422,6 +540,15 @@ function buildMain(d, openTag, K) {
   '  </div>\n' +
   '</section>\n\n';
   return out;
+}
+
+function stockAsk(d) {
+  var C = d.commercial || {};
+  if (C.not_in_store) return { msg: 'היי, יש לי שאלה על ' + d.name, label: 'שאלו אותנו על הדגם' };
+  if (C.by_order) return { msg: 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name, label: 'בירור מחיר וזמן אספקה' };
+  /* יצא מהמכירה: בירור, בלי "בדיקת מחיר ומלאי" ובלי הזמנה להחזיק. אותו נוסח כמו בעמוד השוואה. */
+  if (C.discontinued) return { msg: 'היי, ראיתי את ' + d.name + ' באתר ואשמח להמלצה על דגם דומה שיש במלאי.', label: 'המלצה על דגם דומה ב-WhatsApp' };
+  return { msg: 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name, label: 'בדיקת מחיר ומלאי' };
 }
 
 /* בלוק ה-CTA בהירו. seo.hero_cta הוא אופציונלי ולעמוד אחד.
@@ -439,12 +566,12 @@ function accCommercial(x) {
 }
 
 function heroBlock(d) {
-  var C = d.commercial || {};
   /* בלי hero_cta המחרוזת זהה לבלוק שהיה כאן, כולל ניסוח הדגם שעוד לא בחנות. */
-  var href = wa(C.not_in_store ? 'היי, יש לי שאלה על ' + d.name : C.by_order ? 'היי, אשמח לבדוק מחיר וזמן אספקה של ' + d.name : 'היי, אשמח לבדוק מחיר ומלאי של ' + d.name);
+  var ask = stockAsk(d);
+  var href = wa(ask.msg);
   var call = CM.callHeroInline();
   var c = d.seo && d.seo.hero_cta;
-  var label = (c && c.wa_label) || (C.not_in_store ? 'שאלו אותנו על הדגם' : C.by_order ? 'בירור מחיר וזמן אספקה' : 'בדיקת מחיר ומלאי');
+  var label = (c && c.wa_label) || ask.label;
   var invite = c && c.invite ? '<p class="sub cta-line">' + esc(c.invite) + '</p>' : '';
   var micro = c && c.micro ? '<p class="meta">' + esc(c.micro) + '</p>' : '';
   return '      <div class="hcta">' + invite +
@@ -672,7 +799,22 @@ function writeDevicePage(d, K) {
       console.error('✗ ' + d.slug + ': לא נמצא עוגן CSS של .hcta'); process.exit(1);
     }
     if (h.indexOf('.cta-line{') < 0) {
-      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS);
+      var orderLayout = '';
+      /* רק by_order. הקרוסלה נושאת כלל .btn מאוחר שדורס את .btn-sm ואת .btn-hero,
+         ולכן בעמודי המדף כפתור ההדר הוא 139 על 44. אחרי שהקרוסלה יורדת נשאר
+         .btn-sm, 124 על 36. מחזירים את כפתור ההדר ואת כפתורי ההירו לגודל של
+         עמוד מדף, בלי להחזיר את הקרוסלה ובלי לגעת בעמוד שיש לו hero_cta ואינו
+         by_order. max-width של .sub משאיר את משפט ההזמנה ליד הכפתור הירוק
+         והחיוג יורד לשורה לבד. שורה מלאה מחזירה את שניהם למרכז. */
+      if (d.commercial && d.commercial.by_order && !d.commercial.not_in_store && !d.commercial.discontinued) {
+        /* אותו סוף שורה כמו התבנית. \n לבד הופך את שורת ה-.meta מ-CRLF ל-LF,
+           וזו שורה שלא השתנתה בתוכן. */
+        var nl = h.indexOf('\r\n') >= 0 ? '\r\n' : '\n';
+        orderLayout = nl + 'header.site .hicons .btn.btn-sm{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .btn.btn-hero{padding:9px 20px;font-size:1rem}' + nl +
+          '.ghero .hcta .cta-line{flex-basis:100%;width:100%;max-width:none}';
+      }
+      h = h.replace('.ghero .hcta{margin-top:2.2rem}', '.ghero .hcta{margin-top:2.2rem}\n' + HERO_CTA_CSS + orderLayout);
     }
   }
 
@@ -938,7 +1080,7 @@ if (swGrew) {
         name: d.name,
         name_he: d.name_he || d.name,
         brand: d.brand,
-        kind: ref ? 'reference' : 'sold',
+        kind: ref ? 'reference' : (c.discontinued ? 'discontinued' : 'sold'),
         /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
            ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
         warranty_by: ref ? null : (c.warranty_by || null),

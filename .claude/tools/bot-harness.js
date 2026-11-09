@@ -26,8 +26,11 @@ var facts = JSON.parse(fs.readFileSync(path.join(ROOT, 'prototype', 'bot-facts.j
 /* ---------- חילוץ האזור ---------- */
 var a = html.indexOf('/* bot:facts:start');
 var b = html.indexOf('/* bot:answers:end');
-if (a < 0 || b < 0) { console.error('✗ סימני האזור לא נמצאו ב-index.html'); process.exit(1); }
-var code = html.slice(a, b) + '\n';
+/* buyModel יושב אחרי אזור התשובות, ושם נורה chat_disc_declined. החיתוך נעצר לפני
+   askStorage, כדי שהקריאה לדגם שיצא מהמכירה תחזור בלי להמשיך לשלב הנפח. */
+var buyEnd = html.indexOf('function askStorage()', b);
+if (a < 0 || b < 0 || buyEnd < 0) { console.error('✗ סימני האזור לא נמצאו ב-index.html'); process.exit(1); }
+var code = html.slice(a, buyEnd) + '\n';
 
 /* ---------- דמויות ---------- */
 var replies = [], tracked = [];
@@ -283,6 +286,25 @@ expectOne('אחריות על גלקסי A56', 'galaxy-a56');
 expectOne('מה הסוללה של אייפון 17 פרו מקס', 'iphone-17-pro-max');
 expectOne('galaxy-a07 אחריות', 'galaxy-a07');
 expectOne('כמה שוקל pixel 10', 'pixel-10');
+/* Fold8 בכינוי קצר, ו-Ultra שאחריו אינו Fold8. Fold7 ו-Flip נשארים כמו שהיו. */
+expectOne('Galaxy Z Fold8', 'galaxy-z-fold8');
+expectOne('גלקסי Z Fold8', 'galaxy-z-fold8');
+expectOne('Fold8', 'galaxy-z-fold8');
+expectOne('fold 8', 'galaxy-z-fold8');
+expectOne('פולד 8', 'galaxy-z-fold8');
+expectNone('Galaxy Z Fold8 Ultra');
+expectNone('גלקסי Z Fold8 אולטרה');
+expectNone('Galaxy Z Fold8Ultra');
+expectNone('fold8 ultra');
+expectNone('Fold7');
+expectNone('Fold');
+expectNone('Flip');
+expectNone('Flip8');
+expectOne('Galaxy Z Fold7', 'galaxy-z-fold7');
+expectOne('Galaxy Z Flip7', 'galaxy-z-flip7');
+expectOne('Galaxy S26 Ultra', 'galaxy-s26-ultra');
+expectOne('Galaxy S26', 'galaxy-s26');
+expectOne('iPhone 17', 'iphone-17');
 
 /* ---------- זיהוי שדה ---------- */
 var fFails = [];
@@ -293,6 +315,94 @@ expectField('טעינה אלחוטית יש', 'charging_wireless');
 expectField('איזו מצלמה קדמית', 'camera_front');
 expectField('למי מתאים', '__good');
 expectField('שלום', null);
+
+/* ---------- דגם שיצא מהמכירה ----------
+ * אחריות וטלפון חלופי נשארים למי שכבר קנה. תשלומים והעברת נתונים הם תנאי מכירה
+ * ולכן נעצרים. הקלדת השם בזרימת הקנייה נעצרת ב-chat_disc_declined. */
+var discFails = [];
+(function () {
+  var pro = null, i;
+  for (i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === 'iphone-17-pro') pro = facts.devices[i];
+  if (!pro || pro.kind !== 'discontinued') { discFails.push('iphone-17-pro אינו discontinued'); return; }
+  var wa = fieldAnswer(pro, 'warranty');
+  var wt = wa && wa.text || '';
+  if (wt.indexOf('את ' + pro.name_he + ' כבר לא מוכרים אצלנו. למי שקנה אצלנו: ') !== 0)
+    discFails.push('אחריות לא נפתחת בהערה למי שקנה: ' + wt.slice(0, 80));
+  if (wt.indexOf('פון גת') < 0 || wt.indexOf('12') < 0)
+    discFails.push('אחריות בלי 12 חודשים או בלי פון גת');
+  if (pro.service_terms && wt.indexOf(pro.service_terms) < 0)
+    discFails.push('אחריות בלי תנאי הטלפון החלופי');
+  var st = fieldAnswer(pro, 'service_terms');
+  if (!st || st.text.indexOf('למי שקנה אצלנו: ') < 0 || st.text.indexOf(pro.service_terms) < 0)
+    discFails.push('service_terms בלי ההערה או בלי התשובה הקיימת');
+  ['payments', 'data_transfer'].forEach(function (f) {
+    var t = fieldAnswer(pro, f).text;
+    if (t.indexOf('לא מוכרים') < 0) discFails.push(f + ': חסר גילוי');
+    if (pro[f] && t.indexOf(String(pro[f]).slice(0, 16)) >= 0) discFails.push(f + ': תנאי המכירה צוטט');
+  });
+  replies.length = 0; tracked.length = 0;
+  if (!sandbox.buyModel) { discFails.push('buyModel לא נטען'); return; }
+  sandbox.buyModel('אייפון 17 פרו', '');
+  var ev = tracked.filter(function (t) { return t.event === 'chat_disc_declined'; })[0];
+  if (!ev || !ev.data || ev.data.slug !== 'iphone-17-pro')
+    discFails.push('chat_disc_declined לא נורה על אייפון 17 פרו');
+})();
+
+/* ---------- דגם בהזמנה ----------
+ * Galaxy Z Fold8 הוא by_order: נמכר, לא discontinued ולא ייחוס.
+ * אין לו תנאי מדף, ולכן תשלומים והעברת נתונים לא מצוטטים.
+ * הקלדת השם בזרימת הקנייה ממשיכה לשלב הנפח ולא נעצרת בסירוב. */
+var orderFails = [];
+(function () {
+  var fold = null, i;
+  for (i = 0; i < facts.devices.length; i++) if (facts.devices[i].slug === 'galaxy-z-fold8') fold = facts.devices[i];
+  if (!fold) { orderFails.push('galaxy-z-fold8 חסר ב-bot-facts'); return; }
+  if (fold.kind !== 'sold') orderFails.push('kind אינו sold: ' + fold.kind);
+  if (fold.by_order !== true) orderFails.push('by_order אינו true');
+  ['payments', 'data_transfer', 'warranty'].forEach(function (f) {
+    var t = fieldAnswer(fold, f).text;
+    if (t.indexOf('אפשר בתשלומים') >= 0) orderFails.push(f + ': ציטוט תשלומים');
+    if (t.indexOf('מעבירים את הנתונים') >= 0) orderFails.push(f + ': ציטוט העברת נתונים');
+    if (t.indexOf('חודשים') >= 0) orderFails.push(f + ': מספר חודשי אחריות בלי מקור');
+  });
+  if (!sandbox.buyModel) { orderFails.push('buyModel לא נטען'); return; }
+  sandbox.askStorage = function () { sandbox._orderStorage = true; };
+  replies.length = 0; tracked.length = 0;
+  sandbox.buyModel('גלקסי Z Fold8', '');
+  var declined = tracked.filter(function (t) {
+    return t.event === 'chat_disc_declined' || t.event === 'chat_ref_declined';
+  })[0];
+  if (declined) orderFails.push('הזמנה נעצרה כסירוב: ' + declined.event);
+  if (!sandbox._orderStorage) orderFails.push('הזרימה לא המשיכה לשלב הנפח');
+  var step = tracked.filter(function (t) { return t.event === 'chat_buy_step' && t.data && t.data.step === 'model'; })[0];
+  if (!step) orderFails.push('chat_buy_step model לא נורה');
+  /* שם מלא בלי שדה: תשובת הזמנה, בלי מחיר ובלי מלאי. Ultra לא נענה כ-Fold8.
+     בקשת קנייה, גם בכינוי קצר, לא נתפסת כאן וממשיכה לזרימה. */
+  if (!sandbox.deviceAnswer) { orderFails.push('deviceAnswer לא נטען'); return; }
+  function orderReply(q) {
+    replies.length = 0;
+    var hit = sandbox.deviceAnswer(q);
+    return { hit: hit, text: replies.length ? replies[0].text : '' };
+  }
+  var bare = orderReply('Galaxy Z Fold8');
+  if (!bare.hit || bare.text !== 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.')
+    orderFails.push('שם מלא: ' + JSON.stringify(bare));
+  ['Fold8', 'fold 8', 'פולד 8', 'גלקסי Z Fold8'].forEach(function (q) {
+    var r = orderReply(q);
+    if (!r.hit || r.text !== 'גלקסי Z Fold8 זמין בהזמנה. שלחו הודעה ב-WhatsApp.')
+      orderFails.push('"' + q + '": ' + JSON.stringify(r));
+  });
+  ['Galaxy Z Fold8 Ultra', 'גלקסי Z Fold8 אולטרה', 'Z Fold8 Ultra', 'fold8 ultra', 'Galaxy Z Fold8Ultra'].forEach(function (q) {
+    var r = orderReply(q);
+    if (r.hit || r.text) orderFails.push('Ultra נענה כ-Fold8 "' + q + '": ' + r.text.slice(0, 80));
+  });
+  ['אני רוצה לקנות Fold8', 'אני רוצה לקנות גלקסי Z Fold8', 'אני רוצה לקנות אייפון 17'].forEach(function (q) {
+    var r = orderReply(q);
+    if (r.hit || r.text) orderFails.push('קנייה נתפסה "' + q + '": ' + r.text.slice(0, 80));
+  });
+  var shelf = orderReply('Galaxy S26 Ultra');
+  if (shelf.hit || shelf.text) orderFails.push('S26 Ultra קיבל תשובת הזמנה: ' + shelf.text.slice(0, 80));
+})();
 
 /* ---------- דוח ---------- */
 console.log('');
@@ -312,6 +422,8 @@ console.log('  אורך תשובת השוואה: חציון ' + cmpLens.sort(fun
 n += report(cmpFails, 'השוואה (' + cmpChecked + ' צמדים): עד שלושה הבדלים, קישור לעמוד קיים, גילוי נאות, זיהוי שני דגמים');
 n += report(idFails, 'זיהוי דגם: לא מנחש דגם קרוב ולא מספר עירום');
 n += report(fFails, 'זיהוי שדה');
+n += report(discFails, 'דגם שיצא מהמכירה: אחריות למי שקנה, בלי תשלומים, ו-chat_disc_declined');
+n += report(orderFails, 'דגם בהזמנה: Fold8 נמכר בלי תנאי מדף, והזרימה לא נעצרת');
 n += report(contentFails, 'שכבת התוכן: תשובה לשאלה אמיתית, עמוד קיים, בלי מחיר, וברכה לא מקבלת תשובה');
 n += report(privFails, 'פרטיות: הרמז ב-chat_device_unmatched נקי משם ומטלפון ועדיין נושא את הדגם');
 console.log('');

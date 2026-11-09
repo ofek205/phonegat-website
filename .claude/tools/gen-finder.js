@@ -63,10 +63,10 @@ function json(o) { return JSON.stringify(o).replace(/</g, '\\u003c'); }
  * התיקון היה צריך לקרות פעמיים ואיש לא היה יודע שהשני קיים. זה בדיוק מה ש-traits.js נוצר למנוע. */
 var T = require('./lib/traits.js');
 
-/* not_in_store מוחרג: השאלון ממליץ מה לקנות, והמלצה על דגם שעוד לא בחנות היא המלצה שאי אפשר
-   לממש אצלנו. עד 24.9.2026 אייפון 18 פרו הופיע בו.
-   by_order מוחרג מאותה סיבה: השאלון שואל מה יש על המדף, ודגם שרק מזמינים אינו שם. */
-function offShelf(d) { return d.commercial && (d.commercial.not_in_store || d.commercial.by_order); }
+/* not_in_store, discontinued ו-by_order מוחרגים: השאלון ממליץ מה לקנות מהמדף.
+   דגם שעוד לא בחנות, דגם שיצא מהמכירה, או דגם שמזמינים ללקוח, אינו המלצה שאפשר לממש
+   מהחנות. עד 24.9.2026 אייפון 18 פרו הופיע בו. */
+function offShelf(d) { return d.commercial && (d.commercial.not_in_store || d.commercial.discontinued || d.commercial.by_order); }
 var live = db.devices.filter(function (d) { return d.status !== 'draft' && d.status !== 'reference' && !offShelf(d); });
 var fail = [];
 var TRAITS = live.map(function (d) {
@@ -363,7 +363,7 @@ QUESTIONS.map(function (q) {
 
 '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
 '    <h2 id="cta-h">לא בטוחים? זה בסדר</h2>\n' +
-'    <p>אפשר גם לדלג על השאלון ופשוט לספר לנו מה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+'    <p>אפשר גם לדלג על השאלון ופשוט לספר לנו מה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n' +
 '    <div class="row">\n' +
 '      <a class="btn btn-wa" href="' + waGeneric + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">דברו איתנו ב-WhatsApp</a>\n' +
 CM.callLine('      ') +

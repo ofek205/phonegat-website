@@ -32,7 +32,7 @@
         "charging_wireless": "MagSafe ו-Qi2 עד 25W",
         "dimensions": "163.4 x 78.0 x 8.75 מ״מ",
         "weight": "249 גרם",
-        "sim": "בגרסה האמריקאית eSIM בלבד, בלי חריץ ל-SIM פיזי. הגרסה הישראלית טרם פורסמה",
+        "sim": "בדגם לישראל: nano-SIM ו-eSIM. בדגמים לארה״ב, לקנדה, ליפן ולמדינות המפרץ: eSIM בלבד.",
         "esim": "תמיכה בשני eSIM",
         "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
         "colors_manufacturer": [
@@ -81,7 +81,7 @@
         "charging_wireless": "MagSafe ו-Qi2 עד 25W",
         "dimensions": "150.0 x 71.9 x 8.75 מ״מ",
         "weight": "211 גרם",
-        "sim": "בגרסה האמריקאית eSIM בלבד, בלי חריץ ל-SIM פיזי. הגרסה הישראלית טרם פורסמה",
+        "sim": "בדגם לישראל: nano-SIM ו-eSIM. בדגמים לארה״ב, לקנדה, ליפן ולמדינות המפרץ: eSIM בלבד.",
         "esim": "תמיכה בשני eSIM",
         "water_resistance": "IP68, עד 6 מטר ל-30 דקות",
         "colors_manufacturer": [
@@ -284,7 +284,7 @@
         "screen_type": "Dynamic AMOLED 2X, עומק צבע 16M, בשני המסכים",
         "resolution": "1848x2448 במסך הראשי, ו-1972x1248 במסך הכיסוי",
         "refresh_rate": "עד 120Hz בשני המסכים",
-        "brightness": "3000 ניט בשני המסכים",
+        "brightness": "עד 3000 ניט",
         "chip": "Snapdragon 8 Elite Gen 5",
         "cpu": "8 ליבות, 4.74GHz ו-3.6GHz",
         "gpu": null,
@@ -315,7 +315,7 @@
           "ירוק"
         ],
         "box_contents": null,
-        "model_numbers": "SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
+        "model_numbers": "SM-F971B, SM-F971BLVBMEC, SM-F971BLVCMEC, SM-F971BLVNMEC",
         "connectivity": "5G, Wi-Fi 7, Bluetooth 6.0, NFC, UWB, USB-C 3.2 Gen 1",
         "security_updates": "עדכוני אבטחה עד 31 ביולי 2033"
       },
@@ -821,7 +821,7 @@
         "charging_wireless": "אין",
         "dimensions": "163.41 x 77.04 x 8.30 מ״מ",
         "weight": "214 גרם בשחור פחם, 215 גרם בירוק מנטה",
-        "water_resistance": "IP68 ו-IP69K. עד 1.5 מטר ל-30 דקות, וגם סילוני מים בלחץ",
+        "water_resistance": "IP66, IP68, IP69 ו-IP69K לפי OnePlus",
         "colors_manufacturer": [
           "שחור פחם",
           "ירוק מנטה"
@@ -830,7 +830,7 @@
         "esim": "תמיכה ב-eSIM",
         "connectivity": "5G, LTE עם 4x4 MIMO, USB-C בגרסת USB 2.0 עם תמיכה באוזניות Type-C",
         "box_contents": "המכשיר, כבל USB, כלי הוצאת SIM, מדריך מהיר ומדריך בטיחות. מטען אינו כלול",
-        "security_updates": null,
+        "security_updates": "עדכוני אבטחה עד 31 בדצמבר 2031",
         "model_numbers": "CPH2769"
       },
       "launch": "2025-12",

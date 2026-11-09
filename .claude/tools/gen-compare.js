@@ -105,18 +105,29 @@ function le(displayed) {
   return (/^[\u0590-\u05FF]/.test(plain) ? 'ל' : 'ל-') + displayed;
 }
 /* "מחיר ומלאי היום" רק כששני הדגמים נמכרים ונמצאים בחנות. מכשיר ייחוס, דגם
-   ש-not_in_store, ושעון או אוזניות בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
+   ש-not_in_store, דגם שיצא מהמכירה (commercial.discontinued), ושעון או אוזניות
+   בלי עמוד: בירור, בלי הבטחה שאין לה כיסוי. */
 function offeredHere(x) {
   if (x.status === 'reference') return false;
-  if (x.commercial && (x.commercial.not_in_store || x.commercial.by_order)) return false;
+  if (x.commercial && x.commercial.not_in_store) return false;
+  if (x.commercial && x.commercial.discontinued) return false;
+  /* by_order נשאר מוצע: עמוד השוואה לא יגיד שאיננו מוכרים אותו. */
   if (CAT && !pageHref(x)) return false;
   return true;
 }
+function isOrder(x) {
+  return !!(x.commercial && x.commercial.by_order && !x.commercial.not_in_store && !x.commercial.discontinued);
+}
 function leadAsk(a, b) { return !offeredHere(a) || !offeredHere(b); }
-function leadLabel(a, b) { return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL; }
+function leadLabel(a, b) {
+  if (!leadAsk(a, b) && [a, b].some(isOrder)) return 'בירור מחיר וזמן אספקה ב-WhatsApp';
+  return leadAsk(a, b) ? LEAD_LABEL_ASK : LEAD_LABEL;
+}
 function leadMsg(a, b) {
   var n = function (x) { return x.name_he || x.name; };
-  var tail = leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?';
+  var tail = !leadAsk(a, b) && [a, b].some(isOrder)
+    ? 'אשמח לבדוק מחיר וזמן אספקה.'
+    : (leadAsk(a, b) ? 'אשמח לברר מחיר וזמינות.' : 'מה המחיר והמלאי היום?');
   return 'היי, ראיתי באתר את ההשוואה בין ' + n(a) + ' ' + le(n(b)) + '. ' + tail;
 }
 /* המשפט המלא ("מה יש במלאי", "להחזיק את שניהם") באותו תנאי כמו הכפתור. */
@@ -125,9 +136,10 @@ function leadBlurb(a, b) {
   var open = 'מתלבטים בין ' + he(a) + ' ' + le(he(b)) + '? ';
   var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
   var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
-  var order = [a, b].filter(function (x) { return x.commercial && x.commercial.by_order; });
+  var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
+  var order = [a, b].filter(isOrder);
   var unsold = CAT ? [a, b].filter(function (x) { return !pageHref(x); }) : [];
-  if (!ref.length && !away.length && !unsold.length && !order.length) {
+  if (!ref.length && !away.length && !unsold.length && !gone.length && !order.length) {
     return open + 'שלחו הודעה ונגיד לכם מה המחיר היום, מה יש במלאי, ומה אנחנו רואים במעבדה על כל אחד מהם. אפשר גם לבוא להחזיק את שניהם ביד, ברחבת תשרי 2 בקרית גת.';
   }
   if (ref.length === 2) return open + 'שני הדגמים האלה אינם נמכרים אצלנו. שלחו הודעה אם תרצו שנעבור על ההבדלים.';
@@ -135,9 +147,20 @@ function leadBlurb(a, b) {
     var mine = [a, b].filter(function (x) { return x.status !== 'reference'; })[0];
     return open + 'את ' + he(mine) + ' אנחנו מוכרים, ואת ' + he(ref[0]) + ' לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים, ומה אנחנו רואים במעבדה.';
   }
+  /* דגם שיצא מהמכירה: המחיר והמלאי נאמרים רק על הדגם שעוד נמכר, כמו במכשיר ייחוס. */
+  if (gone.length === 1) {
+    var still = [a, b].filter(function (x) { return !(x.commercial && x.commercial.discontinued); })[0];
+    if (still && still.status !== 'reference') {
+      return open + 'את ' + he(still) + ' אנחנו מוכרים, ואת ' + he(gone[0]) + ' כבר לא. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שאנחנו מוכרים.';
+    }
+  }
+  if (gone.length) {
+    var whoGone = gone.length === 1 ? he(gone[0]) : 'שני הדגמים האלה';
+    return open + 'את ' + whoGone + ' כבר לא מוכרים אצלנו. שלחו הודעה ונמליץ על דגם שיש במלאי.';
+  }
   if (away.length === 2) return open + 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונעבור על מה שחשוב לכם.';
   if (away.length === 1) return open + he(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה. שלחו הודעה ונגיד לכם מה המחיר היום ומה יש במלאי לדגם שכבר אצלנו.';
-  if (order.length && !ref.length && !away.length && !unsold.length) {
+  if (order.length && !ref.length && !away.length && !gone.length && !unsold.length) {
     return open + (order.length === 2
       ? 'שני הדגמים זמינים בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.'
       : he(order[0]) + ' זמין בהזמנה. שלחו הודעה לבדיקת מחיר וזמן אספקה.');
@@ -572,8 +595,16 @@ function buildMain(p, a, b, d, openTag) {
       var away = [a, b].filter(function (x) { return x.commercial && x.commercial.not_in_store; });
       var order = [a, b].filter(function (x) { return x.commercial && x.commercial.by_order; });
       var ref = [a, b].filter(function (x) { return x.status === 'reference'; });
+      var gone = [a, b].filter(function (x) { return x.commercial && x.commercial.discontinued; });
       var mine = [a, b].filter(function (x) { return x.status !== 'reference'; });
       var nmOf = function (x) { return esc(nmHe(x)); };
+      /* דגם שיצא מהמכירה: בלי "אצלנו בחנות" ובלי שעות הפתיחה כהבטחה שאפשר לבוא להחזיק. */
+      if (gone.length && !CAT && !ref.length) {
+        var whoGone = gone.length === 1
+          ? 'את ' + nmOf(gone[0]) + ' כבר לא מוכרים אצלנו. '
+          : 'את שני הדגמים האלה כבר לא מוכרים אצלנו. ';
+        return '    <p>' + whoGone + 'תגידו לנו מה חשוב לכם, ונמליץ על דגם שיש במלאי.</p>\n';
+      }
       /* אוזניות ושעון בלי by_order נשארים בשאלה, כי אין נתון מלאי. עם by_order, ובלי
          ייחוס ובלי "עוד לא הגיע", אותו משפט כמו בטלפון. */
       var stocked = !away.length && !order.length;
@@ -583,7 +614,7 @@ function buildMain(p, a, b, d, openTag) {
         : !away.length ? (order.length === 2 ? 'שני הדגמים זמינים בהזמנה.' : nmOf(order[0]) + ' זמין בהזמנה.')
         : away.length === 2 ? 'שני הדגמים עוד לא בחנות, ואין לנו מועד הגעה.'
         : nmOf(away[0]) + ' עוד לא בחנות, ואין לנו מועד הגעה.';
-      return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n';
+      return '    <p>' + lead + ' תגידו לנו מה חשוב לכם, ונעבור על זה יחד. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n';
     })() +
     '    <div class="row">\n' +
     '      ' + leadBtn(waLead, 'compare_end', true, btnLabel) + '\n' +
@@ -1005,9 +1036,9 @@ function toolMain(openTag, index, order, pairCount) {
   /* בכלי קטגוריה איננו יודעים אילו דגמים בחנות. שאלה, לא הבטחה. */
   (CAT
     ? '    <h2 id="cta-h">רוצים לדעת מה יש אצלנו?</h2>\n' +
-      '    <p>שאלו אותנו אילו מ' + CAT.plural + ' האלה יש בחנות, ונעבור איתכם על מה שחשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n'
+      '    <p>שאלו אותנו אילו מ' + CAT.plural + ' האלה יש בחנות, ונעבור איתכם על מה שחשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n'
     : '    <h2 id="cta-h">רוצים לראות אותם ביד?</h2>\n' +
-      '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n') +
+      '    <p>המכשירים אצלנו בחנות, ואפשר להחזיק ולהשוות. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n') +
   '    <div class="row">\n' +
   '      <a class="btn btn-wa" href="' + waPick + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
   CM.callLine('      ') +
@@ -1030,7 +1061,12 @@ function toolMain(openTag, index, order, pairCount) {
 }
 
 /* נעול עד 9.10.2026. ניסוי hero_cta נשאר כמו ב-main, והמחולל לא כותב את שני העמודים.
-   להסיר יחד עם החריג ב-preflight.js כשהם עולים. */
+   להסיר יחד עם החריג ב-preflight.js כשהם עולים.
+   תיקון משפטי החנות בעמוד הנעול, 26.10.2026. בעמוד אייפון 17 פרו מול פרו מקס השתנו רק משפטי המלאי
+   ושעות הפתיחה. התיקון יושב ב-HTML, ו-bottom_line של הזוג ב-devices.json
+   תואם את פסקת השורה התחתונה. המחולל עדיין לא כותב את העמוד, כדי לא לדרוס
+   את תגיות הראש ואת ניסוי ה-hero_cta. השער ב-preflight (APPROVED_17) מתיר
+   רק את השורות האלה. גלקסי S26 פלוס מול S26 נשאר זהה ל-main. */
 var LOCKED_UNTIL_OCT9 = {
   'galaxy-s26-plus-vs-galaxy-s26': 1,
   'iphone-17-pro-vs-iphone-17-pro-max': 1
@@ -1267,7 +1303,7 @@ if (!only && !CAT) {
 
     '<section class="cta" aria-labelledby="cta-h">\n  <div class="wrap">\n' +
     '    <h2 id="cta-h">מתלבטים בין שני דגמים?</h2>\n' +
-    '    <p>תגידו לנו בין מה למה, ומה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00–18:30 ושישי 9:00–13:00.</p>\n' +
+    '    <p>תגידו לנו בין מה למה, ומה חשוב לכם. אנחנו ברחבת תשרי 2 בקרית גת, ראשון עד חמישי 9:00&nbsp;עד&nbsp;18:30, שישי 9:00&nbsp;עד&nbsp;13:00.</p>\n' +
     '    <div class="row">\n' +
     '      <a class="btn btn-wa" href="' + wa('היי, אני מתלבט בין שני דגמים ואשמח לעזרה') + '"><img class="wa-ico" src="/whatsapp-logo.png" alt="" width="26" height="26" loading="lazy" decoding="async">עזרו לי לבחור</a>\n' +
     CM.callLine('      ') +
