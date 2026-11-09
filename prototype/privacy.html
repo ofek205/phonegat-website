@@ -134,6 +134,8 @@ h1{font-size:clamp(1.7rem,4vw,2.4rem);color:var(--ink-strong);margin:0 0 .4rem}
   .contact-box ul{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
   .contact-box li{display:flex;gap:.5rem;align-items:baseline}
   .contact-box .k{font-weight:800;color:var(--ink-strong);min-width:7.5rem}
+  /* במסך צר התווית עולה מעל הערך, ומספרי הטלפון לא נשברים אחרי המקף */
+  @media(max-width:400px){.contact-box li{flex-wrap:wrap;row-gap:0}.contact-box .k{min-width:0}.contact-box li>span:last-child{min-width:0;overflow-wrap:anywhere}}
   .meta{color:var(--soft);font-size:.92rem;border-top:1px solid var(--line);margin-top:2.2rem;padding-top:1rem}
   bdo,.ltr{unicode-bidi:isolate;direction:ltr}
   a:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
@@ -452,7 +454,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="contact-box">
       <ul>
         <li><span class="k">אחראית פרטיות:</span> <span>סיגל אדלשטיין</span></li>
-        <li><span class="k">טלפון:</span>&nbsp;<span><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a> · WhatsApp&nbsp;<a href="https://wa.me/97286812050"><bdo dir="ltr">08-6812050</bdo></a></span></li>
+        <li><span class="k">טלפון:</span>&nbsp;<span><a href="tel:+972525893366"><bdo dir="ltr" style="white-space:nowrap">052-5893366</bdo></a> · WhatsApp&nbsp;<a href="https://wa.me/97286812050"><bdo dir="ltr" style="white-space:nowrap">08-6812050</bdo></a></span></li>
         <li><span class="k">טופס באתר:</span> <span><a href="/contact/">טופס יצירת קשר</a></span></li>
         <li><span class="k">כתובת:</span> <span>רחבת תשרי 2, קרית גת</span></li>
       </ul>
