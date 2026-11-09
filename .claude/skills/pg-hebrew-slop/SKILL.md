@@ -193,7 +193,7 @@ From `CLAUDE.md`, and a style edit must never break them:
 
 - **WhatsApp**, never וואטסאפ. Enforced, check 12.
 - **Never חינם.** Write **ללא עלות**. It cheapens the brand.
-- Phone numbers read `052-5893366` and `08-6812050`. Digits only inside `tel:` and `wa.me`.
+- The store phone is `052-5893366`. `08-6812050` is only the business WhatsApp and is labeled WhatsApp, never a `tel:` link. Digits only inside `tel:` and `wa.me`.
 - **Never edit a customer review.** They are real. Fixing a fact elsewhere on the page does not
   license touching a quote, not even a typo.
 

@@ -295,7 +295,7 @@ lead-in, not seven. **Read the finished page top to bottom in one sitting and co
 **Brand conventions** (also in CLAUDE.md, and this is where a new page breaks them):
 - **"WhatsApp", never "וואטסאפ"** — enforced, check 12.
 - **Never "חינם"** — it cheapens the brand. Write **"ללא עלות"**.
-- Phone numbers read `052-5893366` / `08-6812050`; digits only inside `tel:` and `wa.me`.
+- The store phone is `052-5893366`; `08-6812050` is only the business WhatsApp (`wa.me/97286812050`), labeled WhatsApp. Digits only inside `tel:` and `wa.me`.
 
 **Write the headings in the words people type into Google.** The guide's headings said *המכשיר* and
 were changed to *הטלפון*, and the `<title>` was rewritten around the three most-searched faults.

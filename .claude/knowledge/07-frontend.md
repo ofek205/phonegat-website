@@ -216,7 +216,7 @@ html { scroll-padding-top: 84px; }   /* גובה ה-header */
 header { position: sticky; inset-block-start: 0; z-index: 100; background:#fff; block-size: 84px; }
 ```
 - `position: sticky` (לא fixed) → פחות בעיות overlap. z-index מסודר מול sticky-bar ו-wa-float.
-- לוגו (`<img>` עם width/height, alt="פון-גת fix and go"), `<nav>` קצר, טלפון כ-`<a href="tel:+97286812050">` עטוף `dir="ltr"`.
+- לוגו (`<img>` עם width/height, alt="פון-גת fix and go"), `<nav>` קצר, טלפון כ-`<a href="tel:+972525893366">` עטוף `dir="ltr"`.
 - מובייל: ניווט מקוצר/hamburger `<button aria-expanded aria-controls>`; שריון גובה (CLS).
 
 ### 4.2 לחצן וואטסאפ צף (מקטע 2)
@@ -305,8 +305,8 @@ header { position: sticky; inset-block-start: 0; z-index: 100; background:#fff; 
 ### 4.10 סרגל דביק בנייד (📞 · 💬 · 📍)
 ```html
 <nav class="mobile-bar" aria-label="פעולות מהירות">
-  <a href="tel:+97286812050" aria-label="חייגו לפון-גת">חייג</a>
-  <a href="https://wa.me/972525893366" rel="noopener noreferrer" aria-label="וואטסאפ">וואטסאפ</a>
+  <a href="tel:+972525893366" aria-label="חייגו לפון-גת">חייג</a>
+  <a href="https://wa.me/97286812050" rel="noopener noreferrer" aria-label="וואטסאפ">וואטסאפ</a>
   <a href="https://waze.com/ul?..." rel="noopener noreferrer" aria-label="ניווט">ניווט</a>
 </nav>
 ```
