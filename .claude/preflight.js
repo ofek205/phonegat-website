@@ -2319,6 +2319,19 @@ if (classFails.length) {
     '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳–ה׳: <span class="ltr">9:00–18:30</span></li><li>ו׳: <span class="ltr">9:00–13:00</span></li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>':
       '    <div><h4>שעות פתיחה</h4><ul class="fl"><li>א׳ עד ה׳: 9:00&nbsp;עד&nbsp;18:30</li><li>ו׳: 9:00&nbsp;עד&nbsp;13:00</li><li><a href="https://www.facebook.com/phonegat/" target="_blank" rel="noopener">פייסבוק</a></li><li><a href="https://www.instagram.com/phonegat/" target="_blank" rel="noopener">אינסטגרם</a></li></ul></div>'
   };
+  /* 9.11.2026, החלטה של אופק: הטלפון של החנות בכל האתר הוא 052-5893366, ו-08-6812050 רק
+     ה-WhatsApp העסקי. זה חל גם על העמודים הנעולים, ולכן שתי ההחלפות האלה בלבד (הפוטר
+     וה-contactPoint ב-JSON-LD) מותרות בהם. אותן מחרוזות בדיוק כמו ב-apply-contact-mode.js. */
+  var PHONE_FIX = [
+    ['<li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li>',
+     '<li><a href="https://wa.me/97286812050">WhatsApp <bdo dir="ltr">08-6812050</bdo></a></li>'],
+    ['"contactPoint":{"@type":"ContactPoint","telephone":"+972-8-6812050"',
+     '"contactPoint":{"@type":"ContactPoint","telephone":"+972-52-5893366"']
+  ];
+  function phoneFixed(line) {
+    PHONE_FIX.forEach(function (p) { line = line.split(p[0]).join(p[1]); });
+    return line;
+  }
   function headKind(line) {
     if (/^<title>[\s\S]*<\/title>$/.test(line)) return 'title';
     var m = line.match(/^<meta (?:name|property)="([^"]+)" content="[^"]*">$/);
@@ -2347,6 +2360,7 @@ if (classFails.length) {
     var drifted = [];
     for (var i = 0; i < a.length; i++) {
       if (a[i] === b[i]) continue;
+      if (a[i] === phoneFixed(b[i])) continue;
       if (rel === 'compare/iphone-17-pro-vs-iphone-17-pro-max/index.html' && APPROVED_17[b[i]] === a[i]) continue;
       if (LOCK[rel] !== 'head' || headKind(a[i]) === null || headKind(a[i]) !== headKind(b[i])) {
         drifted.push(i + 1);
