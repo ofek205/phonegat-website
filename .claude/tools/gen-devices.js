@@ -1011,6 +1011,9 @@ if (swGrew) {
         name_he: d.name_he || d.name,
         brand: d.brand,
         kind: ref ? 'reference' : (c.discontinued ? 'discontinued' : 'sold'),
+        /* אופק, 9.11.2026: מכשיר ייחוס שאפשר להזמין אצלנו, בהזמנה בלבד. אין עמוד, אין מחיר
+           ואין טענת מלאי, והבוט מזמין לשאול ב-WhatsApp על מחיר וזמן אספקה. */
+        order_only: (ref && c.order_only === true) || undefined,
         /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי אחריות ותשלום. null כאן הוא הערך הנכון
            ולא נתון חסר, והבוט מסתעף על kind לפני שהוא נוגע בשדות האלה. */
         warranty_by: ref ? null : (c.warranty_by || null),

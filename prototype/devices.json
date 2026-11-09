@@ -1064,7 +1064,7 @@
     }
    },
    "editorial": {
-    "what_matters": "iPhone Duo הוא האייפון המתקפל של אפל, והוא כאן כדי שתוכלו להשוות אליו. יש שאלה? שאלו אותנו ב-WhatsApp, 08-6812050. יש בו מסך פנימי של 7.6 אינץ׳ ומסך חיצוני של 5.4, שבב A20 Pro ושתי מצלמות אחוריות. הזיהוי הוא בטביעת אצבע, Touch ID, ולא Face ID, ולפי אפל הוא עובד עם eSIM בלבד.",
+    "what_matters": "iPhone Duo הוא האייפון המתקפל של אפל, והוא אצלנו בהזמנה בלבד. למחיר ולזמן אספקה שאלו אותנו ב-WhatsApp, 08-6812050. יש בו מסך פנימי של 7.6 אינץ׳ ומסך חיצוני של 5.4, שבב A20 Pro ושתי מצלמות אחוריות. הזיהוי הוא בטביעת אצבע, Touch ID, ולא Face ID, ולפי אפל הוא עובד עם eSIM בלבד.",
     "good_for": [],
     "less_for": [],
     "daily_benefits": [],
@@ -1092,7 +1092,8 @@
    },
    "commercial": {
     "price": null,
-    "stock": "לא נמכר אצלנו",
+    "stock": "בהזמנה בלבד",
+    "order_only": true,
     "storage_stocked": null,
     "colors_stocked": null,
     "import_official": null,

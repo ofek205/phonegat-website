@@ -3827,6 +3827,9 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
      ולא מצב שנשמר בשיחה. */
   function refNote(d){
+    /* אופק, 9.11.2026: iPhone Duo בהזמנה בלבד. בלי מחיר ובלי טענת מלאי. */
+    if(d.kind==='reference'&&d.order_only)
+      return 'שימו לב: את '+d.name_he+' אפשר להזמין אצלנו, בהזמנה בלבד. למחיר ולזמן אספקה שאלו אותנו ב-WhatsApp, 08-6812050.';
     if(d.kind==='reference')
       return 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.';
     if(d.kind==='discontinued')
@@ -3840,7 +3843,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* הטקסט המצוטט לפעמים כבר נושא את הגילוי בעצמו: הפרוזה של what_matters במכשירי ייחוס
      נפתחת ב"מכשיר שאנחנו לא מוכרים", וההוספה מלמעלה יצרה אמירה כפולה באותה תשובה.
      ההבטחה נשמרת בשני המקרים, כי כאן מוותרים על הכפילות ולא על הגילוי. */
-  function alreadyDiscloses(t){ return /לא מוכרים/.test(t||''); }
+  function alreadyDiscloses(t){ return /לא מוכרים|בהזמנה בלבד/.test(t||''); }
   function fieldAnswer(d,field){
     var note=refNote(d),pre=note?note+'\n':'';
     /* כל השדות שהם רשימת משפטים שנכתבו ביד. מצוטטים כמו שהם, עד שלושה, ובלי ניסוח מחדש. */
@@ -3863,6 +3866,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
+      if(d.kind==='reference'&&d.order_only)return {text:note+'\nאת פרטי האחריות והתשלום נבדוק איתכם יחד עם ההזמנה.',human:true};
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
       /* תשלומים והעברת נתונים הם תנאי מכירה. אחריות וטלפון חלופי נשארים למי שכבר קנה. */
       if(d.kind==='discontinued'&&(field==='payments'||field==='data_transfer'))
@@ -4331,7 +4335,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       if(hits.length===1){
         if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
           track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
-          botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
+          botReply(refNote(hits[0])+(hits[0].order_only?'\nאפשר גם להמשיך כאן בלי דגם ולהשאיר פרטים.':'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.'),{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
                  ['להמשיך בלי דגם',function(){buyModel('','');}]]});
           return;
