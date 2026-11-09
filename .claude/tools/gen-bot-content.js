@@ -120,6 +120,12 @@ var sections = [], skippedPrice = 0, noMain = [], pages = 0, pageList = [], page
  * תשובה, ההצעה "יש לנו עמוד בדיוק על זה" שווה הרבה יותר מ"לא הבנתי", וגם עמוד שאינו
  * באינדקס יכול להיות העמוד הנכון: עמוד מכשיר, עמוד השוואה, עמוד יישוב.
  * לכן שם וכתובת לכל 78 העמודים, בערך 6KB, בלי גוף הטקסט. */
+/* כינוי חיפוש לעמוד שהכותרת שלו כבר לא נושאת את המילה.
+   רק עמוד תיקון הטלפונים: "מעבדת" ירדה מהכותרת ומה-H1 בכוונה. */
+var DIR_ALIAS = {
+  '/mobile-phone-repair-kiryat-gat/': 'מעבדת'
+};
+
 var dir = [];
 files.forEach(function (f) {
   var html = fs.readFileSync(f, 'utf8');
@@ -131,10 +137,16 @@ files.forEach(function (f) {
 
   /* הספרייה נבנית לכל עמוד, מאונדקס או לא. הכותרת נחתכת בקו האנכי הראשון, כי הזנב
      ("| פון גת", "| מסך, סוללה וטעינה") הוא תבנית SEO ולא שם שאומרים ללקוח.
-     ה-h1 נשמר בנפרד כשהוא שונה, כי לפעמים הוא הניסוח שאדם באמת יחפש. */
+     ה-h1 נשמר בנפרד כשהוא שונה, כי לפעמים הוא הניסוח שאדם באמת יחפש.
+     כינוי חיפוש: מילה שהכותרת וה-H1 כבר לא נושאים, והשאילתה עדיין מחפשת אותה.
+     "מעבדת סלולר" נשאר בגוף ולא בכותרת. בלי הכינוי, "מעבדת טלפונים בקרית גת"
+     נוחתת על "מעבדת האייפון שלנו", כי שם המילה נשארה בכותרת משנה.
+     הכינוי נכנס ל-h של הספרייה, לא ל-t, כדי שתווית הקישור תישאר הכותרת. */
   var h1 = strip((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1] || '');
   var shortT = title.split('|')[0].trim() || title;
-  if (shortT) dir.push(h1 && h1 !== shortT ? { u: url, t: shortT, h: h1 } : { u: url, t: shortT });
+  var alias = DIR_ALIAS[url] || '';
+  var dirH = alias ? ((h1 ? h1 + ' ' : '') + alias) : h1;
+  if (shortT) dir.push(dirH && dirH !== shortT ? { u: url, t: shortT, h: dirH } : { u: url, t: shortT });
 
   if (!inIndex(url)) { skippedPage++; return; }
   pages++;
@@ -153,6 +165,10 @@ files.forEach(function (f) {
   /* פיצול לפי h2/h3, ושמירת הכותרת עצמה יחד עם הטקסט שאחריה */
   var chunks = sectionHtml.split(/(<h[23][^>]*>[\s\S]*?<\/h[23]>)/i);
   var heading = '';
+  /* שכבת התוכן נשאלת לפני הספרייה ברגע שהניקוד עובר 12, ולכן כינוי
+     שיושב רק ב-dir לא מחזיר את השאילתה. המילה נשמרת בשדה a של המקטע
+     הפותח, לא בכותרת ולא בגוף: הכותרת מוקראת ללקוח, ומילה בגוף מזיזה
+     את הציטוט אל רשימת הקישורים שבסוף המקטע. */
   chunks.forEach(function (c) {
     if (/^<h[23]/i.test(c)) { heading = strip(c); return; }
     var text = strip(c);
@@ -164,7 +180,9 @@ files.forEach(function (f) {
     if (pi === undefined) { pi = pageIx[url] = pageList.length; pageList.push({ u: url, t: title }); }
     /* חיתוך ל-600 תווים. החציון הוא 347 ורק הזנב חורג, ולכן ההתאמה כמעט לא נפגעת,
        והתצוגה ממילא מראה כ-200. מקטע ארוך מזה הוא עמוד שלם ולא תשובה. */
-    sections.push({ p: pi, h: heading || title, t: text.length > 600 ? text.slice(0, 600) : text });
+    var sec = { p: pi, h: heading || title, t: text.length > 600 ? text.slice(0, 600) : text };
+    if (alias && !heading) sec.a = alias;
+    sections.push(sec);
   });
 });
 
