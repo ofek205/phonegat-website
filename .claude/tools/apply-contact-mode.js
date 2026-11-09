@@ -60,10 +60,10 @@ var CALL_MBAR = '<a href="tel:+972525893366"><span class="mi" aria-hidden="true"
 var CALL_CH = '<a class="ch" data-pg-cta="phone" data-pg-loc="channels" href="tel:+972525893366">\n        <span class="ch-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.3 21 3 13.7 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.3 1l-2.2 2.3Z"/></svg></span>\n        <span class="ch-txt"><b><bdo dir="ltr">052-5893366</bdo></b><span>ברוך וסיגל עונים בעצמם</span></span>\n      </a>';
 var FORM_TEL = ' · <a href="tel:+972525893366"><span dir="ltr">052-5893366</span></a>';
 
-var FOOT_ON = '<li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="' + WA + '">WhatsApp <bdo dir="ltr">08-6812050</bdo></a></li>';
+var FOOT_ON = '<li><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a></li><li><a href="' + WA + '">WhatsApp&nbsp;<bdo dir="ltr">08-6812050</bdo></a></li>';
 var FOOT_OFF_BARE = '<li data-pg-was-phones="1"><a href="' + WA + '">WhatsApp</a></li>';
 var FOOT_OFF = withAsk(FOOT_OFF_BARE);
-var LEGAL_ON = '<span class="k">טלפון:</span> <span><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a> · WhatsApp <a href="' + WA + '"><bdo dir="ltr">08-6812050</bdo></a></span>';
+var LEGAL_ON = '<span class="k">טלפון:</span>&nbsp;<span><a href="tel:+972525893366"><bdo dir="ltr">052-5893366</bdo></a> · WhatsApp&nbsp;<a href="' + WA + '"><bdo dir="ltr">08-6812050</bdo></a></span>';
 var LEGAL_OFF_OLD = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '">כתבו לנו ב-WhatsApp</a></span>';
 var LEGAL_OFF = '<span class="k">WhatsApp:</span> <span><a data-pg-was-phones="legal" href="' + WA + '"><bdo dir="ltr">08-6812050</bdo></a></span>';
 /* Privacy has no email line on production. While calls are off, the privacy
@@ -73,7 +73,7 @@ var PRIV_MAIL = '<li><span class="k">דוא"ל:</span> <span><a href="mailto:sig
 var REV_ON = '<div class="rev-cta"><a class="btn btn-teal" href="tel:+972525893366">חייגו עכשיו</a></div>';
 var REV_OFF_BARE = '<div class="rev-cta"><a class="btn btn-wa" href="' + WA + '"><img class="wa-ico" src="whatsapp-logo.png" alt="" width="22" height="22" decoding="async">WhatsApp</a></div>';
 var REV_OFF = withAsk(REV_OFF_BARE);
-var MAP_ON = '<b>טלפון:</b> <bdo dir="ltr">052-5893366</bdo> · WhatsApp <bdo dir="ltr">08-6812050</bdo>';
+var MAP_ON = '<b>טלפון:</b> <bdo dir="ltr">052-5893366</bdo> · WhatsApp&nbsp;<bdo dir="ltr">08-6812050</bdo>';
 var MAP_OFF_BARE = '<b>WhatsApp:</b> <a href="' + WA + '">כתבו לנו ב-WhatsApp</a>';
 var MAP_OFF = withAsk(MAP_OFF_BARE);
 var GRID_ON = 'grid-template-columns:1fr 1fr 1fr;background:#fff';

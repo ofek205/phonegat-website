@@ -2324,7 +2324,7 @@ if (classFails.length) {
      וה-contactPoint ב-JSON-LD) מותרות בהם. אותן מחרוזות בדיוק כמו ב-apply-contact-mode.js. */
   var PHONE_FIX = [
     ['<li><a href="tel:+97286812050"><bdo dir="ltr">08-6812050</bdo></a></li>',
-     '<li><a href="https://wa.me/97286812050">WhatsApp <bdo dir="ltr">08-6812050</bdo></a></li>'],
+     '<li><a href="https://wa.me/97286812050">WhatsApp&nbsp;<bdo dir="ltr">08-6812050</bdo></a></li>'],
     ['"contactPoint":{"@type":"ContactPoint","telephone":"+972-8-6812050"',
      '"contactPoint":{"@type":"ContactPoint","telephone":"+972-52-5893366"']
   ];
@@ -2374,7 +2374,7 @@ if (classFails.length) {
     } else checked++;
   });
   if (problems.length) bad('עמוד נעול: ' + problems.join(' · '));
-  else ok(checked + ' עמודי השוואה נעולים: גלקסי S26 פלוס זהה ל-main, ובאייפון 17 פרו רק תגיות הראש והשורות שאושרו ב-26.10.2026');
+  else ok(checked + ' עמודי השוואה נעולים: גלקסי S26 פלוס תואם ל-main חוץ משורות הטלפון שאושרו ב-9.11.2026, ובאייפון 17 פרו רק תגיות הראש, השורות שאושרו ב-26.10.2026 ושורות הטלפון');
 })();
 
 /* ---------- דוח ---------- */
