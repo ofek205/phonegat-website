@@ -459,12 +459,21 @@ function buildMain(d, openTag, K) {
   /* --- מה בדרך: קישור לעמודי הדגמים שעוד לא יצאו --- */
   var ups = UPCOMING.filter(function (u) { return (u.related_devices || []).indexOf(d.slug) >= 0; });
   if (ups.length) {
+    /* list_label: אפל כבר פרסמה שהדגם הגיע לחנויות. בלי זה הפסקה נשארת "עוד לא בחנויות".
+       בדף שכל הקישורים שלו שמועות הנוסח הישן נשאר, כדי לא לשכתב עמודים שלא השתנו. */
+    function upLabel(u) {
+      if (u.list_label) return u.list_label;
+      return u.kind === 'rumor' ? 'שמועות, לא מאומת' : 'הוכרז רשמית, עוד לא בחנויות';
+    }
+    var lead = ups.some(function (u) { return u.list_label; })
+      ? 'על דגמים שהוכרזו או שמדברים עליהם ריכזנו את מה שידוע, עם המקור של כל פרט. מה שלא הוכרז רשמית מסומן כשמועה.'
+      : 'על הדגמים שעוד לא בחנויות ריכזנו את מה שידוע, עם המקור של כל פרט. מה שלא הוכרז רשמית מסומן כשמועה.';
     out += '<section class="block" id="upcoming" aria-labelledby="h-upcoming">\n  <div class="wrap box">\n' +
       '    <h2 id="h-upcoming">מה בדרך אצל ' + esc(d.brand === 'Apple' ? 'אפל' : d.brand) + '</h2>\n' +
-      '    <p class="lead">על הדגמים שעוד לא בחנויות ריכזנו את מה שידוע, עם המקור של כל פרט. מה שלא הוכרז רשמית מסומן כשמועה.</p>\n' +
+      '    <p class="lead">' + lead + '</p>\n' +
       '    <ul>\n' + ups.map(function (u) {
         return '      <li><a href="/upcoming-phones/' + u.slug + '/">' + esc(u.h1) + '</a>, ' +
-          (u.kind === 'rumor' ? 'שמועות, לא מאומת' : 'הוכרז רשמית, עוד לא בחנויות') + '</li>';
+          upLabel(u) + '</li>';
       }).join('\n') + '\n    </ul>\n' +
     '  </div>\n</section>\n\n';
   }
