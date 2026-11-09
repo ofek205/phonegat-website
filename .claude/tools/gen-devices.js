@@ -832,6 +832,17 @@ function writeDevicePage(d, K) {
     });
   }
 
+  /* בלי מקף ארוך או קצר בטקסט שהלקוח רואה. העמוד של AirPods Max 2 נבנה פעם ממסגרת ישנה
+     ויצא עם "א׳–ה׳: 9:00–18:30" בפוטר, ולכן נבדק כאן הפלט עצמו ולא רק המקור. הערות,
+     CSS ו-JS לא נבדקים, כי הלקוח לא רואה אותם. */
+  var visible = h.replace(/<!--[\s\S]*?-->/g, '').replace(/<style[\s\S]*?<\/style>/g, '')
+    .replace(/<script[\s\S]*?<\/script>/g, '');
+  var dash = visible.match(/.{0,30}[\u2013\u2014].{0,30}/);
+  if (dash) {
+    console.error('✗ ' + K.base + '/' + d.slug + ': מקף ארוך או קצר בטקסט הגלוי: ' + dash[0].trim());
+    process.exit(1);
+  }
+
   var out = path.join(PROTO, K.base, d.slug, 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, h);
