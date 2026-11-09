@@ -426,6 +426,49 @@ function rule(name, ok, detail) {
   var seen = {}, dup = [];
   labels.forEach(function (l) { if (seen[l]) dup.push(l); else seen[l] = 1; });
   rule('אין שתי תוויות זהות ברשימת הדגמים', dup.length === 0, 'כפולות: ' + dup.join(', ') + '  מתוך ' + labels.join(', '));
+
+  /* 4. דגם בהזמנה בלבד (אופק, 9.11.2026, iPhone Duo). הזרימה ממשיכה עם הדגם, הבועה נושאת
+     כפתורי קשר, ואין chat_ref_declined. ו"מתי יוצא" עונה על זמינות ולא על שעות הפתיחה. */
+  var oo = facts.devices.filter(function (d) { return d.order_only; })[0];
+  if (oo) {
+    var O = boot(0, '/');
+    O.ask('אני רוצה לקנות מכשיר');
+    O.ask('אייפון');
+    O.sandbox.dataLayer.length = 0;
+    var ev = O.ask(oo.name_he);
+    var evAll = O.sandbox.dataLayer.slice();
+    var ctaBox = 0;
+    (function walk(n) { (n.children || []).forEach(function (c) { if (c.className === 'pg-cta') ctaBox++; walk(c); }); })(O.els.pgMsgs);
+    rule('דגם בהזמנה בלבד ממשיך בזרימת הקנייה ולא נדחה', ev.indexOf('chat_ref_declined') < 0 && ev.indexOf('chat_buy_step') >= 0, ev);
+    rule('דגם בהזמנה בלבד מציג כפתורי קשר', ctaBox > 0, 'אין pg-cta');
+    rule('דגם בהזמנה בלבד נשאר הדגם של הליד', evAll.some(function (e) { return e.event === 'chat_buy_step' && e.step === 'model' && String(e.value).indexOf(oo.name) >= 0; }), JSON.stringify(evAll).slice(0, 200));
+    var W = boot(0, '/');
+    var wev = W.ask('מתי יוצא ' + oo.name_he);
+    rule('"מתי יוצא" על דגם בהזמנה בלבד עונה על זמינות', wev.indexOf(':availability') >= 0 && W.lastBot().indexOf('בהזמנה בלבד') >= 0, wev + ' / ' + W.lastBot().slice(0, 60));
+    var W2 = boot(0, '/'), wev2 = W2.ask(oo.name_he + ' כבר בחנויות?');
+    rule('"כבר בחנויות?" על דגם בהזמנה בלבד עונה על זמינות', wev2.indexOf(':availability') >= 0, wev2);
+    /* ושאלות שאינן על זמינות ממשיכות כמו ב-main, גם כשיש בהן "יש לכם" או "מגיע" */
+    var NEG = [
+      ['יש לכם כיסוי ל-' + oo.name_he, 'chat_intent:accessories'],
+      ['יש לכם מגן מסך ל-' + oo.name_he, 'chat_intent:offer'],
+      ['המסך של ' + oo.name_he + ' נשבר, יש לכם תיקון', 'chat_flow:repair'],
+      ['מתי מגיע ' + oo.name_he + ' לתיקון', 'chat_flow:repair'],
+      [oo.name_he + ' מגיע עם מטען?', 'chat_intent:accessories']
+    ];
+    NEG.forEach(function (c) {
+      var N = boot(0, '/'), got = N.ask(c[0]);
+      rule('"' + c[0] + '" לא נתפס כשאלת זמינות', got.indexOf(':availability') < 0 && got.indexOf(c[1]) === 0, got + '   צפוי: ' + c[1]);
+    });
+    /* בדגם בהזמנה בלבד אין שאלת יבוא, וניסוח הנפח הוא "ל-" לפני שם לועזי */
+    var I = boot(0, '/');
+    I.ask('אני רוצה לקנות מכשיר'); I.ask('אייפון'); I.ask(oo.name_he);
+    var stTxt = I.lastBot();
+    I.sandbox.dataLayer.length = 0;
+    var sug = I.lastSug(); I.ask(sug[0] || '256GB');
+    var after = I.sandbox.dataLayer.map(function (e) { return e.event + ':' + (e.step || ''); }).join(' ');
+    rule('בדגם בהזמנה בלבד אין שאלת יבוא', after.indexOf('chat_buy:') >= 0 && I.lastBot().indexOf('יבוא') < 0, after + ' / ' + I.lastBot().slice(0, 60));
+    rule('ניסוח הנפח: "ל-" לפני שם לועזי', /^[A-Za-z]/.test(oo.name_he) ? stTxt.indexOf('שיש ל-' + oo.name_he) >= 0 : true, stTxt.slice(0, 80));
+  }
 })();
 
 /* ---------- מירוץ הטעינה ----------

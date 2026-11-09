@@ -103,14 +103,16 @@ facts.devices.forEach(function (d) {
     if (t.indexOf('—') >= 0) fails.push(d.slug + '/' + field + ': מקף ארוך');
 
     /* דגם ייחוס: גילוי נאות בכל תשובה */
+    /* מכשיר ייחוס בהזמנה בלבד (אופק, 9.11.2026): הגילוי הוא "בהזמנה בלבד" ולא "לא מוכרים" */
     if (d.kind === 'reference') {
       refChecked++;
-      if (t.indexOf('לא מוכרים') < 0) fails.push(d.slug + '/' + field + ': חסר גילוי נאות');
+      if (t.indexOf(d.order_only ? 'בהזמנה בלבד' : 'לא מוכרים') < 0) fails.push(d.slug + '/' + field + ': חסר גילוי נאות');
     }
 
     /* אין מספר שאינו במקור, בשם הדגם או ב-warranty_months */
     var allowed = srcText(d, field) + ' ' + d.name_he + ' ' + d.name + ' ' +
-      (typeof d.warranty_months === 'number' ? d.warranty_months : '');
+      (typeof d.warranty_months === 'number' ? d.warranty_months : '') +
+      (d.order_only ? ' 08-6812050' : '');
     var allowedNums = nums(allowed);
     nums(t).forEach(function (n) {
       if (allowedNums.indexOf(n) < 0) fails.push(d.slug + '/' + field + ': המספר ' + n + ' אינו בשדה המקור');
@@ -144,7 +146,7 @@ if (compareAnswer && comparePage) {
 
     if (PRICE.test(t)) cmpFails.push(pr.join(' vs ') + ': מחיר בתשובה');
     if (t.indexOf('—') >= 0) cmpFails.push(pr.join(' vs ') + ': מקף ארוך');
-    if ((a.kind === 'reference' || b.kind === 'reference') && t.indexOf('לא מוכרים') < 0)
+    if ((a.kind === 'reference' || b.kind === 'reference') && !/לא מוכרים|בהזמנה בלבד/.test(t))
       cmpFails.push(pr.join(' vs ') + ': חסר גילוי נאות למכשיר ייחוס');
     var bullets = (t.match(/\n•/g) || []).length;
     if (bullets > 3) cmpFails.push(pr.join(' vs ') + ': יותר משלושה הבדלים');
@@ -173,7 +175,7 @@ if (compareAnswer && comparePage) {
     /* אורך: שטח השיחה במובייל הוא 362px, ובועה של 415 תווים מילאה אותו כמעט כולו.
        התקציב נמדד על ההבדלים בלבד ולא על הגילוי הנאות, שהוא חובה ועולה כ-95 תווים:
        צמד עם מכשיר ייחוס אינו יכול לעמוד באותו תקציב כמו צמד שאיננו מוכרים בו. */
-    var body = t.split('\n').filter(function (l) { return l.indexOf('לא מוכרים') < 0; }).join('\n');
+    var body = t.split('\n').filter(function (l) { return !/לא מוכרים|בהזמנה בלבד/.test(l); }).join('\n');
     if (body.length > 280) cmpFails.push(pr.join(' vs ') + ': ' + body.length + ' תווי הבדלים, מעל 280');
     cmpLens.push(body.length);
 

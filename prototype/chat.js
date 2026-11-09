@@ -1,5 +1,5 @@
 /* נגזר אוטומטית מ-index.html על ידי gen-bot.js. אל תערוך. */
-/* sha1:fca4c092e38f885f */
+/* sha1:b0563322ca5a6be6 */
 /* bot:js:start — מקור האמת של הצ'אט. gen-bot.js גוזר מכאן את chat.js שנטען ב-21 עמודי
    התוכן, ובדיקה 31 מוודאת שהשניים לא נפרדו. אל תערוך את chat.js ביד. */
 (function(){
@@ -480,6 +480,9 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* גילוי נאות למכשיר ייחוס. מוחזר בכל אזכור ולא רק בראשון, ולכן הוא חלק מבניית התשובה
      ולא מצב שנשמר בשיחה. */
   function refNote(d){
+    /* אופק, 9.11.2026: iPhone Duo בהזמנה בלבד. בלי מחיר ובלי טענת מלאי. */
+    if(d.kind==='reference'&&d.order_only)
+      return 'שימו לב: את '+d.name_he+' אפשר להזמין אצלנו, בהזמנה בלבד. למחיר ולזמן אספקה שאלו אותנו ב-WhatsApp, 08-6812050.';
     if(d.kind==='reference')
       return 'שימו לב: את '+d.name_he+' אנחנו לא מוכרים. הוא אצלנו במאגר רק כדי שאפשר להשוות אליו.';
     if(d.kind==='discontinued')
@@ -493,7 +496,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   /* הטקסט המצוטט לפעמים כבר נושא את הגילוי בעצמו: הפרוזה של what_matters במכשירי ייחוס
      נפתחת ב"מכשיר שאנחנו לא מוכרים", וההוספה מלמעלה יצרה אמירה כפולה באותה תשובה.
      ההבטחה נשמרת בשני המקרים, כי כאן מוותרים על הכפילות ולא על הגילוי. */
-  function alreadyDiscloses(t){ return /לא מוכרים/.test(t||''); }
+  function alreadyDiscloses(t){ return /לא מוכרים|בהזמנה בלבד/.test(t||''); }
   function fieldAnswer(d,field){
     var note=refNote(d),pre=note?note+'\n':'';
     /* כל השדות שהם רשימת משפטים שנכתבו ביד. מצוטטים כמו שהם, עד שלושה, ובלי ניסוח מחדש. */
@@ -516,6 +519,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     }
     if(COMMERCIAL[field]){
       /* מכשיר ייחוס אינו נמכר, ולכן אין לו תנאי מסחר. זו תשובה ולא נתון חסר. */
+      if(d.kind==='reference'&&d.order_only)return {text:note+'\nאת פרטי האחריות והתשלום נבדוק איתכם יחד עם ההזמנה.',human:true};
       if(d.kind==='reference')return {text:note+'\nולכן אין לו אצלנו אחריות ואין תנאי תשלום.',human:false};
       /* תשלומים והעברת נתונים הם תנאי מכירה. אחריות וטלפון חלופי נשארים למי שכבר קנה. */
       if(d.kind==='discontinued'&&(field==='payments'||field==='data_transfer'))
@@ -688,6 +692,18 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
       track('chat_device_compare',{slug_a:a.slug,slug_b:b.slug});
       var r=compareAnswer(a,b),href=comparePage(a,b);
       botReply(r.text,{cta:r.human?contactCta():null,sug:[[href==='/compare/'?'כל ההשוואות':'להשוואה המלאה',function(){location.href=href;}]]});
+      return true;
+    }
+    /* דגם בהזמנה בלבד ושאלת זמינות ("מתי יוצא iPhone Duo"). בלי זה "מתי" תפס את כוונת
+       שעות הפתיחה. התשובה היא order_note מ-devices.json, בלי מחיר ובלי טענת מלאי. */
+    /* רק כשאין כוונה אחרת: "יש לכם כיסוי ל-iPhone Duo" הוא אבזור, "מגן מסך" הוא הצעה,
+       ו"מתי מגיע iPhone Duo לתיקון" הוא תיקון. אלה ממשיכים בניתוב הרגיל. */
+    var otherIt=matchIntent(text),OTHER={repair:1,accessories:1,offer:1,warranty:1,data:1,tradein:1,gaming:1,payments:1,celcom:1,business:1,callback:1,human:1};
+    if(devs.length===1&&devs[0].order_only&&devs[0].order_note&&!(otherIt&&OTHER[otherIt.id])&&
+       /מתי|יוצא|ייצא|יגיע|מגיע|הגיע|זמין|זמינות|להשיג|להזמין|נמכר|בישראל|מלאי|בחנויות|בחנות|יש לכם|אפשר לקנות/.test(text)){
+      var od=devs[0];fails=0;ctx.topic='זמינות '+od.name_he;
+      track('chat_device_spec',{slug:od.slug,field:'availability'});
+      botReply(od.order_note,{cta:contactCta(),waText:'היי, הגעתי דרך האתר של פון גת. אשמח לבדוק מחיר וזמן אספקה ל-'+od.name_he+'.'});
       return true;
     }
     var field=findField(text);if(!field)return false;
@@ -914,7 +930,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
   function buyTopic(){var p=buyParts();return 'קניית מכשיר'+(p.length?(' - '+p.join(', ')):'');}
 
   function startBuy(extra){
-    flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;
+    flow={type:'buy',step:'brand'};ctx.topic='buy';ctx.brand='';ctx.model='';ctx.slug='';ctx.storage='';ctx.imp='';ctx.rec=false;ctx.orderOnly=false;
     track('chat_flow',{flow:'buy'});
     var sug=[],i;
     /* "לא בטוחים? שנמליץ" ראשון ובניסוח של פתרון, כי הוא **קיצור הדרך** של הזרימה:
@@ -982,7 +998,14 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     if(m&&!slug){
       var hits=findDevices(m);
       if(hits.length===1){
-        if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
+        /* אופק, 9.11.2026: דגם בהזמנה בלבד ממשיך בזרימה כמו דגם נמכר. הדגם נשאר בליד,
+           הבועה מציגה את כפתורי הקשר, והמדידה היא chat_buy_step רגיל ולא chat_ref_declined. */
+        if(hits[0].kind==='reference'&&hits[0].order_only){
+          m=hits[0].name_he;slug=hits[0].slug;ctx.orderOnly=true;
+          ctx.model=m;ctx.slug=slug;
+          botReply(refNote(hits[0]),{cta:contactCta(),waText:buyWa()});
+        }
+        else if(hits[0].kind==='reference'||hits[0].kind==='discontinued'){
           track(hits[0].kind==='reference'?'chat_ref_declined':'chat_disc_declined',{slug:hits[0].slug});
           botReply(refNote(hits[0])+'\nאפשר לבחור דגם אחר, או להמשיך בלי דגם ולהשאיר פרטים.',{
             sug:[['לבחור דגם אחר',function(){buyBrand(ctx.brand||'',BRAND_EN[ctx.brand]||'');}],
@@ -990,7 +1013,7 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
           return;
         }
         /* דגם נמכר שזוהה: משלימים את השם המלא ואת ה-slug, וכך גם שלב הנפח מדויק */
-        m=hits[0].name_he;slug=hits[0].slug;
+        else{m=hits[0].name_he;slug=hits[0].slug;}
       }
     }
     ctx.model=m||ctx.model||'';ctx.slug=slug||'';
@@ -1014,9 +1037,9 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     else{['128GB','256GB','512GB ומעלה'].forEach(function(s){STORAGE_SEEN.push(s);sug.push([s,function(){buyStorage(s);}]);});}
     sug.push(['לא בטוח',function(){buyStorage('');}]);
     /* "זיכרון" הוא RAM. השאלה כאן על אחסון, וזה שני דברים שונים שלקוח באמת מבלבל ביניהם. */
-    botReply(opts?('איזה נפח? אלה הנפחים שיש ל'+(ctx.model||'דגם הזה')+'.'):'איזה נפח אחסון צריך?',{sug:sug});
+    botReply(opts?('איזה נפח? אלה הנפחים שיש '+(ctx.model?((/^[A-Za-z0-9]/.test(ctx.model)?'ל-':'ל')+ctx.model):'לדגם הזה')+'.'):'איזה נפח אחסון צריך?',{sug:sug});
   }
-  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:safeVal(s||'לא בטוח',STORAGE_SEEN)});flow={type:'buy',step:'import'};askImport();}
+  function buyStorage(s){ctx.storage=s;track('chat_buy_step',{step:'storage',value:safeVal(s||'לא בטוח',STORAGE_SEEN)});if(ctx.orderOnly){buyDone();return;}flow={type:'buy',step:'import'};askImport();}
   function askImport(){botReply('ואיזה יבוא מעדיפים?',{sug:[['יבוא רשמי',function(){buyImport('רשמי');}],['יבוא מקביל',function(){buyImport('מקביל');}],['לא בטוח, שתסבירו לי',function(){buyImport('');}]]});}
   function buyImport(v){ctx.imp=v;track('chat_buy_step',{step:'import',value:safeVal(v||'לא בטוח',IMPORT_VALS)});buyDone();}
   function buyDone(){
@@ -1025,6 +1048,12 @@ botReply(ctx.device+' עם '+iss+', בול בתחום שלנו. '+warr+' המח�
     track('chat_buy',{device:safeVal(ctx.brand||'המלצה',['אייפון','סמסונג','שיאומי','המלצה']),model:ctx.model?catalogName(ctx.model):'',storage:safeVal(ctx.storage||'',STORAGE_SEEN),imp:safeVal(ctx.imp||'',IMPORT_VALS)});
     /* "הכול בתשלומים, כולל העברת נתונים ואבזור" נקרא כהבטחה שהאבזור כלול במחיר, וזה לא
        מה שנאמר. והצ'יפ "בקשת שיחה חוזרת" ירד, כי ה-CTA באותה בועה כבר מציע אותו. */
+    /* דגם בהזמנה בלבד: אין הבטחה על תשלומים, ומחיר וזמן אספקה נבדקים ב-WhatsApp */
+    var od=ctx.orderOnly?factsBySlug(ctx.slug):null;
+    if(od&&od.order_only){
+      botReply(sum+refNote(od)+'\n'+hoursLine(),{cta:contactCta(),waText:buyWa()});
+      return;
+    }
     botReply(sum+'אפשר בתשלומים, ואנחנו מעבירים את הנתונים מהמכשיר הישן. דברו איתנו ונגיד לכם מחיר.\n'+hoursLine(),{cta:contactCta(),waText:buyWa(),sug:[['תשלומים',function(){runIntent('payments');}],['העברת נתונים',function(){runIntent('data');}]]});
   }
 
